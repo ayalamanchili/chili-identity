@@ -10,7 +10,6 @@ import info.yalamanchili.office.entity.profile.Address;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class AddressDao implements AbstractDao<Address> {
 
 	@PersistenceContext
-	protected EntityManagerFactory emf;
+	protected EntityManager em;
 
 	@Override
 	public void delete(long arg0) {
@@ -35,32 +34,19 @@ public class AddressDao implements AbstractDao<Address> {
 
 	@Override
 	public Address findById(Long id) {
-		EntityManager em = emf.createEntityManager();
 		return em.find(Address.class, id);
 	}
 
 	@Override
 	public List<Address> query(int start, int limit) {
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		Address address = new Address();
-		address.setCity("herndon");
-		address.setCountry("usa");
-		address.setState("va");
-		address.setStreet1("2110 wilkes ct");
-		address.setStreet2("apt 103");
-		em.merge(address);
-		em.getTransaction().commit();
-		
 		Query findAllQuery = em.createQuery(
 				"from " + Address.class.getCanonicalName(), Address.class);
 		return findAllQuery.getResultList();
 	}
 
 	@Override
-	public void save(Address arg0) {
-		// TODO Auto-generated method stub
-
+	public void save(Address address) {
+		em.merge(address);
 	}
 
 	@Override

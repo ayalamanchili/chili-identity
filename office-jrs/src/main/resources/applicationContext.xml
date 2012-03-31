@@ -14,12 +14,12 @@
 		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="office" />
 	</bean>
-	<bean class="org.springframework.orm.jpa.JpaTransactionManager">
+	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
+	<tx:annotation-driven transaction-manager="txManager" />
+
 
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-
-	<tx:annotation-driven />
 </beans>
