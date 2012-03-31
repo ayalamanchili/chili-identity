@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>info.yalamanchili.office</groupId>
-			<artifactId>office-jpa</artifactId>
+			<artifactId>office-dao</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
 		<!-- Jersey -->
@@ -25,25 +25,6 @@
 			<artifactId>jersey-server</artifactId>
 			<version>${jersy.version}</version>
 		</dependency>
-
-		<!-- Spring 3 dependencies -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<!-- Jersey -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>

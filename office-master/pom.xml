@@ -20,7 +20,7 @@
 			<artifactId>yalamanchili-commons</artifactId>
 			<version>${yalamanchili.version}</version>
 		</dependency>
-		<!-- Spring Hibernate -->
+		<!-- JPA and Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
@@ -61,34 +61,38 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>3.0.3.RELEASE</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>3.0.3.RELEASE</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jpa</artifactId>
 			<version>2.0.8</version>
-			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>3.0.3.RELEASE</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+		<!-- SLF4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -109,7 +113,7 @@
 	</dependencies>
 	<modules>
 		<module>../office-jpa</module>
-		<!-- <module>../office-dao</module> -->
+		<module>../office-dao</module>
 		<module>../office-jrs</module>
 	</modules>
 	<build>
@@ -179,5 +183,6 @@
 		<office.version>1.0-SNAPSHOT</office.version>
 		<yalamanchili.version>1.1-SNAPSHOT</yalamanchili.version>
 		<arquillian.version>1.0.0.Alpha4</arquillian.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
 	</properties>
 </project>

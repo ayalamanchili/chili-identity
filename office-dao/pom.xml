@@ -17,7 +17,6 @@
 			<groupId>info.yalamanchili.office</groupId>
 			<artifactId>office-jpa</artifactId>
 			<version>${project.version}</version>
-			<type>ejb</type>
 		</dependency>
 	</dependencies>
 	<build>
