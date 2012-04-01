@@ -1,0 +1,25 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+
+	<!-- logging -->
+	<inherits name="com.google.gwt.logging.Logging" />
+	<!-- Enable Firebug logger and disable console logger -->
+	<set-property name="gwt.logging.firebugHandler" value="ENABLED" />
+	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
+
+	<!-- used to support internationalization -->
+	<inherits name='com.google.gwt.i18n.I18N' />
+	<extend-property name="locale" values="ES" />
+
+	<!-- gwt client bundle to load resources -->
+	<inherits name="com.google.gwt.resources.Resources" />
+
+	<entry-point class="info.yalamanchili.office.client.OfficeWelcome" />
+	<stylesheet src="office.css" />
+
+	<!-- used to include yalamanchili-gwt project in gwt compiler path -->
+	<inherits name='info.yalamanchili.yalamanchili-gwt' />
+
+	<!--source code packages -->
+	<source path='client' />
+</module>

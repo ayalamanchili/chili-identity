@@ -1,0 +1,51 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:TabLayoutPanel barUnit="PX" barHeight="30" height="600px"
+		addStyleNames="{style.tabPanel}" ui:field="tabPanel">
+		<g:tab>
+			<g:header>HOME</g:header>
+			<g:ScrollPanel>
+				<g:FlowPanel addStyleNames="style.homePanel" ui:field="homePanel" />
+			</g:ScrollPanel>
+		</g:tab>
+		<g:tab>
+			<g:header>Knowledge</g:header>
+			<g:ScrollPanel>
+				<g:FlowPanel addStyleNames="style.knowledgeBasePanel"
+					ui:field="knowledgeBasePanel" />
+			</g:ScrollPanel>
+		</g:tab>
+		<g:tab>
+			<g:header>Sandbox</g:header>
+			<g:ScrollPanel>
+				<g:FlowPanel addStyleNames="style.sandboxPanel"
+					ui:field="sandboxPanel" />
+			</g:ScrollPanel>
+		</g:tab>
+		<!-- <g:tab> <g:header> Admin </g:header> <g:ScrollPanel> <g:FlowPanel 
+			addStyleNames="style.adminPanel" ui:field="adminPanel" /> </g:ScrollPanel> 
+			</g:tab> -->
+	</g:TabLayoutPanel>
+	<ui:style>
+		.tabPanel {
+			
+		}
+		
+		.homePanel {
+			
+		}
+		
+		.SandboxPanel {
+			
+		}
+		
+		.knowledgeBasePanel {
+			
+		}
+		
+		.adminPanel {
+			
+		}
+	</ui:style>
+</ui:UiBinder>

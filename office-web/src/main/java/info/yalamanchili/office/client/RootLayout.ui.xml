@@ -1,0 +1,54 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
+	<g:DockLayoutPanel unit='EM' addStyleNames='mainPanel'>
+		<g:north size='4'>
+			<g:FlowPanel ui:field='statusPanel' styleName="{style.statusPanel}">
+				<office:StatusPanel></office:StatusPanel>
+			</g:FlowPanel>
+		</g:north>
+		<g:west size='15'>
+			<g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
+				<g:FlowPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
+					<office:SearchPanel></office:SearchPanel>
+				</g:FlowPanel>
+				<g:FlowPanel styleName="{style.sidePanelBottom}"
+					ui:field='sidePanelBottom'>
+					<office:AppsPanel></office:AppsPanel>
+				</g:FlowPanel>
+			</g:FlowPanel>
+		</g:west>
+		<g:center>
+			<g:ScrollPanel addStyleNames='entityPanelHolder'
+				ui:field='entityPanelHolder'>
+				<g:FlowPanel ui:field='entityPanel'>
+					<office:TabsPanel></office:TabsPanel>
+				</g:FlowPanel>
+			</g:ScrollPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+	<ui:style>
+		.statusPanel {
+			border-bottom-style: solid;
+			border-bottom-color: #28009E;
+			border-bottom-width: 2px;
+		}
+		
+		.sidePanel {
+			border-right-style: solid;
+			border-right-color: #28009E;
+			border-right-width: 2px;
+		}
+		
+		.sidePanelTop {
+			border-bottom-style: solid;
+			border-bottom-color: #28009E;
+			border-bottom-width: 2px;
+			height: 30%;
+		}
+		
+		.sidePanelBottom {
+			height: 68%;
+		}
+	</ui:style>
+</ui:UiBinder> 

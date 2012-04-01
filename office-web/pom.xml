@@ -1,0 +1,150 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>info.yalamanchili.office.client</groupId>
+	<artifactId>office-web</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>office-web</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>info.yalamanchili.gwt</groupId>
+			<artifactId>yalamanchili-gwt</artifactId>
+			<version>${yalamanchili.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.yalamanchili.commons</groupId>
+			<artifactId>yalamanchili-commons</artifactId>
+			<version>${yalamanchili.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin
+				</artifactId>
+				<version>2.4.0</version>
+				<dependencies>
+				</dependencies>
+				<configuration>
+					<logLevel>INFO</logLevel>
+					<runTarget>
+						office.html
+					</runTarget>
+					<style>DETAILED</style>
+					<noServer>false</noServer>
+					<!-- use only for dev -->
+					<!-- <draftCompile>true</draftCompile> -->
+					<soyc>false</soyc>
+					<extraJvmArgs>-Xmx512m</extraJvmArgs>
+					<!-- target dir for generated interfaces -->
+					<generateDirectory>src/main/java</generateDirectory>
+					<i18nConstantsWithLookupBundle>
+						info.yalamanchili.office.client.internalization.OfficeConstants
+					</i18nConstantsWithLookupBundle>
+					<i18nMessagesBundle>
+						info.yalamanchili.office.client.internalization.OfficeMessages
+					</i18nMessagesBundle>
+					<gwtVersion>${gwt.version}</gwtVersion>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<!--<goal>mergewebxml</goal> -->
+							<goal>i18n</goal>
+							<goal>compile</goal>
+							<!-- <goal>test</goal> -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<!-- download artifacts from this repo -->
+	<repositories>
+		<repository>
+			<id>yalamanchili.info</id>
+			<name>yalamanchili.info</name>
+			<url>http://yalamanchili.info:8080/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<!-- download plugins from this repo -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>yalamanchili.info</id>
+			<name>yalamanchili.info</name>
+			<url>http://yalamanchili.info:8080/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	<distributionManagement>
+		<!-- Publish the versioned releases here -->
+		<repository>
+			<id>yalamanchili.info</id>
+			<name>yalamanchili.info</name>
+			<url>http://yalamanchili.info:8080/nexus/content/repositories/releases</url>
+		</repository>
+
+		<!-- Publish the versioned releases here -->
+		<snapshotRepository>
+			<id>yalamanchili.info</id>
+			<name>yalamanchili.info</name>
+			<url>http://yalamanchili.info:8080/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<properties>
+		<yalamanchili.version>1.1-SNAPSHOT</yalamanchili.version>
+		<gwt.version>2.4.0</gwt.version>
+		<gwt.plugin.version>2.4.0</gwt.plugin.version>
+	</properties>
+</project>
