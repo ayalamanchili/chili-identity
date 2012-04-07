@@ -112,9 +112,12 @@
 		</dependency>
 	</dependencies>
 	<modules>
+		<!-- Service -->
 		<module>../office-jpa</module>
 		<module>../office-dao</module>
 		<module>../office-jrs</module>
+		<!-- web -->
+		<module>../office-web</module>
 	</modules>
 	<build>
 		<plugins>

@@ -9,6 +9,10 @@
 	font-size: 12pt;
 }
 
+.tabPanel {
+	height: 600px;
+}
+
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
 	margin-left: 3px;
 	margin-right: 3px;
@@ -49,7 +53,8 @@
 .y-gwt-TablePanel {
 	width: 100%;
 }
-.gwt-Tree .gwt-TreeItem-selected{
+
+.gwt-Tree .gwt-TreeItem-selected {
 	font-weight: bold;
 	background-color: #D9D9D9;
 }

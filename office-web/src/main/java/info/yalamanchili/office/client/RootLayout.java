@@ -38,6 +38,7 @@ public class RootLayout extends Composite {
 	public RootLayout() {
 		initWidget(uiBinder.createAndBindUi(this));
 		instance = this;
+		entityPanel.add(new TabPanel());
 	}
 
 	public void hideSidePanel() {

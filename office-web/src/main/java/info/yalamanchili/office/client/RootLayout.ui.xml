@@ -22,7 +22,6 @@
 			<g:ScrollPanel addStyleNames='entityPanelHolder'
 				ui:field='entityPanelHolder'>
 				<g:FlowPanel ui:field='entityPanel'>
-					<office:TabsPanel></office:TabsPanel>
 				</g:FlowPanel>
 			</g:ScrollPanel>
 		</g:center>
