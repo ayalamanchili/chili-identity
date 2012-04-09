@@ -1,31 +1,31 @@
-/**
- * Automanage Copyright (C) 2011 yalamanchili.info
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package info.yalamanchili.office.dao.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 
 /**
- * @todo add comment for javadoc
  *
- * @author ayalamanchili @generated
+ * @author ayalamanchili
  */
 @Component
-public class AddressDao extends CRUDDao<Address> {
+public class EmployeeDao extends CRUDDao<Employee> {
 
     @PersistenceContext
     protected EntityManager em;
 
-    public AddressDao() {
-        super(Address.class);
+    public EmployeeDao() {
+        super(Employee.class);
     }
 
     @Override
     public EntityManager getEntityManager() {
-       return em;
+        return em;
     }
 }
