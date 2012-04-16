@@ -11,10 +11,9 @@
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
-			<groupId>info.yalamanchili.gwt</groupId>
-			<artifactId>yalamanchili-gwt</artifactId>
+			<groupId>info.yalamanchili</groupId>
+			<artifactId>chili-gwt</artifactId>
 			<version>${yalamanchili.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>info.yalamanchili.commons</groupId>

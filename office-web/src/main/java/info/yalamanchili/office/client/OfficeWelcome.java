@@ -1,8 +1,12 @@
 package info.yalamanchili.office.client;
 
+import info.yalamanchili.office.client.internalization.OfficeConstants;
+import info.yalamanchili.office.client.internalization.OfficeMessages;
+
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class OfficeWelcome implements EntryPoint {
@@ -18,11 +22,11 @@ public class OfficeWelcome implements EntryPoint {
 		return instance;
 	}
 
-	// public static OfficeConstants constants = (OfficeConstants) GWT
-	// .create(OfficeConstants.class);
-	//
-	// public static OfficeMessages messages = (OfficeMessages) GWT
-	// .create(OfficeMessages.class);
+	public static OfficeConstants constants = (OfficeConstants) GWT
+			.create(OfficeConstants.class);
+
+	public static OfficeMessages messages = (OfficeMessages) GWT
+			.create(OfficeMessages.class);
 
 	@Override
 	public void onModuleLoad() {

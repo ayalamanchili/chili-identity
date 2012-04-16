@@ -16,11 +16,11 @@ public interface OfficeConstants extends com.google.gwt.i18n.client.ConstantsWit
   String Table_Action();
 
   /**
-   * Translated "test".
+   * Translated "http://localhost:8080/office/resources/".
    * 
-   * @return translated "test"
+   * @return translated "http://localhost:8080/office/resources/"
    */
-  @DefaultStringValue("test")
-  @Key("test")
-  String test();
+  @DefaultStringValue("http://localhost:8080/office/resources/")
+  @Key("root_url")
+  String root_url();
 }
