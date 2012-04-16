@@ -19,7 +19,6 @@
 			<groupId>info.yalamanchili.commons</groupId>
 			<artifactId>yalamanchili-commons</artifactId>
 			<version>${yalamanchili.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -39,10 +38,20 @@
 			<version>${gwt.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- apache http clinet -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.1</version>
+		</dependency>
 	</dependencies>
 	<build>
-		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
-		<defaultGoal>package</defaultGoal>
+		<finalName>office-web</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -72,7 +81,7 @@
 					<style>DETAILED</style>
 					<noServer>false</noServer>
 					<!-- use only for dev -->
-					<!-- <draftCompile>true</draftCompile> -->
+					<draftCompile>true</draftCompile>
 					<soyc>false</soyc>
 					<extraJvmArgs>-Xmx512m</extraJvmArgs>
 					<!-- target dir for generated interfaces -->

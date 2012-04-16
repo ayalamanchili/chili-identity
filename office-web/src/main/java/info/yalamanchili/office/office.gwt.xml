@@ -14,15 +14,15 @@
 	<!-- used to support internationalization -->
 	<inherits name='com.google.gwt.i18n.I18N' />
 	<extend-property name="locale" values="ES" />
-	
+
 	<!-- used to include chili-gwt project in gwt compiler path -->
 	<inherits name='info.yalamanchili.chili-gwt' />
-	
+
 	<!-- gwt client bundle to load resources -->
 	<inherits name="com.google.gwt.resources.Resources" />
 	<entry-point class="info.yalamanchili.office.client.OfficeWelcome" />
 	<stylesheet src="office.css" />
 
 	<source path='client' />
-	
+
 </module>
