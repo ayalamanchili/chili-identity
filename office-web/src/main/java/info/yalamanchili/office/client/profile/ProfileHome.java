@@ -8,6 +8,6 @@ public class ProfileHome extends Composite {
 
 	public ProfileHome() {
 		initWidget(profileHome);
-                profileHome.add(new CreateEmp());
+                profileHome.add(new CreateEmployeePanel());
 	}
 }

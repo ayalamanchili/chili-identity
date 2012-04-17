@@ -117,7 +117,7 @@
 		<module>../office-dao</module>
 		<module>../office-jrs</module>
 		<!-- web -->
-		<module>../office-web</module>
+		<!--<module>../office-web</module>-->
 	</modules>
 	<build>
 		<plugins>
