@@ -2,15 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile;
+package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.office.client.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.ReadAllComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 
 /**
  * 
@@ -30,13 +33,14 @@ public class ReadAllEmployees extends ReadAllComposite {
 
 	@Override
 	public void preFetchTable(int start) {
-		// TODO externalize the readall table
+		// TODO externalize the limit size for read all
 		HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(0, 10), null,
 				new ALAsyncCallback<String>() {
 
 					@Override
-					public void onResponse(String arg0) {
-						logger.info(arg0);
+					public void onResponse(String result) {
+						logger.info(result);
+						postFetchTable(result);
 					}
 
 				});
@@ -44,7 +48,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 	}
 
 	public String getReadAllEmployeesURL(Integer start, Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/"
+		return OfficeWelcome.constants.root_url() + "employee/table/"
 				+ start.toString() + "/" + limit.toString();
 	}
 
@@ -57,19 +61,27 @@ public class ReadAllEmployees extends ReadAllComposite {
 		table.setText(0, 4, getClassValue("dateOfBirth"));
 		table.setText(0, 5, getClassValue("sex"));
 		table.setText(0, 6, getClassValue("startDate"));
-		table.setText(0, 6, getClassValue("ssn"));
+		table.setText(0, 7, getClassValue("ssn"));
 
 	}
 
 	@Override
 	public void fillData(JSONArray entities) {
-		// TODO Auto-generated method stub
-
+		for (int i = 1; i <= entities.size(); i++) {
+			JSONObject entity = (JSONObject) entities.get(i - 1);
+			createViewIcon(i, JSONUtils.toString(entity, "id"));
+			table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
+			table.setText(i, 2, JSONUtils.toString(entity, "middleName"));
+			table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
+			table.setText(i, 4, JSONUtils.toString(entity, "dateOfBirth"));
+			table.setText(i, 5, JSONUtils.toString(entity, "sex"));
+			table.setText(i, 6, JSONUtils.toString(entity, "startDate"));
+			table.setText(i, 7, JSONUtils.toString(entity, "ssn"));
+		}
 	}
 
 	@Override
 	public void viewClicked(int row, int col) {
-		// TODO Auto-generated method stub
 
 	}
 }

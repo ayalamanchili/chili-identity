@@ -4,8 +4,8 @@ import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.RootLayout;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.EmployeeSidePanel;
-import info.yalamanchili.office.client.profile.ReadAllEmployees;
+import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
+import info.yalamanchili.office.client.profile.employee.ReadAllEmployees;
 
 import java.util.logging.Logger;
 

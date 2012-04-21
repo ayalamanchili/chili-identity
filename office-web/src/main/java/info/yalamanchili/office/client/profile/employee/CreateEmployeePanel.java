@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client.profile;
+package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.date.DateUtils;

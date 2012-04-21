@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client.profile;
+package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;

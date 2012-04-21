@@ -3,7 +3,7 @@ package info.yalamanchili.office.client;
 import info.yalamanchili.office.client.admin.AdminHome;
 import info.yalamanchili.office.client.admin.AdminSidePanel;
 import info.yalamanchili.office.client.profile.ProfileHome;
-import info.yalamanchili.office.client.profile.EmployeeSidePanel;
+import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 
 import java.util.logging.Logger;
 

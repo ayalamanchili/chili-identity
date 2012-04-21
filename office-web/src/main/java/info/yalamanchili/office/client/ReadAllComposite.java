@@ -1,10 +1,12 @@
-package info.yalamanchili.office.client.profile;
+package info.yalamanchili.office.client;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.fields.ListBoxField;
 import info.yalamanchili.gwt.utils.Alignment;
 import info.yalamanchili.gwt.utils.Utils;
 import info.yalamanchili.gwt.widgets.ClickableLink;
+
+import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -13,6 +15,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
@@ -21,6 +25,9 @@ import com.google.gwt.user.client.ui.Label;
 
 public abstract class ReadAllComposite extends ALComposite implements
 		ClickHandler, ChangeHandler {
+
+	private static Logger logger = Logger.getLogger(ReadAllComposite.class
+			.getName());
 
 	/** The panel. */
 	protected FlowPanel panel = new FlowPanel();
@@ -121,17 +128,23 @@ public abstract class ReadAllComposite extends ALComposite implements
 
 	public abstract void preFetchTable(int start);
 
-	public void postFetchTable(JSONObject tableObj) {
-		initPaging(new Long(tableObj.get("size").toString()));
+	public void postFetchTable(String tableObjString) {
+		JSONObject table = (JSONObject) JSONParser.parseLenient(tableObjString);
+		if (table.get("size") != null) {
+			JSONString size = (JSONString) table.get("size");
+			initPaging(new Long(size.stringValue()));
+		}
 		createTableHeader();
-		fillData((JSONArray) tableObj.get("results"));
+		if (table.get("entities") != null) {
+			fillData((JSONArray) table.get("entities"));
+		}
 	}
 
 	public abstract void createTableHeader();
 
-	protected void createViewIcon(int row, Long id) {
+	protected void createViewIcon(int row, String id) {
 		ClickableLink link = new ClickableLink("view");
-		link.setTitle(id.toString());
+		link.setTitle(id);
 		table.setWidget(row, 0, link);
 	}
 
