@@ -1,10 +1,13 @@
 package info.yalamanchili.office.client.profile;
 
+import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.fields.DateField;
 import info.yalamanchili.gwt.fields.EnumField;
 import info.yalamanchili.gwt.fields.StringField;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -13,8 +16,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -71,11 +72,11 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 	@Override
 	public void onClick(ClickEvent clickEvent) {
 		if (clickEvent.getSource().equals(createB)) {
-			doPost(getCreateEmployeeURI(), getEmployee());
+			createEmployee(getCreateEmployeeURI(), getEmployeeData());
 		}
 	}
 
-	protected String getEmployee() {
+	protected String getEmployeeData() {
 		JSONObject jsonValue = new JSONObject();
 		jsonValue.put("firstName", new JSONString(firstNameF.getText()));
 		jsonValue.put("middleName", new JSONString(middleNameF.getText()));
@@ -102,23 +103,19 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 		return OfficeWelcome.constants.root_url() + "employee";
 	}
 
-	public void doPost(String url, String postData) {
-		HttpServiceAsync.instance().doPut(url, postData,
-				new AsyncCallback<String>() {
+	public void createEmployee(String url, String data) {
+		HttpServiceAsync.instance().doPut(url, data,
+				new ALAsyncCallback<String>() {
 
 					@Override
-					public void onFailure(Throwable arg0) {
-						Window.alert("call failed" + arg0.getLocalizedMessage());
-
-					}
-
-					@Override
-					public void onSuccess(String arg0) {
-						Window.alert("success");
-
+					public void onResponse(String arg0) {
+						new ResponseStatusWidget()
+								.show("successfully created employee");
+						TabPanel.instance().adminPanel.clear();
+						TabPanel.instance().adminPanel
+								.add(new ReadAllEmployees());
 					}
 
 				});
 	}
-
 }

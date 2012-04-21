@@ -24,5 +24,6 @@
 	<stylesheet src="office.css" />
 
 	<source path='client' />
-
+	<!-- use this setting in development mode to speed up compile time -->
+	<set-property name="user.agent" value="safari" />
 </module>

@@ -10,7 +10,6 @@
 		<g:west size='15'>
 			<g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
 				<g:FlowPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
-					<office:SearchPanel></office:SearchPanel>
 				</g:FlowPanel>
 				<g:FlowPanel styleName="{style.sidePanelBottom}"
 					ui:field='sidePanelBottom'>
@@ -43,11 +42,11 @@
 			border-bottom-style: solid;
 			border-bottom-color: #28009E;
 			border-bottom-width: 2px;
-			height: 30%;
+			height: 60%;
 		}
 		
 		.sidePanelBottom {
-			height: 68%;
+			height: 40%;
 		}
 	</ui:style>
 </ui:UiBinder> 
