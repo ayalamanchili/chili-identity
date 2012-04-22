@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client;
+package info.yalamanchili.office.client.gwt;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.fields.ListBoxField;
@@ -50,7 +50,7 @@ public abstract class ReadAllComposite extends ALComposite implements
 	/** The number of pages. */
 	protected Integer numberOfPages;
 
-	/** The class canonical name. */
+	/** The class canonical entityName. */
 	protected String classCanonicalName;
 
 	/** The constants. */
@@ -148,8 +148,8 @@ public abstract class ReadAllComposite extends ALComposite implements
 		table.setWidget(row, 0, link);
 	}
 
-	protected Long getEntityId(int row) {
-		return new Long(table.getWidget(row, 0).getTitle());
+	protected String getEntityId(int row) {
+		return table.getWidget(row, 0).getTitle();
 	}
 
 	public abstract void fillData(JSONArray entities);
@@ -169,11 +169,6 @@ public abstract class ReadAllComposite extends ALComposite implements
 		if (event.getSource() == goToPage.getListBox()) {
 			preFetchTable((goToPage.getValue().intValue() * pageSize) - 10);
 		}
-	}
-
-	// TODO move to pakage gwt.utils.Utils.java
-	protected String getClassValue(String id) {
-		return Utils.getAttributeLabel(id, classCanonicalName, constants);
 	}
 
 	// TODO move to pakage gwt.utils.Utils.java

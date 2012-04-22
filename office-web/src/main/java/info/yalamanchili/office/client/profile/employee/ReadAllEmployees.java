@@ -5,9 +5,11 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.office.client.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.ReadAllComposite;
+import info.yalamanchili.office.client.RootLayout;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -55,13 +57,13 @@ public class ReadAllEmployees extends ReadAllComposite {
 	@Override
 	public void createTableHeader() {
 		table.setText(0, 0, getKeyValue("Table_Action"));
-		table.setText(0, 1, getClassValue("firstName"));
-		table.setText(0, 2, getClassValue("middleName"));
-		table.setText(0, 3, getClassValue("lastName"));
-		table.setText(0, 4, getClassValue("dateOfBirth"));
-		table.setText(0, 5, getClassValue("sex"));
-		table.setText(0, 6, getClassValue("startDate"));
-		table.setText(0, 7, getClassValue("ssn"));
+		table.setText(0, 1, getKeyValue("First Name"));
+		table.setText(0, 2, getKeyValue("Middle Name"));
+		table.setText(0, 3, getKeyValue("Last Name"));
+		table.setText(0, 4, getKeyValue("Date of Birth"));
+		table.setText(0, 5, getKeyValue("Sex"));
+		table.setText(0, 6, getKeyValue("Start Date"));
+		table.setText(0, 7, getKeyValue("Social Security Number"));
 
 	}
 
@@ -82,6 +84,10 @@ public class ReadAllEmployees extends ReadAllComposite {
 
 	@Override
 	public void viewClicked(int row, int col) {
-
+		TabPanel.instance().adminPanel.clear();
+		TabPanel.instance().adminPanel.add(new ReadEmployeePanel(
+				getEntityId(row)));
+		RootLayout.instance().sidePanelTop.clear();
+		RootLayout.instance().sidePanelTop.add(new TreeEmployeePanel());
 	}
 }

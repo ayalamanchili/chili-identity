@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client;
+package info.yalamanchili.office.client.gwt;
 
 import com.google.gwt.json.client.JSONObject;
 
