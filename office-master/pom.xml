@@ -92,6 +92,22 @@
 			<artifactId>spring-jpa</artifactId>
 			<version>2.0.8</version>
 		</dependency>
+		<!-- spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
 		<!-- SLF4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -117,7 +133,7 @@
 		<module>../office-dao</module>
 		<module>../office-jrs</module>
 		<!-- web -->
-		<!--<module>../office-web</module>-->
+		<!--<module>../office-web</module> -->
 	</modules>
 	<build>
 		<plugins>
@@ -187,5 +203,6 @@
 		<yalamanchili.version>1.1-SNAPSHOT</yalamanchili.version>
 		<arquillian.version>1.0.0.Alpha4</arquillian.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
+		<spring.security.version>3.0.5.RELEASE</spring.security.version>
 	</properties>
 </project>

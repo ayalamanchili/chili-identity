@@ -13,9 +13,14 @@
 
 	<authentication-manager>
 		<authentication-provider>
-			<user-service>
-				<user name="user" password="user" authorities="ROLE_USER" />
-			</user-service>
+			<jdbc-user-service data-source-ref="officeSecurityDataSource"
+
+				users-by-username-query="
+		      select username, passwordHash ,enabled
+		      from CUser where username=?"
+
+				authorities-by-username-query="select user.username, role.rolename from cuser user, crole role, userroles userroles 
+		      where user.userId = userroles.userId and userroles.roleId= role.roleId and user.username =?  " />
 		</authentication-provider>
 	</authentication-manager>
 
