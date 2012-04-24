@@ -19,6 +19,9 @@
 	</bean>
 	<tx:annotation-driven transaction-manager="txManager" />
 
+	<bean id="mapper" class="org.dozer.DozerBeanMapper"/>
+
+
 
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />

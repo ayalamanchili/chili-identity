@@ -10,8 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class CRole implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +45,7 @@ public class CRole implements Serializable {
 
 	@ManyToMany(targetEntity = CRole.class)
 	@JoinTable(name = "RoleGroups", joinColumns = @JoinColumn(name = "RoleId"), inverseJoinColumns = @JoinColumn(name = "GroupId"))
+	@XmlElement
 	public Set<CRole> getGroups() {
 		if (groups == null) {
 			groups = new HashSet<CRole>();
