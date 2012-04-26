@@ -8,9 +8,11 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 public interface HttpService extends RemoteService {
 
-	public String doPut(String url, String body, Map<String, String> headers);
+	public String doPut(String url, String body, Map<String, String> headers,
+			boolean newClient);
 
-	public String doGet(String url, Map<String, String> headers);
+	public String doGet(String url, Map<String, String> headers,
+			boolean newClient);
 
 	/** proxy */
 	public static class HttpServiceAsync {

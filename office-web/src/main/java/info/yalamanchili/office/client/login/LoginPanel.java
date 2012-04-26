@@ -69,7 +69,7 @@ public class LoginPanel extends PopupPanel {
 		headers.put("username", usernameTb.getText());
 		headers.put("password", passwordTb.getText());
 		HttpServiceAsync.instance().doPut(getLoginURL(), user.toString(),
-				headers, new AsyncCallback<String>() {
+				headers, true, new AsyncCallback<String>() {
 
 					@Override
 					public void onFailure(Throwable arg0) {

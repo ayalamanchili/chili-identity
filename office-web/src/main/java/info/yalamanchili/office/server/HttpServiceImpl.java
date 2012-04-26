@@ -17,12 +17,14 @@ public class HttpServiceImpl extends RemoteServiceServlet implements
 			.getName());
 
 	@Override
-	public String doPut(String url, String body, Map<String, String> headers) {
+	public String doPut(String url, String body, Map<String, String> headers,
+			boolean newClient) {
 		return SyncHttp.httpPut(url, body, processBasicAuthHeader(headers));
 	}
 
 	@Override
-	public String doGet(String url, Map<String, String> headers) {
+	public String doGet(String url, Map<String, String> headers,
+			boolean newClient) {
 		return SyncHttp.httpGet(url, processBasicAuthHeader(headers));
 	}
 
