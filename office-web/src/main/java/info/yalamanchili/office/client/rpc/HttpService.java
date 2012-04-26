@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 public interface HttpService extends RemoteService {
 
-	public String doPut(String url, String body);
+	public String doPut(String url, String body, Map<String, String> headers);
 
 	public String doGet(String url, Map<String, String> headers);
 

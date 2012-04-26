@@ -105,6 +105,7 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 
 	public void createEmployee(String url, String data) {
 		HttpServiceAsync.instance().doPut(url, data,
+				OfficeWelcome.instance().getHeaders(),
 				new ALAsyncCallback<String>() {
 
 					@Override

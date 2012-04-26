@@ -36,7 +36,8 @@ public class ReadAllEmployees extends ReadAllComposite {
 	@Override
 	public void preFetchTable(int start) {
 		// TODO externalize the limit size for read all
-		HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(0, 10), null,
+		HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(0, 10),
+				OfficeWelcome.instance().getHeaders(),
 				new ALAsyncCallback<String>() {
 
 					@Override

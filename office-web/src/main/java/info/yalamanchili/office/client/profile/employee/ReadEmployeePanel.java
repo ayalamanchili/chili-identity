@@ -69,7 +69,8 @@ public class ReadEmployeePanel extends ALComposite {
 	}
 
 	protected void loadEntity(String id) {
-		HttpServiceAsync.instance().doGet(getReadEmployeeURL(id), null,
+		HttpServiceAsync.instance().doGet(getReadEmployeeURL(id),
+				OfficeWelcome.instance().getHeaders(),
 				new ALAsyncCallback<String>() {
 
 					@Override

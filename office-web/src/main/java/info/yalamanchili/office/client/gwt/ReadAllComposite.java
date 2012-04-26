@@ -136,7 +136,12 @@ public abstract class ReadAllComposite extends ALComposite implements
 		}
 		createTableHeader();
 		if (table.get("entities") != null) {
-			fillData((JSONArray) table.get("entities"));
+			JSONArray entities = table.get("entities").isArray();
+			if (entities == null) {
+				entities = new JSONArray();
+				entities.set(0, table.get("entities").isObject());
+			}
+			fillData(entities);
 		}
 	}
 
