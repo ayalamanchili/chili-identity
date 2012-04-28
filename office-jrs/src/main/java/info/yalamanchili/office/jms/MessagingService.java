@@ -16,12 +16,12 @@ public class MessagingService {
 
 	@Autowired
 	protected JmsTemplate myJmsTemplate;
+
 	@Autowired
 	protected Destination destination;
 
 	public void sendMessage(final String message) {
-		System.out.println(myJmsTemplate);
-		System.out.println(destination);
+		System.out.println("-----------sending message---------------");
 		myJmsTemplate.send(destination, new MessageCreator() {
 
 			@Override

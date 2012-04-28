@@ -47,7 +47,7 @@
 
 	<jms:listener-container container-type="default"
 		connection-factory="jmsFactory" acknowledge="auto">
-		<jms:listener destination="org.springbyexample.jms.test"
+		<jms:listener destination="org.apache.activemq.spring.Test.spring.embedded"
 			ref="jmsMessageListener" />
 	</jms:listener-container>
 </beans>

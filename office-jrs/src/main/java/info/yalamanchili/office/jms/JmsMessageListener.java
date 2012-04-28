@@ -11,14 +11,11 @@ import org.springframework.stereotype.Component;
 public class JmsMessageListener implements MessageListener {
 
 	public void onMessage(Message message) {
+		System.out.println("---------- in on message-----------");
 		try {
-
 			if (message instanceof TextMessage) {
 				TextMessage tm = (TextMessage) message;
 				String msg = tm.getText();
-
-				System.out.println("Processedddddddddddddddddddd");
-
 			}
 		} catch (JMSException e) {
 			System.out.println("eerror	");
