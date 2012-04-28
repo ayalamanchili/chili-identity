@@ -2,8 +2,10 @@ package info.yalamanchili.office.jrs;
 
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.security.CUser;
+import info.yalamanchili.office.jms.MessagingService;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -26,9 +28,19 @@ public class AdminResource {
 	@Autowired
 	protected Mapper mapper;
 
+	@Autowired
+	MessagingService messagingService;
+
 	@Path("/login")
 	@PUT
 	public CUser login(CUser user) {
 		return mapper.map(securityService.login(user), CUser.class);
 	}
+
+	@Path("/test")
+	@GET
+	public void test() {
+		messagingService.sendMessage("asdf");
+	}
+
 }
