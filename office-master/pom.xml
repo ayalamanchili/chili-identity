@@ -137,6 +137,7 @@
 		<!-- Service -->
 		<module>../office-jpa</module>
 		<module>../office-dao</module>
+		<module>../office-ejb</module>
 		<module>../office-jrs</module>
 		<!-- web -->
 		<!--<module>../office-web</module> -->
