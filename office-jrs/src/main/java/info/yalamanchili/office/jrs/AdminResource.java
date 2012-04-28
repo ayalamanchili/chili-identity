@@ -40,7 +40,7 @@ public class AdminResource {
 	@Path("/test")
 	@GET
 	public void test() {
-		messagingService.sendMessage("asdf");
+		messagingService.sendEmail("asdf@gmail.com", "asdf");
 	}
 
 }

@@ -19,22 +19,6 @@
 			<artifactId>office-ejb</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
-		<!--  Spring JMS and Active MQ -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
-			<version>5.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.xbean</groupId>
-			<artifactId>xbean-spring</artifactId>
-			<version>3.5</version>
-		</dependency>
 		<!-- Jersey -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>

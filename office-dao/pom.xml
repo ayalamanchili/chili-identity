@@ -18,6 +18,11 @@
 			<artifactId>office-jpa</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>info.yalamanchili.office</groupId>
+			<artifactId>office-jms</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

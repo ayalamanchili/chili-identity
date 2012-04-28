@@ -15,14 +15,14 @@ import org.springframework.stereotype.Component;
 public class MessagingService {
 
 	@Autowired
-	protected JmsTemplate myJmsTemplate;
+	protected JmsTemplate offcieJmsTemplate;
 
 	@Autowired
-	protected Destination destination;
+	protected Destination emailQueue;
 
-	public void sendMessage(final String message) {
-		System.out.println("-----------sending message---------------");
-		myJmsTemplate.send(destination, new MessageCreator() {
+	public void sendEmail(final String to, final String message) {
+		System.out.println("-----------sending email message---------------");
+		offcieJmsTemplate.send(emailQueue, new MessageCreator() {
 
 			@Override
 			public Message createMessage(Session arg0) throws JMSException {
