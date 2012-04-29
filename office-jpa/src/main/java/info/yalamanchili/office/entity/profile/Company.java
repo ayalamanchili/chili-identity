@@ -109,9 +109,7 @@ public class Company extends AbstractEntity {
 	@XmlTransient
 	public List<Employee> getEmployees() {
 		if (this.employees == null) {
-			// TODO actual
-			// this.employees=new ArrayList<Employee>();
-			return new ArrayList<Employee>();
+			this.employees = new ArrayList<Employee>();
 		}
 		return this.employees;
 	}

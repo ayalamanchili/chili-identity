@@ -359,10 +359,7 @@ super();
 														</c:if>  		    											    									    						
 														 public 	Set<${$class2/@name}>  get${$class2/@name}s(){
 														 if(this.${lowercaseFirst($class2/@name)}s==null){
-														 
-														 //TODO actual
-														 //this.${lowercaseFirst($class2/@name)}s=new HashSet<${$class2/@name}>();
-														 return new HashSet<${$class2/@name}>();
+														 this.${lowercaseFirst($class2/@name)}s=new HashSet<${$class2/@name}>();
 														 }
 														 return this.${lowercaseFirst($class2/@name)}s;
 														 }
@@ -392,9 +389,7 @@ super();
 														</c:if>  		    											    									    						
 														 public 	List<${$class2/@name}>  get${$class2/@name}s(){
 														 if(this.${lowercaseFirst($class2/@name)}s==null){
-														  //TODO actual
-														 //this.${lowercaseFirst($class2/@name)}s=new ArrayList<${$class2/@name}>();
-														 return new ArrayList<${$class2/@name}>();
+														 this.${lowercaseFirst($class2/@name)}s=new ArrayList<${$class2/@name}>();
 														 }
 														 return this.${lowercaseFirst($class2/@name)}s;
 														 }

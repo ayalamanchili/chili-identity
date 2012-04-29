@@ -167,9 +167,7 @@ public class Contact extends AbstractEntity {
 	@XmlTransient
 	public List<Address> getAddresss() {
 		if (this.addresss == null) {
-			// TODO actual
-			// this.addresss=new ArrayList<Address>();
-			return new ArrayList<Address>();
+			this.addresss = new ArrayList<Address>();
 		}
 		return this.addresss;
 	}
@@ -198,9 +196,7 @@ public class Contact extends AbstractEntity {
 	@XmlTransient
 	public List<Phone> getPhones() {
 		if (this.phones == null) {
-			// TODO actual
-			// this.phones=new ArrayList<Phone>();
-			return new ArrayList<Phone>();
+			this.phones = new ArrayList<Phone>();
 		}
 		return this.phones;
 	}
@@ -229,9 +225,7 @@ public class Contact extends AbstractEntity {
 	@XmlTransient
 	public List<Email> getEmails() {
 		if (this.emails == null) {
-			// TODO actual
-			// this.emails=new ArrayList<Email>();
-			return new ArrayList<Email>();
+			this.emails = new ArrayList<Email>();
 		}
 		return this.emails;
 	}

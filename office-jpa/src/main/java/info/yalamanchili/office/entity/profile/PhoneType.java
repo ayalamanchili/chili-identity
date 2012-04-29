@@ -69,9 +69,7 @@ public class PhoneType extends AbstractEntity {
 	@XmlTransient
 	public List<Phone> getPhones() {
 		if (this.phones == null) {
-			// TODO actual
-			// this.phones=new ArrayList<Phone>();
-			return new ArrayList<Phone>();
+			this.phones = new ArrayList<Phone>();
 		}
 		return this.phones;
 	}

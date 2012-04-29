@@ -69,9 +69,7 @@ public class AddressType extends AbstractEntity {
 	@XmlTransient
 	public List<Address> getAddresss() {
 		if (this.addresss == null) {
-			// TODO actual
-			// this.addresss=new ArrayList<Address>();
-			return new ArrayList<Address>();
+			this.addresss = new ArrayList<Address>();
 		}
 		return this.addresss;
 	}

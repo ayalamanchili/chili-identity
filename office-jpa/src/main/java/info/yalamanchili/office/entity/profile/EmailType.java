@@ -69,9 +69,7 @@ public class EmailType extends AbstractEntity {
 	@XmlTransient
 	public List<Email> getEmails() {
 		if (this.emails == null) {
-			// TODO actual
-			// this.emails=new ArrayList<Email>();
-			return new ArrayList<Email>();
+			this.emails = new ArrayList<Email>();
 		}
 		return this.emails;
 	}

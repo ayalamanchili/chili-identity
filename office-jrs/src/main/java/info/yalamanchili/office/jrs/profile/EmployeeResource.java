@@ -8,6 +8,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Path("/employee")
 @Component
+@Transactional
 public class EmployeeResource extends CRUDResource<Employee> {
 
 	@Autowired
@@ -39,6 +42,18 @@ public class EmployeeResource extends CRUDResource<Employee> {
 		EmployeeTable tableObj = new EmployeeTable();
 		tableObj.setEntities(getDao().query(start, limit));
 		tableObj.setSize(getDao().size());
+		return tableObj;
+	}
+
+	@GET
+	@Path("addresses/table/{id}/{start}/{limit}")
+	public AddressTable getAddresses(@PathParam("id") long id,
+			@PathParam("start") int start, @PathParam("limit") int limit) {
+		AddressTable tableObj = new AddressTable();
+		Employee emp = (Employee) getDao().findById(id);
+		System.out.println(emp);
+		tableObj.setEntities(emp.getAddresss());
+		tableObj.setSize((long) emp.getAddresss().size());
 		return tableObj;
 	}
 

@@ -68,10 +68,9 @@ public abstract class TreePanelComposite extends Composite implements
 		tree.addItem(rootItem);
 	}
 
-	protected void addFirstChildLink(String childNodeNameKey,
-			String childNodeKey) {
+	protected void addFirstChildLink(String childNodeName, String childNodeKey) {
 		// TODO get the name from constants
-		TreeItem child = new TreeItem(Utils.getKeyValue(childNodeNameKey,
+		TreeItem child = new TreeItem(Utils.getKeyValue(childNodeName,
 				constants));
 		child.addStyleName("y-gwt-treePanelComposite-Node");
 		child.setUserObject(childNodeKey);
