@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,7 +49,7 @@ public class Employee extends Contact {
 	 * @generated
 	 */
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	protected EmployeeType employeeType;
 
 	/**

@@ -7,12 +7,14 @@ package info.yalamanchili.office.entity.profile;
 
 import info.yalamanchili.jpa.AbstractEntity;
 
-import javax.persistence.CascadeType;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @todo add comment for javadoc
@@ -37,8 +39,8 @@ public class EmployeeType extends AbstractEntity {
 	 * @generated
 	 */
 
-	@OneToOne(cascade = CascadeType.ALL)
-	protected Employee employee;
+	@OneToMany(mappedBy = "employeeType")
+	protected List<Employee> employees;
 
 	/**
 	 * @generated
@@ -64,16 +66,32 @@ public class EmployeeType extends AbstractEntity {
 	/**
 	 * @generated
 	 */
-	@XmlElement
-	public Employee getEmployee() {
-		return this.employee;
+	@XmlTransient
+	public List<Employee> getEmployees() {
+		if (this.employees == null) {
+			// TODO actual
+			// this.employees=new ArrayList<Employee>();
+			return new ArrayList<Employee>();
+		}
+		return this.employees;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void addEmployee(Employee entity) {
+		if (entity == null) {
+			return;
+		}
+		getEmployees().add(entity);
+		entity.setEmployeeType(this);
 	}
 
 	/**

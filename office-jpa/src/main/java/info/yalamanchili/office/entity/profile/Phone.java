@@ -10,7 +10,6 @@ import info.yalamanchili.jpa.AbstractEntity;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,7 +42,7 @@ public class Phone extends AbstractEntity {
 	 * @generated
 	 */
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	protected PhoneType phoneType;
 
 	/**

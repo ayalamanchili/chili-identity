@@ -23,75 +23,75 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlRootElement
 @Entity
-public class EmailType extends AbstractEntity {
+public class AddressType extends AbstractEntity {
 	/**
 	 * @generated
 	 */
 	@Transient
-	private static final long serialVersionUID = 9L;
+	private static final long serialVersionUID = 10L;
 
 	/**
 	 * @generated
 	 */
-	protected String emailType;
+	protected String addressType;
 
 	/**
 	 * @generated
 	 */
 
-	@OneToMany(mappedBy = "emailType")
-	protected List<Email> emails;
+	@OneToMany(mappedBy = "addressType")
+	protected List<Address> addresss;
 
 	/**
 	 * @generated
 	 */
-	public EmailType() {
+	public AddressType() {
 		super();
 	}
 
 	/**
 	 * @generated
 	 */
-	public String getEmailType() {
-		return emailType;
+	public String getAddressType() {
+		return addressType;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setEmailType(String emailType) {
-		this.emailType = emailType;
+	public void setAddressType(String addressType) {
+		this.addressType = addressType;
 	}
 
 	/**
 	 * @generated
 	 */
 	@XmlTransient
-	public List<Email> getEmails() {
-		if (this.emails == null) {
+	public List<Address> getAddresss() {
+		if (this.addresss == null) {
 			// TODO actual
-			// this.emails=new ArrayList<Email>();
-			return new ArrayList<Email>();
+			// this.addresss=new ArrayList<Address>();
+			return new ArrayList<Address>();
 		}
-		return this.emails;
+		return this.addresss;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setEmails(List<Email> emails) {
-		this.emails = emails;
+	public void setAddresss(List<Address> addresss) {
+		this.addresss = addresss;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void addEmail(Email entity) {
+	public void addAddress(Address entity) {
 		if (entity == null) {
 			return;
 		}
-		getEmails().add(entity);
-		entity.setEmailType(this);
+		getAddresss().add(entity);
+		entity.setAddressType(this);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class EmailType extends AbstractEntity {
 	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getEmailType());
+		sb.append(getAddressType());
 		sb.append(":");
 		return sb.toString();
 	}

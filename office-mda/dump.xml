@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<XMI xmi.version="1.2" timestamp="Sun Mar 25 20:03:18 EDT 2012">
+<XMI xmi.version="1.2" timestamp="Sun Apr 29 10:07:22 EDT 2012">
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.32.2(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -135,9 +135,9 @@
               <UML:Association.connection>
                 <UML:AssociationEnd xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000CDD" name="employee" visibility="public" isSpecification="false" isNavigable="true" ordering="unordered" aggregation="none" targetScope="instance" changeability="changeable">
                   <UML:AssociationEnd.multiplicity>
-                    <UML:Multiplicity xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000CE0">
+                    <UML:Multiplicity xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D36">
                       <UML:Multiplicity.range>
-                        <UML:MultiplicityRange xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000CDF" lower="1" upper="1"/>
+                        <UML:MultiplicityRange xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D35" lower="0" upper="-1"/>
                       </UML:Multiplicity.range>
                     </UML:Multiplicity>
                   </UML:AssociationEnd.multiplicity>
@@ -383,9 +383,9 @@
               <UML:Association.connection>
                 <UML:AssociationEnd xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000D1F" name="phone" visibility="public" isSpecification="false" isNavigable="true" ordering="unordered" aggregation="none" targetScope="instance" changeability="changeable">
                   <UML:AssociationEnd.multiplicity>
-                    <UML:Multiplicity xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000D22">
+                    <UML:Multiplicity xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D32">
                       <UML:Multiplicity.range>
-                        <UML:MultiplicityRange xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000D21" lower="1" upper="1"/>
+                        <UML:MultiplicityRange xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D31" lower="0" upper="-1"/>
                       </UML:Multiplicity.range>
                     </UML:Multiplicity>
                   </UML:AssociationEnd.multiplicity>
@@ -471,9 +471,9 @@
               <UML:Association.connection>
                 <UML:AssociationEnd xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000D35" name="email" visibility="public" isSpecification="false" isNavigable="true" ordering="unordered" aggregation="none" targetScope="instance" changeability="changeable">
                   <UML:AssociationEnd.multiplicity>
-                    <UML:Multiplicity xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000D38">
+                    <UML:Multiplicity xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D34">
                       <UML:Multiplicity.range>
-                        <UML:MultiplicityRange xmi.id="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000D37" lower="1" upper="1"/>
+                        <UML:MultiplicityRange xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D33" lower="0" upper="-1"/>
                       </UML:Multiplicity.range>
                     </UML:Multiplicity>
                   </UML:AssociationEnd.multiplicity>
@@ -523,8 +523,66 @@
                 </UML:AssociationEnd>
               </UML:Association.connection>
             </UML:Association>
+            <UML:Class xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D23" name="AddressType" visibility="public" isSpecification="false" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D24" name="addressType" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance">
+                  <UML:StructuralFeature.multiplicity>
+                    <UML:Multiplicity xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D25">
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D26" lower="1" upper="1"/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:StructuralFeature.multiplicity>
+                  <UML:StructuralFeature.type>
+                    <UML:DataType href="http://argouml.org/user-profiles/YalamanchiliMDAProfile.xmi#-91--119--6-96-66633a6:124dff5068f:-8000:0000000000000F4B"/>
+                  </UML:StructuralFeature.type>
+                </UML:Attribute>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Association xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D2A" name="addresstype-address" isSpecification="false" isRoot="false" isLeaf="false" isAbstract="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D2B" name="addressType" visibility="public" isSpecification="false" isNavigable="true" ordering="unordered" aggregation="none" targetScope="instance" changeability="changeable">
+                  <UML:AssociationEnd.multiplicity>
+                    <UML:Multiplicity xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D2E">
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D2D" lower="1" upper="1"/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:AssociationEnd.multiplicity>
+                  <UML:AssociationEnd.participant>
+                    <UML:Class xmi.idref="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D23"/>
+                  </UML:AssociationEnd.participant>
+                </UML:AssociationEnd>
+                <UML:AssociationEnd xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D2C" name="address" visibility="public" isSpecification="false" isNavigable="true" ordering="unordered" aggregation="none" targetScope="instance" changeability="changeable">
+                  <UML:AssociationEnd.multiplicity>
+                    <UML:Multiplicity xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D30">
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D2F" lower="0" upper="-1"/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:AssociationEnd.multiplicity>
+                  <UML:AssociationEnd.participant>
+                    <UML:Class xmi.idref="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000CE3"/>
+                  </UML:AssociationEnd.participant>
+                </UML:AssociationEnd>
+              </UML:Association.connection>
+            </UML:Association>
           </UML:Namespace.ownedElement>
         </UML:Package>
+        <UML:Association xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D27" name="addresstype-address" isSpecification="false" isRoot="false" isLeaf="false" isAbstract="false">
+          <UML:Association.connection>
+            <UML:AssociationEnd xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D28" visibility="public" isSpecification="false" isNavigable="true" ordering="unordered" aggregation="aggregate" targetScope="instance" changeability="changeable">
+              <UML:AssociationEnd.participant>
+                <UML:Class xmi.idref="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D23"/>
+              </UML:AssociationEnd.participant>
+            </UML:AssociationEnd>
+            <UML:AssociationEnd xmi.id="-64--88-1-81--1672838f:136fe5e3489:-8000:0000000000000D29" visibility="public" isSpecification="false" isNavigable="true" ordering="unordered" aggregation="none" targetScope="instance" changeability="changeable">
+              <UML:AssociationEnd.participant>
+                <UML:Class xmi.idref="-64--88-0--59--7eddfa4b:13647ba9e2f:-8000:0000000000000CE3"/>
+              </UML:AssociationEnd.participant>
+            </UML:AssociationEnd>
+          </UML:Association.connection>
+        </UML:Association>
       </UML:Namespace.ownedElement>
     </UML:Model>
   </XMI.content>

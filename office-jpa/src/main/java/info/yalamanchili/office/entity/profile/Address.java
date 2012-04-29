@@ -68,6 +68,13 @@ public class Address extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+
+	@ManyToOne
+	protected AddressType addressType;
+
+	/**
+	 * @generated
+	 */
 	public Address() {
 		super();
 	}
@@ -169,6 +176,21 @@ public class Address extends AbstractEntity {
 	 */
 	public void setContact(Contact contact) {
 		this.contact = contact;
+	}
+
+	/**
+	 * @generated
+	 */
+	@XmlElement
+	public AddressType getAddressType() {
+		return this.addressType;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setAddressType(AddressType addressType) {
+		this.addressType = addressType;
 	}
 
 	/**
