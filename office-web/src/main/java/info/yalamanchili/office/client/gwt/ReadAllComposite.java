@@ -29,6 +29,7 @@ public abstract class ReadAllComposite extends ALComposite implements
 	private static Logger logger = Logger.getLogger(ReadAllComposite.class
 			.getName());
 
+	protected String parentId;
 	/** The panel. */
 	protected FlowPanel panel = new FlowPanel();
 

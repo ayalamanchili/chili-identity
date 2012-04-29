@@ -15,7 +15,16 @@ import com.google.gwt.user.client.ui.TreeItem;
 
 public abstract class TreePanelComposite extends Composite implements
 		SelectionHandler<TreeItem> {
+
+	private static TreePanelComposite instance;
+
+	public static TreePanelComposite instance() {
+		return instance;
+	}
+
 	Logger logger = Logger.getLogger(TreePanelComposite.class.getName());
+
+	protected String entityId;
 
 	protected JSONObject entity;
 
@@ -27,12 +36,18 @@ public abstract class TreePanelComposite extends Composite implements
 
 	protected TreeItem rootItem = new TreeItem("root");
 
+	public String getEntityId() {
+		return entityId;
+	}
+
 	public JSONObject getEntity() {
 		return entity;
 	}
 
-	public TreePanelComposite() {
+	public TreePanelComposite(String entityId) {
+		instance = this;
 		initWidget(panel);
+		this.entityId = entityId;
 	}
 
 	public void init(String entityNodeNameKey, ConstantsWithLookup constants) {

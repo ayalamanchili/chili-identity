@@ -37,7 +37,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 	public void preFetchTable(int start) {
 		// TODO externalize the limit size for read all
 		HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(0, 10),
-				OfficeWelcome.instance().getHeaders(),false,
+				OfficeWelcome.instance().getHeaders(), false,
 				new ALAsyncCallback<String>() {
 
 					@Override
@@ -89,6 +89,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 		TabPanel.instance().adminPanel.add(new ReadEmployeePanel(
 				getEntityId(row)));
 		RootLayout.instance().sidePanelTop.clear();
-		RootLayout.instance().sidePanelTop.add(new TreeEmployeePanel());
+		RootLayout.instance().sidePanelTop.add(new TreeEmployeePanel(
+				new Integer(row).toString()));
 	}
 }

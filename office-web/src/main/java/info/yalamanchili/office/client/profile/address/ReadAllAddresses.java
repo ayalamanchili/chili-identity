@@ -19,14 +19,16 @@ public class ReadAllAddresses extends ReadAllComposite {
 
 	public static ReadAllAddresses instance;
 
-	public ReadAllAddresses() {
+	public ReadAllAddresses(String parentId) {
 		instance = this;
+		this.parentId = parentId;
 		initTable("Address", OfficeWelcome.constants);
 	}
 
 	@Override
 	public void preFetchTable(int start) {
-		HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(0, 10),
+		HttpServiceAsync.instance().doGet(
+				getEmployeeAddressesURL(parentId, 0, 10),
 				OfficeWelcome.instance().getHeaders(), false,
 				new ALAsyncCallback<String>() {
 
@@ -40,9 +42,10 @@ public class ReadAllAddresses extends ReadAllComposite {
 
 	}
 
-	public String getEmployeeAddressesURL(Integer start, Integer limit) {
+	public String getEmployeeAddressesURL(String employeeId, Integer start,
+			Integer limit) {
 		return OfficeWelcome.constants.root_url() + "employee/addresses/table/"
-				+ start.toString() + "/" + limit.toString();
+				+ employeeId + "/" + start.toString() + "/" + limit.toString();
 	}
 
 	@Override

@@ -11,7 +11,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
 	protected static final String ADDRESS_NODE = "address";
 
-	public TreeEmployeePanel() {
+	public TreeEmployeePanel(String entityId) {
+		super(entityId);
 		init("Employee", OfficeWelcome.constants);
 	}
 
@@ -37,7 +38,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	public void treeNodeSelected(String entityNodeKey) {
 		if (ADDRESS_NODE.equals(entityNodeKey)) {
 			TabPanel.instance().adminPanel.clear();
-			TabPanel.instance().adminPanel.add(new ReadAllAddresses());
+			TabPanel.instance().adminPanel.add(new ReadAllAddresses(entityId));
 		}
 
 	}
