@@ -3,6 +3,7 @@ package info.yalamanchili.office.client.profile.employee;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
+import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddresses;
 
 import com.google.gwt.json.client.JSONObject;
@@ -39,6 +40,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 		if (ADDRESS_NODE.equals(entityNodeKey)) {
 			TabPanel.instance().adminPanel.clear();
 			TabPanel.instance().adminPanel.add(new ReadAllAddresses(entityId));
+			TabPanel.instance().adminPanel.add(new AddressOptionsPanel());
 		}
 
 	}

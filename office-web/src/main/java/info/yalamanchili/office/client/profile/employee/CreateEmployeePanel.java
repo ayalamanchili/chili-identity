@@ -95,7 +95,6 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 									.getDate())));
 		}
 		jsonValue.put("ssn", new JSONString(ssnF.getText()));
-		logger.info(jsonValue.toString());
 		return jsonValue.toString();
 	}
 
