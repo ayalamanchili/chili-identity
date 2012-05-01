@@ -6,6 +6,7 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -13,6 +14,7 @@ import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -46,7 +48,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	}
 
 	@GET
-	@Path("addresses/table/{id}/{start}/{limit}")
+	@Path("/addresses/table/{id}/{start}/{limit}")
 	public AddressTable getAddresses(@PathParam("id") long id,
 			@PathParam("start") int start, @PathParam("limit") int limit) {
 		AddressTable tableObj = new AddressTable();
@@ -55,6 +57,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
 		tableObj.setEntities(emp.getAddresss());
 		tableObj.setSize((long) emp.getAddresss().size());
 		return tableObj;
+	}
+
+	@PUT
+	@Path("/address/{empId}")
+	public void addAddress(@PathParam("empId") Long empId, Address address) {
+		Employee emp = (Employee) getDao().findById(empId);
+		emp.addAddress(address);
 	}
 
 	@Override

@@ -87,6 +87,7 @@
 				<version>2.0-beta-1</version>
 				<configuration>
 					<path>/office</path>
+					<port>9080</port>
 				</configuration>
 			</plugin>
 			<plugin>
