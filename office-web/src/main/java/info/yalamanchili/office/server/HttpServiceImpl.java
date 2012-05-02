@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/info.yalamanchili.office.office/office-web")
+@RequestMapping("/**/httpService")
 public class HttpServiceImpl extends BaseRemoteService implements HttpService {
 	private final static Logger logger = Logger.getLogger(HttpServiceImpl.class
 			.getName());
