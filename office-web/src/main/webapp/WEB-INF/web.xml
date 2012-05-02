@@ -4,23 +4,26 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
 
-	<!-- Image/File Upload support y-commons -->
+	<!-- Reroute google rpc calls through a spring dispatcherservlet -->
 	<servlet>
-		<servlet-name>ImageUploadServlet</servlet-name>
-		<servlet-class>info.yalamanchili.commons.FileUploadServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ImageUploadServlet</servlet-name>
-		<url-pattern>/com.automanage.catalog.automanage/imageupload</url-pattern>
-	</servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 
+		<!-- We're using an annotation based web application context -->
+		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		</init-param>
+		<!-- The spring @Configuration can be found here -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>info.yalamanchili.office.server.SpringConfiguration</param-value>
+		</init-param>
 
-	<servlet>
-		<servlet-name>HttpService</servlet-name>
-		<servlet-class>info.yalamanchili.office.server.HttpServiceImpl</servlet-class>
 	</servlet>
+
 	<servlet-mapping>
-		<servlet-name>HttpService</servlet-name>
+		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/info.yalamanchili.office.office/office-web</url-pattern>
 	</servlet-mapping>
 

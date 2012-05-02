@@ -7,12 +7,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-//TODO this should extends from spring aware servlet
-public class HttpServiceImpl extends RemoteServiceServlet implements
-		HttpService {
+@RequestMapping("/info.yalamanchili.office.office/office-web")
+public class HttpServiceImpl extends BaseRemoteService implements HttpService {
 	private final static Logger logger = Logger.getLogger(HttpServiceImpl.class
 			.getName());
 
