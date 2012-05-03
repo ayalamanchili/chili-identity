@@ -6,7 +6,6 @@ package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.RootLayout;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
@@ -86,10 +85,9 @@ public class ReadAllEmployees extends ReadAllComposite {
 	@Override
 	public void viewClicked(int row, int col) {
 		TabPanel.instance().adminPanel.clear();
-		TabPanel.instance().adminPanel.add(new ReadEmployeePanel(
+		TabPanel.instance().adminPanel.entityPanel.add(new ReadEmployeePanel(
 				getEntityId(row)));
-		RootLayout.instance().sidePanelTop.clear();
-		RootLayout.instance().sidePanelTop.add(new TreeEmployeePanel(
+		TabPanel.instance().adminPanel.sidePanelTop.add(new TreeEmployeePanel(
 				new Integer(row).toString()));
 	}
 }

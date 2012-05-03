@@ -2,7 +2,6 @@ package info.yalamanchili.office.client.admin;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.RootLayout;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployees;
@@ -30,9 +29,10 @@ public class AdminSidePanel extends ALComposite implements ClickHandler {
 	public void onClick(ClickEvent clickEvent) {
 		if (clickEvent.getSource().equals(manageEmployees)) {
 			TabPanel.instance().getAdminPanel().clear();
-			TabPanel.instance().getAdminPanel().add(new ReadAllEmployees());
-			RootLayout.instance().sidePanelTop.clear();
-			RootLayout.instance().sidePanelTop.add(new EmployeeSidePanel());
+			TabPanel.instance().getAdminPanel().entityPanel
+					.add(new ReadAllEmployees());
+			TabPanel.instance().getAdminPanel().sidePanelTop
+					.add(new EmployeeSidePanel());
 		}
 
 	}

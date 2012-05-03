@@ -18,6 +18,7 @@
 	margin-right: 3px;
 	font-size: 14pt;
 	font-weight: bold;
+	background-color: #EFFBFB;
 }
 
 /* an element nested in each tab (useful for styling)*/
@@ -41,8 +42,7 @@
 .y-gwt-Table {
 	font-size: 10pt;
 	font-family: helvetica, arial sans-serif;
-	/* light blue http://www.colourlovers.com/web/blog/2007/06/30/ultimate-html-color-hex-code-list */
-	background-color: #D2E8FF;
+	background-color: #EFFBFB;
 	width: 100%;
 }
 

@@ -18,15 +18,6 @@ public class RootLayout extends Composite {
 	public FlowPanel statusPanel;
 
 	@UiField
-	public FlowPanel sidePanel;
-
-	@UiField
-	public FlowPanel sidePanelTop;
-
-	@UiField
-	public FlowPanel sidePanelBottom;
-
-	@UiField
 	public FlowPanel entityPanel;
 
 	private static RootLayoutUiBinder uiBinder = GWT
@@ -41,13 +32,4 @@ public class RootLayout extends Composite {
 		entityPanel.add(new TabPanel());
 	}
 
-	public void hideSidePanel() {
-		sidePanel.clear();
-	}
-
-	public void showSidePanel() {
-		sidePanel.clear();
-		sidePanel.add(sidePanelTop);
-		sidePanel.add(sidePanelBottom);
-	}
 }

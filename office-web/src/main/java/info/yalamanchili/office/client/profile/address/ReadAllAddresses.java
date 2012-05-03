@@ -2,7 +2,6 @@ package info.yalamanchili.office.client.profile.address;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.RootLayout;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
@@ -81,7 +80,7 @@ public class ReadAllAddresses extends ReadAllComposite {
 		TabPanel.instance().adminPanel.clear();
 		// TabPanel.instance().adminPanel.add(new ReadEmployeePanel(
 		// getEntityId(row)));
-		RootLayout.instance().sidePanelTop.clear();
+		// TabPanel.instance().adminPanel.sidePanelCenter.clear();
 		// RootLayout.instance().sidePanelTop.add(new TreeEmployeePanel());
 	}
 }

@@ -104,7 +104,7 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 
 	public void createEmployee(String url, String data) {
 		HttpServiceAsync.instance().doPut(url, data,
-				OfficeWelcome.instance().getHeaders(),false,
+				OfficeWelcome.instance().getHeaders(), false,
 				new ALAsyncCallback<String>() {
 
 					@Override
@@ -112,7 +112,7 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 						new ResponseStatusWidget()
 								.show("successfully created employee");
 						TabPanel.instance().adminPanel.clear();
-						TabPanel.instance().adminPanel
+						TabPanel.instance().adminPanel.entityPanel
 								.add(new ReadAllEmployees());
 					}
 

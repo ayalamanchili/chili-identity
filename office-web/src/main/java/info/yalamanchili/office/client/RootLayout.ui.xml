@@ -7,16 +7,6 @@
 				<office:StatusPanel></office:StatusPanel>
 			</g:FlowPanel>
 		</g:north>
-		<g:west size='15'>
-			<g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
-				<g:FlowPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
-				</g:FlowPanel>
-				<g:FlowPanel styleName="{style.sidePanelBottom}"
-					ui:field='sidePanelBottom'>
-					<office:AppsPanel></office:AppsPanel>
-				</g:FlowPanel>
-			</g:FlowPanel>
-		</g:west>
 		<g:center>
 			<g:ScrollPanel addStyleNames='entityPanelHolder'
 				ui:field='entityPanelHolder'>
@@ -30,19 +20,6 @@
 			border-bottom-style: solid;
 			border-bottom-color: #28009E;
 			border-bottom-width: 2px;
-		}
-		
-		.sidePanel {
-			border-right-style: solid;
-			border-right-color: #28009E;
-			border-right-width: 2px;
-		}
-		
-		.sidePanelTop {
-			border-bottom-style: solid;
-			border-bottom-color: #28009E;
-			border-bottom-width: 2px;
-			height: 60%;
 		}
 		
 		.sidePanelBottom {

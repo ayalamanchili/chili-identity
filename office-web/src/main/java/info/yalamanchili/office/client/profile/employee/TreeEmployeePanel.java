@@ -39,8 +39,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	public void treeNodeSelected(String entityNodeKey) {
 		if (ADDRESS_NODE.equals(entityNodeKey)) {
 			TabPanel.instance().adminPanel.clear();
-			TabPanel.instance().adminPanel.add(new ReadAllAddresses(entityId));
-			TabPanel.instance().adminPanel.add(new AddressOptionsPanel());
+			TabPanel.instance().adminPanel.entityPanel
+					.add(new ReadAllAddresses(entityId));
+			TabPanel.instance().adminPanel.entityPanel
+					.add(new AddressOptionsPanel());
 		}
 
 	}
