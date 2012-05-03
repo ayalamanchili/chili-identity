@@ -8,11 +8,8 @@
 			</g:FlowPanel>
 		</g:north>
 		<g:center>
-			<g:ScrollPanel addStyleNames='entityPanelHolder'
-				ui:field='entityPanelHolder'>
-				<g:FlowPanel ui:field='entityPanel'>
-				</g:FlowPanel>
-			</g:ScrollPanel>
+			<g:FlowPanel ui:field='entityPanel'>
+			</g:FlowPanel>
 		</g:center>
 	</g:DockLayoutPanel>
 	<ui:style>
@@ -20,10 +17,6 @@
 			border-bottom-style: solid;
 			border-bottom-color: #28009E;
 			border-bottom-width: 2px;
-		}
-		
-		.sidePanelBottom {
-			height: 40%;
 		}
 	</ui:style>
 </ui:UiBinder> 

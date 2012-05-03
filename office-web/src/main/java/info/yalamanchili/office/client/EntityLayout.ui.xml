@@ -26,13 +26,13 @@
 	<ui:style>
 		.entityLayout {
 			height: 100%;
-			background-color: #EFFBFB;
 		}
 		
 		.entityTitlePanel {
 			border-bottom-style: solid;
 			border-bottom-color: #28009E;
 			border-bottom-width: 2px;
+			background-color: #EFFBFB;
 		}
 		
 		.entityPanel {

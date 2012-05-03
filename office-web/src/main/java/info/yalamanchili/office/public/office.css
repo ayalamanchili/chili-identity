@@ -10,7 +10,7 @@
 }
 
 .tabPanel {
-	height: 600px;
+	height: 100%;
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
@@ -29,12 +29,12 @@
 .y-gwt-PagingBar {
 	font-weight: bold;
 	font-size: 10pt;
-	background-color: #E5E5E5;
+	background-color: #FAFAFA;
 	width: 100%;
 }
 
 .y-gwt-TableHeader {
-	background-color: #D9D9D9;
+	background-color: #F2F2F2;
 	font-weight: bold;
 	font-size: 11pt
 }

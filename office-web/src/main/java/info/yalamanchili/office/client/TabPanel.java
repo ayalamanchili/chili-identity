@@ -18,7 +18,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 	public final static Integer PROFILE_TAB = 1;
 	public final static Integer ADMIN_TAB = 2;
 
-	protected TabLayoutPanel tabPanel = new TabLayoutPanel(30, Unit.PX);
+	protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
 
 	public EntityLayout homePanel = new EntityLayout();
 
@@ -30,6 +30,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 		instance = this;
 		initWidget(tabPanel);
 		tabPanel.addStyleName("tabPanel");
+		// tabPanel.setHeight("100%");
+		tabPanel.setHeight("5");
 		tabPanel.add(homePanel, "Home", false);
 		tabPanel.add(profilePanel, "Profile", false);
 		tabPanel.add(adminPanel, "Admin", false);
