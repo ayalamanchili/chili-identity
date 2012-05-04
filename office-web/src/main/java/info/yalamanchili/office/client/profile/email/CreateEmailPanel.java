@@ -6,8 +6,6 @@ import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
-import info.yalamanchili.office.client.profile.address.ReadAllAddresses;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
@@ -71,13 +69,13 @@ public class CreateEmailPanel extends ALComposite implements ClickHandler {
 					@Override
 					public void onResponse(String arg0) {
 						new ResponseStatusWidget()
-								.show("successfully added employee address");
-						TabPanel.instance().adminPanel.clear();
+								.show("successfully added employee Email");
+						TabPanel.instance().adminPanel.entityPanel.clear();
 						TabPanel.instance().adminPanel.entityPanel
-								.add(new ReadAllAddresses(TreeEmployeePanel
+								.add(new ReadAllEmails(TreeEmployeePanel
 										.instance().getEntityId()));
 						TabPanel.instance().adminPanel.entityPanel
-								.add(new AddressOptionsPanel());
+								.add(new EmailOptionsPanel());
 					}
 
 				});

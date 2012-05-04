@@ -43,7 +43,7 @@ public class ReadAllAddresses extends ReadAllComposite {
 
 	public String getEmployeeAddressesURL(String employeeId, Integer start,
 			Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/addresses/table/"
+		return OfficeWelcome.constants.root_url() + "employee/addresses/"
 				+ employeeId + "/" + start.toString() + "/" + limit.toString();
 	}
 

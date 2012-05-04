@@ -6,8 +6,6 @@ package info.yalamanchili.office.jrs;
 
 import info.yalamanchili.office.dao.CRUDDao;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -35,13 +33,6 @@ public abstract class CRUDResource<T> {
 	@PUT
 	public T save(T entity) {
 		return (T) getDao().save(entity);
-	}
-
-	@GET
-	@Path("/{start}/{limit}")
-	public List<T> readAll(@PathParam("start") int start,
-			@PathParam("limit") int limit) {
-		return getDao().query(start, limit);
 	}
 
 	@GET

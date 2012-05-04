@@ -50,7 +50,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 	}
 
 	public String getReadAllEmployeesURL(Integer start, Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/table/"
+		return OfficeWelcome.constants.root_url() + "employee/"
 				+ start.toString() + "/" + limit.toString();
 	}
 

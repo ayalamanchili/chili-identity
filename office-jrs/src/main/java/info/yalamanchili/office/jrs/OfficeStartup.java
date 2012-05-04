@@ -2,6 +2,8 @@ package info.yalamanchili.office.jrs;
 
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.security.CRole;
@@ -54,6 +56,9 @@ public class OfficeStartup {
 		em.merge(admin);
 	}
 
+	/**
+	 * 
+	 */
 	protected void initTestData() {
 		// Employee
 		Employee joeFullerEmp = new Employee();
@@ -70,12 +75,18 @@ public class OfficeStartup {
 		joeFullerAddress.setCity("Herndon");
 		joeFullerAddress.setState("Virginia");
 
+		Email joeFullerEmail = new Email();
+		joeFullerEmail.setEmailType(getPrimaryEmailType());
+		joeFullerEmail.setEmail("joefuller@gmail.com");
+
 		joeFullerEmp.addAddress(joeFullerAddress);
+		joeFullerEmp.addEmail(joeFullerEmail);
 		joeFullerEmp = em.merge(joeFullerEmp);
 	}
 
 	protected void initRefData() {
 		getHomeAddressType();
+		getPrimaryEmailType();
 	}
 
 	protected AddressType getHomeAddressType() {
@@ -89,6 +100,20 @@ public class OfficeStartup {
 			AddressType homeAddressType = new AddressType();
 			homeAddressType.setAddressType("HOME");
 			return em.merge(homeAddressType);
+		}
+	}
+
+	protected EmailType getPrimaryEmailType() {
+		Query getEmailType = em.createQuery("from "
+				+ EmailType.class.getCanonicalName()
+				+ " where emailType=:emailTypeParam");
+		getEmailType.setParameter("emailTypeParam", "PRIMARY");
+		if (getEmailType.getResultList().size() > 0) {
+			return (EmailType) getEmailType.getResultList().get(0);
+		} else {
+			EmailType homeEmailType = new EmailType();
+			homeEmailType.setEmailType("PRIMARY");
+			return em.merge(homeEmailType);
 		}
 	}
 }

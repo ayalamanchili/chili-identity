@@ -5,6 +5,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddresses;
+import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmails;
 
 import com.google.gwt.json.client.JSONObject;
@@ -40,18 +41,18 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	@Override
 	public void treeNodeSelected(String entityNodeKey) {
 		if (ADDRESS_NODE.equals(entityNodeKey)) {
-			TabPanel.instance().adminPanel.clear();
+			TabPanel.instance().adminPanel.entityPanel.clear();
 			TabPanel.instance().adminPanel.entityPanel
 					.add(new ReadAllAddresses(entityId));
 			TabPanel.instance().adminPanel.entityPanel
 					.add(new AddressOptionsPanel());
 		}
 		if (EMAIL_NODE.equals(entityNodeKey)) {
-			TabPanel.instance().adminPanel.clear();
+			TabPanel.instance().adminPanel.entityPanel.clear();
+			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEmails(
+					entityId));
 			TabPanel.instance().adminPanel.entityPanel
-					.add(new ReadAllEmails(entityId));
-			TabPanel.instance().adminPanel.entityPanel
-					.add(new AddressOptionsPanel());
+					.add(new EmailOptionsPanel());
 		}
 	}
 

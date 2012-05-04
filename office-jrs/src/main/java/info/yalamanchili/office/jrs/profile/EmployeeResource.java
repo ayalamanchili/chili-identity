@@ -7,9 +7,11 @@ package info.yalamanchili.office.jrs.profile;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
+import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	public EmployeeDao employeeDao;
 
 	@GET
-	@Path("/table/{start}/{limit}")
+	@Path("/{start}/{limit}")
 	public EmployeeTable table(@PathParam("start") int start,
 			@PathParam("limit") int limit) {
 		EmployeeTable tableObj = new EmployeeTable();
@@ -48,14 +50,24 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	}
 
 	@GET
-	@Path("/addresses/table/{id}/{start}/{limit}")
+	@Path("/addresses/{id}/{start}/{limit}")
 	public AddressTable getAddresses(@PathParam("id") long id,
 			@PathParam("start") int start, @PathParam("limit") int limit) {
 		AddressTable tableObj = new AddressTable();
 		Employee emp = (Employee) getDao().findById(id);
-		System.out.println(emp);
 		tableObj.setEntities(emp.getAddresss());
 		tableObj.setSize((long) emp.getAddresss().size());
+		return tableObj;
+	}
+
+	@GET
+	@Path("/emails/{id}/{start}/{limit}")
+	public EmailTable getEmails(@PathParam("id") long id,
+			@PathParam("start") int start, @PathParam("limit") int limit) {
+		EmailTable tableObj = new EmailTable();
+		Employee emp = (Employee) getDao().findById(id);
+		tableObj.setEntities(emp.getEmails());
+		tableObj.setSize((long) emp.getEmails().size());
 		return tableObj;
 	}
 
@@ -64,6 +76,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	public void addAddress(@PathParam("empId") Long empId, Address address) {
 		Employee emp = (Employee) getDao().findById(empId);
 		emp.addAddress(address);
+	}
+
+	@PUT
+	@Path("/email/{empId}")
+	public void addEmail(@PathParam("empId") Long empId, Email email) {
+		Employee emp = (Employee) getDao().findById(empId);
+		emp.addEmail(email);
 	}
 
 	@Override

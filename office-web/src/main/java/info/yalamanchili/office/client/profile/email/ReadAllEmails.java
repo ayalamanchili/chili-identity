@@ -44,7 +44,7 @@ public class ReadAllEmails extends ReadAllComposite {
 
 	public String getEmployeeEmailsURL(String employeeId, Integer start,
 			Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/emails/table/"
+		return OfficeWelcome.constants.root_url() + "employee/emails/"
 				+ employeeId + "/" + start.toString() + "/" + limit.toString();
 	}
 
@@ -52,6 +52,7 @@ public class ReadAllEmails extends ReadAllComposite {
 	public void createTableHeader() {
 		table.setText(0, 0, getKeyValue("Table_Action"));
 		table.setText(0, 1, getKeyValue("Type"));
+		table.setText(0, 2, getKeyValue("Email"));
 	}
 
 	@Override
