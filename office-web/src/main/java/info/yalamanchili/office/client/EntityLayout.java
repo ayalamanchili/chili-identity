@@ -41,6 +41,12 @@ public class EntityLayout extends Composite {
 	}
 
 	public void clear() {
+		sidePanelTop.clear();
+		sidePanelBottom.clear();
+		entityPanel.clear();
+	}
+
+	public void clearAll() {
 		entityTitlePanel.clear();
 		sidePanelTop.clear();
 		sidePanelBottom.clear();

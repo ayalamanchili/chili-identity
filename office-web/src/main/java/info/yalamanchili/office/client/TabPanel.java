@@ -1,5 +1,6 @@
 package info.yalamanchili.office.client;
 
+import info.yalamanchili.office.client.admin.AdminMenu;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployees;
 
@@ -30,7 +31,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 		instance = this;
 		initWidget(tabPanel);
 		tabPanel.addStyleName("tabPanel");
-		// tabPanel.setHeight("100%");
 		tabPanel.setHeight("5");
 		tabPanel.add(homePanel, "Home", false);
 		tabPanel.add(profilePanel, "Profile", false);
@@ -63,6 +63,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
 	public void selectAdminTab() {
 		adminPanel.clear();
+		adminPanel.entityTitlePanel.add(new AdminMenu());
 		adminPanel.entityPanel.add(new ReadAllEmployees());
 		adminPanel.sidePanelTop.add(new EmployeeSidePanel());
 	}
