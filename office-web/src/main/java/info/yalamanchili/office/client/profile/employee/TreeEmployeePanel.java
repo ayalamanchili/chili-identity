@@ -5,12 +5,14 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddresses;
+import info.yalamanchili.office.client.profile.email.ReadAllEmails;
 
 import com.google.gwt.json.client.JSONObject;
 
 public class TreeEmployeePanel extends TreePanelComposite {
 
 	protected static final String ADDRESS_NODE = "address";
+	protected static final String EMAIL_NODE = "email";
 
 	public TreeEmployeePanel(String entityId) {
 		super(entityId);
@@ -32,7 +34,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	@Override
 	protected void addWidgets() {
 		addFirstChildLink("Addresses", ADDRESS_NODE);
-
+		addFirstChildLink("Emails", EMAIL_NODE);
 	}
 
 	@Override
@@ -44,7 +46,13 @@ public class TreeEmployeePanel extends TreePanelComposite {
 			TabPanel.instance().adminPanel.entityPanel
 					.add(new AddressOptionsPanel());
 		}
-
+		if (EMAIL_NODE.equals(entityNodeKey)) {
+			TabPanel.instance().adminPanel.clear();
+			TabPanel.instance().adminPanel.entityPanel
+					.add(new ReadAllEmails(entityId));
+			TabPanel.instance().adminPanel.entityPanel
+					.add(new AddressOptionsPanel());
+		}
 	}
 
 	@Override
