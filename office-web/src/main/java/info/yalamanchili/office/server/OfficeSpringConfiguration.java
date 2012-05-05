@@ -8,6 +8,8 @@ import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jmx.export.MBeanExporter;
+import org.springframework.jmx.support.ConnectorServerFactoryBean;
+import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
 
 @Configuration
 public class OfficeSpringConfiguration {
@@ -29,5 +31,25 @@ public class OfficeSpringConfiguration {
 		mBeanExporter.setAllowEagerInit(true);
 		mBeanExporter.setBeans(mbeans);
 		return mBeanExporter;
+	}
+
+	@Bean
+	public RmiRegistryFactoryBean rmiRegistryFactoryBean() {
+		RmiRegistryFactoryBean rmiRegistryFactoryBean = new RmiRegistryFactoryBean();
+		rmiRegistryFactoryBean.setPort(10098);
+		return rmiRegistryFactoryBean;
+	}
+
+	@Bean
+	public ConnectorServerFactoryBean connectorServerFactoryBean() {
+		ConnectorServerFactoryBean connectorServerFactoryBean = new ConnectorServerFactoryBean();
+		try {
+			connectorServerFactoryBean.setObjectName("connector:name=rmi");
+			connectorServerFactoryBean
+					.setServiceUrl("service:jmx:rmi://localhost/jndi/rmi://localhost:10098/myconnector");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return connectorServerFactoryBean;
 	}
 }
