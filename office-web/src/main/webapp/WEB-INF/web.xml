@@ -15,9 +15,10 @@
 			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
 		</init-param>
 		<!-- The spring @Configuration can be found here -->
+		<!-- TODO chage this to class path file -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>info.yalamanchili.office.server.SpringConfiguration</param-value>
+			<param-value>info.yalamanchili.office.server.OfficeSpringConfiguration</param-value>
 		</init-param>
 
 	</servlet>
