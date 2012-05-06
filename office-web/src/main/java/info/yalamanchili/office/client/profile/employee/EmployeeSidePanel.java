@@ -3,6 +3,7 @@ package info.yalamanchili.office.client.profile.employee;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.FileUploadPanel;
 
 import java.util.logging.Logger;
 
@@ -47,6 +48,8 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 			TabPanel.instance().adminPanel.clear();
 			TabPanel.instance().adminPanel.entityPanel
 					.add(new CreateEmployeePanel());
+			TabPanel.instance().adminPanel.entityPanel
+					.add(new FileUploadPanel());
 		}
 
 	}

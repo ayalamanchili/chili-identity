@@ -28,6 +28,18 @@
 		<url-pattern>/info.yalamanchili.office.office/rpc/*</url-pattern>
 	</servlet-mapping>
 
+
+	<!-- Image Upload servlet -->
+	        <servlet>
+                <servlet-name>ImageUploadServlet</servlet-name>
+                <servlet-class>info.yalamanchili.office.server.FileUploadServlet
+                </servlet-class>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>ImageUploadServlet</servlet-name>
+                <url-pattern> /info.yalamanchili.office.office/upload</url-pattern>
+        </servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file> office.html </welcome-file>
 	</welcome-file-list>
