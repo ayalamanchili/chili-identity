@@ -1,22 +1,24 @@
 package info.yalamanchili.office.jrs;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/file")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -24,43 +26,40 @@ import com.sun.jersey.multipart.FormDataParam;
 @Transactional
 public class FileResource {
 
+	protected String fileTargetDirectory = "E://content-management//office/";
+
 	@POST
 	@Path("/upload")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadFile(
-			@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) {
-
-		String uploadedFileLocation = "E://content-management//office/"
-				+ fileDetail.getFileName();
-		System.out.println("ddddddddddddddddddddd" + uploadedFileLocation);
-
-		// save it
-		writeToFile(uploadedInputStream, uploadedFileLocation);
-
-		return Response.status(200).entity(uploadedFileLocation).build();
-
+	public Response uploadFile(@Context HttpServletRequest request) {
+		System.out.println("---------------dddddddddddddddddddddddddd");
+		System.out.println(request.getContentType());
+		processImageUpload(request);
+		return Response.ok().build();
 	}
 
-	// save uploaded file to new location
-	private void writeToFile(InputStream uploadedInputStream,
-			String uploadedFileLocation) {
-
+	protected void processImageUpload(HttpServletRequest request) {
+		FileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		List<?> items = null;
 		try {
-			OutputStream out = new FileOutputStream(new File(
-					uploadedFileLocation));
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			out = new FileOutputStream(new File(uploadedFileLocation));
-			while ((read = uploadedInputStream.read(bytes)) != -1) {
-				out.write(bytes, 0, read);
-			}
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			items = upload.parseRequest(request);
+		} catch (FileUploadException e) {
+			throw new RuntimeException("Error on Image upload", e);
 		}
-
+		for (Iterator<?> i = items.iterator(); i.hasNext();) {
+			FileItem item = (FileItem) i.next();
+			if (item.isFormField() || item.getName() == null
+					|| item.getName().trim().equals(""))
+				continue;
+			File imageurl = new File(fileTargetDirectory + "/" + item.getName());
+			try {
+				System.out.println("writing image to:"
+						+ imageurl.getAbsolutePath());
+				item.write(imageurl);
+			} catch (Exception e) {
+				throw new RuntimeException("Error saving image:" + imageurl
+						+ ": to disk.", e);
+			}
+		}
 	}
 }
