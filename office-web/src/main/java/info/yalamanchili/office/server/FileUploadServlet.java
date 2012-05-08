@@ -15,6 +15,12 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class FileUploadServlet extends HttpServlet {
 	private static final Log log = LogFactory.getLog(FileUploadServlet.class);
@@ -58,7 +64,17 @@ public class FileUploadServlet extends HttpServlet {
 				System.out.println("writing image to:"
 						+ imageurl.getAbsolutePath());
 				log.info("writing image to:" + imageurl.getAbsolutePath());
-				item.write(imageurl);
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpPost postRequest = new HttpPost(
+						"http://localhost:9080/office/resources/file/upload");
+				InputStreamBody isb = new InputStreamBody(
+						item.getInputStream(), "uploadedFile");
+				MultipartEntity multipartContent = new MultipartEntity();
+				multipartContent.addPart("uploadedFile", isb);
+				postRequest.setEntity(multipartContent);
+				HttpResponse res = httpClient.execute(postRequest);
+				res.getEntity().getContent().close();
+//				item.write(imageurl);
 			} catch (Exception e) {
 				throw new RuntimeException("Error saving image:" + imageurl
 						+ ": to disk.", e);
