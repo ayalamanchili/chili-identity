@@ -6,6 +6,7 @@ import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.emailtype.SelectEmailTypeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
@@ -20,12 +21,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class CreateEmailPanel extends ALComposite implements ClickHandler {
 
-	private static Logger logger = Logger.getLogger(CreateEmailPanel.class
-			.getName());
+	private static Logger logger = Logger.getLogger(CreateEmailPanel.class.getName());
 
 	protected FlowPanel panel = new FlowPanel();
 
 	StringField emailF = new StringField("Email", "email", "Email", false, true);
+	SelectEmailTypeWidget emailTypeF = new SelectEmailTypeWidget();
 	Button createB = new Button("Create");
 
 	public CreateEmailPanel() {
@@ -47,6 +48,7 @@ public class CreateEmailPanel extends ALComposite implements ClickHandler {
 	protected void addWidgets() {
 		panel.add(emailF);
 		panel.add(createB);
+		panel.add(emailTypeF);
 	}
 
 	@Override
@@ -58,24 +60,17 @@ public class CreateEmailPanel extends ALComposite implements ClickHandler {
 	}
 
 	protected void AddEmployeeEmail() {
-		logger.info(getAddEmployeeEmailURL(TreeEmployeePanel.instance()
-				.getEntityId()));
-		HttpServiceAsync.instance().doPut(
-				getAddEmployeeEmailURL(TreeEmployeePanel.instance()
-						.getEntityId()), getEmailData(),
-				OfficeWelcome.instance().getHeaders(), false,
-				new ALAsyncCallback<String>() {
+		logger.info(getAddEmployeeEmailURL(TreeEmployeePanel.instance().getEntityId()));
+		HttpServiceAsync.instance().doPut(getAddEmployeeEmailURL(TreeEmployeePanel.instance().getEntityId()),
+				getEmailData(), OfficeWelcome.instance().getHeaders(), false, new ALAsyncCallback<String>() {
 
 					@Override
 					public void onResponse(String arg0) {
-						new ResponseStatusWidget()
-								.show("successfully added employee Email");
+						new ResponseStatusWidget().show("successfully added employee Email");
 						TabPanel.instance().adminPanel.entityPanel.clear();
-						TabPanel.instance().adminPanel.entityPanel
-								.add(new ReadAllEmails(TreeEmployeePanel
-										.instance().getEntityId()));
-						TabPanel.instance().adminPanel.entityPanel
-								.add(new EmailOptionsPanel());
+						TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEmails(TreeEmployeePanel.instance()
+								.getEntityId()));
+						TabPanel.instance().adminPanel.entityPanel.add(new EmailOptionsPanel());
 					}
 
 				});
