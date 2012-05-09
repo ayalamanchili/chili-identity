@@ -5,43 +5,48 @@
 package info.yalamanchili.office.dao;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
- *
+ * 
  * @author ayalamanchili
  */
 public abstract class CRUDDao<T> {
 
-    protected Class entityCls;
+	protected Class entityCls;
 
-    public CRUDDao(Class cls) {
-        this.entityCls = cls;
-    }
+	public CRUDDao(Class cls) {
+		this.entityCls = cls;
+	}
 
-    public T findById(Long id) {
-        return (T) getEntityManager().find(entityCls, id);
-    }
+	public T findById(Long id) {
+		return (T) getEntityManager().find(entityCls, id);
+	}
 
-    public List<T> query(int start, int limit) {
-        Query findAllQuery = getEntityManager().createQuery(
-                "from " + entityCls.getCanonicalName(), entityCls);
-        return findAllQuery.getResultList();
-    }
+	public List<T> query(int start, int limit) {
+		Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName(), entityCls);
+		return findAllQuery.getResultList();
+	}
 
-    public T save(T entity) {
-        return getEntityManager().merge(entity);
-    }
+	public List<T> queryByParams(int start, int limit, String... params) {
+		// TODO implement the query by params
+		return query(start, limit);
+	}
 
-    public void delete(Long id) {
-        getEntityManager().remove(findById(id));
-    }
+	public T save(T entity) {
+		return getEntityManager().merge(entity);
+	}
 
-    public Long size() {
-        Query sizeQuery = getEntityManager().createQuery("select count (*) from " + entityCls.getCanonicalName());
-        return (Long) sizeQuery.getSingleResult();
-    }
+	public void delete(Long id) {
+		getEntityManager().remove(findById(id));
+	}
 
-    public abstract EntityManager getEntityManager();
+	public Long size() {
+		Query sizeQuery = getEntityManager().createQuery("select count (*) from " + entityCls.getCanonicalName());
+		return (Long) sizeQuery.getSingleResult();
+	}
+
+	public abstract EntityManager getEntityManager();
 }
