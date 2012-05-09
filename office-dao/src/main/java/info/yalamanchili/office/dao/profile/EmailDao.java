@@ -6,6 +6,8 @@ import info.yalamanchili.office.entity.profile.Email;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Component;
+@Component
 public class EmailDao extends CRUDDao<Email> {
 
 	@PersistenceContext

@@ -75,12 +75,17 @@ public class OfficeStartup {
 		joeFullerAddress.setCity("Herndon");
 		joeFullerAddress.setState("Virginia");
 
-		Email joeFullerEmail = new Email();
-		joeFullerEmail.setEmailType(getPrimaryEmailType());
-		joeFullerEmail.setEmail("joefuller@gmail.com");
+		Email joeFullerPrimaryEmail = new Email();
+		joeFullerPrimaryEmail.setEmailType(getPrimaryEmailType());
+		joeFullerPrimaryEmail.setEmail("joefuller@gmail.com");
+
+		Email joeFullerSecondaryEmail = new Email();
+		joeFullerSecondaryEmail.setEmailType(getSecondaryEmailType());
+		joeFullerSecondaryEmail.setEmail("joefullerSecondary@gmail.com");
 
 		joeFullerEmp.addAddress(joeFullerAddress);
-		joeFullerEmp.addEmail(joeFullerEmail);
+		joeFullerEmp.addEmail(joeFullerPrimaryEmail);
+		joeFullerEmp.addEmail(joeFullerSecondaryEmail);
 		joeFullerEmp = em.merge(joeFullerEmp);
 	}
 
@@ -90,8 +95,7 @@ public class OfficeStartup {
 	}
 
 	protected AddressType getHomeAddressType() {
-		Query getAddressType = em.createQuery("from "
-				+ AddressType.class.getCanonicalName()
+		Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
 				+ " where addressType=:addressTypeParam");
 		getAddressType.setParameter("addressTypeParam", "HOME");
 		if (getAddressType.getResultList().size() > 0) {
@@ -104,8 +108,7 @@ public class OfficeStartup {
 	}
 
 	protected EmailType getPrimaryEmailType() {
-		Query getEmailType = em.createQuery("from "
-				+ EmailType.class.getCanonicalName()
+		Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
 				+ " where emailType=:emailTypeParam");
 		getEmailType.setParameter("emailTypeParam", "PRIMARY");
 		if (getEmailType.getResultList().size() > 0) {
@@ -113,6 +116,19 @@ public class OfficeStartup {
 		} else {
 			EmailType homeEmailType = new EmailType();
 			homeEmailType.setEmailType("PRIMARY");
+			return em.merge(homeEmailType);
+		}
+	}
+
+	protected EmailType getSecondaryEmailType() {
+		Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
+				+ " where emailType=:emailTypeParam");
+		getEmailType.setParameter("emailTypeParam", "SECONDARY");
+		if (getEmailType.getResultList().size() > 0) {
+			return (EmailType) getEmailType.getResultList().get(0);
+		} else {
+			EmailType homeEmailType = new EmailType();
+			homeEmailType.setEmailType("SECONDARY");
 			return em.merge(homeEmailType);
 		}
 	}

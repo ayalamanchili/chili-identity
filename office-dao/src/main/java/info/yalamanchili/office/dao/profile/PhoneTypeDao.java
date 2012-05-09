@@ -1,7 +1,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.PhoneType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,13 +9,13 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddressTypeDao extends CRUDDao<AddressType> {
+public class PhoneTypeDao extends CRUDDao<PhoneType> {
 
 	@PersistenceContext
 	protected EntityManager em;
 
-	public AddressTypeDao() {
-		super(AddressType.class);
+	public PhoneTypeDao() {
+		super(PhoneType.class);
 	}
 
 	@Override
