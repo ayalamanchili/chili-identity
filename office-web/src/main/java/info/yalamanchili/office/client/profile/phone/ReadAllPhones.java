@@ -55,7 +55,6 @@ public class ReadAllPhones extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
-			logger.info("==========" + entity);
 			createViewIcon(i, JSONUtils.toString(entity, "id"));
 			table.setText(i, 1, JSONUtils.toString(entity.get("phoneType"), "phoneType"));
 			table.setText(i, 2, JSONUtils.toString(entity, "phoneNumber"));
