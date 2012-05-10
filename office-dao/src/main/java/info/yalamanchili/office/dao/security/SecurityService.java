@@ -16,12 +16,8 @@ public class SecurityService {
 	protected EntityManager em;
 
 	public CUser login(CUser user) {
-		Query findUserQuery = em
-				.createQuery(
-						"from "
-								+ CUser.class.getCanonicalName()
-								+ " where username=:userNameParam and passwordHash=:passwordParam",
-						CUser.class);
+		Query findUserQuery = em.createQuery("from " + CUser.class.getCanonicalName()
+				+ " where username=:userNameParam and passwordHash=:passwordParam", CUser.class);
 		findUserQuery.setParameter("userNameParam", user.getUsername());
 		findUserQuery.setParameter("passwordParam", user.getPasswordHash());
 		try {

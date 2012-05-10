@@ -11,21 +11,21 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * 
  * @author ayalamanchili
  */
 @Component
 public class CompanyDao extends CRUDDao<Company> {
 
-    public CompanyDao() {
-        super(Company.class);
-    }
-    
-    @PersistenceContext
-    protected EntityManager em;
+	public CompanyDao() {
+		super(Company.class);
+	}
 
-    @Override
-    public EntityManager getEntityManager() {
-        return em;
-    }
+	@PersistenceContext
+	protected EntityManager em;
+
+	@Override
+	public EntityManager getEntityManager() {
+		return em;
+	}
 }
