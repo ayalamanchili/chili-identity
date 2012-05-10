@@ -5,6 +5,7 @@ import info.yalamanchili.office.entity.security.CUser;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityService {
 
-	@PersistenceContext
+	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	protected EntityManager em;
 
 	public CUser login(CUser user) {
