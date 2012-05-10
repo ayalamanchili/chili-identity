@@ -7,11 +7,16 @@ package info.yalamanchili.office.jrs.profile;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.entity.profile.PhoneType;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
+import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 
 import java.util.List;
 
@@ -41,8 +46,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
 	@GET
 	@Path("/{start}/{limit}")
-	public EmployeeTable table(@PathParam("start") int start,
-			@PathParam("limit") int limit) {
+	public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
 		EmployeeTable tableObj = new EmployeeTable();
 		tableObj.setEntities(getDao().query(start, limit));
 		tableObj.setSize(getDao().size());
@@ -51,8 +55,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
 	@GET
 	@Path("/addresses/{id}/{start}/{limit}")
-	public AddressTable getAddresses(@PathParam("id") long id,
-			@PathParam("start") int start, @PathParam("limit") int limit) {
+	public AddressTable getAddresses(@PathParam("id") long id, @PathParam("start") int start,
+			@PathParam("limit") int limit) {
 		AddressTable tableObj = new AddressTable();
 		Employee emp = (Employee) getDao().findById(id);
 		tableObj.setEntities(emp.getAddresss());
@@ -62,8 +66,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
 	@GET
 	@Path("/emails/{id}/{start}/{limit}")
-	public EmailTable getEmails(@PathParam("id") long id,
-			@PathParam("start") int start, @PathParam("limit") int limit) {
+	public EmailTable getEmails(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
 		EmailTable tableObj = new EmailTable();
 		Employee emp = (Employee) getDao().findById(id);
 		tableObj.setEntities(emp.getEmails());
@@ -71,10 +74,25 @@ public class EmployeeResource extends CRUDResource<Employee> {
 		return tableObj;
 	}
 
+	@GET
+	@Path("/phones/{id}/{start}/{limit}")
+	public PhoneTable getPhones(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+		PhoneTable tableObj = new PhoneTable();
+		Employee emp = (Employee) getDao().findById(id);
+		tableObj.setEntities(emp.getPhones());
+		tableObj.setSize((long) emp.getPhones().size());
+		return tableObj;
+	}
+
 	@PUT
 	@Path("/address/{empId}")
 	public void addAddress(@PathParam("empId") Long empId, Address address) {
 		Employee emp = (Employee) getDao().findById(empId);
+		if (address.getAddressType() != null) {
+			AddressType addressType = getDao().getEntityManager().find(AddressType.class,
+					address.getAddressType().getId());
+			address.setAddressType(addressType);
+		}
 		emp.addAddress(address);
 	}
 
@@ -82,7 +100,22 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	@Path("/email/{empId}")
 	public void addEmail(@PathParam("empId") Long empId, Email email) {
 		Employee emp = (Employee) getDao().findById(empId);
+		if (email.getEmailType() != null) {
+			EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
+			email.setEmailType(emailType);
+		}
 		emp.addEmail(email);
+	}
+
+	@PUT
+	@Path("/phone/{empId}")
+	public void addPhone(@PathParam("empId") Long empId, Phone phone) {
+		Employee emp = (Employee) getDao().findById(empId);
+		if (phone.getPhoneType() != null) {
+			PhoneType phoneType = getDao().getEntityManager().find(PhoneType.class, phone.getPhoneType().getId());
+			phone.setPhoneType(phoneType);
+		}
+		emp.addPhone(phone);
 	}
 
 	@Override
