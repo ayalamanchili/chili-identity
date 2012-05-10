@@ -7,12 +7,16 @@ import info.yalamanchili.office.jrs.CRUDResource;
 
 import java.util.List;
 
+import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Path("/email")
+@Component
 public class EmailResource extends CRUDResource<Email> {
 
 	@Autowired
