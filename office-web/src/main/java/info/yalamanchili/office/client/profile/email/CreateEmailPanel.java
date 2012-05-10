@@ -47,8 +47,8 @@ public class CreateEmailPanel extends ALComposite implements ClickHandler {
 	@Override
 	protected void addWidgets() {
 		panel.add(emailF);
-		panel.add(createB);
 		panel.add(emailTypeF);
+		panel.add(createB);
 	}
 
 	@Override
@@ -79,6 +79,8 @@ public class CreateEmailPanel extends ALComposite implements ClickHandler {
 	protected String getEmailData() {
 		JSONObject jsonValue = new JSONObject();
 		jsonValue.put("email", new JSONString(emailF.getText()));
+		// TODO null checek
+		jsonValue.put("emailType", emailTypeF.getSelectedObject());
 		return jsonValue.toString();
 	}
 

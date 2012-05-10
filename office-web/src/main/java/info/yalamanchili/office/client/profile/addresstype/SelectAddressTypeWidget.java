@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client.profile.emailtype;
+package info.yalamanchili.office.client.profile.addresstype;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -12,9 +12,10 @@ import java.util.Map;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
-public class SelectEmailTypeWidget extends SelectComposite {
-	public SelectEmailTypeWidget() {
-		super("emailType");
+public class SelectAddressTypeWidget extends SelectComposite {
+
+	public SelectAddressTypeWidget() {
+		super("addressType");
 	}
 
 	protected void fetchDropDownData() {
@@ -30,7 +31,7 @@ public class SelectEmailTypeWidget extends SelectComposite {
 	}
 
 	protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
-		return OfficeWelcome.constants.root_url() + "emailtype/dropdown/" + start.toString() + "/" + limit.toString();
+		return OfficeWelcome.constants.root_url() + "addresstype/dropdown/" + start.toString() + "/" + limit.toString();
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class SelectEmailTypeWidget extends SelectComposite {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
 			Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
-			String value = JSONUtils.toString(entity, "emailType");
+			String value = JSONUtils.toString(entity, "addressType");
 			values.put(id, value);
 		}
 		return values;

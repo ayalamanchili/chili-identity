@@ -7,6 +7,8 @@ import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddresses;
 import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmails;
+import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhones;
 
 import com.google.gwt.json.client.JSONObject;
 
@@ -14,6 +16,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
 	protected static final String ADDRESS_NODE = "address";
 	protected static final String EMAIL_NODE = "email";
+	protected static final String PHONE_NODE = "phone";
 
 	public TreeEmployeePanel(String entityId) {
 		super(entityId);
@@ -36,23 +39,25 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	protected void addWidgets() {
 		addFirstChildLink("Addresses", ADDRESS_NODE);
 		addFirstChildLink("Emails", EMAIL_NODE);
+		addFirstChildLink("Phones", PHONE_NODE);
 	}
 
 	@Override
 	public void treeNodeSelected(String entityNodeKey) {
 		if (ADDRESS_NODE.equals(entityNodeKey)) {
 			TabPanel.instance().adminPanel.entityPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel
-					.add(new ReadAllAddresses(entityId));
-			TabPanel.instance().adminPanel.entityPanel
-					.add(new AddressOptionsPanel());
+			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllAddresses(entityId));
+			TabPanel.instance().adminPanel.entityPanel.add(new AddressOptionsPanel());
 		}
 		if (EMAIL_NODE.equals(entityNodeKey)) {
 			TabPanel.instance().adminPanel.entityPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEmails(
-					entityId));
-			TabPanel.instance().adminPanel.entityPanel
-					.add(new EmailOptionsPanel());
+			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEmails(entityId));
+			TabPanel.instance().adminPanel.entityPanel.add(new EmailOptionsPanel());
+		}
+		if (PHONE_NODE.equals(entityNodeKey)) {
+			TabPanel.instance().adminPanel.entityPanel.clear();
+			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllPhones(entityId));
+			TabPanel.instance().adminPanel.entityPanel.add(new PhoneOptionsPanel());
 		}
 	}
 
