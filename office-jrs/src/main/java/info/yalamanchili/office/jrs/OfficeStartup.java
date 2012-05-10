@@ -5,6 +5,8 @@ import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.entity.profile.PhoneType;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
@@ -83,6 +85,11 @@ public class OfficeStartup {
 		joeFullerSecondaryEmail.setEmailType(getSecondaryEmailType());
 		joeFullerSecondaryEmail.setEmail("joefullerSecondary@gmail.com");
 
+		Phone joeFullerCellPhone = new Phone();
+		joeFullerCellPhone.setPhoneNumber("7031112222");
+		joeFullerCellPhone.setPhoneType(getCellPhoneType());
+
+		joeFullerEmp.addPhone(joeFullerCellPhone);
 		joeFullerEmp.addAddress(joeFullerAddress);
 		joeFullerEmp.addEmail(joeFullerPrimaryEmail);
 		joeFullerEmp.addEmail(joeFullerSecondaryEmail);
@@ -130,6 +137,19 @@ public class OfficeStartup {
 			EmailType homeEmailType = new EmailType();
 			homeEmailType.setEmailType("SECONDARY");
 			return em.merge(homeEmailType);
+		}
+	}
+
+	protected PhoneType getCellPhoneType() {
+		Query getCellPhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
+				+ " where phoneType=:phoneTypeParam");
+		getCellPhoneType.setParameter("phoneTypeParam", "PRIMARY");
+		if (getCellPhoneType.getResultList().size() > 0) {
+			return (PhoneType) getCellPhoneType.getResultList().get(0);
+		} else {
+			PhoneType cellPhoneType = new PhoneType();
+			cellPhoneType.setPhoneType("CELL");
+			return em.merge(cellPhoneType);
 		}
 	}
 }
