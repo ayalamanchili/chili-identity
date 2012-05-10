@@ -26,8 +26,8 @@ public class ReadAllPhones extends ReadAllComposite {
 
 	@Override
 	public void preFetchTable(int start) {
-		HttpServiceAsync.instance().doGet(getEmployeePhonessURL(parentId, 0, 10),
-				OfficeWelcome.instance().getHeaders(), false, new ALAsyncCallback<String>() {
+		HttpServiceAsync.instance().doGet(getEmployeePhonesURL(parentId, 0, 10), OfficeWelcome.instance().getHeaders(),
+				false, new ALAsyncCallback<String>() {
 
 					@Override
 					public void onResponse(String result) {
@@ -39,7 +39,7 @@ public class ReadAllPhones extends ReadAllComposite {
 
 	}
 
-	public String getEmployeePhonessURL(String employeeId, Integer start, Integer limit) {
+	public String getEmployeePhonesURL(String employeeId, Integer start, Integer limit) {
 		return OfficeWelcome.constants.root_url() + "employee/phones/" + employeeId + "/" + start.toString() + "/"
 				+ limit.toString();
 	}
@@ -55,8 +55,9 @@ public class ReadAllPhones extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
+			logger.info("==========" + entity);
 			createViewIcon(i, JSONUtils.toString(entity, "id"));
-			table.setText(i, 1, JSONUtils.toString(entity, "TODO"));
+			table.setText(i, 1, JSONUtils.toString(entity.get("phoneType"), "phoneType"));
 			table.setText(i, 2, JSONUtils.toString(entity, "phoneNumber"));
 		}
 	}

@@ -1,13 +1,12 @@
 package info.yalamanchili.office.client.gwt;
 
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
 public class JSONUtils {
-	public static String toString(JSONObject entity, String property) {
-		if (entity.get(property) != null) {
-			return entity.get(property).isString().stringValue();
+	public static String toString(JSONValue entity, String property) {
+		if (entity != null && entity.isObject() != null && entity.isObject().get(property) != null) {
+			return entity.isObject().get(property).isString().stringValue();
 		} else {
 			return "";
 		}
