@@ -34,8 +34,8 @@ public class AdminResource {
 	@Path("/login")
 	@PUT
 	public CUser login(CUser user) {
-		// TODO fix session closed issue and remvoe dozer mappper
-		return mapper.map(securityService.login(user), CUser.class);
+
+		return securityService.login(user);
 	}
 
 	@Path("/test")
