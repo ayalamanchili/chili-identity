@@ -3,7 +3,6 @@ package info.yalamanchili.office.client.profile.employee;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
 
 import java.util.logging.Logger;
 
@@ -13,8 +12,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
-	private static Logger logger = Logger.getLogger(EmployeeSidePanel.class
-			.getName());
+	private static Logger logger = Logger.getLogger(EmployeeSidePanel.class.getName());
 
 	public FlowPanel employeeSidePanel = new FlowPanel();
 
@@ -46,10 +44,7 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 	public void onClick(ClickEvent clickEvent) {
 		if (clickEvent.getSource().equals(createEmployeeLink)) {
 			TabPanel.instance().adminPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel
-					.add(new CreateEmployeePanel());
-			TabPanel.instance().adminPanel.entityPanel
-					.add(new FileUploadPanel());
+			TabPanel.instance().adminPanel.entityPanel.add(new CreateEmployeePanel());
 		}
 
 	}

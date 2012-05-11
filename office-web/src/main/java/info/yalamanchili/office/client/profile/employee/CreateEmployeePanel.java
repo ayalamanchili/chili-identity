@@ -34,7 +34,7 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 	 */
 	StringField firstNameF = new StringField("First Name", "firstName",
 			"Employee", false, true);
-	StringField middleNameF = new StringField("MiddleInitial", "middleInitial",
+	StringField middleNameF = new StringField("Middle Initial", "middleInitial",
 			"Employee", false, false);
 	StringField lastNameF = new StringField("Last Name", "lastName",
 			"Employee", false, true);

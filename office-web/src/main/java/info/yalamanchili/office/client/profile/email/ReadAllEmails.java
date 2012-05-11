@@ -14,8 +14,7 @@ import com.google.gwt.json.client.JSONObject;
 
 public class ReadAllEmails extends ReadAllComposite {
 
-	private static Logger logger = Logger.getLogger(ReadAllEmails.class
-			.getName());
+	private static Logger logger = Logger.getLogger(ReadAllEmails.class.getName());
 
 	public static ReadAllEmails instance;
 
@@ -27,10 +26,8 @@ public class ReadAllEmails extends ReadAllComposite {
 
 	@Override
 	public void preFetchTable(int start) {
-		HttpServiceAsync.instance().doGet(
-				getEmployeeEmailsURL(parentId, 0, 10),
-				OfficeWelcome.instance().getHeaders(), false,
-				new ALAsyncCallback<String>() {
+		HttpServiceAsync.instance().doGet(getEmployeeEmailsURL(parentId, 0, 10), OfficeWelcome.instance().getHeaders(),
+				false, new ALAsyncCallback<String>() {
 
 					@Override
 					public void onResponse(String result) {
@@ -42,10 +39,9 @@ public class ReadAllEmails extends ReadAllComposite {
 
 	}
 
-	public String getEmployeeEmailsURL(String employeeId, Integer start,
-			Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/emails/"
-				+ employeeId + "/" + start.toString() + "/" + limit.toString();
+	public String getEmployeeEmailsURL(String employeeId, Integer start, Integer limit) {
+		return OfficeWelcome.constants.root_url() + "employee/emails/" + employeeId + "/" + start.toString() + "/"
+				+ limit.toString();
 	}
 
 	@Override
@@ -60,7 +56,7 @@ public class ReadAllEmails extends ReadAllComposite {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
 			createViewIcon(i, JSONUtils.toString(entity, "id"));
-			table.setText(i, 1, JSONUtils.toString(entity, "TODO"));
+			table.setText(i, 1, JSONUtils.toString(entity.get("emailType"), "emailType"));
 			table.setText(i, 2, JSONUtils.toString(entity, "email"));
 		}
 	}

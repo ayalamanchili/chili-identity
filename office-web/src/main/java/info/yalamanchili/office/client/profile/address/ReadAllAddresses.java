@@ -13,8 +13,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
 public class ReadAllAddresses extends ReadAllComposite {
-	private static Logger logger = Logger.getLogger(ReadAllAddresses.class
-			.getName());
+	private static Logger logger = Logger.getLogger(ReadAllAddresses.class.getName());
 
 	public static ReadAllAddresses instance;
 
@@ -26,10 +25,8 @@ public class ReadAllAddresses extends ReadAllComposite {
 
 	@Override
 	public void preFetchTable(int start) {
-		HttpServiceAsync.instance().doGet(
-				getEmployeeAddressesURL(parentId, 0, 10),
-				OfficeWelcome.instance().getHeaders(), false,
-				new ALAsyncCallback<String>() {
+		HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, 0, 10),
+				OfficeWelcome.instance().getHeaders(), false, new ALAsyncCallback<String>() {
 
 					@Override
 					public void onResponse(String result) {
@@ -41,10 +38,9 @@ public class ReadAllAddresses extends ReadAllComposite {
 
 	}
 
-	public String getEmployeeAddressesURL(String employeeId, Integer start,
-			Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/addresses/"
-				+ employeeId + "/" + start.toString() + "/" + limit.toString();
+	public String getEmployeeAddressesURL(String employeeId, Integer start, Integer limit) {
+		return OfficeWelcome.constants.root_url() + "employee/addresses/" + employeeId + "/" + start.toString() + "/"
+				+ limit.toString();
 	}
 
 	@Override
@@ -65,7 +61,7 @@ public class ReadAllAddresses extends ReadAllComposite {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
 			createViewIcon(i, JSONUtils.toString(entity, "id"));
-			table.setText(i, 1, JSONUtils.toString(entity, "TODO"));
+			table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
 			table.setText(i, 2, JSONUtils.toString(entity, "street1"));
 			table.setText(i, 3, JSONUtils.toString(entity, "street2"));
 			table.setText(i, 4, JSONUtils.toString(entity, "city"));

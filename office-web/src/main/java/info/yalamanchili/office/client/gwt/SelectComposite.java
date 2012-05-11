@@ -58,6 +58,7 @@ public abstract class SelectComposite extends ALComposite implements ClickHandle
 	protected abstract Map<Integer, String> populateValues(JSONArray entities);
 
 	protected void populateDropDown(Map<Integer, String> values) {
+		listBox.insertItem("SELECT", "", 0);
 		int i = 1;
 		for (Integer key : values.keySet()) {
 			listBox.insertItem(values.get(key), key.toString(), i);
