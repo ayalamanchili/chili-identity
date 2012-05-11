@@ -76,6 +76,7 @@ public class OfficeStartup {
 		joeFullerAddress.setStreet2("apt 123");
 		joeFullerAddress.setCity("Herndon");
 		joeFullerAddress.setState("Virginia");
+		joeFullerAddress.setCountry("USA");
 
 		Email joeFullerPrimaryEmail = new Email();
 		joeFullerPrimaryEmail.setEmailType(getPrimaryEmailType());
@@ -97,8 +98,14 @@ public class OfficeStartup {
 	}
 
 	protected void initRefData() {
+		// Address Types
 		getHomeAddressType();
+		// Email Types
 		getPrimaryEmailType();
+		getSecondaryEmailType();
+		// Phone Types
+		getCellPhoneType();
+		getHomePhoneType();
 	}
 
 	protected AddressType getHomeAddressType() {
@@ -143,12 +150,25 @@ public class OfficeStartup {
 	protected PhoneType getCellPhoneType() {
 		Query getCellPhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
 				+ " where phoneType=:phoneTypeParam");
-		getCellPhoneType.setParameter("phoneTypeParam", "PRIMARY");
+		getCellPhoneType.setParameter("phoneTypeParam", "CELL");
 		if (getCellPhoneType.getResultList().size() > 0) {
 			return (PhoneType) getCellPhoneType.getResultList().get(0);
 		} else {
 			PhoneType cellPhoneType = new PhoneType();
 			cellPhoneType.setPhoneType("CELL");
+			return em.merge(cellPhoneType);
+		}
+	}
+
+	protected PhoneType getHomePhoneType() {
+		Query getHomePhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
+				+ " where phoneType=:phoneTypeParam");
+		getHomePhoneType.setParameter("phoneTypeParam", "HOME");
+		if (getHomePhoneType.getResultList().size() > 0) {
+			return (PhoneType) getHomePhoneType.getResultList().get(0);
+		} else {
+			PhoneType cellPhoneType = new PhoneType();
+			cellPhoneType.setPhoneType("HOME");
 			return em.merge(cellPhoneType);
 		}
 	}
