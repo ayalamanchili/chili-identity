@@ -28,12 +28,12 @@ public class OfficeStartup {
 	protected EntityManager em;
 
 	protected void startup() {
-		initUsers();
+		initRolesAndUsers();
 		initRefData();
 		initTestData();
 	}
 
-	protected void initUsers() {
+	protected void initRolesAndUsers() {
 
 		CRole userRole = new CRole();
 		userRole.setRolename("ROLE_USER");
@@ -42,6 +42,14 @@ public class OfficeStartup {
 		CRole adminRole = new CRole();
 		adminRole.setRolename("ROLE_ADMIN");
 		adminRole = em.merge(adminRole);
+
+		CRole hrManagerRole = new CRole();
+		hrManagerRole.setRolename("ROLE_HR");
+		hrManagerRole = em.merge(hrManagerRole);
+
+		CRole acctManagerRole = new CRole();
+		acctManagerRole.setRolename("ROLE_ACCOUNTS");
+		acctManagerRole = em.merge(acctManagerRole);
 
 		CUser user = new CUser();
 		user.setUsername("user");
