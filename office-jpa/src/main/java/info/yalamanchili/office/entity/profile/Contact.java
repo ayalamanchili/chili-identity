@@ -22,6 +22,8 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
@@ -108,6 +110,7 @@ public class Contact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@NotEmpty
 	public String getLastName() {
 		return lastName;
 	}
