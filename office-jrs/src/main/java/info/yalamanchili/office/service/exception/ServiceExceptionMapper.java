@@ -1,6 +1,5 @@
 package info.yalamanchili.office.service.exception;
 
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class ServiceExceptionMapper implements ExceptionMapper<ServiceException> {
 
 	public Response toResponse(ServiceException exception) {
-		System.out.println("dddddddddddddddddddddddddddddddddddddddddd");
 		ResponseBuilder builder = Response.status(exception.getStatusCode());
 
 		if (exception.getErrors() != null && exception.getErrors().getErrors().size() > 0) {

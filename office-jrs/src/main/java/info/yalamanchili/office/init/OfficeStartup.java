@@ -1,4 +1,4 @@
-package info.yalamanchili.office.jrs;
+package info.yalamanchili.office.init;
 
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;

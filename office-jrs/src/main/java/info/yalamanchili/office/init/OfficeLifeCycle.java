@@ -1,4 +1,5 @@
-package info.yalamanchili.office.jrs;
+package info.yalamanchili.office.init;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.SmartLifecycle;

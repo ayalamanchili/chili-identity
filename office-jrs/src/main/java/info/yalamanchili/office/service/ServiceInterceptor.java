@@ -1,6 +1,8 @@
 package info.yalamanchili.office.service;
 
 import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.office.service.exception.ServiceException;
+import info.yalamanchili.office.service.exception.ServiceException.StatusCode;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -21,17 +23,18 @@ public class ServiceInterceptor {
 	@Autowired
 	protected ServiceMessages serviceMessages;
 
-//	@Around("execution(* info.yalamanchili.office..*.*(..))")
+	@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
 	public void aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
 		for (Object arg : joinPoint.getArgs()) {
 			if (arg instanceof AbstractEntity) {
-				// Perform Validations
+				System.out.println("aaaaaaaaaaaaaaaaaaaaaaa abstract entity");
+
 			}
 		}
 		try {
 			joinPoint.proceed();
 		} catch (Exception e) {
-			// TODO add the exception details to service messages
+			throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, e.getLocalizedMessage(), e.getMessage());
 		}
 	}
 }
