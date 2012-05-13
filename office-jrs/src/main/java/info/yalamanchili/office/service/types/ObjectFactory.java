@@ -9,11 +9,4 @@ public class ObjectFactory {
 	public ObjectFactory() {
 	}
 
-	public Error createError() {
-		return new Error();
-	}
-
-	public Errors createErrors() {
-		return new Errors();
-	}
 }

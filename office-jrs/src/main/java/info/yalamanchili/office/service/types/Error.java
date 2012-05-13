@@ -2,7 +2,6 @@ package info.yalamanchili.office.service.types;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @SuppressWarnings("restriction")
@@ -12,73 +11,68 @@ public class Error implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Error() {
+		super();
 	}
 
 	public Error(String source, String reasonCode) {
-		this(source, reasonCode, null);
+		this.source = source;
+		this.reasonCode = reasonCode;
 	}
 
 	public Error(String source, String reasonCode, String description) {
-		this(source, reasonCode, description, false);
-	}
-
-	public Error(String source, String reasonCode, String description,
-			Boolean recoverable) {
 		this.source = source;
 		this.reasonCode = reasonCode;
 		this.description = description;
-		this.recoverable = recoverable;
 	}
 
-	@XmlElement(name = "Source", required = true, nillable = false)
+	public Error(String source, String reasonCode, String key, String description) {
+		this.source = source;
+		this.reasonCode = reasonCode;
+		this.description = description;
+		this.key = key;
+	}
+
+	protected String source;
+	protected String reasonCode;
+	protected String key;
+	protected String description;
+
 	public String getSource() {
 		return source;
 	}
 
-	public void setSource(final String source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
 
-	private String source = null;
-
-	@XmlElement(name = "ReasonCode", required = true, nillable = false)
 	public String getReasonCode() {
 		return reasonCode;
 	}
 
-	public void setReasonCode(final String reasonCode) {
+	public void setReasonCode(String reasonCode) {
 		this.reasonCode = reasonCode;
 	}
 
-	private String reasonCode = null;
+	public String getKey() {
+		return key;
+	}
 
-	@XmlElement(name = "Description", required = false, nillable = true)
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	private String description = null;
-
-	@XmlElement(name = "Recoverable", required = true, nillable = false)
-	public Boolean getRecoverable() {
-		return recoverable;
-	}
-
-	public void setRecoverable(final Boolean recoverable) {
-		this.recoverable = recoverable;
-	}
-
-	private Boolean recoverable = null;
-
 	@Override
 	public String toString() {
-		return "Error [source=" + source + ", reasonCode=" + reasonCode
-				+ ", description=" + description + ", recoverable="
-				+ recoverable + "]";
+		return "Error [source=" + source + ", reasonCode=" + reasonCode + ", description=" + description + ", key="
+				+ key + "]";
 	}
 
 }

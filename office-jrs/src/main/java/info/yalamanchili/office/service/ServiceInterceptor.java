@@ -4,6 +4,11 @@ import info.yalamanchili.jpa.AbstractEntity;
 import info.yalamanchili.office.service.exception.ServiceException;
 import info.yalamanchili.office.service.exception.ServiceException.StatusCode;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -27,14 +32,31 @@ public class ServiceInterceptor {
 	public void aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
 		for (Object arg : joinPoint.getArgs()) {
 			if (arg instanceof AbstractEntity) {
-				System.out.println("aaaaaaaaaaaaaaaaaaaaaaa abstract entity");
-
+				validate(arg);
 			}
 		}
+		checkForErrors();
 		try {
 			joinPoint.proceed();
 		} catch (Exception e) {
 			throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, e.getLocalizedMessage(), e.getMessage());
+		}
+	}
+
+	protected void validate(Object entity) {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		for (ConstraintViolation<Object> violation : validator.validate(entity)) {
+			System.out.println("---------------" + violation.getMessage());
+			System.out.println("---------------" + violation.getPropertyPath());
+			serviceMessages.addError(new info.yalamanchili.office.service.types.Error(violation.getPropertyPath()
+					.toString(), "INVALID_INPUT", violation.getMessage()));
+		}
+	}
+
+	protected void checkForErrors() {
+		if (serviceMessages.isNotEmpty()) {
+			throw new ServiceException(StatusCode.INVALID_REQUEST, serviceMessages.getErrors());
 		}
 	}
 }

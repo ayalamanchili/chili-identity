@@ -2,6 +2,8 @@ package info.yalamanchili.office.service.exception;
 
 import info.yalamanchili.office.service.types.Errors;
 
+import java.util.List;
+
 import javax.ws.rs.core.MediaType;
 
 public class ServiceException extends RuntimeException {
@@ -20,9 +22,21 @@ public class ServiceException extends RuntimeException {
 		this(statusCode, new info.yalamanchili.office.service.types.Error(source, reasonCode.toString()));
 	}
 
+	public ServiceException(StatusCode statusCode, List<info.yalamanchili.office.service.types.Error> errs) {
+		this.statusCode = statusCode.value();
+		if (this.errors == null) {
+			this.errors = new Errors();
+		}
+		for (info.yalamanchili.office.service.types.Error error : errs) {
+			this.errors.addError(error);
+		}
+	}
+
 	public ServiceException(StatusCode statusCode, info.yalamanchili.office.service.types.Error... errs) {
 		this.statusCode = statusCode.value();
-		this.errors = new Errors();
+		if (this.errors == null) {
+			this.errors = new Errors();
+		}
 		for (info.yalamanchili.office.service.types.Error error : errs) {
 			this.errors.addError(error);
 		}
