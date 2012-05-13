@@ -1,4 +1,4 @@
-package info.yalamanchili.office.config;
+package info.yalamanchili.office.logging;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,6 +11,7 @@ public class LoggingInterceptor {
 	@Before("execution(* info.yalamanchili.office..*.*(..))")
 	public void logBefore(JoinPoint joinPoint) {
 		// TODO add logging/trace related stuff here
-//		System.out.println("****Invoking method : " + joinPoint.getSignature().getName());
+		// System.out.println("****Invoking method : " +
+		// joinPoint.getSignature().getName());
 	}
 }
