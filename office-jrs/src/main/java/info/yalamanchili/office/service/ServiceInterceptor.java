@@ -28,7 +28,7 @@ public class ServiceInterceptor {
 	@Autowired
 	protected ServiceMessages serviceMessages;
 
-	@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
+//	@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
 	public void aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
 		for (Object arg : joinPoint.getArgs()) {
 			if (arg instanceof AbstractEntity) {
@@ -47,8 +47,6 @@ public class ServiceInterceptor {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 		for (ConstraintViolation<Object> violation : validator.validate(entity)) {
-			System.out.println("---------------" + violation.getMessage());
-			System.out.println("---------------" + violation.getPropertyPath());
 			serviceMessages.addError(new info.yalamanchili.office.service.types.Error(violation.getPropertyPath()
 					.toString(), "INVALID_INPUT", violation.getMessage()));
 		}
