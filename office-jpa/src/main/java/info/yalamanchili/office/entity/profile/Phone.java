@@ -14,6 +14,8 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
@@ -31,12 +33,18 @@ public class Phone extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@NotEmpty
 	protected String phoneNumber;
 
 	/**
 	 * @generated
 	 */
 	protected String extension;
+
+	/**
+	 * @generated
+	 */
+	protected String countryCode;
 
 	/**
 	 * @generated
@@ -90,6 +98,20 @@ public class Phone extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	/**
+	 * @generated
+	 */
 	@XmlElement
 	public PhoneType getPhoneType() {
 		return this.phoneType;
@@ -125,6 +147,8 @@ public class Phone extends AbstractEntity {
 		sb.append(getPhoneNumber());
 		sb.append(":");
 		sb.append(getExtension());
+		sb.append(":");
+		sb.append(getCountryCode());
 		sb.append(":");
 		return sb.toString();
 	}

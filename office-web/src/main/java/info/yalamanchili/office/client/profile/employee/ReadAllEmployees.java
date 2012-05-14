@@ -63,7 +63,6 @@ public class ReadAllEmployees extends ReadAllComposite {
 		table.setText(0, 4, getKeyValue("Date of Birth"));
 		table.setText(0, 5, getKeyValue("Sex"));
 		table.setText(0, 6, getKeyValue("Start Date"));
-		table.setText(0, 7, getKeyValue("Social Security Number"));
 
 	}
 
@@ -78,7 +77,6 @@ public class ReadAllEmployees extends ReadAllComposite {
 			table.setText(i, 4, JSONUtils.toString(entity, "dateOfBirth"));
 			table.setText(i, 5, JSONUtils.toString(entity, "sex"));
 			table.setText(i, 6, JSONUtils.toString(entity, "startDate"));
-			table.setText(i, 7, JSONUtils.toString(entity, "ssn"));
 		}
 	}
 

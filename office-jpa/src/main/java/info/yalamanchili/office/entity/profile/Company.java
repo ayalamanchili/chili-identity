@@ -15,8 +15,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @todo add comment for javadoc
@@ -35,11 +38,13 @@ public class Company extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@NotEmpty
 	protected String name;
 
 	/**
 	 * @generated
 	 */
+	@Past
 	protected Date establishedDate;
 
 	/**

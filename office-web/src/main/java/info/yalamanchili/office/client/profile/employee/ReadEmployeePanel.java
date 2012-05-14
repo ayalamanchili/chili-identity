@@ -37,7 +37,6 @@ public class ReadEmployeePanel extends ALComposite {
 	EnumField sexF = new EnumField("Sex", "sex", "Employee", true, false, strs);
 	DateField startDateF = new DateField("Start Date", "startDate", "Employee",
 			true, false);
-	StringField ssnF = new StringField("SSN", "ssn", "Employee", true, false);
 
 	public ReadEmployeePanel(String id) {
 		instance = this;
@@ -65,7 +64,6 @@ public class ReadEmployeePanel extends ALComposite {
 		panel.add(dateOfBirthF);
 		panel.add(sexF);
 		panel.add(startDateF);
-		panel.add(ssnF);
 	}
 
 	protected void loadEntity(String id) {
@@ -89,7 +87,6 @@ public class ReadEmployeePanel extends ALComposite {
 		// dateOfBirthF.setDate(JSONUtils.toString(entity, "dateOfBirth"));
 		sexF.setValue(JSONUtils.toString(entity, "sex"));
 		// startDateF.setText(JSONUtils.toString(entity, "startDate"));
-		ssnF.setText(JSONUtils.toString(entity, "ssn"));
 	}
 
 	protected String getReadEmployeeURL(String id) {

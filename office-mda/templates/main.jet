@@ -10,7 +10,7 @@
 <c:setVariable select="'info/yalamanchili/office'" var="groupIDWithFolder"/>
 <c:setVariable select="'info_yalamanchili_office'" var="groupIDWithUnderScore"/>
 <c:setVariable select="'1.0-SNAPSHOT'" var="version"/>
-<c:setVariable select="'D://codebase//office//trunk'" var="location"/>
+<c:setVariable select="'E://codebase//office//trunk'" var="location"/>
 <%--features--%>
 <c:setVariable select="'false'" var="enableHibernateSearch"/>
 <%-- set true to add jaxb annotations to jpa classes--%>

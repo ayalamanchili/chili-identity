@@ -19,6 +19,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -42,11 +43,13 @@ public class Contact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@NotEmpty
 	protected String firstName;
 
 	/**
 	 * @generated
 	 */
+	@NotEmpty
 	protected String lastName;
 
 	/**
@@ -57,6 +60,7 @@ public class Contact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@Past
 	protected Date dateOfBirth;
 
 	/**
@@ -77,14 +81,14 @@ public class Contact extends AbstractEntity {
 	 */
 
 	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
-	protected List<Phone> phones;
+	protected List<Email> emails;
 
 	/**
 	 * @generated
 	 */
 
 	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
-	protected List<Email> emails;
+	protected List<Phone> phones;
 
 	/**
 	 * @generated
@@ -110,7 +114,6 @@ public class Contact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
-	@NotEmpty
 	public String getLastName() {
 		return lastName;
 	}
@@ -197,35 +200,6 @@ public class Contact extends AbstractEntity {
 	 * @generated
 	 */
 	@XmlTransient
-	public List<Phone> getPhones() {
-		if (this.phones == null) {
-			this.phones = new ArrayList<Phone>();
-		}
-		return this.phones;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setPhones(List<Phone> phones) {
-		this.phones = phones;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addPhone(Phone entity) {
-		if (entity == null) {
-			return;
-		}
-		getPhones().add(entity);
-		entity.setContact(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
 	public List<Email> getEmails() {
 		if (this.emails == null) {
 			this.emails = new ArrayList<Email>();
@@ -248,6 +222,35 @@ public class Contact extends AbstractEntity {
 			return;
 		}
 		getEmails().add(entity);
+		entity.setContact(this);
+	}
+
+	/**
+	 * @generated
+	 */
+	@XmlTransient
+	public List<Phone> getPhones() {
+		if (this.phones == null) {
+			this.phones = new ArrayList<Phone>();
+		}
+		return this.phones;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setPhones(List<Phone> phones) {
+		this.phones = phones;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void addPhone(Phone entity) {
+		if (entity == null) {
+			return;
+		}
+		getPhones().add(entity);
 		entity.setContact(this);
 	}
 

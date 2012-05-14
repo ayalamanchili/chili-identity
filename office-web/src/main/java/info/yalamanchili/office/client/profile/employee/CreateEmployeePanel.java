@@ -44,7 +44,6 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 	EnumField sexF = new EnumField("Sex", "sex", "Employee", false, false, strs);
 	DateField startDateF = new DateField("Start Date", "startDate", "Employee",
 			false, false);
-	StringField ssnF = new StringField("SSN", "ssn", "Employee", false, false);
 	Button createB = new Button("Create Employee");
 
 	public CreateEmployeePanel() {
@@ -60,7 +59,6 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 		panel.add(dateOfBirthF);
 		panel.add(sexF);
 		panel.add(startDateF);
-		panel.add(ssnF);
 		panel.add(createB);
 
 	}
@@ -94,7 +92,6 @@ public class CreateEmployeePanel extends Composite implements ClickHandler {
 							new JSONString(DateUtils.toDateString(startDateF
 									.getDate())));
 		}
-		jsonValue.put("ssn", new JSONString(ssnF.getText()));
 		return jsonValue.toString();
 	}
 
