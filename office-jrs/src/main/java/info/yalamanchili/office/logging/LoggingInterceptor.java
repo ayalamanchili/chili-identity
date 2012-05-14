@@ -1,5 +1,6 @@
 package info.yalamanchili.office.logging;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
@@ -16,14 +17,15 @@ public class LoggingInterceptor {
 	@Before("execution(* info.yalamanchili.office..*.*(..))")
 	public void logBefore(JoinPoint joinPoint) {
 		if (log.isInfoEnabled()) {
-			log.info("--- invoking ---:" + joinPoint.getSignature());
+			log.info("--- invoking --- :" + joinPoint.getSignature());
 		}
 	}
 
 	@AfterReturning(pointcut = "execution(* info.yalamanchili.office..*.*(..))", returning = "result")
 	public void logAfterReturning(JoinPoint joinPoint, Object result) {
 		if (log.isInfoEnabled()) {
-			log.info("--- returning ---:" + result);
+			log.info("--- returning :" + joinPoint.getSignature() + "--- with result :"
+					+ ReflectionToStringBuilder.toString(result));
 		}
 	}
 }

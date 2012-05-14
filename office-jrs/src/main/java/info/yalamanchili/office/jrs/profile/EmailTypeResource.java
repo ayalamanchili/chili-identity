@@ -8,12 +8,14 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import javax.ws.rs.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Path("/emailtype")
 @Component
 @Transactional
+@Scope("request")
 public class EmailTypeResource extends CRUDResource<EmailType> {
 	@Autowired
 	public EmailTypeDao emailTypeDao;

@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Consumes(MediaType.MULTIPART_FORM_DATA)
 @Component
 @Transactional
+@Scope("request")
 public class FileResource {
 
 	protected String fileTargetDirectory = "E://content-management//office/";
@@ -31,7 +33,7 @@ public class FileResource {
 	@POST
 	@Path("/upload")
 	public Response uploadFile(@Context HttpServletRequest request) {
-		System.out.println("---------------dddddddddddddddddddddddddd");
+		System.out.println("---------------uploading file-----------------");
 		System.out.println(request.getContentType());
 		processImageUpload(request);
 		return Response.ok().build();
@@ -48,17 +50,14 @@ public class FileResource {
 		}
 		for (Iterator<?> i = items.iterator(); i.hasNext();) {
 			FileItem item = (FileItem) i.next();
-			if (item.isFormField() || item.getName() == null
-					|| item.getName().trim().equals(""))
+			if (item.isFormField() || item.getName() == null || item.getName().trim().equals(""))
 				continue;
 			File imageurl = new File(fileTargetDirectory + "/" + item.getName());
 			try {
-				System.out.println("writing image to:"
-						+ imageurl.getAbsolutePath());
+				System.out.println("writing image to:" + imageurl.getAbsolutePath());
 				item.write(imageurl);
 			} catch (Exception e) {
-				throw new RuntimeException("Error saving image:" + imageurl
-						+ ": to disk.", e);
+				throw new RuntimeException("Error saving image:" + imageurl + ": to disk.", e);
 			}
 		}
 	}

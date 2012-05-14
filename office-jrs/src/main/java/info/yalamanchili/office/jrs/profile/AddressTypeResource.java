@@ -8,10 +8,12 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import javax.ws.rs.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Path("/addresstype")
 @Component
+@Scope("request")
 public class AddressTypeResource extends CRUDResource<Address> {
 	@Autowired
 	public AddressTypeDao addressTypeDao;

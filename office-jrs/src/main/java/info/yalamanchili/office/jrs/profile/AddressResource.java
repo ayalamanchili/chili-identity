@@ -13,10 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Path("/address")
 @Component
+@Scope("request")
 public class AddressResource extends CRUDResource<Address> {
 
 	@Autowired

@@ -13,12 +13,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Path("/email")
 @Component
 @Transactional
+@Scope("request")
 public class EmailResource extends CRUDResource<Email> {
 
 	@Autowired

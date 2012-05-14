@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Consumes("application/json")
 @Component
 @Transactional
+@Scope("request")
 public class AdminResource {
 
 	@Autowired

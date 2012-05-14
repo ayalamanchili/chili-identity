@@ -5,10 +5,11 @@ import info.yalamanchili.office.service.types.Error;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-//@Scope("request")
 @Component
+@Scope("request")
 public class ServiceMessages {
 	private List<Error> errors = new ArrayList<Error>();
 

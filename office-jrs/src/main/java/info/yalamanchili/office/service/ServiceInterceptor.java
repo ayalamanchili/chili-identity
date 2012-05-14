@@ -13,6 +13,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,12 +25,15 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
+@Scope("request")
 public class ServiceInterceptor {
+
 	@Autowired
 	protected ServiceMessages serviceMessages;
 
-//	@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
-	public void aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
+	@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
+	public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
+		Object result = null;
 		for (Object arg : joinPoint.getArgs()) {
 			if (arg instanceof AbstractEntity) {
 				validate(arg);
@@ -37,10 +41,12 @@ public class ServiceInterceptor {
 		}
 		checkForErrors();
 		try {
-			joinPoint.proceed();
+			result = joinPoint.proceed();
 		} catch (Exception e) {
 			throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, e.getLocalizedMessage(), e.getMessage());
 		}
+		checkForErrors();
+		return result;
 	}
 
 	protected void validate(Object entity) {
