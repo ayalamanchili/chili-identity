@@ -63,6 +63,7 @@ public class OfficeStartup {
 		admin.setPasswordHash("admin");
 		admin.setEnabled(true);
 		admin.addRole(adminRole);
+		admin.addRole(userRole);
 		em.merge(admin);
 	}
 
