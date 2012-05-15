@@ -22,8 +22,7 @@ import com.google.gwt.json.client.JSONObject;
  */
 public class ReadAllEmployees extends ReadAllComposite {
 
-	private static Logger logger = Logger.getLogger(ReadAllEmployees.class
-			.getName());
+	private static Logger logger = Logger.getLogger(ReadAllEmployees.class.getName());
 
 	public static ReadAllEmployees instance;
 
@@ -35,8 +34,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 	@Override
 	public void preFetchTable(int start) {
 		// TODO externalize the limit size for read all
-		HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(0, 10),
-				OfficeWelcome.instance().getHeaders(), false,
+		HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(0, 10), OfficeWelcome.instance().getHeaders(), false,
 				new ALAsyncCallback<String>() {
 
 					@Override
@@ -50,8 +48,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 	}
 
 	public String getReadAllEmployeesURL(Integer start, Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/"
-				+ start.toString() + "/" + limit.toString();
+		return OfficeWelcome.constants.root_url() + "employee/" + start.toString() + "/" + limit.toString();
 	}
 
 	@Override
@@ -72,7 +69,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
 			createViewIcon(i, JSONUtils.toString(entity, "id"));
 			table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
-			table.setText(i, 2, JSONUtils.toString(entity, "middleName"));
+			table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
 			table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
 			table.setText(i, 4, JSONUtils.toString(entity, "dateOfBirth"));
 			table.setText(i, 5, JSONUtils.toString(entity, "sex"));
@@ -83,9 +80,7 @@ public class ReadAllEmployees extends ReadAllComposite {
 	@Override
 	public void viewClicked(int row, int col) {
 		TabPanel.instance().adminPanel.clear();
-		TabPanel.instance().adminPanel.entityPanel.add(new ReadEmployeePanel(
-				getEntityId(row)));
-		TabPanel.instance().adminPanel.sidePanelTop.add(new TreeEmployeePanel(
-				new Integer(row).toString()));
+		TabPanel.instance().adminPanel.entityPanel.add(new ReadEmployeePanel(getEntityId(row)));
+		TabPanel.instance().adminPanel.sidePanelTop.add(new TreeEmployeePanel(new Integer(row).toString()));
 	}
 }
