@@ -1,6 +1,5 @@
 package info.yalamanchili.office.client.profile.employee;
 
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -11,6 +10,7 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class CreateEmployeePanel extends CreateComposite {
 	private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
@@ -64,13 +64,20 @@ public class CreateEmployeePanel extends CreateComposite {
 	@Override
 	protected void createButtonClicked() {
 		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
-				new ALAsyncCallback<String>() {
+				new AsyncCallback<String>() {
 
 					@Override
-					public void onResponse(String arg0) {
+					public void onFailure(Throwable arg0) {
+						logger.info(arg0.getMessage());
+
+					}
+
+					@Override
+					public void onSuccess(String arg0) {
 						new ResponseStatusWidget().show("successfully created employee");
 						TabPanel.instance().adminPanel.clear();
 						TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEmployees());
+
 					}
 
 				});
