@@ -15,6 +15,7 @@ import info.yalamanchili.gwt.fields.PasswordField;
 import info.yalamanchili.gwt.fields.RichTextField;
 import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.utils.Utils;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,8 +24,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.gwt.i18n.client.ConstantsWithLookup;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -76,6 +80,31 @@ public abstract class CRUDComposite extends Composite {
 	protected abstract void addWidgets();
 
 	protected abstract void addWidgetsBeforeCaptionPanel();
+
+	protected void handleErrorResponse(Throwable err) {
+		if (!err.getMessage().isEmpty() && err.getMessage().contains("Error")) {
+			try {
+				JSONValue errors = JSONParser.parseLenient(err.getMessage());
+				processValidationErrors(errors);
+			} catch (Exception e) {
+				new ResponseStatusWidget().show("Call Failed");
+			}
+		} else {
+			new ResponseStatusWidget().show("Call Failed");
+		}
+	}
+
+	protected void processValidationErrors(JSONValue errorsObj) {
+		JSONArray errorsArray = errorsObj.isObject().get("Error").isArray();
+		for (int i = 0; i < errorsArray.size(); i++) {
+			JSONObject err = (JSONObject) errorsArray.get(i);
+			JSONString errSource = err.get("source").isString();
+			if (errSource != null && fields.get(errSource.stringValue()) != null) {
+				BaseField field = fields.get(errSource.stringValue());
+				field.setMessage(err.get("description").isString().stringValue());
+			}
+		}
+	}
 
 	/* adding and getting Fields */
 	protected void addField(String attributeName, Boolean readOnly, Boolean isRequired, DataType type) {
@@ -150,8 +179,8 @@ public abstract class CRUDComposite extends Composite {
 	}
 
 	protected void addEnumField(String key, Boolean readOnly, Boolean isRequired, String[] values) {
-		EnumField enumField = new EnumField(Utils.getAttributeLabel(key, entityName, constants), key,
-				entityName, readOnly, isRequired, values);
+		EnumField enumField = new EnumField(Utils.getAttributeLabel(key, entityName, constants), key, entityName,
+				readOnly, isRequired, values);
 		fields.put(key, enumField);
 		entityDisplayWidget.add(enumField);
 	}

@@ -69,7 +69,7 @@ public class CreateEmployeePanel extends CreateComposite {
 					@Override
 					public void onFailure(Throwable arg0) {
 						logger.info(arg0.getMessage());
-
+						handleErrorResponse(arg0);
 					}
 
 					@Override
