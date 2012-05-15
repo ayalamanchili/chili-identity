@@ -17,7 +17,7 @@
 					<g:Label ui:field='passwordL'>Password</g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox ui:field='passwordTb' />
+					<g:PasswordTextBox ui:field='passwordTb' />
 				</g:customCell>
 			</g:row>
 			<g:row>

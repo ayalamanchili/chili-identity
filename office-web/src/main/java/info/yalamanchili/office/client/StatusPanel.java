@@ -6,10 +6,15 @@ import java.util.logging.Logger;
 
 //TODO convert to UIbinder
 public class StatusPanel extends AbstractStatusPanel {
-	private static Logger logger = Logger
-			.getLogger(StatusPanel.class.getName());
+	private static Logger logger = Logger.getLogger(StatusPanel.class.getName());
+	private static StatusPanel instance;
+
+	public static StatusPanel instance() {
+		return instance;
+	}
 
 	public StatusPanel() {
+		instance = this;
 	}
 
 	@Override
@@ -24,8 +29,8 @@ public class StatusPanel extends AbstractStatusPanel {
 	}
 
 	public void loginSuccessfull() {
-		statusBar.remove(logoutLink);
-		statusBar.setWidget(1, 2, loginLink);
+		statusBar.remove(loginLink);
+		statusBar.setWidget(1, 2, logoutLink);
 
 	}
 
@@ -53,7 +58,7 @@ public class StatusPanel extends AbstractStatusPanel {
 	 */
 	@Override
 	protected void setUser() {
-
+		this.userLink.setText("Welcome " + OfficeWelcome.instance().username);
+		loginSuccessfull();
 	}
-
 }

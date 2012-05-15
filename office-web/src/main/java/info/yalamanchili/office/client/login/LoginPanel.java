@@ -19,14 +19,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class LoginPanel extends PopupPanel {
 	private static Logger logger = Logger.getLogger(LoginPanel.class.getName());
-	private static LoginPanelUiBinder uiBinder = GWT
-			.create(LoginPanelUiBinder.class);
+	private static LoginPanelUiBinder uiBinder = GWT.create(LoginPanelUiBinder.class);
 
 	private static LoginPanel instance;
 
@@ -44,7 +44,7 @@ public class LoginPanel extends PopupPanel {
 	Label passwordL;
 
 	@UiField
-	TextBox passwordTb;
+	PasswordTextBox passwordTb;
 
 	@UiField
 	Button loginB;
@@ -68,32 +68,27 @@ public class LoginPanel extends PopupPanel {
 		Map<String, String> headers = OfficeWelcome.instance().getHeaders();
 		headers.put("username", usernameTb.getText());
 		headers.put("password", passwordTb.getText());
-		HttpServiceAsync.instance().doPut(getLoginURL(), user.toString(),
-				headers, true, new AsyncCallback<String>() {
+		HttpServiceAsync.instance().doPut(getLoginURL(), user.toString(), headers, true, new AsyncCallback<String>() {
 
-					@Override
-					public void onFailure(Throwable arg0) {
-						new ResponseStatusWidget().show("login failed");
-					}
+			@Override
+			public void onFailure(Throwable arg0) {
+				new ResponseStatusWidget().show("login failed");
+			}
 
-					@Override
-					public void onSuccess(String userString) {
-						if (userString != null
-								&& userString.trim().length() > 0) {
-							OfficeWelcome.instance().username = usernameTb
-									.getText();
-							OfficeWelcome.instance().password = passwordTb
-									.getText();
-							JSONObject user = (JSONObject) JSONParser
-									.parseLenient(userString);
-							LoginPanel.this.hide();
-							OfficeWelcome.instance().onMainModuleLoad(user);
-						} else {
-							new ResponseStatusWidget().show("login failed");
-						}
-					}
+			@Override
+			public void onSuccess(String userString) {
+				if (userString != null && userString.trim().length() > 0) {
+					OfficeWelcome.instance().username = usernameTb.getText();
+					OfficeWelcome.instance().password = passwordTb.getText();
+					JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
+					LoginPanel.this.hide();
+					OfficeWelcome.instance().onMainModuleLoad(user);
+				} else {
+					new ResponseStatusWidget().show("login failed");
+				}
+			}
 
-				});
+		});
 	}
 
 	public void showLoginWindow() {

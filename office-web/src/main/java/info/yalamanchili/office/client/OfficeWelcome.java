@@ -12,12 +12,12 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class OfficeWelcome implements EntryPoint {
-	private static Logger logger = Logger.getLogger(OfficeWelcome.class
-			.getName());
+	private static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
 
 	public String username;
 	// This is not good find a better way
@@ -25,11 +25,9 @@ public class OfficeWelcome implements EntryPoint {
 
 	public List<String> roles = new ArrayList<String>();
 
-	public static OfficeConstants constants = (OfficeConstants) GWT
-			.create(OfficeConstants.class);
+	public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
 
-	public static OfficeMessages messages = (OfficeMessages) GWT
-			.create(OfficeMessages.class);
+	public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
 
 	@Override
 	public void onModuleLoad() {
@@ -41,12 +39,17 @@ public class OfficeWelcome implements EntryPoint {
 
 	public void onMainModuleLoad(JSONObject user) {
 		initUserRoles(user);
+		logger.info(roles.toString());
 		RootLayout rootLayout = new RootLayout();
 		RootLayoutPanel.get().add(rootLayout);
 	}
 
-	protected void initUserRoles(JSONObject user) {
-
+	protected void initUserRoles(JSONObject userObj) {
+		JSONArray roles = userObj.get("roles").isArray();
+		for (int i = 0; i < roles.size(); i++) {
+			JSONObject role = (JSONObject) roles.get(i);
+			this.roles.add(role.get("rolename").isString().stringValue());
+		}
 	}
 
 	private static OfficeWelcome instance;
