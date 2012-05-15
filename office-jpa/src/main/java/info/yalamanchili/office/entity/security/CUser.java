@@ -1,5 +1,7 @@
 package info.yalamanchili.office.entity.security;
 
+import info.yalamanchili.office.entity.profile.Contact;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -64,6 +67,17 @@ public class CUser implements Serializable {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@OneToOne
+	public Contact getContact() {
+		return contact;
+	}
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+	protected Contact contact;
 
 	@ManyToMany(targetEntity = CRole.class)
 	@JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "UserId"), inverseJoinColumns = @JoinColumn(name = "RoleId"))

@@ -82,6 +82,7 @@ public class OfficeStartup {
 		joeFullerEmp.addEmail(joeFullerPrimaryEmail);
 		joeFullerEmp.addEmail(joeFullerSecondaryEmail);
 		joeFullerEmp = em.merge(joeFullerEmp);
+		userUser().setContact(joeFullerEmp);
 	}
 
 	protected void initRefData() {

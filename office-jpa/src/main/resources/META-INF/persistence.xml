@@ -14,6 +14,9 @@
 		<class>info.yalamanchili.office.entity.profile.Phone</class>
 		<class>info.yalamanchili.office.entity.profile.PhoneType</class>
 		<class>info.yalamanchili.office.entity.profile.Sex</class>
+		<class>info.yalamanchili.office.entity.security.CRole</class>
+		<class>info.yalamanchili.office.entity.security.CUser</class>
+		<!-- TODO need to add cuser and crole classes but works even without them -->
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />

@@ -36,7 +36,6 @@ public class AdminResource {
 	@Path("/login")
 	@PUT
 	public CUser login(CUser user) {
-
 		return securityService.login(user);
 	}
 
