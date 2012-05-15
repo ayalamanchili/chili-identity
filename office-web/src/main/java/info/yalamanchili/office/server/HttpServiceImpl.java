@@ -11,35 +11,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/**/httpService")
 public class HttpServiceImpl extends BaseRemoteService implements HttpService {
-	private final static Logger logger = Logger.getLogger(HttpServiceImpl.class
-			.getName());
+
+	private static final long serialVersionUID = 1L;
+	private final static Logger logger = Logger.getLogger(HttpServiceImpl.class.getName());
 
 	@Override
-	public String doPut(String url, String body, Map<String, String> headers,
-			boolean newClient) {
-		return SyncHttp.httpPut(url, body, processBasicAuthHeader(headers));
+	public String doPut(String url, String body, Map<String, String> headers, boolean newClient) {
+		return SyncHttp.httpPut(url, body, processBasicAuthHeader(headers), newClient);
 	}
 
 	@Override
-	public String doGet(String url, Map<String, String> headers,
-			boolean newClient) {
-		return SyncHttp.httpGet(url, processBasicAuthHeader(headers));
+	public String doGet(String url, Map<String, String> headers, boolean newClient) {
+		return SyncHttp.httpGet(url, processBasicAuthHeader(headers), newClient);
 	}
 
-	protected Map<String, String> processBasicAuthHeader(
-			Map<String, String> headers) {
-		if (headers != null && headers.keySet().contains("username")
-				&& headers.keySet().contains("password")) {
+	protected Map<String, String> processBasicAuthHeader(Map<String, String> headers) {
+		if (headers != null && headers.keySet().contains("username") && headers.keySet().contains("password")) {
 			String username = headers.get("username");
 			String password = headers.get("password");
 			if (username != null && password != null) {
 				headers.remove("username");
 				headers.remove("password");
-				headers.put(
-						"Authorization",
-						"Basic "
-								+ new String(Base64.encodeBase64((username
-										+ ":" + password).getBytes())));
+				headers.put("Authorization",
+						"Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
 			}
 		}
 		return headers;
