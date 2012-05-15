@@ -35,36 +35,14 @@ public class OfficeStartup {
 
 	protected void initRolesAndUsers() {
 
-		CRole userRole = new CRole();
-		userRole.setRolename("ROLE_USER");
-		userRole = em.merge(userRole);
+		// Roles
+		userRole();
+		adminRole();
+		hrRole();
+		accountsRole();
 
-		CRole adminRole = new CRole();
-		adminRole.setRolename("ROLE_ADMIN");
-		adminRole = em.merge(adminRole);
-
-		CRole hrManagerRole = new CRole();
-		hrManagerRole.setRolename("ROLE_HR");
-		hrManagerRole = em.merge(hrManagerRole);
-
-		CRole acctManagerRole = new CRole();
-		acctManagerRole.setRolename("ROLE_ACCOUNTS");
-		acctManagerRole = em.merge(acctManagerRole);
-
-		CUser user = new CUser();
-		user.setUsername("user");
-		user.setPasswordHash("user");
-		user.setEnabled(true);
-		user.addRole(userRole);
-		em.merge(user);
-
-		CUser admin = new CUser();
-		admin.setUsername("admin");
-		admin.setPasswordHash("admin");
-		admin.setEnabled(true);
-		admin.addRole(adminRole);
-		admin.addRole(userRole);
-		em.merge(admin);
+		userUser();
+		userAdmin();
 	}
 
 	/**
@@ -181,4 +159,76 @@ public class OfficeStartup {
 			return em.merge(cellPhoneType);
 		}
 	}
+
+	protected <T> T findEntity(Class<?> entity, String paramName, String paramValue) {
+		Query query = em.createQuery("from " + entity.getCanonicalName() + " where " + paramName + "='" + paramValue
+				+ "'", entity);
+		if (query.getResultList().size() > 0) {
+			return (T) query.getResultList().get(0);
+		} else {
+			return null;
+		}
+	}
+
+	protected CRole userRole() {
+		if (findEntity(CRole.class, "rolename", "ROLE_USER") == null) {
+			CRole userRole = new CRole();
+			userRole.setRolename("ROLE_USER");
+			return em.merge(userRole);
+		}
+		return findEntity(CRole.class, "rolename", "ROLE_USER");
+	}
+
+	protected CRole hrRole() {
+		if (findEntity(CRole.class, "rolename", "ROLE_HR") == null) {
+			CRole userRole = new CRole();
+			userRole.setRolename("ROLE_HR");
+			return em.merge(userRole);
+		}
+		return findEntity(CRole.class, "rolename", "ROLE_HR");
+	}
+
+	protected CRole accountsRole() {
+		if (findEntity(CRole.class, "rolename", "ROLE_ACCOUNTS") == null) {
+			CRole userRole = new CRole();
+			userRole.setRolename("ROLE_ACCOUNTS");
+			return em.merge(userRole);
+		}
+		return findEntity(CRole.class, "rolename", "ROLE_ACCOUNTS");
+	}
+
+	protected CRole adminRole() {
+		if (findEntity(CRole.class, "rolename", "ROLE_ADMIN") == null) {
+			CRole userRole = new CRole();
+			userRole.setRolename("ROLE_ADMIN");
+			return em.merge(userRole);
+		}
+		return findEntity(CRole.class, "rolename", "ROLE_ADMIN");
+	}
+
+	protected CUser userUser() {
+		if (findEntity(CUser.class, "username", "user") == null) {
+			CUser userUser = new CUser();
+			userUser.setUsername("user");
+			userUser.setPasswordHash("user");
+			userUser.addRole(userRole());
+			userUser.setEnabled(true);
+			return em.merge(userUser);
+		}
+		return findEntity(CUser.class, "username", "user");
+	}
+
+	protected CUser userAdmin() {
+		if (findEntity(CUser.class, "username", "admin") == null) {
+			CUser userUser = new CUser();
+			userUser.setUsername("admin");
+			userUser.setPasswordHash("admin");
+			userUser.setEnabled(true);
+			userUser.addRole(userRole());
+			userUser.addRole(adminRole());
+			return em.merge(userUser);
+		}
+		return findEntity(CUser.class, "username", "admin");
+	}
+
 }
