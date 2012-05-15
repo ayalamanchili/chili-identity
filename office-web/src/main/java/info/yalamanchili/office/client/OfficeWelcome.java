@@ -1,5 +1,6 @@
 package info.yalamanchili.office.client;
 
+import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.internalization.OfficeConstants;
 import info.yalamanchili.office.client.internalization.OfficeMessages;
 import info.yalamanchili.office.client.login.LoginPanel;
@@ -45,7 +46,7 @@ public class OfficeWelcome implements EntryPoint {
 	}
 
 	protected void initUserRoles(JSONObject userObj) {
-		JSONArray roles = userObj.get("roles").isArray();
+		JSONArray roles = JSONUtils.toJSONArray(userObj.get("roles"));
 		for (int i = 0; i < roles.size(); i++) {
 			JSONObject role = (JSONObject) roles.get(i);
 			this.roles.add(role.get("rolename").isString().stringValue());
