@@ -73,7 +73,7 @@ public class ReadAllAddresses extends ReadAllComposite {
 
 	@Override
 	public void viewClicked(int row, int col) {
-		TabPanel.instance().adminPanel.clear();
+		TabPanel.instance().myOfficePanel.clear();
 		// TabPanel.instance().adminPanel.add(new ReadEmployeePanel(
 		// getEntityId(row)));
 		// TabPanel.instance().adminPanel.sidePanelCenter.clear();

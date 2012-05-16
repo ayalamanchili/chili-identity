@@ -79,8 +79,8 @@ public class ReadAllEmployees extends ReadAllComposite {
 
 	@Override
 	public void viewClicked(int row, int col) {
-		TabPanel.instance().adminPanel.clear();
-		TabPanel.instance().adminPanel.entityPanel.add(new ReadEmployeePanel(getEntityId(row)));
-		TabPanel.instance().adminPanel.sidePanelTop.add(new TreeEmployeePanel(new Integer(row).toString()));
+		TabPanel.instance().myOfficePanel.clear();
+		TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(getEntityId(row)));
+		TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(new Integer(row).toString()));
 	}
 }

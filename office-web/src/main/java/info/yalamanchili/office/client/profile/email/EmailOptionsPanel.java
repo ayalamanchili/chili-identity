@@ -39,8 +39,8 @@ public class EmailOptionsPanel extends ALComposite implements ClickHandler {
 	@Override
 	public void onClick(ClickEvent arg0) {
 		if (arg0.getSource().equals(addEmailLink)) {
-			TabPanel.instance().adminPanel.entityPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel
+			TabPanel.instance().myOfficePanel.entityPanel.clear();
+			TabPanel.instance().myOfficePanel.entityPanel
 					.add(new CreateEmailPanel());
 		}
 	}

@@ -1,8 +1,8 @@
 package info.yalamanchili.office.client;
 
-import info.yalamanchili.office.client.admin.AdminMenu;
-import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployees;
+import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.profile.ProfileMenu;
+import info.yalamanchili.office.client.profile.ProfileSidePanel;
 
 import java.util.logging.Logger;
 
@@ -16,16 +16,16 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
 	private static Logger logger = Logger.getLogger(TabPanel.class.getName());
 	public final static Integer HOME_TAB = 0;
-	public final static Integer PROFILE_TAB = 1;
-	public final static Integer ADMIN_TAB = 2;
+	public final static Integer SOCIAL_TAB = 1;
+	public final static Integer MY_OFFICE_TAB = 2;
 
 	protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
 
 	public EntityLayout homePanel = new EntityLayout();
 
-	public EntityLayout profilePanel = new EntityLayout();
+	public EntityLayout socialPanel = new EntityLayout();
 
-	public EntityLayout adminPanel = new EntityLayout();
+	public EntityLayout myOfficePanel = new EntityLayout();
 
 	public TabPanel() {
 		instance = this;
@@ -33,8 +33,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 		tabPanel.addStyleName("tabPanel");
 		tabPanel.setHeight("5");
 		tabPanel.add(homePanel, "Home", false);
-		tabPanel.add(profilePanel, "Profile", false);
-		tabPanel.add(adminPanel, "Admin", false);
+		tabPanel.add(socialPanel, "Social", false);
+		tabPanel.add(myOfficePanel, "My Office", false);
 		tabPanel.selectTab(0);
 		tabPanel.addSelectionHandler(this);
 	}
@@ -45,10 +45,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 		if (selectedTabIndex.getSelectedItem().equals(HOME_TAB)) {
 			selectHomeTab();
 		}
-		if (selectedTabIndex.getSelectedItem().equals(PROFILE_TAB)) {
+		if (selectedTabIndex.getSelectedItem().equals(SOCIAL_TAB)) {
 			selectProfileTab();
 		}
-		if (selectedTabIndex.getSelectedItem().equals(ADMIN_TAB)) {
+		if (selectedTabIndex.getSelectedItem().equals(MY_OFFICE_TAB)) {
 			selectAdminTab();
 		}
 	}
@@ -58,14 +58,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 	}
 
 	public void selectProfileTab() {
-		profilePanel.clear();
+		socialPanel.clear();
 	}
 
 	public void selectAdminTab() {
-		adminPanel.clear();
-		adminPanel.entityTitlePanel.add(new AdminMenu());
-		adminPanel.entityPanel.add(new ReadAllEmployees());
-		adminPanel.sidePanelTop.add(new EmployeeSidePanel());
+		myOfficePanel.clear();
+		myOfficePanel.entityTitlePanel.add(new ProfileMenu());
+		myOfficePanel.entityPanel.add(new ProfileHome());
+		myOfficePanel.sidePanelTop.add(new ProfileSidePanel());
 	}
 
 	private static TabPanel instance;
@@ -79,10 +79,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 	}
 
 	public EntityLayout getProfilePanel() {
-		return profilePanel;
+		return socialPanel;
 	}
 
 	public EntityLayout getAdminPanel() {
-		return adminPanel;
+		return myOfficePanel;
 	}
 }

@@ -44,8 +44,8 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 	@Override
 	public void onClick(ClickEvent clickEvent) {
 		if (clickEvent.getSource().equals(createEmployeeLink)) {
-			TabPanel.instance().adminPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel.add(new CreateEmployeePanel(CreateCompositeType.CREATE));
+			TabPanel.instance().myOfficePanel.clear();
+			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeePanel(CreateCompositeType.CREATE));
 		}
 
 	}

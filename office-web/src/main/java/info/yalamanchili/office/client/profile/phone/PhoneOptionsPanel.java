@@ -39,8 +39,8 @@ public class PhoneOptionsPanel extends ALComposite implements ClickHandler {
 	@Override
 	public void onClick(ClickEvent arg0) {
 		if (arg0.getSource().equals(addPhonelLink)) {
-			TabPanel.instance().adminPanel.entityPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel.add(new CreatePhonePanel());
+			TabPanel.instance().myOfficePanel.entityPanel.clear();
+			TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhonePanel());
 		}
 	}
 }

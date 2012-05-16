@@ -1,14 +1,17 @@
 package info.yalamanchili.office.client.profile;
 
 import info.yalamanchili.gwt.composite.ALComposite;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-public class MyProfileHome extends ALComposite {
+public class ProfileHome extends ALComposite {
 
 	protected FlowPanel panel = new FlowPanel();
 
-	public MyProfileHome() {
+	public ProfileHome() {
 		init(panel);
 	}
 
@@ -26,8 +29,7 @@ public class MyProfileHome extends ALComposite {
 
 	@Override
 	protected void addWidgets() {
-		// TODO Auto-generated method stub
-
+		JSONObject user = OfficeWelcome.instance().user;
+		panel.add(new ReadEmployeePanel(user.get("employee").isObject()));
 	}
-
 }

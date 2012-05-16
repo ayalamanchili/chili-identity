@@ -45,19 +45,19 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	@Override
 	public void treeNodeSelected(String entityNodeKey) {
 		if (ADDRESS_NODE.equals(entityNodeKey)) {
-			TabPanel.instance().adminPanel.entityPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllAddresses(entityId));
-			TabPanel.instance().adminPanel.entityPanel.add(new AddressOptionsPanel());
+			TabPanel.instance().myOfficePanel.entityPanel.clear();
+			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddresses(entityId));
+			TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
 		}
 		if (EMAIL_NODE.equals(entityNodeKey)) {
-			TabPanel.instance().adminPanel.entityPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEmails(entityId));
-			TabPanel.instance().adminPanel.entityPanel.add(new EmailOptionsPanel());
+			TabPanel.instance().myOfficePanel.entityPanel.clear();
+			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmails(entityId));
+			TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
 		}
 		if (PHONE_NODE.equals(entityNodeKey)) {
-			TabPanel.instance().adminPanel.entityPanel.clear();
-			TabPanel.instance().adminPanel.entityPanel.add(new ReadAllPhones(entityId));
-			TabPanel.instance().adminPanel.entityPanel.add(new PhoneOptionsPanel());
+			TabPanel.instance().myOfficePanel.entityPanel.clear();
+			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhones(entityId));
+			TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
 		}
 	}
 

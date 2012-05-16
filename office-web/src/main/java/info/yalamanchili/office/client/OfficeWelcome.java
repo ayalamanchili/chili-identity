@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 public class OfficeWelcome implements EntryPoint {
 	private static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
 
+	public JSONObject user;
 	public String username;
 	// This is not good find a better way
 	public String password;
@@ -39,6 +40,7 @@ public class OfficeWelcome implements EntryPoint {
 	}
 
 	public void onMainModuleLoad(JSONObject user) {
+		this.user = user;
 		initUserRoles(user);
 		logger.info(roles.toString());
 		RootLayout rootLayout = new RootLayout();

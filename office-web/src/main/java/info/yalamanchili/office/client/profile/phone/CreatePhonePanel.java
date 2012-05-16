@@ -67,10 +67,10 @@ public class CreatePhonePanel extends ALComposite implements ClickHandler {
 					@Override
 					public void onResponse(String arg0) {
 						new ResponseStatusWidget().show("successfully added employee Phone");
-						TabPanel.instance().adminPanel.entityPanel.clear();
-						TabPanel.instance().adminPanel.entityPanel.add(new ReadAllPhones(TreeEmployeePanel.instance()
+						TabPanel.instance().myOfficePanel.entityPanel.clear();
+						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhones(TreeEmployeePanel.instance()
 								.getEntityId()));
-						TabPanel.instance().adminPanel.entityPanel.add(new PhoneOptionsPanel());
+						TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
 					}
 
 				});

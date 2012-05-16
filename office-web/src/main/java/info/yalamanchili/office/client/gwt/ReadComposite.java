@@ -11,6 +11,7 @@ public abstract class ReadComposite extends CRUDComposite {
 		entityDisplayWidget.addStyleName("y-gwt-ReadEntityDisplayWidget");
 		basePanel.addStyleName("y-gwt-ReadBasePanel");
 		this.entity = entity;
+		populateFieldsFromEntity(entity);
 	}
 
 	protected void initReadComposite(String id, String className, final ConstantsWithLookup constants) {
