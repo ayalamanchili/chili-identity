@@ -1,6 +1,6 @@
 package info.yalamanchili.office.entity.security;
 
-import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Employee;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -69,15 +69,15 @@ public class CUser implements Serializable {
 	}
 
 	@OneToOne
-	public Contact getContact() {
-		return contact;
+	public Employee getEmployee() {
+		return employee;
 	}
 
-	public void setContact(Contact contact) {
-		this.contact = contact;
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
-	protected Contact contact;
+	protected Employee employee;
 
 	@ManyToMany(targetEntity = CRole.class)
 	@JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "UserId"), inverseJoinColumns = @JoinColumn(name = "RoleId"))

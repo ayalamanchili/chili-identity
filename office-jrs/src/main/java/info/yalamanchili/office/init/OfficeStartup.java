@@ -1,5 +1,6 @@
 package info.yalamanchili.office.init;
 
+import info.yalamanchili.commons.DateUtils;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Email;
@@ -51,8 +52,9 @@ public class OfficeStartup {
 	protected void initTestData() {
 		// Employee
 		Employee joeFullerEmp = new Employee();
-		joeFullerEmp.setFirstName("joe");
-		joeFullerEmp.setLastName("fuller");
+		joeFullerEmp.setFirstName("user");
+		joeFullerEmp.setLastName("user");
+		joeFullerEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
 		joeFullerEmp.setSex(Sex.MALE);
 		joeFullerEmp.setSsn("123456789");
 		joeFullerEmp.setStartDate(new Date());
@@ -67,11 +69,11 @@ public class OfficeStartup {
 
 		Email joeFullerPrimaryEmail = new Email();
 		joeFullerPrimaryEmail.setEmailType(getPrimaryEmailType());
-		joeFullerPrimaryEmail.setEmail("joefuller@gmail.com");
+		joeFullerPrimaryEmail.setEmail("user@gmail.com");
 
 		Email joeFullerSecondaryEmail = new Email();
 		joeFullerSecondaryEmail.setEmailType(getSecondaryEmailType());
-		joeFullerSecondaryEmail.setEmail("joefullerSecondary@gmail.com");
+		joeFullerSecondaryEmail.setEmail("user_secondary@gmail.com");
 
 		Phone joeFullerCellPhone = new Phone();
 		joeFullerCellPhone.setPhoneNumber("7031112222");
@@ -82,7 +84,7 @@ public class OfficeStartup {
 		joeFullerEmp.addEmail(joeFullerPrimaryEmail);
 		joeFullerEmp.addEmail(joeFullerSecondaryEmail);
 		joeFullerEmp = em.merge(joeFullerEmp);
-		userUser().setContact(joeFullerEmp);
+		userUser().setEmployee(joeFullerEmp);
 	}
 
 	protected void initRefData() {
