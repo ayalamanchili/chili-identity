@@ -23,12 +23,12 @@ public class CreateEmployeePanel extends CreateComposite {
 	@Override
 	protected JSONObject populateEntityFromFields() {
 		JSONObject entity = new JSONObject();
-		assignField("firstName", entity);
-		assignField("middleInitial", entity);
-		assignField("lastName", entity);
-		assignField("dateOfBirth", entity);
-		assignField("sex", entity);
-		assignField("startDate", entity);
+		assignEntityValueFromField("firstName", entity);
+		assignEntityValueFromField("middleInitial", entity);
+		assignEntityValueFromField("lastName", entity);
+		assignEntityValueFromField("dateOfBirth", entity);
+		assignEntityValueFromField("sex", entity);
+		assignEntityValueFromField("startDate", entity);
 		return entity;
 	}
 

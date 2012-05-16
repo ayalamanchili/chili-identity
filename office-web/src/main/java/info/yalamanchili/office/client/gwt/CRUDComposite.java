@@ -17,8 +17,6 @@ import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.utils.Utils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -80,31 +78,6 @@ public abstract class CRUDComposite extends Composite {
 	protected abstract void addWidgets();
 
 	protected abstract void addWidgetsBeforeCaptionPanel();
-
-	protected void handleErrorResponse(Throwable err) {
-		if (!err.getMessage().isEmpty() && err.getMessage().contains("Error")) {
-			try {
-				JSONValue errors = JSONParser.parseLenient(err.getMessage());
-				processValidationErrors(errors);
-			} catch (Exception e) {
-				new ResponseStatusWidget().show("Call Failed");
-			}
-		} else {
-			new ResponseStatusWidget().show("Call Failed");
-		}
-	}
-
-	protected void processValidationErrors(JSONValue errorsObj) {
-		JSONArray errorsArray = errorsObj.isObject().get("Error").isArray();
-		for (int i = 0; i < errorsArray.size(); i++) {
-			JSONObject err = (JSONObject) errorsArray.get(i);
-			JSONString errSource = err.get("source").isString();
-			if (errSource != null && fields.get(errSource.stringValue()) != null) {
-				BaseField field = fields.get(errSource.stringValue());
-				field.setMessage(err.get("description").isString().stringValue());
-			}
-		}
-	}
 
 	/* adding and getting Fields */
 	protected void addField(String attributeName, Boolean readOnly, Boolean isRequired, DataType type) {
@@ -189,70 +162,8 @@ public abstract class CRUDComposite extends Composite {
 		entityDisplayWidget.add(widget);
 	}
 
-	protected void setEnumFeild(String fieldName, String value) {
-		EnumField enumField = (EnumField) fields.get(fieldName);
-		enumField.setValue(value);
-	}
-
-	protected void setDropDownField(String fieldName, Object value) {
-		if (value != null) {
-			StringField stringField = (StringField) fields.get(fieldName);
-			stringField.setText(value.toString());
-		}
-	}
-
-	protected void setField(String fieldName, Long number) {
-		LongField longField = (LongField) fields.get(fieldName);
-		longField.setLong(number);
-	}
-
-	protected void setField(String fieldName, Integer number) {
-		IntegerField integerField = (IntegerField) fields.get(fieldName);
-		integerField.setInteger(number);
-	}
-
-	protected void setField(String fieldName, String text) {
-		StringField stringField = (StringField) fields.get(fieldName);
-		stringField.setText(text);
-	}
-
-	protected void setField(String fieldName, Boolean value) {
-		BooleanField booleanField = (BooleanField) fields.get(fieldName);
-		booleanField.setValue(value);
-	}
-
-	protected void setField(String fieldName, Date date) {
-		DateField dateField = (DateField) fields.get(fieldName);
-		dateField.setDate(date);
-	}
-
-	protected void setField(String fieldName, Float value) {
-		FloatField floatField = (FloatField) fields.get(fieldName);
-		floatField.setFloat(value);
-	}
-
-	protected void setImageField(String fieldName, String url, String width, String height) {
-		ImageField imageField = (ImageField) fields.get(fieldName);
-		imageField.setPixelSize(width, height);
-		imageField.setImage(url);
-	}
-
-	protected void setImageField(String fieldName, String url) {
-		ImageField imageField = (ImageField) fields.get(fieldName);
-		imageField.setImage(url);
-	}
-
-	protected void setRichTextField(String fieldName, String value) {
-		RichTextField richTextField = (RichTextField) fields.get(fieldName);
-		richTextField.setValue(value);
-	}
-
-	protected void setField(String fieldName, BigDecimal value, boolean format) {
-		CurrencyField curencyField = (CurrencyField) fields.get(fieldName);
-		curencyField.setValue(value, format);
-	}
-
-	protected void assignField(String fieldKey, JSONObject entity) {
+	// TODO convert to use getValue()
+	protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
 		if (fields.get(fieldKey) instanceof StringField) {
 			StringField field = (StringField) fields.get(fieldKey);
 			entity.put(fieldKey, new JSONString(field.getText()));
@@ -265,8 +176,8 @@ public abstract class CRUDComposite extends Composite {
 		}
 		if (fields.get(fieldKey) instanceof LongField) {
 			LongField field = (LongField) fields.get(fieldKey);
-			if (field.getLong() != null) {
-				entity.put(fieldKey, new JSONString(String.valueOf(field.getLong())));
+			if (field.getValue() != null && field.getValue().trim().equals("")) {
+				entity.put(fieldKey, new JSONString(String.valueOf(field.getValue())));
 			}
 		}
 		if (fields.get(fieldKey) instanceof EnumField) {
@@ -277,6 +188,49 @@ public abstract class CRUDComposite extends Composite {
 		}
 	}
 
+	protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
+		if (DataType.STRING_FIELD.equals(type)) {
+			StringField field = (StringField) fields.get(fieldKey);
+			field.setValue(JSONUtils.toString(entity, fieldKey));
+		}
+		if (DataType.DATE_FIELD.equals(type)) {
+			DateField field = (DateField) fields.get(fieldKey);
+			field.setValue(JSONUtils.toString(entity, fieldKey));
+		}
+		if (DataType.LONG_FIELD.equals(type)) {
+			LongField field = (LongField) fields.get(fieldKey);
+			field.setValue(JSONUtils.toString(entity, fieldKey));
+		}
+		if (DataType.ENUM_FIELD.equals(type)) {
+			EnumField field = (EnumField) fields.get(fieldKey);
+			field.setValue(JSONUtils.toString(entity, fieldKey));
+		}
+	}
+
 	protected abstract String getURI();
 
+	protected void handleErrorResponse(Throwable err) {
+		if (!err.getMessage().isEmpty() && err.getMessage().contains("Error")) {
+			try {
+				JSONValue errors = JSONParser.parseLenient(err.getMessage());
+				processValidationErrors(errors);
+			} catch (Exception e) {
+				new ResponseStatusWidget().show("Call Failed");
+			}
+		} else {
+			new ResponseStatusWidget().show("Call Failed");
+		}
+	}
+
+	protected void processValidationErrors(JSONValue errorsObj) {
+		JSONArray errorsArray = errorsObj.isObject().get("Error").isArray();
+		for (int i = 0; i < errorsArray.size(); i++) {
+			JSONObject err = (JSONObject) errorsArray.get(i);
+			JSONString errSource = err.get("source").isString();
+			if (errSource != null && fields.get(errSource.stringValue()) != null) {
+				BaseField field = fields.get(errSource.stringValue());
+				field.setMessage(err.get("description").isString().stringValue());
+			}
+		}
+	}
 }

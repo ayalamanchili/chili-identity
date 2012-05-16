@@ -46,6 +46,7 @@ public class OfficeWelcome implements EntryPoint {
 	}
 
 	protected void initUserRoles(JSONObject userObj) {
+		logger.info(userObj.toString());
 		JSONArray roles = JSONUtils.toJSONArray(userObj.get("roles"));
 		for (int i = 0; i < roles.size(); i++) {
 			JSONObject role = (JSONObject) roles.get(i);

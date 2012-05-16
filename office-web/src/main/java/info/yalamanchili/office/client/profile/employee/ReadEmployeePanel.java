@@ -1,47 +1,44 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.fields.DateField;
-import info.yalamanchili.gwt.fields.EnumField;
-import info.yalamanchili.gwt.fields.StringField;
+import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.office.client.gwt.ReadComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.FlowPanel;
 
-public class ReadEmployeePanel extends ALComposite {
-
-	protected JSONObject entity;
-
-	/*
-	 * Root panel for Read Employee
-	 */
-
-	protected FlowPanel panel = new FlowPanel();
-	/*
-	 * Fields
-	 */
-	StringField firstNameF = new StringField("First Name", "firstName",
-			"Employee", true, true);
-	StringField middleNameF = new StringField("MiddleInitial", "middleInitial",
-			"Employee", true, false);
-	StringField lastNameF = new StringField("Last Name", "lastName",
-			"Employee", true, true);
-	DateField dateOfBirthF = new DateField("Date of Birth", "dateOfBirth",
-			"Employee", true, false);
-	String[] strs = { "MALE", "FEMALE" };
-	EnumField sexF = new EnumField("Sex", "sex", "Employee", true, false, strs);
-	DateField startDateF = new DateField("Start Date", "startDate", "Employee",
-			true, false);
+public class ReadEmployeePanel extends ReadComposite {
 
 	public ReadEmployeePanel(String id) {
-		instance = this;
-		init(panel);
-		loadEntity(id);
+		initReadComposite(id, "Employee", OfficeWelcome.constants);
+	}
+
+	@Override
+	public void loadEntity(String entityId) {
+		HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), false,
+				new ALAsyncCallback<String>() {
+
+					@Override
+					public void onResponse(String response) {
+						entity = (JSONObject) JSONParser.parseLenient(response);
+						populateFieldsFromEntity(entity);
+					}
+
+				});
+
+	}
+
+	@Override
+	public void populateFieldsFromEntity(JSONObject entity) {
+		assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
+		assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
+		assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
+		assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
+		assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
+		assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+
 	}
 
 	@Override
@@ -53,49 +50,28 @@ public class ReadEmployeePanel extends ALComposite {
 	@Override
 	protected void configure() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void addWidgets() {
-		panel.add(firstNameF);
-		panel.add(middleNameF);
-		panel.add(lastNameF);
-		panel.add(dateOfBirthF);
-		panel.add(sexF);
-		panel.add(startDateF);
+		addField("firstName", true, true, DataType.STRING_FIELD);
+		addField("middleInitial", true, true, DataType.STRING_FIELD);
+		addField("lastName", true, true, DataType.STRING_FIELD);
+		addField("dateOfBirth", true, true, DataType.DATE_FIELD);
+		String[] strs = { "MALE", "FEMALE" };
+		addEnumField("sex", true, true, strs);
+		addField("startDate", true, true, DataType.DATE_FIELD);
 	}
 
-	protected void loadEntity(String id) {
-		HttpServiceAsync.instance().doGet(getReadEmployeeURL(id),
-				OfficeWelcome.instance().getHeaders(), false,
-				new ALAsyncCallback<String>() {
+	@Override
+	protected void addWidgetsBeforeCaptionPanel() {
+		// TODO Auto-generated method stub
 
-					@Override
-					public void onResponse(String response) {
-						entity = (JSONObject) JSONParser.parseLenient(response);
-						populateData(entity);
-					}
-
-				});
 	}
 
-	protected void populateData(JSONObject entity) {
-		firstNameF.setText(JSONUtils.toString(entity, "firstName"));
-		middleNameF.setText(JSONUtils.toString(entity, "middleName"));
-		lastNameF.setText(JSONUtils.toString(entity, "lastName"));
-		// dateOfBirthF.setDate(JSONUtils.toString(entity, "dateOfBirth"));
-		sexF.setValue(JSONUtils.toString(entity, "sex"));
-		// startDateF.setText(JSONUtils.toString(entity, "startDate"));
+	@Override
+	protected String getURI() {
+		return OfficeWelcome.constants.root_url() + "employee/" + entityId;
 	}
 
-	protected String getReadEmployeeURL(String id) {
-		return OfficeWelcome.constants.root_url() + "employee/" + id;
-	}
-
-	private static ReadEmployeePanel instance;
-
-	public static ReadEmployeePanel instance() {
-		return instance;
-	}
 }
