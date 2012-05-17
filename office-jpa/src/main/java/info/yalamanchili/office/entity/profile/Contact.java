@@ -93,6 +93,20 @@ public class Contact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+
+	@OneToMany(mappedBy = "contact")
+	protected List<ReportsTo> reportsTos;
+
+	/**
+	 * @generated
+	 */
+
+	@OneToMany(mappedBy = "contact")
+	protected List<EmergencyContact> emergencyContacts;
+
+	/**
+	 * @generated
+	 */
 	public Contact() {
 		super();
 	}
@@ -251,6 +265,64 @@ public class Contact extends AbstractEntity {
 			return;
 		}
 		getPhones().add(entity);
+		entity.setContact(this);
+	}
+
+	/**
+	 * @generated
+	 */
+	@XmlTransient
+	public List<ReportsTo> getReportsTos() {
+		if (this.reportsTos == null) {
+			this.reportsTos = new ArrayList<ReportsTo>();
+		}
+		return this.reportsTos;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setReportsTos(List<ReportsTo> reportsTos) {
+		this.reportsTos = reportsTos;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void addReportsTo(ReportsTo entity) {
+		if (entity == null) {
+			return;
+		}
+		getReportsTos().add(entity);
+		entity.setContact(this);
+	}
+
+	/**
+	 * @generated
+	 */
+	@XmlTransient
+	public List<EmergencyContact> getEmergencyContacts() {
+		if (this.emergencyContacts == null) {
+			this.emergencyContacts = new ArrayList<EmergencyContact>();
+		}
+		return this.emergencyContacts;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setEmergencyContacts(List<EmergencyContact> emergencyContacts) {
+		this.emergencyContacts = emergencyContacts;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void addEmergencyContact(EmergencyContact entity) {
+		if (entity == null) {
+			return;
+		}
+		getEmergencyContacts().add(entity);
 		entity.setContact(this);
 	}
 
