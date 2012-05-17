@@ -3,11 +3,14 @@ package info.yalamanchili.office.init;
 import info.yalamanchili.commons.DateUtils;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
+import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
+import info.yalamanchili.office.entity.profile.ReportsTo;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
@@ -41,7 +44,7 @@ public class OfficeStartup {
 		adminRole();
 		hrRole();
 		accountsRole();
-
+		// users
 		userUser();
 		userAdmin();
 	}
@@ -50,41 +53,46 @@ public class OfficeStartup {
 	 * 
 	 */
 	protected void initTestData() {
-		// Employee
-		Employee joeFullerEmp = new Employee();
-		joeFullerEmp.setFirstName("user");
-		joeFullerEmp.setLastName("user");
-		joeFullerEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
-		joeFullerEmp.setSex(Sex.MALE);
-		joeFullerEmp.setSsn("123456789");
-		joeFullerEmp.setStartDate(new Date());
+		// User Employee
+		Employee userEmp = new Employee();
+		userEmp.setFirstName("user");
+		userEmp.setLastName("user");
+		userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
+		userEmp.setSex(Sex.MALE);
+		userEmp.setSsn("123456789");
+		userEmp.setStartDate(new Date());
 
-		Address joeFullerAddress = new Address();
-		joeFullerAddress.setAddressType(getHomeAddressType());
-		joeFullerAddress.setStreet1("2110 wilkes ct");
-		joeFullerAddress.setStreet2("apt 123");
-		joeFullerAddress.setCity("Herndon");
-		joeFullerAddress.setState("Virginia");
-		joeFullerAddress.setCountry("USA");
+		Address userAddress = new Address();
+		userAddress.setAddressType(getHomeAddressType());
+		userAddress.setStreet1("2110 wilkes ct");
+		userAddress.setStreet2("apt 123");
+		userAddress.setCity("Herndon");
+		userAddress.setState("Virginia");
+		userAddress.setCountry("USA");
 
-		Email joeFullerPrimaryEmail = new Email();
-		joeFullerPrimaryEmail.setEmailType(getPrimaryEmailType());
-		joeFullerPrimaryEmail.setEmail("user@gmail.com");
+		Email userPrimaryEmail = new Email();
+		userPrimaryEmail.setEmailType(getPrimaryEmailType());
+		userPrimaryEmail.setEmail("user@gmail.com");
 
-		Email joeFullerSecondaryEmail = new Email();
-		joeFullerSecondaryEmail.setEmailType(getSecondaryEmailType());
-		joeFullerSecondaryEmail.setEmail("user_secondary@gmail.com");
+		Email userSecondaryEmail = new Email();
+		userSecondaryEmail.setEmailType(getSecondaryEmailType());
+		userSecondaryEmail.setEmail("user_secondary@gmail.com");
 
 		Phone joeFullerCellPhone = new Phone();
 		joeFullerCellPhone.setPhoneNumber("7031112222");
 		joeFullerCellPhone.setPhoneType(getCellPhoneType());
 
-		joeFullerEmp.addPhone(joeFullerCellPhone);
-		joeFullerEmp.addAddress(joeFullerAddress);
-		joeFullerEmp.addEmail(joeFullerPrimaryEmail);
-		joeFullerEmp.addEmail(joeFullerSecondaryEmail);
-		joeFullerEmp = em.merge(joeFullerEmp);
-		userUser().setEmployee(joeFullerEmp);
+		userEmp.addPhone(joeFullerCellPhone);
+		userEmp.addAddress(userAddress);
+		userEmp.addEmail(userPrimaryEmail);
+		userEmp.addEmail(userSecondaryEmail);
+		userEmp.addReportsTo(userReportsTo());
+		userEmp.addEmergencyContact(userEmergencyContact());
+		userEmp = em.merge(userEmp);
+		userUser().setEmployee(userEmp);
+
+		// Admin Employee
+
 	}
 
 	protected void initRefData() {
@@ -161,6 +169,34 @@ public class OfficeStartup {
 			cellPhoneType.setPhoneType("HOME");
 			return em.merge(cellPhoneType);
 		}
+	}
+
+	public ReportsTo userReportsTo() {
+		Contact userReportToContact = new Contact();
+		userReportToContact.setFirstName("user reports to");
+		userReportToContact.setLastName("user reports to last name");
+		userReportToContact.setSex(Sex.MALE);
+		userReportToContact = em.merge(userReportToContact);
+
+		ReportsTo reportsTo = new ReportsTo();
+		reportsTo.setContact(userReportToContact);
+		reportsTo.setRtPrimary(true);
+		reportsTo.setReportsToRole("Manager");
+		return em.merge(reportsTo);
+	}
+
+	public EmergencyContact userEmergencyContact() {
+		Contact userEmergencyContact = new Contact();
+		userEmergencyContact.setFirstName("user emergency contact");
+		userEmergencyContact.setLastName("user emergency contact last name");
+		userEmergencyContact.setSex(Sex.MALE);
+		userEmergencyContact = em.merge(userEmergencyContact);
+
+		EmergencyContact emergencyContact = new EmergencyContact();
+		emergencyContact.setContact(userEmergencyContact);
+		emergencyContact.setEcPrimary(true);
+		emergencyContact.setRelation("Wife");
+		return em.merge(emergencyContact);
 	}
 
 	protected <T> T findEntity(Class<?> entity, String paramName, String paramValue) {

@@ -19,7 +19,7 @@ public class ServiceException extends RuntimeException {
 	}
 
 	public ServiceException(StatusCode statusCode, String source, String reasonCode) {
-		this(statusCode, new info.yalamanchili.office.service.types.Error(source, reasonCode.toString()));
+		this(statusCode, new info.yalamanchili.office.service.types.Error(source, reasonCode));
 	}
 
 	public ServiceException(StatusCode statusCode, List<info.yalamanchili.office.service.types.Error> errs) {

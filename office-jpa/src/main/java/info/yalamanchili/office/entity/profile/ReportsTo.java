@@ -36,7 +36,7 @@ public class ReportsTo extends AbstractEntity {
 	/**
 	 * @generated
 	 */
-	protected Boolean primary;
+	protected Boolean rtPrimary;
 
 	/**
 	 * @generated
@@ -76,15 +76,15 @@ public class ReportsTo extends AbstractEntity {
 	/**
 	 * @generated
 	 */
-	public Boolean getPrimary() {
-		return primary;
+	public Boolean getRtPrimary() {
+		return rtPrimary;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setPrimary(Boolean primary) {
-		this.primary = primary;
+	public void setRtPrimary(Boolean rtPrimary) {
+		this.rtPrimary = rtPrimary;
 	}
 
 	/**

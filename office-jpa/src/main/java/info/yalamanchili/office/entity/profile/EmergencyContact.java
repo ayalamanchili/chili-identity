@@ -36,7 +36,7 @@ public class EmergencyContact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
-	protected Boolean primary;
+	protected Boolean ecPrimary;
 
 	/**
 	 * @generated
@@ -76,15 +76,15 @@ public class EmergencyContact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
-	public Boolean getPrimary() {
-		return primary;
+	public Boolean getEcPrimary() {
+		return ecPrimary;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setPrimary(Boolean primary) {
-		this.primary = primary;
+	public void setEcPrimary(Boolean ecPrimary) {
+		this.ecPrimary = ecPrimary;
 	}
 
 	/**
