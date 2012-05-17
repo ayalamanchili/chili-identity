@@ -78,11 +78,11 @@ public class OfficeStartup {
 		userSecondaryEmail.setEmailType(getSecondaryEmailType());
 		userSecondaryEmail.setEmail("user_secondary@gmail.com");
 
-		Phone joeFullerCellPhone = new Phone();
-		joeFullerCellPhone.setPhoneNumber("7031112222");
-		joeFullerCellPhone.setPhoneType(getCellPhoneType());
+		Phone userCellPhone = new Phone();
+		userCellPhone.setPhoneNumber("7031112222");
+		userCellPhone.setPhoneType(getCellPhoneType());
 
-		userEmp.addPhone(joeFullerCellPhone);
+		userEmp.addPhone(userCellPhone);
 		userEmp.addAddress(userAddress);
 		userEmp.addEmail(userPrimaryEmail);
 		userEmp.addEmail(userSecondaryEmail);
@@ -92,6 +92,42 @@ public class OfficeStartup {
 		userUser().setEmployee(userEmp);
 
 		// Admin Employee
+		Employee adminEmp = new Employee();
+		adminEmp.setFirstName("admin");
+		adminEmp.setLastName("admin");
+		adminEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -3));
+		adminEmp.setSex(Sex.FEMALE);
+		adminEmp.setSsn("123456789");
+		adminEmp.setStartDate(new Date());
+
+		Address adminAddress = new Address();
+		adminAddress.setAddressType(getHomeAddressType());
+		adminAddress.setStreet1("2110 wilkes ct");
+		adminAddress.setStreet2("apt 123");
+		adminAddress.setCity("Herndon");
+		adminAddress.setState("Virginia");
+		adminAddress.setCountry("USA");
+
+		Email adminPrimaryEmail = new Email();
+		adminPrimaryEmail.setEmailType(getPrimaryEmailType());
+		adminPrimaryEmail.setEmail("admin@gmail.com");
+
+		Email adminSecondaryEmail = new Email();
+		adminSecondaryEmail.setEmailType(getSecondaryEmailType());
+		adminSecondaryEmail.setEmail("admin_secondary@gmail.com");
+
+		Phone adminCellPhone = new Phone();
+		adminCellPhone.setPhoneNumber("7031112222");
+		adminCellPhone.setPhoneType(getCellPhoneType());
+
+		adminEmp.addPhone(userCellPhone);
+		adminEmp.addAddress(adminAddress);
+		adminEmp.addEmail(adminPrimaryEmail);
+		adminEmp.addEmail(adminSecondaryEmail);
+		adminEmp.addReportsTo(userReportsTo());
+		adminEmp.addEmergencyContact(userEmergencyContact());
+		adminEmp = em.merge(adminEmp);
+		userAdmin().setEmployee(adminEmp);
 
 	}
 
