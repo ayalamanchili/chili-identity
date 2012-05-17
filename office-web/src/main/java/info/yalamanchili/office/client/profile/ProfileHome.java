@@ -3,8 +3,10 @@ package info.yalamanchili.office.client.profile;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhones;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class ProfileHome extends ALComposite {
@@ -29,7 +31,16 @@ public class ProfileHome extends ALComposite {
 
 	@Override
 	protected void addWidgets() {
-		JSONObject user = OfficeWelcome.instance().user;
-		panel.add(new ReadEmployeePanel(user.get("employee").isObject()));
+		JSONObject employee = OfficeWelcome.instance().user.get("employee").isObject();
+		panel.add(new ReadEmployeePanel(employee));
+		panel.add(getPhonesPanel(employee.get("id").isString().stringValue()));
+		// TODO add disclosure planel for phones, emails, reports to and
+		// emergency contact.
+	}
+
+	protected DisclosurePanel getPhonesPanel(String empId) {
+		DisclosurePanel phonesPanel = new DisclosurePanel("Phones");
+		phonesPanel.setContent(new ReadAllPhones(empId));
+		return phonesPanel;
 	}
 }
