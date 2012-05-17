@@ -31,6 +31,7 @@ public class ProfileHome extends ALComposite {
 
 	@Override
 	protected void addWidgets() {
+		// TODO check for null pointer
 		JSONObject employee = OfficeWelcome.instance().user.get("employee").isObject();
 		panel.add(new ReadEmployeePanel(employee));
 		panel.add(getPhonesPanel(employee.get("id").isString().stringValue()));
