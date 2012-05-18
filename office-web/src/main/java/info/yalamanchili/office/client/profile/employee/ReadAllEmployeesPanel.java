@@ -20,13 +20,13 @@ import com.google.gwt.json.client.JSONObject;
  * 
  * @author ayalamanchili
  */
-public class ReadAllEmployees extends ReadAllComposite {
+public class ReadAllEmployeesPanel extends ReadAllComposite {
 
-	private static Logger logger = Logger.getLogger(ReadAllEmployees.class.getName());
+	private static Logger logger = Logger.getLogger(ReadAllEmployeesPanel.class.getName());
 
-	public static ReadAllEmployees instance;
+	public static ReadAllEmployeesPanel instance;
 
-	public ReadAllEmployees() {
+	public ReadAllEmployeesPanel() {
 		instance = this;
 		initTable("Employee", OfficeWelcome.constants);
 	}
@@ -81,6 +81,6 @@ public class ReadAllEmployees extends ReadAllComposite {
 	public void viewClicked(int row, int col) {
 		TabPanel.instance().myOfficePanel.clear();
 		TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(getEntityId(row)));
-		TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(new Integer(row).toString()));
+		TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(getEntityId(row)));
 	}
 }

@@ -2,7 +2,7 @@ package info.yalamanchili.office.client.profile;
 
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployees;
+import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
@@ -27,7 +27,7 @@ public class ProfileMenu extends Composite {
 	Command employeeMaintainenceCmd = new Command() {
 		public void execute() {
 			TabPanel.instance().getAdminPanel().clear();
-			TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllEmployees());
+			TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllEmployeesPanel());
 			TabPanel.instance().getAdminPanel().sidePanelTop.add(new EmployeeSidePanel());
 		}
 	};

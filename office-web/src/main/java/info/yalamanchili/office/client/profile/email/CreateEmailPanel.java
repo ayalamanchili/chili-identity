@@ -68,7 +68,7 @@ public class CreateEmailPanel extends ALComposite implements ClickHandler {
 					public void onResponse(String arg0) {
 						new ResponseStatusWidget().show("successfully added employee Email");
 						TabPanel.instance().myOfficePanel.entityPanel.clear();
-						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmails(TreeEmployeePanel.instance()
+						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance()
 								.getEntityId()));
 						TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
 					}

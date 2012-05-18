@@ -12,13 +12,13 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
-public class ReadAllPhones extends ReadAllComposite {
+public class ReadAllPhonesPanel extends ReadAllComposite {
 
-	private static Logger logger = Logger.getLogger(ReadAllPhones.class.getName());
+	private static Logger logger = Logger.getLogger(ReadAllPhonesPanel.class.getName());
 
-	public static ReadAllPhones instance;
+	public static ReadAllPhonesPanel instance;
 
-	public ReadAllPhones(String parentId) {
+	public ReadAllPhonesPanel(String parentId) {
 		instance = this;
 		this.parentId = parentId;
 		initTable("Phone", OfficeWelcome.constants);
@@ -31,7 +31,6 @@ public class ReadAllPhones extends ReadAllComposite {
 
 					@Override
 					public void onResponse(String result) {
-						logger.info(result);
 						postFetchTable(result);
 					}
 

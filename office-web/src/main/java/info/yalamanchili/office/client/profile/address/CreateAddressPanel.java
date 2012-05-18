@@ -87,7 +87,7 @@ public class CreateAddressPanel extends ALComposite implements ClickHandler {
 								.show("successfully added employee address");
 						TabPanel.instance().myOfficePanel.entityPanel.clear();
 						TabPanel.instance().myOfficePanel.entityPanel
-								.add(new ReadAllAddresses(TreeEmployeePanel
+								.add(new ReadAllAddressesPanel(TreeEmployeePanel
 										.instance().getEntityId()));
 						TabPanel.instance().myOfficePanel.entityPanel
 								.add(new AddressOptionsPanel());

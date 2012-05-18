@@ -28,6 +28,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 	private static Logger logger = Logger.getLogger(ReadAllComposite.class.getName());
 
 	protected String parentId;
+
 	/** The panel. */
 	protected FlowPanel panel = new FlowPanel();
 
@@ -134,9 +135,12 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 		}
 		createTableHeader();
 		if (table.get("entities") != null) {
-			fillData(JSONUtils.toJSONArray(table.get("entities")));
+			entities = JSONUtils.toJSONArray(table.get("entities"));
+			fillData(entities);
 		}
 	}
+
+	protected JSONArray entities;
 
 	public abstract void createTableHeader();
 

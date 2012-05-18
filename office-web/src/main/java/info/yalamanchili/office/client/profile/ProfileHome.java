@@ -2,8 +2,9 @@ package info.yalamanchili.office.client.profile;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
-import info.yalamanchili.office.client.profile.phone.ReadAllPhones;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.DisclosurePanel;
@@ -35,13 +36,20 @@ public class ProfileHome extends ALComposite {
 		JSONObject employee = OfficeWelcome.instance().user.get("employee").isObject();
 		panel.add(new ReadEmployeePanel(employee));
 		panel.add(getPhonesPanel(employee.get("id").isString().stringValue()));
-		// TODO add disclosure planel for phones, emails, reports to and
+		panel.add(getEmailsPanel(employee.get("id").isString().stringValue()));
+		// TODO add disclosure planel for reports to and
 		// emergency contact.
 	}
 
 	protected DisclosurePanel getPhonesPanel(String empId) {
 		DisclosurePanel phonesPanel = new DisclosurePanel("Phones");
-		phonesPanel.setContent(new ReadAllPhones(empId));
+		phonesPanel.setContent(new ReadAllPhonesPanel(empId));
 		return phonesPanel;
+	}
+
+	protected DisclosurePanel getEmailsPanel(String empId) {
+		DisclosurePanel emailsPanel = new DisclosurePanel("Emails");
+		emailsPanel.setContent(new ReadAllEmailsPanel(empId));
+		return emailsPanel;
 	}
 }

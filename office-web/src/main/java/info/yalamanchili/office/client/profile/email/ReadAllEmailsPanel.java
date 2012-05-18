@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client.profile.address;
+package info.yalamanchili.office.client.profile.email;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -12,21 +12,22 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
-public class ReadAllAddresses extends ReadAllComposite {
-	private static Logger logger = Logger.getLogger(ReadAllAddresses.class.getName());
+public class ReadAllEmailsPanel extends ReadAllComposite {
 
-	public static ReadAllAddresses instance;
+	private static Logger logger = Logger.getLogger(ReadAllEmailsPanel.class.getName());
 
-	public ReadAllAddresses(String parentId) {
+	public static ReadAllEmailsPanel instance;
+
+	public ReadAllEmailsPanel(String parentId) {
 		instance = this;
 		this.parentId = parentId;
-		initTable("Address", OfficeWelcome.constants);
+		initTable("Email", OfficeWelcome.constants);
 	}
 
 	@Override
 	public void preFetchTable(int start) {
-		HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, 0, 10),
-				OfficeWelcome.instance().getHeaders(), false, new ALAsyncCallback<String>() {
+		HttpServiceAsync.instance().doGet(getEmployeeEmailsURL(parentId, 0, 10), OfficeWelcome.instance().getHeaders(),
+				false, new ALAsyncCallback<String>() {
 
 					@Override
 					public void onResponse(String result) {
@@ -38,8 +39,8 @@ public class ReadAllAddresses extends ReadAllComposite {
 
 	}
 
-	public String getEmployeeAddressesURL(String employeeId, Integer start, Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/addresses/" + employeeId + "/" + start.toString() + "/"
+	public String getEmployeeEmailsURL(String employeeId, Integer start, Integer limit) {
+		return OfficeWelcome.constants.root_url() + "employee/emails/" + employeeId + "/" + start.toString() + "/"
 				+ limit.toString();
 	}
 
@@ -47,13 +48,7 @@ public class ReadAllAddresses extends ReadAllComposite {
 	public void createTableHeader() {
 		table.setText(0, 0, getKeyValue("Table_Action"));
 		table.setText(0, 1, getKeyValue("Type"));
-		table.setText(0, 2, getKeyValue("Street 1"));
-		table.setText(0, 3, getKeyValue("Street 2"));
-		table.setText(0, 4, getKeyValue("City"));
-		table.setText(0, 5, getKeyValue("State"));
-		table.setText(0, 6, getKeyValue("Country"));
-		table.setText(0, 7, getKeyValue("Zip"));
-
+		table.setText(0, 2, getKeyValue("Email"));
 	}
 
 	@Override
@@ -61,13 +56,8 @@ public class ReadAllAddresses extends ReadAllComposite {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
 			createViewIcon(i, JSONUtils.toString(entity, "id"));
-			table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
-			table.setText(i, 2, JSONUtils.toString(entity, "street1"));
-			table.setText(i, 3, JSONUtils.toString(entity, "street2"));
-			table.setText(i, 4, JSONUtils.toString(entity, "city"));
-			table.setText(i, 5, JSONUtils.toString(entity, "state"));
-			table.setText(i, 6, JSONUtils.toString(entity, "country"));
-			table.setText(i, 7, JSONUtils.toString(entity, "zip"));
+			table.setText(i, 1, JSONUtils.toString(entity.get("emailType"), "emailType"));
+			table.setText(i, 2, JSONUtils.toString(entity, "email"));
 		}
 	}
 
@@ -79,4 +69,5 @@ public class ReadAllAddresses extends ReadAllComposite {
 		// TabPanel.instance().adminPanel.sidePanelCenter.clear();
 		// RootLayout.instance().sidePanelTop.add(new TreeEmployeePanel());
 	}
+
 }

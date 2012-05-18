@@ -13,8 +13,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
-public abstract class TreePanelComposite extends Composite implements
-		SelectionHandler<TreeItem> {
+public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem> {
 
 	private static TreePanelComposite instance;
 
@@ -70,8 +69,7 @@ public abstract class TreePanelComposite extends Composite implements
 			logger.info("root selected");
 			showEntity();
 		} else {
-			logger.info("treemode selected:"
-					+ selectedItem.getUserObject().toString());
+			logger.info("treemode selected:" + selectedItem.getUserObject().toString());
 			treeNodeSelected((String) selectedItem.getUserObject());
 		}
 	}
@@ -85,8 +83,7 @@ public abstract class TreePanelComposite extends Composite implements
 
 	protected void addFirstChildLink(String childNodeName, String childNodeKey) {
 		// TODO get the name from constants
-		TreeItem child = new TreeItem(Utils.getKeyValue(childNodeName,
-				constants));
+		TreeItem child = new TreeItem(Utils.getKeyValue(childNodeName, constants));
 		child.addStyleName("y-gwt-treePanelComposite-Node");
 		child.setUserObject(childNodeKey);
 		rootItem.addItem(child);

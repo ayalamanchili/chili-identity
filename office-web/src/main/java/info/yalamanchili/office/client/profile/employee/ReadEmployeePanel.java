@@ -11,7 +11,14 @@ import com.google.gwt.json.client.JSONParser;
 
 public class ReadEmployeePanel extends ReadComposite {
 
+	private static ReadEmployeePanel instance;
+
+	public static ReadEmployeePanel instance() {
+		return instance;
+	}
+
 	public ReadEmployeePanel(JSONObject entity) {
+		instance = this;
 		initReadComposite(entity, "Employee", OfficeWelcome.constants);
 	}
 
