@@ -16,7 +16,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -37,6 +36,12 @@ public abstract class CRUDResource<T> {
 	@PUT
 	public T save(T entity) {
 		return (T) getDao().save(entity);
+	}
+
+	@PUT
+	@Path("/delete/{id}")
+	public void delete(@PathParam("id") Long id) {
+		getDao().delete(id);
 	}
 
 	@GET
