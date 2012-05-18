@@ -8,6 +8,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
@@ -145,6 +146,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	@Path("/reportsto/{empId}")
 	public void addReportsTo(@PathParam("empId") Long empId, ReportsTo entity) {
 		Employee emp = (Employee) getDao().findById(empId);
+		entity.setContact((Contact) getDao().save(entity.getContact()));
 		emp.addReportsTo(entity);
 	}
 
