@@ -3,6 +3,7 @@ package info.yalamanchili.office.client.profile.email;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -40,8 +41,7 @@ public class EmailOptionsPanel extends ALComposite implements ClickHandler {
 	public void onClick(ClickEvent arg0) {
 		if (arg0.getSource().equals(addEmailLink)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel
-					.add(new CreateEmailPanel());
+			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmailPanel(CreateCompositeType.ADD));
 		}
 	}
 }

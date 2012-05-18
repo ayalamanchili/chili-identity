@@ -3,6 +3,7 @@ package info.yalamanchili.office.client.profile.phone;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -40,7 +41,7 @@ public class PhoneOptionsPanel extends ALComposite implements ClickHandler {
 	public void onClick(ClickEvent arg0) {
 		if (arg0.getSource().equals(addPhonelLink)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhonePanel());
+			TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhonePanel(CreateCompositeType.ADD));
 		}
 	}
 }
