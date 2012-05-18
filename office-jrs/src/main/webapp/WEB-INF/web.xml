@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:securityContext.xml,classpath:applicationContext.xml,classpath:jmsContext.xml,classpath:aopContext.xml;</param-value>
+		<param-value>classpath:securityContext.xml,classpath:applicationContext.xml,classpath:jmsContext.xml,classpath:aopContext.xml;classpath:persistenceContext.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -32,8 +32,7 @@
 	<servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<servlet-class>
-			com.sun.jersey.spi.spring.container.servlet.SpringServlet
-		</servlet-class>
+			com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
 			<param-value>info.yalamanchili.office.jrs,info.yalamanchili.office.service.exception</param-value>

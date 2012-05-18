@@ -10,12 +10,6 @@
 	<url>http://somecompany.com</url>
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>info.yalamanchili.commons</groupId>
 			<artifactId>yalamanchili-commons</artifactId>
 			<version>${yalamanchili.version}</version>
@@ -125,6 +119,21 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+		<!--Spring Tests-->
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
 		<!-- Dozer -->
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
