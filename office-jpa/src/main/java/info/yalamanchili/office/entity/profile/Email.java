@@ -31,8 +31,9 @@ public class Email extends AbstractEntity {
 	private static final long serialVersionUID = 8L;
 
 	/**
-	 * @generated
+	 * @NOT generated
 	 */
+	@org.hibernate.validator.constraints.Email
 	@NotEmpty
 	protected String email;
 

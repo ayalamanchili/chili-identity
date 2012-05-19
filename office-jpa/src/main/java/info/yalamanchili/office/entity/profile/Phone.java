@@ -11,10 +11,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @todo add comment for javadoc
@@ -33,7 +32,7 @@ public class Phone extends AbstractEntity {
 	/**
 	 * @generated
 	 */
-	@NotEmpty
+	@Size(min = 10, max = 10)
 	protected String phoneNumber;
 
 	/**
