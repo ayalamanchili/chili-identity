@@ -210,6 +210,7 @@ public abstract class CRUDComposite extends Composite {
 	protected abstract String getURI();
 
 	protected void handleErrorResponse(Throwable err) {
+		logger.info(err.getMessage());
 		if (!err.getMessage().isEmpty() && err.getMessage().contains("Error")) {
 			try {
 				JSONValue errors = JSONParser.parseLenient(err.getMessage());
@@ -223,7 +224,7 @@ public abstract class CRUDComposite extends Composite {
 	}
 
 	protected void processValidationErrors(JSONValue errorsObj) {
-		JSONArray errorsArray = errorsObj.isObject().get("Error").isArray();
+		JSONArray errorsArray = JSONUtils.toJSONArray(errorsObj.isObject().get("Error"));
 		for (int i = 0; i < errorsArray.size(); i++) {
 			JSONObject err = (JSONObject) errorsArray.get(i);
 			JSONString errSource = err.get("source").isString();
