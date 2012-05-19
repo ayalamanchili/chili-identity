@@ -124,7 +124,7 @@
 		</c:iterate>
     </ws:folder>
     <ws:folder path="src/main/resources">
-    <ws:file template="templates/jpa/src/main/resources/jpa_persistence_template.xml.jet" path="META-INF/persistence.xml"/>
+ <%--   <ws:file template="templates/jpa/src/main/resources/jpa_persistence_template.xml.jet" path="META-INF/persistence.xml"/>  --%>
  <%--   <ws:file template="templates/jpa/src/main/resources/jpa_ormxml_template.xml.jet" path="META-INF/orm.xml"/> --%>
     <ws:file template="templates/jpa/src/main/resources/abbrevation.properties.jet" path="abbrevations.properties"/>
     </ws:folder>
@@ -138,11 +138,6 @@
 		</ws:folder>	
 		</c:iterate>
     </ws:folder>
-    
-    <ws:folder path="src/test/resources">
-	<ws:file template="templates/jpa/src/test/resources/jndi.properties.jet" path="jndi.properties"/>
-	<ws:file template="templates/jpa/src/main/resources/jpa_persistence_template.xml.jet" path="test-persistence.xml"/>
-   	</ws:folder>
 </ws:project>
 </c:if>
 

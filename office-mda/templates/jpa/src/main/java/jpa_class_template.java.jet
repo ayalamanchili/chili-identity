@@ -1,4 +1,4 @@
-
+<java:merge/>
 <java:format>
 <f:bundle basename="templates/resources/messages">
 <f:message>copyright</f:message>
@@ -134,8 +134,8 @@ private static final long serialVersionUID = <f:unique/>L;
 		<c:if test="$stereotype/@href = ${'$NotNullID'}">
 @NotNull
 		</c:if>
-		<c:if test="$stereotype/@href = ${'$NotEmptyID'}">
-@NotEmpty
+		<c:if test="$stereotype/@href = ${'$EmailID'}">
+@Email
 		</c:if>
 		<c:if test="$stereotype/@href = ${'$PastID'}">
 @Past
