@@ -45,8 +45,7 @@ public class CreateEmailPanel extends CreateComposite {
 				new AsyncCallback<String>() {
 
 					@Override
-					public void onFailure(Throwable arg0) {
-						logger.info(arg0.getMessage());
+					public void onFailure(Throwable arg0) {												
 						handleErrorResponse(arg0);
 					}
 

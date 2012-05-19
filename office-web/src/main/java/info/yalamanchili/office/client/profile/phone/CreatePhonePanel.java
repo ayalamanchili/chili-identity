@@ -1,8 +1,6 @@
 package info.yalamanchili.office.client.profile.phone;
 
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -14,6 +12,7 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class CreatePhonePanel extends CreateComposite {
 
@@ -45,10 +44,16 @@ public class CreatePhonePanel extends CreateComposite {
 	@Override
 	protected void addButtonClicked() {
 		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
-				new ALAsyncCallback<String>() {
+				new AsyncCallback<String>() {
 
 					@Override
-					public void onResponse(String arg0) {
+					public void onFailure(Throwable arg0) {
+						handleErrorResponse(arg0);
+
+					}
+
+					@Override
+					public void onSuccess(String arg0) {
 						new ResponseStatusWidget().show("successfully added employee Phone");
 						TabPanel.instance().myOfficePanel.entityPanel.clear();
 						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel
@@ -67,8 +72,8 @@ public class CreatePhonePanel extends CreateComposite {
 
 	@Override
 	protected void configure() {
-//		StringField countryCodeF = (StringField) fields.get("countryCode");
-//		countryCodeF.setText("001");
+		// StringField countryCodeF = (StringField) fields.get("countryCode");
+		// countryCodeF.setText("001");
 	}
 
 	@Override
