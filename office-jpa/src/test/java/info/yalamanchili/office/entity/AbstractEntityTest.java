@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "file:src/main/resources/persistenceContext.xml" })
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
 @Transactional
-public abstract class AbstractJPATest<T> {
+public abstract class AbstractEntityTest<T> {
 
 	protected T entity;
 
