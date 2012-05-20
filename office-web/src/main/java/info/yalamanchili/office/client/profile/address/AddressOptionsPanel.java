@@ -2,6 +2,7 @@ package info.yalamanchili.office.client.profile.address;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,7 +33,9 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
 	@Override
 	protected void addWidgets() {
-		panel.add(addAddressLink);
+		if (Auth.isAdmin() || Auth.isHR()) {
+			panel.add(addAddressLink);
+		}
 
 	}
 
@@ -40,8 +43,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 	public void onClick(ClickEvent arg0) {
 		if (arg0.getSource().equals(addAddressLink)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel
-					.add(new CreateAddressPanel());
+			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel());
 		}
 	}
 }

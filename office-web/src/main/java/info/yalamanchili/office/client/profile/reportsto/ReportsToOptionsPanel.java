@@ -2,6 +2,7 @@ package info.yalamanchili.office.client.profile.reportsto;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
@@ -33,7 +34,9 @@ public class ReportsToOptionsPanel extends ALComposite implements ClickHandler {
 
 	@Override
 	protected void addWidgets() {
-		panel.add(addReportsToLink);
+		if (Auth.isAdmin() || Auth.isHR()) {
+			panel.add(addReportsToLink);
+		}
 
 	}
 

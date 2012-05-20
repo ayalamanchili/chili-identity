@@ -21,7 +21,7 @@ public class ProfileMenu extends Composite {
 		profileMenuBar.addItem("Menu", menu);
 		profileMenuBar.addStyleName("entityMenuBar");
 
-		menu.addItem("Employee Maintainence", employeeMaintainenceCmd);
+		menu.addItem("Employees", employeeMaintainenceCmd);
 	}
 
 	Command employeeMaintainenceCmd = new Command() {

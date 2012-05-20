@@ -3,6 +3,8 @@ package info.yalamanchili.office.client;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.ProfileMenu;
 import info.yalamanchili.office.client.profile.ProfileSidePanel;
+import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
+import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 
 import java.util.logging.Logger;
 
@@ -64,8 +66,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 	public void selectAdminTab() {
 		myOfficePanel.clear();
 		myOfficePanel.entityTitlePanel.add(new ProfileMenu());
-		myOfficePanel.entityPanel.add(new ProfileHome());
-		myOfficePanel.sidePanelTop.add(new ProfileSidePanel());
+		if (Auth.isAdmin() || Auth.isHR()) {
+			myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
+			myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
+		} else {
+			myOfficePanel.entityPanel.add(new ProfileHome());
+			myOfficePanel.sidePanelTop.add(new ProfileSidePanel());
+		}
+
 	}
 
 	private static TabPanel instance;
