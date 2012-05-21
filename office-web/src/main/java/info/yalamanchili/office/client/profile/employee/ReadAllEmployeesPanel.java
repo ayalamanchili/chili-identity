@@ -68,7 +68,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
-			createOptionsWidget(OptionsType.READ_DELETE, i, JSONUtils.toString(entity, "id"));
+			createOptionsWidget(OptionsType.READ, i, JSONUtils.toString(entity, "id"));
 			table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
 			table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
 			table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
@@ -88,12 +88,12 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 	@Override
 	public void deleteClicked(String entityId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateClicked(String entityId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

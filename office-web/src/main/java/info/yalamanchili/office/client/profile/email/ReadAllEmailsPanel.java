@@ -2,9 +2,11 @@ package info.yalamanchili.office.client.profile.email;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -69,8 +71,19 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 
 	@Override
 	public void deleteClicked(String entityId) {
-		// TODO Auto-generated method stub
+		HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), false,
+				new ALAsyncCallback<String>() {
 
+					@Override
+					public void onResponse(String arg0) {
+						TabPanel.instance().myOfficePanel.entityPanel.clear();
+						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel
+								.instance().getEntityId()));
+						TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
+
+					}
+
+				});
 	}
 
 	@Override
@@ -79,4 +92,7 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 
 	}
 
+	protected String getDeleteURL(String entityId) {
+		return OfficeWelcome.instance().constants.root_url() + "email/delete/" + entityId;
+	}
 }

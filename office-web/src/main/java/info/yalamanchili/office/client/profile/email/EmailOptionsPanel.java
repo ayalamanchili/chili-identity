@@ -26,8 +26,6 @@ public class EmailOptionsPanel extends ALComposite implements ClickHandler {
 
 	protected ClickableLink addEmailLink = new ClickableLink("Add Email");
 
-	protected ClickableLink deleteEmailLink = new ClickableLink("Delete Email");
-
 	public EmailOptionsPanel() {
 		init(panel);
 	}
@@ -35,7 +33,6 @@ public class EmailOptionsPanel extends ALComposite implements ClickHandler {
 	@Override
 	protected void addListeners() {
 		addEmailLink.addClickHandler(this);
-		deleteEmailLink.addClickHandler(this);
 	}
 
 	@Override
@@ -48,7 +45,7 @@ public class EmailOptionsPanel extends ALComposite implements ClickHandler {
 	@Override
 	protected void addWidgets() {
 		if (Auth.isAdmin() || Auth.isHR()) {
-			panel.add(deleteEmailLink);
+			panel.add(addEmailLink);
 		}
 
 	}
@@ -58,9 +55,6 @@ public class EmailOptionsPanel extends ALComposite implements ClickHandler {
 		if (clickEvent.getSource().equals(addEmailLink)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
 			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmailPanel(CreateCompositeType.ADD));
-		}
-		if (clickEvent.getSource().equals(deleteEmailLink)) {
-
 		}
 	}
 }
