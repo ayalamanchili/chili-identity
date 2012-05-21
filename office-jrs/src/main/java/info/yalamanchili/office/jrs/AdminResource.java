@@ -1,7 +1,9 @@
 package info.yalamanchili.office.jrs;
 
+import static info.yalamanchili.office.init.JPAUtils.findEntity;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
 
@@ -51,7 +53,8 @@ public class AdminResource {
 	@Path("/createuser")
 	@PUT
 	public void createUser(CUser user) {
-
+		user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
+		user.setEmployee(em.merge(user.getEmployee()));
 		em.merge(user);
 	}
 

@@ -43,6 +43,7 @@ public class ServiceInterceptor {
 		try {
 			result = joinPoint.proceed();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, e.getLocalizedMessage(), e.getMessage());
 		}
 		checkForErrors();

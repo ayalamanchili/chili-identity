@@ -1,5 +1,6 @@
 package info.yalamanchili.office.init;
 
+import static info.yalamanchili.office.init.JPAUtils.findEntity;
 import info.yalamanchili.commons.DateUtils;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
@@ -235,54 +236,44 @@ public class OfficeStartup {
 		return em.merge(emergencyContact);
 	}
 
-	protected <T> T findEntity(Class<?> entity, String paramName, String paramValue) {
-		Query query = em.createQuery("from " + entity.getCanonicalName() + " where " + paramName + "='" + paramValue
-				+ "'", entity);
-		if (query.getResultList().size() > 0) {
-			return (T) query.getResultList().get(0);
-		} else {
-			return null;
-		}
-	}
-
-	protected CRole userRole() {
-		if (findEntity(CRole.class, "rolename", "ROLE_USER") == null) {
+	public CRole userRole() {
+		if (findEntity(em, CRole.class, "rolename", "ROLE_USER") == null) {
 			CRole userRole = new CRole();
 			userRole.setRolename("ROLE_USER");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "ROLE_USER");
+		return findEntity(em, CRole.class, "rolename", "ROLE_USER");
 	}
 
-	protected CRole hrRole() {
-		if (findEntity(CRole.class, "rolename", "ROLE_HR") == null) {
+	public CRole hrRole() {
+		if (findEntity(em, CRole.class, "rolename", "ROLE_HR") == null) {
 			CRole userRole = new CRole();
 			userRole.setRolename("ROLE_HR");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "ROLE_HR");
+		return findEntity(em, CRole.class, "rolename", "ROLE_HR");
 	}
 
-	protected CRole accountsRole() {
-		if (findEntity(CRole.class, "rolename", "ROLE_ACCOUNTS") == null) {
+	public CRole accountsRole() {
+		if (findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTS") == null) {
 			CRole userRole = new CRole();
 			userRole.setRolename("ROLE_ACCOUNTS");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "ROLE_ACCOUNTS");
+		return findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTS");
 	}
 
-	protected CRole adminRole() {
-		if (findEntity(CRole.class, "rolename", "ROLE_ADMIN") == null) {
+	public CRole adminRole() {
+		if (findEntity(em, CRole.class, "rolename", "ROLE_ADMIN") == null) {
 			CRole userRole = new CRole();
 			userRole.setRolename("ROLE_ADMIN");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "ROLE_ADMIN");
+		return findEntity(em, CRole.class, "rolename", "ROLE_ADMIN");
 	}
 
 	protected CUser userUser() {
-		if (findEntity(CUser.class, "username", "user") == null) {
+		if (findEntity(em, CUser.class, "username", "user") == null) {
 			CUser userUser = new CUser();
 			userUser.setUsername("user");
 			userUser.setPasswordHash("user");
@@ -290,11 +281,11 @@ public class OfficeStartup {
 			userUser.setEnabled(true);
 			return em.merge(userUser);
 		}
-		return findEntity(CUser.class, "username", "user");
+		return findEntity(em, CUser.class, "username", "user");
 	}
 
 	protected CUser userAdmin() {
-		if (findEntity(CUser.class, "username", "admin") == null) {
+		if (findEntity(em, CUser.class, "username", "admin") == null) {
 			CUser userUser = new CUser();
 			userUser.setUsername("admin");
 			userUser.setPasswordHash("admin");
@@ -303,7 +294,7 @@ public class OfficeStartup {
 			userUser.addRole(adminRole());
 			return em.merge(userUser);
 		}
-		return findEntity(CUser.class, "username", "admin");
+		return findEntity(em, CUser.class, "username", "admin");
 	}
 
 }
