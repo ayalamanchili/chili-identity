@@ -13,15 +13,22 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class CreateEmployeePanel extends CreateComposite {
+
 	private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
+//	private static CreateEmployeePanel instance;
+//
+//	public static CreateEmployeePanel instance() {
+//		return instance;
+//	}
 
 	public CreateEmployeePanel(CreateCompositeType type) {
 		super(type);
+//		instance = this;
 		initCreateComposite("Employee", OfficeWelcome.constants);
 	}
 
 	@Override
-	protected JSONObject populateEntityFromFields() {
+	public JSONObject populateEntityFromFields() {
 		JSONObject entity = new JSONObject();
 		assignEntityValueFromField("firstName", entity);
 		assignEntityValueFromField("middleInitial", entity);
@@ -62,7 +69,7 @@ public class CreateEmployeePanel extends CreateComposite {
 	}
 
 	@Override
-	protected void createButtonClicked() {
+	public void createButtonClicked() {
 		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
 				new AsyncCallback<String>() {
 

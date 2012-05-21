@@ -9,6 +9,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -67,7 +68,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
-			createViewIcon(i, JSONUtils.toString(entity, "id"));
+			createOptionsWidget(OptionsType.READ_DELETE, i, JSONUtils.toString(entity, "id"));
 			table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
 			table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
 			table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
@@ -78,9 +79,21 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 	}
 
 	@Override
-	public void viewClicked(int row, int col) {
+	public void viewClicked(String entityId) {
 		TabPanel.instance().myOfficePanel.clear();
-		TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(getEntityId(row)));
-		TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(getEntityId(row)));
+		TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(entityId));
+		TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entityId));
+	}
+
+	@Override
+	public void deleteClicked(String entityId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateClicked(String entityId) {
+		// TODO Auto-generated method stub
+		
 	}
 }

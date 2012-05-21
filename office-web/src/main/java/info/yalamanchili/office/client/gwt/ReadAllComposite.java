@@ -4,8 +4,10 @@ import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.fields.ListBoxField;
 import info.yalamanchili.gwt.utils.Alignment;
 import info.yalamanchili.gwt.utils.Utils;
-import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -61,6 +63,8 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 
 	/** The no of results l. */
 	protected Label noOfResultsL = new Label("Total Results:");
+
+	protected Map<String, TableRowOptionsWidget> optionsWidgetMap = new HashMap<String, TableRowOptionsWidget>();
 
 	protected void initTable(String className, ConstantsWithLookup constants) {
 		this.classCanonicalName = className;
@@ -144,10 +148,12 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 
 	public abstract void createTableHeader();
 
-	protected void createViewIcon(int row, String id) {
-		ClickableLink link = new ClickableLink("view");
+	protected void createOptionsWidget(OptionsType type, int row, String id) {
+		TableRowOptionsWidget link = new TableRowOptionsWidget(type, id);
 		link.setTitle(id);
+		link.initListeners(this);
 		table.setWidget(row, 0, link);
+		optionsWidgetMap.put(String.valueOf(row), link);
 	}
 
 	protected String getEntityId(int row) {
@@ -156,13 +162,24 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 
 	public abstract void fillData(JSONArray entities);
 
-	public abstract void viewClicked(int row, int col);
+	public abstract void viewClicked(String entityId);
+
+	public abstract void deleteClicked(String entityId);
+
+	public abstract void updateClicked(String entityId);
 
 	public void onClick(ClickEvent event) {
-		if (event.getSource() == table) {
-			Cell clickedCell = table.getCellForEvent(event);
-			if (clickedCell != null && clickedCell.getRowIndex() != 0)
-				viewClicked(clickedCell.getRowIndex(), clickedCell.getCellIndex());
+		Cell src = table.getCellForEvent(event);
+		int rowIndex = src.getRowIndex();
+		TableRowOptionsWidget rowWidget = optionsWidgetMap.get(String.valueOf(rowIndex));
+		if (event.getSource().equals(rowWidget.getReadLink())) {
+			viewClicked(rowWidget.entityId);
+		}
+		if (event.getSource().equals(rowWidget.getUpdateLink())) {
+			updateClicked(rowWidget.entityId);
+		}
+		if (event.getSource().equals(rowWidget.getDeleteLink())) {
+			deleteClicked(rowWidget.entityId);
 		}
 	}
 

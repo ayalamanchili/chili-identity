@@ -2,9 +2,9 @@ package info.yalamanchili.office.client.profile.address;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -60,7 +60,7 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
-			createViewIcon(i, JSONUtils.toString(entity, "id"));
+			createOptionsWidget(OptionsType.READ_DELETE, i, JSONUtils.toString(entity, "id"));
 			table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
 			table.setText(i, 2, JSONUtils.toString(entity, "street1"));
 			table.setText(i, 3, JSONUtils.toString(entity, "street2"));
@@ -72,11 +72,21 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
 	}
 
 	@Override
-	public void viewClicked(int row, int col) {
-		TabPanel.instance().myOfficePanel.clear();
-		// TabPanel.instance().adminPanel.add(new ReadEmployeePanel(
-		// getEntityId(row)));
-		// TabPanel.instance().adminPanel.sidePanelCenter.clear();
-		// RootLayout.instance().sidePanelTop.add(new TreeEmployeePanel());
+	public void viewClicked(String entityId) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public void deleteClicked(String entityId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateClicked(String entityId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
