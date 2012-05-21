@@ -4,6 +4,7 @@ import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -43,7 +44,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 	public void onClick(ClickEvent arg0) {
 		if (arg0.getSource().equals(addAddressLink)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel());
+			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateCompositeType.ADD));
 		}
 	}
 }
