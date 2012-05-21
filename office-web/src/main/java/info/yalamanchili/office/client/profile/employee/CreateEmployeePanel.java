@@ -15,28 +15,35 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class CreateEmployeePanel extends CreateComposite {
 
 	private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
-//	private static CreateEmployeePanel instance;
-//
-//	public static CreateEmployeePanel instance() {
-//		return instance;
-//	}
+
+	// private static CreateEmployeePanel instance;
+	//
+	// public static CreateEmployeePanel instance() {
+	// return instance;
+	// }
 
 	public CreateEmployeePanel(CreateCompositeType type) {
 		super(type);
-//		instance = this;
+		// instance = this;
 		initCreateComposite("Employee", OfficeWelcome.constants);
 	}
 
 	@Override
 	public JSONObject populateEntityFromFields() {
-		JSONObject entity = new JSONObject();
-		assignEntityValueFromField("firstName", entity);
-		assignEntityValueFromField("middleInitial", entity);
-		assignEntityValueFromField("lastName", entity);
-		assignEntityValueFromField("dateOfBirth", entity);
-		assignEntityValueFromField("sex", entity);
-		assignEntityValueFromField("startDate", entity);
-		return entity;
+		JSONObject user = new JSONObject();
+		assignEntityValueFromField("username", user);
+		assignEntityValueFromField("passwordHash", user);
+
+		JSONObject employee = new JSONObject();
+		assignEntityValueFromField("firstName", employee);
+		assignEntityValueFromField("middleInitial", employee);
+		assignEntityValueFromField("lastName", employee);
+		assignEntityValueFromField("dateOfBirth", employee);
+		assignEntityValueFromField("sex", employee);
+		assignEntityValueFromField("startDate", employee);
+		user.put("employee", employee);
+
+		return user;
 	}
 
 	@Override
@@ -53,6 +60,8 @@ public class CreateEmployeePanel extends CreateComposite {
 
 	@Override
 	protected void addWidgets() {
+		addField("username", false, true, DataType.STRING_FIELD);
+		addField("passwordHash", false, true, DataType.STRING_FIELD);
 		addField("firstName", false, true, DataType.STRING_FIELD);
 		addField("middleInitial", false, true, DataType.STRING_FIELD);
 		addField("lastName", false, true, DataType.STRING_FIELD);
@@ -99,7 +108,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
 	@Override
 	protected String getURI() {
-		return OfficeWelcome.constants.root_url() + "employee";
+		return OfficeWelcome.constants.root_url() + "admin/createuser";
 	}
 
 }
