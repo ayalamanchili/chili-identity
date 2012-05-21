@@ -55,6 +55,7 @@ public class AdminResource {
 	public void createUser(CUser user) {
 		user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
 		user.setEmployee(em.merge(user.getEmployee()));
+		user.setEnabled(true);
 		em.merge(user);
 	}
 
