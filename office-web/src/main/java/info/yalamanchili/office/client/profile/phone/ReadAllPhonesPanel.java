@@ -2,9 +2,11 @@ package info.yalamanchili.office.client.profile.phone;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -68,14 +70,31 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 
 	@Override
 	public void deleteClicked(String entityId) {
-		// TODO Auto-generated method stub
-		
+		HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), false,
+				new ALAsyncCallback<String>() {
+
+					@Override
+					public void onResponse(String arg0) {
+						TabPanel.instance().myOfficePanel.entityPanel.clear();
+						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel
+								.instance().getEntityId()));
+						TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
+
+					}
+
+				});
 	}
+		// TODO Auto-generated method stub
+	
 
 	@Override
 	public void updateClicked(String entityId) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	protected String getDeleteURL(String entityId) {
+		return OfficeWelcome.instance().constants.root_url() + "phone/delete/" + entityId;
 	}
 
 }
