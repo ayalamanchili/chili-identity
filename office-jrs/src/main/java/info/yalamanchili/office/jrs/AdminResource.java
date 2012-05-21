@@ -1,9 +1,12 @@
 package info.yalamanchili.office.jrs;
 
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -33,10 +36,23 @@ public class AdminResource {
 	@Autowired
 	MessagingService messagingService;
 
+	@Autowired
+	public EmployeeDao employeeDao;
+
+	@PersistenceContext
+	EntityManager em;
+
 	@Path("/login")
 	@PUT
 	public CUser login(CUser user) {
 		return securityService.login(user);
+	}
+
+	@Path("/createuser")
+	@PUT
+	public void createUser(CUser user) {
+
+		em.merge(user);
 	}
 
 	@Path("/test")

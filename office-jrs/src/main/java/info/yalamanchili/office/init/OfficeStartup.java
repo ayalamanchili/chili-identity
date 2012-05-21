@@ -246,39 +246,39 @@ public class OfficeStartup {
 	}
 
 	protected CRole userRole() {
-		if (findEntity(CRole.class, "rolename", "USER") == null) {
+		if (findEntity(CRole.class, "rolename", "ROLE_USER") == null) {
 			CRole userRole = new CRole();
-			userRole.setRolename("USER");
+			userRole.setRolename("ROLE_USER");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "USER");
+		return findEntity(CRole.class, "rolename", "ROLE_USER");
 	}
 
 	protected CRole hrRole() {
-		if (findEntity(CRole.class, "rolename", "HR") == null) {
+		if (findEntity(CRole.class, "rolename", "ROLE_HR") == null) {
 			CRole userRole = new CRole();
-			userRole.setRolename("HR");
+			userRole.setRolename("ROLE_HR");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "HR");
+		return findEntity(CRole.class, "rolename", "ROLE_HR");
 	}
 
 	protected CRole accountsRole() {
-		if (findEntity(CRole.class, "rolename", "ACCOUNTS") == null) {
+		if (findEntity(CRole.class, "rolename", "ROLE_ACCOUNTS") == null) {
 			CRole userRole = new CRole();
-			userRole.setRolename("ACCOUNTS");
+			userRole.setRolename("ROLE_ACCOUNTS");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "ACCOUNTS");
+		return findEntity(CRole.class, "rolename", "ROLE_ACCOUNTS");
 	}
 
 	protected CRole adminRole() {
-		if (findEntity(CRole.class, "rolename", "ADMIN") == null) {
+		if (findEntity(CRole.class, "rolename", "ROLE_ADMIN") == null) {
 			CRole userRole = new CRole();
-			userRole.setRolename("ADMIN");
+			userRole.setRolename("ROLE_ADMIN");
 			return em.merge(userRole);
 		}
-		return findEntity(CRole.class, "rolename", "ADMIN");
+		return findEntity(CRole.class, "rolename", "ROLE_ADMIN");
 	}
 
 	protected CUser userUser() {
