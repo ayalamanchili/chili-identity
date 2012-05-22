@@ -1,6 +1,7 @@
 package info.yalamanchili.office.service;
 
 import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.service.exception.ServiceException;
 import info.yalamanchili.office.service.exception.ServiceException.StatusCode;
 
@@ -35,7 +36,7 @@ public class ServiceInterceptor {
 	public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object result = null;
 		for (Object arg : joinPoint.getArgs()) {
-			if (arg instanceof AbstractEntity) {
+			if (arg instanceof AbstractEntity || arg instanceof CUser) {
 				validate(arg);
 			}
 		}

@@ -228,10 +228,18 @@ public abstract class CRUDComposite extends Composite {
 		for (int i = 0; i < errorsArray.size(); i++) {
 			JSONObject err = (JSONObject) errorsArray.get(i);
 			JSONString errSource = err.get("source").isString();
-			if (errSource != null && fields.get(errSource.stringValue()) != null) {
-				BaseField field = fields.get(errSource.stringValue());
+			if (errSource != null && fields.get(getErrorProperty(errSource.stringValue())) != null) {
+				BaseField field = fields.get(getErrorProperty(errSource.stringValue()));
 				field.setMessage(err.get("description").isString().stringValue());
 			}
+		}
+	}
+
+	protected String getErrorProperty(String str) {
+		if (str.contains(".")) {
+			return str.substring(str.indexOf(".") + 1);
+		} else {
+			return str;
 		}
 	}
 }

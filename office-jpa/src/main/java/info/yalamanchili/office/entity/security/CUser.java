@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -69,6 +70,7 @@ public class CUser implements Serializable {
 	}
 
 	@OneToOne
+	@Valid
 	public Employee getEmployee() {
 		return employee;
 	}
