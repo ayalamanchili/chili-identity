@@ -31,6 +31,7 @@ public class CreateReportsToPanel extends CreateComposite {
 
 		JSONObject reportsTo = new JSONObject();
 		assignEntityValueFromField("reportsToRole", reportsTo);
+		assignEntityValueFromField("rtPrimary", reportsTo);
 		reportsTo.put("contact", contact);
 		return reportsTo;
 	}
@@ -85,6 +86,7 @@ public class CreateReportsToPanel extends CreateComposite {
 		addField("lastName", false, true, DataType.STRING_FIELD);
 		String[] strs = { "MALE", "FEMALE" };
 		addEnumField("sex", false, true, strs);
+		addField("rtPrimary", false, true, DataType.BOOLEAN_FIELD);
 	}
 
 	@Override

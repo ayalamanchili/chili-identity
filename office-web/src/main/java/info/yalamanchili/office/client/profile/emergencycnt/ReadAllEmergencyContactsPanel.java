@@ -44,7 +44,7 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 		table.setText(0, 1, getKeyValue("Primary"));
 		table.setText(0, 2, getKeyValue("First Name"));
 		table.setText(0, 3, getKeyValue("Last Name"));
-
+		table.setText(0, 4, getKeyValue("Relation"));
 	}
 
 	@Override
@@ -55,6 +55,7 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 			table.setText(i, 1, JSONUtils.toString(entity, "ecPrimary"));
 			table.setText(i, 2, JSONUtils.toString(entity.get("contact"), "firstName"));
 			table.setText(i, 3, JSONUtils.toString(entity.get("contact"), "lastName"));
+			table.setText(i, 4, JSONUtils.toString(entity, "realtion"));
 		}
 	}
 

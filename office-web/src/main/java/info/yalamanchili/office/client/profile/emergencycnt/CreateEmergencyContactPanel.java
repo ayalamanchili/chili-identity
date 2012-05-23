@@ -30,6 +30,7 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 		assignEntityValueFromField("sex", contact);
 
 		JSONObject emergencyContact = new JSONObject();
+		assignEntityValueFromField("relation", emergencyContact);
 		assignEntityValueFromField("ecPrimary", emergencyContact);
 		emergencyContact.put("contact", contact);
 		return emergencyContact;
@@ -84,6 +85,7 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 		addField("lastName", false, true, DataType.STRING_FIELD);
 		String[] strs = { "MALE", "FEMALE" };
 		addEnumField("sex", false, true, strs);
+		addField("relation", false, true, DataType.STRING_FIELD);
 		addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
 	}
 

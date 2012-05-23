@@ -29,6 +29,7 @@ public class CreateEmailPanel extends CreateComposite {
 	protected JSONObject populateEntityFromFields() {
 		JSONObject entity = new JSONObject();
 		assignEntityValueFromField("email", entity);
+		assignEntityValueFromField("primaryEmail", entity);
 		entity.put("emailType", emailTypeF.getSelectedObject());
 		return entity;
 	}
@@ -45,7 +46,7 @@ public class CreateEmailPanel extends CreateComposite {
 				new AsyncCallback<String>() {
 
 					@Override
-					public void onFailure(Throwable arg0) {												
+					public void onFailure(Throwable arg0) {
 						handleErrorResponse(arg0);
 					}
 
@@ -76,6 +77,7 @@ public class CreateEmailPanel extends CreateComposite {
 	@Override
 	protected void addWidgets() {
 		addField("email", false, true, DataType.STRING_FIELD);
+		addField("primaryEmail", false, true, DataType.BOOLEAN_FIELD);
 		entityDisplayWidget.add(emailTypeF);
 	}
 

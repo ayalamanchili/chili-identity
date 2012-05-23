@@ -49,8 +49,9 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 	@Override
 	public void createTableHeader() {
 		table.setText(0, 0, getKeyValue("Table_Action"));
-		table.setText(0, 1, getKeyValue("Type"));
-		table.setText(0, 2, getKeyValue("Email"));
+		table.setText(0, 1, getKeyValue("Primary"));
+		table.setText(0, 2, getKeyValue("Type"));
+		table.setText(0, 3, getKeyValue("Email"));
 	}
 
 	@Override
@@ -58,8 +59,9 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
 			createOptionsWidget(OptionsType.READ_DELETE, i, JSONUtils.toString(entity, "id"));
-			table.setText(i, 1, JSONUtils.toString(entity.get("emailType"), "emailType"));
-			table.setText(i, 2, JSONUtils.toString(entity, "email"));
+			table.setText(i, 1, JSONUtils.toString(entity, "primaryEmail"));
+			table.setText(i, 2, JSONUtils.toString(entity.get("emailType"), "emailType"));
+			table.setText(i, 3, JSONUtils.toString(entity, "email"));
 		}
 	}
 

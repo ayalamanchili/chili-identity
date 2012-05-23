@@ -41,9 +41,10 @@ public class ReadAllReportsToPanel extends ReadAllComposite {
 	@Override
 	public void createTableHeader() {
 		table.setText(0, 0, getKeyValue("Table_Action"));
-		table.setText(0, 1, getKeyValue("Role"));
-		table.setText(0, 2, getKeyValue("First Name"));
-		table.setText(0, 3, getKeyValue("Last Name"));
+		table.setText(0, 1, getKeyValue("Primary"));
+		table.setText(0, 2, getKeyValue("Role"));
+		table.setText(0, 3, getKeyValue("First Name"));
+		table.setText(0, 4, getKeyValue("Last Name"));
 
 	}
 
@@ -52,9 +53,10 @@ public class ReadAllReportsToPanel extends ReadAllComposite {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
 			createOptionsWidget(OptionsType.READ_DELETE, i, JSONUtils.toString(entity, "id"));
-			table.setText(i, 1, JSONUtils.toString(entity, "reportsToRole"));
-			table.setText(i, 2, JSONUtils.toString(entity.get("contact"), "firstName"));
-			table.setText(i, 3, JSONUtils.toString(entity.get("contact"), "lastName"));
+			table.setText(i, 1, JSONUtils.toString(entity, "rtPrimary"));
+			table.setText(i, 2, JSONUtils.toString(entity, "reportsToRole"));
+			table.setText(i, 3, JSONUtils.toString(entity.get("contact"), "firstName"));
+			table.setText(i, 4, JSONUtils.toString(entity.get("contact"), "lastName"));
 		}
 	}
 

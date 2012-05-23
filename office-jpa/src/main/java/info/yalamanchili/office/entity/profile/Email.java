@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,6 +37,12 @@ public class Email extends AbstractEntity {
 	@org.hibernate.validator.constraints.Email
 	@NotEmpty
 	protected String email;
+
+	/**
+	 * @generated
+	 */
+	@NotNull
+	protected Boolean primaryEmail;
 
 	/**
 	 * @generated
@@ -70,6 +77,20 @@ public class Email extends AbstractEntity {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	/**
+	 * @generated
+	 */
+	public Boolean getPrimaryEmail() {
+		return primaryEmail;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setPrimaryEmail(Boolean primaryEmail) {
+		this.primaryEmail = primaryEmail;
 	}
 
 	/**

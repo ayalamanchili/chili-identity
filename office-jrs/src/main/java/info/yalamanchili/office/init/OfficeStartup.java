@@ -73,9 +73,11 @@ public class OfficeStartup {
 
 		Email userPrimaryEmail = new Email();
 		userPrimaryEmail.setEmailType(getPrimaryEmailType());
+		userPrimaryEmail.setPrimaryEmail(true);
 		userPrimaryEmail.setEmail("user@gmail.com");
 
 		Email userSecondaryEmail = new Email();
+		userSecondaryEmail.setPrimaryEmail(false);
 		userSecondaryEmail.setEmailType(getSecondaryEmailType());
 		userSecondaryEmail.setEmail("user_secondary@gmail.com");
 
@@ -111,10 +113,12 @@ public class OfficeStartup {
 
 		Email adminPrimaryEmail = new Email();
 		adminPrimaryEmail.setEmailType(getPrimaryEmailType());
+		adminPrimaryEmail.setPrimaryEmail(true);
 		adminPrimaryEmail.setEmail("admin@gmail.com");
 
 		Email adminSecondaryEmail = new Email();
 		adminSecondaryEmail.setEmailType(getSecondaryEmailType());
+		adminSecondaryEmail.setPrimaryEmail(false);
 		adminSecondaryEmail.setEmail("admin_secondary@gmail.com");
 
 		Phone adminCellPhone = new Phone();
