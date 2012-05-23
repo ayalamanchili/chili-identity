@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -46,10 +47,11 @@ public class EmergencyContact extends AbstractEntity {
 	protected Employee employee;
 
 	/**
-	 * @generated
+	 * @NOT generated
 	 */
 
 	@ManyToOne
+	@Valid
 	protected Contact contact;
 
 	/**
