@@ -17,6 +17,8 @@ public abstract class BaseRemoteService extends RemoteServiceServlet implements
 	private static final long serialVersionUID = 7919984654320520594L;
 
 	private ServletContext servletContext;
+	
+	
 
 	@RequestMapping(method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView handleRequest(HttpServletRequest request,
