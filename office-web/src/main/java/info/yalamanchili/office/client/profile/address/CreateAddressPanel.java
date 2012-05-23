@@ -9,10 +9,15 @@ import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidg
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 
 public class CreateAddressPanel extends CreateComposite {
 
@@ -24,6 +29,11 @@ public class CreateAddressPanel extends CreateComposite {
 	private static Logger logger = Logger.getLogger(CreateAddressPanel.class.getName());
 
 	SelectAddressTypeWidget addressTypeWidget = new SelectAddressTypeWidget();
+	
+	Label statelbl = new Label();
+	ListBox stateListBox = new ListBox();
+	Label countrylbl = new Label();
+	ListBox countryListBox = new ListBox();
 
 	@Override
 	protected JSONObject populateEntityFromFields() {
@@ -31,8 +41,10 @@ public class CreateAddressPanel extends CreateComposite {
 		assignEntityValueFromField("street1", entity);
 		assignEntityValueFromField("street2", entity);
 		assignEntityValueFromField("city", entity);
-		assignEntityValueFromField("state", entity);
-		assignEntityValueFromField("country", entity);
+		//assignEntityValueFromField("state", entity);
+		//assignEntityValueFromField("country", entity);
+		entity.put("state", new JSONString(stateListBox.getItemText(stateListBox.getSelectedIndex())));
+		entity.put("country", new JSONString(countryListBox.getItemText(countryListBox.getSelectedIndex())));
 		assignEntityValueFromField("zip", entity);
 		entity.put("addressType", addressTypeWidget.getSelectedObject());
 		return entity;
@@ -74,25 +86,83 @@ public class CreateAddressPanel extends CreateComposite {
 
 	}
 
+
+	protected List <String> getStates() {
+		List<String> states = new ArrayList<String>();
+		
+		states.add("ME");
+		states.add("MD");
+		states.add("MH");
+		states.add("MA");
+		states.add("MI");
+		states.add("FM");
+		states.add("MN");
+		states.add("MS");
+		states.add("MO");
+		states.add("MT");
+		states.add("NE");
+		states.add("NV");
+		states.add("NH");
+		states.add("NJ");
+		states.add("NM");
+		states.add("NY");
+		states.add("NC");
+		states.add("ND");
+		states.add("MP");
+		states.add("OH");
+		states.add("OK");
+		states.add("OR");
+		states.add("PW");
+		states.add("PA");
+		states.add("PR");
+		states.add("RI");
+		states.add("SC");
+		states.add("SD");
+		states.add("TN");
+		states.add("TX");
+		states.add("UT");
+		states.add("VT");
+		states.add("VA");
+		states.add("VI");
+		states.add("WA");
+		states.add("WV");
+		states.add("WI");
+		states.add("WY");
+		return states;
+	}
+	
 	@Override
 	protected void configure() {
-		// TODO Auto-generated method stub
-
+		statelbl.setText("State");	
+		for(String states:getStates()){
+			stateListBox.insertItem(states,0);
+			}
+		countrylbl.setText("Country");
+		countryListBox.insertItem("SELECT",0);
+		countryListBox.insertItem("INDIA", 1);
+		countryListBox.insertItem("USA", 2);
 	}
+	
+
 
 	@Override
 	protected void addWidgets() {
 		addField("street1", false, true, DataType.STRING_FIELD);
 		addField("street2", false, true, DataType.STRING_FIELD);
 		addField("city", false, true, DataType.STRING_FIELD);
-		addField("state", false, true, DataType.STRING_FIELD);
-		addField("country", false, true, DataType.STRING_FIELD);
+		//addField("state", false, true, DataType.STRING_FIELD);
+		//addField("country", false, true, DataType.STRING_FIELD);
+		entityDisplayWidget.add(statelbl);
+		entityDisplayWidget.add(stateListBox);
+		entityDisplayWidget.add(countrylbl);
+		entityDisplayWidget.add(countryListBox);
 		addField("zip", false, true, DataType.LONG_FIELD);
 		entityDisplayWidget.add(addressTypeWidget);
 	}
 
+	
 	@Override
-	protected void addWidgetsBeforeCaptionPanel() {
+	protected void addWidgetsBeforeCaptionPanel( ) {
 		// TODO Auto-generated method stub
 
 	}
