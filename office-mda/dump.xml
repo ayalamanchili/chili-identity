@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<XMI xmi.version="1.2" timestamp="Sat May 19 10:46:04 EDT 2012">
+<XMI xmi.version="1.2" timestamp="Wed May 23 01:01:30 EDT 2012">
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -485,6 +485,21 @@
                   </UML:ModelElement.stereotype>
                   <UML:StructuralFeature.type>
                     <UML:DataType href="http://argouml.org/user-profiles/YalamanchiliMDAProfile.xmi#-91--119--6-96-66633a6:124dff5068f:-8000:0000000000000F4B"/>
+                  </UML:StructuralFeature.type>
+                </UML:Attribute>
+                <UML:Attribute xmi.id="-64--88-0--66--5aeb4282:137780f6ada:-8000:0000000000000E5E" name="primaryEmail" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance">
+                  <UML:StructuralFeature.multiplicity>
+                    <UML:Multiplicity xmi.id="-64--88-0--66--5aeb4282:137780f6ada:-8000:0000000000000E5F">
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id="-64--88-0--66--5aeb4282:137780f6ada:-8000:0000000000000E60" lower="1" upper="1"/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:StructuralFeature.multiplicity>
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype href="http://argouml.org/user-profiles/YalamanchiliMDAProfile.xmi#-91--119--6-96-7cd177bd:124e39d24e9:-8000:00000000000018E9"/>
+                  </UML:ModelElement.stereotype>
+                  <UML:StructuralFeature.type>
+                    <UML:DataType href="http://argouml.org/user-profiles/YalamanchiliMDAProfile.xmi#-91--119--6-96-66633a6:124dff5068f:-8000:0000000000000F4F"/>
                   </UML:StructuralFeature.type>
                 </UML:Attribute>
               </UML:Classifier.feature>
