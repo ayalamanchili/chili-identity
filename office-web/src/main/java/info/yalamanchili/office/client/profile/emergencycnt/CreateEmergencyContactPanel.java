@@ -6,7 +6,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -31,7 +30,7 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 		assignEntityValueFromField("sex", contact);
 
 		JSONObject emergencyContact = new JSONObject();
-		// TODO add primary flag
+		assignEntityValueFromField("ecPrimary", emergencyContact);
 		emergencyContact.put("contact", contact);
 		return emergencyContact;
 	}
@@ -57,8 +56,8 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 					public void onSuccess(String arg0) {
 						new ResponseStatusWidget().show("successfully added Emergency Contact");
 						TabPanel.instance().myOfficePanel.clear();
-						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllReportsToPanel(TreeEmployeePanel
-								.instance().getEntityId()));
+						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
+								TreeEmployeePanel.instance().getEntityId()));
 
 					}
 
@@ -85,6 +84,7 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 		addField("lastName", false, true, DataType.STRING_FIELD);
 		String[] strs = { "MALE", "FEMALE" };
 		addEnumField("sex", false, true, strs);
+		addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
 	}
 
 	@Override

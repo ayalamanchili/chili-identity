@@ -32,7 +32,6 @@ public class CreateReportsToPanel extends CreateComposite {
 		JSONObject reportsTo = new JSONObject();
 		assignEntityValueFromField("reportsToRole", reportsTo);
 		reportsTo.put("contact", contact);
-		logger.info(reportsTo.toString());
 		return reportsTo;
 	}
 

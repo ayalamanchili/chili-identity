@@ -186,6 +186,12 @@ public abstract class CRUDComposite extends Composite {
 				entity.put(fieldKey, new JSONString(field.getValue()));
 			}
 		}
+		if (fields.get(fieldKey) instanceof BooleanField) {
+			BooleanField field = (BooleanField) fields.get(fieldKey);
+			if (field.getValue() != null) {
+				entity.put(fieldKey, new JSONString(field.getValue().toString()));
+			}
+		}
 	}
 
 	protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
@@ -204,6 +210,14 @@ public abstract class CRUDComposite extends Composite {
 		if (DataType.ENUM_FIELD.equals(type)) {
 			EnumField field = (EnumField) fields.get(fieldKey);
 			field.setValue(JSONUtils.toString(entity, fieldKey));
+		}
+		if (DataType.BOOLEAN_FIELD.equals(type)) {
+			BooleanField field = (BooleanField) fields.get(fieldKey);
+			if ("true".equalsIgnoreCase(JSONUtils.toString(entity, fieldKey))) {
+				field.setValue(true);
+			} else if ("false".equalsIgnoreCase(JSONUtils.toString(entity, fieldKey))) {
+				field.setValid(false);
+			}
 		}
 	}
 
