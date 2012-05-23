@@ -16,7 +16,7 @@ public class TableRowOptionsWidget extends ALComposite {
 	ClickableLink deleteLink = new ClickableLink("delete");
 
 	public enum OptionsType {
-		READ, READ_UPDATE, READ_UPDATE_DELETE, READ_DELETE
+		READ, UPDATE, DELETE, READ_UPDATE, READ_UPDATE_DELETE, READ_DELETE
 	};
 
 	protected OptionsType type;

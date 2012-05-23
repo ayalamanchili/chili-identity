@@ -7,6 +7,8 @@ import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
+import info.yalamanchili.office.client.profile.emergencycnt.EmergencyContactOptionsPanel;
+import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPanel;
 import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPanel;
@@ -20,6 +22,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	protected static final String EMAIL_NODE = "email";
 	protected static final String PHONE_NODE = "phone";
 	protected static final String REPORTS_TO_NODE = "reportsTo";
+	protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
 
 	public TreeEmployeePanel(String entityId) {
 		super(entityId);
@@ -44,6 +47,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 		addFirstChildLink("Emails", EMAIL_NODE);
 		addFirstChildLink("Phones", PHONE_NODE);
 		addFirstChildLink("ReportsTo", REPORTS_TO_NODE);
+		addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
 	}
 
 	@Override
@@ -67,6 +71,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
 			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllReportsToPanel(entityId));
 			TabPanel.instance().myOfficePanel.entityPanel.add(new ReportsToOptionsPanel());
+		}
+		if (EMERGENCY_CONTACT_NODE.equals(entityNodeKey)) {
+			TabPanel.instance().myOfficePanel.entityPanel.clear();
+			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(entityId));
+			TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
 		}
 	}
 

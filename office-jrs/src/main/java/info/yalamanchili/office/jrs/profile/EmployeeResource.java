@@ -167,6 +167,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	@Path("/emergencycontact/{empId}")
 	public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContact entity) {
 		Employee emp = (Employee) getDao().findById(empId);
+		entity.setContact((Contact) getDao().save(entity.getContact()));
 		emp.addEmergencyContact(entity);
 	}
 
