@@ -43,7 +43,7 @@ public class CreatePhonePanel extends CreateComposite {
 
 	@Override
 	protected void addButtonClicked() {
-		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
+		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
 				new AsyncCallback<String>() {
 
 					@Override

@@ -70,7 +70,7 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 
 	@Override
 	public void deleteClicked(String entityId) {
-		HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), false,
+		HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
 				new ALAsyncCallback<String>() {
 
 					@Override

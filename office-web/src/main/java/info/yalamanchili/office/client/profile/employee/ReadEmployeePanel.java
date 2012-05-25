@@ -28,7 +28,7 @@ public class ReadEmployeePanel extends ReadComposite {
 
 	@Override
 	public void loadEntity(String entityId) {
-		HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), false,
+		HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
 				new ALAsyncCallback<String>() {
 
 					@Override

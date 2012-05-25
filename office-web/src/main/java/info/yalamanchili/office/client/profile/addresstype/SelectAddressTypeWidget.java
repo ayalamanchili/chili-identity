@@ -20,7 +20,7 @@ public class SelectAddressTypeWidget extends SelectComposite {
 
 	protected void fetchDropDownData() {
 		HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
-				OfficeWelcome.instance().getHeaders(), false, new ALAsyncCallback<String>() {
+				OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
 					@Override
 					public void onResponse(String entityString) {

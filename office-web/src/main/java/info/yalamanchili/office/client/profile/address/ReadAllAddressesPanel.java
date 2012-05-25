@@ -30,7 +30,7 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
 	@Override
 	public void preFetchTable(int start) {
 		HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, 0, 10),
-				OfficeWelcome.instance().getHeaders(), false, new ALAsyncCallback<String>() {
+				OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
 					@Override
 					public void onResponse(String result) {
@@ -83,7 +83,7 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
 
 	@Override
 	public void deleteClicked(String entityId) {
-		HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), false,
+		HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
 				new ALAsyncCallback<String>() {
 
 					@Override

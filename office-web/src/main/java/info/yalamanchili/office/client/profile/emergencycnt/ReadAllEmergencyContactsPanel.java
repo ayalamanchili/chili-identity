@@ -26,7 +26,7 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
 	@Override
 	public void preFetchTable(int start) {
-		HttpServiceAsync.instance().doGet(getReadAllURL(0, 10), OfficeWelcome.instance().getHeaders(), false,
+		HttpServiceAsync.instance().doGet(getReadAllURL(0, 10), OfficeWelcome.instance().getHeaders(), true,
 				new ALAsyncCallback<String>() {
 
 					@Override

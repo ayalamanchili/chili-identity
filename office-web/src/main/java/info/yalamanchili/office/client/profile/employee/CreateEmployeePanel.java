@@ -79,7 +79,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
 	@Override
 	public void createButtonClicked() {
-		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
+		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
 				new AsyncCallback<String>() {
 
 					@Override
