@@ -37,6 +37,10 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
 
 			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<!-- Hibernate Search -->
+			<property name="hibernate.search.default.directory_provider"
+				value="org.hibernate.search.store.FSDirectoryProvider" />
+			<property name="hibernate.search.default.indexBase" value="e:/office/lucene/indexes" />
 		</properties>
 	</persistence-unit>
 

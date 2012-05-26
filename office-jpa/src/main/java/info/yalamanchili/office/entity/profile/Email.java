@@ -15,6 +15,9 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -22,6 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  * @generated
  */
+@Indexed
 @XmlRootElement
 @Entity
 public class Email extends AbstractEntity {
@@ -42,6 +46,7 @@ public class Email extends AbstractEntity {
 	 * @generated
 	 */
 	@NotNull
+	@Field(index = Index.UN_TOKENIZED)
 	protected Boolean primaryEmail;
 
 	/**

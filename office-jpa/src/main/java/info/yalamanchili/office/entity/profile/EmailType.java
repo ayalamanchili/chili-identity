@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -23,6 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  * @generated
  */
+@Indexed
 @XmlRootElement
 @Entity
 public class EmailType extends AbstractEntity {
@@ -35,6 +38,7 @@ public class EmailType extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@Field
 	@NotEmpty
 	protected String emailType;
 

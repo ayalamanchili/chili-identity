@@ -23,6 +23,9 @@ import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -33,6 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @XmlRootElement
 @Entity
+@Indexed
 public class Contact extends AbstractEntity {
 	/**
 	 * @generated
@@ -44,29 +48,34 @@ public class Contact extends AbstractEntity {
 	 * @generated
 	 */
 	@NotEmpty
+	@Field
 	protected String firstName;
 
 	/**
 	 * @generated
 	 */
 	@NotEmpty
+	@Field
 	protected String lastName;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String middleInitial;
 
 	/**
 	 * @generated
 	 */
 	@Past
+	@Field(index = Index.UN_TOKENIZED)
 	protected Date dateOfBirth;
 
 	/**
 	 * @generated
 	 */
 	@Enumerated(EnumType.STRING)
+	@Field
 	protected Sex sex;
 
 	/**
@@ -88,7 +97,7 @@ public class Contact extends AbstractEntity {
 	 */
 
 	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
-	protected List<Phone> phones;	
+	protected List<Phone> phones;
 
 	/**
 	 * @generated

@@ -14,6 +14,8 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -21,6 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  * @generated
  */
+@Indexed
 @XmlRootElement
 @Entity
 public class Address extends AbstractEntity {
@@ -33,35 +36,41 @@ public class Address extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@Field
 	@NotEmpty
 	protected String street1;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String street2;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	@NotEmpty
 	protected String city;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	@NotEmpty
 	protected String state;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	@NotEmpty
 	protected String country;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String zip;
 
 	/**

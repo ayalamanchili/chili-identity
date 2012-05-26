@@ -19,6 +19,9 @@ import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -26,6 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  * @generated
  */
+@Indexed
 @XmlRootElement
 @Entity
 public class Company extends AbstractEntity {
@@ -38,6 +42,7 @@ public class Company extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@Field
 	@NotEmpty
 	protected String name;
 
@@ -45,11 +50,13 @@ public class Company extends AbstractEntity {
 	 * @generated
 	 */
 	@Past
+	@Field(index = Index.UN_TOKENIZED)
 	protected Date establishedDate;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String logoURL;
 
 	/**

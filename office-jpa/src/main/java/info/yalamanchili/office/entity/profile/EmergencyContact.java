@@ -15,11 +15,16 @@ import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
  * @generated
  */
+@Indexed
 @XmlRootElement
 @Entity
 public class EmergencyContact extends AbstractEntity {
@@ -32,11 +37,13 @@ public class EmergencyContact extends AbstractEntity {
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String relation;
 
 	/**
 	 * @generated
 	 */
+	@Field(index = Index.UN_TOKENIZED)
 	protected Boolean ecPrimary;
 
 	/**

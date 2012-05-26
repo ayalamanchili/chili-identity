@@ -18,11 +18,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
  * @generated
  */
+@Indexed
 @XmlRootElement
 @Entity
 public class Employee extends Contact {
@@ -35,11 +40,13 @@ public class Employee extends Contact {
 	/**
 	 * @generated
 	 */
+	@Field(index = Index.UN_TOKENIZED)
 	protected Date startDate;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String ssn;
 
 	/**

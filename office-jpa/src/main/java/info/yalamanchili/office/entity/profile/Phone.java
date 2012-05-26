@@ -15,11 +15,15 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
  * @generated
  */
+@Indexed
 @XmlRootElement
 @Entity
 public class Phone extends AbstractEntity {
@@ -33,16 +37,19 @@ public class Phone extends AbstractEntity {
 	 * @generated
 	 */
 	@Size(min = 10, max = 10)
+	@Field
 	protected String phoneNumber;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String extension;
 
 	/**
 	 * @generated
 	 */
+	@Field
 	protected String countryCode;
 
 	/**

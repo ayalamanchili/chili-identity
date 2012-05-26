@@ -3,9 +3,12 @@ package info.yalamanchili.office.jrs;
 import static info.yalamanchili.office.init.JPAUtils.findEntity;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +19,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.dozer.Mapper;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -62,7 +67,14 @@ public class AdminResource {
 	@Path("/test")
 	@GET
 	public void test() {
-		messagingService.sendEmail("asdf@gmail.com", "asdf");
+		System.out.println("dddddddddddddddddddddddddddddddd");
+		// messagingService.sendEmail("asdf@gmail.com", "asdf");
+		FullTextEntityManager fullTextEntityManager = Search.createFullTextEntityManager(em);
+
+		List<Employee> cheeses = em.createQuery("from Employee").getResultList();
+		for (Employee emp : cheeses) {
+			fullTextEntityManager.index(emp);
+		}
 	}
 
 }

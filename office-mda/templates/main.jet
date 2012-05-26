@@ -12,7 +12,7 @@
 <c:setVariable select="'1.0-SNAPSHOT'" var="version"/>
 <c:setVariable select="'E://codebase//office//trunk'" var="location"/>
 <%--features--%>
-<c:setVariable select="'false'" var="enableHibernateSearch"/>
+<c:setVariable select="'true'" var="enableHibernateSearch"/>
 <%-- set true to add jaxb annotations to jpa classes--%>
 <c:setVariable select="'TRUE'" var="supportJAXB"/>
 <%--code generation properties--%>
