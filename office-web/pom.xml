@@ -22,12 +22,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>${gwt.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
@@ -71,17 +65,17 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
-			<version>4.1.1</version>
+			<version>${http.client.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.1.1</version>
+			<version>${http.client.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>4.1.1</version>
+			<version>${http.client.version}</version>
 		</dependency>
 		<!-- File upload -->
 		<!-- Apache fileupload -->
@@ -100,6 +94,20 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.6</version>
+		</dependency>
+		<!-- Tests deps -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.17.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -182,8 +190,73 @@
 					<port>9090</port>
 				</configuration>
 			</plugin>
+			<!-- to exclude integration tests from running during build -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/integration/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>ui-tests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>**/integration/**</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>integration-test</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>none</exclude>
+									</excludes>
+									<includes>
+										<include>**/integration/**</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat6-maven-plugin</artifactId>
+						<version>2.0-beta-1</version>
+						<configuration>
+							<path>/${project.build.finalName}</path>
+							<port>9090</port>
+							<fork>true</fork>
+						</configuration>
+						<executions>
+							<execution>
+								<id>run-tomcat</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run-war-only</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+
+			</dependencies>
+		</profile>
+	</profiles>
 	<!-- download artifacts from this repo -->
 	<repositories>
 		<repository>
@@ -231,6 +304,7 @@
 		<yalamanchili.version>1.1-SNAPSHOT</yalamanchili.version>
 		<gwt.version>2.4.0</gwt.version>
 		<gwt.plugin.version>2.4.0</gwt.plugin.version>
+		<http.client.version>4.2</http.client.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 	</properties>
 </project>
