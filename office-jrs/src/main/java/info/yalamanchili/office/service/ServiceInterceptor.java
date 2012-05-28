@@ -32,15 +32,18 @@ public class ServiceInterceptor {
 	@Autowired
 	protected ServiceMessages serviceMessages;
 
-	//@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
+	@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
 	public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object result = null;
-		for (Object arg : joinPoint.getArgs()) {
-			if (arg instanceof AbstractEntity || arg instanceof CUser) {
-				validate(arg);
+		/* skip validation for search methods */
+		if (!joinPoint.getSignature().toShortString().contains("search")) {
+			for (Object arg : joinPoint.getArgs()) {
+				if (arg instanceof AbstractEntity || arg instanceof CUser) {
+					validate(arg);
+				}
 			}
+			checkForErrors();
 		}
-		checkForErrors();
 		try {
 			result = joinPoint.proceed();
 		} catch (Exception e) {
