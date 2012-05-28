@@ -1,6 +1,6 @@
 package info.yalamanchili.office.jrs;
 
-import static info.yalamanchili.office.init.JPAUtils.findEntity;
+import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.security.CRole;

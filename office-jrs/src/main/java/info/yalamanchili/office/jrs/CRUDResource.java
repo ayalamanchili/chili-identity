@@ -65,5 +65,11 @@ public abstract class CRUDResource<T> {
 		return getDao().search(searchText, start, limit);
 	}
 
+	@PUT
+	@Path("/search/{start}/{limit}")
+	public List<T> search(T entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+		return getDao().search(entity, start, limit);
+	}
+
 	public abstract CRUDDao getDao();
 }

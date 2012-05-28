@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dao;
 
 import info.yalamanchili.commons.DataType;
+import info.yalamanchili.commons.EntityQueryUtils;
 import info.yalamanchili.commons.ReflectionUtils;
 import info.yalamanchili.commons.SearchUtils;
 
@@ -49,6 +50,24 @@ public abstract class CRUDDao<T> {
 		return query(start, limit);
 	}
 
+	public <T> List<String> getSuggestionsForName(String name, T entity) {
+		Query query = getEntityManager().createQuery(EntityQueryUtils.getSuggestionsQueryForName(name, entity));
+		return query.getResultList();
+	}
+
+	public T save(T entity) {
+		return getEntityManager().merge(entity);
+	}
+
+	public void delete(Long id) {
+		getEntityManager().remove(findById(id));
+	}
+
+	public Long size() {
+		Query sizeQuery = getEntityManager().createQuery("select count (*) from " + entityCls.getCanonicalName());
+		return (Long) sizeQuery.getSingleResult();
+	}
+
 	// TODO update the depreciated methods
 	public List<T> search(String searchText, int start, int limit) {
 		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search
@@ -63,17 +82,11 @@ public abstract class CRUDDao<T> {
 		return searchQuery.getResultList();
 	}
 
-	public T save(T entity) {
-		return getEntityManager().merge(entity);
-	}
-
-	public void delete(Long id) {
-		getEntityManager().remove(findById(id));
-	}
-
-	public Long size() {
-		Query sizeQuery = getEntityManager().createQuery("select count (*) from " + entityCls.getCanonicalName());
-		return (Long) sizeQuery.getSingleResult();
+	public List<T> search(T entity, int start, int limit) {
+		Query searchQuery = getEntityManager().createQuery(SearchUtils.getSearchQueryString(entity), entityCls);
+		searchQuery.setFirstResult(start);
+		searchQuery.setMaxResults(limit);
+		return searchQuery.getResultList();
 	}
 
 	public abstract EntityManager getEntityManager();

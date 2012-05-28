@@ -1,6 +1,6 @@
 package info.yalamanchili.office.init;
 
-import static info.yalamanchili.office.init.JPAUtils.findEntity;
+import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.commons.DateUtils;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;

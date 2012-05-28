@@ -32,7 +32,7 @@ public class ServiceInterceptor {
 	@Autowired
 	protected ServiceMessages serviceMessages;
 
-	@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
+	//@Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
 	public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object result = null;
 		for (Object arg : joinPoint.getArgs()) {
