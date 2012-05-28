@@ -3,6 +3,7 @@ package info.yalamanchili.office.init;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+//TODO move to y-commons
 public class JPAUtils {
 	public static <T> T findEntity(EntityManager em, Class<?> entity, String paramName, String paramValue) {
 		Query query = em.createQuery("from " + entity.getCanonicalName() + " where " + paramName + "='" + paramValue

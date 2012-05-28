@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
+import info.yalamanchili.commons.SearchUtils;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Address;
@@ -25,6 +26,8 @@ import info.yalamanchili.office.jrs.profile.ReportsToResource.ReportsToTable;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -33,6 +36,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.util.Version;
+import org.hibernate.search.jpa.FullTextEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -51,6 +57,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
 	@Autowired
 	public EmployeeDao employeeDao;
 
+	@PersistenceContext
+	protected EntityManager em;
+
 	@GET
 	@Path("/{start}/{limit}")
 	public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -59,6 +68,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 		tableObj.setSize(getDao().size());
 		return tableObj;
 	}
+
 
 	/* Address */
 	@GET

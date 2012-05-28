@@ -58,5 +58,12 @@ public abstract class CRUDResource<T> {
 		return getDao().size();
 	}
 
+	@GET
+	@Path("/search/{searchText}/{start}/{limit}")
+	public List<T> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+			@PathParam("limit") int limit) {
+		return getDao().search(searchText, start, limit);
+	}
+
 	public abstract CRUDDao getDao();
 }
