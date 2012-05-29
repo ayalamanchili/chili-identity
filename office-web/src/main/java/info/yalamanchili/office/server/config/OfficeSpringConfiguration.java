@@ -45,9 +45,9 @@ public class OfficeSpringConfiguration {
 	public ConnectorServerFactoryBean connectorServerFactoryBean() {
 		ConnectorServerFactoryBean connectorServerFactoryBean = new ConnectorServerFactoryBean();
 		try {
-			connectorServerFactoryBean.setObjectName("connector:name=rmi");
+			connectorServerFactoryBean.setObjectName("connector:name=office-web-rmi");
 			connectorServerFactoryBean
-					.setServiceUrl("service:jmx:rmi://localhost/jndi/rmi://localhost:10098/myconnector");
+					.setServiceUrl("service:jmx:rmi://localhost/jndi/rmi://localhost:10098/office-web-connector");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
