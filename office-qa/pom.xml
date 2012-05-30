@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>info.yalamanchili.office</groupId>
+	<artifactId>office-qa</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>office-qa</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>info.yalamanchili.office</groupId>
+			<artifactId>office-web</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>info.yalamanchili.office</groupId>
+			<artifactId>office-jrs</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<!-- Selenium Web driver -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.17.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<!-- Container configuration -->
+					<container>
+						<containerId>tomcat6x</containerId>
+						<home>${env.CATALINA_HOME}</home>
+					</container>
+					<configuration>
+						<type>existing</type>
+						<home>${env.CATALINA_HOME}</home>
+						<properties>
+							<cargo.servlet.port>8084</cargo.servlet.port>
+						</properties>
+					</configuration>
+					<deployer>
+						<!-- You have to again specify that the type for the deployer -->
+						<type>installed</type>
+						<deployables>
+							<!-- This deployable specifies the webapp you want to deploy -->
+							<deployable>
+								<groupId>info.yalamanchili.office</groupId>
+								<artifactId>office-web</artifactId>
+								<type>war</type>
+								<properties>
+									<context>/office-web</context>
+								</properties>
+							</deployable>
+							<deployable>
+								<groupId>info.yalamanchili.office</groupId>
+								<artifactId>office-jrs</artifactId>
+								<type>war</type>
+								<properties>
+									<context>/office</context>
+								</properties>
+							</deployable>
+						</deployables>
+					</deployer>
+				</configuration>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>deployer-deploy</goal>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>undeploy</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<!-- TODO add undeploy goal -->
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- to exclude integration tests from running during build -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/integration/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>none</exclude>
+							</excludes>
+							<includes>
+								<include>**/integration/**</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
