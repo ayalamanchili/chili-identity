@@ -49,6 +49,7 @@
 				<artifactId>cargo-maven2-plugin</artifactId>
 				<version>1.0</version>
 				<configuration>
+					<wait>false</wait>
 					<!-- Container configuration -->
 					<container>
 						<containerId>tomcat6x</containerId>
