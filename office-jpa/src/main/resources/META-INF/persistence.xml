@@ -40,7 +40,7 @@
 			<!-- Hibernate Search -->
 			<property name="hibernate.search.default.directory_provider"
 				value="org.hibernate.search.store.FSDirectoryProvider" />
-			<property name="hibernate.search.default.indexBase" value="e:/office/lucene/indexes" />
+			<property name="hibernate.search.default.indexBase" value="c:/office/lucene/indexes" />
 		</properties>
 	</persistence-unit>
 
