@@ -8,6 +8,8 @@ import info.yalamanchili.commons.DataType;
 import info.yalamanchili.commons.EntityQueryUtils;
 import info.yalamanchili.commons.ReflectionUtils;
 import info.yalamanchili.commons.SearchUtils;
+import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.mapper.BeanMapper;
 
 import java.util.List;
 
@@ -56,6 +58,12 @@ public abstract class CRUDDao<T> {
 	}
 
 	public T save(T entity) {
+		if (entity instanceof AbstractEntity) {
+			if (((AbstractEntity) entity).getId() != null) {
+				// map root level primitive types
+				entity = (T) BeanMapper.merge(entity, findById(((AbstractEntity) entity).getId()));
+			}
+		}
 		return getEntityManager().merge(entity);
 	}
 
