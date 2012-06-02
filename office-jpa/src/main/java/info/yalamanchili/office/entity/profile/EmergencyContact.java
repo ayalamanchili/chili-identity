@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -131,7 +130,10 @@ public class EmergencyContact extends AbstractEntity {
 	 * @generated
 	 */
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
+		StringBuilder sb = new StringBuilder();
+		sb.append(getRelation());
+		sb.append(":");
+		return sb.toString();
 	}
 
 }
