@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -103,10 +104,7 @@ public class PhoneType extends AbstractEntity {
 	 * @generated
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getPhoneType());
-		sb.append(":");
-		return sb.toString();
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 }

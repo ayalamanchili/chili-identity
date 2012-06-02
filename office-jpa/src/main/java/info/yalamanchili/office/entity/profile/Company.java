@@ -19,6 +19,7 @@ import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -148,10 +149,7 @@ public class Company extends AbstractEntity {
 	 * @generated
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getName());
-		sb.append(":");
-		return sb.toString();
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 }

@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -130,10 +131,7 @@ public class ReportsTo extends AbstractEntity {
 	 * @generated
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getReportsToRole());
-		sb.append(":");
-		return sb.toString();
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 }

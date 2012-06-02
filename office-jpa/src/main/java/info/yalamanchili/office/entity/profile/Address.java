@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -216,20 +217,7 @@ public class Address extends AbstractEntity {
 	 * @generated
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getStreet1());
-		sb.append(":");
-		sb.append(getStreet2());
-		sb.append(":");
-		sb.append(getCity());
-		sb.append(":");
-		sb.append(getState());
-		sb.append(":");
-		sb.append(getCountry());
-		sb.append(":");
-		sb.append(getZip());
-		sb.append(":");
-		return sb.toString();
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 }

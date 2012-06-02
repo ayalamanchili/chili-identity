@@ -23,7 +23,7 @@ import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.hibernate.search.annotations.DateBridge;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -268,14 +268,7 @@ public class Contact extends AbstractEntity {
 	 * @generated
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getFirstName());
-		sb.append(":");
-		sb.append(getLastName());
-		sb.append(":");
-		sb.append(getMiddleInitial());
-		sb.append(":");
-		return sb.toString();
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 }
