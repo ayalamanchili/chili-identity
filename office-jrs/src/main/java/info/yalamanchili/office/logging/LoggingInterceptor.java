@@ -17,14 +17,17 @@ public class LoggingInterceptor {
 	@Before("execution(* info.yalamanchili.office..*.*(..))")
 	public void logBefore(JoinPoint joinPoint) {
 		if (log.isInfoEnabled()) {
-			log.info("--- invoking --- :" + joinPoint.getSignature());
+			log.info("-------------- invoking ---------------- :" + joinPoint.getSignature());
+			for (Object input : joinPoint.getArgs()) {
+				log.info("with input:"+ReflectionToStringBuilder.toString(input));
+			}
 		}
 	}
 
 	@AfterReturning(pointcut = "execution(* info.yalamanchili.office..*.*(..))", returning = "result")
 	public void logAfterReturning(JoinPoint joinPoint, Object result) {
 		if (log.isInfoEnabled()) {
-			log.info("--- returning :" + joinPoint.getSignature() + "--- with result :"
+			log.info("------------ returning :" + joinPoint.getSignature() + "------------ with result :"
 					+ ReflectionToStringBuilder.toString(result));
 		}
 	}
