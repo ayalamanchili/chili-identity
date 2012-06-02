@@ -86,11 +86,11 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 		return homePanel;
 	}
 
-	public EntityLayout getProfilePanel() {
+	public EntityLayout getSocialPanel() {
 		return socialPanel;
 	}
 
-	public EntityLayout getAdminPanel() {
+	public EntityLayout getMyOfficePanel() {
 		return myOfficePanel;
 	}
 }

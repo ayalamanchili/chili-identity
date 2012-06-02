@@ -15,98 +15,95 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.office.client.profile.email.UpdateEmailPanel;
 
 public class ReadAllAddressesPanel extends ReadAllComposite {
-	private static Logger logger = Logger.getLogger(ReadAllAddressesPanel.class.getName());
 
-	public static ReadAllAddressesPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllAddressesPanel.class.getName());
+    public static ReadAllAddressesPanel instance;
 
-	public ReadAllAddressesPanel(String parentId) {
-		instance = this;
-		this.parentId = parentId;
-		initTable("Address", OfficeWelcome.constants);
-	}
+    public ReadAllAddressesPanel(String parentId) {
+        instance = this;
+        this.parentId = parentId;
+        initTable("Address", OfficeWelcome.constants);
+    }
 
-	@Override
-	public void preFetchTable(int start) {
-		HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, 0, 10),
-				OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+    @Override
+    public void preFetchTable(int start) {
+        HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, 0, 10),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
-					@Override
-					public void onResponse(String result) {
-						logger.info(result);
-						postFetchTable(result);
-					}
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
 
-				});
+    }
 
-	}
+    public String getEmployeeAddressesURL(String employeeId, Integer start, Integer limit) {
+        return OfficeWelcome.constants.root_url() + "employee/addresses/" + employeeId + "/" + start.toString() + "/"
+                + limit.toString();
+    }
 
-	public String getEmployeeAddressesURL(String employeeId, Integer start, Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/addresses/" + employeeId + "/" + start.toString() + "/"
-				+ limit.toString();
-	}
+    @Override
+    public void createTableHeader() {
+        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 1, getKeyValue("Type"));
+        table.setText(0, 2, getKeyValue("Street 1"));
+        table.setText(0, 3, getKeyValue("Street 2"));
+        table.setText(0, 4, getKeyValue("City"));
+        table.setText(0, 5, getKeyValue("State"));
+        table.setText(0, 6, getKeyValue("Country"));
+        table.setText(0, 7, getKeyValue("Zip"));
 
-	@Override
-	public void createTableHeader() {
-		table.setText(0, 0, getKeyValue("Table_Action"));
-		table.setText(0, 1, getKeyValue("Type"));
-		table.setText(0, 2, getKeyValue("Street 1"));
-		table.setText(0, 3, getKeyValue("Street 2"));
-		table.setText(0, 4, getKeyValue("City"));
-		table.setText(0, 5, getKeyValue("State"));
-		table.setText(0, 6, getKeyValue("Country"));
-		table.setText(0, 7, getKeyValue("Zip"));
+    }
 
-	}
+    @Override
+    public void fillData(JSONArray entities) {
+        for (int i = 1; i <= entities.size(); i++) {
+            JSONObject entity = (JSONObject) entities.get(i - 1);
+            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, i, JSONUtils.toString(entity, "id"));
+            table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
+            table.setText(i, 2, JSONUtils.toString(entity, "street1"));
+            table.setText(i, 3, JSONUtils.toString(entity, "street2"));
+            table.setText(i, 4, JSONUtils.toString(entity, "city"));
+            table.setText(i, 5, JSONUtils.toString(entity, "state"));
+            table.setText(i, 6, JSONUtils.toString(entity, "country"));
+            table.setText(i, 7, JSONUtils.toString(entity, "zip"));
+        }
+    }
 
-	@Override
-	public void fillData(JSONArray entities) {
-		for (int i = 1; i <= entities.size(); i++) {
-			JSONObject entity = (JSONObject) entities.get(i - 1);
-			createOptionsWidget(OptionsType.READ_DELETE, i, JSONUtils.toString(entity, "id"));
-			table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
-			table.setText(i, 2, JSONUtils.toString(entity, "street1"));
-			table.setText(i, 3, JSONUtils.toString(entity, "street2"));
-			table.setText(i, 4, JSONUtils.toString(entity, "city"));
-			table.setText(i, 5, JSONUtils.toString(entity, "state"));
-			table.setText(i, 6, JSONUtils.toString(entity, "country"));
-			table.setText(i, 7, JSONUtils.toString(entity, "zip"));
-		}
-	}
+    @Override
+    public void viewClicked(String entityId) {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void viewClicked(String entityId) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void deleteClicked(String entityId) {
+        HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
 
-	@Override
-	public void deleteClicked(String entityId) {
-		HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-				new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
 
-					@Override
-					public void onResponse(String arg0) {
-						TabPanel.instance().myOfficePanel.entityPanel.clear();
-						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel
-								.instance().getEntityId()));
-						TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
+                    }
+                });
 
-					}
+    }
 
-				});
-		
-	}
+    @Override
+    public void updateClicked(String entityId) {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+//        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressPanel(getEntity(entityId)));
 
-	@Override
-	public void updateClicked(String entityId) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	protected String getDeleteURL(String entityId) {
-		return OfficeWelcome.instance().constants.root_url() + "address/delete/" + entityId;
-	}
+    }
 
+    protected String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "address/delete/" + entityId;
+    }
 }

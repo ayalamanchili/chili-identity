@@ -76,6 +76,9 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
      * The no of results l.
      */
     protected Label noOfResultsL = new Label("Total Results:");
+    /*
+     * Set of entityId and widgets respectively
+     */
     protected Map<String, TableRowOptionsWidget> optionsWidgetMap = new HashMap<String, TableRowOptionsWidget>();
 
     protected void initTable(String className, ConstantsWithLookup constants) {
@@ -179,6 +182,16 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 
     protected String getEntityId(int row) {
         return table.getWidget(row, 0).getTitle();
+    }
+
+    protected JSONObject getEntity(String entityId) {
+        for (int i = 0; i < entities.size(); i++) {
+            JSONObject entity = (JSONObject) entities.get(i);
+            if (entityId.equals(JSONUtils.toString(entity, "id"))) {
+                return entity;
+            }
+        }
+        return null;
     }
 
     public abstract void fillData(JSONArray entities);

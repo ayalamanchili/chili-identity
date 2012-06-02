@@ -26,9 +26,9 @@ public class ProfileMenu extends Composite {
 
 	Command employeeMaintainenceCmd = new Command() {
 		public void execute() {
-			TabPanel.instance().getAdminPanel().clear();
-			TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllEmployeesPanel());
-			TabPanel.instance().getAdminPanel().sidePanelTop.add(new EmployeeSidePanel());
+			TabPanel.instance().getMyOfficePanel().clear();
+			TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
+			TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
 		}
 	};
 }

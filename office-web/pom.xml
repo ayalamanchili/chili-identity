@@ -202,60 +202,6 @@
 		</plugins>
 	</build>
 	<profiles>
-		<profile>
-			<id>ui-tests</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<excludes>
-								<exclude>**/integration/**</exclude>
-							</excludes>
-						</configuration>
-						<executions>
-							<execution>
-								<id>integration-test</id>
-								<phase>integration-test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>none</exclude>
-									</excludes>
-									<includes>
-										<include>**/integration/**</include>
-									</includes>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.tomcat.maven</groupId>
-						<artifactId>tomcat6-maven-plugin</artifactId>
-						<version>2.0-beta-1</version>
-						<configuration>
-							<path>/${project.build.finalName}</path>
-							<port>9090</port>
-							<fork>true</fork>
-						</configuration>
-						<executions>
-							<execution>
-								<id>run-tomcat</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>run-war-only</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<dependencies>
-
-			</dependencies>
-		</profile>
 	</profiles>
 	<!-- download artifacts from this repo -->
 	<repositories>
