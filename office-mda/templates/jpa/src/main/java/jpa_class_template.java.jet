@@ -7,6 +7,8 @@
 package ${$groupID}.entity.${$package/@name};
  
 <java:importsLocation package="{$package/@name}"/>
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -425,12 +427,7 @@ super();
 </c:iterate>
 	<f:message>generated.comment</f:message>
 	public String toString(){
-	StringBuilder sb= new StringBuilder();
-<c:iterate select="$class/Classifier.feature/Attribute" var="attribute">
-	 <c:choose select="$attribute/StructuralFeature.type/DataType/@href" > <c:when test="${'$StringID'}" > sb.append(get${uppercaseFirst($attribute/@name)}());  sb.append(":");</c:when> 
-</c:choose> 
-</c:iterate>
-	return sb.toString();
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 }
