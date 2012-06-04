@@ -8,31 +8,29 @@ import com.google.gwt.user.client.ui.RichTextArea;
 
 public class ReadPostWidget extends ALComposite {
 
-	FlowPanel mainPanel = new FlowPanel();
+    FlowPanel mainPanel = new FlowPanel();
+    Label header = new Label();
+    RichTextArea body = new RichTextArea();
 
-	Label header = new Label();
+    public ReadPostWidget(String headerText, String bodyText) {
+        init(mainPanel);
+        header.setText(headerText);
+        body.setHTML(bodyText);
+    }
 
-	RichTextArea body = new RichTextArea();
+    @Override
+    protected void addListeners() {
+        // TODO Auto-generated method stub
+    }
 
-	public ReadPostWidget(String headerText, String bodyText) {
-		init(mainPanel);
-	}
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void addListeners() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	protected void addWidgets() {
-		mainPanel.add(header);
-		mainPanel.add(body);
-	}
-
+    @Override
+    protected void addWidgets() {
+        mainPanel.add(header);
+        mainPanel.add(body);
+    }
 }
