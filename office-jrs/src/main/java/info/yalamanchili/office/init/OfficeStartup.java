@@ -15,6 +15,7 @@ import info.yalamanchili.office.entity.profile.ReportsTo;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
+import info.yalamanchili.office.entity.social.Post;
 
 import java.util.Date;
 
@@ -133,6 +134,13 @@ public class OfficeStartup {
 		adminEmp.addEmergencyContact(userEmergencyContact());
 		adminEmp = em.merge(adminEmp);
 		userAdmin().setEmployee(adminEmp);
+
+		// Social
+		Post userPost1 = new Post();
+		userPost1.setPostTimeStamp(new Date());
+		userPost1.setPostContent("this is my first post by user");
+		userEmp.addPost(userPost1);
+		em.merge(userEmp);
 
 	}
 

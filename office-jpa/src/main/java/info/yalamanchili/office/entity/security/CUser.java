@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @Entity
@@ -71,6 +72,7 @@ public class CUser implements Serializable {
 
 	@OneToOne
 	@Valid
+	@XmlTransient
 	public Employee getEmployee() {
 		return employee;
 	}

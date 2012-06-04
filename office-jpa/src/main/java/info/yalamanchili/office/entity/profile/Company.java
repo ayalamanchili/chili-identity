@@ -6,6 +6,7 @@
 package info.yalamanchili.office.entity.profile;
 
 import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.social.Post;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,6 +66,9 @@ public class Company extends AbstractEntity {
 
 	@OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
 	protected List<Employee> employees;
+
+	@OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
+	protected List<Post> posts;
 
 	/**
 	 * @generated
@@ -142,6 +146,26 @@ public class Company extends AbstractEntity {
 		}
 		getEmployees().add(entity);
 		entity.setCompany(this);
+	}
+
+	@XmlTransient
+	public List<Post> getPosts() {
+		if (this.posts == null) {
+			this.posts = new ArrayList<Post>();
+		}
+		return this.posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public void addPost(Post post) {
+		if (post == null) {
+			return;
+		}
+		getPosts().add(post);
+		post.setCompany(this);
 	}
 
 	/**

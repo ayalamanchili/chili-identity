@@ -5,6 +5,8 @@
 
 package info.yalamanchili.office.entity.profile;
 
+import info.yalamanchili.office.entity.social.Post;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +78,9 @@ public class Employee extends Contact {
 
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	protected List<EmergencyContact> emergencyContacts;
+
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	protected List<Post> posts;
 
 	/**
 	 * @generated
@@ -198,6 +203,26 @@ public class Employee extends Contact {
 		}
 		getEmergencyContacts().add(entity);
 		entity.setEmployee(this);
+	}
+
+	@XmlTransient
+	public List<Post> getPosts() {
+		if (this.posts == null) {
+			this.posts = new ArrayList<Post>();
+		}
+		return this.posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public void addPost(Post post) {
+		if (post == null) {
+			return;
+		}
+		getPosts().add(post);
+		post.setEmployee(this);
 	}
 
 	/**

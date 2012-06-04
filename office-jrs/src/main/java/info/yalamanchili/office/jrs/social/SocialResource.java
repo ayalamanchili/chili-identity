@@ -1,0 +1,39 @@
+package info.yalamanchili.office.jrs.social;
+
+import info.yalamanchili.office.dao.social.SocialDao;
+import info.yalamanchili.office.entity.social.Post;
+
+import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * 
+ * @author ayalamanchili
+ */
+@Path("/social")
+@Component
+@Transactional
+@Produces("application/json")
+@Consumes("application/json")
+@Scope("request")
+public class SocialResource {
+
+	@Autowired
+	public SocialDao socialDao;
+
+	@GET
+	@Path("/employeefeed/{start}/{limit}")
+	public List<Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
+		return socialDao.getEmployeeFeed(start, limit);
+	}
+}
