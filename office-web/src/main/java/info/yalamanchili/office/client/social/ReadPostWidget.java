@@ -1,21 +1,20 @@
 package info.yalamanchili.office.client.social;
 
+import com.google.gwt.user.client.ui.CaptionPanel;
 import info.yalamanchili.gwt.composite.ALComposite;
 
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
 
 public class ReadPostWidget extends ALComposite {
 
-    FlowPanel mainPanel = new FlowPanel();
-    Label header = new Label();
+    CaptionPanel panel = new CaptionPanel();
     RichTextArea body = new RichTextArea();
 
-    public ReadPostWidget(String headerText, String bodyText) {
-        init(mainPanel);
-        header.setText(headerText);
-        body.setHTML(bodyText);
+    public ReadPostWidget(String headerHtml, String bodyHtml) {
+        init(panel);
+        panel.setCaptionText(headerHtml);
+        panel.setContentWidget(body);
+        body.setHTML(bodyHtml);
     }
 
     @Override
@@ -30,7 +29,5 @@ public class ReadPostWidget extends ALComposite {
 
     @Override
     protected void addWidgets() {
-        mainPanel.add(header);
-        mainPanel.add(body);
     }
 }
