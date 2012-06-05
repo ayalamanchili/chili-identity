@@ -157,9 +157,7 @@ public class CreateAddressPanel extends CreateComposite {
 	protected void configure() {
 		statelbl.setText("State");	
 		for(String states:getStates()){
-			int i = 0;
-			stateListBox.insertItem(states,i);
-		  	i++;
+			stateListBox.insertItem(states,0);
 			}
 		countrylbl.setText("Country");
 		countryListBox.insertItem("SELECT",0);
