@@ -7,9 +7,7 @@
 		<relativePath>../office-master/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>info.yalamanchili.office</groupId>
 	<artifactId>office-ejb</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>office-ejb</name>

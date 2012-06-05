@@ -7,7 +7,6 @@
 		<relativePath>../office-master/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>info.yalamanchili.office</groupId>
 	<artifactId>office-dao</artifactId>
 	<packaging>jar</packaging>
 	<name>office-dao</name>
