@@ -72,7 +72,6 @@ public class CUser implements Serializable {
 
 	@OneToOne
 	@Valid
-	@XmlTransient
 	public Employee getEmployee() {
 		return employee;
 	}
