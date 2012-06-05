@@ -11,6 +11,7 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
@@ -89,7 +90,28 @@ public class CreateAddressPanel extends CreateComposite {
 
 	protected List <String> getStates() {
 		List<String> states = new ArrayList<String>();
-		
+		states.add("SELECT");
+		states.add("AL");
+		states.add("AK");
+		states.add("AS");
+		states.add("AZ");
+		states.add("AR");
+		states.add("CA");
+		states.add("CO");
+		states.add("CT");
+		states.add("DE");
+		states.add("DC");
+		states.add("FL");
+		states.add("GA");
+		states.add("GU");
+		states.add("HI");
+		states.add("ID");
+		states.add("IL");
+		states.add("IN");
+		states.add("IA");
+		states.add("KS");
+		states.add("KY");
+		states.add("LA");
 		states.add("ME");
 		states.add("MD");
 		states.add("MH");
@@ -135,12 +157,15 @@ public class CreateAddressPanel extends CreateComposite {
 	protected void configure() {
 		statelbl.setText("State");	
 		for(String states:getStates()){
-			stateListBox.insertItem(states,0);
+			int i = 0;
+			stateListBox.insertItem(states,i);
+		  	i++;
 			}
 		countrylbl.setText("Country");
 		countryListBox.insertItem("SELECT",0);
 		countryListBox.insertItem("INDIA", 1);
 		countryListBox.insertItem("USA", 2);
+		return ;
 	}
 	
 
