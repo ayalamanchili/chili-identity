@@ -32,6 +32,11 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 		initTable("Employee", OfficeWelcome.constants);
 	}
 
+	public ReadAllEmployeesPanel(JSONArray array) {
+		instance = this;
+		initTable("Employee", array, OfficeWelcome.constants);
+	}
+
 	@Override
 	public void preFetchTable(int start) {
 		// TODO externalize the limit size for read all
