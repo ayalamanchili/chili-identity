@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author ayalamanchili
  */
-@Path("/social")
+@Path("social")
 @Component
 @Transactional
 @Produces("application/json")

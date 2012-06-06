@@ -23,7 +23,6 @@ public class ReadPostWidget extends ALComposite {
     
     protected void displayPost() {
         panel.setCaptionText("Title");
-        logger.info("dddddddddddddddddddd" + post.toString());
         body.setHTML(JSONUtils.toString(post, "postContent"));
     }
     

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Path("/addresstype")
+@Path("addresstype")
 @Component
 @Scope("request")
 public class AddressTypeResource extends CRUDResource<Address> {

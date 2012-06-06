@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Path("/reportsto")
+@Path("reportsto")
 @Component
 @Transactional
 @Scope("request")
