@@ -1,21 +1,25 @@
 package info.yalamanchili.office.client.social;
 
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.composite.ALComposite;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
+import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
-public class EmployeeFeedPanel extends ALComposite {
+public class EmployeePostsPanel extends ALComposite {
 
-    private static Logger logger = Logger.getLogger(EmployeeFeedPanel.class.getName());
+    private static Logger logger = Logger.getLogger(EmployeePostsPanel.class.getName());
     FlowPanel mainPanel = new FlowPanel();
 
-    public EmployeeFeedPanel() {
+    public EmployeePostsPanel() {
         init(mainPanel);
+        loadEmployeePosts();
     }
 
     protected void loadEmployeePosts() {
@@ -25,9 +29,16 @@ public class EmployeeFeedPanel extends ALComposite {
             @Override
             public void onResponse(String result) {
                 logger.info(result);
-
+                showEmployeePosts(result);
             }
         });
+    }
+
+    protected void showEmployeePosts(String result) {
+        JSONArray posts = JSONUtils.toJSONArray(JSONParser.parseLenient(result));
+        for (int i = 0; i < posts.size(); i++) {
+            mainPanel.add(new ReadPostWidget((JSONObject) posts.get(i)));
+        }
     }
 
     @Override

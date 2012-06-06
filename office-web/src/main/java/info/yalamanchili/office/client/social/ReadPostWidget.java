@@ -1,33 +1,44 @@
 package info.yalamanchili.office.client.social;
 
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import info.yalamanchili.gwt.composite.ALComposite;
 
 import com.google.gwt.user.client.ui.RichTextArea;
+import info.yalamanchili.office.client.gwt.JSONUtils;
+import java.util.logging.Logger;
 
 public class ReadPostWidget extends ALComposite {
 
+    private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
+    JSONObject post;
     CaptionPanel panel = new CaptionPanel();
     RichTextArea body = new RichTextArea();
-
-    public ReadPostWidget(String headerHtml, String bodyHtml) {
+    
+    public ReadPostWidget(JSONObject post) {
         init(panel);
-        panel.setCaptionText(headerHtml);
-        panel.setContentWidget(body);
-        body.setHTML(bodyHtml);
+        this.post = (JSONObject) post.get("post");
+        displayPost();
     }
-
+    
+    protected void displayPost() {
+        panel.setCaptionText("Title");
+        logger.info("dddddddddddddddddddd" + post.toString());
+        body.setHTML(JSONUtils.toString(post, "postContent"));
+    }
+    
     @Override
     protected void addListeners() {
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method 
     }
-
+    
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
+        body.addStyleName("postRichTextBox");
     }
-
+    
     @Override
     protected void addWidgets() {
+        panel.setContentWidget(body);
     }
 }

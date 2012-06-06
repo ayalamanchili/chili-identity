@@ -73,3 +73,7 @@
 .gwt-MenuItem-selected {
 	background-color: #fff;
 }
+
+.postRichTextBox{
+    width: 100%;
+}

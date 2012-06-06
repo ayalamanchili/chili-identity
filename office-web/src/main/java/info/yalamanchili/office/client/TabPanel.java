@@ -13,7 +13,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import info.yalamanchili.office.client.social.ReadPostWidget;
+import info.yalamanchili.office.client.social.EmployeePostsPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
@@ -58,7 +58,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public void selectProfileTab() {
         socialPanel.clear();
-        socialPanel.entityPanel.add(new ReadPostWidget("USER", "Hi this is my fiorst post"));
+        socialPanel.entityPanel.add(new EmployeePostsPanel());
     }
 
     public void selectAdminTab() {
