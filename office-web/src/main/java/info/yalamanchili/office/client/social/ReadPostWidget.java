@@ -14,30 +14,34 @@ public class ReadPostWidget extends ALComposite {
     JSONObject post;
     CaptionPanel panel = new CaptionPanel();
     RichTextArea body = new RichTextArea();
-    
+
     public ReadPostWidget(JSONObject post) {
         init(panel);
         this.post = (JSONObject) post.get("post");
         displayPost();
     }
-    
+
     protected void displayPost() {
-        panel.setCaptionText("Title");
+        panel.setCaptionText(getPostEmployeeNameHtml(post.get("employee").isObject()));
         body.setHTML(JSONUtils.toString(post, "postContent"));
     }
-    
+
     @Override
     protected void addListeners() {
         // TODO Auto-generated method 
     }
-    
+
     @Override
     protected void configure() {
         body.addStyleName("postRichTextBox");
     }
-    
+
     @Override
     protected void addWidgets() {
         panel.setContentWidget(body);
+    }
+
+    protected String getPostEmployeeNameHtml(JSONObject employee) {
+        return JSONUtils.toString(employee, "firstName") + " " + JSONUtils.toString(employee, "lastName");
     }
 }
