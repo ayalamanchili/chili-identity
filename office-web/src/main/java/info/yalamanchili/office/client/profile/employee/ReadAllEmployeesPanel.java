@@ -46,7 +46,6 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
 					@Override
 					public void onResponse(String result) {
-						logger.info(result);
 						postFetchTable(result);
 					}
 

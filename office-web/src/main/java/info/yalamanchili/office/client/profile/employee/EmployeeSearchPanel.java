@@ -11,6 +11,7 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 
 public class EmployeeSearchPanel extends GenericSearchPanel {
@@ -23,12 +24,14 @@ public class EmployeeSearchPanel extends GenericSearchPanel {
 
 					@Override
 					public void onResponse(String result) {
+						logger.info(result);
 						if (result == null) {
 							new ResponseStatusWidget().show("no results");
 						} else {
 							TabPanel.instance().myOfficePanel.entityPanel.clear();
-							TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(JSONUtils
-									.toJSONArray(JSONParser.parseLenient(result))));
+							JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject()
+									.get("employee"));
+							TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
 						}
 					}
 				});
