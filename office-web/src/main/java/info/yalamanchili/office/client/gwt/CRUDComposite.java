@@ -195,6 +195,9 @@ public abstract class CRUDComposite extends Composite {
 	}
 
 	protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
+		if (fields.get(fieldKey) == null) {
+			throw new RuntimeException("there is no field present with key please check the key:" + fieldKey);
+		}
 		if (DataType.STRING_FIELD.equals(type)) {
 			StringField field = (StringField) fields.get(fieldKey);
 			field.setValue(JSONUtils.toString(entity, fieldKey));

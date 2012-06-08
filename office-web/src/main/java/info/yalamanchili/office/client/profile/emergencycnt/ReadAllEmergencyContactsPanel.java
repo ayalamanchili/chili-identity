@@ -3,15 +3,20 @@ package info.yalamanchili.office.client.profile.emergencycnt;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
 public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
+
+	private static Logger logger = Logger.getLogger(ReadAllEmergencyContactsPanel.class.getName());
 
 	private static ReadAllEmergencyContactsPanel instance;
 
@@ -60,7 +65,7 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 			table.setText(i, 1, JSONUtils.toString(entity, "ecPrimary"));
 			table.setText(i, 2, JSONUtils.toString(entity.get("contact"), "firstName"));
 			table.setText(i, 3, JSONUtils.toString(entity.get("contact"), "lastName"));
-			table.setText(i, 4, JSONUtils.toString(entity, "realtion"));
+			table.setText(i, 4, JSONUtils.toString(entity, "relation"));
 		}
 	}
 
@@ -78,13 +83,15 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
 	@Override
 	public void deleteClicked(String entityId) {
-		// TODO Auto-generated method stub
+		// TODO
 
 	}
 
 	@Override
 	public void updateClicked(String entityId) {
-		// TODO Auto-generated method stub
+		logger.info(getEntity(entityId).toString());
+		TabPanel.instance().myOfficePanel.entityPanel.clear();
+		TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmergencyContactPanel(getEntity(entityId)));
 
 	}
 }
