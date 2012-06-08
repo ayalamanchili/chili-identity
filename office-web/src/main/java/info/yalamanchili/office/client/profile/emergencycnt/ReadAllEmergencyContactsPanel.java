@@ -1,6 +1,7 @@
 package info.yalamanchili.office.client.profile.emergencycnt;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
@@ -51,7 +52,11 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
-			createOptionsWidget(OptionsType.READ_DELETE, i, JSONUtils.toString(entity, "id"));
+			if (Auth.isAdmin() || Auth.isHR()) {
+				createOptionsWidget(OptionsType.READ_UPDATE_DELETE, i, JSONUtils.toString(entity, "id"));
+			} else {
+				createOptionsWidget(OptionsType.READ, i, JSONUtils.toString(entity, "id"));
+			}
 			table.setText(i, 1, JSONUtils.toString(entity, "ecPrimary"));
 			table.setText(i, 2, JSONUtils.toString(entity.get("contact"), "firstName"));
 			table.setText(i, 3, JSONUtils.toString(entity.get("contact"), "lastName"));

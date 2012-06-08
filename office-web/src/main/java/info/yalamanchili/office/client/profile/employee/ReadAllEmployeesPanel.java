@@ -5,6 +5,7 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
@@ -73,7 +74,11 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
-			createOptionsWidget(OptionsType.READ, i, JSONUtils.toString(entity, "id"));
+			if (Auth.isAdmin() || Auth.isHR()) {
+				createOptionsWidget(OptionsType.READ_UPDATE, i, JSONUtils.toString(entity, "id"));
+			} else {
+				createOptionsWidget(OptionsType.READ, i, JSONUtils.toString(entity, "id"));
+			}
 			table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
 			table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
 			table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
