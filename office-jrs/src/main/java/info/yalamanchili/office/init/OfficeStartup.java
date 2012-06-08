@@ -73,13 +73,13 @@ public class OfficeStartup {
 		userAddress.setCountry("USA");
 
 		Email userPrimaryEmail = new Email();
-		userPrimaryEmail.setEmailType(getPrimaryEmailType());
+		userPrimaryEmail.setEmailType(getWorkEmailType());
 		userPrimaryEmail.setPrimaryEmail(true);
 		userPrimaryEmail.setEmail("user@gmail.com");
 
 		Email userSecondaryEmail = new Email();
 		userSecondaryEmail.setPrimaryEmail(false);
-		userSecondaryEmail.setEmailType(getSecondaryEmailType());
+		userSecondaryEmail.setEmailType(getPersonalEmailType());
 		userSecondaryEmail.setEmail("user_secondary@gmail.com");
 
 		Phone userCellPhone = new Phone();
@@ -113,12 +113,12 @@ public class OfficeStartup {
 		adminAddress.setCountry("USA");
 
 		Email adminPrimaryEmail = new Email();
-		adminPrimaryEmail.setEmailType(getPrimaryEmailType());
+		adminPrimaryEmail.setEmailType(getWorkEmailType());
 		adminPrimaryEmail.setPrimaryEmail(true);
 		adminPrimaryEmail.setEmail("admin@gmail.com");
 
 		Email adminSecondaryEmail = new Email();
-		adminSecondaryEmail.setEmailType(getSecondaryEmailType());
+		adminSecondaryEmail.setEmailType(getPersonalEmailType());
 		adminSecondaryEmail.setPrimaryEmail(false);
 		adminSecondaryEmail.setEmail("admin_secondary@gmail.com");
 
@@ -148,8 +148,8 @@ public class OfficeStartup {
 		// Address Types
 		getHomeAddressType();
 		// Email Types
-		getPrimaryEmailType();
-		getSecondaryEmailType();
+		getWorkEmailType();
+		getPersonalEmailType();
 		// Phone Types
 		getCellPhoneType();
 		getHomePhoneType();
@@ -168,28 +168,28 @@ public class OfficeStartup {
 		}
 	}
 
-	protected EmailType getPrimaryEmailType() {
+	protected EmailType getWorkEmailType() {
 		Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
 				+ " where emailType=:emailTypeParam");
-		getEmailType.setParameter("emailTypeParam", "PRIMARY");
+		getEmailType.setParameter("emailTypeParam", "WORK");
 		if (getEmailType.getResultList().size() > 0) {
 			return (EmailType) getEmailType.getResultList().get(0);
 		} else {
 			EmailType homeEmailType = new EmailType();
-			homeEmailType.setEmailType("PRIMARY");
+			homeEmailType.setEmailType("WORK");
 			return em.merge(homeEmailType);
 		}
 	}
 
-	protected EmailType getSecondaryEmailType() {
+	protected EmailType getPersonalEmailType() {
 		Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
 				+ " where emailType=:emailTypeParam");
-		getEmailType.setParameter("emailTypeParam", "SECONDARY");
+		getEmailType.setParameter("emailTypeParam", "PERSONAL");
 		if (getEmailType.getResultList().size() > 0) {
 			return (EmailType) getEmailType.getResultList().get(0);
 		} else {
 			EmailType homeEmailType = new EmailType();
-			homeEmailType.setEmailType("SECONDARY");
+			homeEmailType.setEmailType("PERSONAL");
 			return em.merge(homeEmailType);
 		}
 	}
