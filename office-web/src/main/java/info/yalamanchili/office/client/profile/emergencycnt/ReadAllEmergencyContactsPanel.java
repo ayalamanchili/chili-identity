@@ -89,7 +89,6 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
 	@Override
 	public void updateClicked(String entityId) {
-		logger.info(getEntity(entityId).toString());
 		TabPanel.instance().myOfficePanel.entityPanel.clear();
 		TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmergencyContactPanel(getEntity(entityId)));
 

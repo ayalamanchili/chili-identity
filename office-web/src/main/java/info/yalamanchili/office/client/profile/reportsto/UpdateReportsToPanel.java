@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client.profile.emergencycnt;
+package info.yalamanchili.office.client.profile.reportsto;
 
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
@@ -11,10 +11,10 @@ import info.yalamanchili.office.client.rpc.HttpService;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class UpdateEmergencyContactPanel extends UpdateComposite {
+public class UpdateReportsToPanel extends UpdateComposite {
 
-	public UpdateEmergencyContactPanel(JSONObject entity) {
-		initUpdateComposite(entity, "EmergencyContact", OfficeWelcome.constants);
+	public UpdateReportsToPanel(JSONObject entity) {
+		initUpdateComposite(entity, "ReportsTo", OfficeWelcome.constants);
 	}
 
 	@Override
@@ -25,8 +25,8 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
 		assignEntityValueFromField("lastName", contact);
 		assignEntityValueFromField("sex", contact);
 
-		assignEntityValueFromField("relation", entity);
-		assignEntityValueFromField("ecPrimary", entity);
+		assignEntityValueFromField("reportsToRole", entity);
+		assignEntityValueFromField("rtPrimary", entity);
 		entity.put("contact", contact);
 		return entity;
 	}
@@ -43,11 +43,11 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
 
 					@Override
 					public void onSuccess(String arg0) {
-						new ResponseStatusWidget().show("successfully updated Emergency Contact information");
+						new ResponseStatusWidget().show("successfully updated Reports To information");
 						TabPanel.instance().myOfficePanel.entityPanel.clear();
-						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
-								TreeEmployeePanel.instance().getEntityId()));
-						TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
+						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllReportsToPanel(TreeEmployeePanel
+								.instance().getEntityId()));
+						TabPanel.instance().myOfficePanel.entityPanel.add(new ReportsToOptionsPanel());
 					}
 				});
 
@@ -55,8 +55,8 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
 
 	@Override
 	public void populateFieldsFromEntity(JSONObject entity) {
-		assignFieldValueFromEntity("relation", entity, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("ecPrimary", entity, DataType.BOOLEAN_FIELD);
+		assignFieldValueFromEntity("reportsToRole", entity, DataType.STRING_FIELD);
+		assignFieldValueFromEntity("rtPrimary", entity, DataType.BOOLEAN_FIELD);
 		// Contact
 		JSONObject contact = entity.get("contact").isObject();
 		assignFieldValueFromEntity("firstName", contact, DataType.STRING_FIELD);
@@ -91,13 +91,13 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
 		addField("lastName", false, true, DataType.STRING_FIELD);
 		String[] strs = { "MALE", "FEMALE" };
 		addEnumField("sex", false, true, strs);
-		addField("relation", false, true, DataType.STRING_FIELD);
-		addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
+		addField("reportsToRole", false, true, DataType.STRING_FIELD);
+		addField("rtPrimary", false, true, DataType.BOOLEAN_FIELD);
 	}
 
 	@Override
 	protected String getURI() {
-		return OfficeWelcome.constants.root_url() + "emergencycontact";
+		return OfficeWelcome.constants.root_url() + "reportsto";
 	}
 
 }
