@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<g:FlowPanel addStyleNames='searchPanel'>
+		<g:Label>Search</g:Label>
+		<g:TextBox ui:field='searchTextBox'></g:TextBox>
+		<g:Button ui:field='searchButton'>Search</g:Button>
+	</g:FlowPanel>
+	<ui:style>
+		.searchPanel {
+			padding: 10px;
+			border-bottom-style: solid;
+			border-bottom-color: #28009E;
+			border-bottom-width: 2px;
+		}
+	</ui:style>
+</ui:UiBinder> 

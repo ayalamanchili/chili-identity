@@ -44,6 +44,7 @@
 			border-right-color: #28009E;
 			border-right-width: 2px;
 			height: 100%;
+			padding: 10px;
 		}
 		
 		.sidePanelTop {

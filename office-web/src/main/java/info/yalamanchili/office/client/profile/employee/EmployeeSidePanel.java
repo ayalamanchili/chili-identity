@@ -3,7 +3,6 @@ package info.yalamanchili.office.client.profile.employee;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.search.SearchPanel;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
@@ -42,7 +41,7 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 		if (Auth.isAdmin() || Auth.isHR()) {
 			employeeSidePanel.add(createEmployeeLink);
 		}
-		employeeSidePanel.add(new SearchPanel());
+		employeeSidePanel.add(new EmployeeSearchPanel());
 	}
 
 	@Override
