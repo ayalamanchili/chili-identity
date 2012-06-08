@@ -51,6 +51,8 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 		table.setText(0, 0, getKeyValue("Table_Action"));
 		table.setText(0, 1, getKeyValue("Type"));
 		table.setText(0, 2, getKeyValue("PhoneNumber"));
+		table.setText(0, 3, getKeyValue("extension"));
+		table.setText(0, 4, getKeyValue("countryCode"));
 	}
 
 	@Override
@@ -64,6 +66,8 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 			}
 			table.setText(i, 1, JSONUtils.toString(entity.get("phoneType"), "phoneType"));
 			table.setText(i, 2, JSONUtils.toString(entity, "phoneNumber"));
+			table.setText(i, 3, JSONUtils.toString(entity, "extension"));
+			table.setText(i, 4, JSONUtils.toString(entity, "countryCode"));
 		}
 	}
 
@@ -94,7 +98,8 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 
 	@Override
 	public void updateClicked(String entityId) {
-		// TODO Auto-generated method stub
+		TabPanel.instance().myOfficePanel.entityPanel.clear();
+		TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePhonePanel(getEntity(entityId)));
 
 	}
 

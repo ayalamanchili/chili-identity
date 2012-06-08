@@ -52,7 +52,7 @@ public class UpdateEmailPanel extends UpdateComposite {
 
 					@Override
 					public void onSuccess(String arg0) {
-						new ResponseStatusWidget().show("successfully updated employee Email");
+						new ResponseStatusWidget().show("successfully updated Email information");
 						TabPanel.instance().myOfficePanel.entityPanel.clear();
 						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel
 								.instance().getEntityId()));
@@ -87,6 +87,6 @@ public class UpdateEmailPanel extends UpdateComposite {
 	}
 
 	protected String getURI() {
-		return OfficeWelcome.constants.root_url() + "email/";
+		return OfficeWelcome.constants.root_url() + "email";
 	}
 }
