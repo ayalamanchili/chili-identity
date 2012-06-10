@@ -209,6 +209,6 @@
 		<yalamanchili.version>1.1-SNAPSHOT</yalamanchili.version>
 		<app.final.name>msa</app.final.name>
 		<jersy.version>1.8</jersy.version>
-		<spring.version>3.0.5.RELEASE</spring.version>
+		<spring.version>3.1.1.RELEASE</spring.version>
 	</properties>
 </project>
