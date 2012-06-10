@@ -25,7 +25,7 @@ public class EmployeeSearchPanel extends GenericSearchPanel {
 					@Override
 					public void onResponse(String result) {
 						logger.info(result);
-						if (result == null) {
+						if (result == null || JSONParser.parseLenient(result).isObject() == null) {
 							new ResponseStatusWidget().show("no results");
 						} else {
 							TabPanel.instance().myOfficePanel.entityPanel.clear();
