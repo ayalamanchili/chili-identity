@@ -11,47 +11,14 @@
 	<name>office-jpa</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
-
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.20</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
-<!-- 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>hibernate3-maven-plugin
-				</artifactId>
-				<version>2.2</version>
-				<executions>
-					<execution>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>hbm2ddl</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<components>
-						<component>
-							<name>hbm2ddl</name>
-							<implementation>
-								annotationconfiguration</implementation>
-						</component>
-					</components>
-					<componentProperties>
-						<implementation>jpaconfiguration</implementation>
-						<persistenceunit>office</persistenceunit>
-						<outputfilename>schema.ddl</outputfilename>
-						<drop>false</drop>
-						<create>true</create>
-						<export>false</export>
-						<format>true</format>
-					</componentProperties>
-				</configuration>
-			</plugin> -->
-			<!-- <plugin> <groupId>info.yalamanchili.maven</groupId> <artifactId>jpa-testdata</artifactId> 
-				<version>1.0-SNAPSHOT</version> <configuration> <namingStrategy>org.hibernate.cfg.ImprovedNamingStrategy 
-				</namingStrategy> <dialectValue>HSQL</dialectValue> </configuration> <executions> 
-				<execution> <phase>compile</phase> <goals> <goal>generate</goal> </goals> 
-				</execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 	<!-- download artifacts from this repo -->
