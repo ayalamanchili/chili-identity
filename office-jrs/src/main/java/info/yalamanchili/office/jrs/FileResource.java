@@ -60,8 +60,7 @@ public class FileResource {
 			if (fileName == null) {
 				fileName = item.getName();
 			}
-			File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + fileName
-					+ item.getName());
+			File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + fileName);
 			try {
 				System.out.println("----------writing image to-----------:" + fileurl.getAbsolutePath());
 				item.write(fileurl);
