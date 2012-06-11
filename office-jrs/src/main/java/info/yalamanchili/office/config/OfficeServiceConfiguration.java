@@ -14,15 +14,16 @@ public class OfficeServiceConfiguration {
 
 	@PersistenceContext
 	EntityManager em;
-	protected String testString = "";
+
+	protected String contentManagementLocationRoot = "E://content-management//office/";
 
 	@ManagedAttribute
-	public String getTestString() {
-		return testString;
+	public String getContentManagementLocationRoot() {
+		return contentManagementLocationRoot;
 	}
 
-	public void setTestString(String testString) {
-		this.testString = testString;
+	public void setContentManagementLocationRoot(String contentManagementLocationRoot) {
+		this.contentManagementLocationRoot = contentManagementLocationRoot;
 	}
 
 	@ManagedOperation
