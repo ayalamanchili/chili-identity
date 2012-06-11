@@ -52,15 +52,13 @@ public class FileResource {
 			throw new RuntimeException("Error on File upload", e);
 		}
 		for (FileItem item : items) {
+			System.out.println("11111111111111111111" + item.getFieldName());
 			if (item.isFormField() || item.getName() == null || item.getName().trim().equals("")) {
 				continue;
 			}
-			System.out.println("222222222222222222222222");
-			String fileName = getFileName(items);
-			if (fileName == null) {
-				fileName = item.getName();
-			}
-			File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + fileName);
+			System.out.println("222222222222" + item.getFieldName() + item.getName());
+			File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
+					+ item.getName());
 			try {
 				System.out.println("----------writing image to-----------:" + fileurl.getAbsolutePath());
 				item.write(fileurl);
@@ -68,17 +66,5 @@ public class FileResource {
 				throw new RuntimeException("Error saving File:" + fileurl + ": to disk.", e);
 			}
 		}
-	}
-
-	protected String getFileName(List<FileItem> items) {
-		String fileName = null;
-		for (FileItem item : items) {
-			if (item.isFormField()) {
-				if ("filename".equalsIgnoreCase(item.getFieldName())) {
-					fileName = item.getString();
-				}
-			}
-		}
-		return fileName;
 	}
 }
