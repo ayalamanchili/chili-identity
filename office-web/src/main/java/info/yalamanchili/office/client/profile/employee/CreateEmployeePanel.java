@@ -1,10 +1,12 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.FileUploadPanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -16,15 +18,10 @@ public class CreateEmployeePanel extends CreateComposite {
 
 	private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
 
-	// private static CreateEmployeePanel instance;
-	//
-	// public static CreateEmployeePanel instance() {
-	// return instance;
-	// }
+	FileUploadPanel empImageUploadPanel = new FileUploadPanel();
 
 	public CreateEmployeePanel(CreateCompositeType type) {
 		super(type);
-		// instance = this;
 		initCreateComposite("Employee", OfficeWelcome.constants);
 	}
 
@@ -42,9 +39,14 @@ public class CreateEmployeePanel extends CreateComposite {
 		assignEntityValueFromField("sex", employee);
 		assignEntityValueFromField("startDate", employee);
 		user.put("employee", employee);
-
 		return user;
 	}
+
+//	protected void assignImageName() {
+//		StringField firstNameF = (StringField) fields.get("firstName");
+//		StringField lastNameF = (StringField) fields.get("lastName");
+//		empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_" + lastNameF.getText());
+//	}
 
 	@Override
 	protected void addListeners() {
@@ -69,6 +71,7 @@ public class CreateEmployeePanel extends CreateComposite {
 		String[] strs = { "MALE", "FEMALE" };
 		addEnumField("sex", false, true, strs);
 		addField("startDate", false, true, DataType.DATE_FIELD);
+		entityDisplayWidget.add(empImageUploadPanel);
 	}
 
 	@Override
@@ -79,6 +82,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
 	@Override
 	public void createButtonClicked() {
+		empImageUploadPanel.upload();
 		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
 				new AsyncCallback<String>() {
 
@@ -90,6 +94,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
 					@Override
 					public void onSuccess(String arg0) {
+
 						new ResponseStatusWidget().show("successfully created employee");
 						TabPanel.instance().myOfficePanel.clear();
 						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());

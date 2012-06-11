@@ -32,8 +32,7 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		fileUpload.setName("Upload Image");
-		formPanel
-				.setAction("http://localhost:9080/office/resources/file/upload");
+		formPanel.setAction("http://localhost:9080/office/resources/file/upload");
 	}
 
 	@Override
@@ -50,7 +49,9 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 			String imagename = fileUpload.getFilename();
 			formPanel.submit();
 		}
-
 	}
 
+	public void upload() {
+		formPanel.submit();
+	}
 }
