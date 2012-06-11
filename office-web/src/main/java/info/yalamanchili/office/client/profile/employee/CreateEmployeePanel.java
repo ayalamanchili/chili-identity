@@ -1,7 +1,6 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -18,7 +17,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
 	private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
 
-	FileUploadPanel empImageUploadPanel = new FileUploadPanel();
+	FileUploadPanel empImageUploadPanel = new FileUploadPanel("Employee Uplodate", "Test Image Name");
 
 	public CreateEmployeePanel(CreateCompositeType type) {
 		super(type);
@@ -42,11 +41,12 @@ public class CreateEmployeePanel extends CreateComposite {
 		return user;
 	}
 
-//	protected void assignImageName() {
-//		StringField firstNameF = (StringField) fields.get("firstName");
-//		StringField lastNameF = (StringField) fields.get("lastName");
-//		empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_" + lastNameF.getText());
-//	}
+	// protected void assignImageName() {
+	// StringField firstNameF = (StringField) fields.get("firstName");
+	// StringField lastNameF = (StringField) fields.get("lastName");
+	// empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_"
+	// + lastNameF.getText());
+	// }
 
 	@Override
 	protected void addListeners() {

@@ -11,6 +11,9 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Label;
 
 public class FileUploadPanel extends ALComposite implements ClickHandler {
+
+	protected String fileName;
+
 	FlowPanel panel = new FlowPanel();
 
 	FormPanel formPanel = new FormPanel();
@@ -18,8 +21,10 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 	FileUpload fileUpload = new FileUpload();
 	Button submit = new Button("Upload");
 
-	public FileUploadPanel() {
+	public FileUploadPanel(String labelName, String fileName) {
 		init(formPanel);
+		label.setText(labelName);
+		this.fileName = fileName;
 	}
 
 	@Override
@@ -53,5 +58,9 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 
 	public void upload() {
 		formPanel.submit();
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }
