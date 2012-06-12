@@ -195,6 +195,13 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     }
 
     public abstract void fillData(JSONArray entities);
+    
+    /*
+     * Override this and call this in fill data method to call
+     * createOptionsWidget based on roles and permissions
+     */
+
+    protected abstract void addOptionsWidget(int row, JSONObject entity);
 
     public abstract void viewClicked(String entityId);
 

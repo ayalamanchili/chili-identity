@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.email.UpdateEmailPanel;
 
 public class ReadAllAddressesPanel extends ReadAllComposite {
@@ -64,7 +65,7 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
-            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, i, JSONUtils.toString(entity, "id"));
+            addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
             table.setText(i, 2, JSONUtils.toString(entity, "street1"));
             table.setText(i, 3, JSONUtils.toString(entity, "street2"));
@@ -72,6 +73,15 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "state"));
             table.setText(i, 6, JSONUtils.toString(entity, "country"));
             table.setText(i, 7, JSONUtils.toString(entity, "zip"));
+        }
+    }
+
+    @Override
+    protected void addOptionsWidget(int row, JSONObject entity) {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
 
