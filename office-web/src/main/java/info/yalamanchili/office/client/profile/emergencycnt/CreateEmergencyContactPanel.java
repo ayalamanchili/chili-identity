@@ -33,6 +33,7 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 		assignEntityValueFromField("relation", emergencyContact);
 		assignEntityValueFromField("ecPrimary", emergencyContact);
 		emergencyContact.put("contact", contact);
+		logger.info(emergencyContact.toString());
 		return emergencyContact;
 	}
 
