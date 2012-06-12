@@ -62,11 +62,20 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 	}
 
 	public JSONString getFileName() {
-		return new JSONString(fileName);
+		return new JSONString(fileName + stripFileName(fileUpload.getFilename()));
 	}
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 		fileUpload.setName(fileName);
+	}
+
+	protected String stripFileName(String fileName) {
+		if (fileName.lastIndexOf("\\") > 0) {
+			return fileName.substring(fileName.lastIndexOf("\\") + 1);
+		} else {
+			return fileName;
+		}
+
 	}
 }
