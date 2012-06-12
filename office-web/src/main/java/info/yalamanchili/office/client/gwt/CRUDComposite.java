@@ -8,7 +8,6 @@ import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.fields.DateField;
 import info.yalamanchili.gwt.fields.EnumField;
 import info.yalamanchili.gwt.fields.FloatField;
-import info.yalamanchili.gwt.fields.ImageField;
 import info.yalamanchili.gwt.fields.IntegerField;
 import info.yalamanchili.gwt.fields.LongField;
 import info.yalamanchili.gwt.fields.PasswordField;
