@@ -1,6 +1,7 @@
 package info.yalamanchili.office.client.gwt;
 
 import info.yalamanchili.gwt.composite.ALComposite;
+import info.yalamanchili.office.client.OfficeWelcome;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,6 +27,7 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 		label.setText(labelName);
 		this.fileName = fileName;
 		init(formPanel);
+		submit.setVisible(false);
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		fileUpload.setName(fileName);
-		formPanel.setAction("http://localhost:9080/office/resources/file/upload");
+		formPanel.setAction(OfficeWelcome.constants.file_upload_url());
 	}
 
 	@Override

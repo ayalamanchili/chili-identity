@@ -8,6 +8,7 @@ import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
@@ -65,7 +66,8 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 		table.setText(0, 3, getKeyValue("Last Name"));
 		table.setText(0, 4, getKeyValue("Date of Birth"));
 		table.setText(0, 5, getKeyValue("Sex"));
-		table.setText(0, 6, getKeyValue("Start Date"));
+		table.setText(0, 6, getKeyValue("Image"));
+		table.setText(0, 7, getKeyValue("Start Date"));
 
 	}
 
@@ -83,7 +85,8 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 			table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
 			table.setText(i, 4, JSONUtils.toString(entity, "dateOfBirth"));
 			table.setText(i, 5, JSONUtils.toString(entity, "sex"));
-			table.setText(i, 6, JSONUtils.toString(entity, "startDate"));
+			table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), 50, 50, false));
+			table.setText(i, 7, JSONUtils.toString(entity, "startDate"));
 		}
 	}
 
