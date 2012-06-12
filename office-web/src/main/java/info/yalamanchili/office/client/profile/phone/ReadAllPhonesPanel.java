@@ -59,15 +59,19 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 	public void fillData(JSONArray entities) {
 		for (int i = 1; i <= entities.size(); i++) {
 			JSONObject entity = (JSONObject) entities.get(i - 1);
-			if (Auth.isAdmin() || Auth.isHR()) {
-				createOptionsWidget(OptionsType.READ_UPDATE_DELETE, i, JSONUtils.toString(entity, "id"));
-			} else {
-				createOptionsWidget(OptionsType.READ, i, JSONUtils.toString(entity, "id"));
-			}
+			addOptionsWidget(i, entity);
 			table.setText(i, 1, JSONUtils.toString(entity.get("phoneType"), "phoneType"));
 			table.setText(i, 2, JSONUtils.toString(entity, "phoneNumber"));
 			table.setText(i, 3, JSONUtils.toString(entity, "extension"));
 			table.setText(i, 4, JSONUtils.toString(entity, "countryCode"));
+		}
+	}
+
+	protected void addOptionsWidget(int row, JSONObject entity) {
+		if (Auth.isAdmin() || Auth.isHR()) {
+			createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+		} else {
+			createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
 		}
 	}
 

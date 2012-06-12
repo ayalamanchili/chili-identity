@@ -2,6 +2,8 @@ package info.yalamanchili.office.client.profile;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
@@ -43,7 +45,7 @@ public class ProfileHome extends ALComposite {
 
 	protected DisclosurePanel getPhonesPanel(String empId) {
 		DisclosurePanel phonesPanel = new DisclosurePanel("Phones");
-		phonesPanel.setContent(new ReadAllPhonesPanel(empId));
+		phonesPanel.setContent(new ProfileReadAllPhonesPanel(empId));
 		return phonesPanel;
 	}
 
@@ -51,5 +53,17 @@ public class ProfileHome extends ALComposite {
 		DisclosurePanel emailsPanel = new DisclosurePanel("Emails");
 		emailsPanel.setContent(new ReadAllEmailsPanel(empId));
 		return emailsPanel;
+	}
+
+	public class ProfileReadAllPhonesPanel extends ReadAllPhonesPanel {
+
+		public ProfileReadAllPhonesPanel(String parentId) {
+			super(parentId);
+		}
+
+		protected void addOptionsWidget(int row, JSONObject entity) {
+			createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+		}
+
 	}
 }
