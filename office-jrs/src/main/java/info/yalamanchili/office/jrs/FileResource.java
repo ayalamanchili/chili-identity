@@ -52,11 +52,9 @@ public class FileResource {
 			throw new RuntimeException("Error on File upload", e);
 		}
 		for (FileItem item : items) {
-			System.out.println("11111111111111111111" + item.getFieldName());
 			if (item.isFormField() || item.getName() == null || item.getName().trim().equals("")) {
 				continue;
 			}
-			System.out.println("222222222222" + item.getFieldName() + item.getName());
 			File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
 					+ item.getName());
 			try {

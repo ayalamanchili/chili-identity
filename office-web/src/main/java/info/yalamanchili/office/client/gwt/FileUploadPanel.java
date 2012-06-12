@@ -4,6 +4,7 @@ import info.yalamanchili.gwt.composite.ALComposite;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -60,7 +61,12 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 		formPanel.submit();
 	}
 
+	public JSONString getFileName() {
+		return new JSONString(fileName);
+	}
+
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+		fileUpload.setName(fileName);
 	}
 }

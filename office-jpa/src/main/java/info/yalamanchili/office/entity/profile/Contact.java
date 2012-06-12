@@ -23,7 +23,6 @@ import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -78,6 +77,8 @@ public class Contact extends AbstractEntity {
 	@Enumerated(EnumType.STRING)
 	@Field
 	protected Sex sex;
+
+	protected String imageURL;
 
 	/**
 	 * @generated
@@ -175,6 +176,14 @@ public class Contact extends AbstractEntity {
 	 */
 	public void setSex(Sex sex) {
 		this.sex = sex;
+	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	/**

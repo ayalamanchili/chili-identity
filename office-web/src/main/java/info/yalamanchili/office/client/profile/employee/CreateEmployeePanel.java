@@ -1,9 +1,9 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.FileUploadPanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
@@ -37,16 +37,17 @@ public class CreateEmployeePanel extends CreateComposite {
 		assignEntityValueFromField("dateOfBirth", employee);
 		assignEntityValueFromField("sex", employee);
 		assignEntityValueFromField("startDate", employee);
+		assignImageName();
+		employee.put("imageURL", empImageUploadPanel.getFileName());
 		user.put("employee", employee);
 		return user;
 	}
 
-	// protected void assignImageName() {
-	// StringField firstNameF = (StringField) fields.get("firstName");
-	// StringField lastNameF = (StringField) fields.get("lastName");
-	// empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_"
-	// + lastNameF.getText());
-	// }
+	protected void assignImageName() {
+		StringField firstNameF = (StringField) fields.get("firstName");
+		StringField lastNameF = (StringField) fields.get("lastName");
+		empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_" + lastNameF.getText() + "_");
+	}
 
 	@Override
 	protected void addListeners() {
@@ -95,8 +96,9 @@ public class CreateEmployeePanel extends CreateComposite {
 					@Override
 					public void onSuccess(String arg0) {
 						new ResponseStatusWidget().show("successfully created employee");
-//						TabPanel.instance().myOfficePanel.clear();
-//						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
+						// TabPanel.instance().myOfficePanel.clear();
+						// TabPanel.instance().myOfficePanel.entityPanel.add(new
+						// ReadAllEmployeesPanel());
 
 					}
 
