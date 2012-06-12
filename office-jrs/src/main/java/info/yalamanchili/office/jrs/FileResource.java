@@ -7,11 +7,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -40,6 +44,17 @@ public class FileResource {
 		System.out.println(request.getContentType());
 		processImageUpload(request);
 		return Response.ok().build();
+	}
+
+	@GET
+	@Path("/download")
+	@Produces("image/*")
+	public Response downloadFile(@QueryParam("path") String path) {
+		File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
+		System.out.println("downloadint---------:" + file.getPath());
+		ResponseBuilder response = Response.ok((Object) file);
+		response.header("Content-Disposition", "attachment; filename=image_from_server.jpg");
+		return response.build();
 	}
 
 	protected void processImageUpload(HttpServletRequest request) {
