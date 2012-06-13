@@ -129,11 +129,9 @@ public abstract class CRUDComposite extends Composite {
 			entityDisplayWidget.add(dropDownField);
 		}
 		if (DataType.IMAGE_FIELD.equals(type)) {
-			//TODO fix
-//			ImageField imageField = new ImageField(Utils.getAttributeLabel(attributeName, entityName, constants),
-//					attributeName, entityName, readOnly, isRequired);
-//			fields.put(attributeName, imageField);
-//			entityDisplayWidget.add(imageField);
+			FileUploadPanel fileUploadPanel = new FileUploadPanel(Utils.getAttributeLabel(attributeName, entityName,
+					constants), "name");
+			entityDisplayWidget.add(fileUploadPanel);
 		}
 		if (DataType.RICH_TEXT_AREA.equals(type)) {
 			RichTextField richTextField = new RichTextField(Utils.getAttributeLabel(attributeName, entityName,
