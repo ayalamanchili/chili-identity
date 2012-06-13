@@ -47,6 +47,7 @@ public class CreateAddressPanel extends CreateComposite {
 		entity.put("country", new JSONString(countryListBox.getItemText(countryListBox.getSelectedIndex())));
 		assignEntityValueFromField("zip", entity);
 		entity.put("addressType", addressTypeWidget.getSelectedObject());
+		logger.info(entity.toString());
 		return entity;
 	}
 
