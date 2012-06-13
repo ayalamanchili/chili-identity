@@ -11,31 +11,30 @@ import javax.persistence.Query;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 @Component
 public class SocialDao {
 
-	@PersistenceContext(type = PersistenceContextType.EXTENDED)
-	protected EntityManager em;
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    protected EntityManager em;
 
-	public List<Post> getEmployeeFeed(int start, int limit) {
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-		Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p order by p.postTimeStamp",
-				Post.class);
-		getPostsQuery.setFirstResult(start);
-		getPostsQuery.setMaxResults(limit);
-		return getPostsQuery.getResultList();
-	}
+    public List<Post> getEmployeeFeed(int start, int limit) {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+        Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p order by p.postTimeStamp",
+                Post.class);
+        getPostsQuery.setFirstResult(start);
+        getPostsQuery.setMaxResults(limit);
+        return getPostsQuery.getResultList();
+    }
 
-	public List<Post> getCompanyFeed() {
-		// TODO implement this
-		return null;
-	}
+    public List<Post> getCompanyFeed() {
+        // TODO implement this
+        return null;
+    }
 
-
-	public Post addReply(Post post, Long parentPostId)
-	{
-		Post parentPost = em.find(Post.class,parentPostId);
-		parentPost.addReply(post);
-		return em.merge(parentPost);
-}
+    public Post addReply(Long parentPostId, Post post) {
+        Post parentPost = em.find(Post.class, parentPostId);
+        parentPost.addReply(post);
+        return em.merge(parentPost);
+    }
 }

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 
+ *
  * @author ayalamanchili
  */
 @Path("social")
@@ -29,18 +29,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class SocialResource {
 
-	@Autowired
-	public SocialDao socialDao;
+    @Autowired
+    public SocialDao socialDao;
 
-	@GET
-	@Path("/employeefeed/{start}/{limit}")
-	public List<Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
-		return socialDao.getEmployeeFeed(start, limit);
-	}
-	
-	@PUT 
-	@Path("/addreply/{parentPostId}")
-	public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply){
-	return socialDao.addReply(reply,parentPostId);
-	}
+    @GET
+    @Path("/employeefeed/{start}/{limit}")
+    public List<Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return socialDao.getEmployeeFeed(start, limit);
+    }
+
+    @PUT
+    @Path("/addreply/{parentPostId}")
+    public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply) {
+        return socialDao.addReply(parentPostId, reply);
+    }
 }
