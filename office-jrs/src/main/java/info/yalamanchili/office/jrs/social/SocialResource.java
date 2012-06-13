@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -35,5 +36,11 @@ public class SocialResource {
 	@Path("/employeefeed/{start}/{limit}")
 	public List<Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
 		return socialDao.getEmployeeFeed(start, limit);
+	}
+	
+	@PUT 
+	@Path("/addreply/{parentPostId}")
+	public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply){
+	return socialDao.addReply(reply,parentPostId);
 	}
 }
