@@ -13,84 +13,87 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.PopupPanel;
 
 public class UpdatePhonePanel extends UpdateComposite {
 
-	private static Logger logger = Logger.getLogger(UpdatePhonePanel.class.getName());
-	SelectPhoneTypeWidget phoneTypeF = new SelectPhoneTypeWidget();
+    private static Logger logger = Logger.getLogger(UpdatePhonePanel.class.getName());
+    SelectPhoneTypeWidget phoneTypeF = new SelectPhoneTypeWidget();
 
-	public UpdatePhonePanel(JSONObject entity) {
-		initUpdateComposite(entity, "Phone", OfficeWelcome.constants);
-	}
+    public UpdatePhonePanel(JSONObject entity) {
+        initUpdateComposite(entity, "Phone", OfficeWelcome.constants);
+    }
 
-	@Override
-	protected JSONObject populateEntityFromFields() {
-		assignEntityValueFromField("phoneNumber", entity);
-		assignEntityValueFromField("extension", entity);
-		assignEntityValueFromField("countryCode", entity);
-		entity.put("phoneType", phoneTypeF.getSelectedObject());
-		return entity;
-	}
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("phoneNumber", entity);
+        assignEntityValueFromField("extension", entity);
+        assignEntityValueFromField("countryCode", entity);
+        entity.put("phoneType", phoneTypeF.getSelectedObject());
+        return entity;
+    }
 
-	@Override
-	protected void updateButtonClicked() {
-		HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
-				OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+    @Override
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
 
-					@Override
-					public void onFailure(Throwable arg0) {
-						handleErrorResponse(arg0);
-					}
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-					@Override
-					public void onSuccess(String arg0) {
-						new ResponseStatusWidget().show("successfully updated Phone information");
-						TabPanel.instance().myOfficePanel.entityPanel.clear();
-						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel
-								.instance().getEntityId()));
-						TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
-					}
-				});
+            @Override
+            public void onSuccess(String arg0) {
+                new ResponseStatusWidget().show("successfully updated Phone information");
+                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel.instance().getEntityId()));
+                TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
+            }
+        });
 
-	}
+    }
 
-	@Override
-	public void populateFieldsFromEntity(JSONObject entity) {
-		assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
-		// TODO set phone type
-	}
+    @Override
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
+        // TODO set phone type
+    }
 
-	@Override
-	protected void addListeners() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void addListeners() {
+        // TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void addWidgets() {
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
+        addField("extension", false, true, DataType.STRING_FIELD);
+        addField("countryCode", false, true, DataType.STRING_FIELD);
+        entityDisplayWidget.add(phoneTypeF);
+    }
 
-	}
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void addWidgets() {
-		addField("phoneNumber", false, true, DataType.STRING_FIELD);
-		addField("extension", false, true, DataType.STRING_FIELD);
-		addField("countryCode", false, true, DataType.STRING_FIELD);
-		entityDisplayWidget.add(phoneTypeF);
-	}
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "phone";
+    }
 
-	@Override
-	protected void addWidgetsBeforeCaptionPanel() {
-		// TODO Auto-generated method stub
+    public class UpdatePhonePanelPopup extends PopupPanel {
 
-	}
-
-	@Override
-	protected String getURI() {
-		return OfficeWelcome.constants.root_url() + "phone";
-	}
-
+        public UpdatePhonePanelPopup() {
+            setWidget(UpdatePhonePanel.this);
+        }
+    }
 }
