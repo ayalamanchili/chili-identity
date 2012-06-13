@@ -32,6 +32,7 @@ public class CreatePhonePanel extends CreateComposite {
 		assignEntityValueFromField("phoneNumber", entity);
 		assignEntityValueFromField("extension", entity);
 		entity.put("phoneType", phoneTypeF.getSelectedObject());
+		logger.info(entity.toString());
 		return entity;
 	}
 
