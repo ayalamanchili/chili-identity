@@ -41,6 +41,7 @@ public class CreateEmployeePanel extends CreateComposite {
 		assignImageName();
 		employee.put("imageURL", empImageUploadPanel.getFileName());
 		user.put("employee", employee);
+		logger.info(user.toString());
 		return user;
 	}
 
