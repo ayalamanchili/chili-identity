@@ -4,6 +4,7 @@ import info.yalamanchili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -96,14 +97,21 @@ public class Post extends AbstractEntity {
 	}
 
 	@XmlElement
-	public List<Post> getReplies() {
-		return replies;
-	}
+	public List<Post> getReplies(){
+		if(this.replies== null){
+		this.replies= new ArrayList<Post>();
+		}
+		return this.replies;
+		}
 
 	public void setReplies(List<Post> replies) {
 		this.replies = replies;
 	}
-
+	
+	public void addReply(Post reply){
+		getReplies().add(reply);
+		reply.setParentPost(this);
+	}
 	@Override
 	public String toString() {
 		return "Post [postTimeStamp=" + postTimeStamp + ", postContent=" + postContent + ", employee=" + employee
