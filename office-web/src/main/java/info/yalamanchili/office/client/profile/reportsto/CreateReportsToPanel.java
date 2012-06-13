@@ -33,6 +33,7 @@ public class CreateReportsToPanel extends CreateComposite {
 		assignEntityValueFromField("reportsToRole", reportsTo);
 		assignEntityValueFromField("rtPrimary", reportsTo);
 		reportsTo.put("contact", contact);
+		logger.info(contact.toString());
 		return reportsTo;
 	}
 
