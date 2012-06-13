@@ -1,12 +1,13 @@
 package info.yalamanchili.office.client.social;
 
+import info.yalamanchili.gwt.composite.ALComposite;
+import info.yalamanchili.office.client.gwt.JSONUtils;
+
+import java.util.logging.Logger;
+
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.CaptionPanel;
-import info.yalamanchili.gwt.composite.ALComposite;
-
 import com.google.gwt.user.client.ui.RichTextArea;
-import info.yalamanchili.office.client.gwt.JSONUtils;
-import java.util.logging.Logger;
 
 public class ReadPostWidget extends ALComposite {
 

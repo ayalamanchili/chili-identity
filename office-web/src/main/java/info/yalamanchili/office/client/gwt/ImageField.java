@@ -5,7 +5,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 
 import java.util.logging.Logger;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -22,8 +21,7 @@ public class ImageField extends ALComposite {
 		label.setText(labelName);
 		label.setVisible(showLabel);
 		setPixelSize(width, height);
-		logger.info(URL.decode(OfficeWelcome.constants.file_directory_path() + url));
-		image.setUrl(URL.decode(OfficeWelcome.constants.file_directory_path() + url));
+		image.setUrl(OfficeWelcome.constants.file_download_url() + url);
 		init(panel);
 	}
 
@@ -32,7 +30,7 @@ public class ImageField extends ALComposite {
 	}
 
 	public void setImage(String url) {
-		image.setUrl(OfficeWelcome.constants.file_directory_path() + url);
+		image.setUrl(OfficeWelcome.constants.file_download_url() + url);
 	}
 
 	@Override

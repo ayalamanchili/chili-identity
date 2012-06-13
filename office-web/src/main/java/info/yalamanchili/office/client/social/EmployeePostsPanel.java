@@ -1,16 +1,17 @@
 package info.yalamanchili.office.client.social;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import info.yalamanchili.gwt.composite.ALComposite;
-
-import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService;
+
 import java.util.logging.Logger;
+
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.FlowPanel;
 
 public class EmployeePostsPanel extends ALComposite {
 

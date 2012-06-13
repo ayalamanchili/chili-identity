@@ -11,7 +11,6 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;

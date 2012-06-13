@@ -1,13 +1,12 @@
 package info.yalamanchili.office.client.profile.address;
 
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
-import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
-import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
@@ -15,8 +14,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.profile.email.UpdateEmailPanel;
 
 public class ReadAllAddressesPanel extends ReadAllComposite {
 
