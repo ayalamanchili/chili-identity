@@ -6,10 +6,11 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <http pattern="*/file/*" security="none"/>
+    
  
-    <http auto-config="true">
-        <intercept-url pattern="/**" access="ROLE_USER" />
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/*/file/*" access="permitAll" />
+         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
     </http>
  
 
