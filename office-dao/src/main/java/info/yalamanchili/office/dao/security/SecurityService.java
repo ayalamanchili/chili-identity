@@ -1,33 +1,46 @@
 package info.yalamanchili.office.dao.security;
 
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
+import javax.persistence.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class SecurityService {
 
-	@PersistenceContext(type = PersistenceContextType.EXTENDED)
-	protected EntityManager em;
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    protected EntityManager em;
 
-	public CUser login(CUser user) {
-		Query findUserQuery = em.createQuery("from " + CUser.class.getCanonicalName()
-				+ " where username=:userNameParam and passwordHash=:passwordParam", CUser.class);
-		findUserQuery.setParameter("userNameParam", user.getUsername());
-		findUserQuery.setParameter("passwordParam", user.getPasswordHash());
-		try {
-			return (CUser) findUserQuery.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public CUser login(CUser user) {
+        Query findUserQuery = em.createQuery("from " + CUser.class.getCanonicalName()
+                + " where username=:userNameParam and passwordHash=:passwordParam", CUser.class);
+        findUserQuery.setParameter("userNameParam", user.getUsername());
+        findUserQuery.setParameter("passwordParam", user.getPasswordHash());
+        try {
+            return (CUser) findUserQuery.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public Employee getCurrentUser() {
+        CUser user = null;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Query getUserQuery = em.createQuery("from " + CUser.class.getName() + " where username=:usernameParam", CUser.class);
+        getUserQuery.setParameter("usernameParam", auth.getName());
+        try {
+            user = (CUser) getUserQuery.getSingleResult();
+        } catch (NonUniqueResultException e) {
+            throw new RuntimeException(e);
+        } catch (NoResultException e) {
+            return null;
+        }
+        return user.getEmployee();
+    }
 }

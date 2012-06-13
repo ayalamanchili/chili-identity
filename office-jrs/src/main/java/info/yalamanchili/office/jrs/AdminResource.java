@@ -3,6 +3,7 @@ package info.yalamanchili.office.jrs;
 import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
@@ -29,41 +30,42 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class AdminResource {
 
-	@Autowired
-	protected SecurityService securityService;
+    @Autowired
+    protected SecurityService securityService;
+    @Autowired
+    protected Mapper mapper;
+    @Autowired
+    MessagingService messagingService;
+    @Autowired
+    public EmployeeDao employeeDao;
+    @PersistenceContext
+    EntityManager em;
 
-	@Autowired
-	protected Mapper mapper;
+    @Path("/login")
+    @PUT
+    public CUser login(CUser user) {
+        return securityService.login(user);
+    }
 
-	@Autowired
-	MessagingService messagingService;
+    @Path("/createuser")
+    @PUT
+    public void createUser(CUser user) {
+        user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
+        user.setEmployee(em.merge(user.getEmployee()));
+        user.setEnabled(true);
+        em.merge(user);
+    }
 
-	@Autowired
-	public EmployeeDao employeeDao;
+    @Path("/test")
+    @GET
+    public void test() {
+        System.out.println("--------------test-----------");
+        // messagingService.sendEmail("asdf@gmail.com", "asdf");
+    }
 
-	@PersistenceContext
-	EntityManager em;
-
-	@Path("/login")
-	@PUT
-	public CUser login(CUser user) {
-		return securityService.login(user);
-	}
-
-	@Path("/createuser")
-	@PUT
-	public void createUser(CUser user) {
-		user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
-		user.setEmployee(em.merge(user.getEmployee()));
-		user.setEnabled(true);
-		em.merge(user);
-	}
-
-	@Path("/test")
-	@GET
-	public void test() {
-		System.out.println("--------------test-----------");
-		// messagingService.sendEmail("asdf@gmail.com", "asdf");
-	}
-
+    @Path("/currentuser")
+    @GET
+    public Employee getCurrentUser() {
+        return securityService.getCurrentUser();
+    }
 }
