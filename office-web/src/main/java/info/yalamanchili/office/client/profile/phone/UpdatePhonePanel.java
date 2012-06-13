@@ -89,11 +89,4 @@ public class UpdatePhonePanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "phone";
     }
-
-    public class UpdatePhonePanelPopup extends PopupPanel {
-
-        public UpdatePhonePanelPopup() {
-            setWidget(UpdatePhonePanel.this);
-        }
-    }
 }

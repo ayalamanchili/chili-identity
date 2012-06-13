@@ -11,8 +11,8 @@ import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
-import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel.UpdatePhonePanelPopup;
 
 public class ProfileHome extends ALComposite {
 
@@ -68,7 +68,8 @@ public class ProfileHome extends ALComposite {
 
         @Override
         public void updateClicked(String entityId) {
-            new UpdatePhonePanel(getEntity(entityId)).new UpdatePhonePanelPopup().show();
+            UpdatePhonePanel updatePhonePanel = new UpdatePhonePanel(getEntity(entityId));
+            new GenericPopup(updatePhonePanel).show();
         }
     }
 }
