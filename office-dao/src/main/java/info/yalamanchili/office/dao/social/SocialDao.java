@@ -31,4 +31,11 @@ public class SocialDao {
 		return null;
 	}
 
+
+	public Post addReply(Post post, Long parentPostId)
+	{
+		Post parentPost = em.find(Post.class,parentPostId);
+		parentPost.addReply(post);
+		return em.merge(parentPost);
+}
 }
