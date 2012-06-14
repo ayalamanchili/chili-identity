@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class LoginPanel extends PopupPanel {
+    public class LoginPanel extends PopupPanel {
 	private static Logger logger = Logger.getLogger(LoginPanel.class.getName());
 	private static LoginPanelUiBinder uiBinder = GWT.create(LoginPanelUiBinder.class);
 

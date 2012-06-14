@@ -54,6 +54,7 @@ public class ProfileHome extends ALComposite {
         emailsPanel.setContent(new ReadAllEmailsPanel(empId));
         return emailsPanel;
     }
+//Phones
 
     public class ProfileReadAllPhonesPanel extends ReadAllPhonesPanel {
 
@@ -68,8 +69,20 @@ public class ProfileHome extends ALComposite {
 
         @Override
         public void updateClicked(String entityId) {
-            UpdatePhonePanel updatePhonePanel = new UpdatePhonePanel(getEntity(entityId));
+            ProfileUpdatePhonePanel updatePhonePanel = new ProfileUpdatePhonePanel(getEntity(entityId));
             new GenericPopup(updatePhonePanel).show();
+        }
+    }
+
+    public class ProfileUpdatePhonePanel extends UpdatePhonePanel {
+        public ProfileUpdatePhonePanel(JSONObject entity){
+            super(entity);
+        }
+        
+        @Override
+        protected void postSuccess(String result) {
+            GenericPopup.instance().hide();
+            //TODO refresh results
         }
     }
 }

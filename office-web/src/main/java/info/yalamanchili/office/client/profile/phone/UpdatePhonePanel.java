@@ -45,13 +45,17 @@ public class UpdatePhonePanel extends UpdateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-                new ResponseStatusWidget().show("successfully updated Phone information");
-                TabPanel.instance().myOfficePanel.entityPanel.clear();
-                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel.instance().getEntityId()));
-                TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
+                postSuccess(arg0);
             }
         });
 
+    }
+//TODO make this abstract
+    protected void postSuccess(String result) {
+        new ResponseStatusWidget().show("successfully updated Phone information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
     }
 
     @Override

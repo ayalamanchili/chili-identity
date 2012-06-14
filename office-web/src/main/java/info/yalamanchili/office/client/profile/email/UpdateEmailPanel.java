@@ -89,11 +89,4 @@ public class UpdateEmailPanel extends UpdateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "email";
     }
-
-    public class UpdateEmailPanelPopup extends PopupPanel {
-
-        public UpdateEmailPanelPopup(UpdateEmailPanel panel) {
-            setWidget(panel);
-        }
-    }
 }
