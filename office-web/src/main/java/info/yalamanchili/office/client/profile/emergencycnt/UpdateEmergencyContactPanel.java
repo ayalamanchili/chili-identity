@@ -10,94 +10,97 @@ import info.yalamanchili.office.client.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
+import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 
 public class UpdateEmergencyContactPanel extends UpdateComposite {
 
-	public UpdateEmergencyContactPanel(JSONObject entity) {
-		initUpdateComposite(entity, "EmergencyContact", OfficeWelcome.constants);
-	}
+    public UpdateEmergencyContactPanel(JSONObject entity) {
+        initUpdateComposite(entity, "EmergencyContact", OfficeWelcome.constants);
+    }
 
-	@Override
-	protected JSONObject populateEntityFromFields() {
-		JSONObject contact = entity.get("contact").isObject();
-		assignEntityValueFromField("firstName", contact);
-		assignEntityValueFromField("middleInitial", contact);
-		assignEntityValueFromField("lastName", contact);
-		assignEntityValueFromField("sex", contact);
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        JSONObject contact = entity.get("contact").isObject();
+        assignEntityValueFromField("firstName", contact);
+        assignEntityValueFromField("middleInitial", contact);
+        assignEntityValueFromField("lastName", contact);
+        assignEntityValueFromField("sex", contact);
 
-		assignEntityValueFromField("relation", entity);
-		assignEntityValueFromField("ecPrimary", entity);
-		entity.put("contact", contact);
-		return entity;
-	}
+        assignEntityValueFromField("relation", entity);
+        assignEntityValueFromField("ecPrimary", entity);
+        entity.put("contact", contact);
+        return entity;
+    }
 
-	@Override
-	protected void updateButtonClicked() {
-		HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
-				OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+    @Override
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
 
-					@Override
-					public void onFailure(Throwable arg0) {
-						handleErrorResponse(arg0);
-					}
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-					@Override
-					public void onSuccess(String arg0) {
-						new ResponseStatusWidget().show("successfully updated Emergency Contact information");
-						TabPanel.instance().myOfficePanel.entityPanel.clear();
-						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
-								TreeEmployeePanel.instance().getEntityId()));
-						TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
-					}
-				});
+            @Override
+            public void onSuccess(String arg0) {
+                postSuccess(arg0);
+            }
+        });
 
-	}
+    }
 
-	@Override
-	public void populateFieldsFromEntity(JSONObject entity) {
-		assignFieldValueFromEntity("relation", entity, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("ecPrimary", entity, DataType.BOOLEAN_FIELD);
-		// Contact
-		JSONObject contact = entity.get("contact").isObject();
-		assignFieldValueFromEntity("firstName", contact, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("middleInitial", contact, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("lastName", contact, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("sex", contact, DataType.ENUM_FIELD);
+    @Override
+    protected void postSuccess(String result) {
+        new ResponseStatusWidget().show("successfully updated Emergency Contact information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
+                TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
+    }
 
-	}
+    @Override
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("relation", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("ecPrimary", entity, DataType.BOOLEAN_FIELD);
+        // Contact
+        JSONObject contact = entity.get("contact").isObject();
+        assignFieldValueFromEntity("firstName", contact, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("middleInitial", contact, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", contact, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("sex", contact, DataType.ENUM_FIELD);
 
-	@Override
-	protected void addListeners() {
-		// TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    protected void addListeners() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    protected void addWidgets() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void addWidgets() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+        addField("firstName", false, true, DataType.STRING_FIELD);
+        addField("middleInitial", false, true, DataType.STRING_FIELD);
+        addField("lastName", false, true, DataType.STRING_FIELD);
+        String[] strs = {"MALE", "FEMALE"};
+        addEnumField("sex", false, true, strs);
+        addField("relation", false, true, DataType.STRING_FIELD);
+        addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
+    }
 
-	}
-
-	@Override
-	protected void addWidgetsBeforeCaptionPanel() {
-		addField("firstName", false, true, DataType.STRING_FIELD);
-		addField("middleInitial", false, true, DataType.STRING_FIELD);
-		addField("lastName", false, true, DataType.STRING_FIELD);
-		String[] strs = { "MALE", "FEMALE" };
-		addEnumField("sex", false, true, strs);
-		addField("relation", false, true, DataType.STRING_FIELD);
-		addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
-	}
-
-	@Override
-	protected String getURI() {
-		return OfficeWelcome.constants.root_url() + "emergencycontact";
-	}
-
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "emergencycontact";
+    }
 }

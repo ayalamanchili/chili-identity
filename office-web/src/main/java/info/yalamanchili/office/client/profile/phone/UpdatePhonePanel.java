@@ -50,7 +50,8 @@ public class UpdatePhonePanel extends UpdateComposite {
         });
 
     }
-//TODO make this abstract
+
+    @Override
     protected void postSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Phone information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();

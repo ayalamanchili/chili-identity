@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.PopupPanel;
+import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 
 /**
  *
@@ -53,12 +55,16 @@ public class UpdateEmailPanel extends UpdateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-                new ResponseStatusWidget().show("successfully updated Email information");
-                TabPanel.instance().myOfficePanel.entityPanel.clear();
-                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
-                TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
+                postSuccess(arg0);
             }
         });
+    }
+
+    protected void postSuccess(String result) {
+        new ResponseStatusWidget().show("successfully updated Email information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
     }
 
     @Override
