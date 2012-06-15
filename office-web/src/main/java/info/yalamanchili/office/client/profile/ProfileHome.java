@@ -16,6 +16,12 @@ import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
 
 public class ProfileHome extends ALComposite {
 
+    protected static final int READ_EMPLOYEE_WIDGET_INDEX = 0;
+    protected static final int READ_EMPLOYEE_PHONES_WIDGET_INDEX = 1;
+    protected static final int READ_EMPLOYEE_EMAILS_WIDGET_INDEX = 2;
+    protected static final int READ_EMPLOYEE_ADDRESSES_WIDGET_INDEX = 3;
+    protected static final int READ_EMPLOYEE_REPORTSTO_WIDGET_INDEX = 4;
+    protected static final int READ_EMPLOYEE_EMERGENCYCNT_WIDGET_INDEX = 5;
     protected FlowPanel panel = new FlowPanel();
 
     public ProfileHome() {
@@ -36,11 +42,17 @@ public class ProfileHome extends ALComposite {
     protected void addWidgets() {
         // TODO check for null pointer
         JSONObject employee = OfficeWelcome.instance().user.get("employee").isObject();
-        panel.add(new ReadEmployeePanel(employee));
-        panel.add(getPhonesPanel(employee.get("id").isString().stringValue()));
-        panel.add(getEmailsPanel(employee.get("id").isString().stringValue()));
+        panel.insert(new ReadEmployeePanel(employee), READ_EMPLOYEE_WIDGET_INDEX);
+        panel.insert(getPhonesPanel(employee.get("id").isString().stringValue()), READ_EMPLOYEE_PHONES_WIDGET_INDEX);
+        panel.insert(getEmailsPanel(employee.get("id").isString().stringValue()), READ_EMPLOYEE_EMAILS_WIDGET_INDEX);
         // TODO add disclosure planel for reports to and
         // emergency contact.
+    }
+
+    protected void refreshPhones() {
+        panel.remove(READ_EMPLOYEE_PHONES_WIDGET_INDEX);
+        panel.insert(getPhonesPanel(OfficeWelcome.instance().user.get("employee").isObject().get("id").isString().stringValue()), READ_EMPLOYEE_PHONES_WIDGET_INDEX);
+
     }
 
     protected DisclosurePanel getPhonesPanel(String empId) {
@@ -73,18 +85,17 @@ public class ProfileHome extends ALComposite {
             new GenericPopup(updatePhonePanel).show();
         }
     }
-    //Ragha changes
-    ///Ramanam changes
 
     public class ProfileUpdatePhonePanel extends UpdatePhonePanel {
-        public ProfileUpdatePhonePanel(JSONObject entity){
+
+        public ProfileUpdatePhonePanel(JSONObject entity) {
             super(entity);
         }
-        
+
         @Override
         protected void postSuccess(String result) {
             GenericPopup.instance().hide();
-            //TODO refresh results
+            refreshPhones();
         }
     }
 }
