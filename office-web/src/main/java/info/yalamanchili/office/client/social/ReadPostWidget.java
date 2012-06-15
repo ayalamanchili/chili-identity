@@ -18,7 +18,7 @@ public class ReadPostWidget extends ALComposite {
     CaptionPanel postRootPanel = new CaptionPanel();
     FlowPanel postBodyPanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
-    ClickableLink replyLink = new ClickableLink("reply");
+  
 
     public ReadPostWidget(JSONObject post) {
         init(postRootPanel);
@@ -45,7 +45,6 @@ public class ReadPostWidget extends ALComposite {
     protected void addWidgets() {
         postRootPanel.setContentWidget(postBodyPanel);
         postBodyPanel.add(postBodyArea);
-        postBodyPanel.add(replyLink);
     }
 
     protected String getPostEmployeeNameHtml(JSONObject employee) {
