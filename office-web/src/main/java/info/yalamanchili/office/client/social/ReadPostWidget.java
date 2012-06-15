@@ -7,24 +7,28 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
+import info.yalamanchili.gwt.widgets.ClickableLink;
 
 public class ReadPostWidget extends ALComposite {
 
     private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
     JSONObject post;
-    CaptionPanel panel = new CaptionPanel();
-    RichTextArea body = new RichTextArea();
+    CaptionPanel postRootPanel = new CaptionPanel();
+    FlowPanel postBodyPanel = new FlowPanel();
+    RichTextArea postBodyArea = new RichTextArea();
+    ClickableLink replyLink = new ClickableLink("reply");
 
     public ReadPostWidget(JSONObject post) {
-        init(panel);
+        init(postRootPanel);
         this.post = (JSONObject) post.get("post");
         displayPost();
     }
 
     protected void displayPost() {
-        panel.setCaptionText(getPostEmployeeNameHtml(post.get("employee").isObject()));
-        body.setHTML(JSONUtils.toString(post, "postContent"));
+        postRootPanel.setCaptionText(getPostEmployeeNameHtml(post.get("employee").isObject()));
+        postBodyArea.setHTML(JSONUtils.toString(post, "postContent"));
     }
 
     @Override
@@ -34,12 +38,14 @@ public class ReadPostWidget extends ALComposite {
 
     @Override
     protected void configure() {
-        body.addStyleName("postRichTextBox");
+        postBodyArea.addStyleName("postRichTextBox");
     }
 
     @Override
     protected void addWidgets() {
-        panel.setContentWidget(body);
+        postRootPanel.setContentWidget(postBodyPanel);
+        postBodyPanel.add(postBodyArea);
+        postBodyPanel.add(replyLink);
     }
 
     protected String getPostEmployeeNameHtml(JSONObject employee) {
