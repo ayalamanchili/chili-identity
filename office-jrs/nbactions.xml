@@ -12,17 +12,10 @@
             </properties>
         </action>
         <action>
-            <actionName>CUSTOM-gwtrun</actionName>
-            <displayName>gwtrun</displayName>
-            <goals>
-                <goal>gwt:run</goal>
-            </goals>
-        </action>
-        <action>
             <actionName>CUSTOM-tomcat6run</actionName>
             <displayName>tomcat6run</displayName>
             <goals>
-                <goal>tomcat6:run-war</goal>
+                <goal>tomcat6:run</goal>
             </goals>
         </action>
     </actions>
