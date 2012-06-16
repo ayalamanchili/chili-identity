@@ -85,12 +85,15 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 
                     @Override
                     public void onResponse(String arg0) {
-                        TabPanel.instance().myOfficePanel.entityPanel.clear();
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
-
                     }
                 });
+    }
+
+    @Override
+    public void postDeleteSuccess() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
     }
 
     @Override

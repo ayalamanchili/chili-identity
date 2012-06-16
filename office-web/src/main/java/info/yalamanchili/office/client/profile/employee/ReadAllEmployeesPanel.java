@@ -106,6 +106,10 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
     }
 
     @Override
+    public void postDeleteSuccess() {
+    }
+
+    @Override
     public void updateClicked(String entityId) {
         // TODO Auto-generated method stub
     }

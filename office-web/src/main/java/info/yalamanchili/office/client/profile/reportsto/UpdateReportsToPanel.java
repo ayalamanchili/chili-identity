@@ -45,14 +45,14 @@ public class UpdateReportsToPanel extends UpdateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-                postSuccess(arg0);
+                postUpdateSuccess(arg0);
             }
         });
 
     }
 
     @Override
-    protected void postSuccess(String result) {
+    protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Reports To information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllReportsToPanel(TreeEmployeePanel.instance().getEntityId()));

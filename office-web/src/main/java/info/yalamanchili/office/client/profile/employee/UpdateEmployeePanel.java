@@ -58,7 +58,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     }
 
     @Override
-    protected void postSuccess(String result) {
+    protected void postUpdateSuccess(String result) {
         //TODO
     }
 }

@@ -94,12 +94,17 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
 
                     @Override
                     public void onResponse(String arg0) {
-                        TabPanel.instance().myOfficePanel.entityPanel.clear();
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
-
+                        postDeleteSuccess();
                     }
                 });
+
+    }
+
+    @Override
+    public void postDeleteSuccess() {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
 
     }
 

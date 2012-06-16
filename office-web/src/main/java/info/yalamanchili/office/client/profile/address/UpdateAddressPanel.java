@@ -53,13 +53,13 @@ public class UpdateAddressPanel extends UpdateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-                postSuccess(arg0);
+                postUpdateSuccess(arg0);
             }
         });
     }
 
     @Override
-    protected void postSuccess(String result) {
+    protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated employee Address");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));

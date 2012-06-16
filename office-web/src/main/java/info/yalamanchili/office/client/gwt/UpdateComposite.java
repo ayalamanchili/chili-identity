@@ -37,5 +37,5 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
 
     public abstract void populateFieldsFromEntity(JSONObject entity);
 
-    protected abstract void postSuccess(String result);
+    protected abstract void postUpdateSuccess(String result);
 }

@@ -87,6 +87,11 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
     public void deleteClicked(String entityId) {
         // TODO
     }
+    
+    @Override
+    public void postDeleteSuccess() {
+        
+    }
 
     @Override
     public void updateClicked(String entityId) {

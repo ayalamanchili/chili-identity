@@ -87,6 +87,10 @@ public class ReadAllReportsToPanel extends ReadAllComposite {
     }
 
     @Override
+    public void postDeleteSuccess() {
+    }
+
+    @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateReportsToPanel(getEntity(entityId)));
