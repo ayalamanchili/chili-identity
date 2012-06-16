@@ -1,5 +1,7 @@
 package info.yalamanchili.office.client.profile;
 
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.JSONUtils;
@@ -13,16 +15,17 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
+import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite {
 
-    protected static final int READ_EMPLOYEE_WIDGET_INDEX = 0;
-    protected static final int READ_EMPLOYEE_PHONES_WIDGET_INDEX = 1;
-    protected static final int READ_EMPLOYEE_EMAILS_WIDGET_INDEX = 2;
-    protected static final int READ_EMPLOYEE_ADDRESSES_WIDGET_INDEX = 3;
-    protected static final int READ_EMPLOYEE_REPORTSTO_WIDGET_INDEX = 4;
-    protected static final int READ_EMPLOYEE_EMERGENCYCNT_WIDGET_INDEX = 5;
+    private static Logger logger = Logger.getLogger(ProfileHome.class.getName());
     protected FlowPanel panel = new FlowPanel();
+    protected DisclosurePanel phonesPanel;
+    protected DisclosurePanel emailsPanel;
+    protected DisclosurePanel addressesPanel;
+    protected DisclosurePanel reportsTosPanel;
+    protected DisclosurePanel emergencyContactsPanel;
 
     public ProfileHome() {
         init(panel);
@@ -40,33 +43,32 @@ public class ProfileHome extends ALComposite {
 
     @Override
     protected void addWidgets() {
-        // TODO check for null pointer
-        JSONObject employee = OfficeWelcome.instance().user.get("employee").isObject();
-        panel.insert(new ReadEmployeePanel(employee), READ_EMPLOYEE_WIDGET_INDEX);
-        panel.insert(getPhonesPanel(employee.get("id").isString().stringValue()), READ_EMPLOYEE_PHONES_WIDGET_INDEX);
-        panel.insert(getEmailsPanel(employee.get("id").isString().stringValue()), READ_EMPLOYEE_EMAILS_WIDGET_INDEX);
+        panel.add(new ReadEmployeePanel(OfficeWelcome.instance().employee));
+        addPhonesPanel(false);
+        addEmailsPanel(false);
         // TODO add disclosure planel for reports to and
         // emergency contact.
     }
 
-    protected void refreshPhones() {
-        panel.remove(READ_EMPLOYEE_PHONES_WIDGET_INDEX);
-        panel.insert(getPhonesPanel(OfficeWelcome.instance().user.get("employee").isObject().get("id").isString().stringValue()), READ_EMPLOYEE_PHONES_WIDGET_INDEX);
+    /**
+     * Phones
+     */
+    protected void addPhonesPanel(boolean open) {
+        if (panel.getWidgetIndex(phonesPanel) < 0) {
+            phonesPanel = new DisclosurePanel("Phones");
+            panel.add(phonesPanel);
 
-    }
+            phonesPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
 
-    protected DisclosurePanel getPhonesPanel(String empId) {
-        DisclosurePanel phonesPanel = new DisclosurePanel("Phones");
-        phonesPanel.setContent(new ProfileReadAllPhonesPanel(empId));
-        return phonesPanel;
-    }
+                @Override
+                public void onOpen(OpenEvent<DisclosurePanel> event) {
+                    phonesPanel.setContent(
+                            new ProfileReadAllPhonesPanel(OfficeWelcome.instance().employeeId));
 
-    protected DisclosurePanel getEmailsPanel(String empId) {
-        DisclosurePanel emailsPanel = new DisclosurePanel("Emails");
-        emailsPanel.setContent(new ReadAllEmailsPanel(empId));
-        return emailsPanel;
+                }
+            });
+        }
     }
-//Phones
 
     public class ProfileReadAllPhonesPanel extends ReadAllPhonesPanel {
 
@@ -95,7 +97,26 @@ public class ProfileHome extends ALComposite {
         @Override
         protected void postSuccess(String result) {
             GenericPopup.instance().hide();
-            refreshPhones();
+            phonesPanel.setOpen(false);
+            phonesPanel.setOpen(true);
         }
+    }
+
+    /*
+     * Emails
+     */
+    protected void addEmailsPanel(boolean open) {
+        emailsPanel = null;
+        emailsPanel = new DisclosurePanel("Emails");
+        panel.add(emailsPanel);
+        emailsPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                emailsPanel.setContent(
+                        new ReadAllEmailsPanel(OfficeWelcome.instance().employeeId));
+
+            }
+        });
     }
 }
