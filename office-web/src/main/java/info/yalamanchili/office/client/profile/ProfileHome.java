@@ -4,28 +4,24 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.JSONUtils;
-import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
-import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
-import info.yalamanchili.office.client.gwt.GenericPopup;
-import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
-import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
-import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPanel;
-import info.yalamanchili.office.client.profile.emergencycnt.UpdateEmergencyContactPanel;
-import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
-import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPanel;
-import info.yalamanchili.office.client.profile.reportsto.UpdateReportsToPanel;
+import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
+import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
+import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPopupPanel;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite {
 
+    private static ProfileHome instance;
+
+    public static ProfileHome instance() {
+        return instance;
+    }
     private static Logger logger = Logger.getLogger(ProfileHome.class.getName());
     protected FlowPanel panel = new FlowPanel();
     protected DisclosurePanel phonesPanel;
@@ -35,6 +31,7 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel emergencyContactsPanel;
 
     public ProfileHome() {
+        instance = this;
         init(panel);
     }
 
@@ -80,6 +77,11 @@ public class ProfileHome extends ALComposite {
         }
     }
 
+    public void refreshAddresses() {
+        addressesPanel.setOpen(false);
+        addressesPanel.setOpen(true);
+    }
+
     /**
      * Phones
      */
@@ -93,54 +95,21 @@ public class ProfileHome extends ALComposite {
                 @Override
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     phonesPanel.setContent(
-                            new ProfileReadAllPhonesPanel(OfficeWelcome.instance().employeeId));
+                            new ReadAllPhonesPopupPanel(OfficeWelcome.instance().employeeId));
 
                 }
             });
         }
     }
 
-    public class ProfileReadAllPhonesPanel extends ReadAllPhonesPanel {
-
-        public ProfileReadAllPhonesPanel(String parentId) {
-            super(parentId);
-        }
-
-        @Override
-        protected void addOptionsWidget(int row, JSONObject entity) {
-            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        }
-
-        @Override
-        public void updateClicked(String entityId) {
-            ProfileUpdatePhonePanel updatePhonePanel = new ProfileUpdatePhonePanel(getEntity(entityId));
-            new GenericPopup(updatePhonePanel).show();
-        }
-
-        @Override
-        public void postDeleteSuccess() {
-            phonesPanel.setOpen(false);
-            phonesPanel.setOpen(true);
-        }
+    public void refreshPhones() {
+        phonesPanel.setOpen(false);
+        phonesPanel.setOpen(true);
     }
-
-    public class ProfileUpdatePhonePanel extends UpdatePhonePanel {
-
-        public ProfileUpdatePhonePanel(JSONObject entity) {
-            super(entity);
-        }
-
-        @Override
-        protected void postUpdateSuccess(String result) {
-            GenericPopup.instance().hide();
-            phonesPanel.setOpen(false);
-            phonesPanel.setOpen(true);
-        }
-    }
-
     /*
      * Emails
      */
+
     protected void addEmailsPanel() {
         emailsPanel = null;
         emailsPanel = new DisclosurePanel("Emails");
@@ -155,10 +124,10 @@ public class ProfileHome extends ALComposite {
             }
         });
     }
+
     /*
      * ReportsTo
      */
-
     protected void addReportsToPanel() {
         reportsTosPanel = null;
         reportsTosPanel = new DisclosurePanel("ReportsTo");
@@ -168,48 +137,15 @@ public class ProfileHome extends ALComposite {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 reportsTosPanel.setContent(
-                        new ProfileReadAllReportsToPanel(OfficeWelcome.instance().employeeId));
+                        new ReadAllReportsToPopupPanel(OfficeWelcome.instance().employeeId));
 
             }
         });
     }
 
-    public class ProfileReadAllReportsToPanel extends ReadAllReportsToPanel {
-
-        public ProfileReadAllReportsToPanel(String parentId) {
-            super(parentId);
-        }
-
-        @Override
-        protected void addOptionsWidget(int row, JSONObject entity) {
-            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        }
-
-        @Override
-        public void updateClicked(String entityId) {
-            ProfileUpdateReportsToPanel updateReportsToPanel = new ProfileUpdateReportsToPanel(getEntity(entityId));
-            new GenericPopup(updateReportsToPanel).show();
-        }
-
-        @Override
-        public void postDeleteSuccess() {
-            reportsTosPanel.setOpen(false);
-            reportsTosPanel.setOpen(true);
-        }
-    }
-
-    public class ProfileUpdateReportsToPanel extends UpdateReportsToPanel {
-
-        public ProfileUpdateReportsToPanel(JSONObject entity) {
-            super(entity);
-        }
-
-        @Override
-        protected void postUpdateSuccess(String result) {
-            GenericPopup.instance().hide();
-            reportsTosPanel.setOpen(false);
-            reportsTosPanel.setOpen(true);
-        }
+    public void refreshReportsTo() {
+        reportsTosPanel.setOpen(false);
+        reportsTosPanel.setOpen(true);
     }
     /*
      * emergency contact
@@ -224,47 +160,14 @@ public class ProfileHome extends ALComposite {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 emergencyContactsPanel.setContent(
-                        new ProfileReadAllEmergencyContactsPanel(OfficeWelcome.instance().employeeId));
+                        new ReadAllEmergencyContactsPopupPanel(OfficeWelcome.instance().employeeId));
 
             }
         });
     }
 
-    public class ProfileReadAllEmergencyContactsPanel extends ReadAllEmergencyContactsPanel {
-
-        public ProfileReadAllEmergencyContactsPanel(String parentId) {
-            super(parentId);
-        }
-
-        @Override
-        protected void addOptionsWidget(int row, JSONObject entity) {
-            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        }
-
-        @Override
-        public void updateClicked(String entityId) {
-            ProfileUpdateEmergencyContactPanel updateEmergencyContactPanel = new ProfileUpdateEmergencyContactPanel(getEntity(entityId));
-            new GenericPopup(updateEmergencyContactPanel).show();
-        }
-
-        @Override
-        public void postDeleteSuccess() {
-            emergencyContactsPanel.setOpen(false);
-            emergencyContactsPanel.setOpen(true);
-        }
-    }
-
-    public class ProfileUpdateEmergencyContactPanel extends UpdateEmergencyContactPanel {
-
-        public ProfileUpdateEmergencyContactPanel(JSONObject entity) {
-            super(entity);
-        }
-
-        @Override
-        protected void postUpdateSuccess(String result) {
-            GenericPopup.instance().hide();
-            emergencyContactsPanel.setOpen(false);
-            emergencyContactsPanel.setOpen(true);
-        }
+    public void refreshEmergencyContactsPanel() {
+        emergencyContactsPanel.setOpen(false);
+        emergencyContactsPanel.setOpen(true);
     }
 }
