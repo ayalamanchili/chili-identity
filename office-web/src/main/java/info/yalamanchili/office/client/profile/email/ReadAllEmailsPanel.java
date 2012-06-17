@@ -85,6 +85,7 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 
                     @Override
                     public void onResponse(String arg0) {
+                        postDeleteSuccess();
                     }
                 });
     }
