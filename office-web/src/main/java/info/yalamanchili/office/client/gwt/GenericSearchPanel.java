@@ -5,29 +5,29 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 
 public abstract class GenericSearchPanel extends Composite {
 
-	@UiField
-	protected TextBox searchTextBox;
+    @UiField
+    protected CaptionPanel captionPanel;
+    @UiField
+    protected TextBox searchTextBox;
+    @UiField
+    protected Button searchButton;
 
-	@UiField
-	protected Button searchButton;
+    public GenericSearchPanel() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	public GenericSearchPanel() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    /**
+     * override this method to implement the logic to call server with the
+     * search text.
+     */
+    @UiHandler("searchButton")
+    protected abstract void onSearchClicked(ClickEvent clickEvent);
+    private static GenericSearchPanelUiBinder uiBinder = GWT.create(GenericSearchPanelUiBinder.class);
 
-	@UiHandler("searchButton")
-	protected abstract void onSearchClicked(ClickEvent clickEvent);
-
-	private static GenericSearchPanelUiBinder uiBinder = GWT.create(GenericSearchPanelUiBinder.class);
-
-	interface GenericSearchPanelUiBinder extends UiBinder<Widget, GenericSearchPanel> {
-	}
-
+    interface GenericSearchPanelUiBinder extends UiBinder<Widget, GenericSearchPanel> {
+    }
 }
