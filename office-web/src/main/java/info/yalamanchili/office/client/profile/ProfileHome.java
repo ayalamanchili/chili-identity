@@ -13,11 +13,14 @@ import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.UpdateEmergencyContactPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
 import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPanel;
 import info.yalamanchili.office.client.profile.reportsto.UpdateReportsToPanel;
@@ -98,6 +101,36 @@ public class ProfileHome extends ALComposite {
 
         @Override
         public void postDeleteSuccess() {
+            addressesPanel.setOpen(false);
+            addressesPanel.setOpen(true);
+        }
+
+        @Override
+        protected void configureCreateButton() {
+            createButton.setVisible(true);
+        }
+
+        @Override
+        protected void createButtonClicked() {
+            ProfileCreateAddressesPanel createPanel = new ProfileCreateAddressesPanel(CreateComposite.CreateCompositeType.ADD);;
+            new GenericPopup(createPanel).show();
+        }
+    }
+
+    public class ProfileCreateAddressesPanel extends CreateAddressPanel {
+
+        public ProfileCreateAddressesPanel(CreateCompositeType type) {
+            super(type);
+        }
+
+        @Override
+        protected String getURI() {
+            return OfficeWelcome.constants.root_url() + "employee/address/" + OfficeWelcome.instance().employeeId;
+        }
+
+        @Override
+        protected void postCreateSuccess(String result) {
+            GenericPopup.instance().hide();
             addressesPanel.setOpen(false);
             addressesPanel.setOpen(true);
         }

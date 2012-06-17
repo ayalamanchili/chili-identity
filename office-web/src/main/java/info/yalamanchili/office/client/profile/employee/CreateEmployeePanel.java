@@ -16,106 +16,104 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class CreateEmployeePanel extends CreateComposite {
 
-	private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
+    FileUploadPanel empImageUploadPanel = new FileUploadPanel("Profile Picture", "name");
 
-	FileUploadPanel empImageUploadPanel = new FileUploadPanel("Profile Picture", "name");
+    public CreateEmployeePanel(CreateCompositeType type) {
+        super(type);
+        initCreateComposite("Employee", OfficeWelcome.constants);
+    }
 
-	public CreateEmployeePanel(CreateCompositeType type) {
-		super(type);
-		initCreateComposite("Employee", OfficeWelcome.constants);
-	}
+    @Override
+    public JSONObject populateEntityFromFields() {
+        JSONObject user = new JSONObject();
+        assignEntityValueFromField("username", user);
+        assignEntityValueFromField("passwordHash", user);
 
-	@Override
-	public JSONObject populateEntityFromFields() {
-		JSONObject user = new JSONObject();
-		assignEntityValueFromField("username", user);
-		assignEntityValueFromField("passwordHash", user);
+        JSONObject employee = new JSONObject();
+        assignEntityValueFromField("firstName", employee);
+        assignEntityValueFromField("middleInitial", employee);
+        assignEntityValueFromField("lastName", employee);
+        assignEntityValueFromField("dateOfBirth", employee);
+        assignEntityValueFromField("sex", employee);
+        assignEntityValueFromField("startDate", employee);
+        assignImageName();
+        employee.put("imageURL", empImageUploadPanel.getFileName());
+        user.put("employee", employee);
+        logger.info(user.toString());
+        return user;
+    }
 
-		JSONObject employee = new JSONObject();
-		assignEntityValueFromField("firstName", employee);
-		assignEntityValueFromField("middleInitial", employee);
-		assignEntityValueFromField("lastName", employee);
-		assignEntityValueFromField("dateOfBirth", employee);
-		assignEntityValueFromField("sex", employee);
-		assignEntityValueFromField("startDate", employee);
-		assignImageName();
-		employee.put("imageURL", empImageUploadPanel.getFileName());
-		user.put("employee", employee);
-		logger.info(user.toString());
-		return user;
-	}
+    protected void assignImageName() {
+        StringField firstNameF = (StringField) fields.get("firstName");
+        StringField lastNameF = (StringField) fields.get("lastName");
+        empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_" + lastNameF.getText() + "_");
+    }
 
-	protected void assignImageName() {
-		StringField firstNameF = (StringField) fields.get("firstName");
-		StringField lastNameF = (StringField) fields.get("lastName");
-		empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_" + lastNameF.getText() + "_");
-	}
+    @Override
+    protected void addListeners() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void addListeners() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    protected void addWidgets() {
+        addField("username", false, true, DataType.STRING_FIELD);
+        addField("passwordHash", false, true, DataType.STRING_FIELD);
+        addField("firstName", false, true, DataType.STRING_FIELD);
+        addField("middleInitial", false, true, DataType.STRING_FIELD);
+        addField("lastName", false, true, DataType.STRING_FIELD);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD);
+        String[] strs = {"MALE", "FEMALE"};
+        addEnumField("sex", false, true, strs);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        entityDisplayWidget.add(empImageUploadPanel);
+    }
 
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+        // TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    public void createButtonClicked() {
+        empImageUploadPanel.upload();
+        HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
 
-	@Override
-	protected void addWidgets() {
-		addField("username", false, true, DataType.STRING_FIELD);
-		addField("passwordHash", false, true, DataType.STRING_FIELD);
-		addField("firstName", false, true, DataType.STRING_FIELD);
-		addField("middleInitial", false, true, DataType.STRING_FIELD);
-		addField("lastName", false, true, DataType.STRING_FIELD);
-		addField("dateOfBirth", false, true, DataType.DATE_FIELD);
-		String[] strs = { "MALE", "FEMALE" };
-		addEnumField("sex", false, true, strs);
-		addField("startDate", false, true, DataType.DATE_FIELD);
-		entityDisplayWidget.add(empImageUploadPanel);
-	}
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-	@Override
-	protected void addWidgetsBeforeCaptionPanel() {
-		// TODO Auto-generated method stub
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
 
-	}
+    }
 
-	@Override
-	public void createButtonClicked() {
-		empImageUploadPanel.upload();
-		HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-				new AsyncCallback<String>() {
+    @Override
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully created employee");
+        TabPanel.instance().myOfficePanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
 
-					@Override
-					public void onFailure(Throwable arg0) {
-						logger.info(arg0.getMessage());
-						handleErrorResponse(arg0);
-					}
+    }
 
-					@Override
-					public void onSuccess(String arg0) {
-						new ResponseStatusWidget().show("successfully created employee");
-						TabPanel.instance().myOfficePanel.clear();
-						TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
+    @Override
+    protected void addButtonClicked() {
+        // TODO Auto-generated method stub
+    }
 
-					}
-
-				});
-
-	}
-
-	@Override
-	protected void addButtonClicked() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected String getURI() {
-		return OfficeWelcome.constants.root_url() + "admin/createuser";
-	}
-
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "admin/createuser";
+    }
 }

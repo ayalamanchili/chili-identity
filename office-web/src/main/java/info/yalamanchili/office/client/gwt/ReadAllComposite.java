@@ -44,7 +44,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
      */
     protected FlowPanel tablePanel = new FlowPanel();
     /**
-     * The table.
+     * The data table.
      */
     protected FlexTable table = new FlexTable();
     /**
@@ -59,6 +59,11 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
      * The number of pages.
      */
     protected Integer numberOfPages;
+    /**
+     * create/add button to add new record this is set to not visible by
+     * default. To be seen need to override the configure createButton(
+     */
+    protected Button createButton = new Button("Create");
     /**
      * The class canonical entityName.
      */
@@ -112,12 +117,14 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
         pagingPanel.addStyleName("y-gwt-PagingBar");
         mainPanel.addStyleName("y-gwt-ReadAllPanel");
         tablePanel.addStyleName("y-gwt-TablePanel");
+        configureCreateButton();
     }
 
     @Override
     protected void addListeners() {
         goToPage.addChangeHandler(this);
         table.addClickHandler(this);
+        createButton.addClickHandler(this);
     }
 
     @Override
@@ -125,6 +132,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
         pagingPanel.add(goToPage);
         pagingPanel.add(noOfResultsL);
         tablePanel.add(table);
+        mainPanel.add(createButton);
         mainPanel.add(pagingPanel);
         mainPanel.add(tablePanel);
         captionPanel.setContentWidget(mainPanel);
@@ -217,9 +225,16 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
      */
     public abstract void postDeleteSuccess();
 
+    /**
+     * override this to add logic to perform on update row clicked
+     */
     public abstract void updateClicked(String entityId);
 
+    @Override
     public void onClick(ClickEvent event) {
+        if (event.getSource().equals(createButton)) {
+            createButtonClicked();
+        }
         Cell src = table.getCellForEvent(event);
         int rowIndex = src.getRowIndex();
         TableRowOptionsWidget rowWidget = optionsWidgetMap.get(String.valueOf(rowIndex));
@@ -234,6 +249,20 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
         }
     }
 
+    /**
+     * override this to make the create button visible and update its name etc
+     */
+    protected void configureCreateButton() {
+        createButton.setVisible(false);
+    }
+
+    /**
+     * override this method to perform logic to handle create button
+     */
+    protected void createButtonClicked() {
+    }
+
+    @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource() == goToPage.getListBox()) {
             preFetchTable((goToPage.getValue().intValue() * pageSize) - 10);
