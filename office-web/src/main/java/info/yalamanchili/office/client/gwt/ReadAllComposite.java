@@ -19,11 +19,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 
 public abstract class ReadAllComposite extends ALComposite implements ClickHandler, ChangeHandler {
 
@@ -32,16 +29,18 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
      * Parent entityId if any
      */
     protected String parentId;
+    protected FlowPanel basePanel = new FlowPanel();
+    protected CaptionPanel captionPanel = new CaptionPanel();
     /**
-     * The panel.
+     * The mainPanel.
      */
-    protected FlowPanel panel = new FlowPanel();
+    protected FlowPanel mainPanel = new FlowPanel();
     /**
-     * The paging panel.
+     * The paging mainPanel.
      */
     protected HorizontalPanel pagingPanel = new HorizontalPanel();
     /**
-     * The table panel.
+     * The table mainPanel.
      */
     protected FlowPanel tablePanel = new FlowPanel();
     /**
@@ -84,7 +83,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     protected void initTable(String className, ConstantsWithLookup constants) {
         this.classCanonicalName = className;
         this.constants = constants;
-        init(panel);
+        init(basePanel);
         preFetchTable(0);
     }
 
@@ -94,7 +93,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     protected void initTable(String className, JSONArray entities, ConstantsWithLookup constants) {
         this.classCanonicalName = className;
         this.constants = constants;
-        init(panel);
+        init(basePanel);
         createTableHeader();
         fillData(entities);
     }
@@ -111,7 +110,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
         table.setBorderWidth(1);
         pagingPanel.setSpacing(5);
         pagingPanel.addStyleName("y-gwt-PagingBar");
-        panel.addStyleName("y-gwt-ReadAllPanel");
+        mainPanel.addStyleName("y-gwt-ReadAllPanel");
         tablePanel.addStyleName("y-gwt-TablePanel");
     }
 
@@ -126,8 +125,11 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
         pagingPanel.add(goToPage);
         pagingPanel.add(noOfResultsL);
         tablePanel.add(table);
-        panel.add(pagingPanel);
-        panel.add(tablePanel);
+        mainPanel.add(pagingPanel);
+        mainPanel.add(tablePanel);
+        captionPanel.setContentWidget(mainPanel);
+        captionPanel.setCaptionHTML(classCanonicalName);
+        basePanel.add(captionPanel);
     }
 
     /**
