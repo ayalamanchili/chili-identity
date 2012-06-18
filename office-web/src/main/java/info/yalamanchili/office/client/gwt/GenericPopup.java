@@ -33,6 +33,7 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
         panel.add(widget);
         panel.add(closeB);
         setWidget(panel);
+        closeB.addClickHandler(this);
         super.setPopupPosition(Window.getClientWidth() / 3, Window.getClientHeight() / 3);
     }
 
