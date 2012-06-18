@@ -48,9 +48,6 @@
 		}
 		
 		.sidePanelTop {
-			border-bottom-style: solid;
-			border-bottom-color: #28009E;
-			border-bottom-width: 2px;
 			height: 40%;
 		}
 		

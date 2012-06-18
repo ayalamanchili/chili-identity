@@ -8,18 +8,22 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
 
 /**
  *
  * @author yalamanchili
  */
 public class EmployeeSearchPanel extends SearchComposite {
+
+    private static Logger logger = Logger.getLogger(EmployeeSearchPanel.class.getName());
 
     public EmployeeSearchPanel() {
         init("Employees Search", "Employee", OfficeWelcome.constants);
@@ -35,10 +39,18 @@ public class EmployeeSearchPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
+        addField("firstName", DataType.STRING_FIELD);
+        addField("middleInitial", DataType.STRING_FIELD);
+        addField("lastName", DataType.STRING_FIELD);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        JSONObject entity = new JSONObject();
+        assignEntityValueFromField("firstName", entity);
+        assignEntityValueFromField("middleInitial", entity);
+        assignEntityValueFromField("lastName", entity);
+        logger.info(entity.toString());
         return entity;
     }
 

@@ -77,40 +77,40 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
      * adding and getting Fields
      */
 
-    protected void addField(String attributeName, Boolean readOnly, Boolean isRequired, DataType type) {
+    protected void addField(String attributeName, DataType type) {
         if (DataType.LONG_FIELD.equals(type)) {
             LongField longField = new LongField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, readOnly, isRequired);
+                    attributeName, entityName, true, false);
             fields.put(attributeName, longField);
             advancedSearchPanel.add(longField);
         }
         if (DataType.INTEGER_FIELD.equals(type)) {
             IntegerField integerField = new IntegerField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, readOnly, isRequired);
+                    attributeName, entityName, true, false);
             fields.put(attributeName, integerField);
             advancedSearchPanel.add(integerField);
         }
         if (DataType.STRING_FIELD.equals(type)) {
             StringField stringField = new StringField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, readOnly, isRequired);
+                    attributeName, entityName, true, false);
             fields.put(attributeName, stringField);
             advancedSearchPanel.add(stringField);
         }
         if (DataType.DATE_FIELD.equals(type)) {
             DateField dateField = new DateField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, readOnly, isRequired);
+                    attributeName, entityName, true, false);
             fields.put(attributeName, dateField);
             advancedSearchPanel.add(dateField);
         }
         if (DataType.BOOLEAN_FIELD.equals(type)) {
             BooleanField booleanField = new BooleanField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, readOnly, isRequired);
+                    attributeName, entityName, true, false);
             fields.put(attributeName, booleanField);
             advancedSearchPanel.add(booleanField);
         }
         if (DataType.FLOAT_FIELD.equals(type)) {
             FloatField floatField = new FloatField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, readOnly, isRequired);
+                    attributeName, entityName, true, false);
             fields.put(attributeName, floatField);
             advancedSearchPanel.add(floatField);
         }
@@ -122,7 +122,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
         if (DataType.DROPDOWN_FIELD.equals(type)) {
             StringField dropDownField = new StringField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, readOnly, isRequired);
+                    attributeName, entityName, true, false);
             fields.put(attributeName, dropDownField);
             advancedSearchPanel.add(dropDownField);
         }
@@ -133,14 +133,14 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
         if (DataType.RICH_TEXT_AREA.equals(type)) {
             RichTextField richTextField = new RichTextField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName, readOnly, isRequired);
+                    constants), attributeName, entityName, true, false);
             richTextField.addStyleName("y-gwt-RichTextField");
             fields.put(attributeName, richTextField);
             advancedSearchPanel.add(richTextField);
         }
         if (DataType.CURRENCY_FIELD.equals(type)) {
             CurrencyField currencyField = new CurrencyField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName, readOnly, isRequired);
+                    constants), attributeName, entityName, true, false);
             currencyField.addStyleName("y-gwt-CurrencyField");
             fields.put(attributeName, currencyField);
             advancedSearchPanel.add(currencyField);
