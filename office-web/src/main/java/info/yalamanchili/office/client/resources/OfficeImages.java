@@ -20,5 +20,8 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/default-image.gif")
     @ImageOptions(height = 50, width = 50)
-    ImageResource defaultImageForReadAll();
+    ImageResource defaultImage_w_50_h_50();
+
+    @Source("images/default-image.gif")
+    ImageResource defaultImage();
 }
