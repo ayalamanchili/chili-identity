@@ -4,28 +4,16 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
-import info.yalamanchili.commons.SearchUtils;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.AddressType;
-import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Email;
-import info.yalamanchili.office.entity.profile.EmailType;
-import info.yalamanchili.office.entity.profile.EmergencyContact;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.Phone;
-import info.yalamanchili.office.entity.profile.PhoneType;
-import info.yalamanchili.office.entity.profile.ReportsTo;
+import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.jrs.profile.ReportsToResource.ReportsToTable;
-
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
@@ -35,10 +23,6 @@ import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.util.Version;
-import org.hibernate.search.jpa.FullTextEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

@@ -3,6 +3,7 @@ package info.yalamanchili.office.jrs;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,50 +35,59 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class FileResource {
 
-	@Autowired
-	protected OfficeServiceConfiguration officeServiceConfiguration;
+    @Autowired
+    protected OfficeServiceConfiguration officeServiceConfiguration;
 
-	@POST
-	@Path("/upload")
-	public Response uploadFile(@Context HttpServletRequest request) {
-		System.out.println("---------------uploading file-----------------");
-		System.out.println(request.getContentType());
-		processImageUpload(request);
-		return Response.ok().build();
-	}
+    @POST
+    @Path("/upload")
+    public Response uploadFile(@Context HttpServletRequest request) {
+        System.out.println("---------------uploading file-----------------");
+        processImageUpload(request);
+        return Response.ok().build();
+    }
 
-	@GET
-	@Path("/download")
-	@Produces("image/*")
-	public Response downloadFile(@QueryParam("path") String path) {
-		File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
-		System.out.println("downloadint---------:" + file.getPath());
-		ResponseBuilder response = Response.ok((Object) file);
-		response.header("Content-Disposition", "attachment; filename=image_from_server.jpg");
-		return response.build();
-	}
+    @GET
+    @Path("/download")
+    @Produces("image/*")
+    public Response downloadFile(@QueryParam("path") String path) {
+        if (path == null || path.trim().length() < 1) {
+            ResponseBuilder response = Response.status(Response.Status.BAD_REQUEST);
+            return response.build();
+        }
+        File file = null;
+        try {
+            file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
+        } catch (Exception e) {
+            ResponseBuilder response = Response.status(Response.Status.NOT_FOUND);
+            return response.build();
+        }
+        System.out.println("downloading---------:" + file.getPath());
+        ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition", "attachment; filename=" + file.getName());
+        return response.build();
+    }
 
-	protected void processImageUpload(HttpServletRequest request) {
-		FileItemFactory factory = new DiskFileItemFactory();
-		ServletFileUpload upload = new ServletFileUpload(factory);
-		List<FileItem> items = null;
-		try {
-			items = upload.parseRequest(request);
-		} catch (FileUploadException e) {
-			throw new RuntimeException("Error on File upload", e);
-		}
-		for (FileItem item : items) {
-			if (item.isFormField() || item.getName() == null || item.getName().trim().equals("")) {
-				continue;
-			}
-			File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
-					+ item.getName());
-			try {
-				System.out.println("----------writing image to-----------:" + fileurl.getAbsolutePath());
-				item.write(fileurl);
-			} catch (Exception e) {
-				throw new RuntimeException("Error saving File:" + fileurl + ": to disk.", e);
-			}
-		}
-	}
+    protected void processImageUpload(HttpServletRequest request) {
+        FileItemFactory factory = new DiskFileItemFactory();
+        ServletFileUpload upload = new ServletFileUpload(factory);
+        List<FileItem> items = null;
+        try {
+            items = upload.parseRequest(request);
+        } catch (FileUploadException e) {
+            throw new RuntimeException("Error on File upload", e);
+        }
+        for (FileItem item : items) {
+            if (item.isFormField() || item.getName() == null || item.getName().trim().equals("")) {
+                continue;
+            }
+            File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
+                    + item.getName());
+            try {
+                System.out.println("----------writing image to-----------:" + fileurl.getAbsolutePath());
+                item.write(fileurl);
+            } catch (Exception e) {
+                throw new RuntimeException("Error saving File:" + fileurl + ": to disk.", e);
+            }
+        }
+    }
 }
