@@ -124,7 +124,10 @@ public class ProfileHome extends ALComposite {
             }
         });
     }
-
+    public void refreshEmails() {
+        emailsPanel.setOpen(false);
+        emailsPanel.setOpen(true);
+    }
     /*
      * ReportsTo
      */
