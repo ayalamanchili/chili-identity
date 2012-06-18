@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor.Path;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
 
 /**
  *
@@ -18,5 +19,6 @@ public interface OfficeImages extends ClientBundle {
     public static final OfficeImages INSTANCE = GWT.create(OfficeImages.class);
 
     @Source("images/default-image.gif")
-    ImageResource defaultImage();
+    @ImageOptions(height = 50, width = 50)
+    ImageResource defaultImageForReadAll();
 }
