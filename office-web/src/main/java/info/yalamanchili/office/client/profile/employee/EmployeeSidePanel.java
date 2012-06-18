@@ -14,42 +14,39 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
-	private static Logger logger = Logger.getLogger(EmployeeSidePanel.class.getName());
+    private static Logger logger = Logger.getLogger(EmployeeSidePanel.class.getName());
+    public FlowPanel employeeSidePanel = new FlowPanel();
+    ClickableLink createEmployeeLink = new ClickableLink("Create Employee");
 
-	public FlowPanel employeeSidePanel = new FlowPanel();
+    public EmployeeSidePanel() {
+        init(employeeSidePanel);
+    }
 
-	ClickableLink createEmployeeLink = new ClickableLink("Create Employee");
+    @Override
+    protected void addListeners() {
+        createEmployeeLink.addClickHandler(this);
 
-	public EmployeeSidePanel() {
-		init(employeeSidePanel);
-	}
+    }
 
-	@Override
-	protected void addListeners() {
-		createEmployeeLink.addClickHandler(this);
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
+    }
 
-	}
+    @Override
+    protected void addWidgets() {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            employeeSidePanel.add(createEmployeeLink);
+        }
+        employeeSidePanel.add(new EmployeeSearchPanel());
+    }
 
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
+    @Override
+    public void onClick(ClickEvent clickEvent) {
+        if (clickEvent.getSource().equals(createEmployeeLink)) {
+            TabPanel.instance().myOfficePanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeePanel(CreateCompositeType.CREATE));
+        }
 
-	}
-
-	@Override
-	protected void addWidgets() {
-		if (Auth.isAdmin() || Auth.isHR()) {
-			employeeSidePanel.add(createEmployeeLink);
-		}
-		employeeSidePanel.add(new EmployeeSearchPanel());
-	}
-
-	@Override
-	public void onClick(ClickEvent clickEvent) {
-		if (clickEvent.getSource().equals(createEmployeeLink)) {
-			TabPanel.instance().myOfficePanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmployeePanel(CreateCompositeType.CREATE));
-		}
-
-	}
+    }
 }

@@ -49,6 +49,7 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
 
     protected abstract void postCreateSuccess(String result);
 
+    @Override
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
         if (event.getSource() == create) {

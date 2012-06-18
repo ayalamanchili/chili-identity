@@ -1,45 +1,82 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.GenericSearchPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.yalamanchili.office.client.gwt.SearchComposite;
+import info.yalamanchili.office.client.rpc.HttpService;
 
-import java.util.logging.Logger;
+/**
+ *
+ * @author yalamanchili
+ */
+public class EmployeeSearchPanel extends SearchComposite {
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONParser;
+    public EmployeeSearchPanel() {
+        init("Employees Search", "Employee", OfficeWelcome.constants);
+    }
 
-public class EmployeeSearchPanel extends GenericSearchPanel {
-	private static Logger logger = Logger.getLogger(EmployeeSearchPanel.class.getName());
+    @Override
+    protected void addListeners() {
+    }
 
-	@Override
-	protected void onSearchClicked(ClickEvent clickEvent) {
-		HttpServiceAsync.instance().doGet(getEmployeesearchURL(searchTextBox.getText(), 0, 10),
-				OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+    @Override
+    protected void configure() {
+    }
 
-					@Override
-					public void onResponse(String result) {
-						logger.info(result);
-						if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-							new ResponseStatusWidget().show("no results");
-						} else {
-							TabPanel.instance().myOfficePanel.entityPanel.clear();
-							JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject()
-									.get("employee"));
-							TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
-						}
-					}
-				});
-	}
+    @Override
+    protected void addWidgets() {
+    }
 
-	public String getEmployeesearchURL(String searchText, Integer start, Integer limit) {
-		return OfficeWelcome.constants.root_url() + "employee/search/" + searchText + "/" + start.toString() + "/"
-				+ limit.toString();
-	}
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        return entity;
+    }
 
+    @Override
+    protected void search(String searchText) {
+        HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+
+            @Override
+            public void onResponse(String result) {
+                postSearchSuccess(result);
+            }
+        });
+    }
+
+    @Override
+    protected void search(JSONObject entity) {
+    }
+
+    @Override
+    protected void postSearchSuccess(String result) {
+        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+            new ResponseStatusWidget().show("no results");
+        } else {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("employee"));
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
+        }
+    }
+
+    @Override
+    protected String getSearchURI(String searchText, Integer start, Integer limit) {
+        return OfficeWelcome.constants.root_url() + "employee/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString();
+    }
+
+    @Override
+    protected String getSearchURI(Integer start, Integer limit) {
+        return null;
+    }
 }
