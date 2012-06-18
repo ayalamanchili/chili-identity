@@ -8,10 +8,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
+import info.yalamanchili.gwt.fields.*;
 import com.google.gwt.user.client.ui.*;
 import info.yalamanchili.gwt.composite.BaseField;
 import info.yalamanchili.gwt.date.DateUtils;
-import info.yalamanchili.gwt.fields.*;
 import info.yalamanchili.gwt.utils.Utils;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,37 +80,37 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
     protected void addField(String attributeName, DataType type) {
         if (DataType.LONG_FIELD.equals(type)) {
             LongField longField = new LongField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, true, false);
+                    attributeName, entityName, false, false);
             fields.put(attributeName, longField);
             advancedSearchPanel.add(longField);
         }
         if (DataType.INTEGER_FIELD.equals(type)) {
             IntegerField integerField = new IntegerField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, true, false);
+                    attributeName, entityName, false, false);
             fields.put(attributeName, integerField);
             advancedSearchPanel.add(integerField);
         }
         if (DataType.STRING_FIELD.equals(type)) {
             StringField stringField = new StringField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, true, false);
+                    attributeName, entityName, false, false);
             fields.put(attributeName, stringField);
             advancedSearchPanel.add(stringField);
         }
         if (DataType.DATE_FIELD.equals(type)) {
             DateField dateField = new DateField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, true, false);
+                    attributeName, entityName, false, false);
             fields.put(attributeName, dateField);
             advancedSearchPanel.add(dateField);
         }
         if (DataType.BOOLEAN_FIELD.equals(type)) {
             BooleanField booleanField = new BooleanField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, true, false);
+                    attributeName, entityName, false, false);
             fields.put(attributeName, booleanField);
             advancedSearchPanel.add(booleanField);
         }
         if (DataType.FLOAT_FIELD.equals(type)) {
             FloatField floatField = new FloatField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, true, false);
+                    attributeName, entityName, false, false);
             fields.put(attributeName, floatField);
             advancedSearchPanel.add(floatField);
         }
@@ -122,7 +122,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
         if (DataType.DROPDOWN_FIELD.equals(type)) {
             StringField dropDownField = new StringField(Utils.getAttributeLabel(attributeName, entityName, constants),
-                    attributeName, entityName, true, false);
+                    attributeName, entityName, false, false);
             fields.put(attributeName, dropDownField);
             advancedSearchPanel.add(dropDownField);
         }
@@ -133,14 +133,14 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
         if (DataType.RICH_TEXT_AREA.equals(type)) {
             RichTextField richTextField = new RichTextField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName, true, false);
+                    constants), attributeName, entityName, false, false);
             richTextField.addStyleName("y-gwt-RichTextField");
             fields.put(attributeName, richTextField);
             advancedSearchPanel.add(richTextField);
         }
         if (DataType.CURRENCY_FIELD.equals(type)) {
             CurrencyField currencyField = new CurrencyField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName, true, false);
+                    constants), attributeName, entityName, false, false);
             currencyField.addStyleName("y-gwt-CurrencyField");
             fields.put(attributeName, currencyField);
             advancedSearchPanel.add(currencyField);
@@ -162,7 +162,9 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
-            entity.put(fieldKey, new JSONString(field.getText()));
+            if (field.getValue() != null) {
+                entity.put(fieldKey, new JSONString(field.getValue()));
+            }
         }
         if (fields.get(fieldKey) instanceof DateField) {
             DateField field = (DateField) fields.get(fieldKey);
@@ -172,7 +174,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
         if (fields.get(fieldKey) instanceof LongField) {
             LongField field = (LongField) fields.get(fieldKey);
-            if (field.getValue() != null && field.getValue().trim().equals("")) {
+            if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(String.valueOf(field.getValue())));
             }
         }

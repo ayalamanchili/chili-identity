@@ -21,11 +21,11 @@ import java.util.logging.Logger;
  *
  * @author yalamanchili
  */
-public class EmployeeSearchPanel extends SearchComposite {
+public class SearchEmployeePanel extends SearchComposite {
 
-    private static Logger logger = Logger.getLogger(EmployeeSearchPanel.class.getName());
+    private static Logger logger = Logger.getLogger(SearchEmployeePanel.class.getName());
 
-    public EmployeeSearchPanel() {
+    public SearchEmployeePanel() {
         init("Employees Search", "Employee", OfficeWelcome.constants);
     }
 
@@ -68,6 +68,14 @@ public class EmployeeSearchPanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
+        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+
+            @Override
+            public void onResponse(String result) {
+                postSearchSuccess(result);
+            }
+        });
     }
 
     @Override
@@ -89,6 +97,7 @@ public class EmployeeSearchPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return null;
+        return OfficeWelcome.constants.root_url() + "employee/search/" + start.toString() + "/"
+                + limit.toString();
     }
 }

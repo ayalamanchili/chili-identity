@@ -47,7 +47,7 @@ public class CreateEmployeePanel extends CreateComposite {
     protected void assignImageName() {
         StringField firstNameF = (StringField) fields.get("firstName");
         StringField lastNameF = (StringField) fields.get("lastName");
-        empImageUploadPanel.setFileName("employee/" + firstNameF.getText() + "_" + lastNameF.getText() + "_");
+        empImageUploadPanel.setFileName("employee/" + firstNameF.getValue() + "_" + lastNameF.getValue() + "_");
     }
 
     @Override

@@ -38,7 +38,7 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
         if (Auth.isAdmin() || Auth.isHR()) {
             employeeSidePanel.add(createEmployeeLink);
         }
-        employeeSidePanel.add(new EmployeeSearchPanel());
+        employeeSidePanel.add(new SearchEmployeePanel());
     }
 
     @Override

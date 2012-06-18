@@ -164,7 +164,7 @@ public abstract class CRUDComposite extends Composite {
 	protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
 		if (fields.get(fieldKey) instanceof StringField) {
 			StringField field = (StringField) fields.get(fieldKey);
-			entity.put(fieldKey, new JSONString(field.getText()));
+			entity.put(fieldKey, new JSONString(field.getValue()));
 		}
 		if (fields.get(fieldKey) instanceof DateField) {
 			DateField field = (DateField) fields.get(fieldKey);
