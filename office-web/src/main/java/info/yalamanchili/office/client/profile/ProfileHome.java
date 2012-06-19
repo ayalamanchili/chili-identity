@@ -5,6 +5,7 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
+import info.yalamanchili.office.client.profile.email.ReadAllEmailsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 
 import com.google.gwt.user.client.ui.DisclosurePanel;
@@ -111,7 +112,8 @@ public class ProfileHome extends ALComposite {
      */
 
     protected void addEmailsPanel() {
-        emailsPanel = null;
+    	 if (panel.getWidgetIndex(emailsPanel) < 0){
+    	/*emailsPanel = null;*/
         emailsPanel = new DisclosurePanel("Emails");
         panel.add(emailsPanel);
         emailsPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
@@ -119,10 +121,11 @@ public class ProfileHome extends ALComposite {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 emailsPanel.setContent(
-                        new ReadAllEmailsPanel(OfficeWelcome.instance().employeeId));
+                        new ReadAllEmailsPopupPanel(OfficeWelcome.instance().employeeId));
 
             }
         });
+    	 }
     }
     public void refreshEmails() {
         emailsPanel.setOpen(false);
