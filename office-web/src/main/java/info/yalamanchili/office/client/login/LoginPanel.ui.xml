@@ -9,7 +9,7 @@
 					<g:Label ui:field='usernameL'>Username</g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox ui:field='usernameTb' />
+					<g:TextBox ui:field='usernameTb' debugId="usernameTb"/>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -17,12 +17,12 @@
 					<g:Label ui:field='passwordL'>Password</g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:PasswordTextBox ui:field='passwordTb' />
+					<g:PasswordTextBox ui:field='passwordTb' debugId="passwordTb"/>
 				</g:customCell>
 			</g:row>
 			<g:row>
 				<g:customCell>
-					<g:Button title='Login' ui:field='loginB'>Login</g:Button>
+					<g:Button title='Login' ui:field='loginB' debugId="loginB">Login</g:Button>
 				</g:customCell>
 			</g:row>
 		</g:Grid>
