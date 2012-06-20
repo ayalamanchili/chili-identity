@@ -37,7 +37,14 @@ public class SocialResource {
     public List<Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
         return socialDao.getEmployeeFeed(start, limit);
     }
-
+    
+    @PUT
+    @Path("/CreatePost")
+    public Post CreatePost(Post NewPost)
+    {
+    	
+    	return socialDao.CreatePost(NewPost);
+    }
     @PUT
     @Path("/addreply/{parentPostId}")
     public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply) {
