@@ -8,18 +8,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import static org.junit.Assert.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginTest {
 //TODO get/set this from pom system property
 
     public static final String officeURL = "http://localhost:9090/office-web/office.html";
     protected static FirefoxDriver driver;
-
+    
     @BeforeClass
     public static void init() {
         driver = new FirefoxDriver();
     }
-
+    
     @Test
     public void testLogin() {
         driver.get(officeURL);
@@ -31,9 +34,15 @@ public class LoginTest {
         passwordTB.sendKeys("user");
         WebElement loginB = driver.findElement(By.id("gwt-debug-loginB"));
         loginB.click();
-        assertTrue(driver.getPageSource().contains("Welcome user"));
+        WebElement welcomeUserE = (new WebDriverWait(driver, 3)).until(new ExpectedCondition<WebElement>() {
+            @Override
+            public WebElement apply(WebDriver d) {
+                return d.findElement(By.id("gwt-debug-welcomeL"));
+            }
+        });
+        assertNotNull(welcomeUserE);
     }
-
+    
     @AfterClass
     public static void destroy() {
         driver.close();
