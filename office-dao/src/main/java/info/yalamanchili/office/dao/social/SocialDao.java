@@ -37,4 +37,10 @@ public class SocialDao {
         parentPost.addReply(post);
         return em.merge(parentPost);
     }
+
+	public Post CreatePost(Post newPost) {
+		// TODO Auto-generated method stub
+		
+		return null;
+	}
 }
