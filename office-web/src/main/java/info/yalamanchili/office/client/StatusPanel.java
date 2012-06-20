@@ -17,6 +17,7 @@ public class StatusPanel extends AbstractStatusPanel {
 
     public StatusPanel() {
         instance = this;
+        userLink.ensureDebugId("welcomeL");
     }
 
     @Override
