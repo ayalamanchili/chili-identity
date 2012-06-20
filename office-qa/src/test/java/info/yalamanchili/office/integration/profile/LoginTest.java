@@ -4,25 +4,38 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import static org.junit.Assert.*;
 
 public class LoginTest {
-	protected static FirefoxDriver driver;
+//TODO get/set this from pom system property
 
-	@BeforeClass
-	public static void init() {
-		driver = new FirefoxDriver();
-	}
+    public static final String officeURL = "http://localhost:9090/office-web/office.html";
+    protected static FirefoxDriver driver;
 
-	@Test
-	public void testLogin() {
-		driver.get("http://localhost:8084/office-web/office.html");
-		Alert alert = driver.switchTo().alert();
-		alert.accept();
-	}
+    @BeforeClass
+    public static void init() {
+        driver = new FirefoxDriver();
+    }
 
-	@AfterClass
-	public static void destroy() {
-		driver.close();
-	}
+    @Test
+    public void testLogin() {
+        driver.get(officeURL);
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        WebElement usernameTB = driver.findElement(By.id("gwt-debug-usernameTb"));
+        usernameTB.sendKeys("user");
+        WebElement passwordTB = driver.findElement(By.id("gwt-debug-passwordTb"));
+        passwordTB.sendKeys("user");
+        WebElement loginB = driver.findElement(By.id("gwt-debug-loginB"));
+        loginB.click();
+        assertTrue(driver.getPageSource().contains("Welcome user"));
+    }
+
+    @AfterClass
+    public static void destroy() {
+        driver.close();
+    }
 }
