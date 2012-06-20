@@ -25,4 +25,14 @@
                 <goal>tomcat6:run-war</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-tomcat6run-prod</actionName>
+            <displayName>tomcat6run-prod</displayName>
+            <goals>
+                <goal>tomcat6:run-war</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>prod</activatedProfile>
+            </activatedProfiles>
+        </action>
     </actions>
