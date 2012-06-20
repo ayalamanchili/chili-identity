@@ -31,6 +31,7 @@ public class LoginTest {
         passwordTB.sendKeys("user");
         WebElement loginB = driver.findElement(By.id("gwt-debug-loginB"));
         loginB.click();
+        System.out.println(driver.getPageSource().toString());
         assertTrue(driver.getPageSource().contains("Welcome user"));
     }
 
