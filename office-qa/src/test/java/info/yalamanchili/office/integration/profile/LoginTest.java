@@ -1,9 +1,10 @@
 package info.yalamanchili.office.integration.profile;
 
+import info.yalamanchili.commons.PropertyFileLoader;
+import java.util.Properties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -11,11 +12,10 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import static info.yalamanchili.office.integration.TestUtils.*;
 
 public class LoginTest {
-//TODO get/set this from pom system property
 
-    public static final String officeURL = "http://localhost:9090/office-web/office.html";
     protected static FirefoxDriver driver;
 
     @BeforeClass
@@ -25,7 +25,7 @@ public class LoginTest {
 
     @Test
     public void testLogin() {
-        driver.get(officeURL);
+        driver.get(getRootURL());
         WebElement usernameTB = driver.findElement(By.id("gwt-debug-usernameTb"));
         usernameTB.sendKeys("user");
         WebElement passwordTB = driver.findElement(By.id("gwt-debug-passwordTb"));
