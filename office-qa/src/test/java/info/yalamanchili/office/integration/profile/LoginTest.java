@@ -1,6 +1,7 @@
 package info.yalamanchili.office.integration.profile;
 
 import info.yalamanchili.commons.PropertyFileLoader;
+import info.yalamanchili.office.integration.TestUtils;
 import java.util.Properties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,21 +25,18 @@ public class LoginTest {
     }
 
     @Test
-    public void testLogin() {
-        driver.get(getRootURL());
-        WebElement usernameTB = driver.findElement(By.id("gwt-debug-usernameTb"));
-        usernameTB.sendKeys("user");
-        WebElement passwordTB = driver.findElement(By.id("gwt-debug-passwordTb"));
-        passwordTB.sendKeys("user");
-        WebElement loginB = driver.findElement(By.id("gwt-debug-loginB"));
-        loginB.click();
-        WebElement welcomeUserE = (new WebDriverWait(driver, 3)).until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver d) {
-                return d.findElement(By.id("gwt-debug-welcomeL"));
-            }
-        });
-        assertNotNull(welcomeUserE);
+    public void testUserLogin() {
+        assertTrue(TestUtils.login(driver, "user", "user"));
+    }
+
+    @Test
+    public void testAdminLogin() {
+        assertTrue(TestUtils.login(driver, "admin", "admin"));
+    }
+
+    @Test(expected = org.openqa.selenium.TimeoutException.class)
+    public void loginFailureTest() {
+        TestUtils.login(driver, "user", "incorrectpassword");
     }
 
     @AfterClass

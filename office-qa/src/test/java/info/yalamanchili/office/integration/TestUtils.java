@@ -33,7 +33,7 @@ public class TestUtils {
         return properties.getProperty("root_url");
     }
 
-    public boolean login(WebDriver driver, String username, String password) {
+    public static boolean login(WebDriver driver, String username, String password) {
         driver.get(getRootURL());
         WebElement usernameTB = driver.findElement(By.id("gwt-debug-usernameTb"));
         usernameTB.sendKeys(username);
