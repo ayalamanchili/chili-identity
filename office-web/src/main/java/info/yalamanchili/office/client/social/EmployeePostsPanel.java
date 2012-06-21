@@ -26,7 +26,6 @@ public class EmployeePostsPanel extends ALComposite {
     protected void loadEmployeePosts() {
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeFeedURL(0, 10), OfficeWelcome.instance().getHeaders(),
                 true, new ALAsyncCallback<String>() {
-
             @Override
             public void onResponse(String result) {
                 logger.info(result);
@@ -36,7 +35,8 @@ public class EmployeePostsPanel extends ALComposite {
     }
 
     protected void showEmployeePosts(String result) {
-        JSONArray posts = JSONUtils.toJSONArray(JSONParser.parseLenient(result));
+        JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
+        JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
         for (int i = 0; i < posts.size(); i++) {
             mainPanel.add(new ReadPostWidget((JSONObject) posts.get(i)));
         }
