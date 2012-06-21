@@ -20,7 +20,7 @@ public class SocialDao {
 
     public List<Post> getEmployeeFeed(int start, int limit) {
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-        Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p order by p.postTimeStamp",
+        Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p where p.parentPost is null and p.employee is not null order by p.postTimeStamp",
                 Post.class);
         getPostsQuery.setFirstResult(start);
         getPostsQuery.setMaxResults(limit);
