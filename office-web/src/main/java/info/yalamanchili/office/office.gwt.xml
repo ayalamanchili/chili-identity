@@ -1,24 +1,35 @@
 <module rename-to='office'>
-	<inherits name="com.google.gwt.user.User" />
+    <inherits name="com.google.gwt.user.User" />
 
-	<!-- logging -->
-	<inherits name="com.google.gwt.logging.Logging" />
+    <!-- logging -->
+    <inherits name="com.google.gwt.logging.Logging"/>
+    <!-- todo change this to better disable this-->
+    <set-property name="gwt.logging.logLevel" value="SEVERE"/> 
+    <set-property name="gwt.logging.enabled" value="FALSE"/>
+    <set-property name="gwt.logging.consoleHandler" value="DISABLED"/>  
+    <set-property name="gwt.logging.developmentModeHandler" value="DISABLED" />
+    <set-property name="gwt.logging.popupHandler" value="DISABLED" />
+    <set-property name="gwt.logging.systemHandler" value="DISABLED" />
+    <set-property name="gwt.logging.firebugHandler" value="DISABLED" />
+    <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
 
 
-	<!--HTTP Module -->
-	<inherits name='com.google.gwt.http.HTTP' />
+    <!--HTTP Module -->
+    <inherits name='com.google.gwt.http.HTTP' />
 
-	<!-- used to support internationalization -->
-	<inherits name='com.google.gwt.i18n.I18N' />
-	<extend-property name="locale" values="ES" />
+    <!-- used to support internationalization -->
+    <inherits name='com.google.gwt.i18n.I18N' />
+    <extend-property name="locale" values="ES" />
 
-	<!-- used to include chili-gwt project in gwt compiler path -->
-	<inherits name='info.yalamanchili.chili-gwt' />
+    <!-- used to include chili-gwt project in gwt compiler path -->
+    <inherits name='info.yalamanchili.chili-gwt' />
 
-	<!-- gwt client bundle to load resources -->
-	<inherits name="com.google.gwt.resources.Resources" />
-	<entry-point class="info.yalamanchili.office.client.OfficeWelcome" />
-	<stylesheet src="office.css" />
+    <!-- gwt client bundle to load resources -->
+    <inherits name="com.google.gwt.resources.Resources" />
+    <entry-point class="info.yalamanchili.office.client.OfficeWelcome" />
+    <stylesheet src="office.css" />
 
-	<source path='client' />
+    <source path='client' />
+    <!-- this is a temp should remove-->
+    <inherits name='com.google.gwt.user.Debug'/>
 </module>
