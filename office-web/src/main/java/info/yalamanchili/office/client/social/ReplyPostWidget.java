@@ -61,8 +61,8 @@ public class ReplyPostWidget extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("reply posted");
-                        TabPanel.instance().myOfficePanel.entityPanel.clear();
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new SocialHome());
+                        TabPanel.instance().socialPanel.entityPanel.clear();
+                        TabPanel.instance().socialPanel.entityPanel.add(new SocialHome());
                     }
                 });
         
