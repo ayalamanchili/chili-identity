@@ -34,8 +34,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 		tabPanel.add(homePanel, "Home", false);
 		tabPanel.add(socialPanel, "Social", false);
 		tabPanel.add(myOfficePanel, "My Office", false);
-		tabPanel.selectTab(0);
 		tabPanel.addSelectionHandler(this);
+                tabPanel.selectTab(MY_OFFICE_TAB);
 	}
 
 	@Override
