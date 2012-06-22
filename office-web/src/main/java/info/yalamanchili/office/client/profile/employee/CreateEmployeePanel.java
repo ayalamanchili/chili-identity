@@ -63,7 +63,7 @@ public class CreateEmployeePanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("username", false, true, DataType.STRING_FIELD);
-        addField("passwordHash", false, true, DataType.STRING_FIELD);
+        addField("passwordHash", false, true, DataType.PASSWORD_FIELD);
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);

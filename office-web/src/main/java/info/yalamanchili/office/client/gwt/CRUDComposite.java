@@ -171,6 +171,12 @@ public abstract class CRUDComposite extends Composite {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
+        if (fields.get(fieldKey) instanceof PasswordField) {
+            PasswordField field = (PasswordField) fields.get(fieldKey);
+            if (field.getPassword()!= null) {
+                entity.put(fieldKey, new JSONString(field.getPassword()));
+            }
+        }
         if (fields.get(fieldKey) instanceof DateField) {
             DateField field = (DateField) fields.get(fieldKey);
             if (field.getDate() != null) {
