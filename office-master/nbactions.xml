@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
         <action>
-            <actionName>CUSTOM-mcist</actionName>
-            <displayName>mcist</displayName>
+            <actionName>CUSTOM-mvn clean install</actionName>
+            <displayName>mvn clean install</displayName>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
             </goals>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
         </action>
         <action>
-            <actionName>CUSTOM-mci-prd</actionName>
-            <displayName>mci-prd</displayName>
+            <actionName>CUSTOM-mvn clean install -Pprod</actionName>
+            <displayName>mvn clean install -Pprod</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>prod</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-mvn clean install -DskipTests -Pprod</actionName>
+            <displayName>mvn clean install -DskipTests -Pprod</displayName>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
@@ -24,5 +32,17 @@
             <activatedProfiles>
                 <activatedProfile>prod</activatedProfile>
             </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-mvn clean install -DskipTests</actionName>
+            <displayName>mvn clean install -DskipTests</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
         </action>
     </actions>

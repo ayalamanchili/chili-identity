@@ -28,11 +28,10 @@
             <property name="hibernate.show_sql" value="${db.show.sql}" />
             <property name="hibernate.format_sql" value="true" />
 
-            <property name="hibernate.connection.driver_class" value="${db.driver.name}" />
-            <property name="hibernate.connection.url" value="${db.url}" />
+            <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:office" />
 
-            <property name="hibernate.connection.username" value="${db.username}" />
-            <property name="hibernate.connection.password" value="${db.password}" />
+            <property name="hibernate.connection.username" value="sa" />
 
             <property name="hibernate.c3p0.min_size" value="5" />
             <property name="hibernate.c3p0.max_size" value="20" />
@@ -40,9 +39,9 @@
             <property name="hibernate.c3p0.max_statements" value="50" />
             <property name="hibernate.c3p0.idle_test_period" value="3000" />
 
-            <property name="hibernate.dialect" value="${db.dialect}" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
 
-            <property name="hibernate.hbm2ddl.auto" value="${db.hbm2ddl}" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
             <!-- Hibernate Search -->
             <property name="hibernate.search.default.directory_provider"
                       value="org.hibernate.search.store.FSDirectoryProvider" />
