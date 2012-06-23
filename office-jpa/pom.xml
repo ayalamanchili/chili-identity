@@ -99,27 +99,19 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <db.driver.name>org.hsqldb.jdbcDriver</db.driver.name>
-                <db.url>jdbc:hsqldb:mem:office</db.url>
-                <db.username>sa</db.username>
-                <db.password></db.password>
-                <db.dialect>org.hibernate.dialect.HSQLDialect</db.dialect>
-                <db.show.sql>true</db.show.sql>
-                <db.hbm2ddl>create</db.hbm2ddl>
-            </properties>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/database-dev.properties</filter>
+                </filters>
+            </build>
         </profile>
         <profile>
             <id>prod</id>
-            <properties>
-                <db.driver.name>com.mysql.jdbc.Driver</db.driver.name>
-                <db.url>jdbc:mysql://localhost:3306/office</db.url>
-                <db.username>office</db.username>
-                <db.password>zuzubi1833</db.password>
-                <db.dialect>org.hibernate.dialect.MySQLDialect</db.dialect>
-                <db.show.sql>false</db.show.sql>
-                <db.hbm2ddl>validate</db.hbm2ddl>
-            </properties>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/database-prod.properties</filter>
+                </filters>
+            </build>
         </profile>
     </profiles>
 </project>
