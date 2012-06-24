@@ -57,7 +57,7 @@ public class ReportsTo extends AbstractEntity {
 	 * @NOT generated
 	 */
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@Valid
 	protected Contact contact;
 

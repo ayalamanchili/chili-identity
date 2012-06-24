@@ -4,8 +4,10 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
+import info.yalamanchili.office.config.ApplicationContextProvider;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.ReportsToDao;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -39,14 +41,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class EmployeeResource extends CRUDResource<Employee> {
-
+    
     @Autowired
     public EmployeeDao employeeDao;
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     @GET
     @Path("/{start}/{limit}")
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -68,7 +70,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getAddresss().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/address/{empId}")
     public void addAddress(@PathParam("empId") Long empId, Address address) {
@@ -91,7 +93,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmails().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/email/{empId}")
     public void addEmail(@PathParam("empId") Long empId, Email email) {
@@ -113,7 +115,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getPhones().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/phone/{empId}")
     public void addPhone(@PathParam("empId") Long empId, Phone phone) {
@@ -140,7 +142,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getReportsTos().size());
         return tableObj;
     }
-
+    
     public info.yalamanchili.office.dto.profile.ReportsTo mapReportsTo(ReportsTo entity) {
         info.yalamanchili.office.dto.profile.ReportsTo reportsTo = mapper.map(entity, info.yalamanchili.office.dto.profile.ReportsTo.class);
         mapper.map(entity.getContact(), reportsTo);
@@ -149,12 +151,27 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return reportsTo;
     }
-
+    
     @PUT
     @Path("/reportsto/{empId}")
-    public void addReportsTo(@PathParam("empId") Long empId, ReportsTo entity) {
+    public void addReportsTo(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ReportsTo reportsTo) {
         Employee emp = (Employee) getDao().findById(empId);
-        entity.setContact((Contact) getDao().save(entity.getContact()));
+        
+        Phone phone = new Phone();
+        phone.setPhoneNumber(reportsTo.getPhoneNumber());
+        
+        Contact contact = new Contact();
+        contact.setFirstName(reportsTo.getFirstName());
+        contact.setLastName(reportsTo.getLastName());
+        contact.setMiddleInitial(reportsTo.getMiddleInitial());
+        contact.addPhone(phone);
+        
+        ReportsTo entity = new ReportsTo();
+        entity.setReportsToRole(reportsTo.getReportsToRole());
+        entity.setRtPrimary(reportsTo.isRtPrimary());
+        entity.setContact(contact);
+        ReportsToDao reportsToDao = ApplicationContextProvider.getApplicationContext().getBean("reportsToDao", ReportsToDao.class);
+        entity = reportsToDao.save(entity);
         emp.addReportsTo(entity);
     }
 
@@ -169,7 +186,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmergencyContacts().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/emergencycontact/{empId}")
     public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContact entity) {
@@ -177,32 +194,32 @@ public class EmployeeResource extends CRUDResource<Employee> {
         entity.setContact((Contact) getDao().save(entity.getContact()));
         emp.addEmergencyContact(entity);
     }
-
+    
     @Override
     public CRUDDao getDao() {
         return employeeDao;
     }
-
+    
     @XmlRootElement
     @XmlType
     public static class EmployeeTable {
-
+        
         protected Long size;
         protected List<Employee> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<Employee> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<Employee> entities) {
             this.entities = entities;
         }
