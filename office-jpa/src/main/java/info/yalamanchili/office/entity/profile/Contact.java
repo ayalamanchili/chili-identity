@@ -1,8 +1,6 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
 import info.yalamanchili.jpa.AbstractEntity;
@@ -38,253 +36,253 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Indexed
 public class Contact extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 5L;
 
-	/**
-	 * @generated
-	 */
-	@NotEmpty
-	@Field
-	protected String firstName;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 5L;
+    /**
+     * @generated
+     */
+    @NotEmpty
+    @Field
+    protected String firstName;
+    /**
+     * @generated
+     */
+    @NotEmpty
+    @Field
+    protected String lastName;
+    /**
+     * @generated
+     */
+    @Field
+    protected String middleInitial;
+    /**
+     * @generated
+     */
+    @Past
+    @Field(index = Index.UN_TOKENIZED)
+    protected Date dateOfBirth;
+    /**
+     * @generated
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    protected Sex sex;
+    protected String imageURL;
+    /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
+    protected List<Address> addresss;
+    /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
+    protected List<Email> emails;
+    /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
+    protected List<Phone> phones;
 
-	/**
-	 * @generated
-	 */
-	@NotEmpty
-	@Field
-	protected String lastName;
+    /**
+     * @generated
+     */
+    public Contact() {
+        super();
+    }
 
-	/**
-	 * @generated
-	 */
-	@Field
-	protected String middleInitial;
+    /**
+     * @generated
+     */
+    public String getFirstName() {
+        return firstName;
+    }
 
-	/**
-	 * @generated
-	 */
-	@Past
-	@Field(index = Index.UN_TOKENIZED)
-	protected Date dateOfBirth;
+    /**
+     * @generated
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	/**
-	 * @generated
-	 */
-	@Enumerated(EnumType.STRING)
-	@Field
-	protected Sex sex;
+    /**
+     * @generated
+     */
+    public String getLastName() {
+        return lastName;
+    }
 
-	protected String imageURL;
+    /**
+     * @generated
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public String getMiddleInitial() {
+        return middleInitial;
+    }
 
-	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
-	protected List<Address> addresss;
+    /**
+     * @generated
+     */
+    public void setMiddleInitial(String middleInitial) {
+        this.middleInitial = middleInitial;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
-	protected List<Email> emails;
+    /**
+     * @generated
+     */
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public Sex getSex() {
+        return sex;
+    }
 
-	@OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
-	protected List<Phone> phones;
+    /**
+     * @generated
+     */
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Contact() {
-		super();
-	}
+    public String getImageURL() {
+        return imageURL;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<Address> getAddresss() {
+        if (this.addresss == null) {
+            this.addresss = new ArrayList<Address>();
+        }
+        return this.addresss;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getLastName() {
-		return lastName;
-	}
+    /**
+     * @generated
+     */
+    public void setAddresss(List<Address> addresss) {
+        this.addresss = addresss;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    /**
+     * @generated
+     */
+    public void addAddress(Address entity) {
+        if (entity == null) {
+            return;
+        }
+        getAddresss().add(entity);
+        entity.setContact(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getMiddleInitial() {
-		return middleInitial;
-	}
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<Email> getEmails() {
+        if (this.emails == null) {
+            this.emails = new ArrayList<Email>();
+        }
+        return this.emails;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setMiddleInitial(String middleInitial) {
-		this.middleInitial = middleInitial;
-	}
+    /**
+     * @generated
+     */
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
+    /**
+     * @generated
+     */
+    public void addEmail(Email entity) {
+        if (entity == null) {
+            return;
+        }
+        getEmails().add(entity);
+        entity.setContact(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<Phone> getPhones() {
+        if (this.phones == null) {
+            this.phones = new ArrayList<Phone>();
+        }
+        return this.phones;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Sex getSex() {
-		return sex;
-	}
+    /**
+     * @generated
+     */
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setSex(Sex sex) {
-		this.sex = sex;
-	}
+    /**
+     * @generated
+     */
+    public void addPhone(Phone entity) {
+        if (entity == null) {
+            return;
+        }
+        getPhones().add(entity);
+        entity.setContact(this);
+    }
 
-	public String getImageURL() {
-		return imageURL;
-	}
+    @Transient
+    public Email getPrimaryEmail() {
+        //TODO use Query for better performance?
+        for (Email email : this.getEmails()) {
+            if (email.getPrimaryEmail()) {
+                return email;
+            }
+        }
+        return null;
+    }
+    //TODO add helpers for getPrimary ReportsTo
 
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Address> getAddresss() {
-		if (this.addresss == null) {
-			this.addresss = new ArrayList<Address>();
-		}
-		return this.addresss;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setAddresss(List<Address> addresss) {
-		this.addresss = addresss;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addAddress(Address entity) {
-		if (entity == null) {
-			return;
-		}
-		getAddresss().add(entity);
-		entity.setContact(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Email> getEmails() {
-		if (this.emails == null) {
-			this.emails = new ArrayList<Email>();
-		}
-		return this.emails;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setEmails(List<Email> emails) {
-		this.emails = emails;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addEmail(Email entity) {
-		if (entity == null) {
-			return;
-		}
-		getEmails().add(entity);
-		entity.setContact(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Phone> getPhones() {
-		if (this.phones == null) {
-			this.phones = new ArrayList<Phone>();
-		}
-		return this.phones;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setPhones(List<Phone> phones) {
-		this.phones = phones;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addPhone(Phone entity) {
-		if (entity == null) {
-			return;
-		}
-		getPhones().add(entity);
-		entity.setContact(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getFirstName());
-		sb.append(":");
-		sb.append(getLastName());
-		sb.append(":");
-		sb.append(getMiddleInitial());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    /**
+     * @generated
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getFirstName());
+        sb.append(":");
+        sb.append(getLastName());
+        sb.append(":");
+        sb.append(getMiddleInitial());
+        sb.append(":");
+        return sb.toString();
+    }
 }

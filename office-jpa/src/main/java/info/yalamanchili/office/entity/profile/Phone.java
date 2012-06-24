@@ -22,7 +22,7 @@ import org.hibernate.search.annotations.Indexed;
  * @todo add comment for javadoc
  * @author ayalamanchili
  * @generated
- */
+    */
 @Indexed
 @XmlRootElement
 @Entity

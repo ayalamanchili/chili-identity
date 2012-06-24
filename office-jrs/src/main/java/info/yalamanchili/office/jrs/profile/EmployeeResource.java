@@ -13,6 +13,7 @@ import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.jrs.profile.ReportsToResource.ReportsToTable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,13 +24,14 @@ import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 
+ *
  * @author ayalamanchili
  */
 @Path("employee")
@@ -38,161 +40,171 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class EmployeeResource extends CRUDResource<Employee> {
 
-	@Autowired
-	public EmployeeDao employeeDao;
+    @Autowired
+    public EmployeeDao employeeDao;
+    @PersistenceContext
+    protected EntityManager em;
+    @Autowired
+    protected Mapper mapper;
 
-	@PersistenceContext
-	protected EntityManager em;
-
-	@GET
-	@Path("/{start}/{limit}")
-	public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-		EmployeeTable tableObj = new EmployeeTable();
-		tableObj.setEntities(getDao().query(start, limit));
-		tableObj.setSize(getDao().size());
-		return tableObj;
-	}
+    @GET
+    @Path("/{start}/{limit}")
+    public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        EmployeeTable tableObj = new EmployeeTable();
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
 
 
-	/* Address */
-	@GET
-	@Path("/addresses/{id}/{start}/{limit}")
-	public AddressTable getAddresses(@PathParam("id") long id, @PathParam("start") int start,
-			@PathParam("limit") int limit) {
-		AddressTable tableObj = new AddressTable();
-		Employee emp = (Employee) getDao().findById(id);
-		tableObj.setEntities(emp.getAddresss());
-		tableObj.setSize((long) emp.getAddresss().size());
-		return tableObj;
-	}
+    /* Address */
+    @GET
+    @Path("/addresses/{id}/{start}/{limit}")
+    public AddressTable getAddresses(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        AddressTable tableObj = new AddressTable();
+        Employee emp = (Employee) getDao().findById(id);
+        tableObj.setEntities(emp.getAddresss());
+        tableObj.setSize((long) emp.getAddresss().size());
+        return tableObj;
+    }
 
-	@PUT
-	@Path("/address/{empId}")
-	public void addAddress(@PathParam("empId") Long empId, Address address) {
-		Employee emp = (Employee) getDao().findById(empId);
-		if (address.getAddressType() != null) {
-			AddressType addressType = getDao().getEntityManager().find(AddressType.class,
-					address.getAddressType().getId());
-			address.setAddressType(addressType);
-		}
-		emp.addAddress(address);
-	}
+    @PUT
+    @Path("/address/{empId}")
+    public void addAddress(@PathParam("empId") Long empId, Address address) {
+        Employee emp = (Employee) getDao().findById(empId);
+        if (address.getAddressType() != null) {
+            AddressType addressType = getDao().getEntityManager().find(AddressType.class,
+                    address.getAddressType().getId());
+            address.setAddressType(addressType);
+        }
+        emp.addAddress(address);
+    }
 
-	/* Email */
-	@GET
-	@Path("/emails/{id}/{start}/{limit}")
-	public EmailTable getEmails(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
-		EmailTable tableObj = new EmailTable();
-		Employee emp = (Employee) getDao().findById(id);
-		tableObj.setEntities(emp.getEmails());
-		tableObj.setSize((long) emp.getEmails().size());
-		return tableObj;
-	}
+    /* Email */
+    @GET
+    @Path("/emails/{id}/{start}/{limit}")
+    public EmailTable getEmails(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        EmailTable tableObj = new EmailTable();
+        Employee emp = (Employee) getDao().findById(id);
+        tableObj.setEntities(emp.getEmails());
+        tableObj.setSize((long) emp.getEmails().size());
+        return tableObj;
+    }
 
-	@PUT
-	@Path("/email/{empId}")
-	public void addEmail(@PathParam("empId") Long empId, Email email) {
-		Employee emp = (Employee) getDao().findById(empId);
-		if (email.getEmailType() != null) {
-			EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
-			email.setEmailType(emailType);
-		}
-		emp.addEmail(email);
-	}
+    @PUT
+    @Path("/email/{empId}")
+    public void addEmail(@PathParam("empId") Long empId, Email email) {
+        Employee emp = (Employee) getDao().findById(empId);
+        if (email.getEmailType() != null) {
+            EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
+            email.setEmailType(emailType);
+        }
+        emp.addEmail(email);
+    }
 
-	/* Phone */
+    /* Phone */
+    @GET
+    @Path("/phones/{id}/{start}/{limit}")
+    public PhoneTable getPhones(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        PhoneTable tableObj = new PhoneTable();
+        Employee emp = (Employee) getDao().findById(id);
+        tableObj.setEntities(emp.getPhones());
+        tableObj.setSize((long) emp.getPhones().size());
+        return tableObj;
+    }
 
-	@GET
-	@Path("/phones/{id}/{start}/{limit}")
-	public PhoneTable getPhones(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
-		PhoneTable tableObj = new PhoneTable();
-		Employee emp = (Employee) getDao().findById(id);
-		tableObj.setEntities(emp.getPhones());
-		tableObj.setSize((long) emp.getPhones().size());
-		return tableObj;
-	}
+    @PUT
+    @Path("/phone/{empId}")
+    public void addPhone(@PathParam("empId") Long empId, Phone phone) {
+        Employee emp = (Employee) getDao().findById(empId);
+        if (phone.getPhoneType() != null) {
+            PhoneType phoneType = getDao().getEntityManager().find(PhoneType.class, phone.getPhoneType().getId());
+            phone.setPhoneType(phoneType);
+        }
+        emp.addPhone(phone);
+    }
 
-	@PUT
-	@Path("/phone/{empId}")
-	public void addPhone(@PathParam("empId") Long empId, Phone phone) {
-		Employee emp = (Employee) getDao().findById(empId);
-		if (phone.getPhoneType() != null) {
-			PhoneType phoneType = getDao().getEntityManager().find(PhoneType.class, phone.getPhoneType().getId());
-			phone.setPhoneType(phoneType);
-		}
-		emp.addPhone(phone);
-	}
+    /* ResportsTo */
+    @GET
+    @Path("/reportstos/{id}/{start}/{limit}")
+    public ReportsToTable getReportsTos(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        ReportsToTable tableObj = new ReportsToTable();
+        Employee emp = (Employee) getDao().findById(id);
+        List<info.yalamanchili.office.dto.profile.ReportsTo> reportsToDtos = new ArrayList<info.yalamanchili.office.dto.profile.ReportsTo>();
+        for (ReportsTo entity : emp.getReportsTos()) {
+            reportsToDtos.add(mapReportsTo(entity));
+        }
+        tableObj.setEntities(reportsToDtos);
+        tableObj.setSize((long) emp.getReportsTos().size());
+        return tableObj;
+    }
 
-	/* ResportsTo */
+    public info.yalamanchili.office.dto.profile.ReportsTo mapReportsTo(ReportsTo entity) {
+        info.yalamanchili.office.dto.profile.ReportsTo reportsTo = mapper.map(entity, info.yalamanchili.office.dto.profile.ReportsTo.class);
+        mapper.map(entity.getContact(), reportsTo);
+        if (entity.getContact().getPhones().size() > 0) {
+            mapper.map(entity.getContact().getPhones().get(0), reportsTo);
+        }
+        return reportsTo;
+    }
 
-	@GET
-	@Path("/reportstos/{id}/{start}/{limit}")
-	public ReportsToTable getReportsTos(@PathParam("id") long id, @PathParam("start") int start,
-			@PathParam("limit") int limit) {
-		ReportsToTable tableObj = new ReportsToTable();
-		Employee emp = (Employee) getDao().findById(id);
-		tableObj.setEntities(emp.getReportsTos());
-		tableObj.setSize((long) emp.getReportsTos().size());
-		return tableObj;
-	}
+    @PUT
+    @Path("/reportsto/{empId}")
+    public void addReportsTo(@PathParam("empId") Long empId, ReportsTo entity) {
+        Employee emp = (Employee) getDao().findById(empId);
+        entity.setContact((Contact) getDao().save(entity.getContact()));
+        emp.addReportsTo(entity);
+    }
 
-	@PUT
-	@Path("/reportsto/{empId}")
-	public void addReportsTo(@PathParam("empId") Long empId, ReportsTo entity) {
-		Employee emp = (Employee) getDao().findById(empId);
-		entity.setContact((Contact) getDao().save(entity.getContact()));
-		emp.addReportsTo(entity);
-	}
+    /* Emergency Contact */
+    @GET
+    @Path("/emergencycontacts/{id}/{start}/{limit}")
+    public EmergencyContactTable getEmergencyContacts(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        EmergencyContactTable tableObj = new EmergencyContactTable();
+        Employee emp = (Employee) getDao().findById(id);
+        tableObj.setEntities(emp.getEmergencyContacts());
+        tableObj.setSize((long) emp.getEmergencyContacts().size());
+        return tableObj;
+    }
 
-	/* Emergency Contact */
+    @PUT
+    @Path("/emergencycontact/{empId}")
+    public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContact entity) {
+        Employee emp = (Employee) getDao().findById(empId);
+        entity.setContact((Contact) getDao().save(entity.getContact()));
+        emp.addEmergencyContact(entity);
+    }
 
-	@GET
-	@Path("/emergencycontacts/{id}/{start}/{limit}")
-	public EmergencyContactTable getEmergencyContacts(@PathParam("id") long id, @PathParam("start") int start,
-			@PathParam("limit") int limit) {
-		EmergencyContactTable tableObj = new EmergencyContactTable();
-		Employee emp = (Employee) getDao().findById(id);
-		tableObj.setEntities(emp.getEmergencyContacts());
-		tableObj.setSize((long) emp.getEmergencyContacts().size());
-		return tableObj;
-	}
+    @Override
+    public CRUDDao getDao() {
+        return employeeDao;
+    }
 
-	@PUT
-	@Path("/emergencycontact/{empId}")
-	public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContact entity) {
-		Employee emp = (Employee) getDao().findById(empId);
-		entity.setContact((Contact) getDao().save(entity.getContact()));
-		emp.addEmergencyContact(entity);
-	}
+    @XmlRootElement
+    @XmlType
+    public static class EmployeeTable {
 
-	@Override
-	public CRUDDao getDao() {
-		return employeeDao;
-	}
+        protected Long size;
+        protected List<Employee> entities;
 
-	@XmlRootElement
-	@XmlType
-	public static class EmployeeTable {
-		protected Long size;
-		protected List<Employee> entities;
+        public Long getSize() {
+            return size;
+        }
 
-		public Long getSize() {
-			return size;
-		}
+        public void setSize(Long size) {
+            this.size = size;
+        }
 
-		public void setSize(Long size) {
-			this.size = size;
-		}
+        @XmlElement
+        public List<Employee> getEntities() {
+            return entities;
+        }
 
-		@XmlElement
-		public List<Employee> getEntities() {
-			return entities;
-		}
-
-		public void setEntities(List<Employee> entities) {
-			this.entities = entities;
-		}
-
-	}
-
+        public void setEntities(List<Employee> entities) {
+            this.entities = entities;
+        }
+    }
 }

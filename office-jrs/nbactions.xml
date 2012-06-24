@@ -51,4 +51,16 @@
                 <activatedProfile>prod</activatedProfile>
             </activatedProfiles>
         </action>
+        <action>
+            <actionName>CUSTOM-build with deps</actionName>
+            <displayName>build with deps</displayName>
+            <preAction>build-with-dependencies</preAction>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
     </actions>
