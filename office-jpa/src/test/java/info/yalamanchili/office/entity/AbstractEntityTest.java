@@ -8,7 +8,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/resources/persistenceContext.xml" })
+@ContextConfiguration(locations = { "classpath:persistenceContext.xml" })
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
 @Transactional
 public abstract class AbstractEntityTest<T> {
