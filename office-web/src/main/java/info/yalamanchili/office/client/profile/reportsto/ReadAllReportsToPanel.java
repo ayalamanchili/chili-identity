@@ -30,7 +30,6 @@ public class ReadAllReportsToPanel extends ReadAllComposite {
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(0, 10), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String result) {
                         postFetchTable(result);
@@ -46,6 +45,7 @@ public class ReadAllReportsToPanel extends ReadAllComposite {
         table.setText(0, 2, getKeyValue("Role"));
         table.setText(0, 3, getKeyValue("First Name"));
         table.setText(0, 4, getKeyValue("Last Name"));
+        table.setText(0, 5, getKeyValue("Phone Number"));
 
     }
 
@@ -54,10 +54,12 @@ public class ReadAllReportsToPanel extends ReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            OfficeWelcome.instance().logger.info(entity.toString());
             table.setText(i, 1, JSONUtils.toString(entity, "rtPrimary"));
             table.setText(i, 2, JSONUtils.toString(entity, "reportsToRole"));
-            table.setText(i, 3, JSONUtils.toString(entity.get("contact"), "firstName"));
-            table.setText(i, 4, JSONUtils.toString(entity.get("contact"), "lastName"));
+            table.setText(i, 3, JSONUtils.toString(entity, "firstName"));
+            table.setText(i, 4, JSONUtils.toString(entity, "lastName"));
+            table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
         }
     }
 

@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class OfficeWelcome implements EntryPoint {
 
-    private static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
+    public static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
     public JSONObject user;
     public JSONObject employee;
     public String employeeId;
