@@ -20,7 +20,7 @@ public class MessagingService {
 	@Autowired
 	protected Destination emailQueue;
 
-	public void sendEmail(final String to, final String message) {
+	public void sendJMSMessage(final String to, final String message) {
 		System.out.println("-----------sending email message---------------");
 		offcieJmsTemplate.send(emailQueue, new MessageCreator() {
 

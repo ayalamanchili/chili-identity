@@ -1,6 +1,7 @@
 package info.yalamanchili.office.jrs;
 
 import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
+import info.yalamanchili.office.email.EmailService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -30,12 +31,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class AdminResource {
 
+    //TODO make these be created on demand rather than at per request.
     @Autowired
     protected SecurityService securityService;
     @Autowired
     protected Mapper mapper;
     @Autowired
-    MessagingService messagingService;
+    protected MessagingService messagingService;
+    @Autowired
+    protected EmailService emailService;
     @Autowired
     public EmployeeDao employeeDao;
     @PersistenceContext
@@ -56,11 +60,17 @@ public class AdminResource {
         em.merge(user);
     }
 
-    @Path("/test")
+    @Path("/testjmsmessage")
     @GET
-    public void test() {
+    public void testJMSMessage() {
         System.out.println("--------------test-----------");
-        // messagingService.sendEmail("asdf@gmail.com", "asdf");
+        messagingService.sendJMSMessage("asdf@gmail.com", "asdf");
+    }
+
+    @Path("/testemail")
+    @GET
+    public void testEmail() {
+        emailService.sendEmail("yphanikumar@gmail.com", "test", "test body");
     }
 
     @Path("/currentuser")
