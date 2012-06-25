@@ -1,13 +1,13 @@
 package info.yalamanchili.office.jrs;
 
 import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
-import info.yalamanchili.office.email.EmailService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.profile.ProfileNotificationService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -39,7 +39,7 @@ public class AdminResource {
     @Autowired
     protected MessagingService messagingService;
     @Autowired
-    protected EmailService emailService;
+    protected ProfileNotificationService profileNotificationService;
     @Autowired
     public EmployeeDao employeeDao;
     @PersistenceContext
@@ -58,6 +58,7 @@ public class AdminResource {
         user.setEmployee(em.merge(user.getEmployee()));
         user.setEnabled(true);
         em.merge(user);
+        profileNotificationService.sendNewUserCreatedNotification(user);
     }
 
     @Path("/testjmsmessage")
@@ -70,7 +71,7 @@ public class AdminResource {
     @Path("/testemail")
     @GET
     public void testEmail() {
-        emailService.sendEmail("yphanikumar@gmail.com", "test", "test body");
+        profileNotificationService.sendNewUserCreatedNotification(new CUser());
     }
 
     @Path("/currentuser")
