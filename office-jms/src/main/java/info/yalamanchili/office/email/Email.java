@@ -4,13 +4,14 @@
  */
 package info.yalamanchili.office.email;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author yalamanchili
  */
-public class Email {
+public class Email implements Serializable {
 
     protected List<String> tos;
     protected List<String> ccs;
@@ -60,5 +61,4 @@ public class Email {
     public void setBody(String body) {
         this.body = body;
     }
-    
 }

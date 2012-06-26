@@ -57,21 +57,8 @@ public class AdminResource {
         user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
         user.setEmployee(em.merge(user.getEmployee()));
         user.setEnabled(true);
-        em.merge(user);
+        user = em.merge(user);
         profileNotificationService.sendNewUserCreatedNotification(user);
-    }
-
-    @Path("/testjmsmessage")
-    @GET
-    public void testJMSMessage() {
-        System.out.println("--------------test-----------");
-        messagingService.sendJMSMessage("asdf@gmail.com", "asdf");
-    }
-
-    @Path("/testemail")
-    @GET
-    public void testEmail() {
-        profileNotificationService.sendNewUserCreatedNotification(new CUser());
     }
 
     @Path("/currentuser")

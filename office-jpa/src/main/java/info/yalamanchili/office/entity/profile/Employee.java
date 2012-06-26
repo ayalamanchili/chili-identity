@@ -1,8 +1,6 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
 import info.yalamanchili.office.entity.social.Post;
@@ -19,6 +17,7 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -33,206 +32,190 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 public class Employee extends Contact {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 2L;
 
-	/**
-	 * @generated
-	 */
-	@Field(index = Index.UN_TOKENIZED)
-	protected Date startDate;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 2L;
+    /**
+     * @generated
+     */
+    @Field(index = Index.UN_TOKENIZED)
+    protected Date startDate;
+    /**
+     * @generated
+     */
+    @Field
+    protected String ssn;
+    /**
+     * @generated
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    protected Company company;
+    /**
+     * @generated
+     */
+    @ManyToOne
+    protected EmployeeType employeeType;
+    /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    protected List<ReportsTo> reportsTos;
+    /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    protected List<EmergencyContact> emergencyContacts;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    protected List<Post> posts;
 
-	/**
-	 * @generated
-	 */
-	@Field
-	protected String ssn;
+    /**
+     * @generated
+     */
+    public Employee() {
+        super();
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	@ManyToOne(cascade = CascadeType.MERGE)
-	protected Company company;
+    /**
+     * @generated
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public String getSsn() {
+        return ssn;
+    }
 
-	@ManyToOne
-	protected EmployeeType employeeType;
+    /**
+     * @generated
+     */
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    @XmlElement
+    public Company getCompany() {
+        return this.company;
+    }
 
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	protected List<ReportsTo> reportsTos;
+    /**
+     * @generated
+     */
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    @XmlElement
+    public EmployeeType getEmployeeType() {
+        return this.employeeType;
+    }
 
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	protected List<EmergencyContact> emergencyContacts;
+    /**
+     * @generated
+     */
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
+    }
 
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	protected List<Post> posts;
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<ReportsTo> getReportsTos() {
+        if (this.reportsTos == null) {
+            this.reportsTos = new ArrayList<ReportsTo>();
+        }
+        return this.reportsTos;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Employee() {
-		super();
-	}
+    /**
+     * @generated
+     */
+    public void setReportsTos(List<ReportsTo> reportsTos) {
+        this.reportsTos = reportsTos;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Date getStartDate() {
-		return startDate;
-	}
+    /**
+     * @generated
+     */
+    public void addReportsTo(ReportsTo entity) {
+        if (entity == null) {
+            return;
+        }
+        getReportsTos().add(entity);
+        entity.setEmployee(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<EmergencyContact> getEmergencyContacts() {
+        if (this.emergencyContacts == null) {
+            this.emergencyContacts = new ArrayList<EmergencyContact>();
+        }
+        return this.emergencyContacts;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getSsn() {
-		return ssn;
-	}
+    /**
+     * @generated
+     */
+    public void setEmergencyContacts(List<EmergencyContact> emergencyContacts) {
+        this.emergencyContacts = emergencyContacts;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setSsn(String ssn) {
-		this.ssn = ssn;
-	}
+    /**
+     * @generated
+     */
+    public void addEmergencyContact(EmergencyContact entity) {
+        if (entity == null) {
+            return;
+        }
+        getEmergencyContacts().add(entity);
+        entity.setEmployee(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	@XmlElement
-	public Company getCompany() {
-		return this.company;
-	}
+    @XmlTransient
+    public List<Post> getPosts() {
+        if (this.posts == null) {
+            this.posts = new ArrayList<Post>();
+        }
+        return this.posts;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
-	/**
-	 * @generated
-	 */
-	@XmlElement
-	public EmployeeType getEmployeeType() {
-		return this.employeeType;
-	}
+    public void addPost(Post post) {
+        if (post == null) {
+            return;
+        }
+        getPosts().add(post);
+        post.setEmployee(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setEmployeeType(EmployeeType employeeType) {
-		this.employeeType = employeeType;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<ReportsTo> getReportsTos() {
-		if (this.reportsTos == null) {
-			this.reportsTos = new ArrayList<ReportsTo>();
-		}
-		return this.reportsTos;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setReportsTos(List<ReportsTo> reportsTos) {
-		this.reportsTos = reportsTos;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addReportsTo(ReportsTo entity) {
-		if (entity == null) {
-			return;
-		}
-		getReportsTos().add(entity);
-		entity.setEmployee(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<EmergencyContact> getEmergencyContacts() {
-		if (this.emergencyContacts == null) {
-			this.emergencyContacts = new ArrayList<EmergencyContact>();
-		}
-		return this.emergencyContacts;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setEmergencyContacts(List<EmergencyContact> emergencyContacts) {
-		this.emergencyContacts = emergencyContacts;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addEmergencyContact(EmergencyContact entity) {
-		if (entity == null) {
-			return;
-		}
-		getEmergencyContacts().add(entity);
-		entity.setEmployee(this);
-	}
-
-	@XmlTransient
-	public List<Post> getPosts() {
-		if (this.posts == null) {
-			this.posts = new ArrayList<Post>();
-		}
-		return this.posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-
-	public void addPost(Post post) {
-		if (post == null) {
-			return;
-		}
-		getPosts().add(post);
-		post.setEmployee(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getSsn());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }

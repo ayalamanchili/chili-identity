@@ -50,20 +50,22 @@ public class FileResource {
     @Path("/download")
     @Produces("image/*")
     public Response downloadFile(@QueryParam("path") String path) {
+        ResponseBuilder response = null;
         if (path == null || path.trim().length() < 1) {
-            ResponseBuilder response = Response.status(Response.Status.BAD_REQUEST);
+            response = Response.status(Response.Status.BAD_REQUEST);
             return response.build();
         }
         File file = null;
         try {
             file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
+            System.out.println("downloading---------:" + file.getPath());
+            response = Response.ok((Object) file);
+            response.header("Content-Disposition", "attachment; filename=" + file.getName());
+            //TODO better handle  exceptions here
         } catch (Exception e) {
-            ResponseBuilder response = Response.status(Response.Status.NOT_FOUND);
+            response = Response.status(Response.Status.NOT_FOUND);
             return response.build();
         }
-        System.out.println("downloading---------:" + file.getPath());
-        ResponseBuilder response = Response.ok((Object) file);
-        response.header("Content-Disposition", "attachment; filename=" + file.getName());
         return response.build();
     }
 
