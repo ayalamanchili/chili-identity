@@ -2,6 +2,7 @@ package info.yalamanchili.office.jrs.social;
 
 import info.yalamanchili.office.dao.social.SocialDao;
 import info.yalamanchili.office.entity.social.Post;
+import info.yalamanchili.office.social.SocialService;
 
 import java.util.List;
 
@@ -31,20 +32,22 @@ public class SocialResource {
 
     @Autowired
     public SocialDao socialDao;
+    @Autowired
+    public SocialService socialService;
 
     @GET
     @Path("/employeefeed/{start}/{limit}")
-    public List<Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
-        return socialDao.getEmployeeFeed(start, limit);
+    public List<info.yalamanchili.office.dto.social.Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return socialService.getEmployeeFeed(start, limit);
     }
-    
+
     @PUT
     @Path("/CreatePost")
-    public Post CreatePost(Post NewPost)
-    {
-    	
-    	return socialDao.CreatePost(NewPost);
+    public Post CreatePost(Post NewPost) {
+
+        return socialDao.CreatePost(NewPost);
     }
+
     @PUT
     @Path("/addreply/{parentPostId}")
     public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply) {

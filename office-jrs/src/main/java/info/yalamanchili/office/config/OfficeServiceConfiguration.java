@@ -12,29 +12,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeServiceConfiguration {
 
-	@PersistenceContext
-	EntityManager em;
+    @PersistenceContext
+    protected EntityManager em;
+    protected String contentManagementLocationRoot = "E://content-management//office/";
 
-	protected String contentManagementLocationRoot = "E://content-management//office/";
+    @ManagedAttribute
+    public String getContentManagementLocationRoot() {
+        return contentManagementLocationRoot;
+    }
 
-	@ManagedAttribute
-	public String getContentManagementLocationRoot() {
-		return contentManagementLocationRoot;
-	}
+    public void setContentManagementLocationRoot(String contentManagementLocationRoot) {
+        this.contentManagementLocationRoot = contentManagementLocationRoot;
+    }
 
-	public void setContentManagementLocationRoot(String contentManagementLocationRoot) {
-		this.contentManagementLocationRoot = contentManagementLocationRoot;
-	}
-
-	@ManagedOperation
-	public void indexHibernateSearch() {
-		System.out.println("--------------started hiberante search indexing-------------");
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
-		try {
-			fullTextEntityManager.createIndexer().startAndWait();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
+    @ManagedOperation
+    public void indexHibernateSearch() {
+        System.out.println("--------------started hiberante search indexing-------------");
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
+        try {
+            fullTextEntityManager.createIndexer().startAndWait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -19,7 +19,6 @@ public class SocialDao {
     protected EntityManager em;
 
     public List<Post> getEmployeeFeed(int start, int limit) {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p where p.parentPost is null and p.employee is not null order by p.postTimeStamp",
                 Post.class);
         getPostsQuery.setFirstResult(start);
@@ -38,9 +37,9 @@ public class SocialDao {
         return parentPost;
     }
 
-	public Post CreatePost(Post newPost) {
-		// TODO Auto-generated method stub
-		
-		return null;
-	}
+    public Post CreatePost(Post newPost) {
+        // TODO Auto-generated method stub
+
+        return null;
+    }
 }

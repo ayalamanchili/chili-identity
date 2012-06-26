@@ -15,61 +15,51 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 
 public class ReadPostWidget extends ALComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
     protected JSONObject post;
     protected String postId;
     CaptionPanel postRootPanel = new CaptionPanel();
     FlowPanel postBodyPanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
-    ClickableLink replyLink = new ClickableLink("Reply");
-    
+    ClickableLink replyLink = new ClickableLink("reply");
+
     public ReadPostWidget(JSONObject post) {
         init(postRootPanel);
         this.post = post;
         displayPost();
-        
+
     }
-    
+
     protected void displayPost() {
-        if (post.containsKey("employee")) {
-            postRootPanel.setCaptionText(getPostEmployeeNameHtml(post.get(
-                    "employee").isObject()));
-        } else {
-            postRootPanel.setCaptionHTML("Default");
-        }
+        postRootPanel.setCaptionHTML(JSONUtils.toString(post, "employeeName"));
         this.postId = JSONUtils.toString(post, "id");
         postBodyArea.setHTML(JSONUtils.toString(post, "postContent"));
     }
-    
+
     @Override
     protected void addListeners() {
         replyLink.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         postBodyArea.addStyleName("postRichTextBox");
     }
-    
+
     @Override
     protected void addWidgets() {
         postRootPanel.setContentWidget(postBodyPanel);
         postBodyPanel.add(postBodyArea);
         postBodyPanel.add(replyLink);
     }
-    
-    protected String getPostEmployeeNameHtml(JSONObject employee) {
-        return JSONUtils.toString(employee, "firstName") + " "
-                + JSONUtils.toString(employee, "lastName");
-    }
-    
+
     @Override
     public void onClick(ClickEvent arg0) {
         if (arg0.getSource().equals(replyLink)) {
             ReplyPostWidget replywidget = new ReplyPostWidget(String.valueOf(postId));
             postBodyPanel.add(replywidget);
         }
-        
+
     }
 }
