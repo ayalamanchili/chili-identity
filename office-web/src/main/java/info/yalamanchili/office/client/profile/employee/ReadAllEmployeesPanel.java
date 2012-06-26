@@ -77,7 +77,9 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
             table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
-            table.setText(i, 4, JSONUtils.toString(entity, "dateOfBirth"));
+            if (Auth.isAdmin() || Auth.isHR()){
+                table.setText(i, 4, JSONUtils.toString(entity, "dateOfBirth"));
+            }
             table.setText(i, 5, JSONUtils.toString(entity, "sex"));
             table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), 50, 50, false));
             table.setText(i, 7, JSONUtils.toString(entity, "startDate"));
