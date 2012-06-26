@@ -58,15 +58,19 @@ public class FileResource {
         File file = null;
         try {
             file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
-            System.out.println("downloading---------:" + file.getPath());
-            response = Response.ok((Object) file);
-            response.header("Content-Disposition", "attachment; filename=" + file.getName());
-            //TODO better handle  exceptions here
+            if (file.exists()) {
+                System.out.println("downloading---------:" + file.getPath());
+                response = Response.ok((Object) file);
+                response.header("Content-Disposition", "attachment; filename=" + file.getName());
+                return response.build();
+            } else {
+                response = Response.status(Response.Status.NOT_FOUND);
+                return response.build();
+            }
         } catch (Exception e) {
-            response = Response.status(Response.Status.NOT_FOUND);
-            return response.build();
+            throw new RuntimeException("Error processing File download" + e);
         }
-        return response.build();
+
     }
 
     protected void processImageUpload(HttpServletRequest request) {
