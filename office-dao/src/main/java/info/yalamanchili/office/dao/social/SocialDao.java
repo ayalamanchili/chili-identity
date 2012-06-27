@@ -1,6 +1,9 @@
 package info.yalamanchili.office.dao.social;
 
 import info.yalamanchili.office.entity.social.Post;
+import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.profile.Employee;
+
 
 import java.util.List;
 
@@ -8,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+import org.hsqldb.User;
+
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -37,9 +42,22 @@ public class SocialDao {
         return parentPost;
     }
 
-    public Post CreatePost(Post newPost) {
-        // TODO Auto-generated method stub
 
-        return null;
-    }
+	public Post createPost(Post newPost) {
+		// TODO Auto-generated method stub
+           
+            SecurityService SecurityService=new SecurityService();
+            
+            
+            newPost.setEmployee(SecurityService.getCurrentUser());
+            
+	    em.persist(newPost);         
+                return newPost;
+	}
+
+    
+
+       
+
+       
 }
