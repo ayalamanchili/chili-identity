@@ -51,13 +51,9 @@ public class SocialDao {
 
 	public Post createPost(Post newPost) {
 		// TODO Auto-generated method stub
-           
-           /* SecurityService SecurityService=new SecurityService();*/
-            
-            
             newPost.setEmployee(securityService.getCurrentUser());
 	    em.persist(newPost);         
-                return newPost;
+                return em.merge(newPost);
 	}
 
     
