@@ -42,11 +42,18 @@ public class SocialResource {
     }
 
     @PUT
-    @Path("/CreatePost")
-    public Post CreatePost(Post NewPost) {
+    @Path("/createPost")
 
-        return socialDao.CreatePost(NewPost);
+    public Post createPost(Post NewPost)
+    {
+    	
+    	return socialDao.createPost(NewPost);
     }
+    
+
+      
+
+    
 
     @PUT
     @Path("/addreply/{parentPostId}")
