@@ -17,7 +17,7 @@
         <class>info.yalamanchili.office.entity.profile.PhoneType</class>
         <class>info.yalamanchili.office.entity.profile.Sex</class>
         <class>info.yalamanchili.office.entity.profile.EmergencyContact</class>
-        <class>info.yalamanchili.office.entity.profile.ReportsTo</class>
+        <class>info.yalamanchili.office.entity.profile.ClientInformation</class>
         
         <!-- Social-->
         <class>info.yalamanchili.office.entity.social.Post</class>

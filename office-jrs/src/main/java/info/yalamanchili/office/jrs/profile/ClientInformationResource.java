@@ -1,9 +1,9 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.dao.profile.ReportsToDao;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.dto.profile.ReportsTo;
+import info.yalamanchili.office.dto.profile.ClientInformation;
 import java.util.List;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,26 +14,26 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Path("reportsto")
+@Path("clientinformation")
 @Component
 @Transactional
 @Scope("request")
-public class ReportsToResource extends CRUDResource<ReportsTo> {
+public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @Autowired
-    protected ReportsToDao reportsToDao;
+    protected ClientInformationDao clientInformationDao;
 
     @Override
     public CRUDDao getDao() {
-        return reportsToDao;
+        return clientInformationDao;
     }
 
     @XmlRootElement
     @XmlType
-    public static class ReportsToTable {
+    public static class ClientInformationTable {
 
         protected Long size;
-        protected List<ReportsTo> entities;
+        protected List<ClientInformation> entities;
 
         public Long getSize() {
             return size;
@@ -44,11 +44,11 @@ public class ReportsToResource extends CRUDResource<ReportsTo> {
         }
 
         @XmlElement
-        public List<ReportsTo> getEntities() {
+        public List<ClientInformation> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<ReportsTo> entities) {
+        public void setEntities(List<ClientInformation> entities) {
             this.entities = entities;
         }
     }

@@ -7,14 +7,14 @@ package info.yalamanchili.office.jrs.profile;
 import info.yalamanchili.office.config.ApplicationContextProvider;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.ReportsToDao;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
-import info.yalamanchili.office.jrs.profile.ReportsToResource.ReportsToTable;
+import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -149,50 +149,50 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     /* ResportsTo */
     @GET
-    @Path("/reportstos/{id}/{start}/{limit}")
-    public ReportsToTable getReportsTos(@PathParam("id") long id, @PathParam("start") int start,
+    @Path("/clientinformation/{id}/{start}/{limit}")
+    public ClientInformationTable getClientInformations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
-        ReportsToTable tableObj = new ReportsToTable();
+        ClientInformationTable tableObj = new ClientInformationTable();
         Employee emp = (Employee) getDao().findById(id);
-        List<info.yalamanchili.office.dto.profile.ReportsTo> reportsToDtos = new ArrayList<info.yalamanchili.office.dto.profile.ReportsTo>();
-        for (ReportsTo entity : emp.getReportsTos()) {
-            reportsToDtos.add(mapReportsTo(entity));
+        List<info.yalamanchili.office.dto.profile.ClientInformation> clientInfoDtos = new ArrayList<info.yalamanchili.office.dto.profile.ClientInformation>();
+        for (ClientInformation entity : emp.getClientInformations()) {
+            clientInfoDtos.add(mapClientInformation(entity));
         }
-        tableObj.setEntities(reportsToDtos);
-        tableObj.setSize((long) emp.getReportsTos().size());
+        tableObj.setEntities(clientInfoDtos);
+        tableObj.setSize((long) emp.getClientInformations().size());
         return tableObj;
     }
     
-    public info.yalamanchili.office.dto.profile.ReportsTo mapReportsTo(ReportsTo entity) {
-        info.yalamanchili.office.dto.profile.ReportsTo reportsTo = mapper.map(entity, info.yalamanchili.office.dto.profile.ReportsTo.class);
-        mapper.map(entity.getContact(), reportsTo);
+    public info.yalamanchili.office.dto.profile.ClientInformation mapClientInformation(ClientInformation entity) {
+        info.yalamanchili.office.dto.profile.ClientInformation clientInformation = mapper.map(entity, info.yalamanchili.office.dto.profile.ClientInformation.class);
+        mapper.map(entity.getContact(), clientInformation);
         if (entity.getContact().getPhones().size() > 0) {
-            mapper.map(entity.getContact().getPhones().get(0), reportsTo);
+            mapper.map(entity.getContact().getPhones().get(0), clientInformation);
         }
-        return reportsTo;
+        return clientInformation;
     }
     
     @PUT
-    @Path("/reportsto/{empId}")
-    public void addReportsTo(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ReportsTo reportsTo) {
+    @Path("/clientinformation/{empId}")
+    public void addClientInformation(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
         Employee emp = (Employee) getDao().findById(empId);
         
         Phone phone = new Phone();
-        phone.setPhoneNumber(reportsTo.getPhoneNumber());
+        phone.setPhoneNumber(clientInformation.getPhoneNumber());
         
         Contact contact = new Contact();
-        contact.setFirstName(reportsTo.getFirstName());
-        contact.setLastName(reportsTo.getLastName());
-        contact.setMiddleInitial(reportsTo.getMiddleInitial());
+        contact.setFirstName(clientInformation.getFirstName());
+        contact.setLastName(clientInformation.getLastName());
+        contact.setMiddleInitial(clientInformation.getMiddleInitial());
         contact.addPhone(phone);
         
-        ReportsTo entity = new ReportsTo();
-        entity.setReportsToRole(reportsTo.getReportsToRole());
-        entity.setRtPrimary(reportsTo.isRtPrimary());
+        ClientInformation entity = new ClientInformation();
+        entity.setReportsToRole(clientInformation.getReportsToRole());
+        entity.setRtPrimary(clientInformation.isRtPrimary());
         entity.setContact(contact);
-        ReportsToDao reportsToDao = ApplicationContextProvider.getApplicationContext().getBean("reportsToDao", ReportsToDao.class);
-        entity = reportsToDao.save(entity);
-        emp.addReportsTo(entity);
+        ClientInformationDao clientInformationDao = ApplicationContextProvider.getApplicationContext().getBean("clientInformationDao", ClientInformationDao.class);
+        entity = clientInformationDao.save(entity);
+        emp.addClientInformation(entity);
     }
 
     /* Emergency Contact */

@@ -11,8 +11,8 @@ import info.yalamanchili.office.client.profile.emergencycnt.EmergencyContactOpti
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPanel;
 import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
-import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPanel;
-import info.yalamanchili.office.client.profile.reportsto.ReportsToOptionsPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPanel;
 
 import com.google.gwt.json.client.JSONObject;
 
@@ -21,7 +21,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	protected static final String ADDRESS_NODE = "address";
 	protected static final String EMAIL_NODE = "email";
 	protected static final String PHONE_NODE = "phone";
-	protected static final String REPORTS_TO_NODE = "reportsTo";
+	protected static final String REPORTS_TO_NODE = "clientInfo";
 	protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
 
 	public TreeEmployeePanel(String entityId) {
@@ -46,7 +46,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 		addFirstChildLink("Addresses", ADDRESS_NODE);
 		addFirstChildLink("Emails", EMAIL_NODE);
 		addFirstChildLink("Phones", PHONE_NODE);
-		addFirstChildLink("ReportsTo", REPORTS_TO_NODE);
+		addFirstChildLink("Client Information", REPORTS_TO_NODE);
 		addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
 	}
 
@@ -69,8 +69,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
 		}
 		if (REPORTS_TO_NODE.equals(entityNodeKey)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllReportsToPanel(entityId));
-			TabPanel.instance().myOfficePanel.entityPanel.add(new ReportsToOptionsPanel());
+			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(entityId));
+			TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
 		}
 		if (EMERGENCY_CONTACT_NODE.equals(entityNodeKey)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();

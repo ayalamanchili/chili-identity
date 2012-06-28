@@ -4,8 +4,6 @@ package info.yalamanchili.office.dto.profile;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -16,17 +14,18 @@ import org.dozer.Mapper;
  */
 @XmlRootElement
 @XmlType
-public class ReportsTo {
+public class ClientInformation {
 
     protected String firstName;
     protected String lastName;
     protected String middleInitial;
     protected String reportsToRole;
+    protected String consultantJobTitle;
     protected boolean rtPrimary;
     protected String email;
     protected String phoneNumber;
 
-    public ReportsTo() {
+    public ClientInformation() {
     }
 
     public String getFirstName() {
@@ -61,6 +60,14 @@ public class ReportsTo {
         this.reportsToRole = reportsToRole;
     }
 
+    public String getConsultantJobTitle() {
+        return consultantJobTitle;
+    }
+
+    public void setConsultantJobTitle(String consultantJobTitle) {
+        this.consultantJobTitle = consultantJobTitle;
+    }
+
     public boolean isRtPrimary() {
         return rtPrimary;
     }
@@ -87,12 +94,12 @@ public class ReportsTo {
 
     @Override
     public String toString() {
-        return "ReportsTo{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", reportsToRole=" + reportsToRole + ", rtPrimary=" + rtPrimary + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
+        return "ClientInformation{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", reportsToRole=" + reportsToRole + ", consultantJobTitle=" + consultantJobTitle + ", rtPrimary=" + rtPrimary + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
 
     //TODO move this to seperate class?
-    public static ReportsTo map(Mapper mapper, info.yalamanchili.office.entity.profile.ReportsTo entity) {
-        ReportsTo reportsTo = mapper.map(entity, ReportsTo.class);
+    public static ClientInformation map(Mapper mapper, info.yalamanchili.office.entity.profile.ClientInformation entity) {
+        ClientInformation reportsTo = mapper.map(entity, ClientInformation.class);
         mapper.map(entity.getContact(), reportsTo);
         if (entity.getContact().getPhones().size() > 0) {
             mapper.map(entity.getContact().getPhones().get(0), reportsTo);
@@ -102,5 +109,4 @@ public class ReportsTo {
         }
         return reportsTo;
     }
-    
 }

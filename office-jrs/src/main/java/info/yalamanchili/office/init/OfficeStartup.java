@@ -11,7 +11,7 @@ import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
-import info.yalamanchili.office.entity.profile.ReportsTo;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
@@ -90,7 +90,7 @@ public class OfficeStartup {
         userEmp.addAddress(userAddress);
         userEmp.addEmail(userPrimaryEmail);
         userEmp.addEmail(userSecondaryEmail);
-        userEmp.addReportsTo(userReportsTo());
+        userEmp.addClientInformation(userReportsTo());
         userEmp.addEmergencyContact(userEmergencyContact());
         userEmp = em.merge(userEmp);
         userUser().setEmployee(userEmp);
@@ -130,7 +130,7 @@ public class OfficeStartup {
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
-        adminEmp.addReportsTo(userReportsTo());
+        adminEmp.addClientInformation(userReportsTo());
         adminEmp.addEmergencyContact(userEmergencyContact());
         adminEmp = em.merge(adminEmp);
         userAdmin().setEmployee(adminEmp);
@@ -227,7 +227,7 @@ public class OfficeStartup {
         }
     }
     
-    public ReportsTo userReportsTo() {
+    public ClientInformation userReportsTo() {
         Phone userReportsToContactPhone = new Phone();
         userReportsToContactPhone.setPhoneNumber("1313131313");
         userReportsToContactPhone = em.merge(userReportsToContactPhone);
@@ -244,7 +244,7 @@ public class OfficeStartup {
         userReportToContact.addEmail(userReportsToEmail);
         userReportToContact = em.merge(userReportToContact);
         
-        ReportsTo reportsTo = new ReportsTo();
+        ClientInformation reportsTo = new ClientInformation();
         reportsTo.setContact(userReportToContact);
         reportsTo.setRtPrimary(true);
         reportsTo.setReportsToRole("Manager");

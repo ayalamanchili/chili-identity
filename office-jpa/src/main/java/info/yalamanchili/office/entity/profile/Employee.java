@@ -62,7 +62,7 @@ public class Employee extends Contact {
      * @generated
      */
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    protected List<ReportsTo> reportsTos;
+    protected List<ClientInformation> clientInformations;
     /**
      * @generated
      */
@@ -140,28 +140,28 @@ public class Employee extends Contact {
      * @generated
      */
     @XmlTransient
-    public List<ReportsTo> getReportsTos() {
-        if (this.reportsTos == null) {
-            this.reportsTos = new ArrayList<ReportsTo>();
+    public List<ClientInformation> getClientInformations() {
+        if (this.clientInformations == null) {
+            this.clientInformations = new ArrayList<ClientInformation>();
         }
-        return this.reportsTos;
+        return this.clientInformations;
     }
 
     /**
      * @generated
      */
-    public void setReportsTos(List<ReportsTo> reportsTos) {
-        this.reportsTos = reportsTos;
+    public void setClientInformations(List<ClientInformation> clientInformations) {
+        this.clientInformations = clientInformations;
     }
 
     /**
      * @generated
      */
-    public void addReportsTo(ReportsTo entity) {
+    public void addClientInformation(ClientInformation entity) {
         if (entity == null) {
             return;
         }
-        getReportsTos().add(entity);
+        getClientInformations().add(entity);
         entity.setEmployee(this);
     }
 

@@ -21,7 +21,7 @@ import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPane
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
-import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPopupPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
 import java.util.logging.Logger;
 import org.springframework.context.annotation.Profile;
 
@@ -38,7 +38,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel phonesPanel;
     protected DisclosurePanel emailsPanel;
     protected DisclosurePanel addressesPanel;
-    protected DisclosurePanel reportsTosPanel;
+    protected DisclosurePanel clientInfoPanel;
     protected DisclosurePanel emergencyContactsPanel;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
     
@@ -64,7 +64,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         addAddressesPanel();
         addPhonesPanel();
         addEmailsPanel();
-        addReportsToPanel();
+        addClientInfoPanel();
         addEmergencyContactsPanel();
     }
     /*
@@ -160,26 +160,26 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         emailsPanel.setOpen(true);
     }
     /*
-     * ReportsTo
+     * Client Information
      */
     
-    protected void addReportsToPanel() {
-        reportsTosPanel = new DisclosurePanel("ReportsTo");
-        panel.add(reportsTosPanel);
-        reportsTosPanel.addStyleName("profileHome");
-        reportsTosPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+    protected void addClientInfoPanel() {
+        clientInfoPanel = new DisclosurePanel("Client Information");
+        panel.add(clientInfoPanel);
+        clientInfoPanel.addStyleName("profileHome");
+        clientInfoPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-                reportsTosPanel.setContent(
-                        new ReadAllReportsToPopupPanel(OfficeWelcome.instance().employeeId));
+                clientInfoPanel.setContent(
+                        new ReadAllClientInfoPopupPanel(OfficeWelcome.instance().employeeId));
                 
             }
         });
     }
     
-    public void refreshReportsTo() {
-        reportsTosPanel.setOpen(false);
-        reportsTosPanel.setOpen(true);
+    public void refreshClientInformation() {
+        clientInfoPanel.setOpen(false);
+        clientInfoPanel.setOpen(true);
     }
     /*
      * emergency contact

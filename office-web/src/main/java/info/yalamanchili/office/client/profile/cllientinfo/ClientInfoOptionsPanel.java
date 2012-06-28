@@ -1,4 +1,4 @@
-package info.yalamanchili.office.client.profile.emergencycnt;
+package info.yalamanchili.office.client.profile.cllientinfo;
 
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
@@ -10,19 +10,19 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
-public class EmergencyContactOptionsPanel extends ALComposite implements ClickHandler {
+public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler {
 
 	protected HorizontalPanel panel = new HorizontalPanel();
 
-	protected ClickableLink addEmergencyCntLink = new ClickableLink("Add Emergency Contact");
+	protected ClickableLink addClientInfoLink = new ClickableLink("Add Client Inoformation");
 
-	public EmergencyContactOptionsPanel() {
+	public ClientInfoOptionsPanel() {
 		init(panel);
 	}
 
 	@Override
 	protected void addListeners() {
-		addEmergencyCntLink.addClickHandler(this);
+		addClientInfoLink.addClickHandler(this);
 	}
 
 	@Override
@@ -35,16 +35,16 @@ public class EmergencyContactOptionsPanel extends ALComposite implements ClickHa
 	@Override
 	protected void addWidgets() {
 		if (Auth.isAdmin() || Auth.isHR()) {
-			panel.add(addEmergencyCntLink);
+			panel.add(addClientInfoLink);
 		}
 
 	}
 
 	@Override
 	public void onClick(ClickEvent arg0) {
-		if (arg0.getSource().equals(addEmergencyCntLink)) {
+		if (arg0.getSource().equals(addClientInfoLink)) {
 			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmergencyContactPanel(CreateCompositeType.ADD));
+			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateCompositeType.ADD));
 		}
 	}
 }
