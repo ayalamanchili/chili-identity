@@ -80,4 +80,14 @@ public class SkillSet extends AbstractEntity {
     public void setCertifications(List<Certification> certifications) {
         this.certifications = certifications;
     }
+    //TODO add per or post persist and merge to update/set the lastupdated date.
+
+    @XmlTransient
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 }

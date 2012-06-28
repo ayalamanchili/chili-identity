@@ -4,6 +4,7 @@ import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.commons.DateUtils;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
@@ -13,6 +14,8 @@ import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Sex;
+import info.yalamanchili.office.entity.profile.Skill;
+import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
@@ -29,16 +32,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class OfficeStartup {
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     protected void startup() {
         initRolesAndUsers();
         initRefData();
         initTestData();
     }
-    
+
     protected void initRolesAndUsers() {
 
         // Roles
@@ -63,7 +66,7 @@ public class OfficeStartup {
         userEmp.setSex(Sex.MALE);
         userEmp.setSsn("123456789");
         userEmp.setStartDate(new Date());
-        
+
         Address userAddress = new Address();
         userAddress.setAddressType(getHomeAddressType());
         userAddress.setStreet1("2110 wilkes ct");
@@ -71,21 +74,21 @@ public class OfficeStartup {
         userAddress.setCity("Herndon");
         userAddress.setState("Virginia");
         userAddress.setCountry("USA");
-        
+
         Email userPrimaryEmail = new Email();
         userPrimaryEmail.setEmailType(getWorkEmailType());
         userPrimaryEmail.setPrimaryEmail(true);
         userPrimaryEmail.setEmail("user@gmail.com");
-        
+
         Email userSecondaryEmail = new Email();
         userSecondaryEmail.setPrimaryEmail(false);
         userSecondaryEmail.setEmailType(getPersonalEmailType());
         userSecondaryEmail.setEmail("user_secondary@gmail.com");
-        
+
         Phone userCellPhone = new Phone();
         userCellPhone.setPhoneNumber("7031112222");
         userCellPhone.setPhoneType(getCellPhoneType());
-        
+
         userEmp.addPhone(userCellPhone);
         userEmp.addAddress(userAddress);
         userEmp.addEmail(userPrimaryEmail);
@@ -103,7 +106,7 @@ public class OfficeStartup {
         adminEmp.setSex(Sex.FEMALE);
         adminEmp.setSsn("123456789");
         adminEmp.setStartDate(new Date());
-        
+
         Address adminAddress = new Address();
         adminAddress.setAddressType(getHomeAddressType());
         adminAddress.setStreet1("2110 wilkes ct");
@@ -111,21 +114,21 @@ public class OfficeStartup {
         adminAddress.setCity("Herndon");
         adminAddress.setState("Virginia");
         adminAddress.setCountry("USA");
-        
+
         Email adminPrimaryEmail = new Email();
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
         adminPrimaryEmail.setEmail("yphanikumar@gmail.com");
-        
+
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
         adminSecondaryEmail.setPrimaryEmail(false);
         adminSecondaryEmail.setEmail("admin_secondary@gmail.com");
-        
+
         Phone adminCellPhone = new Phone();
         adminCellPhone.setPhoneNumber("7031112222");
         adminCellPhone.setPhoneType(getCellPhoneType());
-        
+
         adminEmp.addPhone(userCellPhone);
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
@@ -135,22 +138,32 @@ public class OfficeStartup {
         adminEmp = em.merge(adminEmp);
         userAdmin().setEmployee(adminEmp);
 
+        SkillSet userSkillSet = new SkillSet();
+        userSkillSet.setLastUpdated(new Date());
+        userSkillSet.getCertifications().add(getDOTNETCertification());
+        userSkillSet.getSkills().add(getJavaSkill());
+        userSkillSet.getSkills().add(getDOTNETSkill());
+        userSkillSet = em.merge(userSkillSet);
+
+        userEmp.setSkillSet(userSkillSet);
+        userEmp = em.merge(userEmp);
+
         // Social
         Post userPost1 = new Post();
         userPost1.setPostTimeStamp(new Date());
         userPost1.setPostContent("this is my first post by user");
         userPost1.setEmployee(userEmp);
         userPost1 = em.merge(userPost1);
-        
+
         Post userPostReply1 = new Post();
         userPostReply1.setPostContent("this is a sample reply to user post by admin");
         userPostReply1.setPostTimeStamp(new Date());
         userPostReply1.setEmployee(adminEmp);
         userPostReply1.setParentPost(userPost1);
         userPostReply1 = em.merge(userPostReply1);
-        
+
     }
-    
+
     protected void initRefData() {
         // Address Types
         getHomeAddressType();
@@ -160,8 +173,14 @@ public class OfficeStartup {
         // Phone Types
         getCellPhoneType();
         getHomePhoneType();
+        //Skills
+        getJavaSkill();
+        getDOTNETSkill();
+        //Certifications
+        getJAVACertification();
+        getDOTNETCertification();
     }
-    
+
     protected AddressType getHomeAddressType() {
         Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
                 + " where addressType=:addressTypeParam");
@@ -174,7 +193,7 @@ public class OfficeStartup {
             return em.merge(homeAddressType);
         }
     }
-    
+
     protected EmailType getWorkEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
@@ -187,7 +206,7 @@ public class OfficeStartup {
             return em.merge(homeEmailType);
         }
     }
-    
+
     protected EmailType getPersonalEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
@@ -200,7 +219,7 @@ public class OfficeStartup {
             return em.merge(homeEmailType);
         }
     }
-    
+
     protected PhoneType getCellPhoneType() {
         Query getCellPhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
                 + " where phoneType=:phoneTypeParam");
@@ -213,7 +232,7 @@ public class OfficeStartup {
             return em.merge(cellPhoneType);
         }
     }
-    
+
     protected PhoneType getHomePhoneType() {
         Query getHomePhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
                 + " where phoneType=:phoneTypeParam");
@@ -226,16 +245,72 @@ public class OfficeStartup {
             return em.merge(cellPhoneType);
         }
     }
-    
+
+    protected Skill getJavaSkill() {
+        Query getSkillQuery = em.createQuery("from " + Skill.class.getCanonicalName()
+                + " where name=:nameParam");
+        getSkillQuery.setParameter("nameParam", "JAVA");
+        if (getSkillQuery.getResultList().size() > 0) {
+            return (Skill) getSkillQuery.getResultList().get(0);
+        } else {
+            Skill javaSkill = new Skill();
+            javaSkill.setName("JAVA");
+            javaSkill.setDescription("Java Programing Language");
+            return em.merge(javaSkill);
+        }
+    }
+
+    protected Skill getDOTNETSkill() {
+        Query getSkillQuery = em.createQuery("from " + Skill.class.getCanonicalName()
+                + " where name=:nameParam");
+        getSkillQuery.setParameter("nameParam", "DOTNET");
+        if (getSkillQuery.getResultList().size() > 0) {
+            return (Skill) getSkillQuery.getResultList().get(0);
+        } else {
+            Skill javaSkill = new Skill();
+            javaSkill.setName("DOTNET");
+            javaSkill.setDescription("DOTNET Programing Language");
+            return em.merge(javaSkill);
+        }
+    }
+
+    protected Certification getJAVACertification() {
+        Query getCertificationQuery = em.createQuery("from " + Certification.class.getCanonicalName()
+                + " where name=:nameParam");
+        getCertificationQuery.setParameter("nameParam", "JAVA_CERTIFICATION");
+        if (getCertificationQuery.getResultList().size() > 0) {
+            return (Certification) getCertificationQuery.getResultList().get(0);
+        } else {
+            Certification certification = new Certification();
+            certification.setName("JAVA_CERTIFICATION");
+            certification.setDescription("JAVA_CERTIFICATION from SUN");
+            return em.merge(certification);
+        }
+    }
+
+    protected Certification getDOTNETCertification() {
+        Query getCertificationQuery = em.createQuery("from " + Certification.class.getCanonicalName()
+                + " where name=:nameParam");
+        getCertificationQuery.setParameter("nameParam", "DOTNET_CERTIFICATION");
+        if (getCertificationQuery.getResultList().size() > 0) {
+            return (Certification) getCertificationQuery.getResultList().get(0);
+        } else {
+            Certification certification = new Certification();
+            certification.setName("DOTNET_CERTIFICATION");
+            certification.setDescription("DOTNET_CERTIFICATION from Miscrosoft");
+            return em.merge(certification);
+        }
+    }
+
     public ClientInformation userClientInfo() {
         Phone userClientInfoContactPhone = new Phone();
         userClientInfoContactPhone.setPhoneNumber("1313131313");
         userClientInfoContactPhone = em.merge(userClientInfoContactPhone);
-        
+
         Email userReportsToEmail = new Email();
         userReportsToEmail.setEmail("userreportsto@email.com");
         userReportsToEmail.setPrimaryEmail(true);
-        
+
         Contact userClientInfoContact = new Contact();
         userClientInfoContact.setFirstName("user reports to");
         userClientInfoContact.setLastName("user reports to last name");
@@ -243,7 +318,7 @@ public class OfficeStartup {
         userClientInfoContact.addPhone(userClientInfoContactPhone);
         userClientInfoContact.addEmail(userReportsToEmail);
         userClientInfoContact = em.merge(userClientInfoContact);
-        
+
         ClientInformation clientInfo = new ClientInformation();
         clientInfo.setContact(userClientInfoContact);
         clientInfo.setRtPrimary(true);
@@ -251,21 +326,21 @@ public class OfficeStartup {
         clientInfo.setConsultantJobTitle("QA Qngineer");
         return em.merge(clientInfo);
     }
-    
+
     public EmergencyContact userEmergencyContact() {
         Contact userEmergencyContact = new Contact();
         userEmergencyContact.setFirstName("user emergency contact");
         userEmergencyContact.setLastName("user emergency contact last name");
         userEmergencyContact.setSex(Sex.MALE);
         userEmergencyContact = em.merge(userEmergencyContact);
-        
+
         EmergencyContact emergencyContact = new EmergencyContact();
         emergencyContact.setContact(userEmergencyContact);
         emergencyContact.setEcPrimary(true);
         emergencyContact.setRelation("Wife");
         return em.merge(emergencyContact);
     }
-    
+
     public CRole userRole() {
         if (findEntity(em, CRole.class, "rolename", "ROLE_USER") == null) {
             CRole userRole = new CRole();
@@ -274,7 +349,7 @@ public class OfficeStartup {
         }
         return findEntity(em, CRole.class, "rolename", "ROLE_USER");
     }
-    
+
     public CRole hrRole() {
         if (findEntity(em, CRole.class, "rolename", "ROLE_HR") == null) {
             CRole userRole = new CRole();
@@ -283,7 +358,7 @@ public class OfficeStartup {
         }
         return findEntity(em, CRole.class, "rolename", "ROLE_HR");
     }
-    
+
     public CRole accountsRole() {
         if (findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTS") == null) {
             CRole userRole = new CRole();
@@ -292,7 +367,7 @@ public class OfficeStartup {
         }
         return findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTS");
     }
-    
+
     public CRole adminRole() {
         if (findEntity(em, CRole.class, "rolename", "ROLE_ADMIN") == null) {
             CRole userRole = new CRole();
@@ -301,7 +376,7 @@ public class OfficeStartup {
         }
         return findEntity(em, CRole.class, "rolename", "ROLE_ADMIN");
     }
-    
+
     protected CUser userUser() {
         if (findEntity(em, CUser.class, "username", "user") == null) {
             CUser userUser = new CUser();
@@ -313,7 +388,7 @@ public class OfficeStartup {
         }
         return findEntity(em, CUser.class, "username", "user");
     }
-    
+
     protected CUser userAdmin() {
         if (findEntity(em, CUser.class, "username", "admin") == null) {
             CUser userUser = new CUser();

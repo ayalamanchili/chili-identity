@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,6 +45,7 @@ public class Employee extends Contact {
      * @generated
      */
     @Field(index = Index.UN_TOKENIZED)
+    @Temporal(TemporalType.DATE)
     protected Date startDate;
     /**
      * @generated
@@ -71,7 +74,6 @@ public class Employee extends Contact {
     protected List<EmergencyContact> emergencyContacts;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<Post> posts;
-    @XmlTransient
     @OneToOne
     protected SkillSet skillSet;
 
@@ -216,6 +218,15 @@ public class Employee extends Contact {
         }
         getPosts().add(post);
         post.setEmployee(this);
+    }
+
+    @XmlTransient
+    public SkillSet getSkillSet() {
+        return skillSet;
+    }
+
+    public void setSkillSet(SkillSet skillSet) {
+        this.skillSet = skillSet;
     }
 
     @Override
