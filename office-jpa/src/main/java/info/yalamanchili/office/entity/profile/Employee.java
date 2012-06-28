@@ -13,6 +13,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -70,6 +71,9 @@ public class Employee extends Contact {
     protected List<EmergencyContact> emergencyContacts;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<Post> posts;
+    @XmlTransient
+    @OneToOne
+    protected SkillSet skillSet;
 
     /**
      * @generated

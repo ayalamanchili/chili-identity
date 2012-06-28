@@ -90,7 +90,7 @@ public class OfficeStartup {
         userEmp.addAddress(userAddress);
         userEmp.addEmail(userPrimaryEmail);
         userEmp.addEmail(userSecondaryEmail);
-        userEmp.addClientInformation(userReportsTo());
+        userEmp.addClientInformation(userClientInfo());
         userEmp.addEmergencyContact(userEmergencyContact());
         userEmp = em.merge(userEmp);
         userUser().setEmployee(userEmp);
@@ -130,7 +130,7 @@ public class OfficeStartup {
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
-        adminEmp.addClientInformation(userReportsTo());
+        adminEmp.addClientInformation(userClientInfo());
         adminEmp.addEmergencyContact(userEmergencyContact());
         adminEmp = em.merge(adminEmp);
         userAdmin().setEmployee(adminEmp);
@@ -227,28 +227,29 @@ public class OfficeStartup {
         }
     }
     
-    public ClientInformation userReportsTo() {
-        Phone userReportsToContactPhone = new Phone();
-        userReportsToContactPhone.setPhoneNumber("1313131313");
-        userReportsToContactPhone = em.merge(userReportsToContactPhone);
+    public ClientInformation userClientInfo() {
+        Phone userClientInfoContactPhone = new Phone();
+        userClientInfoContactPhone.setPhoneNumber("1313131313");
+        userClientInfoContactPhone = em.merge(userClientInfoContactPhone);
         
         Email userReportsToEmail = new Email();
         userReportsToEmail.setEmail("userreportsto@email.com");
         userReportsToEmail.setPrimaryEmail(true);
         
-        Contact userReportToContact = new Contact();
-        userReportToContact.setFirstName("user reports to");
-        userReportToContact.setLastName("user reports to last name");
-        userReportToContact.setSex(Sex.MALE);
-        userReportToContact.addPhone(userReportsToContactPhone);
-        userReportToContact.addEmail(userReportsToEmail);
-        userReportToContact = em.merge(userReportToContact);
+        Contact userClientInfoContact = new Contact();
+        userClientInfoContact.setFirstName("user reports to");
+        userClientInfoContact.setLastName("user reports to last name");
+        userClientInfoContact.setSex(Sex.MALE);
+        userClientInfoContact.addPhone(userClientInfoContactPhone);
+        userClientInfoContact.addEmail(userReportsToEmail);
+        userClientInfoContact = em.merge(userClientInfoContact);
         
-        ClientInformation reportsTo = new ClientInformation();
-        reportsTo.setContact(userReportToContact);
-        reportsTo.setRtPrimary(true);
-        reportsTo.setReportsToRole("Manager");
-        return em.merge(reportsTo);
+        ClientInformation clientInfo = new ClientInformation();
+        clientInfo.setContact(userClientInfoContact);
+        clientInfo.setRtPrimary(true);
+        clientInfo.setReportsToRole("Manager");
+        clientInfo.setConsultantJobTitle("QA Qngineer");
+        return em.merge(clientInfo);
     }
     
     public EmergencyContact userEmergencyContact() {

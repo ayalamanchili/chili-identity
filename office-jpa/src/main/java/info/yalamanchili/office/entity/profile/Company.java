@@ -15,6 +15,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -52,6 +53,7 @@ public class Company extends AbstractEntity {
 	 */
 	@Past
 	@Field(index = Index.UN_TOKENIZED)
+        @Temporal(javax.persistence.TemporalType.DATE)
 	protected Date establishedDate;
 
 	/**

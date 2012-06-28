@@ -16,6 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -64,6 +65,7 @@ public class Contact extends AbstractEntity {
      */
     @Past
     @Field(index = Index.UN_TOKENIZED)
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateOfBirth;
     /**
      * @generated
