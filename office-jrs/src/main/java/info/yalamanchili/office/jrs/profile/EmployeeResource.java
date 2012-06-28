@@ -16,6 +16,7 @@ import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyCo
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.jrs.profile.ReportsToResource.ReportsToTable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -98,13 +99,32 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/email/{empId}")
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);
+        
         if (email.getEmailType() != null) {
             EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
             email.setEmailType(emailType);
         }
+        email = UpdatePrimaryEmail(emp, email);
         emp.addEmail(email);
     }
-
+    
+    public Email UpdatePrimaryEmail(Employee emp,Email Newemail)
+    {
+       if(emp.getPrimaryEmail()== null)
+       {
+         Newemail.setPrimaryEmail(Boolean.TRUE);
+       }
+       else
+       {
+         if(Newemail.getPrimaryEmail())
+         {
+           Email chkEmail = emp.getPrimaryEmail();
+           chkEmail.setPrimaryEmail(Boolean.FALSE);
+         }
+       }
+      return Newemail;
+       
+     }
     /* Phone */
     @GET
     @Path("/phones/{id}/{start}/{limit}")
