@@ -34,4 +34,15 @@ public class ProfileNotificationService {
         email.setBody(user.getEmployee().toString());
         messagingService.sendEmail(email);
     }
+    @Async
+    public void sendEmployeeAddressUpdatedNotification(CUser user){
+        String[] roles={"ROLE_ADMIN","ROLE_HR"};
+        Email email = new Email();
+        email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setSubject("Employee Adress Updated");
+        email.setBody(user.getEmployee().toString());
+        messagingService.sendEmail(email);
+        
+    }
+    
 }
