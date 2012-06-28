@@ -1,7 +1,10 @@
 package info.yalamanchili.office.client.profile;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
+import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
@@ -10,13 +13,19 @@ import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
+import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.reportsto.ReadAllReportsToPopupPanel;
 import java.util.logging.Logger;
+import org.springframework.context.annotation.Profile;
 
-public class ProfileHome extends ALComposite {
+public class ProfileHome extends ALComposite implements ClickHandler {
     
     private static ProfileHome instance;
     
@@ -31,6 +40,7 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel addressesPanel;
     protected DisclosurePanel reportsTosPanel;
     protected DisclosurePanel emergencyContactsPanel;
+    protected ClickableLink updateProfile = new ClickableLink("Update Profile");
     
     public ProfileHome() {
         instance = this;
@@ -39,7 +49,7 @@ public class ProfileHome extends ALComposite {
     
     @Override
     protected void addListeners() {
-        // TODO Auto-generated method stub
+        updateProfile.addClickHandler(this);
     }
     
     @Override
@@ -50,6 +60,7 @@ public class ProfileHome extends ALComposite {
     @Override
     protected void addWidgets() {
         addEmployeePanel();
+        panel.add(updateProfile);
         addAddressesPanel();
         addPhonesPanel();
         addEmailsPanel();
@@ -192,4 +203,13 @@ public class ProfileHome extends ALComposite {
         emergencyContactsPanel.setOpen(false);
         emergencyContactsPanel.setOpen(true);
     }
+
+    @Override
+    public void onClick(ClickEvent event) {
+
+                
+     UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
+        new GenericPopup(UpdatePanel).show();
+    }
+    
 }
