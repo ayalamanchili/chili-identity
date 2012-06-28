@@ -4,11 +4,11 @@
  */
 package info.yalamanchili.office.profile;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -27,22 +27,22 @@ public class ProfileNotificationService {
 
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
-        String[] roles = {"ROLE_ADMIN"};
+        String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New System Soft Office User Created");
         email.setBody(user.getEmployee().toString());
         messagingService.sendEmail(email);
     }
+
     @Async
-    public void sendEmployeeAddressUpdatedNotification(CUser user){
-        String[] roles={"ROLE_ADMIN","ROLE_HR"};
+    public void sendEmployeeAddressUpdatedNotification(CUser user) {
+        String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Adress Updated");
         email.setBody(user.getEmployee().toString());
         messagingService.sendEmail(email);
-        
+
     }
-    
 }
