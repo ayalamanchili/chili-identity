@@ -52,7 +52,7 @@ public class SocialDao {
 	public Post createPost(Post newPost) {
 		// TODO Auto-generated method stub
             newPost.setEmployee(securityService.getCurrentUser());
-	    em.persist(newPost);         
+	         
                 return em.merge(newPost);
 	}
 
