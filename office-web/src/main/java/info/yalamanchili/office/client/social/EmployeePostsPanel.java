@@ -1,5 +1,7 @@
 package info.yalamanchili.office.client.social;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -11,6 +13,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class EmployeePostsPanel extends ALComposite {
@@ -21,6 +24,7 @@ public class EmployeePostsPanel extends ALComposite {
     public EmployeePostsPanel() {
         init(mainPanel);
         loadEmployeePosts();
+        AddNewPostLink();
     }
 
     protected void loadEmployeePosts() {
@@ -33,7 +37,21 @@ public class EmployeePostsPanel extends ALComposite {
             }
         });
     }
-
+  protected void AddNewPostLink()
+  {
+      Button btnAddPost=new Button("New Post");
+      btnAddPost.addClickHandler(new ClickHandler()
+              
+      {
+          @Override
+          public void onClick(ClickEvent e)
+          {
+              mainPanel.clear();
+              mainPanel.add(new CreatePost());
+          }
+      });
+      mainPanel.add(btnAddPost); 
+  }
     protected void showEmployeePosts(String result) {
         JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
         JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
