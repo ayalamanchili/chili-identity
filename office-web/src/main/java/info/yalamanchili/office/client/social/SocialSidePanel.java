@@ -1,0 +1,65 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.social;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.gwt.composite.ALComposite;
+import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.TabPanel;
+
+/**
+ *
+ * @author anu
+ */
+public class SocialSidePanel extends ALComposite implements ClickHandler {
+
+    FlowPanel panel = new FlowPanel();
+    ClickableLink employeeFeedL = new ClickableLink("Communitiy Feed");
+    ClickableLink companyFeedL = new ClickableLink("System Soft Feed");
+
+    public SocialSidePanel() {
+        init(panel);
+
+
+    }
+
+    @Override
+    protected void configure() {
+        panel.addStyleName("socialSidePanel");
+    }
+
+    @Override
+    protected void addWidgets() {
+        panel.add(employeeFeedL);
+        panel.add(companyFeedL);
+    }
+
+    @Override
+    protected void addListeners() {
+        employeeFeedL.addClickHandler(this);
+        companyFeedL.addClickHandler(this);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(employeeFeedL)) {
+            showEmployeeFeed();
+        }
+        if (event.getSource().equals(companyFeedL)) {
+            showCompanyFeed();
+        }
+    }
+
+    protected void showEmployeeFeed() {
+        TabPanel.instance().socialPanel.entityPanel.clear();
+        TabPanel.instance().socialPanel.entityPanel.add(new EmployeePostsHome());
+    }
+
+    protected void showCompanyFeed() {
+        //TODO
+    }
+}

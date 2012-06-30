@@ -37,7 +37,6 @@ public class Post extends AbstractEntity {
     private static final long serialVersionUID = 1L;
     @Temporal(TemporalType.TIMESTAMP)
     @Field(index = Index.UN_TOKENIZED)
-    @NotNull
     protected Date postTimeStamp;
     @NotEmpty
     protected String postContent;
@@ -111,4 +110,6 @@ public class Post extends AbstractEntity {
         getReplies().add(reply);
         reply.setParentPost(this);
     }
+    
+    //TODO add pre/post persiste or update to save the current time stamp.
 }

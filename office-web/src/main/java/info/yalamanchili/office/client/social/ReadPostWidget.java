@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 
 import info.yalamanchili.gwt.widgets.ClickableLink;
@@ -21,6 +22,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     protected String postId;
     CaptionPanel postRootPanel = new CaptionPanel();
     FlowPanel postBodyPanel = new FlowPanel();
+    HorizontalPanel replyLinksPanel = new HorizontalPanel();
     RichTextArea postBodyArea = new RichTextArea();
     ClickableLink replyLink = new ClickableLink("reply");
 
@@ -45,13 +47,16 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     @Override
     protected void configure() {
         postBodyArea.addStyleName("postRichTextBox");
+        postBodyArea.setEnabled(false);
     }
 
     @Override
     protected void addWidgets() {
         postRootPanel.setContentWidget(postBodyPanel);
+        replyLinksPanel.add(replyLink);
+
         postBodyPanel.add(postBodyArea);
-        postBodyPanel.add(replyLink);
+        postBodyPanel.add(replyLinksPanel);
     }
 
     @Override

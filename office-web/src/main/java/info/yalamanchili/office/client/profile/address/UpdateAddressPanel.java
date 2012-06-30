@@ -17,15 +17,15 @@ import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 
 public class UpdateAddressPanel extends UpdateComposite {
-
+    
     private static Logger logger = Logger.getLogger(UpdateAddressPanel.class.getName());
     SelectAddressTypeWidget AddressTypeF = new SelectAddressTypeWidget();
-
+    
     public UpdateAddressPanel(JSONObject entity) {
         initUpdateComposite(entity, "Address", OfficeWelcome.constants);
-
+        
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         // TODO Auto-generated method stub
@@ -39,25 +39,25 @@ public class UpdateAddressPanel extends UpdateComposite {
         logger.info(entity.toString());
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         // TODO Auto-generated method stub
+        logger.info(entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-
             @Override
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
             }
-
+            
             @Override
             public void onSuccess(String arg0) {
                 postUpdateSuccess(arg0);
             }
         });
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated employee Address");
@@ -65,7 +65,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         // TODO Auto-generated method stub
@@ -76,17 +76,17 @@ public class UpdateAddressPanel extends UpdateComposite {
         assignFieldValueFromEntity("country", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("zip", entity, DataType.STRING_FIELD);
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
         // TODO Auto-generated method stub
@@ -98,12 +98,12 @@ public class UpdateAddressPanel extends UpdateComposite {
         addField("zip", false, true, DataType.STRING_FIELD);
         entityDisplayWidget.add(AddressTypeF);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         // TODO Auto-generated method stub
