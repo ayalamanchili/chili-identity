@@ -9,18 +9,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
-import info.yalamanchili.office.client.OfficeWelcome;
-
-/**
- *
- * @author ramana
- */
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 public class CreatePostWidget extends ALComposite implements ClickHandler {
