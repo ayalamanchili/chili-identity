@@ -36,7 +36,23 @@ public class EmployeePostsPanel extends ALComposite {
             }
         });
     }
-
+ 
+  protected void AddNewPostLink()
+  {
+      Button btnAddPost=new Button("New Post");
+      btnAddPost.addClickHandler(new ClickHandler()
+              
+      {
+          @Override
+          public void onClick(ClickEvent e)
+          {
+              //mainPanel.clear();
+              mainPanel.add(new CreatePost());
+          }
+      });
+      mainPanel.add(btnAddPost); 
+  }
+ 
     protected void showEmployeePosts(String result) {
         JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
         JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
