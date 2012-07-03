@@ -29,7 +29,6 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     public ReadPostWidget(JSONObject post) {
         init(postRootPanel);
         this.post = post;
-        logger.info("read post:" + post);
         displayPost();
 
     }
