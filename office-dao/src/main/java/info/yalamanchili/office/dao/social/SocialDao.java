@@ -20,14 +20,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SocialDao {
-    
+
     @Autowired
     protected SecurityService securityService;
-
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     protected EntityManager em;
-    
-    
 
     public List<Post> getEmployeeFeed(int start, int limit) {
         Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p where p.parentPost is null and p.employee is not null order by p.postTimeStamp",
@@ -44,21 +41,14 @@ public class SocialDao {
 
     public Post addReply(Long parentPostId, Post post) {
         Post parentPost = em.find(Post.class, parentPostId);
+        post.setEmployee(securityService.getCurrentUser());
         parentPost.addReply(post);
         return parentPost;
     }
 
-
-	public Post createPost(Post newPost) {
-		// TODO Auto-generated method stub
-            newPost.setEmployee(securityService.getCurrentUser());
-	         
-                return em.merge(newPost);
-	}
-
-    
-
-       
-
-       
+    public Post createPost(Post newPost) {
+        // TODO Auto-generated method stub
+        newPost.setEmployee(securityService.getCurrentUser());
+        return em.merge(newPost);
+    }
 }

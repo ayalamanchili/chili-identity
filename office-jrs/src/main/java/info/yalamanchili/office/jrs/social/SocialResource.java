@@ -52,4 +52,10 @@ public class SocialResource {
     public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply) {
         return socialDao.addReply(parentPostId, reply);
     }
+
+    @GET
+    @Path("/replies/{parentPostId}")
+    public List<info.yalamanchili.office.dto.social.Post> getReplies(@PathParam("parentPostId") String parentPostId) {
+        return socialService.getRepies(parentPostId);
+    }
 }
