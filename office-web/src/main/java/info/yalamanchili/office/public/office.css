@@ -79,7 +79,6 @@
 
 .postRichTextBox{
     width: 100%;
-    height: 5%;
 }
 .createPostTextArea{
     width: 100%;
@@ -89,5 +88,8 @@
     background-color: #E5ECFF;
 }
 .socialSidePanel{
-    
+
+}
+.readRepliesPanel{
+    width: 100%;
 }

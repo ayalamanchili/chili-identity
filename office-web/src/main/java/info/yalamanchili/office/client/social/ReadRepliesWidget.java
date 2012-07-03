@@ -20,19 +20,19 @@ import info.yalamanchili.office.client.rpc.HttpService;
  * @author ayalamanchili
  */
 public class ReadRepliesWidget extends ALComposite {
-
+    
     DisclosurePanel repliesDisclosurePanel = new DisclosurePanel("view replies");
     FlowPanel panel = new FlowPanel();
     String parentPostId;
     Long numberOfRepiles;
-
+    
     public ReadRepliesWidget(String parentPostId, Long numberOfReplies) {
         this.parentPostId = parentPostId;
         this.numberOfRepiles = numberOfReplies;
         init(repliesDisclosurePanel);
         getReplies();
     }
-
+    
     protected void getReplies() {
         HttpService.HttpServiceAsync.instance().doGet(getURL(parentPostId), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -41,7 +41,7 @@ public class ReadRepliesWidget extends ALComposite {
             }
         });
     }
-
+    
     protected void displayReplies(String result) {
         if (JSONParser.parseLenient(result).isNull() == null) {
             JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
@@ -51,20 +51,22 @@ public class ReadRepliesWidget extends ALComposite {
             }
         }
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
+        repliesDisclosurePanel.addStyleName("readRepliesPanel");
+        panel.addStyleName("readRepliesPanel");
     }
-
+    
     @Override
     protected void addWidgets() {
         repliesDisclosurePanel.setContent(panel);
     }
-
+    
     protected String getURL(String parentPostId) {
         return OfficeWelcome.instance().constants.root_url() + "social/replies/" + parentPostId;
     }

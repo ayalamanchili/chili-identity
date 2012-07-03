@@ -29,6 +29,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     public ReadPostWidget(JSONObject post) {
         init(postRootPanel);
         this.post = post;
+        logger.info("read post:" + post);
         displayPost();
 
     }
@@ -51,6 +52,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     @Override
     protected void configure() {
         postBodyArea.addStyleName("postRichTextBox");
+        postBodyArea.setHeight("2em");
         postBodyArea.setEnabled(false);
     }
 
