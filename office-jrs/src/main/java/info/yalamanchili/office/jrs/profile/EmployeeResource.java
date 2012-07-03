@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
+import info.yalamanchili.office.jrs.profile.SkillSetResource.SkillSetTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
@@ -83,6 +84,28 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         emp.addAddress(address);
     }
+    
+    /* SkillSet */
+    
+      @GET
+    @Path("/skillset/{id}")
+    public SkillSet getSkillSet(@PathParam("id") long id)
+            {
+       
+        Employee emp = (Employee) getDao().findById(id);
+        return emp.getSkillSet(); 
+        
+    }
+      
+     @PUT
+    @Path("/addskillset/{empId}")
+    public void addSkillSet(@PathParam("empId") Long empId, SkillSet skillset) {
+        Employee emp = (Employee) getDao().findById(empId);
+        emp.setSkillSet(skillset);
+        
+    }
+    
+    
 
     /* Email */
     @GET
