@@ -19,18 +19,17 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
     protected JSONObject post;
     protected String postId;
+    protected boolean showReplyOption;
     CaptionPanel postRootPanel = new CaptionPanel();
     FlowPanel postBodyPanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
     ClickableLink replyLink = new ClickableLink("reply");
-    //Replies
-    ReadRepliesWidget readRepliesWidget;
 
-    public ReadPostWidget(JSONObject post) {
-        init(postRootPanel);
+    public ReadPostWidget(JSONObject post, boolean showReplyOption) {
         this.post = post;
+        this.showReplyOption = showReplyOption;
+        init(postRootPanel);
         displayPost();
-
     }
 
     protected void displayPost() {
@@ -58,20 +57,18 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         postRootPanel.setContentWidget(postBodyPanel);
-
         postBodyPanel.add(postBodyArea);
-        postBodyPanel.add(replyLink);
+        if (showReplyOption) {
+            postBodyPanel.add(replyLink);
+        }
     }
 
     @Override
     public void onClick(ClickEvent arg0) {
-        if (arg0.getSource().equals(replyLink)) {
+        if (arg0.getSource().equals(replyLink) && replyLink.isVisible()) {
+            replyLink.setVisible(false);
             ReplyPostWidget replywidget = new ReplyPostWidget(String.valueOf(postId));
             postBodyPanel.add(replywidget);
         }
-    }
-
-    public void showReplies(String postId) {
-        //TODO
     }
 }

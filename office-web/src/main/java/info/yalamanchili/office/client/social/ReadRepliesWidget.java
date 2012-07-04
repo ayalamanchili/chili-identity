@@ -49,7 +49,7 @@ public class ReadRepliesWidget extends ALComposite implements OpenHandler {
             JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
             JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
             for (int i = 0; i < posts.size(); i++) {
-                panel.add(new ReadPostWidget((JSONObject) posts.get(i)));
+                panel.add(new ReadPostWidget((JSONObject) posts.get(i), false));
             }
         }
     }
@@ -62,7 +62,6 @@ public class ReadRepliesWidget extends ALComposite implements OpenHandler {
     @Override
     protected void configure() {
         repliesDisclosurePanel.addStyleName("readRepliesPanel");
-        panel.addStyleName("readRepliesPanel");
     }
 
     @Override

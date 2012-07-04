@@ -22,35 +22,36 @@ import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 public class ReplyPostWidget extends ALComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(ReplyPostWidget.class.getName());
     FlowPanel mainPanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
-    Button replyB = new Button("Post");
+    Button replyB = new Button("share reply");
     protected String parentPostId;
-    
+
     protected ReplyPostWidget(String parentPostId) {
         init(mainPanel);
         this.parentPostId = parentPostId;
     }
-    
+
     @Override
     protected void addListeners() {
-        
+
         replyB.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
+        postBodyArea.addStyleName("replyPostWidget");
+        postBodyArea.setHeight("3em");
     }
-    
+
     @Override
     protected void addWidgets() {
         mainPanel.add(postBodyArea);
         mainPanel.add(replyB);
     }
-    
+
     @Override
     public void onClick(ClickEvent arg0) {
         JSONObject replyEntity = new JSONObject();
@@ -65,13 +66,13 @@ public class ReplyPostWidget extends ALComposite implements ClickHandler {
                         TabPanel.instance().socialPanel.entityPanel.add(new SocialHome());
                     }
                 });
-        
+
     }
-    
+
     public String getPostReplyURL(String parentPostId) {
         //update this to be correct url path
         return OfficeWelcome.constants.root_url() + "social/addreply/"
                 + parentPostId;
-        
+
     }
 }

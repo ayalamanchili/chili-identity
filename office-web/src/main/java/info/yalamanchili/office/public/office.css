@@ -91,5 +91,9 @@
 
 }
 .readRepliesPanel{
+    border: 1px solid #999;
     width: 100%;
+}
+.replyPostWidget{
+    width:100%;
 }

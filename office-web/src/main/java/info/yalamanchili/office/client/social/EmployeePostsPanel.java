@@ -41,7 +41,7 @@ public class EmployeePostsPanel extends ALComposite {
         JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
         JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
         for (int i = 0; i < posts.size(); i++) {
-            mainPanel.add(new ReadPostWidget((JSONObject) posts.get(i)));
+            mainPanel.add(new ReadPostWidget((JSONObject) posts.get(i),true));
         }
     }
 
