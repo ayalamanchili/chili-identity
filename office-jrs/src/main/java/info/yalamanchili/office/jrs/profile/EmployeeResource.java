@@ -85,7 +85,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     /* SkillSet */
     @GET
-    @Path("/skillset/{id}")
+    @Path("/skillset/{empId}")
     public SkillSet getSkillSet(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
         return emp.getSkillSet();
