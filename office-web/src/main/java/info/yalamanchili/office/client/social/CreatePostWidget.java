@@ -59,6 +59,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
+                        createPostTextArea.setText("");
                         postCreateSuccess(arg0);
                     }
                 });
