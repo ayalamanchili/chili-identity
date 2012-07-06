@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
+import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 
 public class ProfileMenu extends Composite {
 
@@ -26,7 +27,7 @@ public class ProfileMenu extends Composite {
 
         menu.addItem("Employees", employeeMaintainenceCmd);
         if (Auth.isAdmin() || Auth.isHR()) {
-            menu.addItem("skills", skillsMaintainenceCmd);
+            menu.addItem("Skills", skillsMaintainenceCmd);
         }
     }
     Command employeeMaintainenceCmd = new Command() {
@@ -42,7 +43,7 @@ public class ProfileMenu extends Composite {
             //TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
             //TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllSkillsPanel());
-            //where is the error?where here?we didnt mention any?
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new SkillSidePanel());
         }
     };
 }

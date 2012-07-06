@@ -1,0 +1,63 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.profile.skill;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.gwt.composite.ALComposite;
+import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
+import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
+import info.yalamanchili.office.client.profile.employee.SearchEmployeePanel;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author prani
+ */
+public class SkillSidePanel extends ALComposite implements ClickHandler {
+
+    private static Logger logger = Logger.getLogger(SkillSidePanel.class.getName());
+    public FlowPanel skillSidePanel = new FlowPanel();
+    ClickableLink createSkillLink = new ClickableLink("Create Skill");
+
+    public SkillSidePanel() {
+        init(skillSidePanel);
+    }
+   @Override
+    protected void addListeners() {
+        createSkillLink.addClickHandler(this);
+   }
+
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void addWidgets() 
+    {
+        if (Auth.isAdmin() || Auth.isHR())
+        {
+            skillSidePanel.add(createSkillLink);
+        }
+        //skillSidePanel.add(new SearchskillPanel());
+    }
+
+    @Override
+    public void onClick(ClickEvent clickEvent) 
+    {
+        if (clickEvent.getSource().equals(createSkillLink))
+        {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillPanel(CreateComposite.CreateCompositeType.CREATE));
+        }
+   }
+}
+
