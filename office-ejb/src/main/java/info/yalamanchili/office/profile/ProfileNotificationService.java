@@ -4,8 +4,10 @@
  */
 package info.yalamanchili.office.profile;
 
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Arrays;
@@ -24,6 +26,9 @@ public class ProfileNotificationService {
     protected SecurityService securityService;
     @Autowired
     protected MessagingService messagingService;
+    
+    @Autowired
+         public EmployeeDao employeeDao;
 
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
@@ -36,12 +41,13 @@ public class ProfileNotificationService {
     }
 
     @Async
-    public void sendEmployeeAddressUpdatedNotification(CUser user) {
+    public void sendEmployeeAddressUpdatedNotification(Employee emp) {
         String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
-        email.setSubject("Employee Adress Updated");
-        email.setBody(user.getEmployee().toString());
+        email.setSubject("Employee Address Updated"); 
+        String messageText = "Employee Address for the employee " + emp.getFirstName()+","+emp.getLastName() +" is Updated";
+        email.setBody(messageText);
         messagingService.sendEmail(email);
 
     }
