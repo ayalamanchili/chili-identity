@@ -179,6 +179,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public void addClientInformation(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
         Employee emp = (Employee) getDao().findById(empId);
 
+        Email email = new Email();
+        email.setEmail(clientInformation.getEmail());
+        email.setPrimaryEmail(Boolean.TRUE);
+
         Phone phone = new Phone();
         phone.setPhoneNumber(clientInformation.getPhoneNumber());
 
@@ -187,6 +191,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         contact.setLastName(clientInformation.getLastName());
         contact.setMiddleInitial(clientInformation.getMiddleInitial());
         contact.addPhone(phone);
+        contact.addEmail(email);
 
         ClientInformation entity = new ClientInformation();
         entity.setReportsToRole(clientInformation.getReportsToRole());
@@ -212,13 +217,35 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmergencyContacts().size());
         return tableObj;
     }
+//TODO move this to service in ejb layer
 
     @PUT
     @Path("/emergencycontact/{empId}")
-    public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContact entity) {
+    public void addEmergencyContact(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
         Employee emp = (Employee) getDao().findById(empId);
-        entity.setContact((Contact) getDao().save(entity.getContact()));
-        emp.addEmergencyContact(entity);
+        //TODO user mapper
+        //Email
+        Email email = new Email();
+        email.setEmail(ec.getEmail());
+        email.setPrimaryEmail(Boolean.TRUE);
+        //phone
+        Phone phone = new Phone();
+        phone.setPhoneNumber(ec.getPhoneNumber());
+        //contact
+        Contact contact = new Contact();
+        contact.setFirstName(ec.getFirstName());
+        contact.setLastName(ec.getLastName());
+        contact.setSex(ec.getSex());
+        contact.addEmail(email);
+        contact.addPhone(phone);
+        contact = em.merge(contact);
+        //emergencycontact
+        EmergencyContact emergencyCnt = new EmergencyContact();
+        emergencyCnt.setEcPrimary(ec.isEcPrimary());
+        emergencyCnt.setRelation(ec.getRelation());
+        emergencyCnt.setContact(contact);
+        emergencyCnt.setEmployee(emp);
+        em.merge(emergencyCnt);
     }
 
     @Override

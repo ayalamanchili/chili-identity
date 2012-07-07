@@ -24,18 +24,17 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject contact = new JSONObject();
-        assignEntityValueFromField("firstName", contact);
-        assignEntityValueFromField("middleInitial", contact);
-        assignEntityValueFromField("lastName", contact);
-        assignEntityValueFromField("sex", contact);
-
-        JSONObject emergencyContact = new JSONObject();
-        assignEntityValueFromField("relation", emergencyContact);
-        assignEntityValueFromField("ecPrimary", emergencyContact);
-        emergencyContact.put("contact", contact);
-        logger.info(emergencyContact.toString());
-        return emergencyContact;
+        JSONObject emergencyCnt = new JSONObject();
+        assignEntityValueFromField("firstName", emergencyCnt);
+        assignEntityValueFromField("middleInitial", emergencyCnt);
+        assignEntityValueFromField("lastName", emergencyCnt);
+        assignEntityValueFromField("sex", emergencyCnt);
+        assignEntityValueFromField("relation", emergencyCnt);
+        assignEntityValueFromField("ecPrimary", emergencyCnt);
+        assignEntityValueFromField("email", emergencyCnt);
+        assignEntityValueFromField("phoneNumber", emergencyCnt);
+        logger.info(emergencyCnt.toString());
+        return emergencyCnt;
     }
 
     @Override
@@ -47,7 +46,6 @@ public class CreateEmergencyContactPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-
                     @Override
                     public void onFailure(Throwable arg0) {
                         logger.info(arg0.getMessage());
@@ -90,6 +88,8 @@ public class CreateEmergencyContactPanel extends CreateComposite {
         addEnumField("sex", false, true, strs);
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addField("email", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
     }
 
     @Override

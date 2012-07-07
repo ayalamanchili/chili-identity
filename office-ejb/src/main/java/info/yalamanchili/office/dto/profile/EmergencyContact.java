@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.profile.Sex;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -21,6 +22,7 @@ public class EmergencyContact {
     protected String firstName;
     protected String middleInitial;
     protected String lastName;
+    protected Sex sex;
     protected String email;
     protected String phoneNumber;
 
@@ -67,6 +69,14 @@ public class EmergencyContact {
         this.lastName = lastName;
     }
 
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -87,8 +97,8 @@ public class EmergencyContact {
     public String toString() {
         return "EmergencyContact{" + "relation=" + relation + ", ecPrimary=" + ecPrimary + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
-    
-      //TODO move this to seperate class?
+
+    //TODO move this to seperate class?
     public static EmergencyContact map(Mapper mapper, info.yalamanchili.office.entity.profile.EmergencyContact entity) {
         EmergencyContact emergencyContact = mapper.map(entity, EmergencyContact.class);
         mapper.map(entity.getContact(), emergencyContact);

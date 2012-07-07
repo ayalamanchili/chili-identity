@@ -4,6 +4,7 @@ package info.yalamanchili.office.dto.profile;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import info.yalamanchili.office.entity.profile.Sex;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -19,6 +20,7 @@ public class ClientInformation {
     protected String firstName;
     protected String lastName;
     protected String middleInitial;
+    protected Sex sex;
     protected String reportsToRole;
     protected String consultantJobTitle;
     protected boolean rtPrimary;
@@ -50,6 +52,14 @@ public class ClientInformation {
 
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
     }
 
     public String getReportsToRole() {
