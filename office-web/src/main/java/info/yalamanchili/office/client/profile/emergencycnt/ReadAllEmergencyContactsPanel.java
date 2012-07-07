@@ -33,7 +33,6 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(0, 10), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String result) {
                         postFetchTable(result);
@@ -49,6 +48,8 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
         table.setText(0, 2, getKeyValue("First Name"));
         table.setText(0, 3, getKeyValue("Last Name"));
         table.setText(0, 4, getKeyValue("Relation"));
+        table.setText(0, 5, getKeyValue("Email"));
+        table.setText(0, 6, getKeyValue("Phone Number"));
     }
 
     @Override
@@ -57,9 +58,11 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "ecPrimary"));
-            table.setText(i, 2, JSONUtils.toString(entity.get("contact"), "firstName"));
-            table.setText(i, 3, JSONUtils.toString(entity.get("contact"), "lastName"));
+            table.setText(i, 2, JSONUtils.toString(entity, "firstName"));
+            table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 4, JSONUtils.toString(entity, "relation"));
+            table.setText(i, 5, JSONUtils.toString(entity, "email"));
+            table.setText(i, 6, JSONUtils.toString(entity, "phoneNumber"));
         }
     }
 
@@ -87,10 +90,9 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
     public void deleteClicked(String entityId) {
         // TODO
     }
-    
+
     @Override
     public void postDeleteSuccess() {
-        
     }
 
     @Override

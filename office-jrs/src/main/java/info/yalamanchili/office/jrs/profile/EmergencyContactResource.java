@@ -2,7 +2,7 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmergencyContactDao;
-import info.yalamanchili.office.entity.profile.EmergencyContact;
+import info.yalamanchili.office.dto.profile.EmergencyContact;
 import info.yalamanchili.office.jrs.CRUDResource;
 
 import java.util.List;

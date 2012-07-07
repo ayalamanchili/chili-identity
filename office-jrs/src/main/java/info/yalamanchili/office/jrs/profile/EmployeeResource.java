@@ -167,20 +167,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         Employee emp = (Employee) getDao().findById(id);
         List<info.yalamanchili.office.dto.profile.ClientInformation> clientInfoDtos = new ArrayList<info.yalamanchili.office.dto.profile.ClientInformation>();
         for (ClientInformation entity : emp.getClientInformations()) {
-            clientInfoDtos.add(mapClientInformation(entity));
+            clientInfoDtos.add(info.yalamanchili.office.dto.profile.ClientInformation.map(mapper, entity));
         }
         tableObj.setEntities(clientInfoDtos);
         tableObj.setSize((long) emp.getClientInformations().size());
         return tableObj;
-    }
-
-    public info.yalamanchili.office.dto.profile.ClientInformation mapClientInformation(ClientInformation entity) {
-        info.yalamanchili.office.dto.profile.ClientInformation clientInformation = mapper.map(entity, info.yalamanchili.office.dto.profile.ClientInformation.class);
-        mapper.map(entity.getContact(), clientInformation);
-        if (entity.getContact().getPhones().size() > 0) {
-            mapper.map(entity.getContact().getPhones().get(0), clientInformation);
-        }
-        return clientInformation;
     }
 
     @PUT
@@ -213,7 +204,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
             @PathParam("limit") int limit) {
         EmergencyContactTable tableObj = new EmergencyContactTable();
         Employee emp = (Employee) getDao().findById(id);
-        tableObj.setEntities(emp.getEmergencyContacts());
+        List<info.yalamanchili.office.dto.profile.EmergencyContact> emergencyContacts = new ArrayList<info.yalamanchili.office.dto.profile.EmergencyContact>();
+        for (EmergencyContact ec : emp.getEmergencyContacts()) {
+            emergencyContacts.add(info.yalamanchili.office.dto.profile.EmergencyContact.map(mapper, ec));
+        }
+        tableObj.setEntities(emergencyContacts);
         tableObj.setSize((long) emp.getEmergencyContacts().size());
         return tableObj;
     }
