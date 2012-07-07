@@ -7,7 +7,6 @@ package info.yalamanchili.office.jrs.profile;
 import info.yalamanchili.office.config.ApplicationContextProvider;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -15,6 +14,8 @@ import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
+import info.yalamanchili.office.profile.ClientInformationService;
+import info.yalamanchili.office.profile.EmergencyContactService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -41,14 +42,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class EmployeeResource extends CRUDResource<Employee> {
-
+    
     @Autowired
     public EmployeeDao employeeDao;
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     @GET
     @Path("/{start}/{limit}")
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -70,7 +71,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getAddresss().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/address/{empId}")
     public void addAddress(@PathParam("empId") Long empId, Address address) {
@@ -89,9 +90,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public SkillSet getSkillSet(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
         return emp.getSkillSet();
-
+        
     }
-
+    
     @PUT
     @Path("/skillset/{empId}")
     public void addSkillSet(@PathParam("empId") Long empId, SkillSet skillset) {
@@ -109,12 +110,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmails().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/email/{empId}")
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);
-
+        
         if (email.getEmailType() != null) {
             EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
             email.setEmailType(emailType);
@@ -122,7 +123,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         email = UpdatePrimaryEmail(emp, email);
         emp.addEmail(email);
     }
-
+    
     public Email UpdatePrimaryEmail(Employee emp, Email Newemail) {
         if (emp.getPrimaryEmail() == null) {
             Newemail.setPrimaryEmail(Boolean.TRUE);
@@ -133,10 +134,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
             }
         }
         return Newemail;
-
+        
     }
     /* Phone */
-
+    
     @GET
     @Path("/phones/{id}/{start}/{limit}")
     public PhoneTable getPhones(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -146,7 +147,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getPhones().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/phone/{empId}")
     public void addPhone(@PathParam("empId") Long empId, Phone phone) {
@@ -173,33 +174,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getClientInformations().size());
         return tableObj;
     }
-
+    
     @PUT
     @Path("/clientinformation/{empId}")
     public void addClientInformation(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
-        Employee emp = (Employee) getDao().findById(empId);
-
-        Email email = new Email();
-        email.setEmail(clientInformation.getEmail());
-        email.setPrimaryEmail(Boolean.TRUE);
-
-        Phone phone = new Phone();
-        phone.setPhoneNumber(clientInformation.getPhoneNumber());
-
-        Contact contact = new Contact();
-        contact.setFirstName(clientInformation.getFirstName());
-        contact.setLastName(clientInformation.getLastName());
-        contact.setMiddleInitial(clientInformation.getMiddleInitial());
-        contact.addPhone(phone);
-        contact.addEmail(email);
-
-        ClientInformation entity = new ClientInformation();
-        entity.setReportsToRole(clientInformation.getReportsToRole());
-        entity.setRtPrimary(clientInformation.isRtPrimary());
-        entity.setContact(contact);
-        ClientInformationDao clientInformationDao = ApplicationContextProvider.getApplicationContext().getBean("clientInformationDao", ClientInformationDao.class);
-        entity = clientInformationDao.save(entity);
-        emp.addClientInformation(entity);
+        ClientInformationService clientInformationService = ApplicationContextProvider.getApplicationContext().getBean("clientInformationService", ClientInformationService.class);
+        clientInformationService.addClientInformation(empId, clientInformation);
     }
 
     /* Emergency Contact */
@@ -217,62 +197,39 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmergencyContacts().size());
         return tableObj;
     }
-//TODO move this to service in ejb layer
-
+    
     @PUT
     @Path("/emergencycontact/{empId}")
     public void addEmergencyContact(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
-        Employee emp = (Employee) getDao().findById(empId);
-        //TODO user mapper
-        //Email
-        Email email = new Email();
-        email.setEmail(ec.getEmail());
-        email.setPrimaryEmail(Boolean.TRUE);
-        //phone
-        Phone phone = new Phone();
-        phone.setPhoneNumber(ec.getPhoneNumber());
-        //contact
-        Contact contact = new Contact();
-        contact.setFirstName(ec.getFirstName());
-        contact.setLastName(ec.getLastName());
-        contact.setSex(ec.getSex());
-        contact.addEmail(email);
-        contact.addPhone(phone);
-        contact = em.merge(contact);
-        //emergencycontact
-        EmergencyContact emergencyCnt = new EmergencyContact();
-        emergencyCnt.setEcPrimary(ec.isEcPrimary());
-        emergencyCnt.setRelation(ec.getRelation());
-        emergencyCnt.setContact(contact);
-        emergencyCnt.setEmployee(emp);
-        em.merge(emergencyCnt);
+        EmergencyContactService emergencyContactService = ApplicationContextProvider.getApplicationContext().getBean("emergencyContactService", EmergencyContactService.class);
+        emergencyContactService.addEmergencyContact(empId, ec);
     }
-
+    
     @Override
     public CRUDDao getDao() {
         return employeeDao;
     }
-
+    
     @XmlRootElement
     @XmlType
     public static class EmployeeTable {
-
+        
         protected Long size;
         protected List<Employee> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<Employee> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<Employee> entities) {
             this.entities = entities;
         }

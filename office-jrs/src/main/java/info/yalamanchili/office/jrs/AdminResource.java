@@ -7,7 +7,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
-import info.yalamanchili.office.profile.ProfileNotificationService;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

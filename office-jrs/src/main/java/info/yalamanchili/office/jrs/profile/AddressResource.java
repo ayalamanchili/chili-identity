@@ -8,7 +8,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.profile.ProfileNotificationService;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 
 import java.util.List;
 import javax.ws.rs.PUT;

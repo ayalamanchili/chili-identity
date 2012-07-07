@@ -32,8 +32,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("middleInitial", clientInfo);
         assignEntityValueFromField("lastName", clientInfo);
         assignEntityValueFromField("phoneNumber", clientInfo);
-
-        logger.info(clientInfo.toString());
+        assignEntityValueFromField("email", clientInfo);
         return clientInfo;
     }
 
@@ -90,6 +89,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         addEnumField("sex", false, true, strs);
         addField("rtPrimary", false, true, DataType.BOOLEAN_FIELD);
         addField("phoneNumber", false, true, DataType.STRING_FIELD);
+        addField("email", false, true, DataType.STRING_FIELD);
     }
 
     @Override
