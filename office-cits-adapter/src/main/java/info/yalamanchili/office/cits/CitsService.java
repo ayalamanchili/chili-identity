@@ -24,8 +24,7 @@ public class CitsService {
 
     @Async
     public void pushNewEmployeeInformation(Employee employee) {
-        Employee emp = em.find(Employee.class, employee.getId());
-        System.out.println(emp.toString());
+        //TODO implement logic to push emp data to cits database
     }
 
     @Async
