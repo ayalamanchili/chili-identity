@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.gwt.i18n.client.ConstantsWithLookup;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -173,7 +174,7 @@ public abstract class CRUDComposite extends Composite {
         }
         if (fields.get(fieldKey) instanceof PasswordField) {
             PasswordField field = (PasswordField) fields.get(fieldKey);
-            if (field.getPassword()!= null) {
+            if (field.getPassword() != null) {
                 entity.put(fieldKey, new JSONString(field.getPassword()));
             }
         }
@@ -213,7 +214,8 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.DATE_FIELD.equals(type)) {
             DateField field = (DateField) fields.get(fieldKey);
-            field.setValue(JSONUtils.toString(entity, fieldKey));
+            String formatedDate = DateUtils.getFormatedDate(JSONUtils.toString(entity, fieldKey), DateTimeFormat.PredefinedFormat.DATE_MEDIUM);
+            field.setValue(formatedDate);
         }
         if (DataType.LONG_FIELD.equals(type)) {
             LongField field = (LongField) fields.get(fieldKey);

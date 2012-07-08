@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.gwt.date.DateUtils;
 
 /**
  *
@@ -43,7 +45,6 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
         // TODO externalize the limit size for read all
         HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(0, 10), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String result) {
                         postFetchTable(result);
@@ -77,8 +78,8 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
             table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
-            if (Auth.isAdmin() || Auth.isHR()){
-                table.setText(i, 4, JSONUtils.toString(entity, "dateOfBirth"));
+            if (Auth.isAdmin() || Auth.isHR()) {
+                table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             }
             table.setText(i, 5, JSONUtils.toString(entity, "sex"));
             table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), 50, 50, false));
