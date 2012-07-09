@@ -13,6 +13,7 @@ import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPanel;
+import  info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 
 import com.google.gwt.json.client.JSONObject;
 
@@ -23,7 +24,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
 	protected static final String PHONE_NODE = "phone";
 	protected static final String REPORTS_TO_NODE = "clientInfo";
 	protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
-
+        protected static final String SkillSet_NODE = "skillset";
+        
 	public TreeEmployeePanel(String entityId) {
 		super(entityId);
 		init("Employee", OfficeWelcome.constants);
@@ -48,6 +50,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 		addFirstChildLink("Phones", PHONE_NODE);
 		addFirstChildLink("Client Information", REPORTS_TO_NODE);
 		addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
+                addFirstChildLink("SkillSet",SkillSet_NODE);
 	}
 
 	@Override
@@ -77,6 +80,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
 			TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(entityId));
 			TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
 		}
+                if(SkillSet_NODE.equals(entityNodeKey))
+                {
+                   TabPanel.instance().myOfficePanel.entityPanel.clear();
+                   TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
+                }
 	}
 
 	@Override
