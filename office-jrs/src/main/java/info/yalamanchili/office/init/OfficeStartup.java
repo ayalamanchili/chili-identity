@@ -140,6 +140,7 @@ public class OfficeStartup {
         
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());
+        userSkillSet.setResumeUrl("ResumeURL");
         userSkillSet.getCertifications().add(getDOTNETCertification());
         userSkillSet.getSkills().add(getJavaSkill());
         userSkillSet.getSkills().add(getDOTNETSkill());
