@@ -26,9 +26,8 @@ public class ProfileNotificationService {
     protected SecurityService securityService;
     @Autowired
     protected MessagingService messagingService;
-    
     @Autowired
-         public EmployeeDao employeeDao;
+    public EmployeeDao employeeDao;
 
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
@@ -45,8 +44,8 @@ public class ProfileNotificationService {
         String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
-        email.setSubject("Employee Address Updated"); 
-        String messageText = "Employee Address for the employee " + emp.getFirstName()+","+emp.getLastName() +" is Updated";
+        email.setSubject("Employee Address Updated");
+        String messageText = "Employee Address for the employee " + emp.getFirstName() + "," + emp.getLastName() + " is Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
