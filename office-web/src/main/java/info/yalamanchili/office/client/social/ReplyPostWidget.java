@@ -4,24 +4,26 @@ import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 
 import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
-public class ReplyPostWidget extends ALComposite implements ClickHandler {
+/**
+ *
+ * @author anu
+ */
+public class ReplyPostWidget extends ALComposite implements ClickHandler, KeyUpHandler {
 
     private static Logger logger = Logger.getLogger(ReplyPostWidget.class.getName());
     FlowPanel mainPanel = new FlowPanel();
@@ -36,14 +38,15 @@ public class ReplyPostWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-
         replyB.addClickHandler(this);
+        postBodyArea.addKeyUpHandler(this);
     }
 
     @Override
     protected void configure() {
         postBodyArea.addStyleName("replyPostWidget");
         postBodyArea.setHeight("3em");
+        replyB.setEnabled(false);
     }
 
     @Override
@@ -70,9 +73,19 @@ public class ReplyPostWidget extends ALComposite implements ClickHandler {
     }
 
     public String getPostReplyURL(String parentPostId) {
-        //update this to be correct url path
         return OfficeWelcome.constants.root_url() + "social/addreply/"
                 + parentPostId;
 
+    }
+
+    @Override
+    public void onKeyUp(KeyUpEvent event) {
+        if (postBodyArea.getText().length() >= 2) {
+            logger.info("enabling....");
+            replyB.setEnabled(true);
+        } else {
+            logger.info("disabling...");
+            replyB.setEnabled(false);
+        }
     }
 }
