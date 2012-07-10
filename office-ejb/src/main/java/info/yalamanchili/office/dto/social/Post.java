@@ -16,59 +16,74 @@ import org.dozer.Mapper;
 @XmlRootElement
 @XmlType
 public class Post {
-
+    
     protected Long id;
     protected String employeeName;
+    protected String employeeImageUrl;
     protected String postContent;
     protected Date postTimeStamp;
     protected Integer numberOfReplies;
-
+    
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getEmployeeName() {
         return employeeName;
     }
-
+    
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
-
+    
+    public String getEmployeeImageUrl() {
+        return employeeImageUrl;
+    }
+    
+    public void setEmployeeImageUrl(String employeeImageUrl) {
+        this.employeeImageUrl = employeeImageUrl;
+    }
+    
     public String getPostContent() {
         return postContent;
     }
-
+    
     public void setPostContent(String postContent) {
         this.postContent = postContent;
     }
-
+    
     public Date getPostTimeStamp() {
         return postTimeStamp;
     }
-
+    
     public void setPostTimeStamp(Date postTimeStamp) {
         this.postTimeStamp = postTimeStamp;
     }
-
+    
     public Integer getNumberOfReplies() {
         return numberOfReplies;
     }
-
+    
     public void setNumberOfReplies(Integer numberOfReplies) {
         this.numberOfReplies = numberOfReplies;
     }
-
+    
+    @Override
+    public String toString() {
+        return "Post{" + "id=" + id + ", employeeName=" + employeeName + ", employeeImageUrl=" + employeeImageUrl + ", postContent=" + postContent + ", postTimeStamp=" + postTimeStamp + ", numberOfReplies=" + numberOfReplies + '}';
+    }
+    
     public static Post map(Mapper mapper, info.yalamanchili.office.entity.social.Post entity) {
         Post dto = mapper.map(entity, Post.class);
         //TODO user query to find size rather than whole entity
         dto.setNumberOfReplies(entity.getReplies().size());
         if (entity.getEmployee() != null) {
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+            dto.setEmployeeImageUrl(entity.getEmployee().getImageURL());
         }
         return dto;
     }

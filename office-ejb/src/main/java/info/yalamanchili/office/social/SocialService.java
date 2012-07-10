@@ -27,6 +27,9 @@ public class SocialService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    /*
+     * Employee Feed
+     */
 
     public List<Post> getEmployeeFeed(int start, int limit) {
         List<Post> empFeed = new ArrayList<Post>();

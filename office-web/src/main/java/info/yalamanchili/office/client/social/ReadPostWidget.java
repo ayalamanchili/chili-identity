@@ -40,6 +40,9 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         if (numberOfReplies > 0) {
             postBodyPanel.add(new ReadRepliesWidget(postId, numberOfReplies));
         }
+        if (showReplyOption) {
+            postBodyPanel.add(replyLink);
+        }
     }
 
     @Override
@@ -58,9 +61,6 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     protected void addWidgets() {
         postRootPanel.setContentWidget(postBodyPanel);
         postBodyPanel.add(postBodyArea);
-        if (showReplyOption) {
-            postBodyPanel.add(replyLink);
-        }
     }
 
     @Override
