@@ -8,9 +8,10 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
@@ -23,7 +24,7 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
-public class CreatePostWidget extends ALComposite implements ClickHandler, FocusHandler, BlurHandler {
+public class CreatePostWidget extends ALComposite implements ClickHandler, FocusHandler, BlurHandler, KeyUpHandler {
 
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel panel = new FlowPanel();
@@ -39,6 +40,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
         panel.addStyleName(".createPostWidget");
         createPostTextArea.addStyleName("createPostTextArea");
         createPostTextArea.setHeight("3em");
+        createPostB.setEnabled(false);
     }
 
     @Override
@@ -52,6 +54,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
     @Override
     protected void addListeners() {
         createPostB.addClickHandler(this);
+        createPostTextArea.addKeyUpHandler(this);
         createPostTextArea.addFocusHandler(this);
         createPostTextArea.addBlurHandler(this);
     }
@@ -96,5 +99,14 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
     @Override
     public void onBlur(BlurEvent event) {
         createPostTextArea.setHeight("3em");
+    }
+
+    @Override
+    public void onKeyUp(KeyUpEvent event) {
+        if (createPostTextArea.getText().length() >= 2) {
+            createPostB.setEnabled(true);
+        } else {
+            createPostB.setEnabled(false);
+        }
     }
 }
