@@ -12,6 +12,11 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
+            <groupId>com.smartgwt</groupId>
+            <artifactId>smartgwt</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
             <groupId>info.yalamanchili</groupId>
             <artifactId>chili-gwt</artifactId>
             <version>${yalamanchili.version}</version>
@@ -62,7 +67,7 @@
             <artifactId>cglib</artifactId>
             <version>2.2.2</version>
         </dependency>
-		<!-- apache http clinet -->
+        <!-- apache http clinet -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
@@ -78,8 +83,8 @@
             <artifactId>httpmime</artifactId>
             <version>${http.client.version}</version>
         </dependency>
-		<!-- File upload -->
-		<!-- Apache fileupload -->
+        <!-- File upload -->
+        <!-- Apache fileupload -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-fileupload</artifactId>
@@ -90,13 +95,13 @@
             <artifactId>commons-io</artifactId>
             <version>1.4</version>
         </dependency>
-		<!-- Base 64 -->
+        <!-- Base 64 -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.6</version>
         </dependency>
-		<!-- Tests deps -->
+        <!-- Tests deps -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -142,11 +147,11 @@
                     </runTarget>
                     <style>DETAILED</style>
                     <noServer>false</noServer>
-					<!-- use only for dev -->
+                    <!-- use only for dev -->
                     <draftCompile>true</draftCompile>
                     <soyc>false</soyc>
                     <extraJvmArgs>-Xmx512m</extraJvmArgs>
-					<!-- target dir for generated interfaces -->
+                    <!-- target dir for generated interfaces -->
                     <generateDirectory>src/main/java</generateDirectory>
                     <i18nConstantsWithLookupBundle>
                         info.yalamanchili.office.client.internalization.OfficeConstants
@@ -170,7 +175,7 @@
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <version>1.0</version>
                 <configuration>
-					<!-- Container configuration -->
+                    <!-- Container configuration -->
                     <container>
                         <containerId>tomcat6x</containerId>
                     </container>
@@ -180,7 +185,7 @@
                     </configuration>
                 </configuration>
             </plugin>
-			<!-- embedded tomcat run "mvn tomcat6:run-war" -->
+            <!-- embedded tomcat run "mvn tomcat6:run-war" -->
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat6-maven-plugin</artifactId>
@@ -190,7 +195,7 @@
                     <port>9090</port>
                 </configuration>
             </plugin>
-			<!-- to exclude integration tests from running during build -->
+            <!-- to exclude integration tests from running during build -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
@@ -219,11 +224,11 @@
                                 office.html
                             </runTarget>
                             <noServer>false</noServer>
-					<!-- use only for dev -->
+                            <!-- use only for dev -->
                             <draftCompile>false</draftCompile>
                             <soyc>false</soyc>
                             <extraJvmArgs>-Xmx512m</extraJvmArgs>
-					<!-- target dir for generated interfaces -->
+                            <!-- target dir for generated interfaces -->
                             <generateDirectory>src/main/java</generateDirectory>
                             <i18nConstantsWithLookupBundle>
                                 info.yalamanchili.office.client.internalization.OfficeConstants
@@ -246,7 +251,7 @@
             </build>
         </profile>
     </profiles>
-	<!-- download artifacts from this repo -->
+    <!-- download artifacts from this repo -->
     <repositories>
         <repository>
             <id>yalamanchili.info</id>
@@ -260,7 +265,7 @@
             </snapshots>
         </repository>
     </repositories>
-	<!-- download plugins from this repo -->
+    <!-- download plugins from this repo -->
     <pluginRepositories>
         <pluginRepository>
             <id>yalamanchili.info</id>
@@ -275,14 +280,14 @@
         </pluginRepository>
     </pluginRepositories>
     <distributionManagement>
-		<!-- Publish the versioned releases here -->
+        <!-- Publish the versioned releases here -->
         <repository>
             <id>yalamanchili.info</id>
             <name>yalamanchili.info</name>
             <url>http://yalamanchili.info:8080/nexus/content/repositories/releases</url>
         </repository>
 
-		<!-- Publish the versioned releases here -->
+        <!-- Publish the versioned releases here -->
         <snapshotRepository>
             <id>yalamanchili.info</id>
             <name>yalamanchili.info</name>

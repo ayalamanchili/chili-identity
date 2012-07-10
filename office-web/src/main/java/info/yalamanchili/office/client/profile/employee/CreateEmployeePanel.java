@@ -43,6 +43,7 @@ public class CreateEmployeePanel extends CreateComposite {
         logger.info(user.toString());
         return user;
     }
+//the iamge name needs to be unique. so set the apprioriate it based on properties.
 
     protected void assignImageName() {
         StringField firstNameF = (StringField) fields.get("firstName");
@@ -84,7 +85,6 @@ public class CreateEmployeePanel extends CreateComposite {
         empImageUploadPanel.upload();
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-
                     @Override
                     public void onFailure(Throwable arg0) {
                         logger.info(arg0.getMessage());

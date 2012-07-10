@@ -1,31 +1,34 @@
 <module rename-to='office'>
-	<inherits name="com.google.gwt.user.User" />
+    <inherits name="com.google.gwt.user.User" />
 
-	<!-- logging -->
-	<inherits name="com.google.gwt.logging.Logging" />
-	<!-- Enable Firebug logger and disable console logger -->
-	<set-property name="gwt.logging.firebugHandler" value="ENABLED" />
-	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
+    <!-- logging -->
+    <inherits name="com.google.gwt.logging.Logging" />
+    <!-- Enable Firebug logger and disable console logger -->
+    <set-property name="gwt.logging.firebugHandler" value="ENABLED" />
+    <set-property name="gwt.logging.popupHandler" value="DISABLED" />
 
-	<!--HTTP Module -->
-	<inherits name='com.google.gwt.http.HTTP' />
+    <!-- SMART GWT-->
+    <inherits name="com.smartgwt.SmartGwt"/>
+    
+    <!--HTTP Module -->
+    <inherits name='com.google.gwt.http.HTTP' />
 
-	<!-- used to support internationalization -->
-	<inherits name='com.google.gwt.i18n.I18N' />
-	<extend-property name="locale" values="ES" />
+    <!-- used to support internationalization -->
+    <inherits name='com.google.gwt.i18n.I18N' />
+    <extend-property name="locale" values="ES" />
 
-	<!-- used to include chili-gwt project in gwt compiler path -->
-	<inherits name='info.yalamanchili.chili-gwt' />
+    <!-- used to include chili-gwt project in gwt compiler path -->
+    <inherits name='info.yalamanchili.chili-gwt' />
 
-	<!-- gwt client bundle to load resources -->
-	<inherits name="com.google.gwt.resources.Resources" />
-	<entry-point class="info.yalamanchili.office.client.OfficeWelcome" />
-	<stylesheet src="office.css" />
+    <!-- gwt client bundle to load resources -->
+    <inherits name="com.google.gwt.resources.Resources" />
+    <entry-point class="info.yalamanchili.office.client.OfficeWelcome" />
+    <stylesheet src="office.css" />
 
-	<source path='client' />
-	<!-- use this setting in development mode to speed up compile time -->
-	<set-property name="user.agent" value="safari" />
+    <source path='client' />
+    <!-- use this setting in development mode to speed up compile time -->
+    <set-property name="user.agent" value="safari" />
         
-        <!-- enables the debug id are set elementswidgets -->
-        <inherits name='com.google.gwt.user.Debug'/>
+    <!-- enables the debug id are set elementswidgets -->
+    <inherits name='com.google.gwt.user.Debug'/>
 </module>
