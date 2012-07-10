@@ -81,10 +81,8 @@ public class ReplyPostWidget extends ALComposite implements ClickHandler, KeyUpH
     @Override
     public void onKeyUp(KeyUpEvent event) {
         if (postBodyArea.getText().length() >= 2) {
-            logger.info("enabling....");
             replyB.setEnabled(true);
         } else {
-            logger.info("disabling...");
             replyB.setEnabled(false);
         }
     }

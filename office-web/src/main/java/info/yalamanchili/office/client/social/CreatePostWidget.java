@@ -4,8 +4,13 @@
  */
 package info.yalamanchili.office.client.social;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent.Type;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
@@ -18,7 +23,7 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
-public class CreatePostWidget extends ALComposite implements ClickHandler {
+public class CreatePostWidget extends ALComposite implements ClickHandler, FocusHandler, BlurHandler {
 
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel panel = new FlowPanel();
@@ -33,6 +38,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler {
     protected void configure() {
         panel.addStyleName(".createPostWidget");
         createPostTextArea.addStyleName("createPostTextArea");
+        createPostTextArea.setHeight("3em");
     }
 
     @Override
@@ -46,6 +52,8 @@ public class CreatePostWidget extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         createPostB.addClickHandler(this);
+        createPostTextArea.addFocusHandler(this);
+        createPostTextArea.addBlurHandler(this);
     }
 
     protected JSONObject populatePostEntity() {
@@ -78,5 +86,15 @@ public class CreatePostWidget extends ALComposite implements ClickHandler {
         if (event.getSource().equals(createPostB)) {
             createPostClicked(populatePostEntity());
         }
+    }
+
+    @Override
+    public void onFocus(FocusEvent event) {
+        createPostTextArea.setHeight("6em");
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        createPostTextArea.setHeight("3em");
     }
 }
