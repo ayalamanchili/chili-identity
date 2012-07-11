@@ -52,7 +52,6 @@ public class SecurityService {
         Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
         getUsersInRoleQuery.setParameter("roles", roles);
         List<CUser> users = getUsersInRoleQuery.getResultList();
-        System.out.println(":-----------" + users.size());
         for (CUser user : users) {
             if (user.getEmployee().getPrimaryEmail() != null) {
                 emails.add(user.getEmployee().getPrimaryEmail().getEmail());
