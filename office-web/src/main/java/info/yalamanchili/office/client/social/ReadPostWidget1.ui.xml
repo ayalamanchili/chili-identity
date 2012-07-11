@@ -3,11 +3,14 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
     <g:DockLayoutPanel unit='EM' addStyleNames='readPostWidget'>
         <g:north size='4'>
-            <g:FlowPanel ui:field='readPostStatusPanel'>
+            <g:FlowPanel ui:field='postStatusPanel'>
             </g:FlowPanel>
         </g:north>
         <g:center>
-            <g:CaptionPanel ui:field='readPostCenterPanel'>
+            <g:CaptionPanel ui:field='postCenterPanel'>
+                <g:FlowPanel ui:field='postBodyPanel'>
+                    <g:RichTextArea ui:field='postBodyArea'></g:RichTextArea>
+                </g:FlowPanel>
             </g:CaptionPanel>
         </g:center>
     </g:DockLayoutPanel>

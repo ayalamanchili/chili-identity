@@ -98,7 +98,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
 
     @Override
     public void onBlur(BlurEvent event) {
-        createPostTextArea.setHeight("3em");
+//        createPostTextArea.setHeight("3em");
     }
 
     @Override
