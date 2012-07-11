@@ -118,7 +118,7 @@ public class OfficeStartup {
         Email adminPrimaryEmail = new Email();
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
-        adminPrimaryEmail.setEmail("yphanikumar@gmail.com");
+        adminPrimaryEmail.setEmail("prashanthi_ponnaganti@yahoo.com");
         
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
