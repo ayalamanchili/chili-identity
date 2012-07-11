@@ -56,7 +56,7 @@ public class CertificationSidePanel extends ALComposite implements ClickHandler 
         if (clickEvent.getSource().equals(createCertificationLink))
         {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCertificationPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCertificationPanel(CreateComposite.CreateCompositeType.ADD));
         }
    }
 }
