@@ -265,6 +265,19 @@
                 <updatePolicy>true</updatePolicy>
             </snapshots>
         </repository>
+        <!-- TODO temp fix for snapshots not being downloaded from repo-->
+        <repository>
+            <id>yalamanchili.info.snapshots</id>
+            <name>yalamanchili.info</name>
+            <url>http://yalamanchili.info:8080/nexus/content/repositories/snapshots</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>true</updatePolicy>
+            </snapshots>
+        </repository>
     </repositories>
     <!-- download plugins from this repo -->
     <pluginRepositories>
