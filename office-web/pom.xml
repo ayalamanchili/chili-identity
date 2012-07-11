@@ -262,6 +262,7 @@
             </releases>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>true</updatePolicy>
             </snapshots>
         </repository>
     </repositories>
@@ -276,6 +277,7 @@
             </releases>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>true</updatePolicy>
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
