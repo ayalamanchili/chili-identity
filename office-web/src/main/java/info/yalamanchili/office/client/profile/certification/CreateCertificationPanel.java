@@ -1,0 +1,104 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.profile.certification;
+
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.FileUploadPanel;
+import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
+import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
+import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
+
+
+/**
+ *
+ * @author bala
+ */
+
+public class CreateCertificationPanel extends CreateComposite {
+    
+ private static Logger logger = Logger.getLogger(CreateCertificationPanel.class.getName());
+
+ public CreateCertificationPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
+        initCreateComposite("Certification", OfficeWelcome.constants);
+    }
+
+    @Override
+    public JSONObject populateEntityFromFields() {
+        JSONObject certification = new JSONObject();
+        assignEntityValueFromField("name", certification);
+        assignEntityValueFromField("description", certification);
+        logger.info(certification.toString());
+        return certification;
+        
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
+
+    }
+
+    @Override
+    protected void addButtonClicked() {
+        
+    }
+
+    @Override
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully certification created");
+        TabPanel.instance().myOfficePanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCertificationsPanel());
+    }
+
+    @Override
+    protected void addListeners() {
+        
+    }
+
+    @Override
+    protected void configure() {
+        
+    }
+
+    @Override
+    protected void addWidgets() {
+        addField("name", false, true, DataType.STRING_FIELD);
+        addField("description", false, false, DataType.STRING_FIELD);
+    }
+
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+        
+    }
+
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "certification";
+    }
+ 
+ 
+    
+}
