@@ -80,6 +80,9 @@
 .postRichTextBox{
     width: 100%;
 }
+.postDockPanel{
+    width: 100%;
+}
 .createPostTextArea{
     width: 100%;
     height: 20%;
