@@ -35,7 +35,7 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New User " + user.getEmployee().toString() + " Is Created";
+        String messageText = "New User " + user.getUsername().toString() + " Is Created";
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
@@ -46,7 +46,7 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Address Updated");
-        String messageText = "Employee Address for the employee " + emp.getFirstName() + "," + emp.getLastName() + " is Updated";
+        String messageText = "Employee Address For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
 

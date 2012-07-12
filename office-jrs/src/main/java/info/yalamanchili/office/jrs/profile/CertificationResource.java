@@ -46,7 +46,7 @@ public class CertificationResource extends CRUDResource<Certification> {
     }
     
  @GET
-    @Path("/certification/{start}/{limit}")
+    @Path("/{start}/{limit}")
     public CertificationResource.CertificationTable getcertifications(@PathParam("start") int start, @PathParam("limit") int limit) {
         CertificationResource.CertificationTable tableObj = new CertificationResource.CertificationTable();
         tableObj.setEntities(getDao().query(start, limit));
