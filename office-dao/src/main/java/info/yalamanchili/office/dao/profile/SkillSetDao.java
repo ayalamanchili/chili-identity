@@ -26,11 +26,6 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
     @PersistenceContext
     protected EntityManager em;
 
-    public SkillSet save(SkillSet entity) {
-        entity.setLastUpdated(new Date());
-        return super.save(entity);
-    }
-
     @Override
     public EntityManager getEntityManager() {
         return em;
