@@ -15,7 +15,6 @@
 .profileHome{
     width: 100%;
 }
-
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
     margin-left: 3px;
     margin-right: 3px;
@@ -80,8 +79,12 @@
 .postRichTextBox{
     width: 100%;
 }
-.postLayoutPanel{
-    width: 100%;
+.readPostImagePanel{
+    float:left;
+}
+.postMainPanel{
+    float:right;
+    width: 96%
 }
 .createPostTextArea{
     width: 100%;
