@@ -8,8 +8,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.emergencycnt.EmergencyContactOptionsPanel;
-import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
@@ -24,19 +22,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        
-        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignEntityValueFromField("firstName", entity);
+        assignEntityValueFromField("middleInitial", entity);
+        assignEntityValueFromField("lastName", entity);
+        assignEntityValueFromField("dateOfBirth", entity);
+        assignEntityValueFromField("sex", entity);
+        assignEntityValueFromField("startDate", entity);
         return entity;
     }
 
     @Override
     protected void updateButtonClicked() {
-        OfficeWelcome.logger.info("dddd"+entity);
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
@@ -99,7 +95,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear(); 
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
     }
 }
