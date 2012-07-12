@@ -205,9 +205,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     }
 
     @Override
-    public void onClick(ClickEvent event) {
-
-                
+    public void onClick(ClickEvent event) {           
      UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
         new GenericPopup(UpdatePanel).show();
     }
