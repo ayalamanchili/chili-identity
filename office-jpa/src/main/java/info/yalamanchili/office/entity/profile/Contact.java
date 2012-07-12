@@ -73,6 +73,7 @@ public class Contact extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Field
     protected Sex sex;
+    @Field
     protected String imageURL;
     /**
      * @generated
