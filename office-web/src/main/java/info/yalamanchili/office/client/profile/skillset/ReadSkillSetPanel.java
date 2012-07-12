@@ -4,6 +4,8 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -11,17 +13,39 @@ import info.yalamanchili.office.client.gwt.ReadComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Window;
+import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.JSONUtils;
+import java.util.logging.Logger;
 
 /**
  *
  * @author raghu
  */
-public class ReadSkillSetPanel extends ReadComposite {
+public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
+
+    private static Logger logger = Logger.getLogger(ReadSkillSetPanel.class.getName());
+    ClickableLink resumeL = new ClickableLink("Resume");
 
     public ReadSkillSetPanel(String id) {
         initReadComposite(id, "Employee", OfficeWelcome.constants);
+    }
+
+    @Override
+    protected void addListeners() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void configure() {
+        resumeL.addClickHandler(this);
+    }
+
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+        // TODO Auto-generated method stub
     }
 
     @Override
@@ -44,36 +68,27 @@ public class ReadSkillSetPanel extends ReadComposite {
     }
 
     @Override
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
+    }
+
+    @Override
     protected void addWidgets() {
         addField("lastUpdated", true, true, DataType.DATE_FIELD);
-        addField("resumeUrl", true, true, DataType.STRING_FIELD);
-
+        entityDisplayWidget.add(resumeL);
     }
 
     @Override
-    protected void addListeners() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    protected void configure() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    protected void addWidgetsBeforeCaptionPanel() {
-        // TODO Auto-generated method stub
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(resumeL)) {
+            String fileURL = OfficeWelcome.constants.file_download_url() + JSONUtils.toString(entity, "resumeUrl");
+            logger.info("file url:" + fileURL);
+            Window.open(fileURL, "_blank", "");
+        }
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + entityId;
-    }
-
-    @Override
-    public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("resumeUrl", entity, DataType.STRING_FIELD);
-
     }
 }
