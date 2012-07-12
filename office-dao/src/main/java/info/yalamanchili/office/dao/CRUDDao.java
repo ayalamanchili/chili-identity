@@ -59,9 +59,12 @@ public abstract class CRUDDao<T> {
 
     public T save(T entity) {
         if (entity instanceof AbstractEntity) {
+            System.out.println("aaaa"+entity);
             if (((AbstractEntity) entity).getId() != null) {
                 // map root level primitive types
+                System.out.println(entity.toString());
                 entity = (T) BeanMapper.merge(entity, findById(((AbstractEntity) entity).getId()));
+                
             }
         }
         return getEntityManager().merge(entity);
