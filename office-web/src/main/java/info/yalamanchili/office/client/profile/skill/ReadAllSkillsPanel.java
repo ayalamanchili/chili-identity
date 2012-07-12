@@ -9,11 +9,13 @@ import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.internalization.OfficeConstants;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
+import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -92,5 +94,7 @@ public class ReadAllSkillsPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillPanel(getEntity(entityId)));
     }
 }
