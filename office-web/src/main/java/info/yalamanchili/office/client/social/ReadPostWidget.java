@@ -14,9 +14,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.gwt.ImageField;
 
 public class ReadPostWidget extends ALComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
     protected JSONObject post;
     protected String postId;
@@ -24,19 +25,21 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     DockPanel postDockPanel = new DockPanel();
     CaptionPanel postRootPanel = new CaptionPanel();
     FlowPanel postBodyPanel = new FlowPanel();
+    FlowPanel imagePanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
     ClickableLink replyLink = new ClickableLink("reply");
-    
+
     public ReadPostWidget(JSONObject post, boolean showReplyOption) {
         this.post = post;
         this.showReplyOption = showReplyOption;
         init(postDockPanel);
         displayPost();
     }
-    
+
     protected void displayPost() {
         postRootPanel.setCaptionHTML(JSONUtils.toString(post, "employeeName"));
         this.postId = JSONUtils.toString(post, "id");
+        imagePanel.add(new ImageField("", JSONUtils.toString(post, "employeeImageUrl"), 50, 50, false));
         postBodyArea.setHTML(JSONUtils.toString(post, "postContent"));
         Long numberOfReplies = Long.valueOf(JSONUtils.toString(post, "numberOfReplies"));
         if (numberOfReplies > 0) {
@@ -46,12 +49,12 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
             postBodyPanel.add(replyLink);
         }
     }
-    
+
     @Override
     protected void addListeners() {
         replyLink.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         postBodyArea.addStyleName("postRichTextBox");
@@ -59,14 +62,15 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         postBodyArea.setHeight("2em");
         postBodyArea.setEnabled(false);
     }
-    
+
     @Override
     protected void addWidgets() {
         postRootPanel.setContentWidget(postBodyPanel);
+        postBodyPanel.add(imagePanel);
         postBodyPanel.add(postBodyArea);
         postDockPanel.add(postRootPanel, DockPanel.CENTER);
     }
-    
+
     @Override
     public void onClick(ClickEvent arg0) {
         if (arg0.getSource().equals(replyLink) && replyLink.isVisible()) {
