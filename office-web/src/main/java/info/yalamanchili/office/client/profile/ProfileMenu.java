@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
+import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
+import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
 
 public class ProfileMenu extends Composite {
 
@@ -28,6 +30,7 @@ public class ProfileMenu extends Composite {
         menu.addItem("Employees", employeeMaintainenceCmd);
         if (Auth.isAdmin() || Auth.isHR()) {
             menu.addItem("Skills", skillsMaintainenceCmd);
+            menu.addItem("Certifications", certificationsMaintainenceCmd);
         }
     }
     Command employeeMaintainenceCmd = new Command() {
@@ -44,6 +47,15 @@ public class ProfileMenu extends Composite {
             //TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllSkillsPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new SkillSidePanel());
+        }
+    };
+    Command certificationsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getMyOfficePanel().clear();
+            //TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
+            //TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCertificationsPanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CertificationSidePanel());
         }
     };
 }
