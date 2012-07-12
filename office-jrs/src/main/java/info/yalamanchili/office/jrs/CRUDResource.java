@@ -35,7 +35,7 @@ public abstract class CRUDResource<T> {
 
 	@PUT
 	public T save(T entity) {
-		return (T) getDao().save(entity);
+           return (T) getDao().save(entity);
 	}
 
 	@PUT
