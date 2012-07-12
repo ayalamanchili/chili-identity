@@ -14,6 +14,10 @@ import info.yalamanchili.office.client.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
 
+    public static Object instance() {
+        return null;
+    }
+
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
