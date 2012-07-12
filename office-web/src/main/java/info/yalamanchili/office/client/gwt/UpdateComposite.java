@@ -25,8 +25,8 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
     }
 
     public void onClick(ClickEvent event) {
-        entity = populateEntityFromFields();
         if (event.getSource() == update) {
+            entity = populateEntityFromFields();
             updateButtonClicked();
         }
     }
