@@ -11,6 +11,8 @@ import info.yalamanchili.office.client.gwt.ReadComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite;
 
 /**
  *
@@ -31,6 +33,11 @@ public class ReadSkillSetPanel extends ReadComposite {
                         if (response != null && !response.isEmpty()) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             populateFieldsFromEntity(entity);
+                        }
+                        else
+                        {
+                          TabPanel.instance().myOfficePanel.entityPanel.clear();
+                          TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
                         }
 
                     }
