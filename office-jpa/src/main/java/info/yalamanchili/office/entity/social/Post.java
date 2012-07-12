@@ -112,4 +112,8 @@ public class Post extends AbstractEntity {
     }
     
     //TODO add pre/post persiste or update to save the current time stamp.
+
+    public void setCompany(Post companypost) {
+        
+    }
 }
