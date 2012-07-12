@@ -13,20 +13,22 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
 
 /**
  *
  * @author prani
  */
 public class UpdateSkillPanel extends UpdateComposite {
-
+    
     public UpdateSkillPanel(JSONObject entity) {
         initUpdateComposite(entity, "Skill", OfficeWelcome.constants);
     }
+    
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("description", entity);
         return entity;
     }
 
