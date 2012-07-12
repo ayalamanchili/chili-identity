@@ -207,7 +207,9 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
                 search(getSearchText());
             } else {
                 entity = populateEntityFromFields();
-                search(entity);
+                if (entity.toString().length() > 3) {
+                    search(entity);
+                }
             }
         }
 
