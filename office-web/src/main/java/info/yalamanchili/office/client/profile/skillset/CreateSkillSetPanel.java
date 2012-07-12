@@ -4,51 +4,70 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
-import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.CreateComposite;
-import java.util.logging.Logger;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.FileUploadPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
+
 /**
  *
  * @author raghu
  */
-public class CreateSkillSetPanel extends CreateComposite{
-     private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
-    FileUploadPanel empresumeUploadPanel = new FileUploadPanel("resume", "Date1");
-      public CreateSkillSetPanel(CreateComposite.CreateCompositeType type){
+public class CreateSkillSetPanel extends CreateComposite {
+
+    private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
+    FileUploadPanel resumeUploadPanel = new FileUploadPanel("Resume", "resume");
+
+    public CreateSkillSetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("SkillSet", OfficeWelcome.constants);
     }
-      @Override
-    protected void postCreateSuccess(String result) {
-       
-        new ResponseStatusWidget().show("successfully created employee");
-        TabPanel.instance().myOfficePanel.clear();
-    }
-      
-       @Override
-    protected void addButtonClicked() {
-           
-       }
-         @Override
+
+    @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-        @Override
+
+    @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-        @Override
+
+    @Override
     protected void createButtonClicked() {
-        // TODO Auto-generated method stub
-             empresumeUploadPanel.upload();
-            HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+    }
+
+    @Override
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully created skllset");
+        TabPanel.instance().myOfficePanel.clear();
+    }
+
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        JSONObject skillSet = new JSONObject();
+        assignImageName();
+        skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
+        logger.info(skillSet.toString());
+        return skillSet;
+    }
+
+    protected void assignImageName() {
+        resumeUploadPanel.setFileName("resume/" + TreeEmployeePanel.instance().getEntityId() + "_");
+    }
+
+    @Override
+    protected void addButtonClicked() {
+        resumeUploadPanel.upload();
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -58,28 +77,24 @@ public class CreateSkillSetPanel extends CreateComposite{
 
                     @Override
                     public void onSuccess(String arg0) {
+                        logger.info(arg0);
                         postCreateSuccess(arg0);
                     }
                 });
     }
-         @Override
-    protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
-        
-        return entity;
-    }
-          @Override
+
+    @Override
     protected void addWidgets() {
-        addField("lastUpdated", true, true, DataType.DATE_FIELD);
-        addField("resumeUrl", true, true, DataType.STRING_FIELD);
-        entityDisplayWidget.add(empresumeUploadPanel);
+        entityDisplayWidget.add(resumeUploadPanel);
     }
-          @Override
+
+    @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-          @Override
+
+    @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/skillset" ;
+        return OfficeWelcome.constants.root_url() + "employee/skillset/"+TreeEmployeePanel.instance().getEntityId();
     }
 }

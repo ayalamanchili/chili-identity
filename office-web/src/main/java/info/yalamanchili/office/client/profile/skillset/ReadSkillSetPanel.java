@@ -33,11 +33,9 @@ public class ReadSkillSetPanel extends ReadComposite {
                         if (response != null && !response.isEmpty()) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             populateFieldsFromEntity(entity);
-                        }
-                        else
-                        {
-                          TabPanel.instance().myOfficePanel.entityPanel.clear();
-                          TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
+                        } else {
+                            TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
                         }
 
                     }
