@@ -11,23 +11,18 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
-import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
-
 
 /**
  *
  * @author bala
  */
-
 public class CreateCertificationPanel extends CreateComposite {
-    
- private static Logger logger = Logger.getLogger(CreateCertificationPanel.class.getName());
 
- public CreateCertificationPanel(CreateComposite.CreateCompositeType type) {
+    private static Logger logger = Logger.getLogger(CreateCertificationPanel.class.getName());
+
+    public CreateCertificationPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Certification", OfficeWelcome.constants);
     }
@@ -39,14 +34,13 @@ public class CreateCertificationPanel extends CreateComposite {
         assignEntityValueFromField("description", certification);
         logger.info(certification.toString());
         return certification;
-        
+
     }
 
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-
                     @Override
                     public void onFailure(Throwable arg0) {
                         logger.info(arg0.getMessage());
@@ -63,7 +57,6 @@ public class CreateCertificationPanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
-        
     }
 
     @Override
@@ -75,12 +68,10 @@ public class CreateCertificationPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -91,14 +82,10 @@ public class CreateCertificationPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "certification";
     }
- 
- 
-    
 }

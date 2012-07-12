@@ -7,13 +7,10 @@ package info.yalamanchili.office.client.profile.certification;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.internalization.OfficeConstants;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -21,7 +18,6 @@ import java.util.logging.Logger;
  *
  * @author bala
  */
-
 public class ReadAllCertificationsPanel extends ReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllCertificationsPanel.class.getName());

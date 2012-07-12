@@ -12,15 +12,12 @@ import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
-import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
-import info.yalamanchili.office.client.profile.employee.SearchEmployeePanel;
 import java.util.logging.Logger;
+
 /**
  *
  * @author bala
  */
-
 public class CertificationSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CertificationSidePanel.class.getName());
@@ -30,10 +27,11 @@ public class CertificationSidePanel extends ALComposite implements ClickHandler 
     public CertificationSidePanel() {
         init(certificationSidePanel);
     }
-   @Override
+
+    @Override
     protected void addListeners() {
         createCertificationLink.addClickHandler(this);
-   }
+    }
 
     @Override
     protected void configure() {
@@ -41,22 +39,18 @@ public class CertificationSidePanel extends ALComposite implements ClickHandler 
     }
 
     @Override
-    protected void addWidgets() 
-    {
-        if (Auth.isAdmin() || Auth.isHR())
-        {
+    protected void addWidgets() {
+        if (Auth.isAdmin() || Auth.isHR()) {
             certificationSidePanel.add(createCertificationLink);
         }
         //certificationSidePanel.add(new SearchcertificationPanel());
     }
 
     @Override
-    public void onClick(ClickEvent clickEvent) 
-    {
-        if (clickEvent.getSource().equals(createCertificationLink))
-        {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCertificationPanel(CreateComposite.CreateCompositeType.ADD));
+    public void onClick(ClickEvent clickEvent) {
+        if (clickEvent.getSource().equals(createCertificationLink)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateCertificationPanel(CreateComposite.CreateCompositeType.CREATE));
         }
-   }
+    }
 }

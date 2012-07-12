@@ -1,7 +1,7 @@
 package info.yalamanchili.office.client.gwt;
 
 import info.yalamanchili.gwt.composite.BaseField;
-import info.yalamanchili.gwt.date.DateUtils;
+import info.yalamanchili.office.client.gwt.DateUtils;
 import info.yalamanchili.gwt.fields.BooleanField;
 import info.yalamanchili.gwt.fields.CurrencyField;
 import info.yalamanchili.gwt.fields.DataType;

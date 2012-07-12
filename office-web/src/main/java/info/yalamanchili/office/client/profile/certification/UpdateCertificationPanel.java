@@ -11,20 +11,18 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 /**
  *
  * @author bala
  */
-
-
 public class UpdateCertificationPanel extends UpdateComposite {
 
     public UpdateCertificationPanel(JSONObject entity) {
         initUpdateComposite(entity, "Certification", OfficeWelcome.constants);
     }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
@@ -34,7 +32,7 @@ public class UpdateCertificationPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-       // OfficeWelcome.logger.info("dddd"+entity);
+        // OfficeWelcome.logger.info("dddd"+entity);
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
@@ -59,18 +57,16 @@ public class UpdateCertificationPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee Certification Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear(); 
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCertificationsPanel());
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -81,14 +77,10 @@ public class UpdateCertificationPanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "certification";
     }
-    
-    
-    
 }
