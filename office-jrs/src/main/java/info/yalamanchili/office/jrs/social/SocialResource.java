@@ -40,6 +40,7 @@ public class SocialResource {
     public List<info.yalamanchili.office.dto.social.Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
         return socialService.getEmployeeFeed(start, limit);
     }
+//TODO change this to create employee post and also update ui url
 
     @PUT
     @Path("/createpost")
@@ -57,5 +58,11 @@ public class SocialResource {
     @Path("/replies/{parentPostId}")
     public List<info.yalamanchili.office.dto.social.Post> getReplies(@PathParam("parentPostId") String parentPostId) {
         return socialService.getRepies(parentPostId);
+    }
+
+    @PUT
+    @Path("/createCompanyPost")
+    public Post createCompanyPost(Post companypost) {
+        return socialDao.createCompanyPost(companypost);
     }
 }
