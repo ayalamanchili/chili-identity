@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package info.yalamanchili.office.client.profile.employee;
-
+ 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
@@ -115,6 +115,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-        // TODO Auto-generated method stub
+     TabPanel.instance().myOfficePanel.entityPanel.clear();
+     TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(getEntity(entityId)));
     }
 }
