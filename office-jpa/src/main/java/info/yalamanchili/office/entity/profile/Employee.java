@@ -74,7 +74,7 @@ public class Employee extends Contact {
     protected List<EmergencyContact> emergencyContacts;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<Post> posts;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     protected SkillSet skillSet;
 
     /**
@@ -228,8 +228,7 @@ public class Employee extends Contact {
     public void setSkillSet(SkillSet skillSet) {
         this.skillSet = skillSet;
     }
-  
-    
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
