@@ -1,8 +1,10 @@
 package info.yalamanchili.office.dao.social;
 
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.Date;
 
 
 import java.util.List;
@@ -25,6 +27,8 @@ public class SocialDao {
     protected SecurityService securityService;
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     protected EntityManager em;
+    @Autowired
+    protected CompanyDao companyDao;
 
     public List<Post> getEmployeeFeed(int start, int limit) {
         Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p where p.parentPost is null and p.employee is not null order by p.postTimeStamp",
@@ -50,5 +54,12 @@ public class SocialDao {
         // TODO Auto-generated method stub
         newPost.setEmployee(securityService.getCurrentUser());
         return em.merge(newPost);
+    }
+
+    public Post createCompanyPost(Post newcompanypost) {
+        newcompanypost.setEmployee(securityService.getCurrentUser());
+        newcompanypost.setCompany(companyDao.findByCompanyName("sstech"));
+        newcompanypost.setPostTimeStamp(new Date());
+        return em.merge(newcompanypost);
     }
 }
