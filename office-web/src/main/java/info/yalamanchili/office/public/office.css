@@ -81,10 +81,11 @@
 }
 .readPostImagePanel{
     float:left;
+    width: 4%;
 }
 .postMainPanel{
     float:right;
-    width: 96%
+    width: 96%;
 }
 .createPostTextArea{
     width: 100%;
