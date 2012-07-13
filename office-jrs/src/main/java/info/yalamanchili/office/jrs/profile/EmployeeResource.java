@@ -17,6 +17,7 @@ import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInfo
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.EmergencyContactService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -97,6 +98,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/skillset/{empId}")
     public void addSkillSet(@PathParam("empId") Long empId, SkillSet skillset) {
         Employee emp = (Employee) getDao().findById(empId);
+        skillset.setLastUpdated(new Date());
         emp.setSkillSet(skillset);
     }
 
