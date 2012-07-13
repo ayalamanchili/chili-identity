@@ -14,7 +14,7 @@ public class OfficeServiceConfiguration {
 
     @PersistenceContext
     protected EntityManager em;
-    protected String contentManagementLocationRoot = "E://content-management//office/";
+    protected String contentManagementLocationRoot = "C://content-management//office/";
 
     @ManagedAttribute
     public String getContentManagementLocationRoot() {

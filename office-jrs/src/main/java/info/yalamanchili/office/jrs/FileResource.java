@@ -62,6 +62,7 @@ public class FileResource {
                 System.out.println("downloading---------:" + file.getPath());
                 response = Response.ok((Object) file);
                 response.header("Content-Disposition", "attachment; filename=" + file.getName());
+                response.header("Content-Type", "application/pdf");
                 return response.build();
             } else {
                 response = Response.status(Response.Status.NOT_FOUND);
