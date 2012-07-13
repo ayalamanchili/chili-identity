@@ -57,7 +57,6 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     @Override
     protected void configure() {
         postBodyArea.addStyleName("postRichTextBox");
-//        postLayoutPanel.addStyleName("postLayoutPanel");
         imagePanel.addStyleName("readPostImagePanel");
         postMainPanel.addStyleName("postMainPanel");
         postBodyArea.setHeight("2em");
