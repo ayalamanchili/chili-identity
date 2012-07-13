@@ -38,9 +38,13 @@ public class SocialDao {
         return getPostsQuery.getResultList();
     }
 
-    public List<Post> getCompanyFeed() {
+    public List<Post> getCompanyFeed(int start, int limit) {
         // TODO implement this
-        return null;
+          Query getPostsQuery = em.createQuery("from " + Post.class.getCanonicalName() + " p where p.parentPost is null and p.employee is not null and p.company is not null order by p.postTimeStamp",
+                Post.class);
+        getPostsQuery.setFirstResult(start);
+        getPostsQuery.setMaxResults(limit);
+        return getPostsQuery.getResultList();
     }
 
     public Post addReply(Long parentPostId, Post post) {
