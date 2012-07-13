@@ -38,7 +38,14 @@ public class SocialService {
         }
         return empFeed;
     }
-
+    
+    public List<Post> getCompanyFeed(int start, int limit) {
+        List<Post> compFeed = new ArrayList<Post>();
+        for (info.yalamanchili.office.entity.social.Post entity : socialDao.getCompanyFeed(start, limit)) {
+            compFeed.add(Post.map(mapper, entity));
+        }
+        return compFeed;
+    }
     public List<Post> getRepies(String parentPostId) {
         List<Post> replies = new ArrayList<Post>();
         info.yalamanchili.office.entity.social.Post parenPost = em.find(info.yalamanchili.office.entity.social.Post.class, Long.valueOf(parentPostId));
