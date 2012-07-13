@@ -58,7 +58,7 @@ public class CertificationResource extends CRUDResource<Certification> {
 	@XmlType
 	public static class CertificationTable {
 		protected Long size;
-		protected List<Email> entities;
+		protected List<Certification> entities;
 
 		public Long getSize() {
 			return size;
@@ -69,11 +69,11 @@ public class CertificationResource extends CRUDResource<Certification> {
 		}
 
 		@XmlElement
-		public List<Email> getEntities() {
+		public List<Certification> getEntities() {
 			return entities;
 		}
 
-		public void setEntities(List<Email> entities) {
+		public void setEntities(List<Certification> entities) {
 			this.entities = entities;
 		}
 
