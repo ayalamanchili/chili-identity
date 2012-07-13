@@ -15,21 +15,21 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class CreateEmployeePanel extends CreateComposite {
-
+    
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
     FileUploadPanel empImageUploadPanel = new FileUploadPanel("Profile Picture", "name");
-
+    
     public CreateEmployeePanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject user = new JSONObject();
         assignEntityValueFromField("username", user);
         assignEntityValueFromField("passwordHash", user);
-
+        
         JSONObject employee = new JSONObject();
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
@@ -50,17 +50,17 @@ public class CreateEmployeePanel extends CreateComposite {
         StringField lastNameF = (StringField) fields.get("lastName");
         empImageUploadPanel.setFileName("employee/" + firstNameF.getValue() + "_" + lastNameF.getValue() + "_");
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
         addField("username", false, true, DataType.STRING_FIELD);
@@ -74,12 +74,12 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         entityDisplayWidget.add(empImageUploadPanel);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     public void createButtonClicked() {
         empImageUploadPanel.upload();
@@ -90,28 +90,30 @@ public class CreateEmployeePanel extends CreateComposite {
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
                 });
-
+        
     }
-
+    
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully created employee");
+        TabPanel.instance().myOfficePanel.sidePanel.clear();
+        TabPanel.instance().myOfficePanel.sidePanel.add(new EmployeeSidePanel());
         TabPanel.instance().myOfficePanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
-
+        
     }
-
+    
     @Override
     protected void addButtonClicked() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "admin/createuser";

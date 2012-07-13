@@ -26,9 +26,9 @@ import java.util.logging.Logger;
 import org.springframework.context.annotation.Profile;
 
 public class ProfileHome extends ALComposite implements ClickHandler {
-    
+
     private static ProfileHome instance;
-    
+
     public static ProfileHome instance() {
         return instance;
     }
@@ -41,22 +41,22 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel clientInfoPanel;
     protected DisclosurePanel emergencyContactsPanel;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
-    
+
     public ProfileHome() {
         instance = this;
         init(panel);
     }
-    
+
     @Override
     protected void addListeners() {
         updateProfile.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void addWidgets() {
         addEmployeePanel();
@@ -70,7 +70,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     /*
      * Read Employee Panel
      */
-    
+
     protected void addEmployeePanel() {
         if (panel.getWidgetIndex(employeeePanel) < 0) {
             employeeePanel = new DisclosurePanel("Profile");
@@ -80,16 +80,21 @@ public class ProfileHome extends ALComposite implements ClickHandler {
                 @Override
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     employeeePanel.setContent(new ReadEmployeePanel(OfficeWelcome.instance().employee));
-                    
+
                 }
             });
             employeeePanel.setOpen(true);
         }
     }
+
+    public void refreshEmployeePanel() {
+        employeeePanel.setOpen(false);
+        employeeePanel.setOpen(true);
+    }
     /*
      * Addresses
      */
-    
+
     protected void addAddressesPanel() {
         if (panel.getWidgetIndex(phonesPanel) < 0) {
             addressesPanel = new DisclosurePanel("Addresses");
@@ -100,12 +105,12 @@ public class ProfileHome extends ALComposite implements ClickHandler {
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     addressesPanel.setContent(
                             new ReadAllAddressesPopupPanel(OfficeWelcome.instance().employeeId));
-                    
+
                 }
             });
         }
     }
-    
+
     public void refreshAddresses() {
         addressesPanel.setOpen(false);
         addressesPanel.setOpen(true);
@@ -124,12 +129,12 @@ public class ProfileHome extends ALComposite implements ClickHandler {
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     phonesPanel.setContent(
                             new ReadAllPhonesPopupPanel(OfficeWelcome.instance().employeeId));
-                    
+
                 }
             });
         }
     }
-    
+
     public void refreshPhones() {
         phonesPanel.setOpen(false);
         phonesPanel.setOpen(true);
@@ -137,7 +142,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     /*
      * Emails
      */
-    
+
     protected void addEmailsPanel() {
         if (panel.getWidgetIndex(emailsPanel) < 0) {
             /*emailsPanel = null;*/
@@ -149,12 +154,12 @@ public class ProfileHome extends ALComposite implements ClickHandler {
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     emailsPanel.setContent(
                             new ReadAllEmailsPopupPanel(OfficeWelcome.instance().employeeId));
-                    
+
                 }
             });
         }
     }
-    
+
     public void refreshEmails() {
         emailsPanel.setOpen(false);
         emailsPanel.setOpen(true);
@@ -162,7 +167,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     /*
      * Client Information
      */
-    
+
     protected void addClientInfoPanel() {
         clientInfoPanel = new DisclosurePanel("Client Information");
         panel.add(clientInfoPanel);
@@ -172,11 +177,11 @@ public class ProfileHome extends ALComposite implements ClickHandler {
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 clientInfoPanel.setContent(
                         new ReadAllClientInfoPopupPanel(OfficeWelcome.instance().employeeId));
-                
+
             }
         });
     }
-    
+
     public void refreshClientInformation() {
         clientInfoPanel.setOpen(false);
         clientInfoPanel.setOpen(true);
@@ -184,7 +189,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     /*
      * emergency contact
      */
-    
+
     protected void addEmergencyContactsPanel() {
         emergencyContactsPanel = new DisclosurePanel("EmergencyContacts");
         panel.add(emergencyContactsPanel);
@@ -194,20 +199,19 @@ public class ProfileHome extends ALComposite implements ClickHandler {
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 emergencyContactsPanel.setContent(
                         new ReadAllEmergencyContactsPopupPanel(OfficeWelcome.instance().employeeId));
-                
+
             }
         });
     }
-    
+
     public void refreshEmergencyContactsPanel() {
         emergencyContactsPanel.setOpen(false);
         emergencyContactsPanel.setOpen(true);
     }
 
     @Override
-    public void onClick(ClickEvent event) {           
-     UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
+    public void onClick(ClickEvent event) {
+        UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
         new GenericPopup(UpdatePanel).show();
     }
-    
 }
