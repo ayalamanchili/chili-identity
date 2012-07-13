@@ -40,6 +40,11 @@ public class SocialResource {
     public List<info.yalamanchili.office.dto.social.Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
         return socialService.getEmployeeFeed(start, limit);
     }
+     @GET
+    @Path("/companyfeed/{start}/{limit}")
+    public List<info.yalamanchili.office.dto.social.Post> getCompanyFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return socialService.getCompanyFeed(start, limit);
+    }
 //TODO change this to create employee post and also update ui url
 
     @PUT
