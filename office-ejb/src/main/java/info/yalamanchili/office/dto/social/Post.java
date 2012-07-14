@@ -4,7 +4,10 @@
  */
 package info.yalamanchili.office.dto.social;
 
+import info.yalamanchili.office.entity.social.PostFile;
 import java.util.Date;
+import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -23,6 +26,7 @@ public class Post {
     protected String postContent;
     protected Date postTimeStamp;
     protected Integer numberOfReplies;
+    protected List<PostFile> postFiles;
     
     public Long getId() {
         return id;
@@ -72,6 +76,15 @@ public class Post {
         this.numberOfReplies = numberOfReplies;
     }
     
+    @XmlElement
+    public List<PostFile> getPostFiles() {
+        return postFiles;
+    }
+    
+    public void setPostFiles(List<PostFile> postFiles) {
+        this.postFiles = postFiles;
+    }
+    
     @Override
     public String toString() {
         return "Post{" + "id=" + id + ", employeeName=" + employeeName + ", employeeImageUrl=" + employeeImageUrl + ", postContent=" + postContent + ", postTimeStamp=" + postTimeStamp + ", numberOfReplies=" + numberOfReplies + '}';
@@ -84,6 +97,7 @@ public class Post {
         if (entity.getEmployee() != null) {
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
             dto.setEmployeeImageUrl(entity.getEmployee().getImageURL());
+            dto.setPostFiles(entity.getPostFiles());
         }
         return dto;
     }

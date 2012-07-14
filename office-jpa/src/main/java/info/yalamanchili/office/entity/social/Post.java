@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -48,6 +47,8 @@ public class Post extends AbstractEntity {
     protected Post parentPost;
     @OneToMany(mappedBy = "parentPost", cascade = CascadeType.ALL)
     protected List<Post> replies;
+    @OneToMany(cascade = CascadeType.ALL)
+    protected List<PostFile> postFiles;
 
     public Date getPostTimeStamp() {
         return postTimeStamp;
@@ -110,10 +111,24 @@ public class Post extends AbstractEntity {
         getReplies().add(reply);
         reply.setParentPost(this);
     }
-    
-    //TODO add pre/post persiste or update to save the current time stamp.
 
-    public void setCompany(Post companypost) {
-        
+    @XmlElement
+    public List<PostFile> getPostFiles() {
+        if (this.postFiles == null) {
+            this.postFiles = new ArrayList<PostFile>();
+        }
+        return postFiles;
     }
+
+    public void setPostFiles(List<PostFile> postFiles) {
+        this.postFiles = postFiles;
+    }
+
+    public void addPostFile(PostFile postFile) {
+        if (postFile == null) {
+            return;
+        }
+        getPostFiles().add(postFile);
+    }
+    //TODO add pre/post persiste or update to save the current time stamp.
 }
