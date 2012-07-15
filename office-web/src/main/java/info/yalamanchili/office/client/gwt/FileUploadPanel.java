@@ -19,7 +19,7 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
 	FlowPanel panel = new FlowPanel();
 
 	FormPanel formPanel = new FormPanel();
-	Label label = new Label("Upload images for listing");
+	Label label = new Label("upload");
 	FileUpload fileUpload = new FileUpload();
 	Button submit = new Button("Upload");
 
