@@ -13,6 +13,11 @@
             <artifactId>yalamanchili-commons</artifactId>
             <version>${yalamanchili.version}</version>
         </dependency>
+        <dependency>
+            <groupId>info.chili</groupId>
+            <artifactId>chili-commons</artifactId>
+            <version>${yalamanchili.version}</version>
+        </dependency> 
         <!-- JPA and Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>

@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
-import info.yalamanchili.office.config.ApplicationContextProvider;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.*;
@@ -184,7 +184,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Path("/clientinformation/{empId}")
     public void addClientInformation(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
-        ClientInformationService clientInformationService = ApplicationContextProvider.getApplicationContext().getBean("clientInformationService", ClientInformationService.class);
+        ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
         clientInformationService.addClientInformation(empId, clientInformation);
     }
 
@@ -207,7 +207,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Path("/emergencycontact/{empId}")
     public void addEmergencyContact(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
-        EmergencyContactService emergencyContactService = ApplicationContextProvider.getApplicationContext().getBean("emergencyContactService", EmergencyContactService.class);
+        EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
         emergencyContactService.addEmergencyContact(empId, ec);
     }
 

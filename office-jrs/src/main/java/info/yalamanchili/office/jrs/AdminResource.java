@@ -1,8 +1,8 @@
 package info.yalamanchili.office.jrs;
 
+import info.chili.spring.SpringContext;
 import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.office.cits.CitsService;
-import info.yalamanchili.office.config.ApplicationContextProvider;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -64,7 +64,7 @@ public class AdminResource {
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(user);
         //CITS data push
-        CitsService citsService = ApplicationContextProvider.getApplicationContext().getBean("citsService", CitsService.class);
+        CitsService citsService = (CitsService) SpringContext.getBean("citsService");
         citsService.pushNewEmployeeInformation(user.getEmployee());
         return user.getEmployee().getId().toString();
     }

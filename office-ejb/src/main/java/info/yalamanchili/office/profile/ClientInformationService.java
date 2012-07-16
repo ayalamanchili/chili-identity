@@ -4,8 +4,6 @@
  */
 package info.yalamanchili.office.profile;
 
-import info.yalamanchili.office.config.ApplicationContextProvider;
-import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
