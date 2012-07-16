@@ -101,6 +101,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(entityId));
+         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entityId));
     }
 
