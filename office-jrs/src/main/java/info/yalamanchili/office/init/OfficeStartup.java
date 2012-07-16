@@ -1,11 +1,12 @@
 package info.yalamanchili.office.init;
 
-import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.commons.DateUtils;
+import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.office.entity.FileType;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Certification;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
@@ -13,7 +14,6 @@ import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
-import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
@@ -21,13 +21,10 @@ import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostFile;
-
 import java.util.Date;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,8 +132,9 @@ public class OfficeStartup {
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
-        adminEmp.addClientInformation(userClientInfo());
-        adminEmp.addEmergencyContact(userEmergencyContact());
+        //TODO fix data this is causing duplicates
+//        adminEmp.addClientInformation(userClientInfo());
+//        adminEmp.addEmergencyContact(userEmergencyContact());
         adminEmp = em.merge(adminEmp);
         userAdmin().setEmployee(adminEmp);
 
