@@ -35,7 +35,6 @@ public class CreateSkillPanel extends CreateComposite {
         JSONObject skill = new JSONObject();
         assignEntityValueFromField("name", skill);
         assignEntityValueFromField("description", skill);
-        logger.info(skill.toString());
         return skill;
         
     }
@@ -47,7 +46,6 @@ public class CreateSkillPanel extends CreateComposite {
 
                     @Override
                     public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
 

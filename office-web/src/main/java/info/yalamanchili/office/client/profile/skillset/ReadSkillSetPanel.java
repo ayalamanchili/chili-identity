@@ -25,29 +25,29 @@ import java.util.logging.Logger;
  * @author raghu
  */
 public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(ReadSkillSetPanel.class.getName());
     ClickableLink resumeL = new ClickableLink("Resume");
-    
+
     public ReadSkillSetPanel(String id) {
         initReadComposite(id, "Employee", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void configure() {
         resumeL.addClickHandler(this);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -61,33 +61,33 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
                             TabPanel.instance().myOfficePanel.entityPanel.clear();
                             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
                         }
-                        
+
                     }
                 });
-        
+
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("entity" + entity.toString());
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("lastUpdated", true, false, DataType.DATE_FIELD);
         entityDisplayWidget.add(resumeL);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(resumeL)) {
-            String fileURL = OfficeWelcome.constants.file_download_url() + JSONUtils.toString(entity, "resumeUrl");
+            String fileURL = OfficeWelcome.constants.file_download_url() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
             logger.info("file url:" + fileURL);
             Window.open(fileURL, "_blank", "");
         }
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + entityId;

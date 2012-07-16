@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package info.yalamanchili.office.client.profile.employee;
- 
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
@@ -83,7 +83,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
                 table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             }
             table.setText(i, 5, JSONUtils.toString(entity, "sex"));
-            table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), 50, 50, false));
+            table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 7, JSONUtils.toString(entity, "startDate"));
         }
     }
@@ -115,7 +115,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-     TabPanel.instance().myOfficePanel.entityPanel.clear();
-     TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(getEntity(entityId)));
     }
 }

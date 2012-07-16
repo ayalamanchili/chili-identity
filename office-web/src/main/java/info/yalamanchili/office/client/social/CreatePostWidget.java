@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -25,6 +26,7 @@ import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileUploadPanel;
+import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.Date;
 import java.util.logging.Level;
@@ -38,7 +40,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     RichTextArea createPostTextArea = new RichTextArea();
     Button createPostB = new Button("Share");
-    FileUploadPanel imageUploadPanel = new FileUploadPanel("Share Image", "name");
+    FileUploadPanel imageUploadPanel = new FileUploadPanel("Share Image", "PostFile/fileURL");
 
     public CreatePostWidget() {
         init(captionPanel);
@@ -73,10 +75,10 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
     protected JSONObject populatePostEntity() {
         JSONObject post = new JSONObject();
         post.put("postContent", new JSONString(createPostTextArea.getText()));
-        if (imageUploadPanel.getFileName().isString() != null) {
+        if (imageUploadPanel.getFileUpload().getFilename() != null) {
             JSONArray postImages = new JSONArray();
             JSONObject postImage1 = new JSONObject();
-            assignImageName();
+
             postImage1.put("fileURL", imageUploadPanel.getFileName());
             postImage1.put("fileType", new JSONString("IMAGE"));
             postImages.set(0, postImage1);
@@ -85,21 +87,22 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
         return post;
     }
 
-    protected void assignImageName() {
-        imageUploadPanel.setFileName("post/");
-    }
-
     protected void createPostClicked(JSONObject post) {
-        logger.info("000000" + post.toString());
-        imageUploadPanel.upload();
         HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
                         createPostTextArea.setText("");
+                        uploadImage(arg0);
                         postCreateSuccess(arg0);
                     }
                 });
+    }
+
+    protected void uploadImage(String postString) {
+        JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
+        //TODO move this to crud
+        imageUploadPanel.upload(JSONUtils.toString(post, "id"));
     }
 
     protected void postCreateSuccess(String result) {

@@ -55,7 +55,8 @@ public class AdminResource {
 
     @Path("/createuser")
     @PUT
-    public void createUser(CUser user) {
+    @Produces("application/text")
+    public String createUser(CUser user) {
         user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
         user.setEmployee(em.merge(user.getEmployee()));
         user.setEnabled(true);
@@ -65,7 +66,7 @@ public class AdminResource {
         //CITS data push
         CitsService citsService = ApplicationContextProvider.getApplicationContext().getBean("citsService", CitsService.class);
         citsService.pushNewEmployeeInformation(user.getEmployee());
-
+        return user.getEmployee().getId().toString();
     }
 
     @Path("/currentuser")

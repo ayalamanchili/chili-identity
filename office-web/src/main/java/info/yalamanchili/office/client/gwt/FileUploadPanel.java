@@ -14,70 +14,71 @@ import com.google.gwt.user.client.ui.Label;
 
 public class FileUploadPanel extends ALComposite implements ClickHandler {
 
-	protected String fileName;
+    protected String filePrefix;
+    FlowPanel panel = new FlowPanel();
+    FormPanel formPanel = new FormPanel();
+    Label label = new Label("upload");
+    FileUpload fileUpload = new FileUpload();
+    Button submit = new Button("Upload");
 
-	FlowPanel panel = new FlowPanel();
+    public FileUploadPanel(String labelName, String filePrefix) {
+        label.setText(labelName);
+        this.filePrefix = filePrefix;
+        init(formPanel);
+        submit.setVisible(false);
+    }
 
-	FormPanel formPanel = new FormPanel();
-	Label label = new Label("upload");
-	FileUpload fileUpload = new FileUpload();
-	Button submit = new Button("Upload");
+    @Override
+    protected void addListeners() {
+        submit.addClickHandler(this);
+    }
 
-	public FileUploadPanel(String labelName, String fileName) {
-		label.setText(labelName);
-		this.fileName = fileName;
-		init(formPanel);
-		submit.setVisible(false);
-	}
+    @Override
+    protected void configure() {
+        formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
+        formPanel.setMethod(FormPanel.METHOD_POST);
+        fileUpload.setName(filePrefix);
+        formPanel.setAction(OfficeWelcome.constants.file_upload_url());
+    }
 
-	@Override
-	protected void addListeners() {
-		submit.addClickHandler(this);
-	}
+    @Override
+    protected void addWidgets() {
+        panel.add(label);
+        panel.add(fileUpload);
+        panel.add(submit);
+        formPanel.add(panel);
+    }
 
-	@Override
-	protected void configure() {
-		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
-		formPanel.setMethod(FormPanel.METHOD_POST);
-		fileUpload.setName(fileName);
-		formPanel.setAction(OfficeWelcome.constants.file_upload_url());
-	}
+    @Override
+    public void onClick(ClickEvent arg0) {
+        if (arg0.getSource().equals(submit)) {
+            formPanel.submit();
+        }
+    }
 
-	@Override
-	protected void addWidgets() {
-		panel.add(label);
-		panel.add(fileUpload);
-		panel.add(submit);
-		formPanel.add(panel);
-	}
+    public void upload(String entityId) {
+        setEntityId(entityId);
+        formPanel.submit();
+    }
 
-	@Override
-	public void onClick(ClickEvent arg0) {
-		if (arg0.getSource().equals(submit)) {
-			String imagename = fileUpload.getFilename();
-			formPanel.submit();
-		}
-	}
+    public JSONString getFileName() {
+        return new JSONString(filePrefix + "_entityId_" + stripFileName(fileUpload.getFilename()));
+    }
 
-	public void upload() {
-		formPanel.submit();
-	}
+    public void setEntityId(String entityId) {
+        fileUpload.setName(filePrefix + "_" + entityId + "_");
+    }
 
-	public JSONString getFileName() {
-		return new JSONString(fileName + stripFileName(fileUpload.getFilename()));
-	}
+    public FileUpload getFileUpload() {
+        return fileUpload;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-		fileUpload.setName(fileName);
-	}
+    protected String stripFileName(String fileName) {
+        if (fileName.lastIndexOf("\\") > 0) {
+            return fileName.substring(fileName.lastIndexOf("\\") + 1);
+        } else {
+            return fileName;
+        }
 
-	protected String stripFileName(String fileName) {
-		if (fileName.lastIndexOf("\\") > 0) {
-			return fileName.substring(fileName.lastIndexOf("\\") + 1);
-		} else {
-			return fileName;
-		}
-
-	}
+    }
 }

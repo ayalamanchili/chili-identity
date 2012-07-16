@@ -49,13 +49,14 @@ public class FileResource {
     @GET
     @Path("/download")
     @Produces("image/*")
-    public Response downloadFile(@QueryParam("path") String path) {
+    public Response downloadFile(@QueryParam("path") String path, @QueryParam("entityId") String entityId) {
         ResponseBuilder response = null;
         if (path == null || path.trim().length() < 1) {
             response = Response.status(Response.Status.BAD_REQUEST);
             return response.build();
         }
         File file = null;
+        path = swapEntityId(path, entityId);
         try {
             file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
             if (file.exists()) {
@@ -72,6 +73,14 @@ public class FileResource {
             throw new RuntimeException("Error processing File download" + e);
         }
 
+    }
+
+    protected String swapEntityId(String path, String entityId) {
+        if (entityId != null && path.contains("entityId")) {
+            return path.replace("entityId", entityId);
+        } else {
+            return path;
+        }
     }
 
     protected void processImageUpload(HttpServletRequest request) {

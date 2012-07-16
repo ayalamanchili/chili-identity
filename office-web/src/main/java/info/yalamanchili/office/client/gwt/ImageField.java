@@ -20,16 +20,15 @@ public class ImageField extends ALComposite {
     Label label = new Label();
     Image image = new Image();
 
-    public ImageField(String labelName, String url, final int width, final int height, boolean showLabel) {
+    public ImageField(String labelName, String url, String entityId, final int width, final int height, boolean showLabel) {
         if (url == null || url.trim().length() < 1) {
             setDefaultImage(width, height);
         }
         label.setText(labelName);
         label.setVisible(showLabel);
         setPixelSize(width, height);
-        image.setUrl(OfficeWelcome.constants.file_download_url() + url);
+        image.setUrl(OfficeWelcome.constants.file_download_url() + url + "&entityId=" + entityId);
         image.addErrorHandler(new ErrorHandler() {
-
             public void onError(ErrorEvent event) {
                 setDefaultImage(width, height);
             }

@@ -12,24 +12,26 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.office.client.gwt.JSONUtils;
 
 public class CreateEmployeePanel extends CreateComposite {
-    
+
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
-    FileUploadPanel empImageUploadPanel = new FileUploadPanel("Profile Picture", "name");
-    
+    FileUploadPanel empImageUploadPanel = new FileUploadPanel("Profile Picture", "Employee/imageURL");
+
     public CreateEmployeePanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("Employee", OfficeWelcome.constants);
     }
-    
+
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject user = new JSONObject();
         assignEntityValueFromField("username", user);
         assignEntityValueFromField("passwordHash", user);
-        
+
         JSONObject employee = new JSONObject();
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
@@ -37,30 +39,21 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("dateOfBirth", employee);
         assignEntityValueFromField("sex", employee);
         assignEntityValueFromField("startDate", employee);
-        assignImageName();
         employee.put("imageURL", empImageUploadPanel.getFileName());
         user.put("employee", employee);
-        logger.info(user.toString());
         return user;
     }
-//the iamge name needs to be unique. so set the apprioriate it based on properties.
 
-    protected void assignImageName() {
-        StringField firstNameF = (StringField) fields.get("firstName");
-        StringField lastNameF = (StringField) fields.get("lastName");
-        empImageUploadPanel.setFileName("employee/" + firstNameF.getValue() + "_" + lastNameF.getValue() + "_");
-    }
-    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("username", false, true, DataType.STRING_FIELD);
@@ -74,31 +67,34 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         entityDisplayWidget.add(empImageUploadPanel);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     public void createButtonClicked() {
-        empImageUploadPanel.upload();
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-                    
+
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
+                        uploadImage(arg0);
                     }
                 });
-        
+
     }
-    
+
+    protected void uploadImage(String entityId) {
+        empImageUploadPanel.upload(entityId.trim());
+    }
+
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully created employee");
@@ -106,14 +102,14 @@ public class CreateEmployeePanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.sidePanel.add(new EmployeeSidePanel());
         TabPanel.instance().myOfficePanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
-        
+
     }
-    
+
     @Override
     protected void addButtonClicked() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "admin/createuser";

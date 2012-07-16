@@ -38,7 +38,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     protected void displayPost() {
         postCaptionPanel.setCaptionHTML(JSONUtils.toString(post, "employeeName"));
         this.postId = JSONUtils.toString(post, "id");
-        imagePanel.add(new ImageField("", JSONUtils.toString(post, "employeeImageUrl"), 50, 50, false));
+        imagePanel.add(new ImageField("", JSONUtils.toString(post, "employeeImageUrl"), JSONUtils.toString(post, "id"), 50, 50, false));
         postBodyArea.setHTML(JSONUtils.toString(post, "postContent"));
         Long numberOfReplies = Long.valueOf(JSONUtils.toString(post, "numberOfReplies"));
         if (numberOfReplies > 0) {
