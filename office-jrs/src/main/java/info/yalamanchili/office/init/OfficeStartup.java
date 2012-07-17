@@ -128,17 +128,17 @@ public class OfficeStartup {
         adminCellPhone.setPhoneNumber("7031112222");
         adminCellPhone.setPhoneType(getCellPhoneType());
 
-//        adminEmp.addPhone(userCellPhone);
-//         adminEmp.addAddress(adminAddress);
+        adminEmp.addPhone(userCellPhone);
+        adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
         //TODO fix data this is causing duplicates
 //        adminEmp.addClientInformation(userClientInfo());
 //        adminEmp.addEmergencyContact(userEmergencyContact());
         adminEmp = em.merge(adminEmp);
-//        userAdmin().setEmployee(adminEmp);
-        
-        
+        userAdmin().setEmployee(adminEmp);
+
+
 
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());
