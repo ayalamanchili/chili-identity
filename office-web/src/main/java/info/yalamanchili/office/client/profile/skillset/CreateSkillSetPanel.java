@@ -35,6 +35,7 @@ public class CreateSkillSetPanel extends CreateComposite {
     
     @Override
     protected void addWidgets() {
+        addField("lastUpdated", true, false, DataType.DATE_FIELD);
         entityDisplayWidget.add(resumeUploadPanel);
     }
     
@@ -55,6 +56,7 @@ public class CreateSkillSetPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject skillSet = new JSONObject();
+        assignEntityValueFromField("lastUpdated", skillSet);
         skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
         return skillSet;
     }
