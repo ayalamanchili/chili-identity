@@ -41,9 +41,7 @@ public class OfficeStartup {
 
     protected void startup() {
         initRoles();
-        em.flush();
         initUsers();
-        em.flush();
         initRefData();
         initTestData();
     }
@@ -102,7 +100,6 @@ public class OfficeStartup {
         userEmp.addEmergencyContact(userEmergencyContact());
         userEmp.setUser(userUser);
         userEmp = em.merge(userEmp);
-        em.flush();
 
         // Admin Employee
         Employee adminEmp = new Employee();
@@ -144,7 +141,6 @@ public class OfficeStartup {
 //        adminEmp.addEmergencyContact(userEmergencyContact());
         adminEmp.setUser(adminUser);
         adminEmp = em.merge(adminEmp);
-        em.flush();
 
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());
