@@ -1,5 +1,6 @@
 package info.yalamanchili.office.entity.security;
 
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Employee;
 
 import java.io.Serializable;
@@ -13,91 +14,92 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @XmlRootElement
 @XmlType
+@Table(
+uniqueConstraints =
+@UniqueConstraint(columnNames = {"username"}))
 public class CUser implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    private Long userId;
+//    @Unique(entity = CUser.class, property = "username")
+    private String username;
+    private String passwordHash;
+    private boolean enabled;
+    private Set<CRole> roles;
 
-	private Long userId;
+    @Id
+    @GeneratedValue
+    public Long getUserId() {
+        return userId;
+    }
 
-	private String username;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	private String passwordHash;
+//    @Unique(entity = CUser.class, property = "username")
+    public String getUsername() {
+        return username;
+    }
 
-	private boolean enabled;
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	private Set<CRole> roles;
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-	@Id
-	@GeneratedValue
-	public Long getUserId() {
-		return userId;
-	}
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @OneToOne
+    @Valid
+    public Employee getEmployee() {
+        return employee;
+    }
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    protected Employee employee;
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    @ManyToMany(targetEntity = CRole.class)
+    @JoinTable(name = "UserRoles", joinColumns =
+    @JoinColumn(name = "UserId"), inverseJoinColumns =
+    @JoinColumn(name = "RoleId"))
+    @XmlElement
+    public Set<CRole> getRoles() {
+        if (roles == null) {
+            roles = new HashSet<CRole>();
+        }
+        return roles;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public void setRoles(Set<CRole> roles) {
+        this.roles = roles;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	@OneToOne
-	@Valid
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-
-	protected Employee employee;
-
-	@ManyToMany(targetEntity = CRole.class)
-	@JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "UserId"), inverseJoinColumns = @JoinColumn(name = "RoleId"))
-	@XmlElement
-	public Set<CRole> getRoles() {
-		if (roles == null) {
-			roles = new HashSet<CRole>();
-		}
-		return roles;
-	}
-
-	public void setRoles(Set<CRole> roles) {
-		this.roles = roles;
-	}
-
-	public void addRole(CRole role) {
-		this.getRoles().add(role);
-	}
-
+    public void addRole(CRole role) {
+        this.getRoles().add(role);
+    }
 }
