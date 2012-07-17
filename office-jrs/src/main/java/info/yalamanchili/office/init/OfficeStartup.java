@@ -1,7 +1,6 @@
 package info.yalamanchili.office.init;
 
 import info.yalamanchili.commons.DateUtils;
-import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
 import info.yalamanchili.office.entity.FileType;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
@@ -34,21 +33,28 @@ public class OfficeStartup {
 
     @PersistenceContext
     protected EntityManager em;
+    protected CUser userUser;
+    protected CUser adminUser;
+    protected CRole userRole;
+    protected CRole hrRole;
+    protected CRole adminRole;
 
     protected void startup() {
-        initRolesAndUsers();
+        initRoles();
+        em.flush();
+        initUsers();
+        em.flush();
         initRefData();
         initTestData();
     }
 
-    protected void initRolesAndUsers() {
-
-        // Roles
+    protected void initRoles() {
         userRole();
         adminRole();
         hrRole();
-        accountsRole();
-        // users
+    }
+
+    protected void initUsers() {
         userUser();
         userAdmin();
     }
@@ -94,8 +100,9 @@ public class OfficeStartup {
         userEmp.addEmail(userSecondaryEmail);
         userEmp.addClientInformation(userClientInfo());
         userEmp.addEmergencyContact(userEmergencyContact());
+        userEmp.setUser(userUser);
         userEmp = em.merge(userEmp);
-        userUser().setEmployee(userEmp);
+        em.flush();
 
         // Admin Employee
         Employee adminEmp = new Employee();
@@ -135,10 +142,9 @@ public class OfficeStartup {
         //TODO fix data this is causing duplicates
 //        adminEmp.addClientInformation(userClientInfo());
 //        adminEmp.addEmergencyContact(userEmergencyContact());
+        adminEmp.setUser(adminUser);
         adminEmp = em.merge(adminEmp);
-        userAdmin().setEmployee(adminEmp);
-
-
+        em.flush();
 
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());
@@ -360,64 +366,40 @@ public class OfficeStartup {
         return em.merge(emergencyContact);
     }
 
-    public CRole userRole() {
-        if (findEntity(em, CRole.class, "rolename", "ROLE_USER") == null) {
-            CRole userRole = new CRole();
-            userRole.setRolename("ROLE_USER");
-            return em.merge(userRole);
-        }
-        return findEntity(em, CRole.class, "rolename", "ROLE_USER");
+    public void userRole() {
+        CRole role = new CRole();
+        role.setRolename("ROLE_USER");
+        userRole = em.merge(role);
     }
 
-    public CRole hrRole() {
-        if (findEntity(em, CRole.class, "rolename", "ROLE_HR") == null) {
-            CRole userRole = new CRole();
-            userRole.setRolename("ROLE_HR");
-            return em.merge(userRole);
-        }
-        return findEntity(em, CRole.class, "rolename", "ROLE_HR");
+    public void hrRole() {
+        CRole role = new CRole();
+        role.setRolename("ROLE_HR");
+        hrRole = em.merge(role);
     }
 
-    public CRole accountsRole() {
-        if (findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTS") == null) {
-            CRole userRole = new CRole();
-            userRole.setRolename("ROLE_ACCOUNTS");
-            return em.merge(userRole);
-        }
-        return findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTS");
+    public void adminRole() {
+        CRole role = new CRole();
+        role.setRolename("ROLE_ADMIN");
+        adminRole = em.merge(role);
     }
 
-    public CRole adminRole() {
-        if (findEntity(em, CRole.class, "rolename", "ROLE_ADMIN") == null) {
-            CRole userRole = new CRole();
-            userRole.setRolename("ROLE_ADMIN");
-            return em.merge(userRole);
-        }
-        return findEntity(em, CRole.class, "rolename", "ROLE_ADMIN");
+    protected void userUser() {
+        CUser user = new CUser();
+        user.setUsername("user");
+        user.setPasswordHash("user");
+        user.addRole(userRole);
+        user.setEnabled(true);
+        userUser = em.merge(user);
     }
 
-    protected CUser userUser() {
-        if (findEntity(em, CUser.class, "username", "user") == null) {
-            CUser userUser = new CUser();
-            userUser.setUsername("user");
-            userUser.setPasswordHash("user");
-            userUser.addRole(userRole());
-            userUser.setEnabled(true);
-            return em.merge(userUser);
-        }
-        return findEntity(em, CUser.class, "username", "user");
-    }
-
-    protected CUser userAdmin() {
-        if (findEntity(em, CUser.class, "username", "admin") == null) {
-            CUser userUser = new CUser();
-            userUser.setUsername("admin");
-            userUser.setPasswordHash("admin");
-            userUser.setEnabled(true);
-            userUser.addRole(userRole());
-            userUser.addRole(adminRole());
-            return em.merge(userUser);
-        }
-        return findEntity(em, CUser.class, "username", "admin");
+    protected void userAdmin() {
+        CUser user = new CUser();
+        user.setUsername("admin");
+        user.setPasswordHash("admin");
+        user.setEnabled(true);
+        user.addRole(userRole);
+        user.addRole(adminRole);
+        adminUser = em.merge(user);
     }
 }

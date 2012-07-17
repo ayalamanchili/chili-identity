@@ -58,14 +58,13 @@ public class AdminResource {
     @Produces("application/text")
     public String createUser(CUser user) {
         user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
-        user.setEmployee(em.merge(user.getEmployee()));
         user.setEnabled(true);
         user = em.merge(user);
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(user);
         //CITS data push
-        CitsService citsService = (CitsService) SpringContext.getBean("citsService");
-        citsService.pushNewEmployeeInformation(user.getEmployee());
+//        CitsService citsService = (CitsService) SpringContext.getBean("citsService");
+//        citsService.pushNewEmployeeInformation(user.getEmployee());
         return user.getEmployee().getId().toString();
     }
 

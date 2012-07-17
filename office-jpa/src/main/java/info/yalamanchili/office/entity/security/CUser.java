@@ -6,6 +6,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class CUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long userId;
-//    @Unique(entity = CUser.class, property = "username")
+    @Unique(entity = CUser.class, property = "username")
     private String username;
     private String passwordHash;
     private boolean enabled;
@@ -47,7 +48,6 @@ public class CUser implements Serializable {
         this.userId = userId;
     }
 
-//    @Unique(entity = CUser.class, property = "username")
     public String getUsername() {
         return username;
     }
@@ -72,8 +72,9 @@ public class CUser implements Serializable {
         this.enabled = enabled;
     }
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
     @Valid
+    @XmlElement
     public Employee getEmployee() {
         return employee;
     }
