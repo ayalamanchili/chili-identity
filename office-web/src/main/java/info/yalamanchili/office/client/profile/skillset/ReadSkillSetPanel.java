@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.JSONUtils;
@@ -30,7 +31,7 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
     ClickableLink resumeL = new ClickableLink("Resume");
 
     public ReadSkillSetPanel(String id) {
-        initReadComposite(id, "Employee", OfficeWelcome.constants);
+        initReadComposite(id, "SkillSet", OfficeWelcome.constants);
     }
 
     @Override
@@ -59,7 +60,10 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
                             populateFieldsFromEntity(entity);
                         } else {
                             TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            if (Auth.isAdmin() || Auth.isHR())
+                            {
                             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
+                            }
                         }
 
                     }
