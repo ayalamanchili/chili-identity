@@ -236,17 +236,19 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
             createButtonClicked();
         }
         Cell src = table.getCellForEvent(event);
-        Integer rowIndex = src.getRowIndex();
-        if (rowIndex != null) {
-            TableRowOptionsWidget rowWidget = optionsWidgetMap.get(String.valueOf(rowIndex));
-            if (event.getSource().equals(rowWidget.getReadLink())) {
-                viewClicked(rowWidget.entityId);
-            }
-            if (event.getSource().equals(rowWidget.getUpdateLink())) {
-                updateClicked(rowWidget.entityId);
-            }
-            if (event.getSource().equals(rowWidget.getDeleteLink())) {
-                deleteClicked(rowWidget.entityId);
+        if (src != null) {
+            Integer rowIndex = src.getRowIndex();
+            if (rowIndex != null) {
+                TableRowOptionsWidget rowWidget = optionsWidgetMap.get(String.valueOf(rowIndex));
+                if (event.getSource().equals(rowWidget.getReadLink())) {
+                    viewClicked(rowWidget.entityId);
+                }
+                if (event.getSource().equals(rowWidget.getUpdateLink())) {
+                    updateClicked(rowWidget.entityId);
+                }
+                if (event.getSource().equals(rowWidget.getDeleteLink())) {
+                    deleteClicked(rowWidget.entityId);
+                }
             }
         }
     }
