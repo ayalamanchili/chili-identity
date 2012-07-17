@@ -22,6 +22,7 @@ import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyCont
 import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
+import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import java.util.logging.Logger;
 import org.springframework.context.annotation.Profile;
 
@@ -40,6 +41,8 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel addressesPanel;
     protected DisclosurePanel clientInfoPanel;
     protected DisclosurePanel emergencyContactsPanel;
+    protected DisclosurePanel skillSetPanel;
+    
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
 
     public ProfileHome() {
@@ -66,6 +69,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         addEmailsPanel();
         addClientInfoPanel();
         addEmergencyContactsPanel();
+        addSkillSetPanel();
     }
     /*
      * Read Employee Panel
@@ -208,7 +212,24 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         emergencyContactsPanel.setOpen(false);
         emergencyContactsPanel.setOpen(true);
     }
+    /* SkillSet Panel */
+     protected void addSkillSetPanel() {
+        skillSetPanel = new DisclosurePanel("SkillSet");
+        panel.add(skillSetPanel);
+        skillSetPanel.addStyleName("profileHome");
+        skillSetPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                skillSetPanel.setContent(
+                        new ReadSkillSetPanel(OfficeWelcome.instance().employeeId));
 
+            }
+        });
+    }
+ public void refreshSkillSetPanel() {
+        skillSetPanel.setOpen(false);
+        skillSetPanel.setOpen(true);
+    }
     @Override
     public void onClick(ClickEvent event) {
         UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
