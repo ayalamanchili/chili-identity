@@ -5,6 +5,7 @@
 package info.yalamanchili.office.client.profile.address;
 
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.gwt.JSONUtils;
@@ -34,6 +35,7 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("successfully deleted Address information");
         ProfileHome.instance();
         ProfileHome.instance().refreshAddresses();
     }
