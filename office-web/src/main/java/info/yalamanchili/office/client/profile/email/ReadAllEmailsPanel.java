@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 
 public class ReadAllEmailsPanel extends ReadAllComposite {
 
@@ -92,6 +93,7 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("successfully deleted Emails information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
