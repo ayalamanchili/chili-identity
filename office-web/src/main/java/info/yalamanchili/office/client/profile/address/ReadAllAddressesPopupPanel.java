@@ -34,7 +34,8 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
 
     @Override
     public void postDeleteSuccess() {
-        //TODO refresh
+        ProfileHome.instance();
+        ProfileHome.instance().refreshAddresses();
     }
 
     @Override
