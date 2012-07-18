@@ -37,6 +37,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @XmlRootElement
 @Entity
+
 @Indexed
 @Table(
 uniqueConstraints =

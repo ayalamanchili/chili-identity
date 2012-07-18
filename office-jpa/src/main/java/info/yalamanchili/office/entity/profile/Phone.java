@@ -5,12 +5,15 @@
 
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,6 +29,7 @@ import org.hibernate.search.annotations.Indexed;
 @Indexed
 @XmlRootElement
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"phoneNumber"}))
 public class Phone extends AbstractEntity {
 	/**
 	 * @generated
@@ -38,6 +42,7 @@ public class Phone extends AbstractEntity {
 	 */
 	@Size(min = 10, max = 10)
 	@Field
+        @Unique(entity = Certification.class, property = "name", message="{PhoneNumber.already.exists}")
 	protected String phoneNumber;
 
 	/**

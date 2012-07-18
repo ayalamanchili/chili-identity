@@ -5,6 +5,7 @@
 
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
 
 import java.util.ArrayList;
@@ -12,7 +13,9 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,6 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"emailType"}))
 public class EmailType extends AbstractEntity {
 	/**
 	 * @generated
@@ -40,6 +44,7 @@ public class EmailType extends AbstractEntity {
 	 */
 	@Field
 	@NotEmpty
+        @Unique(entity = Certification.class, property = "name", message="{emailtype.name.already.exists}")
 	protected String emailType;
 
 	/**

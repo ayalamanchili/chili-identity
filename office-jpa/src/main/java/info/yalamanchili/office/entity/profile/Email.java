@@ -5,12 +5,15 @@
 
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,6 +32,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class Email extends AbstractEntity {
 	/**
 	 * @generated
@@ -40,6 +44,7 @@ public class Email extends AbstractEntity {
 	 * @NOT generated
 	 */
 	@org.hibernate.validator.constraints.Email
+        @Unique(entity = Certification.class, property = "email", message="{email.not.unique.msg}")
 	@NotEmpty
 	protected String email;
 
