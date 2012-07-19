@@ -29,7 +29,7 @@ import org.hibernate.search.annotations.Indexed;
 @Indexed
 @XmlRootElement
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"phoneNumber"}))
+
 public class Phone extends AbstractEntity {
 	/**
 	 * @generated
@@ -42,7 +42,7 @@ public class Phone extends AbstractEntity {
 	 */
 	@Size(min = 10, max = 10)
 	@Field
-        @Unique(entity = Certification.class, property = "name", message="{PhoneNumber.already.exists}")
+        
 	protected String phoneNumber;
 
 	/**
