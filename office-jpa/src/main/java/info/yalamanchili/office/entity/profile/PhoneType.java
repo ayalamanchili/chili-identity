@@ -44,7 +44,7 @@ public class PhoneType extends AbstractEntity {
 	 */
 	@Field
 	@NotEmpty
-        @Unique(entity = PhoneType.class, property = "phoneType", message="{PhoneType.name.not.unique.msg}")
+        @Unique(entity = PhoneType.class, property = "phoneType", message="{phonetype.name.not.unique.msg}")
 	protected String phoneType;
 
 	/**
