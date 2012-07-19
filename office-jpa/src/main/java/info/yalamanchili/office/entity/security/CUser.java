@@ -25,14 +25,13 @@ import javax.xml.bind.annotation.XmlType;
 @Entity
 @XmlRootElement
 @XmlType
-@Table(
-uniqueConstraints =
-@UniqueConstraint(columnNames = {"username"}))
+//@Table(uniqueConstraints =@UniqueConstraint(columnNames = {"username"}))
+
 public class CUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long userId;
-    @Unique(entity = CUser.class, property = "username", message="{user.name.not.unique.msg}")
+    //@Unique(entity = CUser.class, property = "username", message="{user.name.not.unique.msg}")
     private String username;
     private String passwordHash;
     private boolean enabled;
