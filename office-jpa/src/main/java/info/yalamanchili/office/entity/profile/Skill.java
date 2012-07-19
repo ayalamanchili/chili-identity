@@ -4,7 +4,9 @@
  */
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.security.CUser;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -23,6 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Skill extends AbstractEntity {
 
     @NotEmpty
+    @Unique(entity = CUser.class, property = "name", message="{skill.name.not.unique.msg}")
     protected String name;
     protected String description;
 
