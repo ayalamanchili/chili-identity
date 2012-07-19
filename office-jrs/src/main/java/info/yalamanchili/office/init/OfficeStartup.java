@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
+import info.yalamanchili.office.entity.profile.Company;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
@@ -70,6 +71,10 @@ public class OfficeStartup {
         userEmp.setSsn("123456789");
         userEmp.setStartDate(new Date());
 
+        Company c1= new   Company();
+        c1.setName("sstech");
+        c1= em.merge(c1);
+        
         Address userAddress = new Address();
         userAddress.setAddressType(getHomeAddressType());
         userAddress.setStreet1("2110 wilkes ct");
@@ -170,6 +175,14 @@ public class OfficeStartup {
         userPostReply1.setEmployee(adminEmp);
         userPostReply1.setParentPost(userPost1);
         userPostReply1 = em.merge(userPostReply1);
+
+        
+       Post userPost2 = new Post();
+        userPost2.setPostTimeStamp(new Date());
+        userPost2.setPostContent("this is my company post by user");
+        userPost2.setEmployee(userEmp);
+        userPost2.setCompany(c1);
+        userPost2 = em.merge(userPost2);
 
     }
 
