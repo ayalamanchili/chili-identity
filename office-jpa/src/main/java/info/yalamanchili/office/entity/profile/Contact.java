@@ -39,9 +39,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 
 @Indexed
-@Table(
-uniqueConstraints =
-@UniqueConstraint(columnNames = {"firstName", "lastName"}))
+//@Table(uniqueConstraints =@UniqueConstraint(columnNames = {"firstName", "lastName"}))
 public class Contact extends AbstractEntity {
 
     /**
