@@ -45,7 +45,7 @@ public class Company extends AbstractEntity {
 	 */
 	@Field
 	@NotEmpty
-        @Unique(entity = CUser.class, property = "name", message="{company.name.not.unique.msg}")
+        @Unique(entity = Company.class, property = "name", message="{company.name.not.unique.msg}")
 	protected String name;
 
 	/**
