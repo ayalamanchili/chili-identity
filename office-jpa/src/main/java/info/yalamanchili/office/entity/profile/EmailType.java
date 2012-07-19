@@ -31,7 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"emailType"}))
+
 public class EmailType extends AbstractEntity {
 	/**
 	 * @generated
@@ -44,7 +44,7 @@ public class EmailType extends AbstractEntity {
 	 */
 	@Field
 	@NotEmpty
-        //@Unique(entity = Certification.class, property = "name", message="{emailtype.name.already.exists}")
+       
 	protected String emailType;
 
 	/**
