@@ -45,7 +45,7 @@ public class EmailType extends AbstractEntity {
 	 */
 	@Field
 	@NotEmpty
-        @Unique(entity = CUser.class, property = "emailType", message="{emailtype.name.not.unique.msg}")
+        @Unique(entity = EmailType.class, property = "emailType", message="{emailtype.name.not.unique.msg}")
 	protected String emailType;
 
 	/**
