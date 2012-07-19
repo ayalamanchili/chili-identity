@@ -7,6 +7,7 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.security.CUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class EmailType extends AbstractEntity {
 	 */
 	@Field
 	@NotEmpty
-       @Unique(entity = EmailType.class, property = "emailType", message="{EmailType.name.not.unique.msg}")
+        @Unique(entity = CUser.class, property = "emailType", message="{emailtype.name.not.unique.msg}")
 	protected String emailType;
 
 	/**
