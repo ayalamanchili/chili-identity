@@ -56,7 +56,14 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
 
     @Override
     protected void addWidgets() {
-        captionPanel.setCaptionHTML("Share something...");
+        if (SocialSidePanel.IsEmployeeFeedSelected == true)
+        {
+        captionPanel.setCaptionHTML("Community Feed...");
+        }
+        else
+        {
+          captionPanel.setCaptionHTML("System Soft Feed...");
+        }
         buttonsPanel.add(createPostB);
         buttonsPanel.add(imageUploadPanel);
         mainPanel.add(createPostTextArea);
@@ -110,7 +117,13 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
     }
 
     protected String getURI() {
+       if (SocialSidePanel.IsEmployeeFeedSelected == true)
+       {
         return OfficeWelcome.constants.root_url() + "social/createpost";
+       }else
+       {
+         return OfficeWelcome.constants.root_url() + "social/createCompanyPost";
+       }
     }
 
     @Override
