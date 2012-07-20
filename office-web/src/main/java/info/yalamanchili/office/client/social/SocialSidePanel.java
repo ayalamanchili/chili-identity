@@ -18,6 +18,7 @@ import info.yalamanchili.office.client.TabPanel;
 public class SocialSidePanel extends ALComposite implements ClickHandler {
 
     FlowPanel panel = new FlowPanel();
+    public static boolean IsEmployeeFeedSelected = true;
     ClickableLink employeeFeedL = new ClickableLink("Communitiy Feed");
     ClickableLink companyFeedL = new ClickableLink("System Soft Feed");
 
@@ -47,11 +48,14 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(employeeFeedL)) {
-            showEmployeeFeed();
+            IsEmployeeFeedSelected = true;
+//            showEmployeeFeed();
         }
-        if (event.getSource().equals(companyFeedL)) {
-            showCompanyFeed();
+        else if (event.getSource().equals(companyFeedL)) {
+            IsEmployeeFeedSelected = false;
+//            showCompanyFeed();
         }
+        showEmployeeFeed();
     }
 
     protected void showEmployeeFeed() {
@@ -59,7 +63,9 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
         TabPanel.instance().socialPanel.entityPanel.add(new EmployeePostsHome());
     }
 
-    protected void showCompanyFeed() {
-        //TODO
-    }
+//    protected void showCompanyFeed() {
+//        //TODO
+//        TabPanel.instance().socialPanel.entityPanel.clear();
+//        TabPanel.instance().socialPanel.entityPanel.add(new EmployeePostsHome());
+//    }
 }
