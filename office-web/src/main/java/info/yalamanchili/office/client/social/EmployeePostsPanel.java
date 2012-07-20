@@ -60,6 +60,13 @@ public class EmployeePostsPanel extends ALComposite {
     }
 
     protected String getEmployeeFeedURL(Integer start, Integer limit) {
+       if (SocialSidePanel.IsEmployeeFeedSelected == true)
+       {
         return OfficeWelcome.constants.root_url() + "social/employeefeed/" + start.toString() + "/" + limit.toString();
+       }
+       else
+       {
+         return OfficeWelcome.constants.root_url() + "social/companyfeed/" + start.toString() + "/" + limit.toString();
+       }
     }
 }
