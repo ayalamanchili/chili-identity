@@ -1,5 +1,6 @@
 package info.yalamanchili.office.init;
 
+import info.chili.jpa.validation.impl.UniqueIDValidator;
 import info.yalamanchili.commons.DateUtils;
 import info.yalamanchili.office.entity.FileType;
 import info.yalamanchili.office.entity.profile.Address;
@@ -41,10 +42,13 @@ public class OfficeStartup {
     protected CRole adminRole;
 
     protected void startup() {
+        UniqueIDValidator.disable();
         initRoles();
         initUsers();
         initRefData();
         initTestData();
+        em.flush();
+        UniqueIDValidator.enable();
     }
 
     protected void initRoles() {
@@ -71,10 +75,10 @@ public class OfficeStartup {
         userEmp.setSsn("123456789");
         userEmp.setStartDate(new Date());
 
-        Company c1= new   Company();
+        Company c1 = new Company();
         c1.setName("sstech");
-        c1= em.merge(c1);
-        
+        c1 = em.merge(c1);
+
         Address userAddress = new Address();
         userAddress.setAddressType(getHomeAddressType());
         userAddress.setStreet1("2110 wilkes ct");
@@ -103,9 +107,10 @@ public class OfficeStartup {
         userEmp.addEmail(userSecondaryEmail);
         userEmp.addClientInformation(userClientInfo());
         userEmp.addEmergencyContact(userEmergencyContact());
-        userEmp.setUser(userUser);
         userEmp = em.merge(userEmp);
 
+        userUser.setEmployee(userEmp);
+        userUser = em.merge(userUser);
         // Admin Employee
         Employee adminEmp = new Employee();
         adminEmp.setFirstName("admin");
@@ -141,11 +146,10 @@ public class OfficeStartup {
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
-        //TODO fix data this is causing duplicates
-//        adminEmp.addClientInformation(userClientInfo());
-//        adminEmp.addEmergencyContact(userEmergencyContact());
-        adminEmp.setUser(adminUser);
         adminEmp = em.merge(adminEmp);
+
+        adminUser.setEmployee(adminEmp);
+        adminUser = em.merge(adminUser);
 
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());
@@ -176,8 +180,8 @@ public class OfficeStartup {
         userPostReply1.setParentPost(userPost1);
         userPostReply1 = em.merge(userPostReply1);
 
-        
-       Post userPost2 = new Post();
+
+        Post userPost2 = new Post();
         userPost2.setPostTimeStamp(new Date());
         userPost2.setPostContent("this is my company post by user");
         userPost2.setEmployee(userEmp);

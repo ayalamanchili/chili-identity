@@ -37,8 +37,6 @@ import org.hibernate.search.annotations.Indexed;
 @Indexed
 @XmlRootElement
 @Entity
-
-           
 public class Employee extends Contact {
 
     /**
@@ -57,8 +55,6 @@ public class Employee extends Contact {
      */
     @Field
     protected String ssn;
-    @OneToOne
-    protected CUser user;
     /**
      * @generated
      */
@@ -117,15 +113,6 @@ public class Employee extends Contact {
      */
     public void setSsn(String ssn) {
         this.ssn = ssn;
-    }
-
-    @XmlTransient
-    public CUser getUser() {
-        return user;
-    }
-
-    public void setUser(CUser user) {
-        this.user = user;
     }
 
     /**
