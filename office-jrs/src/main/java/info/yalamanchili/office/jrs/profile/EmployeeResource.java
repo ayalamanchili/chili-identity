@@ -100,8 +100,15 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Produces("application/text")
     public String addSkillSet(@PathParam("empId") Long empId, SkillSet skillset) {
         Employee emp = (Employee) getDao().findById(empId);
-        skillset.setLastUpdated(new Date());
-        emp.setSkillSet(skillset);
+        SkillSet skillSetUpdated = emp.getSkillSet();
+        if (skillSetUpdated != null) {
+            skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
+
+        } else {
+            skillSetUpdated = skillset;
+        }
+        skillSetUpdated.setLastUpdated(new Date());
+        emp.setSkillSet(skillSetUpdated);
         emp = em.merge(emp);
         return emp.getSkillSet().getId().toString();
     }

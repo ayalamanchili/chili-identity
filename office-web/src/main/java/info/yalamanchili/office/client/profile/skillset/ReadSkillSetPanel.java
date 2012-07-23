@@ -46,7 +46,6 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -55,26 +54,29 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response != null && !response.isEmpty()) {
-                            entity = (JSONObject) JSONParser.parseLenient(response);
-                            populateFieldsFromEntity(entity);
-                        } else {
-                            TabPanel.instance().myOfficePanel.entityPanel.clear();
-                            if (Auth.isAdmin() || Auth.isHR())
-                            {
-                            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
-                            }
-                        }
-
+                        onLoadSuccess(response);
                     }
                 });
 
+    }
+
+    protected void onLoadSuccess(String response) {
+        if (response != null && !response.isEmpty()) {
+            entity = (JSONObject) JSONParser.parseLenient(response);
+            populateFieldsFromEntity(entity);
+        } else {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            if (Auth.isAdmin() || Auth.isHR()) {
+                TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
+            }
+        }
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("entity" + entity.toString());
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
+        entityDisplayWidget.add(new SkillSetOptionsPanel(entityId));
     }
 
     @Override
