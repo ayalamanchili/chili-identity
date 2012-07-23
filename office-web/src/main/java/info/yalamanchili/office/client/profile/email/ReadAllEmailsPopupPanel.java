@@ -5,7 +5,6 @@ import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 
-import info.yalamanchili.office.client.profile.email.UpdateEmailPopupPanel;
 
 import info.yalamanchili.office.client.profile.ProfileHome;
 

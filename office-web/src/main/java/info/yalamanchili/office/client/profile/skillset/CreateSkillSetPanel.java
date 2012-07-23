@@ -9,7 +9,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.FileUploadPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
@@ -22,11 +21,13 @@ import java.util.logging.Logger;
  */
 public class CreateSkillSetPanel extends CreateComposite {
 
+    protected String employeeId;
     private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
     FileUploadPanel resumeUploadPanel = new FileUploadPanel("Resume", "SkillSet/resumeUrl");
 
-    public CreateSkillSetPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
+    public CreateSkillSetPanel(String employeeId) {
+        super(CreateCompositeType.CREATE);
+        this.employeeId = employeeId;
         initCreateComposite("SkillSet", OfficeWelcome.constants);
     }
 
@@ -48,18 +49,6 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-    }
-
-    @Override
-    protected JSONObject populateEntityFromFields() {
-        JSONObject skillSet = new JSONObject();
-        assignEntityValueFromField("lastUpdated", skillSet);
-        skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
-        return skillSet;
-    }
-
-    @Override
-    protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -74,6 +63,18 @@ public class CreateSkillSetPanel extends CreateComposite {
                         uploadResume(arg0);
                     }
                 });
+    }
+
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        JSONObject skillSet = new JSONObject();
+        assignEntityValueFromField("lastUpdated", skillSet);
+        skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
+        return skillSet;
+    }
+
+    @Override
+    protected void addButtonClicked() {
     }
 
     protected void uploadResume(String entityId) {
@@ -94,6 +95,6 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/skillset/" + TreeEmployeePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + employeeId;
     }
 }

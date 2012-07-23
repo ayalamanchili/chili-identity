@@ -18,7 +18,7 @@ import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyCont
 import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
-import info.yalamanchili.office.client.profile.skillset.UpdateSkillSetPanel;
+import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite implements ClickHandler {
@@ -216,7 +216,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 skillSetPanel.setContent(
-                        new UpdateSkillSetPanel(OfficeWelcome.instance().employeeId));
+                        new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
 
             }
         });
@@ -229,7 +229,9 @@ public class ProfileHome extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
-        new GenericPopup(UpdatePanel).show();
+        if (event.getSource().equals(updateProfile)) {
+            UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
+            new GenericPopup(UpdatePanel).show();
+        }
     }
 }

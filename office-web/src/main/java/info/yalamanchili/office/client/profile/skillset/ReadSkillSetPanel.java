@@ -64,10 +64,11 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
         if (response != null && !response.isEmpty()) {
             entity = (JSONObject) JSONParser.parseLenient(response);
             populateFieldsFromEntity(entity);
+
         } else {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             if (Auth.isAdmin() || Auth.isHR()) {
-                TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(CreateComposite.CreateCompositeType.ADD));
+                TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(entityId));
             }
         }
     }
