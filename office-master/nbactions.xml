@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
         <action>
-            <actionName>CUSTOM-mvn clean install</actionName>
-            <displayName>mvn clean install</displayName>
+            <actionName>CUSTOM-clean install -DskipTests</actionName>
+            <displayName>clean install -DskipTests</displayName>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
             </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
         </action>
         <action>
-            <actionName>CUSTOM-mvn clean install -Pprod</actionName>
-            <displayName>mvn clean install -Pprod</displayName>
+            <actionName>CUSTOM-clean install -Pprod</actionName>
+            <displayName>clean install -Pprod</displayName>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
@@ -20,29 +23,11 @@
             </activatedProfiles>
         </action>
         <action>
-            <actionName>CUSTOM-mvn clean install -DskipTests -Pprod</actionName>
-            <displayName>mvn clean install -DskipTests -Pprod</displayName>
+            <actionName>CUSTOM-clean install</actionName>
+            <displayName>clean install</displayName>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
             </goals>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
-            <activatedProfiles>
-                <activatedProfile>prod</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
-            <actionName>CUSTOM-mvn clean install -DskipTests</actionName>
-            <displayName>mvn clean install -DskipTests</displayName>
-            <goals>
-                <goal>clean</goal>
-                <goal>install</goal>
-                
-            </goals>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
         </action>
     </actions>
