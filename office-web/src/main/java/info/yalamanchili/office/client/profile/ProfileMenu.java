@@ -35,7 +35,8 @@ public class ProfileMenu extends Composite {
     }
     Command employeeMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getMyOfficePanel().clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
         }
@@ -43,17 +44,16 @@ public class ProfileMenu extends Composite {
     Command skillsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().clear();
-            //TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
-            //TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllSkillsPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new SkillSidePanel());
         }
     };
     Command certificationsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getMyOfficePanel().clear();
-            //TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
-            //TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCertificationsPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CertificationSidePanel());
         }
