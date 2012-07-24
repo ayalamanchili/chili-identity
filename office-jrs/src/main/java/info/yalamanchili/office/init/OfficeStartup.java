@@ -131,7 +131,11 @@ public class OfficeStartup {
         Email adminPrimaryEmail = new Email();
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
-        adminPrimaryEmail.setEmail("prashanthi_ponnaganti@yahoo.com");
+
+        adminPrimaryEmail.setEmail("bapu435@gmail.com");
+
+
+
 
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
@@ -399,8 +403,8 @@ public class OfficeStartup {
 
     protected void userUser() {
         CUser user = new CUser();
-        user.setUsername("user");
-        user.setPasswordHash("user");
+        user.setUsername("useruser");
+        user.setPasswordHash("useruser");
         user.addRole(userRole);
         user.setEnabled(true);
         userUser = em.merge(user);
@@ -408,8 +412,8 @@ public class OfficeStartup {
 
     protected void userAdmin() {
         CUser user = new CUser();
-        user.setUsername("admin");
-        user.setPasswordHash("admin");
+        user.setUsername("adminadmin");
+        user.setPasswordHash("adminadmin");
         user.setEnabled(true);
         user.addRole(userRole);
         user.addRole(adminRole);
