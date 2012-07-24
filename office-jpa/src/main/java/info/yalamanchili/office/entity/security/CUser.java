@@ -18,15 +18,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @XmlRootElement
 @XmlType
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"username"}))
+
 public class CUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,11 +44,12 @@ public class CUser implements Serializable {
     public Long getUserId() {
         return userId;
     }
-
+    
+    
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
+    @Size(min = 6,message="{user.userId.length.invalid.msg}")
     @Unique(entity = CUser.class, property = "username", message = "{user.name.not.unique.msg}")
     public String getUsername() {
         return username;
@@ -58,7 +62,7 @@ public class CUser implements Serializable {
     public String getPasswordHash() {
         return passwordHash;
     }
-
+    @Size(min = 6,message="{user.passwordHash.length.invalid.msg}")
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
