@@ -63,8 +63,8 @@ public class AdminResource {
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(user);
         //CITS data push
-//        CitsService citsService = (CitsService) SpringContext.getBean("citsService");
-//        citsService.pushNewEmployeeInformation(user.getEmployee());
+       CitsService citsService = (CitsService) SpringContext.getBean("citsService");
+      citsService.pushNewEmployeeInformation(user.getEmployee());
         return user.getEmployee().getId().toString();
     }
 
