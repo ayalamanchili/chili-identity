@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import  info.yalamanchili.office.profile.EmployeeService;
+import info.yalamanchili.office.dto.security.User;
 
 @Path("admin")
 @Produces("application/json")
@@ -32,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class AdminResource {
-
+ 
     //TODO make these be created on demand rather than at per request.
     @Autowired
     protected SecurityService securityService;
@@ -53,6 +55,13 @@ public class AdminResource {
         return securityService.login(user);
     }
 
+    @Path("/changepassword")
+    @PUT
+    public CUser changePassword(User user) {
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        return employeeService.changePassword(user);
+    }
+    
     @Path("/createuser")
     @PUT
     @Produces("application/text")
