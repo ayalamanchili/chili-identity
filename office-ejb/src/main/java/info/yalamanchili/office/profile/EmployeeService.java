@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dto.profile;
+package info.yalamanchili.office.profile;
 
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.security.CUser;
@@ -17,25 +17,23 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EmployeeService {
-     @PersistenceContext
+
+    @PersistenceContext
     protected EntityManager em;
-     public CUser changePassword(User user)
-     {
-        CUser user1=null;
-        javax.persistence.Query findUserQuery=em.createQuery("from CUser where username=:usernameParam and passwordHash=:passwordHashParam");
-        findUserQuery.setParameter("usernameParam",user.getUserName());
-        findUserQuery.setParameter("passwordHashParam ",user.getoldPassword());
-        if (findUserQuery.getResultList().size()>0){
-        user1=(CUser) findUserQuery.getResultList().get(0);
-        }
-        else{
-        //no user found means incorrect current passwrod
-        return null;
+
+    public CUser changePassword(User user) {
+        CUser user1 = null;
+        javax.persistence.Query findUserQuery = em.createQuery("from CUser where username=:usernameParam and passwordHash=:passwordHashParam");
+        findUserQuery.setParameter("usernameParam", user.getUserName());
+        findUserQuery.setParameter("passwordHashParam ", user.getoldPassword());
+        if (findUserQuery.getResultList().size() > 0) {
+            user1 = (CUser) findUserQuery.getResultList().get(0);
+        } else {
+            //no user found means incorrect current passwrod
+            return null;
         }
         user1.setPasswordHash(user.getnewPassword());
-        return em.merge(user1); 
-         
-     }
-   
-    
+        return em.merge(user1);
+
+    }
 }
