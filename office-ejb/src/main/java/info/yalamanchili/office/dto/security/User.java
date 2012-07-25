@@ -4,13 +4,18 @@
  */
 package info.yalamanchili.office.dto.security;
 
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.springframework.stereotype.Component;
 
 /**
  *
  * @author raghu
  */
-@Component
+@XmlRootElement
+@XmlType
+
 public class User {
     protected String userName;
     protected String oldPassword;
