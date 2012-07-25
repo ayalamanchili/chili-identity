@@ -22,10 +22,10 @@ import java.util.logging.Logger;
  * @author prani
  */
 public class CreateSkillPanel extends CreateComposite {
-    
- private static Logger logger = Logger.getLogger(CreateSkillPanel.class.getName());
 
- public CreateSkillPanel(CreateComposite.CreateCompositeType type) {
+    private static Logger logger = Logger.getLogger(CreateSkillPanel.class.getName());
+
+    public CreateSkillPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Skill", OfficeWelcome.constants);
     }
@@ -36,14 +36,13 @@ public class CreateSkillPanel extends CreateComposite {
         assignEntityValueFromField("name", skill);
         assignEntityValueFromField("description", skill);
         return skill;
-        
+
     }
 
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-
                     @Override
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
@@ -59,26 +58,23 @@ public class CreateSkillPanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
-        
     }
 
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully skill created");
-        TabPanel.instance().myOfficePanel.sidePanel.clear();
-        TabPanel.instance().myOfficePanel.sidePanel.add(new SkillSidePanel());
-        TabPanel.instance().myOfficePanel.clear();
+        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+        TabPanel.instance().myOfficePanel.sidePanelTop.add(new SkillSidePanel());
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSkillsPanel());
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -89,14 +85,10 @@ public class CreateSkillPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "skill";
     }
- 
- 
-    
 }
