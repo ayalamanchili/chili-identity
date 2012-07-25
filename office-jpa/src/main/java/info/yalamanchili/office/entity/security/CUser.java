@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,6 +35,7 @@ public class CUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long userId;
+    
     private String username;
     private String passwordHash;
     private boolean enabled;
@@ -49,7 +51,9 @@ public class CUser implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+    
     @Size(min = 6,message="{user.userId.length.invalid.msg}")
+    /*@Pattern(regexp="[A-Za-z0-9]", message = "{user.username.alphanumeric.valid.msg}")*/
     @Unique(entity = CUser.class, property = "username", message = "{user.name.not.unique.msg}")
     public String getUsername() {
         return username;
@@ -58,11 +62,13 @@ public class CUser implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
+    
+    @Size(min = 6,message="{user.password.length.invalid.msg}")
     public String getPasswordHash() {
         return passwordHash;
     }
-    @Size(min = 6,message="{user.passwordHash.length.invalid.msg}")
+    
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
