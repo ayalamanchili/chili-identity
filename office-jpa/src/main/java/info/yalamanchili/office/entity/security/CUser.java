@@ -18,24 +18,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @XmlRootElement
 @XmlType
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"username"}))
-
+@Unique(entity = CUser.class, fields = {"username"}, message = "{user.name.not.unique.msg}", idName = "userId")
 public class CUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long userId;
-    
     private String username;
     private String passwordHash;
     private boolean enabled;
@@ -46,15 +43,13 @@ public class CUser implements Serializable {
     public Long getUserId() {
         return userId;
     }
-    
-    
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    
-    @Size(min = 6,message="{user.userId.length.invalid.msg}")
+
+    @Size(min = 6, message = "{user.userId.length.invalid.msg}")
     /*@Pattern(regexp="[A-Za-z0-9]", message = "{user.username.alphanumeric.valid.msg}")*/
-    @Unique(entity = CUser.class, property = "username", message = "{user.name.not.unique.msg}")
     public String getUsername() {
         return username;
     }
@@ -62,13 +57,12 @@ public class CUser implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-    
-    
-    @Size(min = 6,message="{user.password.length.invalid.msg}")
+
+    @Size(min = 6, message = "{user.password.length.invalid.msg}")
     public String getPasswordHash() {
         return passwordHash;
     }
-    
+
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
@@ -81,7 +75,7 @@ public class CUser implements Serializable {
         this.enabled = enabled;
     }
 
-    @OneToOne(cascade= CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @Valid
     @XmlElement
     public Employee getEmployee() {

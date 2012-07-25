@@ -1,8 +1,6 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.validation.Unique;
@@ -31,87 +29,85 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"phoneType"}))
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"phoneType"}))
+@Unique(entity = PhoneType.class, fields = {"phoneType"}, message = "{phonetype.name.not.unique.msg}")
 public class PhoneType extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 7L;
 
-	/**
-	 * @generated
-	 */
-	@Field
-	@NotEmpty
-        @Unique(entity = PhoneType.class, property = "phoneType", message="{phonetype.name.not.unique.msg}")
-	protected String phoneType;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 7L;
+    /**
+     * @generated
+     */
+    @Field
+    @NotEmpty
+    protected String phoneType;
+    /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "phoneType")
+    protected List<Phone> phones;
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public PhoneType() {
+        super();
+    }
 
-	@OneToMany(mappedBy = "phoneType")
-	protected List<Phone> phones;
+    /**
+     * @generated
+     */
+    public String getPhoneType() {
+        return phoneType;
+    }
 
-	/**
-	 * @generated
-	 */
-	public PhoneType() {
-		super();
-	}
+    /**
+     * @generated
+     */
+    public void setPhoneType(String phoneType) {
+        this.phoneType = phoneType;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getPhoneType() {
-		return phoneType;
-	}
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<Phone> getPhones() {
+        if (this.phones == null) {
+            this.phones = new ArrayList<Phone>();
+        }
+        return this.phones;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setPhoneType(String phoneType) {
-		this.phoneType = phoneType;
-	}
+    /**
+     * @generated
+     */
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
+    }
 
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Phone> getPhones() {
-		if (this.phones == null) {
-			this.phones = new ArrayList<Phone>();
-		}
-		return this.phones;
-	}
+    /**
+     * @generated
+     */
+    public void addPhone(Phone entity) {
+        if (entity == null) {
+            return;
+        }
+        getPhones().add(entity);
+        entity.setPhoneType(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setPhones(List<Phone> phones) {
-		this.phones = phones;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addPhone(Phone entity) {
-		if (entity == null) {
-			return;
-		}
-		getPhones().add(entity);
-		entity.setPhoneType(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getPhoneType());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    /**
+     * @generated
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getPhoneType());
+        sb.append(":");
+        return sb.toString();
+    }
 }

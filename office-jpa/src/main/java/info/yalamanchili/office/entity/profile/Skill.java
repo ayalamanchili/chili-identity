@@ -21,11 +21,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"name"}))
+@Unique(entity = Skill.class, fields = {"name"}, message = "{skill.name.not.unique.msg}")
 public class Skill extends AbstractEntity {
 
     @NotEmpty
-    @Unique(entity = Skill.class, property = "name", message="{skill.name.not.unique.msg}")
     protected String name;
     protected String description;
 

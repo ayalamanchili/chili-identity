@@ -20,9 +20,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
-public class Certification extends AbstractEntity{
-    @Unique(entity = Certification.class, property = "name", message="{certification.name.not.unique.msg}")
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"name"}))
+@Unique(entity = Certification.class, fields = {"name"}, message = "{certification.name.not.unique.msg}")
+public class Certification extends AbstractEntity {
+
     @NotEmpty
     protected String name;
     protected String description;
@@ -50,5 +52,4 @@ public class Certification extends AbstractEntity{
     public String toString() {
         return "Certification{" + "name=" + name + ", description=" + description + '}';
     }
-    
 }

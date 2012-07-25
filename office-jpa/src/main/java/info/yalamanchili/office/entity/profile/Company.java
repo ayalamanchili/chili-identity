@@ -33,6 +33,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
+ @Unique(entity = Company.class, fields = {"name"}, message="{company.name.not.unique.msg}")
 public class Company extends AbstractEntity {
 	/**
 	 * @generated
@@ -45,7 +46,7 @@ public class Company extends AbstractEntity {
 	 */
 	@Field
 	@NotEmpty
-        @Unique(entity = Company.class, property = "name", message="{company.name.not.unique.msg}")
+       
 	protected String name;
 
 	/**

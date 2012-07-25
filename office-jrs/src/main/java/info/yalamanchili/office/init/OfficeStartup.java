@@ -42,13 +42,10 @@ public class OfficeStartup {
     protected CRole adminRole;
 
     protected void startup() {
-        UniqueIDValidator.disable();
         initRoles();
         initUsers();
         initRefData();
         initTestData();
-        em.flush();
-        UniqueIDValidator.enable();
     }
 
     protected void initRoles() {
