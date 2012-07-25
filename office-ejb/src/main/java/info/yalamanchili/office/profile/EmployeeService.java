@@ -8,7 +8,6 @@ import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.security.CUser;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 
 /**
