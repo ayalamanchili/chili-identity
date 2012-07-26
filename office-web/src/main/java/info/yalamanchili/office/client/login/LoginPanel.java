@@ -20,6 +20,8 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.KeyboardListener;
+import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -65,15 +67,15 @@ import com.google.gwt.user.client.ui.Widget;
 //                        
 //            }
 //        }       
-//        
-//          @UiHandler("passwordTb")
-//         void passwordtextboxkeypress(KeyPressEvent event){
-//            if(event.getCharCode()==KeyCodes.KEY_ENTER)
-//            {
-//                loginClicked();
-//                        
-//            }
-//        }   
+        
+          @UiHandler("passwordTb")
+         void passwordtextboxkeypress(KeyPressEvent event){
+            if(event.getCharCode()==KeyCodes.KEY_ENTER)
+            {
+                loginClicked();
+                        
+            }
+        }   
                 
 	interface LoginPanelUiBinder extends UiBinder<Widget, LoginPanel> {
 	}
@@ -122,9 +124,16 @@ import com.google.gwt.user.client.ui.Widget;
 	protected void setAutoLogout() {
 		// TODO
 	}
-
+        
+// private class SubmitListener extends KeyboardListenerAdapter {
+//    public void onKeyPress(Widget sender, char key, int mods) {
+//      if (KeyboardListener.KEY_ENTER == key)
+//        loginB.click();
+//    }
+// }
 	protected String getLoginURL() {
 		return OfficeWelcome.constants.root_url() + "admin/login";
 	}
 
 }
+
