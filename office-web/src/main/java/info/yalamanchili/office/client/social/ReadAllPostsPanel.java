@@ -12,18 +12,21 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.FlowPanel;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ReadAllPostsPanel extends ALComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllPostsPanel.class.getName());
-    FlowPanel mainPanel = new FlowPanel();
+    FlowPanel panel = new FlowPanel();
+    Set<String> postIds = new HashSet<String>();
 
     public ReadAllPostsPanel() {
-        init(mainPanel);
+        init(panel);
         loadEmployeePosts();
     }
 
-    protected void loadEmployeePosts() {
+    public void loadEmployeePosts() {
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeFeedURL(0, 10), OfficeWelcome.instance().getHeaders(),
                 true, new ALAsyncCallback<String>() {
             @Override
@@ -38,7 +41,12 @@ public class ReadAllPostsPanel extends ALComposite {
         JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
         JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
         for (int i = 0; i < posts.size(); i++) {
-            mainPanel.add(new ReadPostWidget((JSONObject) posts.get(i), true));
+            JSONObject post = (JSONObject) posts.get(i);
+            String postId = JSONUtils.toString(post, "id");
+            if (!postIds.contains(postId)) {
+                postIds.add(postId);
+                panel.insert(new ReadPostWidget(post, true), 0);
+            }
         }
     }
 
@@ -54,6 +62,10 @@ public class ReadAllPostsPanel extends ALComposite {
 
     @Override
     protected void addWidgets() {
+    }
+
+    public void refresh() {
+        loadEmployeePosts();
     }
 
     protected String getEmployeeFeedURL(Integer start, Integer limit) {

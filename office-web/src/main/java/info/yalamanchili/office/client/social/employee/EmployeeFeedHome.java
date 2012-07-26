@@ -14,13 +14,23 @@ import info.yalamanchili.office.client.social.ReadAllPostsPanel;
  */
 public class EmployeeFeedHome extends Composite {
 
+    private static EmployeeFeedHome instance;
+
+    public static EmployeeFeedHome instance() {
+        return instance;
+    }
     protected FlowPanel panel = new FlowPanel();
     protected CreateEmployeePostWidget createEmployeePostWidget = new CreateEmployeePostWidget();
-    protected ReadAllPostsPanel companyFeed = new ReadAllPostsPanel();
+    protected ReadAllPostsPanel employeeFeed = new ReadAllPostsPanel();
 
     public EmployeeFeedHome() {
+        instance = this;
         initWidget(panel);
         panel.add(createEmployeePostWidget);
-        panel.add(companyFeed);
+        panel.add(employeeFeed);
+    }
+
+    public void refresh() {
+        employeeFeed.refresh();
     }
 }

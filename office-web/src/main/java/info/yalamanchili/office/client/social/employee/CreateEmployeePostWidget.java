@@ -105,6 +105,7 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
 
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Shared");
+        EmployeeFeedHome.instance().refresh();
     }
 
     protected String getURI() {
