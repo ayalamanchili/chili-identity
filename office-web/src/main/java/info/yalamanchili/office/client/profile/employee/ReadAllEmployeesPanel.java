@@ -84,7 +84,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
             }
             table.setText(i, 5, JSONUtils.toString(entity, "sex"));
             table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
-            table.setText(i, 7, JSONUtils.toString(entity, "startDate"));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 
