@@ -50,6 +50,11 @@ public class CUser implements Serializable {
 
     @Size(min = 6, message = "{user.userId.length.invalid.msg}")
     /*@Pattern(regexp="[A-Za-z0-9]", message = "{user.username.alphanumeric.valid.msg}")*/
+<<<<<<< .mine
+    @Pattern(regexp="[A-Za-z0-9]+")
+    @Unique(entity = CUser.class, property = "username", message = "{user.name.not.unique.msg}")
+=======
+>>>>>>> .r729
     public String getUsername() {
         return username;
     }
@@ -57,8 +62,14 @@ public class CUser implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+<<<<<<< .mine
+    
+    
+    @Size(min = 6,message="{user.passwordHash.length.invalid.msg}")
+=======
 
     @Size(min = 6, message = "{user.password.length.invalid.msg}")
+>>>>>>> .r729
     public String getPasswordHash() {
         return passwordHash;
     }
