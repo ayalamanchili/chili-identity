@@ -32,7 +32,7 @@ public class CompanyDao extends CRUDDao<Company> {
     }
 
     public Company findByCompanyName(String companyName) {
-        Query q = em.createQuery("FROM Company WHERE lower(company) = :CompanyNameParam");
+        Query q = em.createQuery("FROM Company WHERE lower(name) = :CompanyNameParam");
         q.setParameter("CompanyNameParam", companyName.toLowerCase());
         if (q.getResultList().size() > 0) {
             return (Company) q.getResultList().get(0);
