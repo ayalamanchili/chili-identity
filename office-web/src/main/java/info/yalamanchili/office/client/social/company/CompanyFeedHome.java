@@ -1,0 +1,26 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.social.company;
+
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.office.client.social.ReadAllPostsPanel;
+
+/**
+ *
+ * @author ayalamanchili
+ */
+public class CompanyFeedHome extends Composite {
+    
+    protected FlowPanel panel = new FlowPanel();
+    protected CreateCompanyPostWidget createCompanyPostWidget = new CreateCompanyPostWidget();
+    protected ReadAllPostsPanel companyFeed = new ReadAllPostsPanel();
+    
+    public CompanyFeedHome() {
+        initWidget(panel);
+        panel.add(createCompanyPostWidget);
+        panel.add(companyFeed);
+    }
+}

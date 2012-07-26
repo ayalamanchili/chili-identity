@@ -18,6 +18,8 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.yalamanchili.office.client.social.company.CompanyFeedHome;
+import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 
 /**
  *
@@ -66,7 +68,11 @@ public class ReplyPostWidget extends ALComposite implements ClickHandler, KeyUpH
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("reply posted");
                         TabPanel.instance().socialPanel.entityPanel.clear();
-                        TabPanel.instance().socialPanel.entityPanel.add(new SocialHome());
+                        if (SocialSidePanel.IsEmployeeFeedSelected) {
+                            TabPanel.instance().socialPanel.entityPanel.add(new EmployeeFeedHome());
+                        } else {
+                            TabPanel.instance().socialPanel.entityPanel.add(new CompanyFeedHome());
+                        }
                     }
                 });
 

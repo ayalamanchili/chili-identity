@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.social.company.CompanyFeedHome;
+import info.yalamanchili.office.client.social.company.CreateCompanyPostWidget;
 
 /**
  *
@@ -19,7 +21,7 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
 
     FlowPanel panel = new FlowPanel();
     public static boolean IsEmployeeFeedSelected = true;
-    ClickableLink employeeFeedL = new ClickableLink("Communitiy Feed");
+    ClickableLink employeeFeedL = new ClickableLink("Employee Feed");
     ClickableLink companyFeedL = new ClickableLink("System Soft Feed");
 
     public SocialSidePanel() {
@@ -49,23 +51,20 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(employeeFeedL)) {
             IsEmployeeFeedSelected = true;
-//            showEmployeeFeed();
-        }
-        else if (event.getSource().equals(companyFeedL)) {
+            showEmployeeFeed();
+        } else if (event.getSource().equals(companyFeedL)) {
             IsEmployeeFeedSelected = false;
-//            showCompanyFeed();
+            showCompanyFeed();
         }
-        showEmployeeFeed();
     }
 
     protected void showEmployeeFeed() {
         TabPanel.instance().socialPanel.entityPanel.clear();
-        TabPanel.instance().socialPanel.entityPanel.add(new EmployeePostsHome());
+        TabPanel.instance().socialPanel.entityPanel.add(new CompanyFeedHome());
     }
 
-//    protected void showCompanyFeed() {
-//        //TODO
-//        TabPanel.instance().socialPanel.entityPanel.clear();
-//        TabPanel.instance().socialPanel.entityPanel.add(new EmployeePostsHome());
-//    }
+    protected void showCompanyFeed() {
+        TabPanel.instance().socialPanel.entityPanel.clear();
+        TabPanel.instance().socialPanel.entityPanel.add(new CreateCompanyPostWidget());
+    }
 }

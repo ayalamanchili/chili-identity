@@ -5,7 +5,6 @@ import info.yalamanchili.office.client.profile.ProfileMenu;
 import info.yalamanchili.office.client.profile.ProfileSidePanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
-import info.yalamanchili.office.client.social.SocialHome;
 
 import java.util.logging.Logger;
 
@@ -15,6 +14,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.social.SocialSidePanel;
+import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
@@ -61,7 +61,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         socialPanel.entityPanel.clear();
         socialPanel.sidePanelTop.clear();
         socialPanel.sidePanelTop.add(new SocialSidePanel());
-        socialPanel.entityPanel.add(new SocialHome());
+        socialPanel.entityPanel.add(new EmployeeFeedHome());
     }
 
     public void selectAdminTab() {

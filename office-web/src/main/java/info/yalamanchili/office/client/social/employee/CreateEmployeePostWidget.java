@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.social;
+package info.yalamanchili.office.client.social.employee;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -28,13 +28,11 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileUploadPanel;
 import info.yalamanchili.office.client.gwt.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
-import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CreatePostWidget extends ALComposite implements ClickHandler, FocusHandler, BlurHandler, KeyUpHandler {
+public class CreateEmployeePostWidget extends ALComposite implements ClickHandler, FocusHandler, BlurHandler, KeyUpHandler {
 
-    private static Logger logger = Logger.getLogger(CreatePostWidget.class.getName());
+    private static Logger logger = Logger.getLogger(CreateEmployeePostWidget.class.getName());
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel mainPanel = new FlowPanel();
     HorizontalPanel buttonsPanel = new HorizontalPanel();
@@ -42,7 +40,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
     Button createPostB = new Button("Share");
     FileUploadPanel imageUploadPanel = new FileUploadPanel("Share Image", "PostFile/fileURL");
 
-    public CreatePostWidget() {
+    public CreateEmployeePostWidget() {
         init(captionPanel);
     }
 
@@ -56,14 +54,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
 
     @Override
     protected void addWidgets() {
-        if (SocialSidePanel.IsEmployeeFeedSelected == true)
-        {
-        captionPanel.setCaptionHTML("Community Feed...");
-        }
-        else
-        {
-          captionPanel.setCaptionHTML("System Soft Feed...");
-        }
+        captionPanel.setCaptionHTML("Employee Feed...");
         buttonsPanel.add(createPostB);
         buttonsPanel.add(imageUploadPanel);
         mainPanel.add(createPostTextArea);
@@ -117,13 +108,7 @@ public class CreatePostWidget extends ALComposite implements ClickHandler, Focus
     }
 
     protected String getURI() {
-       if (SocialSidePanel.IsEmployeeFeedSelected == true)
-       {
         return OfficeWelcome.constants.root_url() + "social/createpost";
-       }else
-       {
-         return OfficeWelcome.constants.root_url() + "social/createCompanyPost";
-       }
     }
 
     @Override
