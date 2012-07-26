@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,12 +50,7 @@ public class CUser implements Serializable {
     }
 
     @Size(min = 6, message = "{user.userId.length.invalid.msg}")
-    /*@Pattern(regexp="[A-Za-z0-9]", message = "{user.username.alphanumeric.valid.msg}")*/
-<<<<<<< .mine
-    @Pattern(regexp="[A-Za-z0-9]+")
-    @Unique(entity = CUser.class, property = "username", message = "{user.name.not.unique.msg}")
-=======
->>>>>>> .r729
+    @Pattern(regexp = "[A-Za-z0-9]+")
     public String getUsername() {
         return username;
     }
@@ -62,14 +58,8 @@ public class CUser implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-<<<<<<< .mine
-    
-    
-    @Size(min = 6,message="{user.passwordHash.length.invalid.msg}")
-=======
 
-    @Size(min = 6, message = "{user.password.length.invalid.msg}")
->>>>>>> .r729
+    @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
     public String getPasswordHash() {
         return passwordHash;
     }

@@ -234,6 +234,8 @@ public class Employee extends Contact {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return "Employee{" + "startDate=" + startDate + ", ssn=" + ssn + '}';
     }
+
+   
 }
