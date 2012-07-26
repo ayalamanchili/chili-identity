@@ -57,23 +57,23 @@ import com.google.gwt.user.client.ui.Widget;
 		loginClicked();
 	}
 
-        @UiHandler("usernameTb")
-         void usertextboxkeypress(KeyPressEvent event){
-            if(event.getCharCode()==KeyCodes.KEY_ENTER)
-            {
-                loginClicked();
-                        
-            }
-        }       
-        
-          @UiHandler("passwordTb")
-         void passwordtextboxkeypress(KeyPressEvent event){
-            if(event.getCharCode()==KeyCodes.KEY_ENTER)
-            {
-                loginClicked();
-                        
-            }
-        }   
+//        @UiHandler("usernameTb")
+//         void usertextboxkeypress(KeyPressEvent event){
+//            if(event.getCharCode()==KeyCodes.KEY_ENTER)
+//            {
+//                loginClicked();
+//                        
+//            }
+//        }       
+//        
+//          @UiHandler("passwordTb")
+//         void passwordtextboxkeypress(KeyPressEvent event){
+//            if(event.getCharCode()==KeyCodes.KEY_ENTER)
+//            {
+//                loginClicked();
+//                        
+//            }
+//        }   
                 
 	interface LoginPanelUiBinder extends UiBinder<Widget, LoginPanel> {
 	}
