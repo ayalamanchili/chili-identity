@@ -59,21 +59,33 @@ import com.google.gwt.user.client.ui.Widget;
 		loginClicked();
 	}
 
-//        @UiHandler("usernameTb")
-//         void usertextboxkeypress(KeyPressEvent event){
-//            if(event.getCharCode()==KeyCodes.KEY_ENTER)
-//            {
-//                loginClicked();
-//                        
-//            }
-//        }       
+    @UiHandler("usernameTb")
+        void usertextboxkeypress(KeyPressEvent event) {
+
+
+            int keyCode = event.getUnicodeCharCode();
+            if (keyCode == 0) {
+                // Probably Firefox
+                keyCode = event.getNativeEvent().getKeyCode();
+            }
+            if (keyCode == KeyCodes.KEY_ENTER) {
+                // Do something when Enter is pressed.
+
+                loginClicked();
+            }
+        } 
         
           @UiHandler("passwordTb")
          void passwordtextboxkeypress(KeyPressEvent event){
-            if(event.getCharCode()==KeyCodes.KEY_ENTER)
-            {
+             int keyCode = event.getUnicodeCharCode();
+            if (keyCode == 0) {
+                // Probably Firefox
+                keyCode = event.getNativeEvent().getKeyCode();
+            }
+            if (keyCode == KeyCodes.KEY_ENTER) {
+                // Do something when Enter is pressed.
+
                 loginClicked();
-                        
             }
         }   
                 
