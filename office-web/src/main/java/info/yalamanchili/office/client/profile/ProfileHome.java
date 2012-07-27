@@ -240,7 +240,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         }
         else if(event.getSource().equals(updatePassword))
         {
-            ChangePasswordPanel cngPasswordPanel = new  ChangePasswordPanel(CreateComposite.CreateCompositeType.ADD);
+            ChangePasswordPanel cngPasswordPanel = new  ChangePasswordPanel(CreateComposite.CreateCompositeType.CREATE);
             new GenericPopup(cngPasswordPanel).show();
         }
     }
