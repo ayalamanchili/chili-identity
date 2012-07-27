@@ -60,33 +60,33 @@ import com.google.gwt.user.client.ui.Widget;
 	}
 
     @UiHandler("usernameTb")
-        void usertextboxkeypress(KeyPressEvent event) {
+       void usertextboxkeypress(KeyPressEvent event){
 
-
-            int keyCode = event.getUnicodeCharCode();
-            if (keyCode == 0) {
-                // Probably Firefox
-                keyCode = event.getNativeEvent().getKeyCode();
-            }
-            if (keyCode == KeyCodes.KEY_ENTER) {
-                // Do something when Enter is pressed.
-
-                loginClicked();
-            }
-        } 
+        
+         int keyCode = event.getUnicodeCharCode();
+    if (keyCode == 0) {
+        // Probably Firefox
+        keyCode = event.getNativeEvent().getKeyCode();
+    }
+    if (keyCode == KeyCodes.KEY_ENTER) {
+        // Do something when Enter is pressed.
+        
+        loginClicked();
+    }
+  }       
         
           @UiHandler("passwordTb")
          void passwordtextboxkeypress(KeyPressEvent event){
-             int keyCode = event.getUnicodeCharCode();
-            if (keyCode == 0) {
-                // Probably Firefox
-                keyCode = event.getNativeEvent().getKeyCode();
-            }
-            if (keyCode == KeyCodes.KEY_ENTER) {
-                // Do something when Enter is pressed.
-
-                loginClicked();
-            }
+            int keyCode = event.getUnicodeCharCode();
+    if (keyCode == 0) {
+        // Probably Firefox
+        keyCode = event.getNativeEvent().getKeyCode();
+    }
+    if (keyCode == KeyCodes.KEY_ENTER) {
+        // Do something when Enter is pressed.
+        
+        loginClicked();
+    }
         }   
                 
 	interface LoginPanelUiBinder extends UiBinder<Widget, LoginPanel> {
