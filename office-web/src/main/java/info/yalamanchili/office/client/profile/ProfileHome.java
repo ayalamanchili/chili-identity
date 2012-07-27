@@ -12,10 +12,12 @@ import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel;
+import info.yalamanchili.office.client.profile.employee.ChangePasswordPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
@@ -38,6 +40,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel emergencyContactsPanel;
     protected DisclosurePanel skillSetPanel;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
+    protected ClickableLink updatePassword = new ClickableLink("Update Password");
 
     public ProfileHome() {
         instance = this;
@@ -47,6 +50,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         updateProfile.addClickHandler(this);
+        updatePassword.addClickHandler(this);
     }
 
     @Override
@@ -58,6 +62,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected void addWidgets() {
         addEmployeePanel();
         panel.add(updateProfile);
+        panel.add(updatePassword);
         addAddressesPanel();
         addPhonesPanel();
         addEmailsPanel();
@@ -232,6 +237,11 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         if (event.getSource().equals(updateProfile)) {
             UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
             new GenericPopup(UpdatePanel).show();
+        }
+        else if(event.getSource().equals(updatePassword))
+        {
+            ChangePasswordPanel cngPasswordPanel = new  ChangePasswordPanel(CreateComposite.CreateCompositeType.ADD);
+            new GenericPopup(cngPasswordPanel).show();
         }
     }
 }
