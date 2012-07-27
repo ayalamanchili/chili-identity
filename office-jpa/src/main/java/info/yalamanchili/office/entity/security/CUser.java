@@ -50,7 +50,7 @@ public class CUser implements Serializable {
     }
 
     @Size(min = 6, message = "{user.userId.length.invalid.msg}")
-    @Pattern(regexp = "[A-Za-z0-9]+")
+    @Pattern(regexp = "[A-Za-z0-9]")
     public String getUsername() {
         return username;
     }
