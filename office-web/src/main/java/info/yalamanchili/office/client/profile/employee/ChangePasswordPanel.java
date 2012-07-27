@@ -11,6 +11,7 @@ import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.login.LoginPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 
@@ -46,7 +47,7 @@ public class ChangePasswordPanel extends CreateComposite {
                     public void onSuccess(String userString) {
                        if (userString != null && userString.trim().length() > 0) {
 					
-                                        
+                                         GenericPopup.instance().hide();
 					JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
                                         OfficeWelcome.instance().username = user.get("username").toString() ;
 					OfficeWelcome.instance().password = user.get("passwordHash").toString();
