@@ -28,124 +28,114 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+public class LoginPanel extends PopupPanel {
 
-    public class LoginPanel extends PopupPanel {
-	private static Logger logger = Logger.getLogger(LoginPanel.class.getName());
-	private static LoginPanelUiBinder uiBinder = GWT.create(LoginPanelUiBinder.class);
+    private static Logger logger = Logger.getLogger(LoginPanel.class.getName());
+    private static LoginPanelUiBinder uiBinder = GWT.create(LoginPanelUiBinder.class);
+    private static LoginPanel instance;
 
-	private static LoginPanel instance;
+    public static LoginPanel instance() {
+        return instance;
+    }
+    @UiField
+    Label usernameL;
+    @UiField
+    TextBox usernameTb;
+    @UiField
+    Label passwordL;
+    @UiField
+    PasswordTextBox passwordTb;
+    @UiField
+    Button loginB;
 
-	public static LoginPanel instance() {
-		return instance;
-	}
-
-	@UiField
-	Label usernameL;
-
-	@UiField
-	TextBox usernameTb;
-
-	@UiField
-	Label passwordL;
-
-	@UiField
-	PasswordTextBox passwordTb;
-
-	@UiField
-	Button loginB;
-
-	@UiHandler("loginB")
-	void handleLogin(ClickEvent e) {
-		loginClicked();
-	}
+    @UiHandler("loginB")
+    void handleLogin(ClickEvent e) {
+        loginClicked();
+    }
 
     @UiHandler("usernameTb")
-       void usertextboxkeypress(KeyPressEvent event){
+    void usertextboxkeypress(KeyPressEvent event) {
 
-        
-         int keyCode = event.getUnicodeCharCode();
-    if (keyCode == 0) {
-        // Probably Firefox
-        keyCode = event.getNativeEvent().getKeyCode();
+
+        int keyCode = event.getUnicodeCharCode();
+        if (keyCode == 0) {
+            // Probably Firefox
+            keyCode = event.getNativeEvent().getKeyCode();
+        }
+        if (keyCode == KeyCodes.KEY_ENTER) {
+            // Do something when Enter is pressed.
+
+            loginClicked();
+        }
     }
-    if (keyCode == KeyCodes.KEY_ENTER) {
-        // Do something when Enter is pressed.
-        
-        loginClicked();
+
+    @UiHandler("passwordTb")
+    void passwordtextboxkeypress(KeyPressEvent event) {
+        int keyCode = event.getUnicodeCharCode();
+        if (keyCode == 0) {
+            // Probably Firefox
+            keyCode = event.getNativeEvent().getKeyCode();
+        }
+        if (keyCode == KeyCodes.KEY_ENTER) {
+            // Do something when Enter is pressed.
+
+            loginClicked();
+        }
     }
-  }       
-        
-          @UiHandler("passwordTb")
-         void passwordtextboxkeypress(KeyPressEvent event){
-            int keyCode = event.getUnicodeCharCode();
-    if (keyCode == 0) {
-        // Probably Firefox
-        keyCode = event.getNativeEvent().getKeyCode();
+
+    interface LoginPanelUiBinder extends UiBinder<Widget, LoginPanel> {
     }
-    if (keyCode == KeyCodes.KEY_ENTER) {
-        // Do something when Enter is pressed.
-        
-        loginClicked();
+
+    public LoginPanel() {
+        setWidget(uiBinder.createAndBindUi(this));
     }
-        }   
-                
-	interface LoginPanelUiBinder extends UiBinder<Widget, LoginPanel> {
-	}
 
-	public LoginPanel() {
-		setWidget(uiBinder.createAndBindUi(this));
-	}
+    protected void loginClicked() {
+        JSONObject user = new JSONObject();
+        user.put("username", new JSONString(usernameTb.getText()));
+        user.put("passwordHash", new JSONString(passwordTb.getText()));
+        Map<String, String> headers = OfficeWelcome.instance().getHeaders();
+        headers.put("username", usernameTb.getText());
+        headers.put("password", passwordTb.getText());
+        HttpServiceAsync.instance().doPut(getLoginURL(), user.toString(), headers, true, new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                new ResponseStatusWidget().show("login failed");
+            }
 
-	protected void loginClicked() {
-		JSONObject user = new JSONObject();
-		user.put("username", new JSONString(usernameTb.getText()));
-		user.put("passwordHash", new JSONString(passwordTb.getText()));
-		Map<String, String> headers = OfficeWelcome.instance().getHeaders();
-		headers.put("username", usernameTb.getText());
-		headers.put("password", passwordTb.getText());
-		HttpServiceAsync.instance().doPut(getLoginURL(), user.toString(), headers, true, new AsyncCallback<String>() {
+            @Override
+            public void onSuccess(String userString) {
+                if (userString != null && userString.trim().length() > 0) {
+                    OfficeWelcome.instance().username = usernameTb.getText();
+                    OfficeWelcome.instance().password = passwordTb.getText();
+                    JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
+                    LoginPanel.this.hide();
+                    OfficeWelcome.instance().onMainModuleLoad(user);
+                } else {
+                    new ResponseStatusWidget().show("login failed");
+                }
+            }
+        });
+    }
 
-			@Override
-			public void onFailure(Throwable arg0) {
-				new ResponseStatusWidget().show("login failed");
-			}
+    public void showLoginWindow() {
+        int left = Window.getClientWidth() / 3;
+        int top = Window.getClientHeight() / 3;
+        this.setPopupPosition(left, top);
+        this.show();
+    }
 
-			@Override
-			public void onSuccess(String userString) {
-				if (userString != null && userString.trim().length() > 0) {
-					OfficeWelcome.instance().username = usernameTb.getText();
-					OfficeWelcome.instance().password = passwordTb.getText();
-					JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
-					LoginPanel.this.hide();
-					OfficeWelcome.instance().onMainModuleLoad(user);
-				} else {
-					new ResponseStatusWidget().show("login failed");
-				}
-			}
+    protected void setAutoLogout() {
+        // TODO
+    }
 
-		});
-	}
-
-	public void showLoginWindow() {
-		int left = Window.getClientWidth() / 3;
-		int top = Window.getClientHeight() / 3;
-		this.setPopupPosition(left, top);
-		this.show();
-	}
-
-	protected void setAutoLogout() {
-		// TODO
-	}
-        
 // private class SubmitListener extends KeyboardListenerAdapter {
 //    public void onKeyPress(Widget sender, char key, int mods) {
 //      if (KeyboardListener.KEY_ENTER == key)
 //        loginB.click();
 //    }
 // }
-	protected String getLoginURL() {
-		return OfficeWelcome.constants.root_url() + "admin/login";
-	}
-
+    protected String getLoginURL() {
+        return OfficeWelcome.constants.root_url() + "admin/login";
+    }
 }
-
