@@ -52,6 +52,7 @@ public class ChangePasswordPanel extends CreateComposite {
                                         OfficeWelcome.instance().username = user.get("username").toString() ;
 					OfficeWelcome.instance().password = user.get("passwordHash").toString();
 					OfficeWelcome.instance().onMainModuleLoad(user);
+                                        new ResponseStatusWidget().show("Change Password successfu1");
 				} else {
 					new ResponseStatusWidget().show("Change Password failed");
 				}
