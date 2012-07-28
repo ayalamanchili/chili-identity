@@ -184,7 +184,7 @@ public class OfficeStartup {
 
         Post userPost2 = new Post();
         userPost2.setPostTimeStamp(new Date());
-        userPost2.setPostContent("this is my company post by user");
+        userPost2.setPostContent("<h3>This is a Sample System Soft news letter</h3><b>this is my company post by admin</b>");
         userPost2.setEmployee(userEmp);
         userPost2.setCompany(c1);
         userPost2 = em.merge(userPost2);
