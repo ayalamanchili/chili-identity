@@ -33,7 +33,6 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("lastUpdated", true, false, DataType.DATE_FIELD);
         entityDisplayWidget.add(resumeUploadPanel);
     }
 
