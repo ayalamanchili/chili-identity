@@ -10,6 +10,7 @@ import info.yalamanchili.commons.ReflectionUtils;
 import info.yalamanchili.commons.SearchUtils;
 import info.yalamanchili.jpa.AbstractEntity;
 import info.yalamanchili.mapper.BeanMapper;
+import java.util.Arrays;
 
 import java.util.List;
 
@@ -18,8 +19,6 @@ import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.util.Version;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
@@ -59,12 +58,12 @@ public abstract class CRUDDao<T> {
 
     public T save(T entity) {
         if (entity instanceof AbstractEntity) {
-            System.out.println("aaaa"+entity);
+            System.out.println("aaaa" + entity);
             if (((AbstractEntity) entity).getId() != null) {
                 // map root level primitive types
                 System.out.println(entity.toString());
                 entity = (T) BeanMapper.merge(entity, findById(((AbstractEntity) entity).getId()));
-                
+
             }
         }
         return getEntityManager().merge(entity);
@@ -79,12 +78,27 @@ public abstract class CRUDDao<T> {
         return (Long) sizeQuery.getSingleResult();
     }
 
-    // TODO update the depreciated methods
-    public List<T> search(String searchText, int start, int limit) {
+    public List<T> search(String searchText, int start, int limit, boolean useSQLSearch) {
+        if (useSQLSearch) {
+            return sqlSearch(searchText, start, limit);
+        } else {
+            return hibernateSearch(searchText, start, limit);
+        }
+    }
+
+    public List<T> sqlSearch(String searchText, int start, int limit) {
+        Query searchQ = getEntityManager().createQuery(SearchUtils.getSearchQueryString(entityCls, searchText));
+        searchQ.setFirstResult(start);
+        searchQ.setMaxResults(limit);
+        return searchQ.getResultList();
+    }
+
+    public List<T> hibernateSearch(String searchText, int start, int limit) {
         FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search
                 .createFullTextEntityManager(getEntityManager());
         String[] fields = ReflectionUtils.getBeanProperties(entityCls, DataType.STRING);
-        log.info(fields);
+        log.info("search fields:" + Arrays.asList(fields));
+        log.info("search class:" + entityCls);
         QueryBuilder qb = fullTextEntityManager.getSearchFactory()
                 .buildQueryBuilder().forEntity(entityCls).get();
         org.apache.lucene.search.Query luceneSearchQuery = qb

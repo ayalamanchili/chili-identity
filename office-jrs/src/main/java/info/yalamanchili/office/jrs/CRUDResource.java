@@ -19,7 +19,7 @@ import javax.ws.rs.QueryParam;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 
+ *
  * @author ayalamanchili
  */
 @Produces("application/json")
@@ -27,49 +27,49 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class CRUDResource<T> {
 
-	@GET
-	@Path("/{id}")
-	public T read(@PathParam("id") Long id) {
-		return (T) getDao().findById(id);
-	}
+    @GET
+    @Path("/{id}")
+    public T read(@PathParam("id") Long id) {
+        return (T) getDao().findById(id);
+    }
 
-	@PUT
-	public T save(T entity) {
-           return (T) getDao().save(entity);
-	}
+    @PUT
+    public T save(T entity) {
+        return (T) getDao().save(entity);
+    }
 
-	@PUT
-	@Path("/delete/{id}")
-	public void delete(@PathParam("id") Long id) {
-		getDao().delete(id);
-	}
+    @PUT
+    @Path("/delete/{id}")
+    public void delete(@PathParam("id") Long id) {
+        getDao().delete(id);
+    }
 
-	@GET
-	@Path("/dropdown/{start}/{limit}")
-	public List<T> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
-			@QueryParam("param1") String param1, @QueryParam("param2") String param2,
-			@QueryParam("param3") String param3) {
-		return getDao().queryByParams(start, limit, param1, param2, param3);
-	}
+    @GET
+    @Path("/dropdown/{start}/{limit}")
+    public List<T> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("param1") String param1, @QueryParam("param2") String param2,
+            @QueryParam("param3") String param3) {
+        return getDao().queryByParams(start, limit, param1, param2, param3);
+    }
 
-	@GET
-	@Path("/size")
-	public long size() {
-		return getDao().size();
-	}
+    @GET
+    @Path("/size")
+    public long size() {
+        return getDao().size();
+    }
 
-	@GET
-	@Path("/search/{searchText}/{start}/{limit}")
-	public List<T> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
-			@PathParam("limit") int limit) {
-		return getDao().search(searchText, start, limit);
-	}
+    @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    public List<T> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        return getDao().search(searchText, start, limit, true);
+    }
 
-	@PUT
-	@Path("/search/{start}/{limit}")
-	public List<T> search(T entity, @PathParam("start") int start, @PathParam("limit") int limit) {
-		return getDao().search(entity, start, limit);
-	}
+    @PUT
+    @Path("/search/{start}/{limit}")
+    public List<T> search(T entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return getDao().search(entity, start, limit);
+    }
 
-	public abstract CRUDDao getDao();
+    public abstract CRUDDao getDao();
 }
