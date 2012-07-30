@@ -223,7 +223,7 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.ENUM_FIELD.equals(type)) {
             EnumField field = (EnumField) fields.get(fieldKey);
-            field.setValue(JSONUtils.toString(entity, fieldKey));
+            field.selectValue(JSONUtils.toString(entity, fieldKey));
         }
         if (DataType.BOOLEAN_FIELD.equals(type)) {
             BooleanField field = (BooleanField) fields.get(fieldKey);
