@@ -31,7 +31,7 @@ public class SocialNotificationService {
     
     @Async
     public void sendNewCompanyPostNotification(Employee emp) {
-        String[] roles = {"USER_ROLE"};
+        String[] roles = {"USER_ROLE,USER_HR,USER_ADMIN"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New Post in company feed");
@@ -40,4 +40,5 @@ public class SocialNotificationService {
         messagingService.sendEmail(email);
 
     }
+    
 }
