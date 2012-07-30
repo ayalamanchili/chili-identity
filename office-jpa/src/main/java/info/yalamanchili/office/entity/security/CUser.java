@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @XmlRootElement
@@ -50,6 +51,7 @@ public class CUser implements Serializable {
     }
 
     @Size(min = 6, message = "{user.userId.length.invalid.msg}")
+    @NotEmpty
     @Pattern(regexp = "[A-Za-z0-9]+")
     public String getUsername() {
         return username;
@@ -60,6 +62,7 @@ public class CUser implements Serializable {
     }
 
     @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
+    @NotEmpty
     public String getPasswordHash() {
         return passwordHash;
     }

@@ -15,25 +15,23 @@ import javax.persistence.Query;
  * @author raghu
  */
 public class EmployeeService {
-     @PersistenceContext
+
+    @PersistenceContext
     protected EntityManager em;
-     public CUser changePassword(User user)
-     {
-        CUser user1=null;
-        javax.persistence.Query findUserQuery=em.createQuery("from CUser where username=:usernameParam and passwordHash=:passwordHashParam");
-        findUserQuery.setParameter("usernameParam",user.getUserName());
-        findUserQuery.setParameter("passwordHashParam ",user.getoldPassword());
-        if (findUserQuery.getResultList().size()>0){
-        user1=(CUser) findUserQuery.getResultList().get(0);
+
+    public CUser changePassword(User user) {
+        CUser user1 = null;
+        javax.persistence.Query findUserQuery = em.createQuery("from CUser where username=:usernameParam and passwordHash=:passwordHashParam");
+        findUserQuery.setParameter("usernameParam", user.getUserName());
+        findUserQuery.setParameter("passwordHashParam ", user.getOldPassword());
+        if (findUserQuery.getResultList().size() > 0) {
+            user1 = (CUser) findUserQuery.getResultList().get(0);
+        } else {
+            //no user found means incorrect current passwrod
+            return null;
         }
-        else{
-        //no user found means incorrect current passwrod
-        return null;
-        }
-        user1.setPasswordHash(user.getnewPassword());
-        return em.merge(user1); 
-         
-     }
-   
-    
+        user1.setPasswordHash(user.getNewPassword());
+        return em.merge(user1);
+
+    }
 }

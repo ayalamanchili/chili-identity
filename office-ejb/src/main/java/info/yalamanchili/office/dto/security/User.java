@@ -4,10 +4,11 @@
  */
 package info.yalamanchili.office.dto.security;
 
-
+import java.io.Serializable;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.springframework.stereotype.Component;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -15,33 +16,33 @@ import org.springframework.stereotype.Component;
  */
 @XmlRootElement
 @XmlType
+public class User implements Serializable {
 
-public class User {
     protected String userName;
     protected String oldPassword;
     protected String newPassword;
-    
-     public String getUserName() {
+
+    public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
-     public String getoldPassword() {
+
+    public String getOldPassword() {
         return oldPassword;
     }
 
-    public void setoldPassword(String oldPassword) {
+    public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
     }
-    
-     public String getnewPassword() {
+
+    public String getNewPassword() {
         return newPassword;
     }
 
-    public void setnewPassword(String newPassword) {
+    public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
 }
