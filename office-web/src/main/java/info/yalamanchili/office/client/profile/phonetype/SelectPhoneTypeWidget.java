@@ -13,36 +13,34 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
 public class SelectPhoneTypeWidget extends SelectComposite {
-	public SelectPhoneTypeWidget() {
-		super("phoneType");
-	}
 
-	protected void fetchDropDownData() {
-		HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
-				OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+    public SelectPhoneTypeWidget() {
+        super("PhoneType", "phoneType");
+    }
 
-					@Override
-					public void onResponse(String entityString) {
-						processData(entityString);
-					}
+    protected void fetchDropDownData() {
+        HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                processData(entityString);
+            }
+        });
+    }
 
-				});
-	}
+    protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
+        return OfficeWelcome.constants.root_url() + "phonetype/dropdown/" + start.toString() + "/" + limit.toString();
+    }
 
-	protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
-		return OfficeWelcome.constants.root_url() + "phonetype/dropdown/" + start.toString() + "/" + limit.toString();
-	}
-
-	@Override
-	protected Map<Integer, String> populateValues(JSONArray entities) {
-		Map<Integer, String> values = new HashMap<Integer, String>();
-		for (int i = 1; i <= entities.size(); i++) {
-			JSONObject entity = (JSONObject) entities.get(i - 1);
-			Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
-			String value = JSONUtils.toString(entity, "phoneType");
-			values.put(id, value);
-		}
-		return values;
-	}
-
+    @Override
+    protected Map<Integer, String> populateValues(JSONArray entities) {
+        Map<Integer, String> values = new HashMap<Integer, String>();
+        for (int i = 1; i <= entities.size(); i++) {
+            JSONObject entity = (JSONObject) entities.get(i - 1);
+            Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
+            String value = JSONUtils.toString(entity, "phoneType");
+            values.put(id, value);
+        }
+        return values;
+    }
 }
