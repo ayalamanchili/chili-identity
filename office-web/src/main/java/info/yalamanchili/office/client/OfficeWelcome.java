@@ -24,7 +24,7 @@ public class OfficeWelcome implements EntryPoint {
     public JSONObject employee;
     public String employeeId;
     public String username;
-    // This is not good find a better way
+    //TODO This is not good find a better way
     public String password;
     public List<String> roles = new ArrayList<String>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);

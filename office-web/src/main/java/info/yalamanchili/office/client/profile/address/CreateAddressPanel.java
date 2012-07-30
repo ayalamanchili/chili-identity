@@ -21,16 +21,13 @@ import com.google.gwt.user.client.ui.ListBox;
 
 public class CreateAddressPanel extends CreateComposite {
 
+    private static Logger logger = Logger.getLogger(CreateAddressPanel.class.getName());
+    SelectAddressTypeWidget addressTypeWidget = new SelectAddressTypeWidget();
+
     public CreateAddressPanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("Address", OfficeWelcome.constants);
     }
-    private static Logger logger = Logger.getLogger(CreateAddressPanel.class.getName());
-    SelectAddressTypeWidget addressTypeWidget = new SelectAddressTypeWidget();
-    Label statelbl = new Label();
-    ListBox stateListBox = new ListBox();
-    Label countrylbl = new Label();
-    ListBox countryListBox = new ListBox();
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -39,11 +36,8 @@ public class CreateAddressPanel extends CreateComposite {
         assignEntityValueFromField("street1", entity);
         assignEntityValueFromField("street2", entity);
         assignEntityValueFromField("city", entity);
-        //assignEntityValueFromField("state", entity);
-        //assignEntityValueFromField("country", entity);
-        entity.put("state", new JSONString(stateListBox.getItemText(stateListBox.getSelectedIndex())));
-        entity.put("country", new JSONString(countryListBox.getItemText(countryListBox.getSelectedIndex())));
-        assignEntityValueFromField("zip", entity);
+        assignEntityValueFromField("state", entity);
+        assignEntityValueFromField("country", entity);
         entity.put("addressType", addressTypeWidget.getSelectedObject());
         logger.info(entity.toString());
         return entity;
@@ -58,7 +52,6 @@ public class CreateAddressPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-
                     @Override
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
@@ -86,9 +79,16 @@ public class CreateAddressPanel extends CreateComposite {
         // TODO Auto-generated method stub
     }
 
+    protected List<String> getCountries() {
+        List<String> countries = new ArrayList<String>();
+        countries.add("USA");
+        countries.add("INDIA");
+        return countries;
+    }
+
+//TODO externalize this
     protected List<String> getStates() {
         List<String> states = new ArrayList<String>();
-        states.add("SELECT");
         states.add("AL");
         states.add("AK");
         states.add("AS");
@@ -153,15 +153,6 @@ public class CreateAddressPanel extends CreateComposite {
 
     @Override
     protected void configure() {
-        statelbl.setText("State");
-        for (String states : getStates()) {
-            stateListBox.insertItem(states, 0);
-        }
-        countrylbl.setText("Country");
-        countryListBox.insertItem("SELECT", 0);
-        countryListBox.insertItem("INDIA", 1);
-        countryListBox.insertItem("USA", 2);
-        return;
     }
 
     @Override
@@ -169,12 +160,9 @@ public class CreateAddressPanel extends CreateComposite {
         addField("street1", false, true, DataType.STRING_FIELD);
         addField("street2", false, true, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
-        //addField("state", false, true, DataType.STRING_FIELD);
-        //addField("country", false, true, DataType.STRING_FIELD);
-        entityDisplayWidget.add(statelbl);
-        entityDisplayWidget.add(stateListBox);
-        entityDisplayWidget.add(countrylbl);
-        entityDisplayWidget.add(countryListBox);
+        addField("state", false, true, DataType.ENUM_FIELD);
+        addEnumField("state", false, true, getStates().toArray(new String[0]));
+        addEnumField("country", false, true, getCountries().toArray(new String[0]));
         addField("zip", false, true, DataType.LONG_FIELD);
         entityDisplayWidget.add(addressTypeWidget);
     }
