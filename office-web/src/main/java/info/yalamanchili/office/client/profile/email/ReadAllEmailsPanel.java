@@ -29,7 +29,7 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpServiceAsync.instance().doGet(getEmployeeEmailsURL(parentId, 0, 10), OfficeWelcome.instance().getHeaders(),
+        HttpServiceAsync.instance().doGet(getEmployeeEmailsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
 
             @Override
@@ -41,7 +41,7 @@ public class ReadAllEmailsPanel extends ReadAllComposite {
 
     }
 
-    public String getEmployeeEmailsURL(String employeeId, Integer start, Integer limit) {
+    public String getEmployeeEmailsURL(String employeeId, Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "employee/emails/" + employeeId + "/" + start.toString() + "/"
                 + limit.toString();
     }

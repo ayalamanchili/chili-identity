@@ -29,7 +29,7 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpServiceAsync.instance().doGet(getEmployeePhonesURL(parentId, 0, 10), OfficeWelcome.instance().getHeaders(),
+        HttpServiceAsync.instance().doGet(getEmployeePhonesURL(parentId,start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
 
             @Override
@@ -40,7 +40,7 @@ public class ReadAllPhonesPanel extends ReadAllComposite {
 
     }
 
-    public String getEmployeePhonesURL(String employeeId, Integer start, Integer limit) {
+    public String getEmployeePhonesURL(String employeeId, Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "employee/phones/" + employeeId + "/" + start.toString() + "/"
                 + limit.toString();
     }

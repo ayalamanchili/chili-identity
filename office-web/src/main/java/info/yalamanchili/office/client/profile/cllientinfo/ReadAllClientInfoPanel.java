@@ -28,7 +28,7 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpServiceAsync.instance().doGet(getReadAllURL(0, 10), OfficeWelcome.instance().getHeaders(), true,
+        HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -75,7 +75,7 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
     }
 
     // TODO move to composite
-    public String getReadAllURL(Integer start, Integer limit) {
+    public String getReadAllURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + parentId + "/" + start.toString() + "/"
                 + limit.toString();
     }

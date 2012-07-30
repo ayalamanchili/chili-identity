@@ -110,14 +110,18 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 
     @Override
     protected void configure() {
-        table.addStyleName("y-gwt-Table");
-        table.getRowFormatter().addStyleName(0, "y-gwt-TableHeader");
-        table.setBorderWidth(1);
+        configureTable();
         pagingPanel.setSpacing(5);
         pagingPanel.addStyleName("y-gwt-PagingBar");
         mainPanel.addStyleName("y-gwt-ReadAllPanel");
         tablePanel.addStyleName("y-gwt-TablePanel");
         configureCreateButton();
+    }
+
+    protected void configureTable() {
+        table.addStyleName("y-gwt-Table");
+        table.getRowFormatter().addStyleName(0, "y-gwt-TableHeader");
+        table.setBorderWidth(1);
     }
 
     @Override
@@ -269,6 +273,9 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource() == goToPage.getListBox()) {
+            //TODO improve this
+            table.removeAllRows();
+            configureTable();
             preFetchTable((goToPage.getValue().intValue() * pageSize) - 10);
         }
     }

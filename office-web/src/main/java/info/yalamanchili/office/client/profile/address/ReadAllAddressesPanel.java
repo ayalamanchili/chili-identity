@@ -29,7 +29,7 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, 0, 10),
+        HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, start, OfficeWelcome.constants.tableSize()),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
             @Override
@@ -41,7 +41,7 @@ public class ReadAllAddressesPanel extends ReadAllComposite {
 
     }
 
-    public String getEmployeeAddressesURL(String employeeId, Integer start, Integer limit) {
+    public String getEmployeeAddressesURL(String employeeId, Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "employee/addresses/" + employeeId + "/" + start.toString() + "/"
                 + limit.toString();
     }

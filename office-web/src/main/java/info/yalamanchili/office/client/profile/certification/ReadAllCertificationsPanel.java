@@ -37,7 +37,7 @@ public class ReadAllCertificationsPanel extends ReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllCertificationsURL(0, 10), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllCertificationsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -47,7 +47,7 @@ public class ReadAllCertificationsPanel extends ReadAllComposite {
 
     }
 
-    public String getReadAllCertificationsURL(Integer start, Integer limit) {
+    public String getReadAllCertificationsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "certification/" + start.toString() + "/" + limit.toString();
     }
 
