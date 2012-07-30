@@ -5,7 +5,7 @@
 package info.yalamanchili.office.email;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -13,36 +13,36 @@ import java.util.List;
  */
 public class Email implements Serializable {
 
-    protected List<String> tos;
-    protected List<String> ccs;
-    protected List<String> bccs;
+    protected Set<String> tos;
+    protected Set<String> ccs;
+    protected Set<String> bccs;
     protected String subject;
     protected String body;
 
     public Email() {
     }
 
-    public List<String> getTos() {
+    public Set<String> getTos() {
         return tos;
     }
 
-    public void setTos(List<String> tos) {
+    public void setTos(Set<String> tos) {
         this.tos = tos;
     }
 
-    public List<String> getCcs() {
+    public Set<String> getCcs() {
         return ccs;
     }
 
-    public void setCcs(List<String> ccs) {
+    public void setCcs(Set<String> ccs) {
         this.ccs = ccs;
     }
 
-    public List<String> getBccs() {
+    public Set<String> getBccs() {
         return bccs;
     }
 
-    public void setBccs(List<String> bccs) {
+    public void setBccs(Set<String> bccs) {
         this.bccs = bccs;
     }
 
