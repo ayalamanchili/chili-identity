@@ -81,7 +81,7 @@ public class OfficeStartup {
         userAddress.setStreet1("2110 wilkes ct");
         userAddress.setStreet2("apt 123");
         userAddress.setCity("Herndon");
-        userAddress.setState("Virginia");
+        userAddress.setState("VA");
         userAddress.setCountry("USA");
 
         Email userPrimaryEmail = new Email();
@@ -122,7 +122,7 @@ public class OfficeStartup {
         adminAddress.setStreet1("2110 wilkes ct");
         adminAddress.setStreet2("apt 123");
         adminAddress.setCity("Herndon");
-        adminAddress.setState("Virginia");
+        adminAddress.setState("VA");
         adminAddress.setCountry("USA");
 
         Email adminPrimaryEmail = new Email();
