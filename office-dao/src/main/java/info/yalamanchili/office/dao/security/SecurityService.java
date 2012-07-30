@@ -1,10 +1,10 @@
 package info.yalamanchili.office.dao.security;
 
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 import org.springframework.security.core.Authentication;
@@ -47,8 +47,8 @@ public class SecurityService {
         return user.getEmployee();
     }
 
-    public List<String> getEmailsAddressesForRoles(List<String> roles) {
-        List<String> emails = new ArrayList<String>();
+    public Set<String> getEmailsAddressesForRoles(List<String> roles) {
+        Set<String> emails = new HashSet<String>();
         Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
         getUsersInRoleQuery.setParameter("roles", roles);
         List<CUser> users = getUsersInRoleQuery.getResultList();
