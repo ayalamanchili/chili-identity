@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.profile.employee;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -24,6 +25,7 @@ public class ChangePasswordPanel extends CreateComposite {
      public ChangePasswordPanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("Change Password", OfficeWelcome.constants);
+        create.setText("Change Password");
     }
     @Override
     protected JSONObject populateEntityFromFields() {
