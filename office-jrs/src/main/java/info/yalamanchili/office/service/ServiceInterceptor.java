@@ -39,8 +39,9 @@ public class ServiceInterceptor {
         /* skip validation for search and login methods */
         if (!joinPoint.getSignature().toShortString().contains("search") && !joinPoint.getSignature().toShortString().contains("login")) {
             for (Object arg : joinPoint.getArgs()) {
-                System.out.println("-----validationg--------:" + arg.getClass());
-                validate(arg);
+                if (arg != null && arg instanceof java.io.Serializable) {
+                    validate(arg);
+                }
             }
             checkForErrors();
         }
@@ -57,9 +58,7 @@ public class ServiceInterceptor {
     protected void validate(Object entity) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        System.out.println("valiadtiong--------------");
         for (ConstraintViolation<Object> violation : validator.validate(entity)) {
-             System.out.println("valiadtiong--------------xxxxxx");
             serviceMessages.addError(new info.yalamanchili.office.service.types.Error(violation.getPropertyPath()
                     .toString(), "INVALID_INPUT", violation.getMessage()));
         }
