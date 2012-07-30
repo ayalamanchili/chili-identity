@@ -5,13 +5,10 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
 public interface OfficeResources extends ClientBundle {
-	public static final OfficeResources INSTANCE = GWT
-			.create(OfficeResources.class);
 
-	// @Source("logo.gif")
-	// ImageResource logo();
+    public static final OfficeResources INSTANCE = GWT
+            .create(OfficeResources.class);
 
-	@Source("office.css")
-	public CssResource officeCss();
-
+    @Source("office.css")
+    public CssResource officeCss();
 }
