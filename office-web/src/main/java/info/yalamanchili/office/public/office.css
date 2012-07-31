@@ -104,3 +104,15 @@
 .replyPostWidget{
     width:100%;
 }
+
+.y-gwt-treePanelComposite-Node
+{
+    cursor: pointer;
+    
+}
+
+.y-gwt-treePanelComposite-RootNode
+{
+    cursor: default;
+    
+}
