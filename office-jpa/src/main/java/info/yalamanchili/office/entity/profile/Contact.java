@@ -50,13 +50,13 @@ public class Contact extends AbstractEntity {
     /**
      * @generated
      */
-    @NotEmpty
+    @NotEmpty(message = "{firstName.not.empty.msg}")
     @Field
     protected String firstName;
     /**
      * @generated
      */
-    @NotEmpty
+    @NotEmpty(message = "{lastName.not.empty.msg}")
     @Field
     protected String lastName;
     /**
