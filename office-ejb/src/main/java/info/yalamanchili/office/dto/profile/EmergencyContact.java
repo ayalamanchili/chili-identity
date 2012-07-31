@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.profile.Sex;
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -15,7 +16,7 @@ import org.dozer.Mapper;
  */
 @XmlRootElement
 @XmlType
-public class EmergencyContact {
+public class EmergencyContact implements Serializable{
 
     protected String relation;
     protected boolean ecPrimary;

@@ -5,6 +5,7 @@ package info.yalamanchili.office.dto.profile;
  * and open the template in the editor.
  */
 import info.yalamanchili.office.entity.profile.Sex;
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -15,7 +16,7 @@ import org.dozer.Mapper;
  */
 @XmlRootElement
 @XmlType
-public class ClientInformation {
+public class ClientInformation implements Serializable{
 
     protected String firstName;
     protected String lastName;

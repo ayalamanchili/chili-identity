@@ -55,8 +55,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @GET
     @Path("/{start}/{limit}")
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        List<info.yalamanchili.office.dto.profile.Employee> employees = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
         EmployeeTable tableObj = new EmployeeTable();
-        tableObj.setEntities(getDao().query(start, limit));
+        for (Object empObj : getDao().query(start, limit)) {
+            employees.add(info.yalamanchili.office.dto.profile.Employee.map(mapper, (Employee) empObj));
+        }
+        tableObj.setEntities(employees);
         tableObj.setSize(getDao().size());
         return tableObj;
     }
@@ -228,7 +232,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public static class EmployeeTable {
 
         protected Long size;
-        protected List<Employee> entities;
+        protected List<info.yalamanchili.office.dto.profile.Employee> entities;
 
         public Long getSize() {
             return size;
@@ -239,11 +243,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
 
         @XmlElement
-        public List<Employee> getEntities() {
+        public List<info.yalamanchili.office.dto.profile.Employee> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<Employee> entities) {
+        public void setEntities(List<info.yalamanchili.office.dto.profile.Employee> entities) {
             this.entities = entities;
         }
     }

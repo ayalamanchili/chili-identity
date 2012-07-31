@@ -53,11 +53,6 @@ public class Employee extends Contact {
     /**
      * @generated
      */
-    @Field
-    protected String ssn;
-    /**
-     * @generated
-     */
     @ManyToOne(cascade = CascadeType.MERGE)
     protected Company company;
     /**
@@ -99,20 +94,6 @@ public class Employee extends Contact {
      */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    /**
-     * @generated
-     */
-    public String getSsn() {
-        return ssn;
-    }
-
-    /**
-     * @generated
-     */
-    public void setSsn(String ssn) {
-        this.ssn = ssn;
     }
 
     /**

@@ -69,7 +69,6 @@ public class OfficeStartup {
         userEmp.setLastName("user");
         userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
         userEmp.setSex(Sex.MALE);
-        userEmp.setSsn("123456789");
         userEmp.setStartDate(new Date());
 
         Company c1 = new Company();
@@ -114,7 +113,6 @@ public class OfficeStartup {
         adminEmp.setLastName("admin");
         adminEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -3));
         adminEmp.setSex(Sex.FEMALE);
-        adminEmp.setSsn("123456789");
         adminEmp.setStartDate(new Date());
 
         Address adminAddress = new Address();
