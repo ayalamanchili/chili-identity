@@ -77,7 +77,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 	protected void addRooNode(String name) {
 		// TODO get the roo node name from constants
 		rootItem.setText(name);
-		rootItem.addStyleName("y-gwt-treePanelComposite-Node");
+		rootItem.addStyleName("y-gwt-treePanelComposite-RootNode");
 		tree.addItem(rootItem);
 	}
 
@@ -85,6 +85,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 		// TODO get the name from constants
 		TreeItem child = new TreeItem(Utils.getKeyValue(childNodeName, constants));
 		child.addStyleName("y-gwt-treePanelComposite-Node");
+                
 		child.setUserObject(childNodeKey);
 		rootItem.addItem(child);
 	}
