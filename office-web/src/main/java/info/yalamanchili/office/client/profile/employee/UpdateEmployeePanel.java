@@ -55,7 +55,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
 
 
@@ -78,7 +78,8 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("middleInitial", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD);
-        addField("sex", false, true, DataType.STRING_FIELD);
+        String[] strs = {"MALE", "FEMALE"};
+        addEnumField("sex", false, true, strs);
         addField("startDate", false, true, DataType.DATE_FIELD);
     }
 
