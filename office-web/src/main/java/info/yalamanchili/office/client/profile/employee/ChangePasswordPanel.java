@@ -9,12 +9,14 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.fields.PasswordField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.login.LoginPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.gwt.fields.StringField;
 
 /**
  *
@@ -33,11 +35,19 @@ public class ChangePasswordPanel extends CreateComposite {
         assignEntityValueFromField("userName", chgpassword);
         assignEntityValueFromField("oldPassword", chgpassword);
         assignEntityValueFromField("newPassword", chgpassword);
+        
         return chgpassword;
     }
 
     @Override
     protected void createButtonClicked() {
+     
+            PasswordField newpassword = (PasswordField) fields.get("newPassword");
+            
+            PasswordField confirmpassword = (PasswordField) fields.get("confirmPassword");
+           
+            if(newpassword.getPassword().equals(confirmpassword.getPassword()))
+            {
        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -61,6 +71,11 @@ public class ChangePasswordPanel extends CreateComposite {
                         
                     }
                 });
+            }
+            else
+            {
+              new ResponseStatusWidget().show("New password and Confirm Password are not same");
+            }
     }
 
     @Override
@@ -86,8 +101,9 @@ public class ChangePasswordPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("userName", false, true, DataType.STRING_FIELD);
-        addField("oldPassword", false, true, DataType.STRING_FIELD);
-        addField("newPassword", false, true, DataType.STRING_FIELD);
+        addField("oldPassword", false, true, DataType.PASSWORD_FIELD);
+        addField("newPassword", false, true, DataType.PASSWORD_FIELD);
+        addField("confirmPassword",false,true,DataType.PASSWORD_FIELD);
     }
 
     @Override
