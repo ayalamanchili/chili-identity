@@ -37,7 +37,7 @@ public class Address extends AbstractEntity {
 	 * @generated
 	 */
 	@Field
-	@NotEmpty
+	@NotEmpty(message = "{address.street1.not.empty.msg}")
 	protected String street1;
 
 	/**
@@ -50,21 +50,21 @@ public class Address extends AbstractEntity {
 	 * @generated
 	 */
 	@Field
-	@NotEmpty
+	@NotEmpty(message = "{address.city.not.empty.msg}")
 	protected String city;
 
 	/**
 	 * @generated
 	 */
 	@Field
-	@NotEmpty
+	@NotEmpty(message = "{address.state.not.empty.msg}")
 	protected String state;
 
 	/**
 	 * @generated
 	 */
 	@Field
-	@NotEmpty
+	@NotEmpty(message = "{address.country.not.empty.msg}")
 	protected String country;
 
 	/**
