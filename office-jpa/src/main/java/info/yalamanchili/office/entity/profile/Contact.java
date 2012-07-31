@@ -279,17 +279,10 @@ public class Contact extends AbstractEntity {
     }
     //TODO add helpers for getPrimary ReportsTo
 
-    /**
-     * @generated
-     */
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getFirstName());
-        sb.append(":");
-        sb.append(getLastName());
-        sb.append(":");
-        sb.append(getMiddleInitial());
-        sb.append(":");
-        return sb.toString();
+        return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + '}';
     }
+
+   
 }
