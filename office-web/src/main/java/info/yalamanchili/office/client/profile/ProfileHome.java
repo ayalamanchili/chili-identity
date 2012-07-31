@@ -40,7 +40,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel emergencyContactsPanel;
     protected DisclosurePanel skillSetPanel;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
-    protected ClickableLink updatePassword = new ClickableLink("Update Password");
+    protected ClickableLink changePassword = new ClickableLink("Change Password");
 
     public ProfileHome() {
         instance = this;
@@ -50,7 +50,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         updateProfile.addClickHandler(this);
-        updatePassword.addClickHandler(this);
+        changePassword.addClickHandler(this);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected void addWidgets() {
         addEmployeePanel();
         panel.add(updateProfile);
-        panel.add(updatePassword);
+        panel.add(changePassword);
         addAddressesPanel();
         addPhonesPanel();
         addEmailsPanel();
@@ -238,7 +238,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
             UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
             new GenericPopup(UpdatePanel).show();
         }
-        else if(event.getSource().equals(updatePassword))
+        else if(event.getSource().equals(changePassword))
         {
             ChangePasswordPanel cngPasswordPanel = new  ChangePasswordPanel(CreateComposite.CreateCompositeType.CREATE);
             new GenericPopup(cngPasswordPanel).show();
