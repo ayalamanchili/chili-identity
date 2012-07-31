@@ -51,7 +51,7 @@ public class CUser implements Serializable {
     }
 
     @Size(min = 6, message = "{user.userId.length.invalid.msg}")
-    @NotEmpty
+    @NotEmpty(message = "{username.not.empty.msg}")
     @Pattern(regexp = "[A-Za-z0-9]+")
     public String getUsername() {
         return username;
@@ -62,7 +62,7 @@ public class CUser implements Serializable {
     }
 
     @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
-    @NotEmpty
+    @NotEmpty(message = "{password.not.empty.msg}")
     public String getPasswordHash() {
         return passwordHash;
     }
