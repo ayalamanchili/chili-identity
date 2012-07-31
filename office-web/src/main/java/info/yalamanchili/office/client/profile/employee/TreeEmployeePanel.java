@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPane
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPanel;
 
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 
 public class TreeEmployeePanel extends TreePanelComposite {
@@ -25,6 +26,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String REPORTS_TO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String SkillSet_NODE = "skillset";
+    protected static final String ChangePassword_NODE = "changepassword";
 
     public TreeEmployeePanel(String entityId) {
         super(entityId);
@@ -49,6 +51,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Skill Set", SkillSet_NODE);
+        addFirstChildLink("Change Password",ChangePassword_NODE);
     }
 
     @Override
@@ -81,6 +84,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (SkillSet_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
+        }
+         if (ChangePassword_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ChangePasswordPanel(CreateComposite.CreateCompositeType.CREATE));
+            
         }
     }
 
