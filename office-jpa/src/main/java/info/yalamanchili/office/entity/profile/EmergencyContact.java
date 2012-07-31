@@ -1,8 +1,6 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
 import info.yalamanchili.jpa.AbstractEntity;
@@ -18,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @todo add comment for javadoc
@@ -28,112 +27,107 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 public class EmergencyContact extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 12L;
 
-	/**
-	 * @generated
-	 */
-	@Field
-	protected String relation;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 12L;
+    /**
+     * @generated
+     */
+    @Field
+    @NotEmpty
+    protected String relation;
+    /**
+     * @generated
+     */
+    @Field(index = Index.UN_TOKENIZED)
+    protected Boolean ecPrimary;
+    /**
+     * @generated
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    protected Employee employee;
+    /**
+     * @NOT generated
+     */
+    @ManyToOne
+    @Valid
+    protected Contact contact;
 
-	/**
-	 * @generated
-	 */
-	@Field(index = Index.UN_TOKENIZED)
-	protected Boolean ecPrimary;
+    /**
+     * @generated
+     */
+    public EmergencyContact() {
+        super();
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public String getRelation() {
+        return relation;
+    }
 
-	@ManyToOne(cascade = CascadeType.MERGE)
-	protected Employee employee;
+    /**
+     * @generated
+     */
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
 
-	/**
-	 * @NOT generated
-	 */
+    /**
+     * @generated
+     */
+    public Boolean getEcPrimary() {
+        return ecPrimary;
+    }
 
-	@ManyToOne
-	@Valid
-	protected Contact contact;
+    /**
+     * @generated
+     */
+    public void setEcPrimary(Boolean ecPrimary) {
+        this.ecPrimary = ecPrimary;
+    }
 
-	/**
-	 * @generated
-	 */
-	public EmergencyContact() {
-		super();
-	}
+    /**
+     * @generated
+     */
+    @XmlElement
+    public Employee getEmployee() {
+        return this.employee;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getRelation() {
-		return relation;
-	}
+    /**
+     * @generated
+     */
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setRelation(String relation) {
-		this.relation = relation;
-	}
+    /**
+     * @generated
+     */
+    @XmlElement
+    public Contact getContact() {
+        return this.contact;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Boolean getEcPrimary() {
-		return ecPrimary;
-	}
+    /**
+     * @generated
+     */
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setEcPrimary(Boolean ecPrimary) {
-		this.ecPrimary = ecPrimary;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlElement
-	public Employee getEmployee() {
-		return this.employee;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlElement
-	public Contact getContact() {
-		return this.contact;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setContact(Contact contact) {
-		this.contact = contact;
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getRelation());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    /**
+     * @generated
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getRelation());
+        sb.append(":");
+        return sb.toString();
+    }
 }

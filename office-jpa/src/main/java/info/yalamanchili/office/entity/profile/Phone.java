@@ -42,7 +42,6 @@ public class Phone extends AbstractEntity {
 	 */
 	@Size(min = 10, max = 10)
 	@Field
-        
 	protected String phoneNumber;
 
 	/**

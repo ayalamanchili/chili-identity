@@ -6,9 +6,11 @@ package info.yalamanchili.office.dto.profile;
  */
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -16,16 +18,20 @@ import org.dozer.Mapper;
  */
 @XmlRootElement
 @XmlType
-public class ClientInformation implements Serializable{
+public class ClientInformation implements Serializable {
 
+    @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
+    @NotEmpty(message = "{lastName.not.empty.msg}")
     protected String lastName;
     protected String middleInitial;
     protected Sex sex;
     protected String reportsToRole;
     protected String consultantJobTitle;
     protected boolean rtPrimary;
+    @org.hibernate.validator.constraints.Email
     protected String email;
+    @Size(min = 10, max = 10)
     protected String phoneNumber;
 
     public ClientInformation() {

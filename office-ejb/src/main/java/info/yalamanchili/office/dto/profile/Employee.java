@@ -19,6 +19,7 @@ import org.dozer.Mapper;
 @XmlType
 public class Employee implements Serializable {
 
+    protected Long id;
     protected String firstName;
     protected String lastName;
     protected String middleInitial;
@@ -30,6 +31,14 @@ public class Employee implements Serializable {
     protected String phoneNumber;
 
     public Employee() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
