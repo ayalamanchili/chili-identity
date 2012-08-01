@@ -59,10 +59,10 @@ public class ServiceInterceptor {
         return result;
     }
 
-    @AfterThrowing(pointcut = "execution(* info.yalamanchili.office.jrs..*.*(..))", throwing = "exception")
-    public void catchException(JoinPoint joinPoint, Throwable exception) {
-        System.out.print("ddddddd");
-    }
+//    @AfterThrowing(pointcut = "execution(* info.yalamanchili.office.jrs..*.*(..))", throwing = "exception")
+//    public void catchException(JoinPoint joinPoint, Throwable exception) {
+//        System.out.print("ddddddd");
+//    }
 
     protected void validate(Object entity) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
