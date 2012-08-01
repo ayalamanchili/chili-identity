@@ -16,6 +16,7 @@ import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPane
 
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.profile.ResetPassword.ResetPassword;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 
 public class TreeEmployeePanel extends TreePanelComposite {
@@ -26,7 +27,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String REPORTS_TO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String SkillSet_NODE = "skillset";
-    protected static final String ChangePassword_NODE = "changepassword";
+    protected static final String ResetPassword_NODE = "resetpassword";
 
     public TreeEmployeePanel(String entityId) {
         super(entityId);
@@ -51,7 +52,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Skill Set", SkillSet_NODE);
-        addFirstChildLink("Change Password",ChangePassword_NODE);
+        addFirstChildLink("Reset Password",ResetPassword_NODE);
     }
 
     @Override
@@ -85,9 +86,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
         }
-         if (ChangePassword_NODE.equals(entityNodeKey)) {
+         if (ResetPassword_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ChangePasswordPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPassword(CreateComposite.CreateCompositeType.CREATE));
             
         }
     }
