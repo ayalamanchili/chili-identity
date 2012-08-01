@@ -7,14 +7,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import org.aspectj.lang.JoinPoint;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,6 +26,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Scope("request")
+//have to specify the order so that this is run before the transaction advice runs to handle all possible exceptions
+@Order(100)
 public class ServiceInterceptor {
 
     @Autowired
@@ -50,9 +51,6 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(se.getCause(), StatusCode.INVALID_REQUEST);
         } catch (Exception e) {
-            //TODO this catch block not executing when a exception happens at lower layer like dao delete
-            System.out.println("yyyy" + e.getLocalizedMessage());
-            e.printStackTrace();
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, e.getLocalizedMessage(), e.getMessage());
         }
         checkForErrors();
@@ -63,7 +61,6 @@ public class ServiceInterceptor {
 //    public void catchException(JoinPoint joinPoint, Throwable exception) {
 //        System.out.print("ddddddd");
 //    }
-
     protected void validate(Object entity) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
