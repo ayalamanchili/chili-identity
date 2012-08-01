@@ -21,6 +21,7 @@ public class User implements Serializable {
     protected String userName;
     protected String oldPassword;
     protected String newPassword;
+    protected long empid;
 
     public String getUserName() {
         return userName;
