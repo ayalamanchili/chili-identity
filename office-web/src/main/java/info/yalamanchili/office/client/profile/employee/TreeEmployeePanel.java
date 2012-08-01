@@ -16,7 +16,7 @@ import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPane
 
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.ResetPassword.ResetPassword;
+import info.yalamanchili.office.client.profile.password.ResetPassword;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 
 public class TreeEmployeePanel extends TreePanelComposite {
