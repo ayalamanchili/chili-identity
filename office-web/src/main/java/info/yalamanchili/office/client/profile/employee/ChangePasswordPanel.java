@@ -23,8 +23,9 @@ import info.yalamanchili.gwt.fields.StringField;
  * @author raghu
  */
 public class ChangePasswordPanel extends CreateComposite {
-
+   
      public ChangePasswordPanel(CreateCompositeType type) {
+          
         super(type);
         initCreateComposite("Change Password", OfficeWelcome.constants);
         create.setText("Change Password");
@@ -113,7 +114,7 @@ public class ChangePasswordPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-       return OfficeWelcome.constants.root_url() + "admin/changepassword";
+       return OfficeWelcome.constants.root_url() + "admin/changepassword/"+OfficeWelcome.instance().employeeId;
     }
     
 }
