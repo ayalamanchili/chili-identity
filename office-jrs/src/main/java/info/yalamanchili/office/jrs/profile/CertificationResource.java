@@ -33,8 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Path("certification")
 @Component
 @Transactional
-@Produces("application/json")
-@Consumes("application/json")
 @Scope("request")
 public class CertificationResource extends CRUDResource<Certification> {
      @Autowired
@@ -43,12 +41,12 @@ public class CertificationResource extends CRUDResource<Certification> {
     @Override
     public CRUDDao getDao() {
         return certificationDao;
-    }
+    }  
     
- @GET
+    @GET
     @Path("/{start}/{limit}")
-    public CertificationResource.CertificationTable getcertifications(@PathParam("start") int start, @PathParam("limit") int limit) {
-        CertificationResource.CertificationTable tableObj = new CertificationResource.CertificationTable();
+    public CertificationTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        CertificationTable tableObj = new CertificationTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
