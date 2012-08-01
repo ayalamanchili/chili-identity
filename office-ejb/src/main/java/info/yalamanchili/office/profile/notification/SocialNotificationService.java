@@ -32,13 +32,12 @@ public class SocialNotificationService {
     public EmployeeDao employeeDao;
     
     @Async
-    public void sendNewCompanyPostNotification() {
+    public void sendNewCompanyPostNotification(String PostContent ) {
         String[] roles = {"USER_ROLE,USER_HR,USER_ADMIN"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
-        email.setSubject("New Post in company feed");
-        String messageText = "News is posted in company feed " ;
-        email.setBody(messageText);
+        email.setSubject("New Post in company feed"); 
+        email.setBody(PostContent);
         messagingService.sendEmail(email);
 
     }

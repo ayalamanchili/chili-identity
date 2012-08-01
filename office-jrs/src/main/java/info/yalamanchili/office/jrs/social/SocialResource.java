@@ -77,7 +77,7 @@ public class SocialResource {
     @Path("/createCompanyPost")
     public Post createCompanyPost(Post companypost) {
         /*List<String> Emails=null;*/
-         socialnotificationservice.sendNewCompanyPostNotification();
+         socialnotificationservice.sendNewCompanyPostNotification(companypost.getPostContent());
         return socialDao.createCompanyPost(companypost);
        
     }
