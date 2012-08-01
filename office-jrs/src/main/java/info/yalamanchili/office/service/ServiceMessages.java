@@ -1,6 +1,6 @@
 package info.yalamanchili.office.service;
 
-import info.yalamanchili.office.service.types.Error;
+import info.chili.service.jrs.types.Error;
 
 import java.util.ArrayList;
 import java.util.List;
