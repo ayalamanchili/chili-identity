@@ -1,10 +1,13 @@
 package info.yalamanchili.office.jrs.social;
 
+
 import info.yalamanchili.office.dao.social.SocialDao;
 import info.yalamanchili.office.entity.social.Post;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
+import info.yalamanchili.office.profile.notification.SocialNotificationService;
 import info.yalamanchili.office.social.SocialService;
 
-import java.util.List;
+
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 /**
  *
@@ -34,6 +38,10 @@ public class SocialResource {
     public SocialDao socialDao;
     @Autowired
     public SocialService socialService;
+    @Autowired
+    protected ProfileNotificationService profileNotificationservice;
+    @Autowired
+    protected SocialNotificationService socialnotificationservice;
 
     @GET
     @Path("/employeefeed/{start}/{limit}")
@@ -68,6 +76,9 @@ public class SocialResource {
     @PUT
     @Path("/createCompanyPost")
     public Post createCompanyPost(Post companypost) {
+        /*List<String> Emails=null;*/
+         socialnotificationservice.sendNewCompanyPostNotification();
         return socialDao.createCompanyPost(companypost);
+       
     }
 }
