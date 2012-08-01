@@ -62,7 +62,7 @@ public class CUser implements Serializable {
     }
 
     @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
-    @NotEmpty(message = "{password.not.empty.msg}")
+    @NotEmpty(message = "{passwordHash.not.empty.msg}")
     public String getPasswordHash() {
         return passwordHash;
     }
