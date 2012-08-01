@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import  info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.dto.security.User;
+import javax.ws.rs.PathParam;
 
 @Path("admin")
 @Produces("application/json")
@@ -55,11 +56,18 @@ public class AdminResource {
         return securityService.login(user);
     }
 
-    @Path("/changepassword")
+    @Path("/changepassword/{empId}")
     @PUT
-    public CUser changePassword(User user) {
+    public CUser changePassword(@PathParam("empId") Long empId,User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        return employeeService.changePassword(user);
+        return employeeService.changePassword(empId,user);
+    }
+    
+    @Path("/resetpassword/{empId}")
+    @PUT
+    public CUser resetPassword(@PathParam("empId") Long empId,User user) {
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        return employeeService.ResetPassword(empId,user);
     }
     
     @Path("/createuser")
