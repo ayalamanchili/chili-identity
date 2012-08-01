@@ -25,8 +25,8 @@ public class UpdateCertificationPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("description", entity);
         return entity;
     }
 
