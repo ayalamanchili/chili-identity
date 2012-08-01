@@ -10,8 +10,10 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
+import info.yalamanchili.office.entity.social.PostFile;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Arrays;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -30,7 +32,7 @@ public class SocialNotificationService {
     public EmployeeDao employeeDao;
     
     @Async
-    public void sendNewCompanyPostNotification(Employee emp) {
+    public void sendNewCompanyPostNotification() {
         String[] roles = {"USER_ROLE,USER_HR,USER_ADMIN"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
