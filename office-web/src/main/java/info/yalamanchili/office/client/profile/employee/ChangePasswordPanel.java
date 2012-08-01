@@ -6,7 +6,7 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.fields.PasswordField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
@@ -48,14 +48,9 @@ public class ChangePasswordPanel extends CreateComposite {
 
         if (newpassword.getPassword().equals(confirmpassword.getPassword())) {
             HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                    new AsyncCallback<String>() {
+                    new ALAsyncCallback<String>() {
                         @Override
-                        public void onFailure(Throwable arg0) {
-                            new ResponseStatusWidget().show("Change Password failed");
-                        }
-
-                        @Override
-                        public void onSuccess(String userString) {
+                        public void onResponse(String userString) {
                             if (userString != null && userString.trim().length() > 0) {
 
                                 GenericPopup.instance().hide();
