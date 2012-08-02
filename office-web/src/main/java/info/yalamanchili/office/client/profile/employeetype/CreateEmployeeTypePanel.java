@@ -76,8 +76,8 @@ public class CreateEmployeeTypePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
+        addField("Name", false, true, DataType.STRING_FIELD);
+        addField("Description", false, false, DataType.STRING_FIELD);
     }
 
     @Override
