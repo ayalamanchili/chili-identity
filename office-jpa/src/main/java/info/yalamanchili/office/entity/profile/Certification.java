@@ -14,7 +14,6 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- *
  * @author ayalamanchili
  */
 @Indexed
