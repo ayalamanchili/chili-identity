@@ -120,13 +120,12 @@ public class Employee implements Serializable {
 
     public static Employee map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
         Employee dto = mapper.map(entity, Employee.class);
-       if(entity.getPrimaryEmail() !=null) {
-        dto.setEmail(entity.getPrimaryEmail().getEmail());
+        if (entity.getPrimaryEmail() != null) {
+            dto.setEmail(entity.getPrimaryEmail().getEmail());
+        }
         if (entity.getPhones().size() > 0) {
             dto.setPhoneNumber(entity.getPhones().get(0).getPhoneNumber());
         }
-       
-       }
         return dto;
     }
 }
