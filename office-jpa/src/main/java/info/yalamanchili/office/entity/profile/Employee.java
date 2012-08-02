@@ -217,4 +217,8 @@ public class Employee extends Contact {
     public String toString() {
         return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + '}';
     }
+
+    public void getprimaremail() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
