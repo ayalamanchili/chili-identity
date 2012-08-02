@@ -5,18 +5,12 @@
 
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -25,88 +19,40 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  * @generated
  */
+
 @Indexed
 @XmlRootElement
 @Entity
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"name"}))
+@Unique(entity = Certification.class, fields = {"name"}, message = "{employeetype.name.not.unique.msg}")
 public class EmployeeType extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 3L;
+    @NotEmpty(message = "{employeetype.not.empty.msg}")
+    protected String name;
+    protected String description;
 
-	/**
-	 * @generated
-	 */
-	@Field
-	@NotEmpty
-	protected String employeeType;
+    public EmployeeType() {
+    }
 
-	/**
-	 * @generated
-	 */
+    public String getName() {
+        return name;
+    }
 
-	@OneToMany(mappedBy = "employeeType")
-	protected List<Employee> employees;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @generated
-	 */
-	public EmployeeType() {
-		super();
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getEmployeeType() {
-		return employeeType;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setEmployeeType(String employeeType) {
-		this.employeeType = employeeType;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Employee> getEmployees() {
-		if (this.employees == null) {
-			this.employees = new ArrayList<Employee>();
-		}
-		return this.employees;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addEmployee(Employee entity) {
-		if (entity == null) {
-			return;
-		}
-		getEmployees().add(entity);
-		entity.setEmployeeType(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getEmployeeType());
-		sb.append(":");
-		return sb.toString();
-	}
+    @Override
+    public String toString() {
+        return "EmployeeType{" + "name=" + name + ", description=" + description + '}';
+    }
 
 }
