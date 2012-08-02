@@ -6,6 +6,7 @@ import info.yalamanchili.office.entity.FileType;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Certification;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -204,6 +205,9 @@ public class OfficeStartup {
         //Certifications
         getJAVACertification();
         getDOTNETCertification();
+        //Employee Type
+        getMANAGEREmployeeType();
+        getTECHLEADEmployeeType();
     }
 
     protected AddressType getHomeAddressType() {
@@ -326,7 +330,32 @@ public class OfficeStartup {
             return em.merge(certification);
         }
     }
-
+    protected EmployeeType getMANAGEREmployeeType(){
+        Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", "MANAGER");
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            EmployeeType employeetype = new EmployeeType();
+            employeetype.setName("MANAGER");
+            employeetype.setDescription("SSTECH General Manager");
+            return em.merge(employeetype);
+        }
+    }
+    protected EmployeeType getTECHLEADEmployeeType(){
+        Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", "TECHLEAD");
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            EmployeeType employeetype = new EmployeeType();
+            employeetype.setName("TECH LEAD");
+            employeetype.setDescription("Leads Software Developers");
+            return em.merge(employeetype);
+        }
+    }
     public ClientInformation userClientInfo() {
         Phone userClientInfoContactPhone = new Phone();
         userClientInfoContactPhone.setPhoneNumber("1313131313");
