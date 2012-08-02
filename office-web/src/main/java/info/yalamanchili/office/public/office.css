@@ -45,7 +45,7 @@
 
 .y-gwt-Table {
     font-size: 10pt;
-    font-family: helvetica, arial sans-serif;
+    font-family: helvetica, arial ;
     background-color: #EFFBFB;
     width: 100%;
 }
@@ -125,4 +125,5 @@
 body{
     font-family:Arial;
     font-size: 11pt;
+    cursor: default;
 }
