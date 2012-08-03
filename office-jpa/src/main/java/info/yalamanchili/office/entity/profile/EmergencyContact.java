@@ -37,7 +37,7 @@ public class EmergencyContact extends AbstractEntity {
      * @generated
      */
     @Field
-    @NotEmpty(message = "{EmergencyContact.reletion.not.empty.msg}")
+    @NotEmpty
     protected String relation;
     /**
      * @generated
