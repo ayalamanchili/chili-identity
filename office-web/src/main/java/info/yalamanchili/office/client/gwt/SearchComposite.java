@@ -116,7 +116,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
         if (DataType.PASSWORD_FIELD.equals(type)) {
             PasswordField passwordField = new PasswordField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName);
+                    constants), attributeName, entityName, false);
             fields.put(attributeName, passwordField);
             advancedSearchPanel.add(passwordField);
         }

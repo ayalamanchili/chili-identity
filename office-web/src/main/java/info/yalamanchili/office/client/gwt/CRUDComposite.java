@@ -122,7 +122,7 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.PASSWORD_FIELD.equals(type)) {
             PasswordField passwordField = new PasswordField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName);
+                    constants), attributeName, entityName,isRequired);
             fields.put(attributeName, passwordField);
             entityDisplayWidget.add(passwordField);
         }
