@@ -1,5 +1,6 @@
 package info.yalamanchili.office.service;
 
+import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
 
@@ -49,7 +50,7 @@ public class ServiceInterceptor {
         try {
             result = joinPoint.proceed();
         } catch (ServiceException se) {
-            throw new ServiceException(se.getCause(), StatusCode.INVALID_REQUEST);
+            throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } catch (Exception e) {
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", e.getMessage());
         }

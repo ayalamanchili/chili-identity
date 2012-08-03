@@ -4,6 +4,9 @@
  */
 package info.yalamanchili.office.dao;
 
+import info.chili.service.jrs.ServiceMessages;
+import info.chili.service.jrs.exception.ServiceException;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.commons.DataType;
 import info.yalamanchili.commons.EntityQueryUtils;
 import info.yalamanchili.commons.ReflectionUtils;
@@ -70,7 +73,12 @@ public abstract class CRUDDao<T> {
     }
 
     public void delete(Long id) {
-        getEntityManager().remove(findById(id));
+        try {
+            getEntityManager().remove(findById(id));
+            getEntityManager().flush();
+        } catch (javax.persistence.PersistenceException e) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "cannot delete due to associated data");
+        }
     }
 
     public Long size() {

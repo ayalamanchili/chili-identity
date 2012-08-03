@@ -52,15 +52,12 @@
             </activatedProfiles>
         </action>
         <action>
-            <actionName>CUSTOM-build with deps</actionName>
-            <displayName>build with deps</displayName>
-            <preAction>build-with-dependencies</preAction>
+            <actionName>CUSTOM-cargo:deploy</actionName>
+            <displayName>cargo:deploy</displayName>
             <goals>
-                <goal>clean</goal>
-                <goal>install</goal>
+                <goal>cargo:deploy</goal>
+                
             </goals>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
         </action>
+        
     </actions>
