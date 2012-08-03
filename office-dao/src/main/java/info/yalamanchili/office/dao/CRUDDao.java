@@ -77,7 +77,7 @@ public abstract class CRUDDao<T> {
             getEntityManager().remove(findById(id));
             getEntityManager().flush();
         } catch (javax.persistence.PersistenceException e) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "cannot delete due to associated data");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", "cannot delete due to associated data");
         }
     }
 

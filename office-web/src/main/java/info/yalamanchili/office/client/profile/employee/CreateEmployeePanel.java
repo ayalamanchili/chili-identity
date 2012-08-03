@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 
 public class CreateEmployeePanel extends CreateComposite {
 

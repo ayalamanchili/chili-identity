@@ -24,7 +24,7 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.gwt.widgets.RichTextToolBar;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileUploadPanel;
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.social.employee.CreateEmployeePostWidget;
 import java.util.logging.Logger;

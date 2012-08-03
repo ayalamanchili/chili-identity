@@ -7,7 +7,7 @@ package info.yalamanchili.office.client.profile.phone;
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.address.CreateAddressPopupPanel;

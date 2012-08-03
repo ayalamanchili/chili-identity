@@ -2,6 +2,7 @@ package info.yalamanchili.office.service;
 
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.service.jrs.exception.ServiceException.ReasonCode;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
 
 import javax.validation.ConstraintViolation;
@@ -52,7 +53,7 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } catch (Exception e) {
-            throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", e.getMessage());
+            throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", e.getMessage());
         }
         checkForErrors();
         return result;

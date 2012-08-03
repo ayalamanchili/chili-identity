@@ -10,7 +10,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ImageField;
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;

@@ -2,7 +2,7 @@ package info.yalamanchili.office.client.profile.email;
 
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 
 

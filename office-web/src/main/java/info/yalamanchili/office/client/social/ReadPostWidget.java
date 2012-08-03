@@ -1,7 +1,7 @@
 package info.yalamanchili.office.client.social;
 
 import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 
 import java.util.logging.Logger;
 

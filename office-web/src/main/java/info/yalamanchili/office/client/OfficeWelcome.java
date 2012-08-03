@@ -1,6 +1,6 @@
 package info.yalamanchili.office.client;
 
-import info.yalamanchili.office.client.gwt.JSONUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.internalization.OfficeConstants;
 import info.yalamanchili.office.client.internalization.OfficeMessages;
 import info.yalamanchili.office.client.login.LoginPanel;
