@@ -51,7 +51,7 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(se.getCause(), StatusCode.INVALID_REQUEST);
         } catch (Exception e) {
-            throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM    ", e.getMessage());
+            throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", e.getMessage());
         }
         checkForErrors();
         return result;
