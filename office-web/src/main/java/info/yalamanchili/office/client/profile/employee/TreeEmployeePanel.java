@@ -16,7 +16,7 @@ import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPane
 
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.password.ResetPassword;
+import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 
 public class TreeEmployeePanel extends TreePanelComposite {
@@ -88,7 +88,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
          if (ResetPassword_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPassword(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
             
         }
     }
