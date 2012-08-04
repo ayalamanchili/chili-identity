@@ -105,6 +105,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Shared");
+        CompanyFeedHome.instance().refresh();
     }
     
     protected String getURI() {
