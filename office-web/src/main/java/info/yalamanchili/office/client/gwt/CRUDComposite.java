@@ -2,7 +2,6 @@ package info.yalamanchili.office.client.gwt;
 
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.composite.BaseField;
-import info.yalamanchili.office.client.gwt.DateUtils;
 import info.yalamanchili.gwt.fields.BooleanField;
 import info.yalamanchili.gwt.fields.CurrencyField;
 import info.yalamanchili.gwt.fields.DataType;
@@ -31,6 +30,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.gwt.date.DateUtils;
 
 public abstract class CRUDComposite extends Composite {
 
@@ -215,8 +215,7 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.DATE_FIELD.equals(type)) {
             DateField field = (DateField) fields.get(fieldKey);
-            String formatedDate = DateUtils.getFormatedDate(JSONUtils.toString(entity, fieldKey), DateTimeFormat.PredefinedFormat.DATE_MEDIUM);
-            field.setValue(formatedDate);
+            field.setValue(JSONUtils.toString(entity, fieldKey));
         }
         if (DataType.LONG_FIELD.equals(type)) {
             LongField field = (LongField) fields.get(fieldKey);

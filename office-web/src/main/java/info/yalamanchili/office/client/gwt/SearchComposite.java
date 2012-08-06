@@ -11,7 +11,7 @@ import com.google.gwt.json.client.*;
 import info.yalamanchili.gwt.fields.*;
 import com.google.gwt.user.client.ui.*;
 import info.yalamanchili.gwt.composite.BaseField;
-import info.yalamanchili.office.client.gwt.DateUtils;
+import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.utils.Utils;
 import java.util.HashMap;
 import java.util.Map;

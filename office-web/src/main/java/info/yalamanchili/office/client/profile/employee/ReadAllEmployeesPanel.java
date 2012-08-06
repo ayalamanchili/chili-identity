@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import info.yalamanchili.office.client.gwt.DateUtils;
+import info.yalamanchili.gwt.date.DateUtils;
 
 /**
  *
