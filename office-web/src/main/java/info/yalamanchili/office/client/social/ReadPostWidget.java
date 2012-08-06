@@ -8,14 +8,16 @@ import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
+import info.yalamanchili.gwt.date.DateUtils;
 
 import info.yalamanchili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.gwt.DateUtils;
 import info.yalamanchili.office.client.gwt.ImageField;
 
 public class ReadPostWidget extends ALComposite implements ClickHandler {
@@ -25,9 +27,10 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     protected String postId;
     protected boolean showReplyOption;
     CaptionPanel postCaptionPanel = new CaptionPanel();
-    FlowPanel postLayoutPanel = new FlowPanel();
+    FlowPanel mainPanel = new FlowPanel();
     FlowPanel postMainPanel = new FlowPanel();
-    FlowPanel imagePanel = new FlowPanel();
+    HorizontalPanel attachmentsPanel = new HorizontalPanel();
+    FlowPanel profileImagePanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
     Label postStatusPanel = new Label();
     ClickableLink replyLink = new ClickableLink("reply");
@@ -42,8 +45,11 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     protected void displayPost() {
         postCaptionPanel.setCaptionHTML(JSONUtils.toString(post, "employeeName"));
         this.postId = JSONUtils.toString(post, "id");
-        imagePanel.add(new ImageField("", JSONUtils.toString(post, "employeeImageUrl"), JSONUtils.toString(post, "id"), 50, 50, false));
+        profileImagePanel.add(new ImageField("", JSONUtils.toString(post, "employeeImageUrl"), JSONUtils.toString(post, "id"), 50, 50, false));
         postBodyArea.setHTML(JSONUtils.toString(post, "postContent"));
+        if (post.get("postFiles") != null) {
+            displayAttachments(post.get("postFiles").isArray());
+        }
         Long numberOfReplies = Long.valueOf(JSONUtils.toString(post, "numberOfReplies"));
         displayPostStatus(post);
         if (numberOfReplies > 0) {
@@ -51,6 +57,12 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         }
         if (showReplyOption) {
             postMainPanel.add(replyLink);
+        }
+    }
+
+    protected void displayAttachments(JSONArray postFiles) {
+        for (int i = 0; i < postFiles.size(); i++) {
+            logger.info(postId);
         }
     }
 
@@ -67,7 +79,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     @Override
     protected void configure() {
         postBodyArea.addStyleName("postRichTextBox");
-        imagePanel.addStyleName("readPostImagePanel");
+        profileImagePanel.addStyleName("readPostImagePanel");
         postMainPanel.addStyleName("postMainPanel");
         postStatusPanel.addStyleName("postStatusPanel");
         postBodyArea.setHeight("2em");
@@ -76,10 +88,11 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        postLayoutPanel.add(imagePanel);
-        postLayoutPanel.add(postMainPanel);
-        postCaptionPanel.setContentWidget(postLayoutPanel);
+        mainPanel.add(profileImagePanel);
+        mainPanel.add(postMainPanel);
+        postCaptionPanel.setContentWidget(mainPanel);
         postMainPanel.add(postBodyArea);
+        postMainPanel.add(attachmentsPanel);
         postMainPanel.add(postStatusPanel);
     }
 
