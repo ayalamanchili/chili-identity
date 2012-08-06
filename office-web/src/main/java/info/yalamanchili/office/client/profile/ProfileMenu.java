@@ -14,6 +14,8 @@ import info.yalamanchili.office.client.profile.certification.ReadAllCertificatio
 import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
+import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
+import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 
 public class ProfileMenu extends Composite {
 
@@ -34,6 +36,7 @@ public class ProfileMenu extends Composite {
             menu.addItem("Skills", skillsMaintainenceCmd);
             menu.addItem("Certifications", certificationsMaintainenceCmd);
             menu.addItem("EmployeeTypes", employeeTypesMaintainenceCmd);
+            menu.addItem("PhoneType", phoneTypesMaintainenceCmd);
         }
     }
     Command employeeMaintainenceCmd = new Command() {
@@ -69,4 +72,15 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeTypeSidePanel());
         }
     };
+    Command phoneTypesMaintainenceCmd=new Command(){
+        public void execute(){
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPhoneTypePanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PhoneTypeSidePanel());
+            
+            
+        }
+    };
+    
 }
