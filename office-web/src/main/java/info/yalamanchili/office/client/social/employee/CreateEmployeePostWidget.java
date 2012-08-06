@@ -99,8 +99,10 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
 
     protected void uploadImage(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
-        //TODO move this to crud
-        imageUploadPanel.upload(JSONUtils.toString(post, "id"));
+        JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
+        if (postFiles.size() > 0) {
+            imageUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
+        }
     }
 
     protected void postCreateSuccess(String result) {

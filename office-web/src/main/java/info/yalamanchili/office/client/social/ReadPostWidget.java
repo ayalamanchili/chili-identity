@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -47,9 +48,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         this.postId = JSONUtils.toString(post, "id");
         profileImagePanel.add(new ImageField("", JSONUtils.toString(post, "employeeImageUrl"), JSONUtils.toString(post, "id"), 50, 50, false));
         postBodyArea.setHTML(JSONUtils.toString(post, "postContent"));
-        if (post.get("postFiles") != null) {
-            displayAttachments(post.get("postFiles").isArray());
-        }
+        displayAttachments(post);
         Long numberOfReplies = Long.valueOf(JSONUtils.toString(post, "numberOfReplies"));
         displayPostStatus(post);
         if (numberOfReplies > 0) {
@@ -60,15 +59,27 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         }
     }
 
-    protected void displayAttachments(JSONArray postFiles) {
-        for (int i = 0; i < postFiles.size(); i++) {
-            logger.info(postId);
+    protected void displayAttachments(JSONObject post) {
+        if (post.get("postFiles") != null) {
+            JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
+            for (int i = 0; i < postFiles.size(); i++) {
+                JSONObject postFile = (JSONObject) postFiles.get(i);
+                if ("IMAGE".equals(JSONUtils.toString(postFile, "fileType"))) {
+                    ImageField imageField = new ImageField("Image", JSONUtils.toString(postFile, "fileURL"), JSONUtils.toString(postFile, "id"), 50, 50, false);
+                    attachmentsPanel.add(imageField);
+                }
+                if ("FILE".equals(JSONUtils.toString(postFile, "fileType"))) {
+                    //TODO file link
+                }
+            }
         }
     }
 
     protected void displayPostStatus(JSONObject post) {
         String postTimeStamp = JSONUtils.toString(post, "postTimeStamp");
-        postStatusPanel.setText("Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
+        if (DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM) != null) {
+            postStatusPanel.setText("Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
+        }
     }
 
     @Override
