@@ -61,4 +61,9 @@ public class Email implements Serializable {
     public void setBody(String body) {
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "Email{" + "tos=" + tos + ", ccs=" + ccs + ", bccs=" + bccs + ", subject=" + subject + ", body=" + body + '}';
+    }
 }
