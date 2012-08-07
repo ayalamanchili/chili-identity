@@ -158,12 +158,12 @@ public class CreateAddressPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("street1", false, true, DataType.STRING_FIELD);
-        addField("street2", false, true, DataType.STRING_FIELD);
+        addField("street2", false, false, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("state", false, true, getStates().toArray(new String[0]));
         addEnumField("country", false, true, getCountries().toArray(new String[0]));
-        addField("zip", false, true, DataType.LONG_FIELD);
+        addField("zip", false, false, DataType.LONG_FIELD);
         entityDisplayWidget.add(addressTypeWidget);
     }
 
