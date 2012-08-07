@@ -65,13 +65,13 @@ public class ReadEmployeePanel extends ReadComposite {
 
 	@Override
 	protected void addWidgets() {
-		addField("firstName", true, true, DataType.STRING_FIELD);
-		addField("middleInitial", true, true, DataType.STRING_FIELD);
-		addField("lastName", true, true, DataType.STRING_FIELD);
-		addField("dateOfBirth", true, true, DataType.DATE_FIELD);
+		addField("firstName", true, false, DataType.STRING_FIELD);
+		addField("middleInitial", true, false, DataType.STRING_FIELD);
+		addField("lastName", true, false, DataType.STRING_FIELD);
+		addField("dateOfBirth", true, false, DataType.DATE_FIELD);
 		String[] strs = { "MALE", "FEMALE" };
-		addEnumField("sex", true, true, strs);
-		addField("startDate", true, true, DataType.DATE_FIELD);
+		addEnumField("sex", true, false, strs);
+		addField("startDate", true, false, DataType.DATE_FIELD);
 	}
 
 	@Override
