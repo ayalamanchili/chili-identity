@@ -73,10 +73,9 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     protected JSONObject populatePostEntity() {
         JSONObject post = new JSONObject();
         post.put("postContent", new JSONString(createPostTextArea.getText()));
-        if (imageUploadPanel.getFileUpload().getFilename() != null) {
+        if (imageUploadPanel.getFileUpload().getFilename() != null && !"".equals(imageUploadPanel.getFileUpload().getFilename().trim())) {
             JSONArray postImages = new JSONArray();
             JSONObject postImage1 = new JSONObject();
-
             postImage1.put("fileURL", imageUploadPanel.getFileName());
             postImage1.put("fileType", new JSONString("IMAGE"));
             postImages.set(0, postImage1);

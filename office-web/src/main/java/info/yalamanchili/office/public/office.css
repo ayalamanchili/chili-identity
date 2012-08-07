@@ -77,6 +77,21 @@
     background-color: #fff;
 }
 
+
+.genericPopup{
+    background-color: #E5ECFF;
+}
+.socialSidePanel{
+
+}
+/*post css start*/
+.readRepliesPanel{
+    border: 1px solid #999;
+    width: 100%;
+}
+.replyPostWidget{
+    width:100%;
+}
 .postRichTextBox{
     width: 100%;
 }
@@ -96,20 +111,18 @@
     width: 100%;
     height: 20%;
 }
-.genericPopup{
-    background-color: #E5ECFF;
-}
-.socialSidePanel{
+.postAttachmentsPanel{
 
 }
-.readRepliesPanel{
-    border: 1px solid #999;
-    width: 100%;
+/*post css end*/
+/*image field css start*/
+.imageField-Image{
+    border: 1px solid #4C3C1B;
+    padding: 5px;
+    width: 300px;
+    background-color: #EFEECB;
 }
-.replyPostWidget{
-    width:100%;
-}
-
+/*image field css end*/
 .y-gwt-treePanelComposite-Node
 {
     cursor: pointer;

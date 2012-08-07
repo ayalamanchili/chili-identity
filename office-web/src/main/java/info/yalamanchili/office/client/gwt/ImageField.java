@@ -27,6 +27,7 @@ public class ImageField extends ALComposite {
         label.setText(labelName);
         label.setVisible(showLabel);
         setPixelSize(width, height);
+        image.addStyleName("imageField-Image");
         image.setUrl(OfficeWelcome.constants.file_download_url() + url + "&entityId=" + entityId);
         image.addErrorHandler(new ErrorHandler() {
             public void onError(ErrorEvent event) {

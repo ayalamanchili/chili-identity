@@ -93,6 +93,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         profileImagePanel.addStyleName("readPostImagePanel");
         postMainPanel.addStyleName("postMainPanel");
         postStatusPanel.addStyleName("postStatusPanel");
+        attachmentsPanel.addStyleName("postAttachmentsPanel");
         postBodyArea.setHeight("2em");
         postBodyArea.setEnabled(false);
     }
