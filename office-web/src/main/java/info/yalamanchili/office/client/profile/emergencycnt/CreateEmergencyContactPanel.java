@@ -82,12 +82,12 @@ public class CreateEmergencyContactPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, true, DataType.STRING_FIELD);
+        addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("relation", false, true, DataType.STRING_FIELD);
-        addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
         addField("phoneNumber", false, true, DataType.STRING_FIELD);
     }
