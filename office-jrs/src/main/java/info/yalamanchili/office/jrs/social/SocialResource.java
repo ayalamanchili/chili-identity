@@ -4,7 +4,7 @@ package info.yalamanchili.office.jrs.social;
 import info.yalamanchili.office.dao.social.SocialDao;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
-import info.yalamanchili.office.profile.notification.SocialNotificationService;
+import info.yalamanchili.office.social.notification.SocialNotificationService;
 import info.yalamanchili.office.social.SocialService;
 
 
