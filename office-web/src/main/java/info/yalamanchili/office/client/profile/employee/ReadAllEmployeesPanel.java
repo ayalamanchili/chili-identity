@@ -111,13 +111,13 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-       /* HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                }); */
+        /* HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+         new ALAsyncCallback<String>() {
+         @Override
+         public void onResponse(String arg0) {
+         postDeleteSuccess();
+         }
+         }); */
     }
 
     @Override
@@ -129,6 +129,8 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entityId));
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(getEntity(entityId)));
     }
