@@ -31,6 +31,7 @@ public class EmergencyContact extends AbstractEntity {
     /**
      * @generated
      */
+    
     @Transient
     private static final long serialVersionUID = 12L;
     /**
