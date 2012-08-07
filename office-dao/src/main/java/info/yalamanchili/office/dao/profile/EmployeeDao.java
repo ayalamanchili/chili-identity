@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dao.profile;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Employee;
 
@@ -30,4 +31,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
 	public EntityManager getEntityManager() {
 		return em;
 	}
+        @Override
+        public void delete(Long id) {
+        try {
+            //getEntityManager().remove(findById(id));
+            //getEntityManager().flush();
+        } catch (javax.persistence.PersistenceException e) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", "cannot delete due to associated data");
+        }
+    }
 }
