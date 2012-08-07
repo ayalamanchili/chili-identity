@@ -2,8 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.profile.notification;
-
+package info.yalamanchili.office.social.notification;
 
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -17,29 +16,29 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author Bapuji
  */
 @Component
 public class SocialNotificationService {
-   
+
     @Autowired
     protected SecurityService securityService;
     @Autowired
     protected MessagingService messagingService;
     @Autowired
     public EmployeeDao employeeDao;
-    
+
     @Async
-    public void sendNewCompanyPostNotification(String PostContent ) {
-        String[] roles = {"USER_ROLE,USER_HR,USER_ADMIN"};
+    public void sendNewCompanyPostNotification(String PostContent) {
+        String[] roles = {"ROLE_USER,ROLE_HR,ROLE_ADMIN"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
-        email.setSubject("New Post in company feed"); 
+        email.setSubject("New Post in company feed");
         email.setBody(PostContent);
         messagingService.sendEmail(email);
 
     }
-    
 }
