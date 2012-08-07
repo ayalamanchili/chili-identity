@@ -11,9 +11,7 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
-import info.yalamanchili.office.client.profile.certification.CreateCertificationPanel;
-import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
+
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -31,11 +29,14 @@ public class CreatePhoneTypePanel extends CreateComposite {
     }
      @Override
     public JSONObject populateEntityFromFields() {
-        JSONObject phonetype = new JSONObject();
+         
+         JSONObject phonetype=new JSONObject();
+         assignEntityValueFromField("name", phonetype);
+        assignEntityValueFromField("description", phonetype);
+         logger.info(phonetype.toString());
+         return phonetype;
+         
         
-        assignEntityValueFromField("phonetype", phonetype);
-        logger.info(phonetype.toString());
-        return phonetype;
 
     }
      
@@ -80,7 +81,8 @@ public class CreatePhoneTypePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("PhoneType", false, true, DataType.STRING_FIELD);
+        addField("name", false, true, DataType.STRING_FIELD);
+        addField("description", false, false, DataType.STRING_FIELD);
         
     }
 
