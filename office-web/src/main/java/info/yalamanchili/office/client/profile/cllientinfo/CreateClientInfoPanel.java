@@ -83,11 +83,11 @@ public class CreateClientInfoPanel extends CreateComposite {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
         addField("reportsToRole", false, true, DataType.STRING_FIELD);
         addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, true, DataType.STRING_FIELD);
+        addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
-        addField("rtPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("phoneNumber", false, true, DataType.STRING_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
     }
