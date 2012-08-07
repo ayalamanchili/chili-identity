@@ -84,7 +84,7 @@ public class UpdateEmailPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("primaryEmail", false, true, DataType.BOOLEAN_FIELD);
+        addField("primaryEmail", false, false, DataType.BOOLEAN_FIELD);
         entityDisplayWidget.add(emailTypeF);
     }
 
