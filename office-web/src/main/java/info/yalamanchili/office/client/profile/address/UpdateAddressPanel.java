@@ -91,11 +91,11 @@ public class UpdateAddressPanel extends UpdateComposite {
     protected void addWidgets() {
         // TODO Auto-generated method stub
         addField("street1", false, true, DataType.STRING_FIELD);
-        addField("street2", false, true, DataType.STRING_FIELD);
+        addField("street2", false, false, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
         addEnumField("state", false, true, CreateAddressPanel.getStates().toArray(new String[0]));
         addEnumField("country", false, true, CreateAddressPanel.getCountries().toArray(new String[0]));
-        addField("zip", false, true, DataType.STRING_FIELD);
+        addField("zip", false, false, DataType.STRING_FIELD);
         entityDisplayWidget.add(AddressTypeF);
     }
 
