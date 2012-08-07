@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.date.DateUtils;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.rpc.HttpService;
 
 /**
  *
@@ -82,18 +84,18 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
             if (Auth.isAdmin() || Auth.isHR()) {
-                table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+                table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             }
             table.setText(i, 7, JSONUtils.toString(entity, "sex"));
             table.setWidget(i, 8, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
-            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.isAdmin() || Auth.isHR()) {
-            createOptionsWidget(OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
@@ -109,11 +111,20 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-        // TODO Auto-generated method stub
+       /* HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                }); */
     }
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully deleted Employee Information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
     }
 
     @Override
