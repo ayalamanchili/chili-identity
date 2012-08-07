@@ -89,12 +89,12 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, true, DataType.STRING_FIELD);
+        addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("reportsToRole", false, true, DataType.STRING_FIELD);
-        addField("rtPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
     }
 
