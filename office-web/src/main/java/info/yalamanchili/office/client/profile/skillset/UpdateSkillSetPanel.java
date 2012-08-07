@@ -40,7 +40,6 @@ public class UpdateSkillSetPanel extends UpdateComposite {
             public void onResponse(String arg0) {
                 if (arg0 != null) {
                     entity = (JSONObject) JSONParser.parseLenient(arg0);
-
                 }
             }
         });
@@ -49,7 +48,6 @@ public class UpdateSkillSetPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject skillSet = new JSONObject();
-        assignEntityValueFromField("lastUpdated", skillSet);
         skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
         return skillSet;
     }
@@ -74,7 +72,6 @@ public class UpdateSkillSetPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
     }
 
     protected void uploadResume(String entityId) {

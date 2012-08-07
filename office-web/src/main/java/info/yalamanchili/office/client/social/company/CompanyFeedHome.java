@@ -6,6 +6,7 @@ package info.yalamanchili.office.client.social.company;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.social.ReadAllPostsPanel;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 
@@ -27,7 +28,9 @@ public class CompanyFeedHome extends Composite {
     public CompanyFeedHome() {
         instance = this;
         initWidget(panel);
-        panel.add(createCompanyPostWidget);
+        if (Auth.isAdmin()) {
+            panel.add(createCompanyPostWidget);
+        }
         panel.add(companyFeed);
     }
 

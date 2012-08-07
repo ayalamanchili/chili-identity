@@ -112,15 +112,12 @@
     height: 20%;
 }
 .postAttachmentsPanel{
-
+    border: 1px solid black;
 }
 /*post css end*/
 /*image field css start*/
 .imageField-Image{
-    border: 1px solid #4C3C1B;
-    padding: 5px;
-    width: 300px;
-    background-color: #EFEECB;
+   
 }
 /*image field css end*/
 .y-gwt-treePanelComposite-Node
