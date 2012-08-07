@@ -91,12 +91,12 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, true, DataType.STRING_FIELD);
+        addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("relation", false, true, DataType.STRING_FIELD);
-        addField("ecPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
     }
 
     @Override
