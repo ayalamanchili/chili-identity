@@ -98,7 +98,7 @@ public class ReadAllSkillsPanel extends ReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully deleted Skill Information");
+        new ResponseStatusWidget().show("Successfully deleted Skill Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSkillsPanel());
     }
