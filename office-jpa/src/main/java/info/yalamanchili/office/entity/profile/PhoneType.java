@@ -43,7 +43,7 @@ public class PhoneType extends AbstractEntity {
      * @generated
      */
     @Field
-    @NotEmpty
+    @NotEmpty(message = "{phoneType.not.empty.msg}")
     protected String phoneType;
     /**
      * @generated
