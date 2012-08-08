@@ -57,7 +57,7 @@ public class ReadAllPhoneTypePanel extends ReadAllComposite {
     public void createTableHeader() {
 
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("PhoneType"));
+        table.setText(0, 1, getKeyValue("phoneType"));
         
         
     }
@@ -66,7 +66,7 @@ public class ReadAllPhoneTypePanel extends ReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-           table.setText(i, 1, JSONUtils.toString(entity, "phonetype"));
+           table.setText(i, 1, JSONUtils.toString(entity, "phoneType"));
            
             
 
