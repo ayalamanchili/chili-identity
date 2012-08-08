@@ -32,7 +32,7 @@ public class CreatePhoneTypePanel extends CreateComposite {
          
          JSONObject phonetype=new JSONObject();
          
-        assignEntityValueFromField("phonetype", phonetype);
+        assignEntityValueFromField("phoneType", phonetype);
          logger.info(phonetype.toString());
          return phonetype;
          
@@ -81,7 +81,7 @@ public class CreatePhoneTypePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("phonetype", false, true, DataType.STRING_FIELD);
+        addField("phoneType", false, true, DataType.STRING_FIELD);
         
         
     }
