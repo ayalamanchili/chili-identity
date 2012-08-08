@@ -39,7 +39,7 @@ public class AddressType extends AbstractEntity {
 	 * @generated
 	 */
 	@Field
-	@NotEmpty
+	@NotEmpty(message = "{addressType.not.empty.msg}")
 	protected String addressType;
 
 	/**
