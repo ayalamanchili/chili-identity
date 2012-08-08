@@ -49,6 +49,8 @@ public class Post extends AbstractEntity {
     protected List<Post> replies;
     @OneToMany(cascade = CascadeType.ALL)
     protected List<PostFile> postFiles;
+    @OneToMany(mappedBy = "post")
+    protected List<PostLike> postLikes;
 
     public Date getPostTimeStamp() {
         return postTimeStamp;
@@ -130,5 +132,17 @@ public class Post extends AbstractEntity {
         }
         getPostFiles().add(postFile);
     }
+
     //TODO add pre/post persiste or update to save the current time stamp.
+    @XmlTransient
+    public List<PostLike> getPostLikes() {
+        if (this.postLikes == null) {
+            this.postLikes = new ArrayList<PostLike>();
+        }
+        return postLikes;
+    }
+
+    public void setPostLikes(List<PostLike> postLikes) {
+        this.postLikes = postLikes;
+    }
 }
