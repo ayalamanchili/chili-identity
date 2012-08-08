@@ -94,7 +94,7 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs);
+        addEnumField("sex", false, false, strs);
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
     }
