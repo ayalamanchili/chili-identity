@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class EmergencyContact implements Serializable {
 
-    @NotEmpty
+    @NotEmpty(message = "{relation.not.empty.msg}")
     protected String relation;
     protected boolean ecPrimary;
     @NotEmpty(message = "{firstName.not.empty.msg}")
