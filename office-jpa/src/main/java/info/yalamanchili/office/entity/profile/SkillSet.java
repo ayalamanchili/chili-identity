@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -31,9 +32,11 @@ public class SkillSet extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date lastUpdated;
     protected String resumeUrl;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "skillSet", cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_SkillSet_Skills")
     protected List<Skill> skills;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "skillSet", cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_SkillSet_Certifications")
     protected List<Certification> certifications;
     @OneToOne(mappedBy = "skillSet")
     private Employee employee;

@@ -12,6 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @XmlRootElement
@@ -46,6 +47,7 @@ public class CRole implements Serializable {
 	@ManyToMany(targetEntity = CRole.class)
 	@JoinTable(name = "RoleGroups", joinColumns = @JoinColumn(name = "RoleId"), inverseJoinColumns = @JoinColumn(name = "GroupId"))
 	@XmlElement
+        @ForeignKey(name = "FK_Groupes_CRoles")
 	public Set<CRole> getGroups() {
 		if (groups == null) {
 			groups = new HashSet<CRole>();

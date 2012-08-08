@@ -6,9 +6,12 @@ package info.yalamanchili.office.entity.social;
 
 import info.yalamanchili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.FileType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 
 /**
  *
@@ -21,6 +24,9 @@ public class PostFile extends AbstractEntity {
 
     protected String fileURL;
     protected FileType fileType;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Post_PostFiles")
+    protected Post post;
 
     public PostFile() {
     }

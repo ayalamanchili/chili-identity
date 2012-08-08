@@ -17,6 +17,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -61,6 +62,7 @@ public class Phone extends AbstractEntity {
 	 */
 
 	@ManyToOne
+        @ForeignKey(name = "FK_PhoneType_Phones")
 	protected PhoneType phoneType;
 
 	/**
@@ -68,6 +70,7 @@ public class Phone extends AbstractEntity {
 	 */
 
 	@ManyToOne(cascade = CascadeType.MERGE)
+        @ForeignKey(name = "FK_Contact_Phones")
 	protected Contact contact;
 
 	/**

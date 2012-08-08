@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -54,11 +55,13 @@ public class Employee extends Contact {
      * @generated
      */
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Company_Employees")
     protected Company company;
     /**
      * @generated
      */
     @ManyToOne
+    @ForeignKey(name = "FK_EmployeeType_Employees")
     protected EmployeeType employeeType;
     /**
      * @generated
@@ -73,6 +76,7 @@ public class Employee extends Contact {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<Post> posts;
     @OneToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_SkillSet_Employee")
     protected SkillSet skillSet;
 
     /**

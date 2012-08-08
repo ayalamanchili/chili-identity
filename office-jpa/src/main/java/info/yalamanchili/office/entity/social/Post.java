@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -40,14 +41,17 @@ public class Post extends AbstractEntity {
     @NotEmpty
     protected String postContent;
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_Posts")
     protected Employee employee;
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Company_Posts")
     protected Company company;
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Post_ChildPosts")
     protected Post parentPost;
     @OneToMany(mappedBy = "parentPost", cascade = CascadeType.ALL)
     protected List<Post> replies;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     protected List<PostFile> postFiles;
     @OneToMany(mappedBy = "post")
     protected List<PostLike> postLikes;

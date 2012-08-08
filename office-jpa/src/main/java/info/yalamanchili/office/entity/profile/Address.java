@@ -76,6 +76,7 @@ public class Address extends AbstractEntity {
      * @generated
      */
     @ManyToOne
+    @ForeignKey(name = "FK_AddressType_Addresses")
     protected AddressType addressType;
 
     /**

@@ -7,6 +7,7 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,6 +28,8 @@ public class Certification extends AbstractEntity {
     @NotEmpty(message = "{certification.not.empty.msg}")
     protected String name;
     protected String description;
+    @ManyToOne
+    protected SkillSet skillSet;
 
     public Certification() {
     }
@@ -45,6 +48,14 @@ public class Certification extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public SkillSet getSkillSet() {
+        return skillSet;
+    }
+
+    public void setSkillSet(SkillSet skillSet) {
+        this.skillSet = skillSet;
     }
 
     @Override

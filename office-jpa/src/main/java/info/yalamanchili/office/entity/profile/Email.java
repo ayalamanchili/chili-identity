@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -60,6 +61,7 @@ public class Email extends AbstractEntity {
 	 */
 
 	@ManyToOne
+        @ForeignKey(name = "FK_EmailType_Emails")
 	protected EmailType emailType;
 
 	/**
@@ -67,6 +69,7 @@ public class Email extends AbstractEntity {
 	 */
 
 	@ManyToOne(cascade = CascadeType.MERGE)
+        @ForeignKey(name = "FK_Contact_Emails")
 	protected Contact contact;
 
 	/**

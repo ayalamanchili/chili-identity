@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -49,11 +50,13 @@ public class EmergencyContact extends AbstractEntity {
      * @generated
      */
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_EmergencyContacts")
     protected Employee employee;
     /**
      * @NOT generated
      */
     @ManyToOne
+    @ForeignKey(name = "FK_Contact_EmergencyContacts")
     @Valid
     protected Contact contact;
 

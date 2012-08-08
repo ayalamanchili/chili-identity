@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -80,6 +81,7 @@ public class CUser implements Serializable {
     }
 
     @OneToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_Employee_CUser")
     @Valid
     @XmlElement
     public Employee getEmployee() {
@@ -92,6 +94,7 @@ public class CUser implements Serializable {
     protected Employee employee;
 
     @ManyToMany(targetEntity = CRole.class)
+    @ForeignKey(name = "FK_CRoles_CUsers")
     @JoinTable(name = "UserRoles", joinColumns =
     @JoinColumn(name = "UserId"), inverseJoinColumns =
     @JoinColumn(name = "RoleId"))

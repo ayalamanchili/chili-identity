@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -35,8 +36,10 @@ public class ClientInformation extends AbstractEntity {
     @Field(index = Index.UN_TOKENIZED)
     protected Boolean rtPrimary;
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_ClientInformations")
     protected Employee employee;
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Contact_ClientInformations")
     @Valid
     protected Contact contact;
 
