@@ -1,8 +1,6 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.validation.Unique;
@@ -32,88 +30,51 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"emailType"}))
-@Unique(entity = EmailType.class, fields = {"emailType"}, message="{emailtype.name.not.unique.msg}")
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"emailType"}))
+@Unique(entity = EmailType.class, fields = {"emailType"}, message = "{emailtype.name.not.unique.msg}")
 public class EmailType extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 9L;
 
-	/**
-	 * @generated
-	 */
-	@Field
-	@NotEmpty
-        
-	protected String emailType;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 9L;
+    /**
+     * @generated
+     */
+    @Field
+    @NotEmpty
+    protected String emailType;
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public EmailType() {
+        super();
+    }
 
-	@OneToMany(mappedBy = "emailType")
-	protected List<Email> emails;
+    /**
+     * @generated
+     */
+    public String getEmailType() {
+        return emailType;
+    }
 
-	/**
-	 * @generated
-	 */
-	public EmailType() {
-		super();
-	}
+    /**
+     * @generated
+     */
+    public void setEmailType(String emailType) {
+        this.emailType = emailType;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getEmailType() {
-		return emailType;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setEmailType(String emailType) {
-		this.emailType = emailType;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Email> getEmails() {
-		if (this.emails == null) {
-			this.emails = new ArrayList<Email>();
-		}
-		return this.emails;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setEmails(List<Email> emails) {
-		this.emails = emails;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addEmail(Email entity) {
-		if (entity == null) {
-			return;
-		}
-		getEmails().add(entity);
-		entity.setEmailType(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getEmailType());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    /**
+     * @generated
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getEmailType());
+        sb.append(":");
+        return sb.toString();
+    }
 }

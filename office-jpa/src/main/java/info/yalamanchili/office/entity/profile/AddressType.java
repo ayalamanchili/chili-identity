@@ -1,8 +1,6 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
 import info.yalamanchili.jpa.AbstractEntity;
@@ -29,88 +27,50 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 public class AddressType extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 10L;
 
-	/**
-	 * @generated
-	 */
-	@Field
-	@NotEmpty(message = "{addressType.not.empty.msg}")
-	protected String addressType;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 10L;
+    /**
+     * @generated
+     */
+    @Field
+    @NotEmpty(message = "{addressType.not.empty.msg}")
+    protected String addressType;
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    /**
+     * @generated
+     */
+    public AddressType() {
+        super();
+    }
 
-	@OneToMany(mappedBy = "addressType")
-	protected List<Address> addresss;
+    /**
+     * @generated
+     */
+    public String getAddressType() {
+        return addressType;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
+    }
 
-	/**
-	 * @generated
-	 */
-	public AddressType() {
-		super();
-	}
-
-	/**
-	 * @generated
-	 */
-	public String getAddressType() {
-		return addressType;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setAddressType(String addressType) {
-		this.addressType = addressType;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Address> getAddresss() {
-		if (this.addresss == null) {
-			this.addresss = new ArrayList<Address>();
-		}
-		return this.addresss;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setAddresss(List<Address> addresss) {
-		this.addresss = addresss;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addAddress(Address entity) {
-		if (entity == null) {
-			return;
-		}
-		getAddresss().add(entity);
-		entity.setAddressType(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getAddressType());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    /**
+     * @generated
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getAddressType());
+        sb.append(":");
+        return sb.toString();
+    }
 }

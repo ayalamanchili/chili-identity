@@ -45,11 +45,6 @@ public class PhoneType extends AbstractEntity {
     @Field
     @NotEmpty(message = "{phoneType.not.empty.msg}")
     protected String phoneType;
-    /**
-     * @generated
-     */
-    @OneToMany(mappedBy = "phoneType")
-    protected List<Phone> phones;
 
     /**
      * @generated
@@ -70,35 +65,6 @@ public class PhoneType extends AbstractEntity {
      */
     public void setPhoneType(String phoneType) {
         this.phoneType = phoneType;
-    }
-
-    /**
-     * @generated
-     */
-    @XmlTransient
-    public List<Phone> getPhones() {
-        if (this.phones == null) {
-            this.phones = new ArrayList<Phone>();
-        }
-        return this.phones;
-    }
-
-    /**
-     * @generated
-     */
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
-    }
-
-    /**
-     * @generated
-     */
-    public void addPhone(Phone entity) {
-        if (entity == null) {
-            return;
-        }
-        getPhones().add(entity);
-        entity.setPhoneType(this);
     }
 
     /**

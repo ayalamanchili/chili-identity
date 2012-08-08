@@ -11,10 +11,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -32,10 +31,10 @@ public class SkillSet extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date lastUpdated;
     protected String resumeUrl;
-    @OneToMany(mappedBy = "skillSet", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Skills")
     protected List<Skill> skills;
-    @OneToMany(mappedBy = "skillSet", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Certifications")
     protected List<Certification> certifications;
     @OneToOne(mappedBy = "skillSet")

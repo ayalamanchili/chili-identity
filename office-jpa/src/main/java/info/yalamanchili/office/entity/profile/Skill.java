@@ -29,8 +29,6 @@ public class Skill extends AbstractEntity {
     @NotEmpty(message = "{skill.not.empty.msg}")
     protected String name;
     protected String description;
-    @ManyToOne
-    protected SkillSet skillSet;
 
     public Skill() {
     }
@@ -49,14 +47,6 @@ public class Skill extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public SkillSet getSkillSet() {
-        return skillSet;
-    }
-
-    public void setSkillSet(SkillSet skillSet) {
-        this.skillSet = skillSet;
     }
 
     @Override
