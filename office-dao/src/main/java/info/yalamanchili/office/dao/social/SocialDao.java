@@ -2,6 +2,7 @@ package info.yalamanchili.office.dao.social;
 
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.entity.social.Post;
+import info.yalamanchili.office.entity.social.Like;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
@@ -65,5 +66,11 @@ public class SocialDao {
         newcompanypost.setCompany(companyDao.findByCompanyName("sstech"));
         newcompanypost.setPostTimeStamp(new Date());
         return em.merge(newcompanypost);
+    }
+    public void liked(Long postId){
+        Like like = new Like();
+        like.setEmployee(securityService.getCurrentUser());
+        like.setPost(em.find(Post.class,postId));
+        em.merge(like);
     }
 }
