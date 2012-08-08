@@ -81,4 +81,9 @@ public class SocialResource {
         return socialDao.createCompanyPost(companypost);
        
     }
+    @GET
+    @Path("/liked/{postId}")
+    public void liked(@PathParam("postId") Long postId) {
+        socialDao.liked(postId);
+    }
 }
