@@ -8,6 +8,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -33,7 +35,7 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class CreateCompanyPostWidget extends ALComposite implements ClickHandler, FocusHandler {
+public class CreateCompanyPostWidget extends ALComposite implements ClickHandler, FocusHandler, KeyUpHandler {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePostWidget.class.getName());
     CaptionPanel captionPanel = new CaptionPanel();
@@ -122,5 +124,13 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
 
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "social/createCompanyPost";
+    }
+      @Override
+    public void onKeyUp(KeyUpEvent event) {
+        if (textArea.getText().length() >= 2) {
+            createPostB.setEnabled(true);
+        } else {
+            createPostB.setEnabled(false);
+        }
     }
 }
