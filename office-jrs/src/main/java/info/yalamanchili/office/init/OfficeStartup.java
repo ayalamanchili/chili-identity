@@ -167,10 +167,6 @@ public class OfficeStartup {
         userPost1.setPostTimeStamp(new Date());
         userPost1.setPostContent("this is my first post by user");
         userPost1.setEmployee(userEmp);
-        PostFile userPostImage = new PostFile();
-        userPostImage.setFileType(FileType.IMAGE);
-        userPostImage.setFileURL("sampleURL");
-        userPost1.addPostFile(userPostImage);
         userPost1 = em.merge(userPost1);
 
         Post userPostReply1 = new Post();

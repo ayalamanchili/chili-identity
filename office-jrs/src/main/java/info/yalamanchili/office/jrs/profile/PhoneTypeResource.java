@@ -22,14 +22,16 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class PhoneTypeResource extends CRUDResource<PhoneType> {
-	@Autowired
-	public PhoneTypeDao phoneTypeDao;
 
-	@Override
-	public CRUDDao getDao() {
-		return phoneTypeDao;
-	}
-         @GET
+    @Autowired
+    public PhoneTypeDao phoneTypeDao;
+
+    @Override
+    public CRUDDao getDao() {
+        return phoneTypeDao;
+    }
+
+    @GET
     @Path("/{start}/{limit}")
     public PhoneTypeResource.PhoneTypeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         PhoneTypeResource.PhoneTypeTable tableObj = new PhoneTypeResource.PhoneTypeTable();
@@ -37,28 +39,29 @@ public class PhoneTypeResource extends CRUDResource<PhoneType> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-         @XmlRootElement
-	@XmlType
-	public static class PhoneTypeTable {
-		protected Long size;
-		protected List<PhoneType> entities;
 
-		public Long getSize() {
-			return size;
-		}
+    @XmlRootElement
+    @XmlType
+    public static class PhoneTypeTable {
 
-		public void setSize(Long size) {
-			this.size = size;
-		}
+        protected Long size;
+        protected List<PhoneType> entities;
 
-		@XmlElement
-		public List<PhoneType> getEntities() {
-			return entities;
-		}
+        public Long getSize() {
+            return size;
+        }
 
-		public void setEntities(List<PhoneType> entities) {
-			this.entities = entities;
-		}
+        public void setSize(Long size) {
+            this.size = size;
+        }
 
-	}
+        @XmlElement
+        public List<PhoneType> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<PhoneType> entities) {
+            this.entities = entities;
+        }
+    }
 }
