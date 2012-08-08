@@ -70,6 +70,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     protected void configure() {
         mainPanel.addStyleName(".createPostWidget");
         textArea.setWidth("100%");
+         createPostB.setEnabled(false);
     }
 
     protected JSONObject populatePostEntity() {
