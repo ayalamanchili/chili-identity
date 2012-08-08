@@ -25,8 +25,8 @@ public class UpdatePhoneTypePanel extends UpdateComposite {
     }
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("name", entity);
-        assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("phonetype", entity);
+       
         
         return entity;
     }
@@ -49,8 +49,8 @@ public class UpdatePhoneTypePanel extends UpdateComposite {
     }
      @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-       assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+       assignFieldValueFromEntity("phonetype", entity, DataType.STRING_FIELD);
+        
        
     }
 
@@ -70,8 +70,8 @@ public class UpdatePhoneTypePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-       addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
+       addField("phonetype", false, true, DataType.STRING_FIELD);
+        
         
     }
 
