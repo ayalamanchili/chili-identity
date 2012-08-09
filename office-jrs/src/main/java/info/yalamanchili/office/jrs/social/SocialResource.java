@@ -1,6 +1,5 @@
 package info.yalamanchili.office.jrs.social;
 
-
 import info.yalamanchili.office.dao.social.SocialDao;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
@@ -21,6 +20,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import javax.ws.rs.POST;
 
 /**
  *
@@ -48,7 +48,8 @@ public class SocialResource {
     public List<info.yalamanchili.office.dto.social.Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
         return socialService.getEmployeeFeed(start, limit);
     }
-     @GET
+
+    @GET
     @Path("/companyfeed/{start}/{limit}")
     public List<info.yalamanchili.office.dto.social.Post> getCompanyFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
         return socialService.getCompanyFeed(start, limit);
@@ -77,11 +78,12 @@ public class SocialResource {
     @Path("/createCompanyPost")
     public Post createCompanyPost(Post companypost) {
         /*List<String> Emails=null;*/
-         socialnotificationservice.sendNewCompanyPostNotification(companypost.getPostContent());
+        socialnotificationservice.sendNewCompanyPostNotification(companypost.getPostContent());
         return socialDao.createCompanyPost(companypost);
-       
+
     }
-    @GET
+
+    @PUT
     @Path("/liked/{postId}")
     public void liked(@PathParam("postId") Long postId) {
         socialDao.liked(postId);
