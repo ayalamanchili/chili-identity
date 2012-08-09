@@ -7,11 +7,12 @@
     margin-left: 3px;
     margin-right: 3px;
     font-size: 12pt;
-    font:Arial;
+    font-family: Arial;
 }
 
 .tabPanel {
     height: 100%;
+
 }
 .profileHome{
     width: 100%;
