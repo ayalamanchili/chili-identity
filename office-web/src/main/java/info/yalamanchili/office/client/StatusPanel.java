@@ -1,6 +1,7 @@
 package info.yalamanchili.office.client;
 
 import com.google.gwt.user.client.Window;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.AbstractStatusPanel;
 
 import java.util.logging.Logger;
@@ -51,7 +52,7 @@ public class StatusPanel extends AbstractStatusPanel {
      */
     @Override
     protected void setUser() {
-        this.userLink.setText("Welcome " + OfficeWelcome.instance().username);
+        this.userLink.setText("Welcome " + JSONUtils.toString(OfficeWelcome.instance().employee, "firstName"));
         loginSuccessfull();
     }
 }
