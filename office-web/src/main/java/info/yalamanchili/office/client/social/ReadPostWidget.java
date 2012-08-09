@@ -11,15 +11,20 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
+import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.date.DateUtils;
 
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ImageField;
+import info.yalamanchili.office.client.rpc.HttpService;
 
 public class ReadPostWidget extends ALComposite implements ClickHandler {
 
@@ -30,6 +35,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     CaptionPanel postCaptionPanel = new CaptionPanel();
     FlowPanel mainPanel = new FlowPanel();
     FlowPanel postMainPanel = new FlowPanel();
+    Button likeB = new Button("Like");
     HorizontalPanel attachmentsPanel = new HorizontalPanel();
     FlowPanel profileImagePanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
@@ -85,6 +91,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         replyLink.addClickHandler(this);
+        likeB.addClickHandler(this);
     }
 
     @Override
@@ -106,6 +113,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         postMainPanel.add(postBodyArea);
         postMainPanel.add(attachmentsPanel);
         postMainPanel.add(postStatusPanel);
+        postMainPanel.add(likeB);
     }
 
     @Override
@@ -115,5 +123,26 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
             ReplyPostWidget replywidget = new ReplyPostWidget(String.valueOf(postId));
             postMainPanel.add(replywidget);
         }
+        if(arg0.getSource().equals(likeB))
+        {
+           likeB.setVisible(false);
+            HttpService.HttpServiceAsync.instance().doPut(getlikeURL(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                       
+                        postCreateSuccess(arg0);
+                    }
+                });
+           
+        }
+    }
+     private void postCreateSuccess(String arg0) {
+           new ResponseStatusWidget().show("Successfully Liked");          
+                }
+     public String getlikeURL() {
+        return OfficeWelcome.constants.root_url() + "social/liked/" + String.valueOf(postId) ;
+                
+
     }
 }
