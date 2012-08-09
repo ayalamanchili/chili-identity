@@ -10,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -123,26 +122,26 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
             ReplyPostWidget replywidget = new ReplyPostWidget(String.valueOf(postId));
             postMainPanel.add(replywidget);
         }
-        if(arg0.getSource().equals(likeB))
-        {
-           likeB.setVisible(false);
-            HttpService.HttpServiceAsync.instance().doPut(getlikeURL(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                       
-                        postCreateSuccess(arg0);
-                    }
-                });
-           
+        if (arg0.getSource().equals(likeB)) {
+            likeB.setVisible(false);
+            HttpService.HttpServiceAsync.instance().doPut(getlikeURL(), null, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            postCreateSuccess(arg0);
+                        }
+                    });
+
         }
     }
-     private void postCreateSuccess(String arg0) {
-           new ResponseStatusWidget().show("Successfully Liked");          
-                }
-     public String getlikeURL() {
-        return OfficeWelcome.constants.root_url() + "social/liked/" + String.valueOf(postId) ;
-                
+
+    private void postCreateSuccess(String arg0) {
+        new ResponseStatusWidget().show("Successfully Liked");
+    }
+
+    public String getlikeURL() {
+        return OfficeWelcome.constants.root_url() + "social/liked/" + String.valueOf(postId);
+
 
     }
 }
