@@ -28,7 +28,7 @@ public class SkillSetOptionsPopupPanel extends SkillSetOptionsPanel {
     public void onClick(ClickEvent clickEvent) {
         if (clickEvent.getSource().equals(updateSkillSetL)) {
             UpdateSkillSetPopupPanel updateSkillSetPanel = new UpdateSkillSetPopupPanel(employeeId);
-            new GenericPopup(updateSkillSetPanel).show();
+            GenericPopup.instance().show(updateSkillSetPanel);
         }
     }
 }

@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 
 /**
  *
@@ -26,7 +25,7 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
     }
     Button closeB = new Button("close");
 
-    public GenericPopup(Composite widget) {
+    private GenericPopup(Composite widget) {
         instance = this;
         this.addStyleName("genericPopup");
         FlowPanel panel = new FlowPanel();
@@ -42,5 +41,14 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
         if (event.getSource().equals(closeB)) {
             this.hide();
         }
+    }
+
+    public static void show(Composite widget) {
+        if (instance != null) {
+            instance.hide();
+        }
+        instance = null;
+        new GenericPopup(widget);
+        instance.show();
     }
 }

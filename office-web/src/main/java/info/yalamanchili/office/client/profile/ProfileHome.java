@@ -235,13 +235,11 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(updateProfile)) {
-            UpdateEmployeePopupPanel UpdatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
-            new GenericPopup(UpdatePanel).show();
-        }
-        else if(event.getSource().equals(changePassword))
-        {
-            ChangePasswordPanel cngPasswordPanel = new  ChangePasswordPanel(CreateComposite.CreateCompositeType.CREATE);
-            new GenericPopup(cngPasswordPanel).show();
+            UpdateEmployeePopupPanel updatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
+            GenericPopup.instance().show(updatePanel);
+        } else if (event.getSource().equals(changePassword)) {
+            ChangePasswordPanel cngPasswordPanel = new ChangePasswordPanel(CreateComposite.CreateCompositeType.CREATE);
+            GenericPopup.instance().show(cngPasswordPanel);
         }
     }
 }

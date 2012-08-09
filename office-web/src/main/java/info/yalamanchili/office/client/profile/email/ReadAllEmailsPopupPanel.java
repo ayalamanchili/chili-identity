@@ -11,19 +11,23 @@ import info.yalamanchili.office.client.profile.ProfileHome;
 import com.google.gwt.json.client.JSONObject;
 
 public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
-	public ReadAllEmailsPopupPanel(String parentId) {
+
+    public ReadAllEmailsPopupPanel(String parentId) {
         super(parentId);
     }
-	@Override
+
+    @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
     }
-	@Override
+
+    @Override
     public void updateClicked(String entityId) {
-		UpdateEmailPopupPanel updateEmailPanel=new UpdateEmailPopupPanel(getEntity(entityId));
-        new GenericPopup(updateEmailPanel).show();
+        UpdateEmailPopupPanel updateEmailPanel = new UpdateEmailPopupPanel(getEntity(entityId));
+        GenericPopup.instance().show(updateEmailPanel);
     }
-	@Override
+
+    @Override
     public void postDeleteSuccess() {
         ProfileHome.instance();
         ProfileHome.instance().refreshEmails();
@@ -33,10 +37,10 @@ public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
     protected void configureCreateButton() {
         createButton.setVisible(true);
     }
+
     @Override
     protected void createButtonClicked() {
         CreateEmailPopupPanel createPanel = new CreateEmailPopupPanel(CreateComposite.CreateCompositeType.ADD);;
-        new GenericPopup(createPanel).show();
+        GenericPopup.instance().show(createPanel);
     }
-
 }
