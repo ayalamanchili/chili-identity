@@ -108,6 +108,12 @@
     </dependencies>
     <build>
         <finalName>office</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -140,6 +146,27 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/office-service-dev.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/office-service-prod.properties</filter>
+                </filters>
+            </build>
+        </profile>
+    </profiles>
     <!-- download artifacts from this repo -->
     <repositories>
         <repository>

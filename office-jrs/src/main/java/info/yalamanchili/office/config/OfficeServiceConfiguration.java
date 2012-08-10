@@ -5,6 +5,7 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
@@ -14,16 +15,26 @@ public class OfficeServiceConfiguration {
 
     @PersistenceContext
     protected EntityManager em;
-
     protected String contentManagementLocationRoot = "D://content-management//office/";
+    @Value("#{officeProperties['initRefData']}")
+    protected Boolean initRefData;
 
     @ManagedAttribute
     public String getContentManagementLocationRoot() {
         return contentManagementLocationRoot;
-    }           
+    }
 
     public void setContentManagementLocationRoot(String contentManagementLocationRoot) {
         this.contentManagementLocationRoot = contentManagementLocationRoot;
+    }
+
+    @ManagedAttribute
+    public Boolean getInitRefData() {
+        return initRefData;
+    }
+
+    public void setInitRefData(Boolean initRefData) {
+        this.initRefData = initRefData;
     }
 
     @ManagedOperation

@@ -1,8 +1,9 @@
 package info.yalamanchili.office.init;
 
-import info.chili.jpa.validation.impl.UniqueIDValidator;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.commons.DateUtils;
-import info.yalamanchili.office.entity.FileType;
+import info.yalamanchili.commons.EntityQueryUtils;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Certification;
@@ -22,7 +23,6 @@ import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
-import info.yalamanchili.office.entity.social.PostFile;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,10 +43,13 @@ public class OfficeStartup {
     protected CRole adminRole;
 
     protected void startup() {
-        initRoles();
-        initUsers();
-        initRefData();
-        initTestData();
+        OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
+        if (config.getInitRefData()) {
+            initRoles();
+            initUsers();
+            initRefData();
+            initTestData();
+        }
     }
 
     protected void initRoles() {
@@ -202,8 +205,8 @@ public class OfficeStartup {
         getJAVACertification();
         getDOTNETCertification();
         //Employee Type
-        getMANAGEREmployeeType();
-        getTECHLEADEmployeeType();
+        getInternalEmployeeType();
+        getConsultantEmployeeType();
     }
 
     protected AddressType getHomeAddressType() {
@@ -327,30 +330,30 @@ public class OfficeStartup {
         }
     }
 
-    protected EmployeeType getMANAGEREmployeeType() {
+    protected EmployeeType getInternalEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "MANAGER");
+        getEmployeeTypeQuery.setParameter("nameParam", "INTERNAL");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("MANAGER");
-            employeetype.setDescription("SSTECH General Manager");
+            employeetype.setName("INTERNAL");
+            employeetype.setDescription("SSTECH Internal Employee");
             return em.merge(employeetype);
         }
     }
 
-    protected EmployeeType getTECHLEADEmployeeType() {
+    protected EmployeeType getConsultantEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "TECHLEAD");
+        getEmployeeTypeQuery.setParameter("nameParam", "CONSULTANT");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("TECH LEAD");
-            employeetype.setDescription("Leads Software Developers");
+            employeetype.setName("CONSULTANT");
+            employeetype.setDescription("SSTECH Consultant Employee");
             return em.merge(employeetype);
         }
     }
@@ -407,39 +410,49 @@ public class OfficeStartup {
     }
 
     public void userRole() {
-        CRole role = new CRole();
-        role.setRolename("ROLE_USER");
-        userRole = em.merge(role);
+        if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_USER") == null) {
+            CRole role = new CRole();
+            role.setRolename("ROLE_USER");
+            userRole = em.merge(role);
+        }
     }
 
     public void hrRole() {
-        CRole role = new CRole();
-        role.setRolename("ROLE_HR");
-        hrRole = em.merge(role);
+        if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_HR") == null) {
+            CRole role = new CRole();
+            role.setRolename("ROLE_HR");
+            hrRole = em.merge(role);
+        }
     }
 
     public void adminRole() {
-        CRole role = new CRole();
-        role.setRolename("ROLE_ADMIN");
-        adminRole = em.merge(role);
+        if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_ADMIN") == null) {
+            CRole role = new CRole();
+            role.setRolename("ROLE_ADMIN");
+            adminRole = em.merge(role);
+        }
     }
 
     protected void userUser() {
-        CUser user = new CUser();
-        user.setUsername("useruser");
-        user.setPasswordHash("useruser");
-        user.addRole(userRole);
-        user.setEnabled(true);
-        userUser = em.merge(user);
+        if (EntityQueryUtils.findEntity(em, CUser.class, "username", "useruser") == null) {
+            CUser user = new CUser();
+            user.setUsername("useruser");
+            user.setPasswordHash("useruser");
+            user.addRole(userRole);
+            user.setEnabled(true);
+            userUser = em.merge(user);
+        }
     }
 
     protected void userAdmin() {
-        CUser user = new CUser();
-        user.setUsername("adminadmin");
-        user.setPasswordHash("adminadmin");
-        user.setEnabled(true);
-        user.addRole(userRole);
-        user.addRole(adminRole);
-        adminUser = em.merge(user);
+        if (EntityQueryUtils.findEntity(em, CUser.class, "username", "adminadmin") == null) {
+            CUser user = new CUser();
+            user.setUsername("adminadmin");
+            user.setPasswordHash("adminadmin");
+            user.setEnabled(true);
+            user.addRole(userRole);
+            user.addRole(adminRole);
+            adminUser = em.merge(user);
+        }
     }
 }

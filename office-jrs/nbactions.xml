@@ -59,5 +59,18 @@
                 
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-mvn tomcat6:run -Pprod</actionName>
+            <displayName>mvn tomcat6:run -Pprod</displayName>
+            <goals>
+                <goal>tomcat6:run</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>prod</activatedProfile>
+            </activatedProfiles>
+        </action>
         
     </actions>

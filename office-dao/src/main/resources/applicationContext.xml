@@ -8,6 +8,5 @@
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<context:annotation-config />
 	<context:component-scan base-package="info.yalamanchili.office" />
-
-
+<!-- TODO is this file a duplicated remove?-->
 </beans>
