@@ -22,10 +22,12 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public final static Integer HOME_TAB = 0;
     public final static Integer SOCIAL_TAB = 1;
     public final static Integer MY_OFFICE_TAB = 2;
+    public final static Integer PROFILE_TAB = 3;
     protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
     public EntityLayout homePanel = new EntityLayout();
     public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
+    public EntityLayout profilePanel = new  EntityLayout();
 
     public TabPanel() {
         instance = this;
@@ -35,6 +37,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
+        tabPanel.add(profilePanel,"Profile",false);
         tabPanel.addSelectionHandler(this);
         tabPanel.selectTab(MY_OFFICE_TAB);
     }
@@ -50,6 +53,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
         if (selectedTabIndex.getSelectedItem().equals(MY_OFFICE_TAB)) {
             selectAdminTab();
+        }
+        if(selectedTabIndex.getSelectedItem().equals(PROFILE_TAB))
+        {
+           selectProfileTab();
         }
     }
 
@@ -71,13 +78,17 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (Auth.isAdmin() || Auth.isHR()) {
             myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
             myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
-        } else {
-            myOfficePanel.entityPanel.add(new ProfileHome());
-            myOfficePanel.sidePanelTop
-                    .add(new ProfileSidePanel());
         }
 
     }
+   public void selectProfileTab()
+   {
+      profilePanel.entityPanel.clear();
+      profilePanel.sidePanel.clear();
+      profilePanel.entityPanel.add(new ProfileHome());
+      profilePanel.sidePanelTop
+                    .add(new ProfileSidePanel());
+   }
     private static TabPanel instance;
 
     public static TabPanel instance() {
@@ -94,5 +105,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public EntityLayout getMyOfficePanel() {
         return myOfficePanel;
+    }
+    
+    public EntityLayout getProfilePanel()
+    {
+      return profilePanel;
     }
 }
