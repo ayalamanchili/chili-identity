@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-clean install -Pprod</actionName>
+            <displayName>clean install -Pprod</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>prod</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-clean install</actionName>
+            <displayName>clean install</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-gwt:run</actionName>
+            <displayName>gwt:run</displayName>
+            <goals>
+                <goal>gwt:run</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-tomcat6:run-war -Pprod</actionName>
+            <displayName>tomcat6:run-war -Pprod</displayName>
+            <goals>
+                <goal>tomcat6:run-war</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>prod</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-tomcat6:run-war</actionName>
+            <displayName>tomcat6:run-war</displayName>
+            <goals>
+                <goal>tomcat6:run-war</goal>
+                
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-cargo:deploy</actionName>
+            <displayName>cargo:deploy</displayName>
+            <goals>
+                <goal>cargo:deploy</goal>
+            </goals>
+        </action>
+    </actions>
