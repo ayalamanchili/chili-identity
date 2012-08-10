@@ -1,8 +1,6 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.validation.Unique;
@@ -19,14 +17,14 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  * @generated
  */
-
 @Indexed
 @XmlRootElement
 @Entity
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"name"}))
-@Unique(entity = Certification.class, fields = {"name"}, message = "{employeetype.name.not.unique.msg}")
+@Unique(entity = EmployeeType.class, fields = {"name"}, message = "{employeetype.name.not.unique.msg}")
 public class EmployeeType extends AbstractEntity {
+
     @NotEmpty(message = "{employeetype.not.empty.msg}")
     protected String name;
     protected String description;
@@ -54,5 +52,4 @@ public class EmployeeType extends AbstractEntity {
     public String toString() {
         return "EmployeeType{" + "name=" + name + ", description=" + description + '}';
     }
-
 }

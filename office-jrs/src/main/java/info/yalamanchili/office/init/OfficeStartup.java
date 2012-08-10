@@ -326,7 +326,8 @@ public class OfficeStartup {
             return em.merge(certification);
         }
     }
-    protected EmployeeType getMANAGEREmployeeType(){
+
+    protected EmployeeType getMANAGEREmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
         getEmployeeTypeQuery.setParameter("nameParam", "MANAGER");
@@ -339,7 +340,8 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
-    protected EmployeeType getTECHLEADEmployeeType(){
+
+    protected EmployeeType getTECHLEADEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
         getEmployeeTypeQuery.setParameter("nameParam", "TECHLEAD");
@@ -352,6 +354,7 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
+
     public ClientInformation userClientInfo() {
         Phone userClientInfoContactPhone = new Phone();
         userClientInfoContactPhone.setPhoneNumber("1313131313");
