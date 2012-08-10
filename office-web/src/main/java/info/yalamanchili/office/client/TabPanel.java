@@ -75,16 +75,15 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         myOfficePanel.entityPanel.clear();
         myOfficePanel.sidePanelTop.clear();
         myOfficePanel.entityTitlePanel.add(new ProfileMenu());
-        if (Auth.isAdmin() || Auth.isHR()) {
-            myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
-            myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
-        }
+        myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
+        myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
+        
 
     }
    public void selectProfileTab()
    {
       profilePanel.entityPanel.clear();
-      profilePanel.sidePanel.clear();
+      profilePanel.sidePanelTop.clear();
       profilePanel.entityPanel.add(new ProfileHome());
       profilePanel.sidePanelTop
                     .add(new ProfileSidePanel());
