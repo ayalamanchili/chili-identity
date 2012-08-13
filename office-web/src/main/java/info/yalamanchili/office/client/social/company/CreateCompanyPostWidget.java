@@ -64,13 +64,15 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     @Override
     protected void addListeners() {
         createPostB.addClickHandler(this);
+        textArea.addKeyUpHandler(this);
+        textArea.addFocusHandler(this);
     }
 
     @Override
     protected void configure() {
         mainPanel.addStyleName(".createPostWidget");
         textArea.setWidth("100%");
-         //createPostB.setEnabled(false);
+        createPostB.setEnabled(false);
     }
 
     protected JSONObject populatePostEntity() {
