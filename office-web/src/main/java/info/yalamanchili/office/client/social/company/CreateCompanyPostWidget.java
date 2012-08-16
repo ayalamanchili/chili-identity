@@ -94,7 +94,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        textArea.setText("");
+                        createPostB.setEnabled(false);           
                         uploadImage(arg0);
                         postCreateSuccess(arg0);
                     }
@@ -109,9 +109,9 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
         }
     }
 
-    protected void postCreateSuccess(String result) {
+    protected void postCreateSuccess(String result) {    
         new ResponseStatusWidget().show("Successfully Shared");
-        CompanyFeedHome.instance().refresh();
+        CompanyFeedHome.instance().refresh();   
     }
 
     @Override
