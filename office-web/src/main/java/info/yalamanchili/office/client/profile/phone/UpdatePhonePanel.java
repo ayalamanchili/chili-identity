@@ -61,9 +61,9 @@ public class UpdatePhonePanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
         // TODO set phone type
     }
 
@@ -79,9 +79,9 @@ public class UpdatePhonePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
-        addField("extension", false, true, DataType.STRING_FIELD);
-        addField("countryCode", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.LONG_FIELD);
+        addField("extension", false, true, DataType.LONG_FIELD);
+        addField("countryCode", false, true, DataType.LONG_FIELD);
         entityDisplayWidget.add(phoneTypeF);
     }
 
