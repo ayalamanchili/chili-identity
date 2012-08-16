@@ -41,7 +41,7 @@ public class SearchEmployeePanel extends SearchComposite {
     protected void addWidgets() {
         addField("firstName", DataType.STRING_FIELD);
         addField("middleInitial", DataType.STRING_FIELD);
-        addField("lastName", DataType.STRING_FIELD);
+        addField("lastName", DataType.STRING_FIELD);           
     }
 
     @Override
