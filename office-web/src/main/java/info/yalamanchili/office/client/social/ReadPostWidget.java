@@ -34,7 +34,7 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     CaptionPanel postCaptionPanel = new CaptionPanel();
     FlowPanel mainPanel = new FlowPanel();
     FlowPanel postMainPanel = new FlowPanel();
-    Button likeB = new Button("Like");
+    ClickableLink likeB = new ClickableLink("Like");
     HorizontalPanel attachmentsPanel = new HorizontalPanel();
     FlowPanel profileImagePanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
