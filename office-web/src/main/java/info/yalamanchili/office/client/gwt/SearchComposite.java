@@ -6,6 +6,9 @@ package info.yalamanchili.office.client.gwt;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import info.yalamanchili.gwt.fields.*;
@@ -53,6 +56,28 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         this.entityName = entityName;
         this.constants = constants;
         captionPanel.setCaptionHTML(title);
+        searchTB.addKeyPressHandler(new KeyPressHandler() {
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                int keyCode = event.getUnicodeCharCode();
+                if (keyCode == 0) {
+                    // Probably Firefox
+                    keyCode = event.getNativeEvent().getKeyCode();
+                }
+                if (keyCode == KeyCodes.KEY_ENTER) {
+                    // Do something when Enter is pressed.
+
+                    if (getSearchText() != null && getSearchText().trim().length() > 0) {
+                        search(getSearchText());
+                    } else {
+                        entity = populateEntityFromFields();
+                        if (entity.toString().length() > 3) {
+                            search(entity);
+                        }
+                    }
+                }
+            }
+        });
         mainPanel.add(searchTB);
         disclosurePanel.setContent(advancedSearchPanel);
         mainPanel.add(disclosurePanel);
@@ -214,6 +239,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
 
     }
+    
+    
 
     protected abstract String getSearchURI(String searchText, Integer start, Integer limit);
 
