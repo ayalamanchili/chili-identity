@@ -4,8 +4,13 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmailTypeDao;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.jrs.CRUDResource;
-
+import java.util.List;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,5 +28,38 @@ public class EmailTypeResource extends CRUDResource<EmailType> {
 	@Override
 	public CRUDDao getDao() {
 		return emailTypeDao;
+	}
+        
+    @GET
+    @Path("/{start}/{limit}")
+    public EmailTypeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        EmailTypeTable tableObj = new EmailTypeTable();
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
+    @XmlRootElement
+	@XmlType
+	public static class EmailTypeTable {
+		protected Long size;
+		protected List<EmailType> entities;
+
+		public Long getSize() {
+			return size;
+		}
+
+		public void setSize(Long size) {
+			this.size = size;
+		}
+
+		@XmlElement
+		public List<EmailType> getEntities() {
+			return entities;
+		}
+
+		public void setEntities(List<EmailType> entities) {
+			this.entities = entities;
+		}
+
 	}
 }
