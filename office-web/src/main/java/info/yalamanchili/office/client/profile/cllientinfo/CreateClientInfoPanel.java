@@ -88,7 +88,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.LONG_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
     }
 
