@@ -33,7 +33,7 @@ public class SocialNotificationService {
 
     @Async
     public void sendNewCompanyPostNotification(String PostContent) {
-        String[] roles = {"ROLE_USER,ROLE_HR,ROLE_ADMIN"};
+        String[] roles = {"ROLE_USER", "ROLE_HR", "ROLE_ADMIN"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New Post in company feed");
