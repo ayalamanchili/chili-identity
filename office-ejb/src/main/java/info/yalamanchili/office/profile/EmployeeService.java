@@ -20,15 +20,9 @@ import org.springframework.stereotype.Component;
 public class EmployeeService {
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
-
-
-  
     protected EntityManager em;
 
-
-
-
-    public CUser changePassword(Long empId,User user) {
+    public CUser changePassword(Long empId, User user) {
         CUser user1 = null;
         javax.persistence.Query findUserQuery = em.createQuery("from CUser where employee.id=:empIdParam and passwordHash=:passwordHashParam");
         findUserQuery.setParameter("empIdParam", empId);
@@ -44,8 +38,8 @@ public class EmployeeService {
         return em.merge(user1);
 
     }
-    
-     public CUser ResetPassword(Long empId,User user) {
+
+    public CUser ResetPassword(Long empId, User user) {
         CUser user1 = null;
         javax.persistence.Query findUserQuery = em.createQuery("from CUser where employee.id=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);
