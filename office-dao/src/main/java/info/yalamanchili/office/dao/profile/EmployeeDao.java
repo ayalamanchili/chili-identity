@@ -14,6 +14,7 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.social.Post;
+import info.yalamanchili.office.entity.security.CUser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,10 +42,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     @Override
     public void delete(Long id) {
-        try {
+         try {
             Employee emp = findById(id);
-           
-            /*
+            //CUser
+            CUser cuser=emp.getUser();
+            em.remove(cuser);
+            em.flush();
+           /* 
             //ClientInformation
             for (ClientInformation clientinformation : emp.getClientInformations()) {
                 em.remove(clientinformation);
@@ -71,17 +75,18 @@ public class EmployeeDao extends CRUDDao<Employee> {
             for (Email email : emp.getEmails()) {
                 em.remove(email);
             }
-            */
+            
             //Phones
             for (Phone phone : emp.getPhones()) {
                 em.remove(phone);
             }
             em.flush();
+            */
             //Finally Employee
-            /*
+            
             em.remove(emp);
             em.flush();
-            */
+           
             
         } catch (javax.persistence.PersistenceException e) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", "Cannot delete due to associated data");
