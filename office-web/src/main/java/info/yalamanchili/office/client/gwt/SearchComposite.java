@@ -56,6 +56,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         this.entityName = entityName;
         this.constants = constants;
         captionPanel.setCaptionHTML(title);
+        searchTB.addStyleName("searchComposite");
         searchTB.addKeyPressHandler(new KeyPressHandler() {
             @Override
             public void onKeyPress(KeyPressEvent event) {
