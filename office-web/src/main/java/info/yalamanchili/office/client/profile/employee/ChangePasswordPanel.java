@@ -32,7 +32,7 @@ public class ChangePasswordPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject chgpassword = new JSONObject();
-        assignEntityValueFromField("userName", chgpassword);
+//        assignEntityValueFromField("userName", chgpassword);
         assignEntityValueFromField("oldPassword", chgpassword);
         assignEntityValueFromField("newPassword", chgpassword);
 
@@ -88,7 +88,7 @@ public class ChangePasswordPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("userName", false, true, DataType.STRING_FIELD);
+//        addField("userName", false, true, DataType.STRING_FIELD);
         addField("oldPassword", false, true, DataType.PASSWORD_FIELD);
         addField("newPassword", false, true, DataType.PASSWORD_FIELD);
         addField("confirmPassword", false, true, DataType.PASSWORD_FIELD);
