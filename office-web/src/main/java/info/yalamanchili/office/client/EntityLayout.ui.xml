@@ -30,9 +30,9 @@
 		
 		.entityTitlePanel {
 			border-bottom-style: solid;
-			border-bottom-color: #28009E;
+			border-bottom-color: #919191;
 			border-bottom-width: 2px;
-			background-color: #EFFBFB;
+			background-color: #ededed;
 		}
 		
 		.entityPanel {
@@ -41,7 +41,7 @@
 		
 		.sidePanel {
 			border-right-style: solid;
-			border-right-color: #28009E;
+			border-right-color: #919191;
 			border-right-width: 2px;
 			height: 100%;
 			padding: 10px;
