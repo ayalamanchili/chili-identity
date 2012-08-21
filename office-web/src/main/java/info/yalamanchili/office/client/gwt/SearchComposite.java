@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  *
  * @author yalamanchili
  */
-public abstract class SearchComposite extends Composite implements ClickHandler {
+public abstract class SearchComposite extends Composite implements ClickHandler, KeyPressHandler {
 
     private Logger logger = Logger.getLogger(SearchComposite.class.getName());
     /*
@@ -57,28 +57,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         this.constants = constants;
         captionPanel.setCaptionHTML(title);
         searchTB.addStyleName("searchComposite");
-        searchTB.addKeyPressHandler(new KeyPressHandler() {
-            @Override
-            public void onKeyPress(KeyPressEvent event) {
-                int keyCode = event.getUnicodeCharCode();
-                if (keyCode == 0) {
-                    // Probably Firefox
-                    keyCode = event.getNativeEvent().getKeyCode();
-                }
-                if (keyCode == KeyCodes.KEY_ENTER) {
-                    // Do something when Enter is pressed.
-
-                    if (getSearchText() != null && getSearchText().trim().length() > 0) {
-                        search(getSearchText());
-                    } else {
-                        entity = populateEntityFromFields();
-                        if (entity.toString().length() > 3) {
-                            search(entity);
-                        }
-                    }
-                }
-            }
-        });
+        searchTB.addKeyPressHandler(this);
         mainPanel.add(searchTB);
         disclosurePanel.setContent(advancedSearchPanel);
         mainPanel.add(disclosurePanel);
@@ -227,6 +206,27 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
     protected abstract void postSearchSuccess(String result);
 
     @Override
+    public void onKeyPress(KeyPressEvent event) {
+        int keyCode = event.getUnicodeCharCode();
+        if (keyCode == 0) {
+            // Probably Firefox
+            keyCode = event.getNativeEvent().getKeyCode();
+        }
+        if (keyCode == KeyCodes.KEY_ENTER) {
+            // Do something when Enter is pressed.
+
+            if (getSearchText() != null && getSearchText().trim().length() > 0) {
+                search(getSearchText());
+            } else {
+                entity = populateEntityFromFields();
+                if (entity.toString().length() > 3) {
+                    search(entity);
+                }
+            }
+        }
+    }
+
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == searchButton) {
             if (getSearchText() != null && getSearchText().trim().length() > 0) {
@@ -240,8 +240,6 @@ public abstract class SearchComposite extends Composite implements ClickHandler 
         }
 
     }
-    
-    
 
     protected abstract String getSearchURI(String searchText, Integer start, Integer limit);
 
