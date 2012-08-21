@@ -78,6 +78,8 @@ public class Employee extends Contact {
     @OneToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Employee")
     protected SkillSet skillSet;
+    @OneToOne(mappedBy = "employee")
+    protected CUser user;
 
     /**
      * @generated
@@ -217,10 +219,17 @@ public class Employee extends Contact {
         this.skillSet = skillSet;
     }
 
+    @XmlTransient
+    public CUser getUser() {
+        return user;
+    }
+
+    public void setUser(CUser user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + '}';
     }
-
-   
 }
