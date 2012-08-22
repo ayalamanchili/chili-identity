@@ -42,54 +42,10 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     @Override
     public void delete(Long id) {
-         try {
-            Employee emp = findById(id);
-            //CUser
-            CUser cuser=emp.getUser();
-            em.remove(cuser);
-            em.flush();
-           /* 
-            //ClientInformation
-            for (ClientInformation clientinformation : emp.getClientInformations()) {
-                em.remove(clientinformation);
-                em.flush();
-            }
-            
-            //EmergencyContact
-            for (EmergencyContact emergencycontact : emp.getEmergencyContacts()) {
-                em.remove(emergencycontact);
-            }
-            //Post
-            for (Post post : emp.getPosts()) {
-                em.remove(post);
-            }
-            //SkillSet
-            SkillSet skillset = emp.getSkillSet(); 
-            em.remove(skillset);
-            
-            //Address
-            for (Address address : emp.getAddresss()) {
-                em.remove(address);
-            }
-            //Email
-            for (Email email : emp.getEmails()) {
-                em.remove(email);
-            }
-            
-            //Phones
-            for (Phone phone : emp.getPhones()) {
-                em.remove(phone);
-            }
-            em.flush();
-            */
-            //Finally Employee
-            
-            em.remove(emp);
-            em.flush();
-           
-            
-        } catch (javax.persistence.PersistenceException e) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", "Cannot delete due to associated data");
-        }
+        Employee emp = findById(id);
+        CUser cuser = emp.getUser();
+        em.remove(cuser);
+        em.flush();
+
     }
 }
