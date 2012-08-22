@@ -39,7 +39,7 @@ public class ImageField extends ALComposite {
 
     protected void setDefaultImage(int width, int height) {
         if (width == 50 && height == 50) {
-            image.setResource(OfficeImages.INSTANCE.defaultImage_w_50_h_50());
+            image.setResource(OfficeImages.INSTANCE.defaultImage_50_50());
             return;
         }
         image.setResource(OfficeImages.INSTANCE.defaultImage());

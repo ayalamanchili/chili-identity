@@ -3,14 +3,14 @@
     /*background: url("../icons/tab_100.png");*/
     background: url("../images/home_btn.png");
     background-color: #919191;
-  
+
     width: 106px;
     text-align: center;
     margin-left: 3px;
     margin-right: 3px;
     font-size: 12pt;
     font-family: Tahoma;
-     
+
 }
 
 .tabPanel {
@@ -31,9 +31,9 @@
 
 /* an element nested in each tab (useful for styling)*/
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabInner {
-    
-/*margin-top:3px;
-margin-bottom:3px;*/  
+
+    /*margin-top:3px;
+    margin-bottom:3px;*/  
 }
 
 .y-gwt-PagingBar {
@@ -43,7 +43,7 @@ margin-bottom:3px;*/
     background: url("../images/PagingBar.png");
     width: 100%;
     height: 34px;
-    
+
 }
 
 .y-gwt-TableHeader {
@@ -91,11 +91,13 @@ margin-bottom:3px;*/
 
 .genericPopup{
     background-color: #ededed;
+    border: 3px solid #919191;
+    padding: 3px;
 }
 .socialSidePanel{
     background-color: #ededed;
     border-color: #919191;
-border-width:1px;
+    border-width:1px;
 
 }
 /*post css start*/
@@ -133,7 +135,7 @@ border-width:1px;
 /*post css end*/
 /*image field css start*/
 .imageField-Image{
-   background-image: url("../src/main/resources/images/home_btn.png");
+    background-image: url("../src/main/resources/images/home_btn.png");
 }
 /*image field css end*/
 .y-gwt-treePanelComposite-Node
@@ -165,5 +167,5 @@ body{
 .searchComposite{
     /*background-color:#f7f7f7;*/
     background: url("../images/Search_bg.png");
-    }
+}
 /*End For search textbox */

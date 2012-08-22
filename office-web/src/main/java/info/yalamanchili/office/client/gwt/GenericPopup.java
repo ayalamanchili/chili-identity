@@ -11,11 +11,14 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import info.yalamanchili.gwt.widgets.ClickableImage;
+import info.yalamanchili.office.client.resources.OfficeImages;
 
 /**
  *
  * @author anu
  */
+//TODO move to chili-gwt
 public class GenericPopup extends PopupPanel implements ClickHandler {
 
     private static GenericPopup instance;
@@ -23,7 +26,7 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
     public static GenericPopup instance() {
         return instance;
     }
-    Button closeB = new Button("close");
+    ClickableImage closeB = new ClickableImage(OfficeImages.INSTANCE.closeIcon_16_16());
 
     private GenericPopup(Composite widget) {
         instance = this;
