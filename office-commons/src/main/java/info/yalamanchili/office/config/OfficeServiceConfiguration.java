@@ -16,8 +16,8 @@ public class OfficeServiceConfiguration {
     @PersistenceContext
     protected EntityManager em;
     protected String contentManagementLocationRoot = "D://content-management//office/";
-//    @Value("#{officeProperties['initRefData']}")
-    protected Boolean initRefData = true;
+    @Value("#{officeProperties['initRefData']}")
+    protected Boolean initRefData;
 
     @ManagedAttribute
     public String getContentManagementLocationRoot() {
