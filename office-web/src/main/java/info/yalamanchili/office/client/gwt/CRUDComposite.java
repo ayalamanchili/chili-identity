@@ -123,7 +123,7 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.PASSWORD_FIELD.equals(type)) {
             PasswordField passwordField = new PasswordField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName,isRequired);
+                    constants), attributeName, entityName, isRequired);
             fields.put(attributeName, passwordField);
             entityDisplayWidget.add(passwordField);
         }
@@ -238,6 +238,7 @@ public abstract class CRUDComposite extends Composite {
     protected abstract String getURI();
 
     protected void handleErrorResponse(Throwable err) {
+        //TODO enhance to show generic error messages
         logger.info(err.getMessage());
         if (!err.getMessage().isEmpty() && err.getMessage().contains("Error")) {
             try {

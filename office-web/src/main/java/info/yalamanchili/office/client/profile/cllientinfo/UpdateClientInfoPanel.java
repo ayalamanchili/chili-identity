@@ -19,16 +19,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject contact = entity.get("contact").isObject();
-        assignEntityValueFromField("firstName", contact);
-        assignEntityValueFromField("middleInitial", contact);
-        assignEntityValueFromField("lastName", contact);
-        assignEntityValueFromField("sex", contact);
-
+        assignEntityValueFromField("firstName", entity);
+        assignEntityValueFromField("middleInitial", entity);
+        assignEntityValueFromField("lastName", entity);
+        assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("reportsToRole", entity);
         assignEntityValueFromField("rtPrimary", entity);
         assignEntityValueFromField("consultantJobTitle", entity);
-        entity.put("contact", contact);
         return entity;
     }
 
@@ -62,12 +59,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("reportsToRole", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("rtPrimary", entity, DataType.BOOLEAN_FIELD);
-        // Contact
-        JSONObject contact = entity.get("contact").isObject();
-        assignFieldValueFromEntity("firstName", contact, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", contact, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("lastName", contact, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("sex", contact, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
 
     }
 
