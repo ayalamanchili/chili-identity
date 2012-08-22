@@ -4,11 +4,9 @@
  */
 package info.yalamanchili.office.dao;
 
-import info.chili.service.jrs.ServiceMessages;
+import info.chili.jpa.QueryUtils;
 import info.chili.service.jrs.exception.ServiceException;
-import info.chili.spring.SpringContext;
 import info.yalamanchili.commons.DataType;
-import info.yalamanchili.commons.EntityQueryUtils;
 import info.yalamanchili.commons.ReflectionUtils;
 import info.yalamanchili.commons.SearchUtils;
 import info.yalamanchili.jpa.AbstractEntity;
@@ -54,14 +52,15 @@ public abstract class CRUDDao<T> {
         return query(start, limit);
     }
 
-    public <T> List<String> getSuggestionsForName(String name, T entity) {
-        Query query = getEntityManager().createQuery(EntityQueryUtils.getSuggestionsQueryForName(name, entity));
+    public <T> List<String> getSuggestionsForName(String name, Class<?> entityCls, Integer start, Integer limit) {
+        Query query = getEntityManager().createQuery(QueryUtils.getSuggestionsQueryForName(name, entityCls));
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
         return query.getResultList();
     }
 
     public T save(T entity) {
         if (entity instanceof AbstractEntity) {
-            System.out.println("aaaa" + entity);
             if (((AbstractEntity) entity).getId() != null) {
                 // map root level primitive types
                 System.out.println(entity.toString());
