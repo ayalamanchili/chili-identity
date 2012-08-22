@@ -26,7 +26,7 @@ import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 public class ReadPostWidget extends ALComposite implements ClickHandler {
-
+    
     private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
     protected JSONObject post;
     protected String postId;
@@ -39,15 +39,16 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
     FlowPanel profileImagePanel = new FlowPanel();
     RichTextArea postBodyArea = new RichTextArea();
     Label postStatusPanel = new Label();
+    HorizontalPanel optionsPanel = new HorizontalPanel();
     ClickableLink replyLink = new ClickableLink("reply");
-
+    
     public ReadPostWidget(JSONObject post, boolean showReplyOption) {
         this.post = post;
         this.showReplyOption = showReplyOption;
         init(postCaptionPanel);
         displayPost();
     }
-
+    
     protected void displayPost() {
         postCaptionPanel.setCaptionHTML(JSONUtils.toString(post, "employeeName"));
         this.postId = JSONUtils.toString(post, "id");
@@ -60,10 +61,10 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
             postMainPanel.add(new ReadRepliesWidget(postId, numberOfReplies));
         }
         if (showReplyOption) {
-            postMainPanel.add(replyLink);
+            optionsPanel.add(replyLink);
         }
     }
-
+    
     protected void displayAttachments(JSONObject post) {
         if (post.get("postFiles") != null) {
             JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
@@ -79,20 +80,20 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
             }
         }
     }
-
+    
     protected void displayPostStatus(JSONObject post) {
         String postTimeStamp = JSONUtils.toString(post, "postTimeStamp");
         if (DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM) != null) {
             postStatusPanel.setText("Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
         }
     }
-
+    
     @Override
     protected void addListeners() {
         replyLink.addClickHandler(this);
         likeB.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         postBodyArea.addStyleName("postRichTextBox");
@@ -102,8 +103,10 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         attachmentsPanel.addStyleName("postAttachmentsPanel");
         postBodyArea.setHeight("2em");
         postBodyArea.setEnabled(false);
+        optionsPanel.setSpacing(5);
+        optionsPanel.addStyleDependentName("readPostOptionsPanel");
     }
-
+    
     @Override
     protected void addWidgets() {
         mainPanel.add(profileImagePanel);
@@ -112,9 +115,10 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
         postMainPanel.add(postBodyArea);
         postMainPanel.add(attachmentsPanel);
         postMainPanel.add(postStatusPanel);
-        postMainPanel.add(likeB);
+        optionsPanel.add(likeB);
+        postMainPanel.add(optionsPanel);
     }
-
+    
     @Override
     public void onClick(ClickEvent arg0) {
         if (arg0.getSource().equals(replyLink) && replyLink.isVisible()) {
@@ -131,17 +135,17 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
                             postCreateSuccess(arg0);
                         }
                     });
-
+            
         }
     }
-
+    
     private void postCreateSuccess(String arg0) {
         new ResponseStatusWidget().show("Successfully Liked");
     }
-
+    
     public String getlikeURL() {
         return OfficeWelcome.constants.root_url() + "social/liked/" + String.valueOf(postId);
-
-
+        
+        
     }
 }
