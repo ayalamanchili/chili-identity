@@ -27,7 +27,7 @@
     font-size: 12pt;
     font-weight: 500;
     color: #FFFFFF;
-/*    background-color: #f7f7f7;*/
+    /*    background-color: #f7f7f7;*/
     background: url("../images/Tab_button_click.png");
 }
 
@@ -133,6 +133,10 @@
 }
 .postAttachmentsPanel{
     border: 1px solid black;
+}
+.showMoreL{
+    width: 100%;
+    background-color: #ededed;
 }
 /*post css end*/
 /*image field css start*/
