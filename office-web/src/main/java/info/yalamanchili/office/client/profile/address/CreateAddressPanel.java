@@ -38,6 +38,7 @@ public class CreateAddressPanel extends CreateComposite {
         assignEntityValueFromField("city", entity);
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
+        assignEntityValueFromField("zip", entity);
         entity.put("addressType", addressTypeWidget.getSelectedObject());
         logger.info(entity.toString());
         return entity;
