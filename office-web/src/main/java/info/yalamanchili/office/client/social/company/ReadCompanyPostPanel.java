@@ -5,8 +5,6 @@
 package info.yalamanchili.office.client.social.company;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.ui.Composite;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.social.ReadPostWidget;
 
 /**
