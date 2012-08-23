@@ -28,9 +28,6 @@ public interface OfficeImages extends ClientBundle {
      * View Icons
      */
 
-    @Source("images/view_icon_32_32.png")
-    ImageResource viewIcon_32_32();
-
     @Source("images/view_icon_16_16.png")
     ImageResource viewIcon_16_16();
     /*
