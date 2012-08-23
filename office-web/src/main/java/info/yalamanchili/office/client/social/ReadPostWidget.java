@@ -27,24 +27,24 @@ import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.social.company.ReadCompanyPostPanel;
-
-public class ReadPostWidget extends ALComposite implements ClickHandler {
+//TODO make this abstract
+public abstract class ReadPostWidget extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
     protected JSONObject post;
     protected String postId;
     protected boolean showReplyOption;
-    CaptionPanel postCaptionPanel = new CaptionPanel();
-    FlowPanel mainPanel = new FlowPanel();
-    FlowPanel postMainPanel = new FlowPanel();
-    ClickableLink likeB = new ClickableLink("Like");
-    HorizontalPanel attachmentsPanel = new HorizontalPanel();
-    FlowPanel profileImagePanel = new FlowPanel();
-    RichTextArea postBodyArea = new RichTextArea();
-    Label postStatusPanel = new Label();
-    HorizontalPanel optionsPanel = new HorizontalPanel();
-    ClickableLink replyLink = new ClickableLink("reply");
-    ClickableImage viewIcon = new ClickableImage(OfficeImages.INSTANCE.viewIcon_16_16());
+    protected CaptionPanel postCaptionPanel = new CaptionPanel();
+    protected FlowPanel mainPanel = new FlowPanel();
+    protected FlowPanel postMainPanel = new FlowPanel();
+    protected ClickableLink likeB = new ClickableLink("Like");
+    protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
+    protected FlowPanel profileImagePanel = new FlowPanel();
+    protected RichTextArea postBodyArea = new RichTextArea();
+    protected Label postStatusPanel = new Label();
+    protected HorizontalPanel optionsPanel = new HorizontalPanel();
+    protected ClickableLink replyLink = new ClickableLink("reply");
+    protected ClickableImage viewIcon = new ClickableImage(OfficeImages.INSTANCE.viewIcon_16_16());
 
     public ReadPostWidget(JSONObject post, boolean showReplyOption) {
         this.post = post;
@@ -144,11 +144,11 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
 
         }
         if (arg0.getSource().equals(viewIcon)) {
-            TabPanel.instance().socialPanel.entityPanel.clear();
-            //TODO
-//            TabPanel.instance().socialPanel.entityPanel.add(new ReadCompanyPostPanel());
+            viewClicked();
         }
     }
+
+    protected abstract void viewClicked();
 
     private void postCreateSuccess(String arg0) {
         new ResponseStatusWidget().show("Successfully Liked");
@@ -156,7 +156,5 @@ public class ReadPostWidget extends ALComposite implements ClickHandler {
 
     public String getlikeURL() {
         return OfficeWelcome.constants.root_url() + "social/liked/" + String.valueOf(postId);
-
-
     }
 }

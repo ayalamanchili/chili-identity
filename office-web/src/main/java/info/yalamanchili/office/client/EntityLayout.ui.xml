@@ -1,62 +1,62 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
-	<g:DockLayoutPanel unit='EM' styleName="{style.entityLayout}">
-		<g:north size='2'>
-			<g:FlowPanel ui:field='entityTitlePanel' styleName="{style.entityTitlePanel}">
-			</g:FlowPanel>
-		</g:north>
-		<g:west size='15'>
-			<g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
-				<g:FlowPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
-				</g:FlowPanel>
-				<g:FlowPanel styleName="{style.sidePanelBottom}"
-					ui:field='sidePanelBottom'>
-				</g:FlowPanel>
-			</g:FlowPanel>
-		</g:west>
-		<g:center>
-			<g:ScrollPanel addStyleNames='entityPanelHolder'
-				ui:field='entityPanelHolder'>
-				<g:FlowPanel ui:field='entityPanel' styleName="{style.entityPanel}">
-				</g:FlowPanel>
-			</g:ScrollPanel>
-		</g:center>
-	</g:DockLayoutPanel>
-	<ui:style>
-		.entityLayout {
-			height: 100%;
-		}
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
+    <g:DockLayoutPanel unit='EM' styleName="{style.entityLayout}">
+        <g:north size='2'>
+            <g:FlowPanel ui:field='entityTitlePanel' styleName="{style.entityTitlePanel}">
+            </g:FlowPanel>
+        </g:north>
+        <g:west size='15'>
+            <g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
+                <g:FlowPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
+                </g:FlowPanel>
+                <g:FlowPanel styleName="{style.sidePanelBottom}"
+                                             ui:field='sidePanelBottom'>
+                </g:FlowPanel>
+            </g:FlowPanel>
+        </g:west>
+        <g:center>
+            <g:ScrollPanel addStyleNames='entityPanelHolder'
+                                       ui:field='entityPanelHolder'>
+                <g:FlowPanel ui:field='entityPanel' styleName="{style.entityPanel}">
+                </g:FlowPanel>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
+    <ui:style>
+        .entityLayout {
+        height: 100%;
+        }
 		
-		.entityTitlePanel {
-			border-bottom-style: solid;
-			border-bottom-color: #919191;
-			border-bottom-width: 2px;
-                        border-top-color: #OOOOOO;
-                        border-top-width:5px;
-			background-color: #83acff;
+        .entityTitlePanel {
+        border-bottom-style: solid;
+        border-bottom-color: #919191;
+        border-bottom-width: 2px;
+        border-top-color: #000000;
+        border-top-width:5px;
+        background-color: #83acff;
                         
                         
-		}
+        }
 		
-		.entityPanel {
+        .entityPanel {
 			
-		}
+        }
 		
-		.sidePanel {
-			border-right-style: solid;
-			border-right-color: #919191;
-			border-right-width: 2px;
-			height: 100%;
-			padding: 10px;
-		}
+        .sidePanel {
+        border-right-style: solid;
+        border-right-color: #919191;
+        border-right-width: 2px;
+        height: 100%;
+        padding: 10px;
+        }
 		
-		.sidePanelTop {
-			height: 40%;
-		}
+        .sidePanelTop {
+        height: 40%;
+        }
 		
-		.sidePanelBottom {
-			height: 60%;
-		}
-	</ui:style>
+        .sidePanelBottom {
+        height: 60%;
+        }
+    </ui:style>
 </ui:UiBinder> 

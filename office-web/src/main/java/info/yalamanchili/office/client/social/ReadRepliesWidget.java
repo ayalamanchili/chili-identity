@@ -16,6 +16,7 @@ import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.social.employee.ReadEmployeePostPanel;
 
 /**
  *
@@ -49,7 +50,7 @@ public class ReadRepliesWidget extends ALComposite implements OpenHandler {
             JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
             JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
             for (int i = 0; i < posts.size(); i++) {
-                panel.add(new ReadPostWidget((JSONObject) posts.get(i), false));
+                panel.add(new ReadEmployeePostPanel((JSONObject) posts.get(i), false));
             }
         }
     }

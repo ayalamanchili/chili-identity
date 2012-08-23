@@ -1,8 +1,10 @@
 package info.yalamanchili.office.client;
 
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.AbstractStatusPanel;
+import info.yalamanchili.office.client.resources.OfficeImages;
 
 import java.util.logging.Logger;
 
@@ -19,6 +21,7 @@ public class StatusPanel extends AbstractStatusPanel {
     public StatusPanel() {
         instance = this;
         userLink.ensureDebugId("welcomeL");
+        super.setLogo(OfficeImages.INSTANCE.logo());
     }
 
     @Override

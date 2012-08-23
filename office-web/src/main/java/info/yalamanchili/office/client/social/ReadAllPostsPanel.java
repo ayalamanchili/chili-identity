@@ -12,6 +12,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.office.client.social.company.ReadCompanyPostPanel;
+import info.yalamanchili.office.client.social.employee.ReadEmployeePostPanel;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,21 +25,21 @@ public class ReadAllPostsPanel extends ALComposite {
 
     public ReadAllPostsPanel() {
         init(panel);
-        loadEmployeePosts();
+        loadPosts();
     }
 
-    public void loadEmployeePosts() {
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeFeedURL(0, 10), OfficeWelcome.instance().getHeaders(),
+    public void loadPosts() {
+        HttpService.HttpServiceAsync.instance().doGet(getPostFeedURL(0, 10), OfficeWelcome.instance().getHeaders(),
                 true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
                 logger.info(result);
-                showEmployeePosts(result);
+                showPosts(result);
             }
         });
     }
 
-    protected void showEmployeePosts(String result) {
+    protected void showPosts(String result) {
         JSONObject postsResp = (JSONObject) JSONParser.parseLenient(result);
         JSONArray posts = JSONUtils.toJSONArray(postsResp.get("post"));
         for (int i = 0; i < posts.size(); i++) {
@@ -45,7 +47,12 @@ public class ReadAllPostsPanel extends ALComposite {
             String postId = JSONUtils.toString(post, "id");
             if (!postIds.contains(postId)) {
                 postIds.add(postId);
-                panel.insert(new ReadPostWidget(post, true), 0);
+                if (SocialSidePanel.isEmployeedFeedSelected()) {
+                    panel.insert(new ReadEmployeePostPanel(post, true), 0);
+                } else if (SocialSidePanel.isCompanyFeedSelected()) {
+                    panel.insert(new ReadCompanyPostPanel(post, true), 0);
+                }
+
             }
         }
     }
@@ -65,11 +72,11 @@ public class ReadAllPostsPanel extends ALComposite {
     }
 
     public void refresh() {
-        loadEmployeePosts();
+        loadPosts();
     }
 
-    protected String getEmployeeFeedURL(Integer start, Integer limit) {
-        if (SocialSidePanel.IsEmployeeFeedSelected == true) {
+    protected String getPostFeedURL(Integer start, Integer limit) {
+        if (SocialSidePanel.isEmployeedFeedSelected() == true) {
             return OfficeWelcome.constants.root_url() + "social/employeefeed/" + start.toString() + "/" + limit.toString();
         } else {
             return OfficeWelcome.constants.root_url() + "social/companyfeed/" + start.toString() + "/" + limit.toString();
