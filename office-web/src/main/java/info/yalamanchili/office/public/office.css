@@ -1,7 +1,7 @@
 /* an individual tab*/
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
     /*background: url("../icons/tab_100.png");*/
-    background: url("../images/home_btn.png");
+    background: url("../images/Tab_button.png");
     background-color: #919191;
 
     width: 106px;
@@ -19,14 +19,16 @@
 }
 .profileHome{
     width: 100%;
-    background-color: #ededed;
+    background-color: #FFFFFF;
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
     margin-left: 3px;
     margin-right: 3px;
-    font-size: 14pt;
-    font-weight: bold;
-    background-color: #f7f7f7;
+    font-size: 12pt;
+    font-weight: 500;
+    color: #FFFFFF;
+/*    background-color: #f7f7f7;*/
+    background: url("../images/Tab_button_click.png");
 }
 
 /* an element nested in each tab (useful for styling)*/
@@ -40,7 +42,7 @@
     font-weight: bold;
     font-size: 10pt;
     /*background-color: #919191;*/
-    background: url("../images/PagingBar.png");
+    background: url("../images/Indexbar.png");
     width: 100%;
     height: 34px;
 
@@ -158,7 +160,7 @@ body{
     font-family:Tahoma;
     font-size: 11pt;
     cursor: default;
-    background: #ededed;
+    background: #FFFFFF;
 }
 /*.GIKIG2NBLI{
   border-color: #919191;  
