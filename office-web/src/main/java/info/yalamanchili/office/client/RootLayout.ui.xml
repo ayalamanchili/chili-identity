@@ -15,7 +15,7 @@
 	<ui:style>
 		.statusPanel {
 			border-bottom-style: solid;
-			border-bottom-color: #28009E;
+			border-bottom-color: #ededed;
 			border-bottom-width: 2px;
 		}
 	</ui:style>
