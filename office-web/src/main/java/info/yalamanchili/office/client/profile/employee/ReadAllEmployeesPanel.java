@@ -114,7 +114,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
     @Override
     public void deleteClicked(String entityId) {
          
-         if(Window.confirm("About to delete Employee Record")){
+         if(Window.confirm( "Are you sure? All Employee details will be deleted")){
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
             new ALAsyncCallback<String>() {
                 @Override
