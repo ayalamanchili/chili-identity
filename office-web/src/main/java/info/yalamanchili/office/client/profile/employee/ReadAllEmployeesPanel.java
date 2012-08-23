@@ -19,9 +19,11 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
+
 
 /**
  *
@@ -111,13 +113,16 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-         new ALAsyncCallback<String>() {
-         @Override
-         public void onResponse(String arg0) {
-         postDeleteSuccess();
+         
+         if(Window.confirm("About to delete Employee Record")){
+            HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+            new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String arg0) {
+                postDeleteSuccess();
+                }
+            });
          }
-         });
     }
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "employee/delete/" + entityId;
