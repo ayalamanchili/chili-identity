@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
@@ -64,6 +65,7 @@ public class Address extends AbstractEntity {
     /**
      * @generated
      */
+    @Size(min = 5, max = 5, message = "{address.zip.length.invalid.msg}")
     @Field
     protected String zip;
     /**
