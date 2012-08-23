@@ -32,7 +32,11 @@
 			border-bottom-style: solid;
 			border-bottom-color: #919191;
 			border-bottom-width: 2px;
-			background-color: #ededed;
+                        border-top-color: #OOOOOO;
+                        border-top-width:5px;
+			background-color: #83acff;
+                        
+                        
 		}
 		
 		.entityPanel {
