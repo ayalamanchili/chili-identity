@@ -75,8 +75,10 @@ public class AdminResource {
     @Produces("application/text")
     public String createUser(CUser user) {
         user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
+        user.getEmployee().setEmployeeId(generateEmployeeId(user));
         user.setEnabled(true);
         user = em.merge(user);
+        
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(user);
         //CITS data push
@@ -85,6 +87,11 @@ public class AdminResource {
         return user.getEmployee().getId().toString();
     }
 
+   public String generateEmployeeId(CUser user)
+   {
+       String empId = user.getEmployee().getFirstName().charAt(0) + user.getEmployee().getLastName().toLowerCase();
+       return empId;
+   }
     @Path("/currentuser")
     @GET
     public Employee getCurrentUser() {
