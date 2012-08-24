@@ -13,8 +13,8 @@ public class TableRowOptionsWidget extends ALComposite {
     HorizontalPanel panel = new HorizontalPanel();
     protected String entityId;
     ClickableImage readLink = new ClickableImage("view", OfficeImages.INSTANCE.viewIcon_16_16());
-    ClickableLink updateLink = new ClickableLink("update");
-    ClickableLink deleteLink = new ClickableLink("delete");
+    ClickableImage updateLink = new ClickableImage("update", OfficeImages.INSTANCE.updateIcon_16_16());
+    ClickableImage deleteLink = new ClickableImage("delete", OfficeImages.INSTANCE.deleteIcon_16_16());
 
     public enum OptionsType {
 
@@ -69,11 +69,11 @@ public class TableRowOptionsWidget extends ALComposite {
         return readLink;
     }
 
-    public ClickableLink getUpdateLink() {
+    public ClickableImage getUpdateLink() {
         return updateLink;
     }
 
-    public ClickableLink getDeleteLink() {
+    public ClickableImage getDeleteLink() {
         return deleteLink;
     }
 }

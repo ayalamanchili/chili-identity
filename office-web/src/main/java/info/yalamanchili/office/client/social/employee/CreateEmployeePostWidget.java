@@ -38,7 +38,7 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     RichTextArea createPostTextArea = new RichTextArea();
     Button createPostB = new Button("Share");
-    FileUploadPanel imageUploadPanel = new FileUploadPanel("Share Image", "PostFile/fileURL");
+    FileUploadPanel imageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL");
 
     public CreateEmployeePostWidget() {
         init(captionPanel);

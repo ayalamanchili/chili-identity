@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class UpdateSkillSetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateSkillSetPanel.class.getName());
-    FileUploadPanel resumeUploadPanel = new FileUploadPanel("Resume", "SkillSet/resumeUrl");
+    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl");
     protected String employeeId;
 
     public UpdateSkillSetPanel(String employeeId) {

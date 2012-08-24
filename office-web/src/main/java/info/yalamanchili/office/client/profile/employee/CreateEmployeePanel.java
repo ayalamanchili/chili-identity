@@ -19,7 +19,7 @@ import info.yalamanchili.gwt.utils.JSONUtils;
 public class CreateEmployeePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
-    FileUploadPanel empImageUploadPanel = new FileUploadPanel("Profile Picture", "Employee/imageURL");
+    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL");
 
     public CreateEmployeePanel(CreateCompositeType type) {
         super(type);

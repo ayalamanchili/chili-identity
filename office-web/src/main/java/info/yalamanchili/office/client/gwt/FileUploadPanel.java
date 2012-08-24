@@ -5,12 +5,14 @@ import info.yalamanchili.office.client.OfficeWelcome;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Label;
+import info.yalamanchili.gwt.utils.Utils;
 
 public class FileUploadPanel extends ALComposite implements ClickHandler {
 
@@ -21,8 +23,8 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
     FileUpload fileUpload = new FileUpload();
     Button submit = new Button("Upload");
 
-    public FileUploadPanel(String labelName, String filePrefix) {
-        label.setText(labelName);
+    public FileUploadPanel(ConstantsWithLookup constants, String attributeName, String className, String filePrefix) {
+        label.setText(Utils.getAttributeLabel(attributeName, className, constants));
         this.filePrefix = filePrefix;
         init(formPanel);
         submit.setVisible(false);

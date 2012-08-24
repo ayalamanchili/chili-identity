@@ -86,68 +86,65 @@ public abstract class CRUDComposite extends Composite {
      */
     protected void addField(String attributeName, Boolean readOnly, Boolean isRequired, DataType type) {
         if (DataType.LONG_FIELD.equals(type)) {
-            LongField longField = new LongField(Utils.getAttributeLabel(attributeName, entityName, constants),
+            LongField longField = new LongField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, longField);
             entityDisplayWidget.add(longField);
         }
         if (DataType.INTEGER_FIELD.equals(type)) {
-            IntegerField integerField = new IntegerField(Utils.getAttributeLabel(attributeName, entityName, constants),
+            IntegerField integerField = new IntegerField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, integerField);
             entityDisplayWidget.add(integerField);
         }
         if (DataType.STRING_FIELD.equals(type)) {
-            StringField stringField = new StringField(Utils.getAttributeLabel(attributeName, entityName, constants),
+            StringField stringField = new StringField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, stringField);
             entityDisplayWidget.add(stringField);
         }
         if (DataType.DATE_FIELD.equals(type)) {
-            DateField dateField = new DateField(Utils.getAttributeLabel(attributeName, entityName, constants),
+            DateField dateField = new DateField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, dateField);
             entityDisplayWidget.add(dateField);
         }
         if (DataType.BOOLEAN_FIELD.equals(type)) {
-            BooleanField booleanField = new BooleanField(Utils.getAttributeLabel(attributeName, entityName, constants),
+            BooleanField booleanField = new BooleanField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, booleanField);
             entityDisplayWidget.add(booleanField);
         }
         if (DataType.FLOAT_FIELD.equals(type)) {
-            FloatField floatField = new FloatField(Utils.getAttributeLabel(attributeName, entityName, constants),
+            FloatField floatField = new FloatField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, floatField);
             entityDisplayWidget.add(floatField);
         }
         if (DataType.PASSWORD_FIELD.equals(type)) {
-            PasswordField passwordField = new PasswordField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName, isRequired);
+            PasswordField passwordField = new PasswordField(constants, attributeName, entityName, isRequired);
             fields.put(attributeName, passwordField);
             entityDisplayWidget.add(passwordField);
         }
         if (DataType.DROPDOWN_FIELD.equals(type)) {
-            StringField dropDownField = new StringField(Utils.getAttributeLabel(attributeName, entityName, constants),
+            StringField dropDownField = new StringField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, dropDownField);
             entityDisplayWidget.add(dropDownField);
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
-            FileUploadPanel fileUploadPanel = new FileUploadPanel(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), "name");
+            FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName,
+                    "name");
             entityDisplayWidget.add(fileUploadPanel);
         }
         if (DataType.RICH_TEXT_AREA.equals(type)) {
-            RichTextField richTextField = new RichTextField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName, readOnly, isRequired);
+            RichTextField richTextField = new RichTextField(constants, attributeName, entityName, readOnly, isRequired);
             richTextField.addStyleName("y-gwt-RichTextField");
             fields.put(attributeName, richTextField);
             entityDisplayWidget.add(richTextField);
         }
         if (DataType.CURRENCY_FIELD.equals(type)) {
-            CurrencyField currencyField = new CurrencyField(Utils.getAttributeLabel(attributeName, entityName,
-                    constants), attributeName, entityName, readOnly, isRequired);
+            CurrencyField currencyField = new CurrencyField(constants, attributeName, entityName, readOnly, isRequired);
             currencyField.addStyleName("y-gwt-CurrencyField");
             fields.put(attributeName, currencyField);
             entityDisplayWidget.add(currencyField);
@@ -155,7 +152,7 @@ public abstract class CRUDComposite extends Composite {
     }
 
     protected void addEnumField(String key, Boolean readOnly, Boolean isRequired, String[] values) {
-        EnumField enumField = new EnumField(Utils.getAttributeLabel(key, entityName, constants), key, entityName,
+        EnumField enumField = new EnumField(constants, key, entityName,
                 readOnly, isRequired, values);
         fields.put(key, enumField);
         entityDisplayWidget.add(enumField);
