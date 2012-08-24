@@ -81,7 +81,7 @@ public class Phone extends AbstractEntity {
 
     /**
      * @generated
-     */
+     */ 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
