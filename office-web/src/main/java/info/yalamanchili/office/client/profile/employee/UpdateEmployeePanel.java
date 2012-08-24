@@ -74,10 +74,10 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         // same here update them
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        addField("dateOfBirth", false, false, DataType.DATE_FIELD);
+        addField("firstName", true, true, DataType.STRING_FIELD);
+        addField("middleInitial", true, false, DataType.STRING_FIELD);
+        addField("lastName", true, true, DataType.STRING_FIELD);
+        addField("dateOfBirth", true, false, DataType.DATE_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
