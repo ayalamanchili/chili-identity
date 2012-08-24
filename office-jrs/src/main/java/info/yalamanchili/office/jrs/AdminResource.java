@@ -89,8 +89,8 @@ public class AdminResource {
 
    public String generateEmployeeId(CUser user)
    {
-       String empId = user.getEmployee().getFirstName().charAt(0) + user.getEmployee().getLastName().toLowerCase();
-       javax.persistence.Query findUserQuery = em.createQuery("from Employee where employee.employeeId=:empIdParam");
+       String empId = user.getEmployee().getFirstName().toLowerCase().charAt(0) + user.getEmployee().getLastName().toLowerCase();
+       javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);
          if (findUserQuery.getResultList().size() > 0) {
              empId = empId + Integer.toString(user.getEmployee().getDateOfBirth().getDate()) ;
