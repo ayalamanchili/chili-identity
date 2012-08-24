@@ -29,6 +29,7 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @todo add comment for javadoc
@@ -45,6 +46,18 @@ public class Employee extends Contact {
      */
     @Transient
     private static final long serialVersionUID = 2L;
+    
+//    @NotEmpty(message = "{employeeId.not.empty.msg}")
+    @Field
+    protected String employeeId;
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
     /**
      * @generated
      */
@@ -54,6 +67,7 @@ public class Employee extends Contact {
     /**
      * @generated
      */
+    
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Company_Employees")
     protected Company company;
