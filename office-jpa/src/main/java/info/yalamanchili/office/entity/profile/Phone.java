@@ -43,13 +43,11 @@ public class Phone extends AbstractEntity {
     /**
      * @generated
      */
-    @Size(min = 4, max = 4,message = "{phone.extension.length.invalid.msg}")
     @Field
     protected String extension;
     /**
      * @generated
      */
-    @Size(min = 4, max = 4,message = "{phone.countryCode.length.invalid.msg}")
     @Field
     protected String countryCode;
     /**
