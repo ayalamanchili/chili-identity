@@ -26,7 +26,7 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
     public static GenericPopup instance() {
         return instance;
     }
-    ClickableImage closeB = new ClickableImage(OfficeImages.INSTANCE.closeIcon_16_16());
+    ClickableImage closeB = new ClickableImage("close", OfficeImages.INSTANCE.closeIcon_16_16());
 
     private GenericPopup(Composite widget) {
         instance = this;
