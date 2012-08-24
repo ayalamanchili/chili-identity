@@ -28,25 +28,13 @@
         height: 100%;
         }
 		
-<<<<<<< .mine
-		.entityTitlePanel {
-			border-bottom-style: solid;
-			border-bottom-color: #919191;
-			border-bottom-width: 2px;
-                        <!--border-top-color: #OOOOOO;
-                        border-top-width:5px;-->
-			background-color: #83acff;
-=======
-        .entityTitlePanel {
-        border-bottom-style: solid;
-        border-bottom-color: #919191;
-        border-bottom-width: 2px;
-        border-top-color: #000000;
-        border-top-width:5px;
-        background-color: #83acff;
->>>>>>> .r1011
-                        
-                        
+	.entityTitlePanel {
+            border-bottom-style: solid;
+            border-bottom-color: #919191;
+            border-bottom-width: 2px;
+            <!--border-top-color: #OOOOOO;
+            border-top-width:5px;-->
+            background-color: #83acff;
         }
 		
         .entityPanel {
