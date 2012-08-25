@@ -1,5 +1,6 @@
 package info.yalamanchili.office.jrs;
 
+import info.yalamanchili.ejb.LoggingInterceptor;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 
 import java.io.File;
@@ -23,6 +24,8 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -35,13 +38,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class FileResource {
 
+    private static final Log log = LogFactory.getLog(FileResource.class);
     @Autowired
     protected OfficeServiceConfiguration officeServiceConfiguration;
 
     @POST
     @Path("/upload")
     public Response uploadFile(@Context HttpServletRequest request) {
-        System.out.println("---------------uploading file-----------------");
+        log.info("---------------uploading file-----------------");
         processImageUpload(request);
         return Response.ok().build();
     }
@@ -60,7 +64,7 @@ public class FileResource {
         try {
             file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
             if (file.exists()) {
-                System.out.println("downloading---------:" + file.getPath());
+                log.info("downloading---------:" + file.getPath());
                 response = Response.ok((Object) file);
                 response.header("Content-Disposition", "attachment; filename=" + file.getName());
                 response.header("Content-Type", "application/pdf");
@@ -99,7 +103,7 @@ public class FileResource {
             File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
                     + item.getName());
             try {
-                System.out.println("----------writing image to-----------:" + fileurl.getAbsolutePath());
+                log.info("----------writing image to-----------:" + fileurl.getAbsolutePath());
                 item.write(fileurl);
             } catch (Exception e) {
                 throw new RuntimeException("Error saving File:" + fileurl + ": to disk.", e);
