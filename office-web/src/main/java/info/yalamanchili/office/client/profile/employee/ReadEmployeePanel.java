@@ -49,7 +49,7 @@ public class ReadEmployeePanel extends ReadComposite {
 		assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
 		assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
 		assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-
+                assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
 	}
 
 	@Override
@@ -68,10 +68,12 @@ public class ReadEmployeePanel extends ReadComposite {
 		addField("firstName", true, false, DataType.STRING_FIELD);
 		addField("middleInitial", true, false, DataType.STRING_FIELD);
 		addField("lastName", true, false, DataType.STRING_FIELD);
+                addField("employeeId", true, false, DataType.STRING_FIELD);
 		addField("dateOfBirth", true, false, DataType.DATE_FIELD);
 		String[] strs = { "MALE", "FEMALE" };
 		addEnumField("sex", true, false, strs);
 		addField("startDate", true, false, DataType.DATE_FIELD);
+                
 	}
 
 	@Override
