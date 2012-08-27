@@ -2,7 +2,7 @@
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
     /*background: url("../icons/tab_100.png");*/
     background: url("../images/Tab_button.png");
-    background-color: #919191;
+/*    background-color: #919191;*/
 
     width: 106px;
     text-align: center;
@@ -28,7 +28,7 @@
     font-weight: 500;
     color: #FFFFFF;
     /*    background-color: #f7f7f7;*/
-    background: url("../images/Tab_button_click.png");
+    background: url("../images/tab_button_click.png");
 }
 
 /* an element nested in each tab (useful for styling)*/
