@@ -4,17 +4,8 @@
  */
 package info.yalamanchili.office.dao.profile;
 
-import com.sun.java.swing.plaf.windows.resources.windows;
-import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.Phone;
-import info.yalamanchili.office.entity.profile.Email;
-import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.ClientInformation;
-import info.yalamanchili.office.entity.profile.EmergencyContact;
-import info.yalamanchili.office.entity.profile.SkillSet;
-import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.security.CUser;
 
 import javax.persistence.EntityManager;
