@@ -67,12 +67,14 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
         table.setText(0, 1, getKeyValue("First Name"));
         table.setText(0, 2, getKeyValue("Middle Name"));
         table.setText(0, 3, getKeyValue("Last Name"));
-        table.setText(0, 4, getKeyValue("Email"));
-        table.setText(0, 5, getKeyValue("Phone"));
-        table.setText(0, 6, getKeyValue("Date of Birth"));
-        table.setText(0, 7, getKeyValue("Sex"));
-        table.setText(0, 8, getKeyValue("Image"));
-        table.setText(0, 9, getKeyValue("Start Date"));
+        table.setText(0, 4, getKeyValue("Employee Id"));
+        table.setText(0, 5, getKeyValue("Email"));
+        table.setText(0, 6, getKeyValue("Phone"));
+        table.setText(0, 7, getKeyValue("Date of Birth"));
+        table.setText(0, 8, getKeyValue("Sex"));
+        table.setText(0, 9, getKeyValue("Image"));
+        table.setText(0, 10, getKeyValue("Start Date"));
+        
     }
 
     @Override
@@ -83,14 +85,15 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
             table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
-            table.setText(i, 4, JSONUtils.toString(entity, "email"));
-            table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
+            table.setText(i, 4, JSONUtils.toString(entity, "employeeId"));
+            table.setText(i, 5, JSONUtils.toString(entity, "email"));
+            table.setText(i, 6, JSONUtils.toString(entity, "phoneNumber"));
             if (Auth.isAdmin() || Auth.isHR()) {
-                table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+                table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             }
-            table.setText(i, 7, JSONUtils.toString(entity, "sex"));
-            table.setWidget(i, 8, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
-            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 8, JSONUtils.toString(entity, "sex"));
+            table.setWidget(i, 9, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
+            table.setText(i, 10, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
     }
 
