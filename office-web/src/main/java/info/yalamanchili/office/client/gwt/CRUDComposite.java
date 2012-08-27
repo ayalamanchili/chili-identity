@@ -257,6 +257,8 @@ public abstract class CRUDComposite extends Composite {
             if (errSource != null && fields.get(getErrorProperty(errSource.stringValue())) != null) {
                 BaseField field = fields.get(getErrorProperty(errSource.stringValue()));
                 field.setMessage(err.get("description").isString().stringValue());
+            } else {
+                new ResponseStatusWidget().show("Generic Error" + err.get("source").isString().stringValue() + ":" + err.get("description").isString().stringValue());
             }
         }
     }
