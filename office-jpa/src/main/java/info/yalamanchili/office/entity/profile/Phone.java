@@ -37,7 +37,7 @@ public class Phone extends AbstractEntity {
     /**
      * @generated
      */
-    @Size(min = 10, max = 10,message = "{phone.phoneNumber.length.invalid.msg}")
+    @Size(min = 0, max = 10,message = "{phone.phoneNumber.length.invalid.msg}")
     @NotEmpty(message = "{phone.phoneNumber.not.empty.msg}")
     @Field
     protected String phoneNumber;
