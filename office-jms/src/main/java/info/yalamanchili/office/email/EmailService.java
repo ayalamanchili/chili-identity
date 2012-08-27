@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
+
 
 /**
  *
@@ -28,7 +30,11 @@ public class EmailService {
         message.setSubject(email.getSubject());
         message.setText(email.getBody());
         logger.info("sending email:" + email);
-        mailSender.send(message);
+        OfficeServiceConfiguration officeserviceconfiguration=new OfficeServiceConfiguration();
+        if(officeserviceconfiguration.getIsSendEmail()==true)
+        {
+           mailSender.send(message);
+        }
     }
     
     public void setMailSender(MailSender mailSender) {
