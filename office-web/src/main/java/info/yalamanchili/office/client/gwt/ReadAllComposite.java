@@ -189,7 +189,6 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 
     protected void createOptionsWidget(OptionsType type, int row, String id) {
         TableRowOptionsWidget link = new TableRowOptionsWidget(type, id);
-        link.setTitle(id);
         link.initListeners(this);
         table.setWidget(row, 0, link);
         optionsWidgetMap.put(String.valueOf(row), link);
