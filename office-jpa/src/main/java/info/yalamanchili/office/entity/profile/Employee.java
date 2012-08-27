@@ -241,6 +241,7 @@ public class Employee extends Contact {
         this.user = user;
     }
 
+    @XmlTransient
     public List<TimeSheet> getTimeSheets() {
         return timeSheets;
     }
