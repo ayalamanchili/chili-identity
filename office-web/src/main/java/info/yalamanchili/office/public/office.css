@@ -185,7 +185,7 @@ body{
     font-size: 11pt;
 }
 .y-gwt-ClickableLink:hover {
-    background-color: #ededed;
+    /*background-color: #ededed;*/
 }
 
 .y-gwt-AbstracttatusPanel {
