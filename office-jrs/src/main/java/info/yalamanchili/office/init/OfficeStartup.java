@@ -144,10 +144,10 @@ public class OfficeStartup {
         adminSecondaryEmail.setEmail("admin_secondary@gmail.com");
 
         Phone adminCellPhone = new Phone();
-        adminCellPhone.setPhoneNumber("7031111222");
+        adminCellPhone.setPhoneNumber("7038889999");
         adminCellPhone.setPhoneType(getCellPhoneType());
 
-        adminEmp.addPhone(userCellPhone);
+        adminEmp.addPhone(adminCellPhone);
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
