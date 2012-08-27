@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
 
 import javax.persistence.CascadeType;
@@ -26,6 +27,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@Unique(entity = Email.class, fields = {"phone"}, message = "{phone.phoneNumber.not.unique.msg}")
 public class Phone extends AbstractEntity {
 
     /**
