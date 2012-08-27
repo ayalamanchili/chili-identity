@@ -1,0 +1,113 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.entity.client;
+
+import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.time.TimeSheet;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.ForeignKey;
+import org.hibernate.validator.constraints.NotEmpty;
+
+/**
+ *
+ * @author ayalamanchili
+ */
+@Entity
+public class StatementOfWork extends AbstractEntity {
+
+    @NotEmpty
+    protected String name;
+    protected String description;
+    protected String sowUrl;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
+    protected Date startDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
+    protected Date endDate;
+    protected BigDecimal billRate;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Project_StatementOfWorks")
+    protected Project project;
+    @OneToMany(mappedBy = "statementOfWork")
+    protected List<TimeSheet> timeSheets;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSowUrl() {
+        return sowUrl;
+    }
+
+    public void setSowUrl(String sowUrl) {
+        this.sowUrl = sowUrl;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public BigDecimal getBillRate() {
+        return billRate;
+    }
+
+    public void setBillRate(BigDecimal billRate) {
+        this.billRate = billRate;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public List<TimeSheet> getTimeSheets() {
+        return timeSheets;
+    }
+
+    public void setTimeSheets(List<TimeSheet> timeSheets) {
+        this.timeSheets = timeSheets;
+    }
+
+    @Override
+    public String toString() {
+        return "StatementOfWork{" + "name=" + name + ", description=" + description + ", sowUrl=" + sowUrl + ", startDate=" + startDate + ", endDate=" + endDate + ", billRate=" + billRate + ", project=" + project + ", timeSheets=" + timeSheets + '}';
+    }
+}

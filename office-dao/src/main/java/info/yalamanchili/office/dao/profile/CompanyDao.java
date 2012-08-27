@@ -5,7 +5,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.entity.profile.Company;
+import info.yalamanchili.office.entity.Company;
 
 
 import javax.persistence.EntityManager;

@@ -3,10 +3,11 @@
  * Copyright (C) 2011 yalamanchili.info 
  */
 
-package info.yalamanchili.office.entity.profile;
+package info.yalamanchili.office.entity;
 
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 

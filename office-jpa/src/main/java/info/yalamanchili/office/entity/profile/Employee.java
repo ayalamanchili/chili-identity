@@ -3,8 +3,10 @@
  */
 package info.yalamanchili.office.entity.profile;
 
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
+import info.yalamanchili.office.entity.time.TimeSheet;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,15 +17,12 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.ForeignKey;
 
 import org.hibernate.search.annotations.Field;
@@ -46,18 +45,9 @@ public class Employee extends Contact {
      */
     @Transient
     private static final long serialVersionUID = 2L;
-    
-//    @NotEmpty(message = "{employeeId.not.empty.msg}")
+    @NotEmpty(message = "{employeeId.not.empty.msg}")
     @Field
     protected String employeeId;
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
-    }
     /**
      * @generated
      */
@@ -67,7 +57,6 @@ public class Employee extends Contact {
     /**
      * @generated
      */
-    
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Company_Employees")
     protected Company company;
@@ -94,12 +83,22 @@ public class Employee extends Contact {
     protected SkillSet skillSet;
     @OneToOne(mappedBy = "employee")
     protected CUser user;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    protected List<TimeSheet> timeSheets;
 
     /**
      * @generated
      */
     public Employee() {
         super();
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
     /**
@@ -240,6 +239,14 @@ public class Employee extends Contact {
 
     public void setUser(CUser user) {
         this.user = user;
+    }
+
+    public List<TimeSheet> getTimeSheets() {
+        return timeSheets;
+    }
+
+    public void setTimeSheets(List<TimeSheet> timeSheets) {
+        this.timeSheets = timeSheets;
     }
 
     @Override

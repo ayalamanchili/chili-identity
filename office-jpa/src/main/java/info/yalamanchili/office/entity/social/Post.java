@@ -1,7 +1,7 @@
 package info.yalamanchili.office.entity.social;
 
 import info.yalamanchili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.profile.Company;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 
 import java.util.ArrayList;

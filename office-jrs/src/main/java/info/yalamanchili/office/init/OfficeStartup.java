@@ -16,7 +16,7 @@ import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
-import info.yalamanchili.office.entity.profile.Company;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
@@ -69,6 +69,7 @@ public class OfficeStartup {
     protected void initTestData() {
         // User Employee
         Employee userEmp = new Employee();
+        userEmp.setEmployeeId("uuser");
         userEmp.setFirstName("user");
         userEmp.setLastName("user");
         userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
@@ -113,6 +114,7 @@ public class OfficeStartup {
         userUser = em.merge(userUser);
         // Admin Employee
         Employee adminEmp = new Employee();
+        adminEmp.setEmployeeId("aadmin");
         adminEmp.setFirstName("admin");
         adminEmp.setLastName("admin");
         adminEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -3));

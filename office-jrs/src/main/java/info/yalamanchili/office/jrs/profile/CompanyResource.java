@@ -6,7 +6,7 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.CompanyDao;
-import info.yalamanchili.office.entity.profile.Company;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.jrs.CRUDResource;
 
 import javax.ws.rs.Path;
