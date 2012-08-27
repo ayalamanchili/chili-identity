@@ -28,7 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 //@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
-@Unique(entity = Email.class, fields = {"phone"}, message = "{phone.phoneNumber.not.unique.msg}")
+@Unique(entity = Phone.class, fields = {"phoneNumber"}, message = "{phone.phoneNumber.not.unique.msg}")
 public class Phone extends AbstractEntity {
 
     /**
