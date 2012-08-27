@@ -1,7 +1,6 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.fields.StringField;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -12,9 +11,8 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.gwt.utils.JSONUtils;
 
 public class CreateEmployeePanel extends CreateComposite {
 
@@ -36,6 +34,7 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
         assignEntityValueFromField("lastName", employee);
+        employee.put("employeeId", new JSONString("dummy"));
         assignEntityValueFromField("dateOfBirth", employee);
         assignEntityValueFromField("sex", employee);
         assignEntityValueFromField("startDate", employee);
