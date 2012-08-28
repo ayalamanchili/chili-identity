@@ -81,7 +81,7 @@ public class SearchEmployeePanel extends SearchComposite {
     @Override
     protected void postSearchSuccess(String result) {
         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-            new ResponseStatusWidget().show("no results");
+            new ResponseStatusWidget().show("no records found");
         } else {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("employee"));
