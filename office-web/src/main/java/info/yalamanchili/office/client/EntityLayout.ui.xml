@@ -28,14 +28,8 @@
         height: 100%;
         }
 		
-	.entityTitlePanel {
-            border-bottom-style: solid;
-            border-bottom-color: #919191;
-            border-bottom-width: 2px;
-            <!--border-top-color: #OOOOOO;
-            border-top-width:5px;-->
-            background-color: #aeafb7;
-        }
+	
+
 		
         .entityPanel {
 			
