@@ -63,10 +63,9 @@ public class ProfileNotificationService {
     }
     public void BirthdayNotification()
     {
-       javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + "where  day(dateOfBirth.dateTime) = :date and month(dateOfBirth.dateTime) = :month and year(dateOfBirth.dateTime) = :year");
+       javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + "where  day(dateOfBirth.dateTime) = :date and month(dateOfBirth.dateTime) = :month ");
        findUserQuery.setParameter("date", Calendar.getInstance().DATE);
        findUserQuery.setParameter("month", Calendar.getInstance().MONTH);
-       findUserQuery.setParameter("year", Calendar.getInstance().YEAR);
        
        List lstResult = findUserQuery.getResultList();
         for (int i = 0; i < lstResult.size(); i++) {
