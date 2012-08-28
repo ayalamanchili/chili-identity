@@ -41,7 +41,7 @@ public class SearchEmployeePanel extends SearchComposite {
     protected void addWidgets() {
         addField("firstName", DataType.STRING_FIELD);
         addField("middleInitial", DataType.STRING_FIELD);
-        addField("lastName", DataType.STRING_FIELD);           
+        addField("lastName", DataType.STRING_FIELD);
     }
 
     @Override
@@ -58,7 +58,6 @@ public class SearchEmployeePanel extends SearchComposite {
     protected void search(String searchText) {
         HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-
             @Override
             public void onResponse(String result) {
                 postSearchSuccess(result);
@@ -70,7 +69,6 @@ public class SearchEmployeePanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-
             @Override
             public void onResponse(String result) {
                 postSearchSuccess(result);
@@ -80,13 +78,9 @@ public class SearchEmployeePanel extends SearchComposite {
 
     @Override
     protected void postSearchSuccess(String result) {
-        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-            new ResponseStatusWidget().show("no records found");
-        } else {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("employee"));
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
-        }
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("employee"));
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
     }
 
     @Override
