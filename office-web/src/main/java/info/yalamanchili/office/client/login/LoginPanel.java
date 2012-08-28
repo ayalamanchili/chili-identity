@@ -94,6 +94,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 	public LoginPanel() {
 		setWidget(uiBinder.createAndBindUi(this));
+                loginB.addStyleName("loginB");
+                
+                
 	}
 
 	protected void loginClicked() {
