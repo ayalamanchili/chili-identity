@@ -10,7 +10,14 @@ import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
+import java.sql.Date;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -28,6 +35,9 @@ public class ProfileNotificationService {
     protected MessagingService messagingService;
     @Autowired
     public EmployeeDao employeeDao;
+    @PersistenceContext
+    public EntityManager em;
+    
 
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
@@ -50,5 +60,25 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
+    }
+    public void BirthdayNotification()
+    {
+       javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + "where  day(dateOfBirth.dateTime) = :date and month(dateOfBirth.dateTime) = :month and year(dateOfBirth.dateTime) = :year");
+       findUserQuery.setParameter("date", Calendar.getInstance().DATE);
+       findUserQuery.setParameter("month", Calendar.getInstance().MONTH);
+       findUserQuery.setParameter("year", Calendar.getInstance().YEAR);
+       
+       List lstResult = findUserQuery.getResultList();
+        for (int i = 0; i < lstResult.size(); i++) {
+            Employee empres = new  Employee();
+             Set<String> emailto = new HashSet<String>();
+             Email email = new Email();
+             emailto.add(empres.getPrimaryEmail().getEmail());
+             email.setTos(emailto);
+             email.setSubject("Birthday Wishes");
+             String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
+             email.setBody(messageText);
+             messagingService.sendEmail(email);
+        }
     }
 }
