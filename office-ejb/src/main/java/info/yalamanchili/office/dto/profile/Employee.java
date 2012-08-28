@@ -23,6 +23,9 @@ public class Employee implements Serializable {
     protected String firstName;
     protected String lastName;
     protected String middleInitial;
+    protected String employeeId;
+
+   
     protected Date dateOfBirth;
     protected Sex sex;
     protected String imageURL;
@@ -64,7 +67,14 @@ public class Employee implements Serializable {
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
+    
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 
+    public String getEmployeeId() {
+        return employeeId;
+    }
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
