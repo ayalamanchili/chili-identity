@@ -61,6 +61,7 @@ public class SearchEmployeePanel extends SearchComposite {
             @Override
             public void onResponse(String result) {
                 postSearchSuccess(result);
+                searchTB.setText("");
             }
         });
     }
