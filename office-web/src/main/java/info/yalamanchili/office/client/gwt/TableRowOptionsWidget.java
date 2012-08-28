@@ -41,7 +41,7 @@ public class TableRowOptionsWidget extends ALComposite {
 
     @Override
     protected void configure() {
-        panel.setSpacing(3);
+        panel.setSpacing(10);
     }
 
     @Override
