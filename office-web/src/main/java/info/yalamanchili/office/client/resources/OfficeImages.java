@@ -31,20 +31,20 @@ public interface OfficeImages extends ClientBundle {
      * View Icons
      */
 
-    @Source("images/view_icon_16_16.png")
-    ImageResource viewIcon_16_16();
+    @Source("images/view_icon_24_24.png")
+    ImageResource viewIcon_24_24();
     /*
      * Update Edit Icons
      */
 
-    @Source("images/update_icon_16_16.png")
-    ImageResource updateIcon_16_16();
+    @Source("images/update_icon_24_24.png")
+    ImageResource updateIcon_24_24();
     /*
      * Delete Icons
      */
 
-    @Source("images/delete_icon_16_16.png")
-    ImageResource deleteIcon_16_16();
+    @Source("images/delete_icon_24_24.png")
+    ImageResource deleteIcon_24_24();
 
     /*
      * close icons
