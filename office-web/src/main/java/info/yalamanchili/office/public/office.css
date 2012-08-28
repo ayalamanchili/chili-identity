@@ -2,7 +2,7 @@
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
     /*background: url("../icons/tab_100.png");*/
     background: url("../images/Tab_button.png");
-/*    background-color: #919191;*/
+    /*    background-color: #919191;*/
 
     width: 106px;
     text-align: center;
@@ -34,8 +34,8 @@
 /* an element nested in each tab (useful for styling)*/
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabInner {
 
-    /*margin-top:3px;
-    margin-bottom:3px;*/  
+    /*margin-top:3px;*/ 
+    margin-bottom:3px; 
 }
 
 .y-gwt-PagingBar {
@@ -51,7 +51,8 @@
 .y-gwt-TableHeader {
     background-color: #b3b3b3;
     font-weight: bold;
-    font-size: 11pt
+    font-size: 11pt;
+    text-align:center;  
 }
 
 .y-gwt-Table {
@@ -59,6 +60,8 @@
     font-family: helvetica, arial ;
     background-color: #f7f7f7;
     width: 100%;
+    text-align:center;
+
 }
 
 .y-gwt-ReadAllPanel {
@@ -77,11 +80,14 @@
     width: 100%;
     border: 2px;
     border-color: #3e3e3e;
+    background: url("../images/menubar_bg.png");
+
     /*background-color: #ededed;*/
 }
 .gwt-MenuItem {
     cursor: pointer;
-    border: 1px solid black;
+    border: 1px solid;
+    border-color: #000000;
     background-color: #919191;
     padding: 2px 10px;
 }
@@ -97,7 +103,7 @@
     padding: 3px;
 }
 .socialSidePanel{
-    background-color: #ededed;
+    /*    background-color: #ededed;*/
     border-color: #919191;
     border-width:1px;
 
@@ -106,20 +112,29 @@
 .readRepliesPanel{
     border: 1px solid #3e3e3e;
     width: 100%;
+    background-color: #ffffff;
+
 }
 .replyPostWidget{
     width:100%;
 }
 .postRichTextBox{
     width: 100%;
+    border-color: #919191;
+    border-width: 1px;
 }
 .readPostImagePanel{
     float:left;
     width: 4%;
+    /*    border: 1px;
+        border-radius: 5px;
+        border-color: #919191;*/
+
 }
 .postStatusPanel{
     width:100%;
     font-size: 12px;
+    background-color: #FFFFFF;
 }
 .postMainPanel{
     float:right;
@@ -137,6 +152,8 @@
 .showMoreL{
     width: 100%;
     background-color: #ededed;
+    font-weight: bold;
+    font-style: italic;
 }
 /*post css end*/
 /*image field css start*/
@@ -263,6 +280,22 @@ body{
 }
 .y-gwt-FindWidget-Button {
 
+}
+
+.entityTitlePanel {
+    border-bottom-style: solid;
+    border-bottom-color: #919191;
+    border-bottom-width: 2px;
+    <!--border-top-color: #OOOOOO;
+    border-top-width:5px;-->
+    background-color: #83acff;
+    background: url("../images/menubar_bg.png");
+
+
+}
+.readPostOptionsPanel
+{
+background-color: #919191;
 }
 
 /*chili=gwt-end*/
