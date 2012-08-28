@@ -37,7 +37,9 @@
     /*margin-top:3px;*/ 
     margin-bottom:3px; 
 }
-
+.gwt-DisclosurePanel .header {
+  color: black;
+}
 .y-gwt-PagingBar {
     font-weight: bold;
     font-size: 10pt;

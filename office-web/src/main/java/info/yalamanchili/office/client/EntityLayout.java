@@ -8,48 +8,44 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class EntityLayout extends Composite {
-	private static EntityLayout instance;
 
-	public static EntityLayout instance() {
-		return instance;
-	}
-
-	@UiField
-	public FlowPanel entityTitlePanel;
-
-	@UiField
-	public FlowPanel sidePanel;
-
-	@UiField
-	public FlowPanel sidePanelTop;
-
-	@UiField
-	public FlowPanel sidePanelBottom;
-
-	@UiField
-	public FlowPanel entityPanel;
-
-	private static EntityLayoutUiBinder uiBinder = GWT
-			.create(EntityLayoutUiBinder.class);
-
-	interface EntityLayoutUiBinder extends UiBinder<Widget, EntityLayout> {
-	}
-
-	public EntityLayout() {
-		instance = this;
-		initWidget(uiBinder.createAndBindUi(this));
-	}
-
-	public void clear() {
-		sidePanelTop.clear();
-		sidePanelBottom.clear();
-		entityPanel.clear();
-	}
-
-	public void clearAll() {
-		entityTitlePanel.clear();
-		sidePanelTop.clear();
-		sidePanelBottom.clear();
-		entityPanel.clear();
-	}
+    private static EntityLayout instance;
+    
+    public static EntityLayout instance() {
+        return instance;
+    }
+    @UiField
+    public FlowPanel entityTitlePanel;
+    @UiField
+    public FlowPanel sidePanel;
+    @UiField
+    public FlowPanel sidePanelTop;
+    @UiField
+    public FlowPanel sidePanelBottom;
+    @UiField
+    public FlowPanel entityPanel;
+    private static EntityLayoutUiBinder uiBinder = GWT
+            .create(EntityLayoutUiBinder.class);
+    
+    interface EntityLayoutUiBinder extends UiBinder<Widget, EntityLayout> {
+    }
+    
+    public EntityLayout() {
+        instance = this;
+        initWidget(uiBinder.createAndBindUi(this));
+        entityTitlePanel.addStyleName("entityTitlePanel");
+    }
+    
+    public void clear() {
+        sidePanelTop.clear();
+        sidePanelBottom.clear();
+        entityPanel.clear();
+    }
+    
+    public void clearAll() {
+        entityTitlePanel.clear();
+        sidePanelTop.clear();
+        sidePanelBottom.clear();
+        entityPanel.clear();
+    }
 }

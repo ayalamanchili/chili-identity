@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
     <g:DockLayoutPanel unit='EM' styleName="{style.entityLayout}">
         <g:north size='2'>
-            <g:FlowPanel ui:field='entityTitlePanel' styleName="{style.entityTitlePanel}">
+            <g:FlowPanel ui:field='entityTitlePanel'>
             </g:FlowPanel>
         </g:north>
         <g:west size='15'>
