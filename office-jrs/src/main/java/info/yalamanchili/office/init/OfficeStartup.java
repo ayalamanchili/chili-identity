@@ -136,7 +136,7 @@ public class OfficeStartup {
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
 
-        adminPrimaryEmail.setEmail("bapu435@gmail.com");
+        adminPrimaryEmail.setEmail("bkmallipeddi@gmail.com");
 
 
 
@@ -144,7 +144,7 @@ public class OfficeStartup {
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
         adminSecondaryEmail.setPrimaryEmail(false);
-        adminSecondaryEmail.setEmail("admin_secondary@gmail.com");
+        adminSecondaryEmail.setEmail("balamallipeddi@gmail.com");
 
         Phone adminCellPhone = new Phone();
         adminCellPhone.setPhoneNumber("7038889999");
