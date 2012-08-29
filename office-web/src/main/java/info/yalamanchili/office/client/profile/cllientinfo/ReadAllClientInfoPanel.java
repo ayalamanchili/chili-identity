@@ -11,6 +11,9 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.gwt.TreePanelComposite;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllClientInfoPanel extends ReadAllComposite {
 
@@ -84,14 +87,28 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
     public void viewClicked(String entityId) {
         // TODO Auto-generated method stub
     }
-
+  public String getDeleteURL(String entityId) {
+        return OfficeWelcome.constants.root_url() + "clientinformation/delete/" + entityId;
+               
+    }
     @Override
     public void deleteClicked(String entityId) {
-        // TODO Auto-generated method stub
+        HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
     public void postDeleteSuccess() {
+         new ResponseStatusWidget().show("successfully deleted Emails information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override
