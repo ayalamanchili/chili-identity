@@ -39,7 +39,7 @@ public class ProfileNotificationService {
     public EntityManager em;
     
     @Async
-    public void ResumeUpdatedNotification(Employee emp) {
+    public void skillSetUpdatedNotification(Employee emp) {
         String[] roles = {"ROLE_RECRUITER"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));

@@ -15,10 +15,10 @@ public class OfficeServiceConfiguration {
 
     @PersistenceContext
     protected EntityManager em;
-    protected String contentManagementLocationRoot = "C://content-management//office/";
+    protected String contentManagementLocationRoot = "D://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData;
-    protected Boolean isSendMail;
+    protected Boolean isSendMail = true;
 
     @ManagedAttribute
     public String getContentManagementLocationRoot() {
@@ -38,16 +38,13 @@ public class OfficeServiceConfiguration {
         this.initRefData = initRefData;
     }
 
-    
-    
-    public Boolean getIsSendEmail(){
-        return isSendMail ;
+    public Boolean getIsSendEmail() {
+        return isSendMail;
     }
-    public void setIsSendEmail(Boolean IsSendEmail){
-        this.isSendMail=IsSendEmail;
+
+    public void setIsSendEmail(Boolean IsSendEmail) {
+        this.isSendMail = IsSendEmail;
     }
-    
-    
 
     @ManagedOperation
     public void indexHibernateSearch() {
