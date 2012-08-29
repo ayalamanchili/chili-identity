@@ -27,7 +27,7 @@ public class CreateEmployeePanel extends CreateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject user = new JSONObject();
-        assignEntityValueFromField("username", user);
+        user.put("username", new JSONString("dummyusername"));
         assignEntityValueFromField("passwordHash", user);
 
         JSONObject employee = new JSONObject();
@@ -55,8 +55,6 @@ public class CreateEmployeePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("username", false, true, DataType.STRING_FIELD);
-        addField("passwordHash", false, true, DataType.PASSWORD_FIELD);
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
@@ -64,6 +62,7 @@ public class CreateEmployeePanel extends CreateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
+        addField("passwordHash", false, true, DataType.PASSWORD_FIELD);
         entityDisplayWidget.add(empImageUploadPanel);
     }
 
