@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class ClientInformation implements Serializable {
 
+     protected Long id;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
     @NotEmpty(message = "{lastName.not.empty.msg}")
@@ -36,7 +37,13 @@ public class ClientInformation implements Serializable {
 
     public ClientInformation() {
     }
+ public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getFirstName() {
         return firstName;
     }
