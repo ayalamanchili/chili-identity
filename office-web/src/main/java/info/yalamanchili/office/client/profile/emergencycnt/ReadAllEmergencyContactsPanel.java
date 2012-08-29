@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
@@ -88,11 +90,22 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-        // TODO
+        HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("successfully deleted Emails information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
     }
 
     @Override
@@ -100,5 +113,8 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmergencyContactPanel(getEntity(entityId)));
 
+    }
+     protected String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "emergencycontact/delete/" + entityId;
     }
 }
