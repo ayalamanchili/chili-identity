@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class EmergencyContact implements Serializable {
-
+    protected Long id;
     @NotEmpty(message = "{relation.not.empty.msg}")
     protected String relation;
     protected boolean ecPrimary;
@@ -36,7 +36,13 @@ public class EmergencyContact implements Serializable {
 
     public EmergencyContact() {
     }
+ public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getRelation() {
         return relation;
     }
