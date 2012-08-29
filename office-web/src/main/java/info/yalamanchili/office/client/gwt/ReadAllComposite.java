@@ -99,6 +99,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     protected void initTable(String className, JSONArray entities, ConstantsWithLookup constants) {
         this.classCanonicalName = className;
         this.constants = constants;
+        this.entities = entities;
         init(basePanel);
         createTableHeader();
         fillData(entities);
