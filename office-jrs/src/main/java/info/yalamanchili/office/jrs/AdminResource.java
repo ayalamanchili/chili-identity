@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import  info.yalamanchili.office.profile.EmployeeService;
+import info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.dto.security.User;
 import javax.ws.rs.PathParam;
 
@@ -35,7 +35,7 @@ import javax.ws.rs.PathParam;
 @Transactional
 @Scope("request")
 public class AdminResource {
- 
+
     //TODO make these be created on demand rather than at per request.
     @Autowired
     protected SecurityService securityService;
@@ -58,46 +58,48 @@ public class AdminResource {
 
     @Path("/changepassword/{empId}")
     @PUT
-    public CUser changePassword(@PathParam("empId") Long empId,User user) {
+    public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        return employeeService.changePassword(empId,user);
+        return employeeService.changePassword(empId, user);
     }
-    
+
     @Path("/resetpassword/{empId}")
     @PUT
-    public CUser resetPassword(@PathParam("empId") Long empId,User user) {
+    public CUser resetPassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        return employeeService.ResetPassword(empId,user);
+        return employeeService.ResetPassword(empId, user);
     }
-    
+
     @Path("/createuser")
     @PUT
     @Produces("application/text")
     public String createUser(CUser user) {
+        String employeeId = generateEmployeeId(user);
+        user.setUsername(employeeId);
         user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
         user.getEmployee().setEmployeeId(generateEmployeeId(user));
         user.setEnabled(true);
         user = em.merge(user);
-        
+
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(user);
         //CITS data push
-       CitsService citsService = (CitsService) SpringContext.getBean("citsService");
-      citsService.pushNewEmployeeInformation(user.getEmployee());
+        CitsService citsService = (CitsService) SpringContext.getBean("citsService");
+        citsService.pushNewEmployeeInformation(user.getEmployee());
         return user.getEmployee().getId().toString();
     }
 
-   public String generateEmployeeId(CUser user)
-   {
-       String empId = user.getEmployee().getFirstName().toLowerCase().charAt(0) + user.getEmployee().getLastName().toLowerCase();
-       javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
+    private String generateEmployeeId(CUser user) {
+        String empId = user.getEmployee().getFirstName().toLowerCase().charAt(0) + user.getEmployee().getLastName().toLowerCase();
+        javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);
-         if (findUserQuery.getResultList().size() > 0) {
-             empId = empId + Integer.toString(user.getEmployee().getDateOfBirth().getDate()) ;
-         }
-         
-       return empId;
-   }
+        if (findUserQuery.getResultList().size() > 0) {
+            empId = empId + Integer.toString(user.getEmployee().getDateOfBirth().getDate());
+        }
+
+        return empId;
+    }
+
     @Path("/currentuser")
     @GET
     public Employee getCurrentUser() {
