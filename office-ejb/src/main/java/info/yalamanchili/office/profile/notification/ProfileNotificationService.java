@@ -38,7 +38,16 @@ public class ProfileNotificationService {
     @PersistenceContext
     public EntityManager em;
     
-
+    @Async
+    public void ResumeUpdatedNotification(Employee emp) {
+        String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
+        Email email = new Email();
+        email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setSubject("Employee Resume Updated");
+        String messageText = emp.getFirstName() + " " + emp.getLastName()  + "'s Resume Updated";
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
+    }
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
         String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
