@@ -109,7 +109,7 @@ public class EmergencyContact implements Serializable {
 
     @Override
     public String toString() {
-        return "EmergencyContact{" + "relation=" + relation + ", ecPrimary=" + ecPrimary + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
+        return "EmergencyContact{" + "id=" + id + ", relation=" + relation + ", ecPrimary=" + ecPrimary + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName=" + lastName + ", sex=" + sex + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
 
     //TODO move this to seperate class?

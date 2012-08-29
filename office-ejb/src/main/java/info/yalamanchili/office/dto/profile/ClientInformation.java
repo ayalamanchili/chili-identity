@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class ClientInformation implements Serializable {
 
-     protected Long id;
+    protected Long id;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
     @NotEmpty(message = "{lastName.not.empty.msg}")
@@ -37,13 +37,15 @@ public class ClientInformation implements Serializable {
 
     public ClientInformation() {
     }
- public Long getId() {
+
+    public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getFirstName() {
         return firstName;
     }
@@ -118,7 +120,7 @@ public class ClientInformation implements Serializable {
 
     @Override
     public String toString() {
-        return "ClientInformation{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", reportsToRole=" + reportsToRole + ", consultantJobTitle=" + consultantJobTitle + ", rtPrimary=" + rtPrimary + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
+        return "ClientInformation{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", sex=" + sex + ", reportsToRole=" + reportsToRole + ", consultantJobTitle=" + consultantJobTitle + ", rtPrimary=" + rtPrimary + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
 
     //TODO move this to seperate class?
