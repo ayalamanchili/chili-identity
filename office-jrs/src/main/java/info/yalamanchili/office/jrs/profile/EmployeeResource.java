@@ -117,7 +117,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         skillSetUpdated.setLastUpdated(new Date());
         emp.setSkillSet(skillSetUpdated);
         emp = em.merge(emp);
-        profileNotificationservice.ResumeUpdatedNotification(emp);
+        profileNotificationservice.skillSetUpdatedNotification(emp);
         return emp.getSkillSet().getId().toString();
     }
 
