@@ -15,7 +15,7 @@ public class OfficeServiceConfiguration {
 
     @PersistenceContext
     protected EntityManager em;
-    protected String contentManagementLocationRoot = "D://content-management//office/";
+    protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData;
     protected Boolean isSendMail;
