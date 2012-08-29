@@ -16,6 +16,7 @@ import info.yalamanchili.office.jrs.profile.PhoneResource.PhoneTable;
 import info.yalamanchili.office.jrs.profile.ClientInformationResource.ClientInformationTable;
 import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.EmergencyContactService;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +52,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    @Autowired
+    protected ProfileNotificationService profileNotificationservice;
 
     @GET
     @Path("/{start}/{limit}")
@@ -114,6 +117,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         skillSetUpdated.setLastUpdated(new Date());
         emp.setSkillSet(skillSetUpdated);
         emp = em.merge(emp);
+        profileNotificationservice.ResumeUpdatedNotification(emp);
         return emp.getSkillSet().getId().toString();
     }
 
