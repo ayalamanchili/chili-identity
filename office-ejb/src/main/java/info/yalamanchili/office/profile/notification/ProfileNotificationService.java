@@ -40,7 +40,7 @@ public class ProfileNotificationService {
     
     @Async
     public void ResumeUpdatedNotification(Employee emp) {
-        String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
+        String[] roles = {"ROLE_RECRUITER"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Resume Updated");
