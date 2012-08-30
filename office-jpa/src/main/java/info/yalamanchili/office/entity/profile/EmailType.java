@@ -44,7 +44,7 @@ public class EmailType extends AbstractEntity {
      * @generated
      */
     @Field
-    @NotEmpty
+    @NotEmpty(message = "{emailType.not.empty.msg}")
     protected String emailType;
 
     /**
