@@ -1,12 +1,10 @@
 package info.yalamanchili.office.jrs;
 
 import info.chili.spring.SpringContext;
-import static info.yalamanchili.commons.EntityQueryUtils.findEntity;
-import info.yalamanchili.office.cits.CitsService;
+import info.yalamanchili.commons.EntityQueryUtils;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
@@ -26,6 +24,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.dto.security.User;
+import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.security.CRole;
 import javax.ws.rs.PathParam;
 
 @Path("admin")
@@ -73,30 +73,31 @@ public class AdminResource {
     @Path("/createuser")
     @PUT
     @Produces("application/text")
-    public String createUser(CUser user) {
-        String employeeId = generateEmployeeId(user);
+    public String createUser(info.yalamanchili.office.dto.profile.Employee employee) {
+        CUser user = mapper.map(employee, CUser.class);
+        Employee emp = mapper.map(employee, Employee.class);
+        String employeeId = generateEmployeeId(employee);
         user.setUsername(employeeId);
-        user.addRole((CRole) findEntity(em, CRole.class, "rolename", "ROLE_USER"));
-        user.getEmployee().setEmployeeId(generateEmployeeId(user));
+        emp.setEmployeeId(employeeId);
+        Email email = mapper.map(emp, Email.class);
+        email.setPrimaryEmail(true);
+        emp.addEmail(email);
+        user.setEmployee(emp);
+        user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_USER"));
         user.setEnabled(true);
         user = em.merge(user);
-
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(user);
-        //CITS data push
-        CitsService citsService = (CitsService) SpringContext.getBean("citsService");
-        citsService.pushNewEmployeeInformation(user.getEmployee());
         return user.getEmployee().getId().toString();
     }
 
-    private String generateEmployeeId(CUser user) {
-        String empId = user.getEmployee().getFirstName().toLowerCase().charAt(0) + user.getEmployee().getLastName().toLowerCase();
+    private String generateEmployeeId(info.yalamanchili.office.dto.profile.Employee emp) {
+        String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);
         if (findUserQuery.getResultList().size() > 0) {
-            empId = empId + Integer.toString(user.getEmployee().getDateOfBirth().getDate());
+            empId = empId + Integer.toString(emp.getDateOfBirth().getDate());
         }
-
         return empId;
     }
 

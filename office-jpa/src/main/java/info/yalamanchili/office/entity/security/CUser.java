@@ -113,4 +113,9 @@ public class CUser implements Serializable {
     public void addRole(CRole role) {
         this.getRoles().add(role);
     }
+
+    @Override
+    public String toString() {
+        return "CUser{" + "userId=" + userId + ", username=" + username + ", passwordHash=" + passwordHash + ", enabled=" + enabled + ", roles=" + roles + ", employee=" + employee + '}';
+    }
 }

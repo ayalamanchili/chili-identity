@@ -26,21 +26,17 @@ public class CreateEmployeePanel extends CreateComposite {
 
     @Override
     public JSONObject populateEntityFromFields() {
-        JSONObject user = new JSONObject();
-        user.put("username", new JSONString("dummyusername"));
-        assignEntityValueFromField("passwordHash", user);
-
         JSONObject employee = new JSONObject();
+        assignEntityValueFromField("passwordHash", employee);
         assignEntityValueFromField("firstName", employee);
         assignEntityValueFromField("middleInitial", employee);
         assignEntityValueFromField("lastName", employee);
-        employee.put("employeeId", new JSONString("dummy"));
         assignEntityValueFromField("dateOfBirth", employee);
+        assignEntityValueFromField("email", employee);
         assignEntityValueFromField("sex", employee);
         assignEntityValueFromField("startDate", employee);
         employee.put("imageURL", empImageUploadPanel.getFileName());
-        user.put("employee", employee);
-        return user;
+        return employee;
     }
 
     @Override
@@ -58,6 +54,7 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
+        addField("email", false, true, DataType.STRING_FIELD);
         addField("dateOfBirth", false, false, DataType.DATE_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);

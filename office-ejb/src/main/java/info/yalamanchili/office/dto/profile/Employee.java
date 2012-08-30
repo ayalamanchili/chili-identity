@@ -7,9 +7,13 @@ package info.yalamanchili.office.dto.profile;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -20,16 +24,21 @@ import org.dozer.Mapper;
 public class Employee implements Serializable {
 
     protected Long id;
+    protected String username;
+    protected String passwordHash;
+    @NotEmpty
     protected String firstName;
+    @NotEmpty
     protected String lastName;
     protected String middleInitial;
     protected String employeeId;
-
-   
+    @Past
+    @NotNull
     protected Date dateOfBirth;
     protected Sex sex;
     protected String imageURL;
     protected Date startDate;
+    @Email
     protected String email;
     protected String phoneNumber;
 
@@ -42,6 +51,22 @@ public class Employee implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getFirstName() {
@@ -67,7 +92,7 @@ public class Employee implements Serializable {
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
-    
+
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
@@ -75,6 +100,7 @@ public class Employee implements Serializable {
     public String getEmployeeId() {
         return employeeId;
     }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -125,7 +151,7 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        return "Employee{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
+        return "Employee{" + "id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
 
     public static Employee map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
