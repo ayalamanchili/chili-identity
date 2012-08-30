@@ -114,6 +114,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     protected void configure() {
         configureTable();
         pagingPanel.setSpacing(5);
+        captionPanel.addStyleName("readAllCompositeCAptionPanel");
         pagingPanel.addStyleName("y-gwt-PagingBar");
         mainPanel.addStyleName("y-gwt-ReadAllPanel");
         tablePanel.addStyleName("y-gwt-TablePanel");

@@ -39,7 +39,7 @@
     margin-bottom:3px; 
 }
 .gwt-DisclosurePanel .header {
-  color: d96230;
+    color: d96230;
 }
 .y-gwt-PagingBar {
     font-weight: bold;
@@ -68,7 +68,13 @@
     text-align:center;
 
 }
+.readAllCompositeCAptionPanel{
 
+}
+.readAllCompositeCAptionPanel legend {
+    font-weight: bold;
+    color:red;
+}
 .y-gwt-ReadAllPanel {
     width: 100%;
 }
@@ -293,8 +299,8 @@ body{
     border-bottom-style: solid;
     border-bottom-color: #bc033d;
     border-bottom-width: 1px;
-/*    <!--border-top-color: #OOOOOO;
-    border-top-width:5px;-->*/
+    /*    <!--border-top-color: #OOOOOO;
+        border-top-width:5px;-->*/
     background-color: #83acff;
     background: url("../images/menubar_bg.png");
 
@@ -302,16 +308,16 @@ body{
 }
 .readPostOptionsPanel
 {
-background-color: #919191;
+    background-color: #919191;
 }
 
 .gwt-DisclosurePanel-open .header TD {
     color: #83acff;
-    
+
 }
 
 .y-gwt-CreateEntityCaptionPanel{
-   color: #bc033d;
+    color: #bc033d;
 }/*
 
 .y-gwt-CreateEntityDisplayWidget{
@@ -334,7 +340,7 @@ background-color: #919191;
 }
 
 .genericPopup {
-    
+
     background-color: #EDEDED;
     border: 3px solid #054c78;
     padding: 3px;
