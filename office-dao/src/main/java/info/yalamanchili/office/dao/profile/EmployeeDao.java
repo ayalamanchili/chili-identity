@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 
@@ -25,7 +26,18 @@ public class EmployeeDao extends CRUDDao<Employee> {
     public EmployeeDao() {
         super(Employee.class);
     }
+    public Email UpdatePrimaryEmail(Employee emp, Email Newemail) {
+        if (emp.getPrimaryEmail() == null) {
+            Newemail.setPrimaryEmail(Boolean.TRUE);
+        } else {
+            if (Newemail.getPrimaryEmail()) {
+                Email chkEmail = emp.getPrimaryEmail();
+                chkEmail.setPrimaryEmail(Boolean.FALSE);
+            }
+        }
+        return Newemail;
 
+    }
     @Override
     public EntityManager getEntityManager() {
         return em;
