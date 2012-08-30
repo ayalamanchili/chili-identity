@@ -6,6 +6,7 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.fields.PasswordField;
@@ -32,10 +33,10 @@ public class ChangePasswordPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject chgpassword = new JSONObject();
-//        assignEntityValueFromField("userName", chgpassword);
+       // assignEntityValueFromField("userName", chgpassword);
         assignEntityValueFromField("oldPassword", chgpassword);
         assignEntityValueFromField("newPassword", chgpassword);
-
+         chgpassword.put("userName",new JSONString("dummy"));
         return chgpassword;
     }
 
