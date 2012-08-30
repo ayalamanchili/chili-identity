@@ -15,6 +15,8 @@ import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
 import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
+import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
+import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
@@ -43,6 +45,7 @@ public class ProfileMenu extends Composite {
             menu.addItem("EmployeeTypes", employeeTypesMaintainenceCmd);
             menu.addItem("PhoneType", phoneTypesMaintainenceCmd);
             menu.addItem("AddressType", addressTypesMaintainenceCmd);
+            menu.addItem("EmailType", emailTypesMaintainenceCmd);
         }
     }
     Command employeeMaintainenceCmd = new Command() {
@@ -102,5 +105,14 @@ public class ProfileMenu extends Composite {
         }
     };
     
-
+ Command emailTypesMaintainenceCmd=new Command(){
+        public void execute(){
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
+            
+            
+        }
+    };
 }
