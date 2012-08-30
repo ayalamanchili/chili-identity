@@ -29,7 +29,7 @@
 	</g:PopupPanel>
 	<ui:style>
 		.loginPanel {
-			background-color: #E5ECFF;
+			background-color: #e1e1e1;
 		}
 	</ui:style>
 </ui:UiBinder> 
