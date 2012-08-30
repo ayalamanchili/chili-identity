@@ -49,27 +49,27 @@ public class AdminResource {
     public EmployeeDao employeeDao;
     @PersistenceContext
     EntityManager em;
-
+    
     @Path("/login")
     @PUT
     public CUser login(CUser user) {
         return securityService.login(user);
     }
-
+    
     @Path("/changepassword/{empId}")
     @PUT
     public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.changePassword(empId, user);
     }
-
+    
     @Path("/resetpassword/{empId}")
     @PUT
     public CUser resetPassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.ResetPassword(empId, user);
     }
-
+    
     @Path("/createuser")
     @PUT
     @Produces("application/text")
@@ -79,7 +79,8 @@ public class AdminResource {
         String employeeId = generateEmployeeId(employee);
         user.setUsername(employeeId);
         emp.setEmployeeId(employeeId);
-        Email email = mapper.map(emp, Email.class);
+        Email email = new Email();
+        email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
         emp.addEmail(email);
         user.setEmployee(emp);
@@ -90,7 +91,7 @@ public class AdminResource {
         profileNotificationService.sendNewUserCreatedNotification(user);
         return user.getEmployee().getId().toString();
     }
-
+    
     private String generateEmployeeId(info.yalamanchili.office.dto.profile.Employee emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -100,7 +101,7 @@ public class AdminResource {
         }
         return empId;
     }
-
+    
     @Path("/currentuser")
     @GET
     public Employee getCurrentUser() {
