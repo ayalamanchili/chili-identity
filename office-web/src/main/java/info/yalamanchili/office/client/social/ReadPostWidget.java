@@ -44,7 +44,7 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     protected Label postStatusPanel = new Label();
     protected HorizontalPanel optionsPanel = new HorizontalPanel();
     protected ClickableLink replyLink = new ClickableLink("reply");
-    protected ClickableImage viewIcon = new ClickableImage("view", OfficeImages.INSTANCE.viewIcon_24_24());
+    protected ClickableImage viewIcon = new ClickableImage("view", OfficeImages.INSTANCE.viewIcon_16_16());
 
     public ReadPostWidget(JSONObject post, boolean showReplyOption) {
         this.post = post;
