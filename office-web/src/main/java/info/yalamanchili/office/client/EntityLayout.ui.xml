@@ -37,8 +37,8 @@
 		
         .sidePanel {
         border-right-style: solid;
-        border-right-color: #919191;
-        border-right-width: 2px;
+        border-right-color: #bc033d;
+        border-right-width: 1px;
         height: 100%;
         padding: 10px;
         }
