@@ -19,6 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class EmergencyContact implements Serializable {
+
     protected Long id;
     @NotEmpty(message = "{relation.not.empty.msg}")
     protected String relation;
@@ -33,80 +34,82 @@ public class EmergencyContact implements Serializable {
     protected String email;
     @Size(min = 10, max = 10)
     protected String phoneNumber;
-
+    
     public EmergencyContact() {
     }
- public Long getId() {
+
+    public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getRelation() {
         return relation;
     }
-
+    
     public void setRelation(String relation) {
         this.relation = relation;
     }
-
+    
     public boolean isEcPrimary() {
         return ecPrimary;
     }
-
+    
     public void setEcPrimary(boolean ecPrimary) {
         this.ecPrimary = ecPrimary;
     }
-
+    
     public String getFirstName() {
         return firstName;
     }
-
+    
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    
     public String getMiddleInitial() {
         return middleInitial;
     }
-
+    
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
-
+    
     public String getLastName() {
         return lastName;
     }
-
+    
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+    
     public Sex getSex() {
         return sex;
     }
-
+    
     public void setSex(Sex sex) {
         this.sex = sex;
     }
-
+    
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     public String getPhoneNumber() {
         return phoneNumber;
     }
-
+    
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
+    
     @Override
     public String toString() {
         return "EmergencyContact{" + "id=" + id + ", relation=" + relation + ", ecPrimary=" + ecPrimary + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName=" + lastName + ", sex=" + sex + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
@@ -122,6 +125,7 @@ public class EmergencyContact implements Serializable {
         if (entity.getContact().getPrimaryEmail() != null) {
             mapper.map(entity.getContact().getPrimaryEmail(), emergencyContact);
         }
+        emergencyContact.setId(entity.getId());
         return emergencyContact;
     }
 }

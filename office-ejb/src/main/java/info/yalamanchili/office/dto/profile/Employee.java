@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class Employee implements Serializable {
-
+    
     protected Long id;
     protected String username;
     protected String passwordHash;
@@ -41,119 +41,119 @@ public class Employee implements Serializable {
     @Email
     protected String email;
     protected String phoneNumber;
-
+    
     public Employee() {
     }
-
+    
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getUsername() {
         return username;
     }
-
+    
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
     public String getPasswordHash() {
         return passwordHash;
     }
-
+    
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
-
+    
     public String getFirstName() {
         return firstName;
     }
-
+    
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    
     public String getLastName() {
         return lastName;
     }
-
+    
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+    
     public String getMiddleInitial() {
         return middleInitial;
     }
-
+    
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
-
+    
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
-
+    
     public String getEmployeeId() {
         return employeeId;
     }
-
+    
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
-
+    
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
+    
     public Sex getSex() {
         return sex;
     }
-
+    
     public void setSex(Sex sex) {
         this.sex = sex;
     }
-
+    
     public String getImageURL() {
         return imageURL;
     }
-
+    
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
-
+    
     public Date getStartDate() {
         return startDate;
     }
-
+    
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
-
+    
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     public String getPhoneNumber() {
         return phoneNumber;
     }
-
+    
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
+    
     @Override
     public String toString() {
         return "Employee{" + "id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
-
+    
     public static Employee map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
         Employee dto = mapper.map(entity, Employee.class);
         if (entity.getPrimaryEmail() != null) {
@@ -162,6 +162,7 @@ public class Employee implements Serializable {
         if (entity.getPhones().size() > 0) {
             dto.setPhoneNumber(entity.getPhones().get(0).getPhoneNumber());
         }
+        dto.setId(entity.getId());
         return dto;
     }
 }
