@@ -141,22 +141,23 @@ public class EmployeeResource extends CRUDResource<Employee> {
             EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
             email.setEmailType(emailType);
         }
-        email = UpdatePrimaryEmail(emp, email);
+        //email = getDao().getEntityManager.(emp, email);
+        email=employeeDao.UpdatePrimaryEmail(emp, email);
         emp.addEmail(email);
     }
 
-    public Email UpdatePrimaryEmail(Employee emp, Email Newemail) {
-        if (emp.getPrimaryEmail() == null) {
-            Newemail.setPrimaryEmail(Boolean.TRUE);
-        } else {
-            if (Newemail.getPrimaryEmail()) {
-                Email chkEmail = emp.getPrimaryEmail();
-                chkEmail.setPrimaryEmail(Boolean.FALSE);
-            }
-        }
-        return Newemail;
-
-    }
+//    public Email UpdatePrimaryEmail(Employee emp, Email Newemail) {
+//        if (emp.getPrimaryEmail() == null) {
+//            Newemail.setPrimaryEmail(Boolean.TRUE);
+//        } else {
+//            if (Newemail.getPrimaryEmail()) {
+//                Email chkEmail = emp.getPrimaryEmail();
+//                chkEmail.setPrimaryEmail(Boolean.FALSE);
+//            }
+//        }
+//        return Newemail;
+//
+//    }
     /* Phone */
 
     @GET
