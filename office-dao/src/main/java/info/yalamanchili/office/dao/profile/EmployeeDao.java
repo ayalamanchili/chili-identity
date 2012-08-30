@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author ayalamanchili
@@ -26,7 +28,8 @@ public class EmployeeDao extends CRUDDao<Employee> {
     public EmployeeDao() {
         super(Employee.class);
     }
-    public Email UpdatePrimaryEmail(Employee emp, Email Newemail) {
+
+    public Email updatePrimaryEmail(Contact emp, Email Newemail) {
         if (emp.getPrimaryEmail() == null) {
             Newemail.setPrimaryEmail(Boolean.TRUE);
         } else {
@@ -38,6 +41,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return Newemail;
 
     }
+
     @Override
     public EntityManager getEntityManager() {
         return em;

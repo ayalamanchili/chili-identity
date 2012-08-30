@@ -28,52 +28,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class EmailResource extends CRUDResource<Email> {
 
-	@Autowired
-	public EmailDao emailDao;
+    @Autowired
+    public EmailDao emailDao;
 
-        @Autowired
-       public EmployeeDao employeeDao;
-        
-	@Override
-	public CRUDDao getDao() {
-		return emailDao;
-	}
-
-    @PUT
-    @Path("/email/{empId}")
-    public void addEmail(@PathParam("empId") Long empId, Email email) {
-        Employee emp = (Employee) employeeDao.findById(empId);
-
-        if (email.getEmailType() != null) {
-            EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
-            email.setEmailType(emailType);
-        }
-        email = employeeDao.UpdatePrimaryEmail(emp, email);
-        emp.addEmail(email);
+    @Override
+    public CRUDDao getDao() {
+        return emailDao;
     }
-        
-	@XmlRootElement
-	@XmlType
-	public static class EmailTable {
-		protected Long size;
-		protected List<Email> entities;
 
-		public Long getSize() {
-			return size;
-		}
+    @XmlRootElement
+    @XmlType
+    public static class EmailTable {
 
-		public void setSize(Long size) {
-			this.size = size;
-		}
+        protected Long size;
+        protected List<Email> entities;
 
-		@XmlElement
-		public List<Email> getEntities() {
-			return entities;
-		}
+        public Long getSize() {
+            return size;
+        }
 
-		public void setEntities(List<Email> entities) {
-			this.entities = entities;
-		}
+        public void setSize(Long size) {
+            this.size = size;
+        }
 
-	}
+        @XmlElement
+        public List<Email> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<Email> entities) {
+            this.entities = entities;
+        }
+    }
 }

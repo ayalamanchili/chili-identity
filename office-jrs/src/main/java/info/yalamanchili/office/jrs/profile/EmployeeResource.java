@@ -142,7 +142,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             email.setEmailType(emailType);
         }
         //email = getDao().getEntityManager.(emp, email);
-        email=employeeDao.UpdatePrimaryEmail(emp, email);
+        email=employeeDao.updatePrimaryEmail(emp, email);
         emp.addEmail(email);
     }
 
