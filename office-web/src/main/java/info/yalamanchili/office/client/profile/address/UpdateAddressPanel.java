@@ -74,7 +74,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         assignFieldValueFromEntity("city", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("zip", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         addField("city", false, true, DataType.STRING_FIELD);
         addEnumField("state", false, true, CreateAddressPanel.getStates().toArray(new String[0]));
         addEnumField("country", false, true, CreateAddressPanel.getCountries().toArray(new String[0]));
-        addField("zip", false, false, DataType.STRING_FIELD);
+        addField("zip", false, false, DataType.LONG_FIELD);
         entityDisplayWidget.add(AddressTypeF);
     }
 
