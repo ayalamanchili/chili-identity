@@ -27,13 +27,14 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
         return instance;
     }
     ClickableImage closeB = new ClickableImage("close", OfficeImages.INSTANCE.closeIcon_16_16());
+    
 
     private GenericPopup(Composite widget) {
         instance = this;
         this.addStyleName("genericPopup");
         FlowPanel panel = new FlowPanel();
-        panel.add(widget);
         panel.add(closeB);
+        panel.add(widget);
         setWidget(panel);
         closeB.addClickHandler(this);
         super.setPopupPosition(Window.getClientWidth() / 3, Window.getClientHeight() / 3);
