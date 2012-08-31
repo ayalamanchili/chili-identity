@@ -86,13 +86,13 @@ public class SearchEmployeePanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "employee/search/" + searchText + "/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + searchText + "/" + start.toString() + "/"
                 + limit.toString();
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "employee/search/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
                 + limit.toString();
     }
 }
