@@ -64,7 +64,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         new ResponseStatusWidget().show("successfully added Reports To");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
-
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override
