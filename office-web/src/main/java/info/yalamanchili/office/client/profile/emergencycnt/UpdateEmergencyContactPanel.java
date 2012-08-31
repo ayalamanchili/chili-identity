@@ -21,15 +21,14 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject contact = entity.get("contact").isObject();
-        assignEntityValueFromField("firstName", contact);
-        assignEntityValueFromField("middleInitial", contact);
-        assignEntityValueFromField("lastName", contact);
-        assignEntityValueFromField("sex", contact);
-
+        assignEntityValueFromField("firstName", entity);
+        assignEntityValueFromField("middleInitial", entity);
+        assignEntityValueFromField("lastName", entity);
+        assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("relation", entity);
         assignEntityValueFromField("ecPrimary", entity);
-        entity.put("contact", contact);
+        assignEntityValueFromField("email", entity);
+        assignEntityValueFromField("phoneNumber", entity);
         return entity;
     }
 
@@ -37,7 +36,6 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-
             @Override
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
@@ -64,13 +62,12 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("relation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("ecPrimary", entity, DataType.BOOLEAN_FIELD);
-        // Contact
-        JSONObject contact = entity.get("contact").isObject();
-        assignFieldValueFromEntity("firstName", contact, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", contact, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("lastName", contact, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("sex", contact, DataType.ENUM_FIELD);
-
+        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -97,6 +94,9 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         addEnumField("sex", false, false, strs);
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
+        addField("email", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
+
     }
 
     @Override
