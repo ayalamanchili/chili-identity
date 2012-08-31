@@ -37,13 +37,14 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     protected CaptionPanel postCaptionPanel = new CaptionPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected FlowPanel postMainPanel = new FlowPanel();
-    protected ClickableLink likeB = new ClickableLink("Like");
+    
     protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
     protected FlowPanel profileImagePanel = new FlowPanel();
     protected RichTextArea postBodyArea = new RichTextArea();
     protected Label postStatusPanel = new Label();
     protected HorizontalPanel optionsPanel = new HorizontalPanel();
-    protected ClickableLink replyLink = new ClickableLink("reply");
+    protected ClickableImage likeB = new ClickableImage("Like", OfficeImages.INSTANCE.likeIcon_16_16());
+    protected ClickableImage replyLink = new ClickableImage("reply", OfficeImages.INSTANCE.replyIcon_16_16());
     protected ClickableImage viewIcon = new ClickableImage("view", OfficeImages.INSTANCE.viewIcon_16_16());
 
     public ReadPostWidget(JSONObject post, boolean showReplyOption) {
