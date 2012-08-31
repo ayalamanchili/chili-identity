@@ -38,9 +38,13 @@
         .sidePanel {
         border-right-style: solid;
         border-right-color: #bc033d;
-        border-right-width: 1px;
+        border-top-color: #bc033d;
+        border-right-width: 0px;
+        border-radius:8px;
         height: 100%;
         padding: 10px;
+        background-color:#eef2fd;
+        
         }
 		
         .sidePanelTop {
