@@ -21,29 +21,35 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ClientInformationService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     public void addClientInformation(Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
         Employee emp = (Employee) em.find(Employee.class, empId);
-        
-        Email email = new Email();
-        email.setEmail(clientInformation.getEmail());
-        email.setPrimaryEmail(Boolean.TRUE);
-        
-        Phone phone = new Phone();
-        phone.setPhoneNumber(clientInformation.getPhoneNumber());
-        
         Contact contact = new Contact();
         contact.setFirstName(clientInformation.getFirstName());
         contact.setLastName(clientInformation.getLastName());
-        contact.setMiddleInitial(clientInformation.getMiddleInitial());
-        contact.addPhone(phone);
-        contact.addEmail(email);
-        
+        contact.setSex(clientInformation.getSex());
+        //Email
+
+        if (clientInformation.getEmail() != null) {
+            Email email = new Email();
+            email.setEmail(clientInformation.getEmail());
+            email.setPrimaryEmail(Boolean.TRUE);
+            contact.addEmail(email);
+        }
+        //phone
+        if (clientInformation.getPhoneNumber() != null) {
+            Phone phone = new Phone();
+            contact.addPhone(phone);
+            phone.setPhoneNumber(clientInformation.getPhoneNumber());
+        }
+        //contact
+        contact = em.merge(contact);
+
         ClientInformation entity = new ClientInformation();
         entity.setReportsToRole(clientInformation.getReportsToRole());
         entity.setConsultantJobTitle(clientInformation.getConsultantJobTitle());
