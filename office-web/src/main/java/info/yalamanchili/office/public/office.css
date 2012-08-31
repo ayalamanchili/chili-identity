@@ -68,19 +68,29 @@
     text-align:center;
 
 }
+/*Text insiise the tabel START*/
 .readAllCompositeCAptionPanel{
-
+    
 }
+/*Text insiise the tabel END*/
 .readAllCompositeCAptionPanel legend {
     font-weight: bold;
-    color:red;
+    color:#d54937;
+    font-style: italic;
 }
+legend {
+    color: #c31f41;
+    
+}
+
 .y-gwt-ReadAllPanel {
     width: 100%;
+    color:Green;
 }
 
 .y-gwt-TablePanel {
     width: 100%;
+    color:#595959;
 }
 
 .gwt-Tree .gwt-TreeItem-selected {
@@ -99,13 +109,15 @@
     cursor: pointer;
     border: 1px solid;
     border-color: #bc033d;
-    background-color: #ea8a61;
+    background-color: #d14836;
     padding: 3px 34px;
     border-radius: 5px;
 }
 
 .gwt-MenuItem-selected {
-    background-color: #ffffff;
+    background-color: #e94f3c;
+    font-size: 12pt;
+    color:#FFFFFF;
 }
 
 
@@ -129,12 +141,14 @@
 }
 .replyPostWidget{
     width:100%;
+    font-family: Tahoma;
 }
 .postRichTextBox{
     width: 100%;
     border-color: #919191;
     border-width: 1px;
     background-color: #f7f7f7;
+    font-family: Tahoma;
 }
 .readPostImagePanel{
     float:left;
@@ -157,6 +171,7 @@
 .createPostTextArea{
     width: 100%;
     height: 20%;
+    font-family: Tahoma;
     background-color: #ffffff; 
 }
 .postAttachmentsPanel{
@@ -164,7 +179,7 @@
 }
 .showMoreL{
     width: 100%;
-    background-color: #ededed;
+    background-color: #fafbfe;
     font-weight: bold;
     font-style: italic;
 }
@@ -208,14 +223,25 @@ body{
 /*//TODO move back to chili-gwt*/
 /*chili-gwt start*/
 .y-gwt-ClickableLink {
-    color: black;
+    color: #054c78;
     cursor: pointer;
     cursor: hand;
     font-family: helvetica, arial sans-serif;
     font-size: 11pt;
+    font-style: bold;
+    text-shadow: 0px 1px 1px #4d4d4d;
+    animation-name: hilight2;
+    animation-duration: 2s;
+    animation-timing-function: initial;
+    animation-delay: initial;
+    animation-iteration-count: infinite;
+    animation-fill-mode: initial;
 }
 .y-gwt-ClickableLink:hover {
-    /*background-color: #ededed;*/
+    color:#c31f41;
+    font-size: 11.5pt;
+/*    font-weight: 300;*/
+   
 }
 
 .y-gwt-AbstracttatusPanel {
@@ -316,9 +342,9 @@ body{
 
 }
 
-.y-gwt-CreateEntityCaptionPanel{
+/*.y-gwt-CreateEntityCaptionPanel{
     color: #bc033d;
-}/*
+}
 
 .y-gwt-CreateEntityDisplayWidget{
     
@@ -330,7 +356,7 @@ body{
     color: #bc033d;
 }*/
 /*fieldset {
-    color: Red;
+    color: green;
 }*/
 
 /*chili=gwt-end*/
@@ -347,9 +373,9 @@ body{
 }
 
 /*.y-gwt-CreateEntityCaptionPanel {
-    color:#c31f41;*/
-}
+    color:#c31f41;
+}*/
 
-.readAllCompositeCP{
-    color: orange;
-}
+/*.readAllCompositeCP{
+    color: #ff00ea;
+}*/
