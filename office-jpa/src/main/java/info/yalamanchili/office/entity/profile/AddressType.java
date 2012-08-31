@@ -8,7 +8,9 @@ import info.yalamanchili.jpa.AbstractEntity;
 
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.search.annotations.Field;
@@ -23,6 +25,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"addressType"}))
 @Unique(entity = AddressType.class, fields = {"addressType"}, message = "{addresstype.name.not.unique.msg}")
 public class AddressType extends AbstractEntity {
 
