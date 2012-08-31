@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -30,7 +31,7 @@ public class EmergencyContact implements Serializable {
     @NotEmpty(message = "{lastName.not.empty.msg}")
     protected String lastName;
     protected Sex sex;
-    @org.hibernate.validator.constraints.Email
+    @Email
     protected String email;
     @Size(min = 10, max = 10)
     protected String phoneNumber;

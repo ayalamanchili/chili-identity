@@ -32,21 +32,25 @@ public class EmergencyContactService {
 
     public void addEmergencyContact(Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
         Employee emp = (Employee) em.find(Employee.class, empId);
-        //TODO user mapper
-        //Email
-        Email email = new Email();
-        email.setEmail(ec.getEmail());
-        email.setPrimaryEmail(Boolean.TRUE);
-        //phone
-        Phone phone = new Phone();
-        phone.setPhoneNumber(ec.getPhoneNumber());
-        //contact
         Contact contact = new Contact();
         contact.setFirstName(ec.getFirstName());
         contact.setLastName(ec.getLastName());
         contact.setSex(ec.getSex());
-        contact.addEmail(email);
-        contact.addPhone(phone);
+        //Email
+
+        if (ec.getEmail() != null) {
+            Email email = new Email();
+            email.setEmail(ec.getEmail());
+            email.setPrimaryEmail(Boolean.TRUE);
+            contact.addEmail(email);
+        }
+        //phone
+        if (ec.getPhoneNumber() != null) {
+            Phone phone = new Phone();
+            contact.addPhone(phone);
+            phone.setPhoneNumber(ec.getPhoneNumber());
+        }
+        //contact
         contact = em.merge(contact);
         //emergencycontact
         EmergencyContact emergencyCnt = new EmergencyContact();
