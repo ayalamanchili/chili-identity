@@ -326,11 +326,8 @@ body{
 }
 
 .entityTitlePanel {
-    border-bottom-style: solid;
     border-bottom-color: #bc033d;
     border-bottom-width: 1px;
-    /*    <!--border-top-color: #OOOOOO;
-        border-top-width:5px;-->*/
     background-color: #83acff;
     background: url("../images/menubar_bg.png");
 
