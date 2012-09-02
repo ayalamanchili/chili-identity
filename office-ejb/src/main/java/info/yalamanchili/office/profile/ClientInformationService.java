@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.profile;
 
+import info.yalamanchili.mapper.BeanMapper;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -26,6 +27,7 @@ public class ClientInformationService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+
 
     public void addClientInformation(Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
         Employee emp = (Employee) em.find(Employee.class, empId);
@@ -57,5 +59,12 @@ public class ClientInformationService {
         entity.setContact(contact);
         entity.setEmployee(emp);
         em.merge(entity);
+    }
+
+    public info.yalamanchili.office.dto.profile.ClientInformation update(info.yalamanchili.office.dto.profile.ClientInformation ci) {
+        //TODO implement mapping for contact,phone and email
+        ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
+        ciEntity = (ClientInformation) BeanMapper.merge(ci, ciEntity);
+        return ci;
     }
 }

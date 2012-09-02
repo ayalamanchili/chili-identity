@@ -4,8 +4,10 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmergencyContactDao;
 import info.yalamanchili.office.dto.profile.EmergencyContact;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.EmergencyContactService;
 
 import java.util.List;
+import javax.ws.rs.PUT;
 
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
@@ -23,37 +25,43 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class EmergencyContactResource extends CRUDResource<EmergencyContact> {
 
-	@Autowired
-	public EmergencyContactDao emergencyContactDao;
+    @Autowired
+    public EmergencyContactDao emergencyContactDao;
+    @Autowired
+    public EmergencyContactService emergencyContactService;
 
-	@Override
-	public CRUDDao getDao() {
-		return emergencyContactDao;
-	}
+    @Override
+    public CRUDDao getDao() {
+        return emergencyContactDao;
+    }
 
-	@XmlRootElement
-	@XmlType
-	public static class EmergencyContactTable {
-		protected Long size;
-		protected List<EmergencyContact> entities;
+    @PUT
+    public EmergencyContact save(EmergencyContact entity) {
+        return emergencyContactService.update(entity);
+    }
 
-		public Long getSize() {
-			return size;
-		}
+    @XmlRootElement
+    @XmlType
+    public static class EmergencyContactTable {
 
-		public void setSize(Long size) {
-			this.size = size;
-		}
+        protected Long size;
+        protected List<EmergencyContact> entities;
 
-		@XmlElement
-		public List<EmergencyContact> getEntities() {
-			return entities;
-		}
+        public Long getSize() {
+            return size;
+        }
 
-		public void setEntities(List<EmergencyContact> entities) {
-			this.entities = entities;
-		}
+        public void setSize(Long size) {
+            this.size = size;
+        }
 
-	}
+        @XmlElement
+        public List<EmergencyContact> getEntities() {
+            return entities;
+        }
 
+        public void setEntities(List<EmergencyContact> entities) {
+            this.entities = entities;
+        }
+    }
 }

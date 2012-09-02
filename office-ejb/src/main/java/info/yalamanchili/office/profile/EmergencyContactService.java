@@ -4,9 +4,7 @@
  */
 package info.yalamanchili.office.profile;
 
-import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.dao.profile.EmergencyContactDao;
-import info.yalamanchili.office.dto.profile.ClientInformation;
+import info.yalamanchili.mapper.BeanMapper;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
@@ -59,5 +57,13 @@ public class EmergencyContactService {
         emergencyCnt.setContact(contact);
         emergencyCnt.setEmployee(emp);
         em.merge(emergencyCnt);
+    }
+
+    public info.yalamanchili.office.dto.profile.EmergencyContact update(info.yalamanchili.office.dto.profile.EmergencyContact ec) {
+        //TODO implement mapping for contact,phone and email
+        EmergencyContact ecEntity = em.find(EmergencyContact.class, ec.getId());
+        ecEntity = (EmergencyContact) BeanMapper.merge(ec, ecEntity);
+        BeanMapper.merge(ecEntity.getContact(), ec);
+        return ec;
     }
 }
