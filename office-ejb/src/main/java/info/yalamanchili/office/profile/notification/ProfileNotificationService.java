@@ -57,6 +57,13 @@ public class ProfileNotificationService {
         String messageText = "New User " + user.getUsername().toString() + " Is Created";
         email.setBody(messageText);
         messagingService.sendEmail(email);
+        
+        // Email Intimation for User
+        Email emailUser = new Email();
+        emailUser.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        emailUser.setSubject("Welcome to System Soft Portal");
+        String messageTextforuser = "Your Username and Employee Id are" + user.getUsername().toString() + " and You can obtain Password from HR to access our portal at http://apps.sstech.us/portal";
+        emailUser.setBody(messageTextforuser);
     }
 
     @Async
