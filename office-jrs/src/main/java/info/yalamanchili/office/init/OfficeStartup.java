@@ -43,6 +43,7 @@ public class OfficeStartup {
     protected CRole adminRole;
     protected CRole recruiterRole;
     protected CRole accountantRole;
+    protected CRole payrollRole;
     protected void startup() {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
         if (config.getInitRefData()) {
@@ -59,6 +60,7 @@ public class OfficeStartup {
         hrRole();
         recruiterRole();
         accountantRole();
+        payrollRole();
     }
 
     protected void initUsers() {
@@ -450,6 +452,13 @@ public class OfficeStartup {
             CRole role = new CRole();
             role.setRolename("ROLE_ACCOUNTANT");
             accountantRole = em.merge(role);
+        }
+    }
+     public void payrollRole() {
+        if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_PAYROLL") == null) {
+            CRole role = new CRole();
+            role.setRolename("ROLE_PAYROLL");
+            payrollRole = em.merge(role);
         }
     }
     protected void userUser() {
