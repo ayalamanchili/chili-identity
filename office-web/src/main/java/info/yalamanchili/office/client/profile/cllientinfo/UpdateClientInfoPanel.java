@@ -26,6 +26,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("reportsToRole", entity);
         assignEntityValueFromField("rtPrimary", entity);
         assignEntityValueFromField("consultantJobTitle", entity);
+        assignEntityValueFromField("phoneNumber", entity);
         return entity;
     }
 
@@ -62,6 +63,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phoneNumber",entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
 
     }
@@ -91,6 +93,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addField("reportsToRole", false, true, DataType.STRING_FIELD);
         addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
+         addField("phoneNumber",false,true, DataType.LONG_FIELD);
     }
 
     @Override
