@@ -40,7 +40,7 @@
         border-right-color: #bc033d;
         border-top-color: #bc033d;
         border-right-width: 0px;
-        border-radius:8px;
+        border-radius:0px;
         height: 100%;
         padding: 10px;
         background-color:#eef2fd;
