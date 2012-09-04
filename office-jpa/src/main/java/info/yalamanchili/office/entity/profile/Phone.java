@@ -3,7 +3,6 @@
  */
 package info.yalamanchili.office.entity.profile;
 
-import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
 
 import javax.persistence.CascadeType;
@@ -27,7 +26,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-@Unique(entity = Phone.class, fields = {"phoneNumber"}, message = "{phone.phoneNumber.not.unique.msg}")
 public class Phone extends AbstractEntity {
 
     /**
@@ -38,20 +36,20 @@ public class Phone extends AbstractEntity {
     /**
      * @generated
      */
-    @Size(min = 10, max = 10,message = "{phone.phoneNumber.length.invalid.msg}")
+    @Size(min = 10, max = 10, message = "{phone.phoneNumber.length.invalid.msg}")
     @NotEmpty(message = "{phone.phoneNumber.not.empty.msg}")
     @Field
     protected String phoneNumber;
     /**
      * @generated
      */
-    @Size(min = 0, max = 4,message = "{phone.extension.length.invalid.msg}")
+    @Size(min = 0, max = 4, message = "{phone.extension.length.invalid.msg}")
     @Field
     protected String extension;
     /**
      * @generated
      */
-    @Size(min = 0, max = 4,message = "{phone.countryCode.length.invalid.msg}")
+    @Size(min = 0, max = 4, message = "{phone.countryCode.length.invalid.msg}")
     @Field
     protected String countryCode;
     /**

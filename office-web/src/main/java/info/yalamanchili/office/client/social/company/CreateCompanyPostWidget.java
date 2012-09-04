@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -26,6 +27,7 @@ import info.yalamanchili.gwt.widgets.RichTextToolBar;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileUploadPanel;
 import info.yalamanchili.gwt.utils.JSONUtils;
+import info.yalamanchili.gwt.utils.Utils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.social.employee.CreateEmployeePostWidget;
@@ -36,7 +38,7 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class CreateCompanyPostWidget extends ALComposite implements ClickHandler, FocusHandler, KeyUpHandler {
-
+    
     private static Logger logger = Logger.getLogger(CreateEmployeePostWidget.class.getName());
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel mainPanel = new FlowPanel();
@@ -44,30 +46,30 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     final RichTextArea textArea = new RichTextArea();
     final RichTextToolBar toolBar = new RichTextToolBar(textArea);
     Button createPostB = new Button("Share");
-    FileUploadPanel imageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL");
-
+    FileUploadPanel fileUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL");
+    
     public CreateCompanyPostWidget() {
         init(captionPanel);
     }
-
+    
     @Override
     protected void addWidgets() {
         captionPanel.setCaptionHTML("System Soft Feed...");
         buttonsPanel.add(createPostB);
-        buttonsPanel.add(imageUploadPanel);
+        buttonsPanel.add(fileUploadPanel);
         mainPanel.add(toolBar);
         mainPanel.add(textArea);
         mainPanel.add(buttonsPanel);
         captionPanel.setContentWidget(mainPanel);
     }
-
+    
     @Override
     protected void addListeners() {
         createPostB.addClickHandler(this);
         textArea.addKeyUpHandler(this);
         textArea.addFocusHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         mainPanel.addStyleName(".createPostWidget");
@@ -75,64 +77,71 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
         textArea.setHeight("80%");
         createPostB.setEnabled(false);
     }
-
+    
     protected JSONObject populatePostEntity() {
         JSONObject post = new JSONObject();
         post.put("postContent", new JSONString(textArea.getHTML()));
-        if (imageUploadPanel.getFileUpload().getFilename() != null && !"".equals(imageUploadPanel.getFileUpload().getFilename().trim())) {
+        if (fileUploadPanel.getFileUpload().getFilename() != null && !"".equals(fileUploadPanel.getFileUpload().getFilename().trim())) {
             JSONArray postImages = new JSONArray();
             JSONObject postImage1 = new JSONObject();
-            postImage1.put("fileURL", imageUploadPanel.getFileName());
-            postImage1.put("fileType", new JSONString("IMAGE"));
+            postImage1.put("fileURL", fileUploadPanel.getFileName());
+            if (Utils.isImage(fileUploadPanel.getFileName().stringValue())) {
+                postImage1.put("fileType", new JSONString("IMAGE"));
+            } else if (Utils.isImage(fileUploadPanel.getFileName().stringValue())) {
+                postImage1.put("fileType", new JSONString("FILE"));
+            } else {
+                Window.alert("Unsupported file extension");
+                throw new RuntimeException("unsupported file type");
+            }
+            logger.info(postImage1.toString());
             postImages.set(0, postImage1);
             post.put("postFiles", postImages);
         }
         return post;
     }
-
+    
     protected void createCompanyPostClicked(JSONObject post) {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-
-                        uploadImage(arg0);
+                        
+                        uploadFiles(arg0);
                         postCreateSuccess(arg0);
                     }
                 });
     }
-
-    protected void uploadImage(String postString) {
+    
+    protected void uploadFiles(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
         if (postFiles.size() > 0) {
-            imageUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
+            fileUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
         }
     }
-
+    
     protected void postCreateSuccess(String result) {
         textArea.setText("");
         new ResponseStatusWidget().show("Successfully Shared");
         TabPanel.instance().socialPanel.entityPanel.clear();
         TabPanel.instance().socialPanel.entityPanel.add(new CompanyFeedHome());
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createPostB)) {
             createCompanyPostClicked(populatePostEntity());
         }
     }
-
+    
     @Override
     public void onFocus(FocusEvent event) {
-//        createPostTextEditor.setHeight("6em");
     }
-
+    
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "social/createCompanyPost";
     }
-
+    
     @Override
     public void onKeyUp(KeyUpEvent event) {
         if (textArea.getText().length() >= 2) {

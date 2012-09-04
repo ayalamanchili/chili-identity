@@ -23,6 +23,7 @@ import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.FileField;
 import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -37,7 +38,6 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     protected CaptionPanel postCaptionPanel = new CaptionPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected FlowPanel postMainPanel = new FlowPanel();
-    
     protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
     protected FlowPanel profileImagePanel = new FlowPanel();
     protected RichTextArea postBodyArea = new RichTextArea();
@@ -80,7 +80,9 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
                     attachmentsPanel.add(imageField);
                 }
                 if ("FILE".equals(JSONUtils.toString(postFile, "fileType"))) {
-                    //TODO file link
+                    String fileURL = OfficeWelcome.constants.file_download_url() + JSONUtils.toString(postFile, "fileURL") + "&entityId=" + JSONUtils.toString(postFile, "id");
+                    FileField fileField = new FileField("attachment", fileURL);
+                    attachmentsPanel.add(fileField);
                 }
             }
         }

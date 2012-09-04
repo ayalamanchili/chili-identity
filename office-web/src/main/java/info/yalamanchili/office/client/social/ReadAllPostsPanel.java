@@ -27,6 +27,7 @@ public class ReadAllPostsPanel extends ALComposite implements ClickHandler {
     protected int start = 0;
     protected int limit = 5;
     FlowPanel panel = new FlowPanel();
+    FlowPanel postsPanel = new FlowPanel();
     Label showMoreL = new Label("load more");
     Set<String> postIds = new HashSet<String>();
 
@@ -56,9 +57,9 @@ public class ReadAllPostsPanel extends ALComposite implements ClickHandler {
                 if (!postIds.contains(postId)) {
                     postIds.add(postId);
                     if (SocialSidePanel.isEmployeedFeedSelected()) {
-                        panel.insert(new ReadEmployeePostPanel(post, true), 0);
+                        postsPanel.add(new ReadEmployeePostPanel(post, true));
                     } else if (SocialSidePanel.isCompanyFeedSelected()) {
-                        panel.insert(new ReadCompanyPostPanel(post, true), 0);
+                        postsPanel.add(new ReadCompanyPostPanel(post, true));
                     }
 
                 }
@@ -79,10 +80,14 @@ public class ReadAllPostsPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
+        panel.add(postsPanel);
         panel.add(showMoreL);
     }
 
     public void refresh() {
+        //Temp fix until the proper logic for ordering the posts is in place.
+        postsPanel.clear();
+        postIds.clear();
         loadPosts();
     }
 

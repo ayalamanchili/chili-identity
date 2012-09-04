@@ -1,24 +1,18 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity.profile;
 
-import info.chili.jpa.validation.Unique;
 import info.yalamanchili.jpa.AbstractEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -33,119 +27,111 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
-@Unique(entity = Email.class, fields = {"email"}, message = "{email.email.not.unique.msg}")
 public class Email extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 8L;
 
-	/**
-	 * @NOT generated
-	 */
-	@org.hibernate.validator.constraints.Email
-       // @Unique(entity = Email.class, property = "email", message="{email.not.unique.msg}")
-	@NotEmpty(message = "{email.not.empty.msg}")
-	protected String email;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 8L;
+    /**
+     * @NOT generated
+     */
+    @org.hibernate.validator.constraints.Email
+    // @Unique(entity = Email.class, property = "email", message="{email.not.unique.msg}")
+    @NotEmpty(message = "{email.not.empty.msg}")
+    protected String email;
+    /**
+     * @generated
+     */
+    @NotNull
+    @Field(index = Index.UN_TOKENIZED)
+    protected Boolean primaryEmail;
+    /**
+     * @generated
+     */
+    @ManyToOne
+    @ForeignKey(name = "FK_EmailType_Emails")
+    protected EmailType emailType;
+    /**
+     * @generated
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Contact_Emails")
+    protected Contact contact;
 
-	/**
-	 * @generated
-	 */
-	@NotNull
-	@Field(index = Index.UN_TOKENIZED)
-	protected Boolean primaryEmail;
+    /**
+     * @generated
+     */
+    public Email() {
+        super();
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public String getEmail() {
+        return email;
+    }
 
-	@ManyToOne
-        @ForeignKey(name = "FK_EmailType_Emails")
-	protected EmailType emailType;
+    /**
+     * @generated
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public Boolean getPrimaryEmail() {
+        return primaryEmail;
+    }
 
-	@ManyToOne(cascade = CascadeType.MERGE)
-        @ForeignKey(name = "FK_Contact_Emails")
-	protected Contact contact;
+    /**
+     * @generated
+     */
+    public void setPrimaryEmail(Boolean primaryEmail) {
+        this.primaryEmail = primaryEmail;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Email() {
-		super();
-	}
+    /**
+     * @generated
+     */
+    @XmlElement
+    public EmailType getEmailType() {
+        return this.emailType;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getEmail() {
-		return email;
-	}
+    /**
+     * @generated
+     */
+    public void setEmailType(EmailType emailType) {
+        this.emailType = emailType;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    /**
+     * @generated
+     */
+    @XmlElement
+    public Contact getContact() {
+        return this.contact;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Boolean getPrimaryEmail() {
-		return primaryEmail;
-	}
+    /**
+     * @generated
+     */
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setPrimaryEmail(Boolean primaryEmail) {
-		this.primaryEmail = primaryEmail;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlElement
-	public EmailType getEmailType() {
-		return this.emailType;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setEmailType(EmailType emailType) {
-		this.emailType = emailType;
-	}
-
-	/**
-	 * @generated
-	 */
-	@XmlElement
-	public Contact getContact() {
-		return this.contact;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void setContact(Contact contact) {
-		this.contact = contact;
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getEmail());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    /**
+     * @generated
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getEmail());
+        sb.append(":");
+        return sb.toString();
+    }
 }
