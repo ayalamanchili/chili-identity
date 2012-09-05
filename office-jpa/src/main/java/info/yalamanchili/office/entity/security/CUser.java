@@ -51,7 +51,6 @@ public class CUser implements Serializable {
         this.userId = userId;
     }
 
-    @Size(min = 6, message = "{user.userId.length.invalid.msg}")
     @NotEmpty(message = "{username.not.empty.msg}")
     @Pattern(regexp = "[A-Za-z0-9]+")
     public String getUsername() {
