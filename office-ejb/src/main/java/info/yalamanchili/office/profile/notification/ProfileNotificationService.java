@@ -68,7 +68,7 @@ public class ProfileNotificationService {
 
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
-        String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
+        String[] roles = {"ROLE_ADMIN", "ROLE_HR","ROLE_ACCOUNTANT","ROLE_PAYROLL"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Address Updated");
