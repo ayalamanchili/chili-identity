@@ -14,8 +14,8 @@ import com.google.gwt.json.client.JSONObject;
 
 public class SelectEmailTypeWidget extends SelectComposite {
 
-    public SelectEmailTypeWidget() {
-        super("Email Type", "emailType");
+    public SelectEmailTypeWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "emailType", "EmailType", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {
@@ -42,5 +42,9 @@ public class SelectEmailTypeWidget extends SelectComposite {
             values.put(id, value);
         }
         return values;
+    }
+
+    @Override
+    protected void validate() {
     }
 }

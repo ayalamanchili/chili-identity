@@ -17,7 +17,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class CreateEmailPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmailPanel.class.getName());
-    SelectEmailTypeWidget emailTypeF = new SelectEmailTypeWidget();
+    SelectEmailTypeWidget emailTypeF = new SelectEmailTypeWidget(false, false);
 
     public CreateEmailPanel(CreateCompositeType type) {
         super(type);
@@ -42,7 +42,6 @@ public class CreateEmailPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-
                     @Override
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);

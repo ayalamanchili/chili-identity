@@ -13,12 +13,10 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.PopupPanel;
 
 public class UpdatePhonePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdatePhonePanel.class.getName());
-    SelectPhoneTypeWidget phoneTypeF = new SelectPhoneTypeWidget();
 
     public UpdatePhonePanel(JSONObject entity) {
         initUpdateComposite(entity, "Phone", OfficeWelcome.constants);
@@ -29,7 +27,8 @@ public class UpdatePhonePanel extends UpdateComposite {
         assignEntityValueFromField("phoneNumber", entity);
         assignEntityValueFromField("extension", entity);
         assignEntityValueFromField("countryCode", entity);
-        entity.put("phoneType", phoneTypeF.getSelectedObject());
+        assignEntityValueFromField("phoneType", entity);
+        logger.info(entity.toString());
         return entity;
     }
 
@@ -37,7 +36,6 @@ public class UpdatePhonePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-
             @Override
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
@@ -82,7 +80,7 @@ public class UpdatePhonePanel extends UpdateComposite {
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
         addField("extension", false, true, DataType.LONG_FIELD);
         addField("countryCode", false, true, DataType.LONG_FIELD);
-        entityDisplayWidget.add(phoneTypeF);
+        addDropDown("phoneType", new SelectPhoneTypeWidget(false, false));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package info.yalamanchili.office.client.profile.addresstype;
 
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.gwt.utils.JSONUtils;
@@ -14,8 +15,8 @@ import com.google.gwt.json.client.JSONObject;
 
 public class SelectAddressTypeWidget extends SelectComposite {
 
-    public SelectAddressTypeWidget() {
-        super("Address Type", "addressType");
+    public SelectAddressTypeWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "addressType", "AddressType", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {
@@ -42,5 +43,9 @@ public class SelectAddressTypeWidget extends SelectComposite {
             values.put(id, value);
         }
         return values;
+    }
+
+    @Override
+    protected void validate() {
     }
 }

@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.ListBox;
 public class CreateAddressPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateAddressPanel.class.getName());
-    SelectAddressTypeWidget addressTypeWidget = new SelectAddressTypeWidget();
 
     public CreateAddressPanel(CreateCompositeType type) {
         super(type);
@@ -39,7 +38,7 @@ public class CreateAddressPanel extends CreateComposite {
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
         assignEntityValueFromField("zip", entity);
-        entity.put("addressType", addressTypeWidget.getSelectedObject());
+        assignEntityValueFromField("addressType", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -165,7 +164,7 @@ public class CreateAddressPanel extends CreateComposite {
         addEnumField("state", false, true, getStates().toArray(new String[0]));
         addEnumField("country", false, true, getCountries().toArray(new String[0]));
         addField("zip", false, false, DataType.LONG_FIELD);
-        entityDisplayWidget.add(addressTypeWidget);
+        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
     }
 
     @Override

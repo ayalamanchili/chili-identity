@@ -68,13 +68,8 @@ public class EmailType extends AbstractEntity {
         this.emailType = emailType;
     }
 
-    /**
-     * @generated
-     */
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getEmailType());
-        sb.append(":");
-        return sb.toString();
+        return "EmailType{" + "emailType=" + emailType + '}';
     }
 }

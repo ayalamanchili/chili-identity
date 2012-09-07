@@ -1,7 +1,6 @@
 package info.yalamanchili.office.client.gwt;
 
 import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.composite.ALComposite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,28 +10,38 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-
-public abstract class SelectComposite extends ALComposite implements ClickHandler, ChangeHandler {
+import info.yalamanchili.gwt.composite.BaseField;
+//TODO make this extend basefied
+public abstract class SelectComposite extends BaseField implements ClickHandler, ChangeHandler {
 
     private static Logger logger = Logger.getLogger(SelectComposite.class.getName());
-    FlowPanel panel = new FlowPanel();
-    protected Label label = new Label();
     protected ListBox listBox = new ListBox();
     protected Map<Integer, String> values;
     protected Map<Integer, JSONObject> entityMap = new HashMap<Integer, JSONObject>();
     protected String type = null;
 
-    public SelectComposite(String name, String type) {
-        label.setText(name);
-        this.type = type;
-        init(panel);
+    public SelectComposite(ConstantsWithLookup constants, String attributeName, String className, Boolean readOnly, Boolean isRequired) {
+        super(constants, attributeName, className, readOnly, isRequired);
+        this.type = attributeName;
+        configureAddMainWidget();
+        setReadOnly(readOnly);
         fetchDropDownData();
+    }
+
+    @Override
+    protected void configureAddMainWidget() {
+        listBox.insertItem("SELECT", 0);
+        listBox.ensureDebugId(className + "_" + attributeName + "_LB");
+        fieldPanel.insert(listBox, 0);
+    }
+
+    public void setReadOnly(Boolean readOnly) {
+        listBox.setEnabled(!readOnly);
     }
 
     protected abstract void fetchDropDownData();
@@ -56,27 +65,11 @@ public abstract class SelectComposite extends ALComposite implements ClickHandle
     protected abstract Map<Integer, String> populateValues(JSONArray entities);
 
     protected void populateDropDown(Map<Integer, String> values) {
-        listBox.insertItem("SELECT", "", 0);
         int i = 1;
         for (Integer key : values.keySet()) {
             listBox.insertItem(values.get(key), key.toString(), i);
             i++;
         }
-    }
-
-    @Override
-    protected void addListeners() {
-        listBox.addClickHandler(this);
-    }
-
-    @Override
-    protected void configure() {
-    }
-
-    @Override
-    protected void addWidgets() {
-        panel.add(label);
-        panel.add(listBox);
     }
 
     @Override
@@ -86,6 +79,10 @@ public abstract class SelectComposite extends ALComposite implements ClickHandle
     @Override
     public void onClick(ClickEvent arg0) {
         // TODO Auto-generated method stub
+    }
+
+    public ListBox getListBox() {
+        return listBox;
     }
 
     public JSONObject getSelectedObject() {

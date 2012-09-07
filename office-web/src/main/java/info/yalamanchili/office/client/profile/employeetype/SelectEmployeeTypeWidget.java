@@ -20,8 +20,8 @@ import java.util.Map;
  */
 public class SelectEmployeeTypeWidget extends SelectComposite {
 
-    public SelectEmployeeTypeWidget() {
-        super("Employee Type", "employeeType");
+    public SelectEmployeeTypeWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "employeeType", "Employee", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {
@@ -48,5 +48,9 @@ public class SelectEmployeeTypeWidget extends SelectComposite {
             values.put(id, value);
         }
         return values;
+    }
+
+    @Override
+    protected void validate() {
     }
 }

@@ -19,7 +19,7 @@ import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 public class UpdateAddressPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateAddressPanel.class.getName());
-    SelectAddressTypeWidget AddressTypeF = new SelectAddressTypeWidget();
+    SelectAddressTypeWidget AddressTypeF = new SelectAddressTypeWidget(false, false);
 
     public UpdateAddressPanel(JSONObject entity) {
         initUpdateComposite(entity, "Address", OfficeWelcome.constants);

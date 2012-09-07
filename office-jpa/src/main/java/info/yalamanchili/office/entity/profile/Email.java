@@ -125,13 +125,8 @@ public class Email extends AbstractEntity {
         this.contact = contact;
     }
 
-    /**
-     * @generated
-     */
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getEmail());
-        sb.append(":");
-        return sb.toString();
+        return "Email{" + "email=" + email + ", primaryEmail=" + primaryEmail + ", emailType=" + emailType + ", contact=" + contact + '}';
     }
 }

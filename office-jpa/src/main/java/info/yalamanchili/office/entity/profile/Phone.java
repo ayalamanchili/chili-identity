@@ -144,17 +144,8 @@ public class Phone extends AbstractEntity {
         this.contact = contact;
     }
 
-    /**
-     * @generated
-     */
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getPhoneNumber());
-        sb.append(":");
-        sb.append(getExtension());
-        sb.append(":");
-        sb.append(getCountryCode());
-        sb.append(":");
-        return sb.toString();
+        return "Phone{" + "phoneNumber=" + phoneNumber + ", extension=" + extension + ", countryCode=" + countryCode + ", phoneType=" + phoneType + ", contact=" + contact + '}';
     }
 }

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 public class CreateEmployeePanel extends CreateComposite {
 
@@ -34,6 +35,7 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("email", employee);
         assignEntityValueFromField("sex", employee);
         assignEntityValueFromField("startDate", employee);
+        assignEntityValueFromField("employeeType", employee);
         employee.put("imageURL", empImageUploadPanel.getFileName());
         return employee;
     }
@@ -50,6 +52,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("employeeType", new SelectEmployeeTypeWidget(false, false));
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);

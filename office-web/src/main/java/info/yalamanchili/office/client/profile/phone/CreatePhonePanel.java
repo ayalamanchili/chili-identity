@@ -17,7 +17,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class CreatePhonePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreatePhonePanel.class.getName());
-    SelectPhoneTypeWidget phoneTypeF = new SelectPhoneTypeWidget();
+    SelectPhoneTypeWidget phoneTypeF = new SelectPhoneTypeWidget(false, false);
 
     public CreatePhonePanel(CreateCompositeType type) {
         super(type);
@@ -44,7 +44,6 @@ public class CreatePhonePanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-
                     @Override
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);

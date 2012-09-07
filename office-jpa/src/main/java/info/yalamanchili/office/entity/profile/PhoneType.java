@@ -67,13 +67,8 @@ public class PhoneType extends AbstractEntity {
         this.phoneType = phoneType;
     }
 
-    /**
-     * @generated
-     */
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getPhoneType());
-        sb.append(":");
-        return sb.toString();
+        return "PhoneType{" + "phoneType=" + phoneType + '}';
     }
 }

@@ -158,7 +158,9 @@ public abstract class CRUDComposite extends Composite {
         entityDisplayWidget.add(enumField);
     }
 
-    protected void addDropDown(SelectComposite widget) {
+    protected void addDropDown(String key, SelectComposite widget) {
+        fields.put(key, widget);
+        widget.getListBox().setEnabled(!readOnly);
         entityDisplayWidget.add(widget);
     }
 
@@ -198,6 +200,12 @@ public abstract class CRUDComposite extends Composite {
             BooleanField field = (BooleanField) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue().toString()));
+            }
+        }
+        if (fields.get(fieldKey) instanceof SelectComposite) {
+            SelectComposite field = (SelectComposite) fields.get(fieldKey);
+            if (field.getSelectedObject() != null) {
+                entity.put(fieldKey, field.getSelectedObject());
             }
         }
     }

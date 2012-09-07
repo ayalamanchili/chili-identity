@@ -66,13 +66,8 @@ public class AddressType extends AbstractEntity {
         this.addressType = addressType;
     }
 
-    /**
-     * @generated
-     */
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getAddressType());
-        sb.append(":");
-        return sb.toString();
+        return "AddressType{" + "addressType=" + addressType + '}';
     }
 }

@@ -205,23 +205,8 @@ public class Address extends AbstractEntity {
         this.addressType = addressType;
     }
 
-    /**
-     * @generated
-     */
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getStreet1());
-        sb.append(":");
-        sb.append(getStreet2());
-        sb.append(":");
-        sb.append(getCity());
-        sb.append(":");
-        sb.append(getState());
-        sb.append(":");
-        sb.append(getCountry());
-        sb.append(":");
-        sb.append(getZip());
-        sb.append(":");
-        return sb.toString();
+        return "Address{" + "street1=" + street1 + ", street2=" + street2 + ", city=" + city + ", state=" + state + ", country=" + country + ", zip=" + zip + ", contact=" + contact + ", addressType=" + addressType + '}';
     }
 }

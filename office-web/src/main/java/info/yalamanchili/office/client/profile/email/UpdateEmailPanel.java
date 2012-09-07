@@ -17,9 +17,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.PopupPanel;
-import info.yalamanchili.office.client.profile.phone.PhoneOptionsPanel;
-import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
+import info.yalamanchili.office.client.profile.phonetype.SelectPhoneTypeWidget;
 
 /**
  *
@@ -28,7 +26,7 @@ import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 public class UpdateEmailPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEmailPanel.class.getName());
-    SelectEmailTypeWidget emailTypeF = new SelectEmailTypeWidget();
+    SelectEmailTypeWidget emailTypeF = new SelectEmailTypeWidget(false, false);
 
     public UpdateEmailPanel(JSONObject entity) {
         initUpdateComposite(entity, "Email", OfficeWelcome.constants);
@@ -38,7 +36,8 @@ public class UpdateEmailPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("primaryEmail", entity);
-        entity.put("emailType", emailTypeF.getSelectedObject());
+        assignEntityValueFromField("emailType", entity);
+//        entity.put("emailType", emailTypeF.getSelectedObject());
         logger.info(entity.toString());
         return entity;
     }
@@ -47,7 +46,6 @@ public class UpdateEmailPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-
             @Override
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
@@ -85,7 +83,7 @@ public class UpdateEmailPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("email", false, true, DataType.STRING_FIELD);
         addField("primaryEmail", false, false, DataType.BOOLEAN_FIELD);
-        entityDisplayWidget.add(emailTypeF);
+        addDropDown("emailType", new SelectEmailTypeWidget(false, false));
     }
 
     @Override
