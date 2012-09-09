@@ -16,7 +16,7 @@ import com.google.gwt.json.client.JSONObject;
 public class SelectAddressTypeWidget extends SelectComposite {
 
     public SelectAddressTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "addressType", "AddressType", readOnly, isRequired);
+        super(OfficeWelcome.constants, "addressType", "AddressType", "addressType", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {

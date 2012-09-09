@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.office.client.profile.phonetype.SelectPhoneTypeWidget;
 
 /**
  *
@@ -26,7 +25,6 @@ import info.yalamanchili.office.client.profile.phonetype.SelectPhoneTypeWidget;
 public class UpdateEmailPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEmailPanel.class.getName());
-    SelectEmailTypeWidget emailTypeF = new SelectEmailTypeWidget(false, false);
 
     public UpdateEmailPanel(JSONObject entity) {
         initUpdateComposite(entity, "Email", OfficeWelcome.constants);
@@ -37,7 +35,6 @@ public class UpdateEmailPanel extends UpdateComposite {
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("primaryEmail", entity);
         assignEntityValueFromField("emailType", entity);
-//        entity.put("emailType", emailTypeF.getSelectedObject());
         logger.info(entity.toString());
         return entity;
     }
@@ -69,6 +66,7 @@ public class UpdateEmailPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("primaryEmail", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("emailType", entity, null);
     }
 
     @Override

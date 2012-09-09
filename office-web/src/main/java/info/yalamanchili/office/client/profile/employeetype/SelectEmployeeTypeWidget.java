@@ -21,7 +21,7 @@ import java.util.Map;
 public class SelectEmployeeTypeWidget extends SelectComposite {
 
     public SelectEmployeeTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "employeeType", "Employee", readOnly, isRequired);
+        super(OfficeWelcome.constants, "employeeType", "Employee", "name", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {
@@ -37,6 +37,7 @@ public class SelectEmployeeTypeWidget extends SelectComposite {
     protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
         return OfficeWelcome.constants.root_url() + "employeetype/dropdown/" + start.toString() + "/" + limit.toString();
     }
+//TODO move to select composite
 
     @Override
     protected Map<Integer, String> populateValues(JSONArray entities) {
@@ -44,7 +45,7 @@ public class SelectEmployeeTypeWidget extends SelectComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
-            String value = JSONUtils.toString(entity, "name");
+            String value = JSONUtils.toString(entity, attributeKey);
             values.put(id, value);
         }
         return values;

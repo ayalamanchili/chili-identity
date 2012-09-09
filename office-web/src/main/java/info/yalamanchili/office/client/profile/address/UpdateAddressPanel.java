@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.office.client.profile.email.EmailOptionsPanel;
-import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 
 public class UpdateAddressPanel extends UpdateComposite {
 
@@ -35,7 +33,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
         assignEntityValueFromField("zip", entity);
-        entity.put("AddressType", AddressTypeF.getSelectedObject());
+        assignEntityValueFromField("addressType", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -75,6 +73,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("addressType", entity, null);
     }
 
     @Override
@@ -96,7 +95,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         addEnumField("state", false, true, CreateAddressPanel.getStates().toArray(new String[0]));
         addEnumField("country", false, true, CreateAddressPanel.getCountries().toArray(new String[0]));
         addField("zip", false, false, DataType.LONG_FIELD);
-        entityDisplayWidget.add(AddressTypeF);
+        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
     }
 
     @Override

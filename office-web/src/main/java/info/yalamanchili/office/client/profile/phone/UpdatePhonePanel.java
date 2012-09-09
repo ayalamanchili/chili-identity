@@ -62,6 +62,7 @@ public class UpdatePhonePanel extends UpdateComposite {
         assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
         assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("phoneType", entity, null);
         // TODO set phone type
     }
 
