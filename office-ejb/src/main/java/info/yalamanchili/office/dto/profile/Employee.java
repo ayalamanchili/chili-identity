@@ -30,19 +30,19 @@ public class Employee implements Serializable {
     protected String passwordHash;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
-     @NotEmpty(message = "{lastName.not.empty.msg}")
+    @NotEmpty(message = "{lastName.not.empty.msg}")
     protected String lastName;
     protected String middleInitial;
     protected String employeeId;
-    @Past
-    @NotNull
+    @Past(message = "{dateOfBirth.past.msg}")
+    @NotNull(message = "{dateOfBirth.not.empty.msg}")
     protected Date dateOfBirth;
-    @NotNull
+    @NotNull(message = "{sex.not.empty.msg}")
     protected Sex sex;
     protected String imageURL;
     protected Date startDate;
     @Email
-    @NotEmpty
+    @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
     protected String phoneNumber;
 

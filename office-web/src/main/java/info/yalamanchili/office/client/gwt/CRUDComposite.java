@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.yalamanchili.gwt.date.DateUtils;
 
 public abstract class CRUDComposite extends Composite {
-    
+
     private Logger logger = Logger.getLogger(CRUDComposite.class.getName());
     /*
      * Panels
@@ -47,16 +47,16 @@ public abstract class CRUDComposite extends Composite {
     protected ConstantsWithLookup constants;
     protected String entityName;
     protected Map<String, BaseField> fields = new HashMap<String, BaseField>();
-    
+
     public JSONObject getEntity() {
         return entity;
     }
-    
+
     public String getEntityId() {
         return entityId;
     }
     protected Boolean readOnly;
-    
+
     protected void init(String entityName, final Boolean readOnly, ConstantsWithLookup constants) {
         initWidget(basePanel);
         this.readOnly = readOnly;
@@ -70,13 +70,13 @@ public abstract class CRUDComposite extends Composite {
         configure();
         addWidgets();
     }
-    
+
     protected abstract void addListeners();
-    
+
     protected abstract void configure();
-    
+
     protected abstract void addWidgets();
-    
+
     protected abstract void addWidgetsBeforeCaptionPanel();
 
     /*
@@ -148,14 +148,14 @@ public abstract class CRUDComposite extends Composite {
             entityDisplayWidget.add(currencyField);
         }
     }
-    
+
     protected void addEnumField(String key, Boolean readOnly, Boolean isRequired, String[] values) {
         EnumField enumField = new EnumField(constants, key, entityName,
                 readOnly, isRequired, values);
         fields.put(key, enumField);
         entityDisplayWidget.add(enumField);
     }
-    
+
     protected void addDropDown(String key, SelectComposite widget) {
         fields.put(key, widget);
         widget.getListBox().setEnabled(!readOnly);
@@ -207,7 +207,7 @@ public abstract class CRUDComposite extends Composite {
             }
         }
     }
-    
+
     protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
         if (fields.get(fieldKey) == null) {
             throw new RuntimeException("there is no field present with key please check the key:" + fieldKey);
@@ -242,9 +242,9 @@ public abstract class CRUDComposite extends Composite {
             selectComposite.setSelectedValue(entity.get(fieldKey).isObject());
         }
     }
-    
+
     protected abstract String getURI();
-    
+
     protected void handleErrorResponse(Throwable err) {
         //TODO enhance to show generic error messages
         logger.info(err.getMessage());
@@ -259,7 +259,7 @@ public abstract class CRUDComposite extends Composite {
             new ResponseStatusWidget().show("Call Failed");
         }
     }
-    
+
     protected void processValidationErrors(JSONValue errorsObj) {
         JSONArray errorsArray = JSONUtils.toJSONArray(errorsObj.isObject().get("Error"));
         for (int i = 0; i < errorsArray.size(); i++) {
@@ -273,7 +273,7 @@ public abstract class CRUDComposite extends Composite {
             }
         }
     }
-    
+
     protected String getErrorProperty(String str) {
         if (str.contains(".")) {
             return str.substring(str.indexOf(".") + 1);
