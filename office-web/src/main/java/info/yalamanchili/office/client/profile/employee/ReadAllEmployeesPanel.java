@@ -24,7 +24,6 @@ import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 
-
 /**
  *
  * @author ayalamanchili
@@ -51,6 +50,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        logger.info(result);
                         postFetchTable(result);
                     }
                 });
@@ -65,16 +65,13 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("First Name"));
-//        table.setText(0, 2, getKeyValue("Middle Name"));
         table.setText(0, 2, getKeyValue("Last Name"));
         table.setText(0, 3, getKeyValue("Emp Id"));
         table.setText(0, 4, getKeyValue("Email"));
         table.setText(0, 5, getKeyValue("Phone"));
-//        table.setText(0, 7, getKeyValue("Date of Birth"));
         table.setText(0, 6, getKeyValue("Sex"));
         table.setText(0, 7, getKeyValue("Image"));
         table.setText(0, 8, getKeyValue("Start Date"));
-        
     }
 
     @Override
@@ -83,14 +80,10 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
-//            table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
-//            if (Auth.isAdmin() || Auth.isHR()) {
-//                table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "dateOfBirth"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-//            }
             table.setText(i, 6, JSONUtils.toString(entity, "sex"));
             table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
@@ -116,17 +109,18 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-         
-         if(Window.confirm( "Are you sure? All Employee details will be deleted")){
+
+        if (Window.confirm("Are you sure? All Employee details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-            new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                postDeleteSuccess();
-                }
-            });
-         }
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess();
+                        }
+                    });
+        }
     }
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "employee/delete/" + entityId;
     }
