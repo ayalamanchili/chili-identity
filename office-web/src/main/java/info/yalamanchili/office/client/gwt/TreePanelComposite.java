@@ -15,101 +15,104 @@ import com.google.gwt.user.client.ui.TreeItem;
 
 public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem> {
 
-	private static TreePanelComposite instance;
+    private static TreePanelComposite instance;
 
-	public static TreePanelComposite instance() {
-		return instance;
-	}
+    public static TreePanelComposite instance() {
+        return instance;
+    }
+    Logger logger = Logger.getLogger(TreePanelComposite.class.getName());
+    protected String entityId;
+    protected JSONObject entity;
+    protected ConstantsWithLookup constants;
+    protected FlowPanel panel = new FlowPanel();
+    protected Tree tree = new Tree();
+    protected TreeItem rootItem = new TreeItem("root");
 
-	Logger logger = Logger.getLogger(TreePanelComposite.class.getName());
+    public String getEntityId() {
+        return entityId;
+    }
 
-	protected String entityId;
+    public JSONObject getEntity() {
+        return entity;
+    }
 
-	protected JSONObject entity;
+    public TreePanelComposite(String entityId) {
+        instance = this;
+        initWidget(panel);
+        this.entityId = entityId;
+    }
 
-	protected ConstantsWithLookup constants;
+    public void init(String entityNodeNameKey, ConstantsWithLookup constants) {
+        this.constants = constants;
+        panel.add(tree);
+        panel.addStyleName("y-gwt-TreePanel");
+        addRooNode(entityNodeNameKey);
+        tree.addSelectionHandler(this);
+        addListeners();
+        configure();
+        addWidgets();
 
-	protected FlowPanel panel = new FlowPanel();
+    }
 
-	protected Tree tree = new Tree();
+    public TreeItem getRoot() {
+        return rootItem;
+    }
 
-	protected TreeItem rootItem = new TreeItem("root");
+    @Override
+    public void onSelection(SelectionEvent<TreeItem> event) {
+        entity = loadEntity();
+        TreeItem selectedItem = (TreeItem) event.getSelectedItem();
+        TreeItem root = tree.getItem(0);
+        if (root.equals(selectedItem)) {
+            logger.info("root selected");
+            showEntity();
+        } else {
+            logger.info("tree node selected:" + selectedItem.getUserObject().toString());
+            treeNodeSelected((String) selectedItem.getUserObject());
+        }
+    }
 
-	public String getEntityId() {
-		return entityId;
-	}
+    protected void addRooNode(String name) {
+        // TODO get the roo node name from constants
+        rootItem.setText(name);
+        rootItem.addStyleName("y-gwt-treePanelComposite-RootNode");
+        tree.addItem(rootItem);
+    }
 
-	public JSONObject getEntity() {
-		return entity;
-	}
+    protected void addFirstChildLink(String childNodeName, String childNodeKey) {
+        // TODO get the name from constants
+        TreeItem child = new TreeItem(Utils.getKeyValue(childNodeName, constants));
+        child.addStyleName("y-gwt-treePanelComposite-Node");
 
-	public TreePanelComposite(String entityId) {
-		instance = this;
-		initWidget(panel);
-		this.entityId = entityId;
-	}
+        child.setUserObject(childNodeKey);
+        rootItem.addItem(child);
+    }
 
-	public void init(String entityNodeNameKey, ConstantsWithLookup constants) {
-		this.constants = constants;
-		panel.add(tree);
-		panel.addStyleName("y-gwt-TreePanel");
-		addRooNode(entityNodeNameKey);
-		tree.addSelectionHandler(this);
-		addListeners();
-		configure();
-		addWidgets();
+    protected void addFirstChildLink(String childNodeName, String childNodeKey, TreeItem treeItem) {
+        treeItem.setText(childNodeName);
+        treeItem.setUserObject(childNodeKey);
+        rootItem.addItem(treeItem);
+    }
 
-	}
+    protected void removeFirstChildLink(String childNodeKey) {
+        TreeItem root = tree.getItem(0);
+        for (int i = 0; i < root.getChildCount(); i++) {
+            TreeItem child = root.getChild(i);
+            if (childNodeKey.contains((CharSequence) child.getUserObject())) {
+                child.remove();
+            }
+        }
+    }
 
-	public void onSelection(SelectionEvent<TreeItem> event) {
-		entity = loadEntity();
-		TreeItem selectedItem = (TreeItem) event.getSelectedItem();
-		TreeItem root = tree.getItem(0);
-		if (root.equals(selectedItem)) {
-			logger.info("root selected");
-			showEntity();
-		} else {
-			logger.info("treemode selected:" + selectedItem.getUserObject().toString());
-			treeNodeSelected((String) selectedItem.getUserObject());
-		}
-	}
+    protected abstract void addListeners();
 
-	protected void addRooNode(String name) {
-		// TODO get the roo node name from constants
-		rootItem.setText(name);
-		rootItem.addStyleName("y-gwt-treePanelComposite-RootNode");
-		tree.addItem(rootItem);
-	}
+    protected abstract void configure();
 
-	protected void addFirstChildLink(String childNodeName, String childNodeKey) {
-		// TODO get the name from constants
-		TreeItem child = new TreeItem(Utils.getKeyValue(childNodeName, constants));
-		child.addStyleName("y-gwt-treePanelComposite-Node");
-                
-		child.setUserObject(childNodeKey);
-		rootItem.addItem(child);
-	}
+    protected abstract void addWidgets();
 
-	protected void removeFirstChildLink(String childNodeKey) {
-		TreeItem root = tree.getItem(0);
-		for (int i = 0; i < root.getChildCount(); i++) {
-			TreeItem child = root.getChild(i);
-			if (childNodeKey.contains((CharSequence) child.getUserObject())) {
-				child.remove();
-			}
-		}
-	}
+    public abstract void treeNodeSelected(String entityNodeKey);
 
-	protected abstract void addListeners();
+    public abstract JSONObject loadEntity();
 
-	protected abstract void configure();
-
-	protected abstract void addWidgets();
-
-	public abstract void treeNodeSelected(String entityNodeKey);
-
-	public abstract JSONObject loadEntity();
-
-	public abstract void showEntity();
-
+    public abstract void showEntity();
 }

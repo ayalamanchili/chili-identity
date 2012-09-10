@@ -18,6 +18,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
+import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
 
 public class TreeEmployeePanel extends TreePanelComposite {
 
@@ -26,8 +27,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String PHONE_NODE = "phone";
     protected static final String REPORTS_TO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
-    protected static final String SkillSet_NODE = "skillset";
-    protected static final String ResetPassword_NODE = "resetpassword";
+    protected static final String SKILL_SET_NODE = "skillset";
+    protected static final String RESET_PASSWORD_NODE = "resetpassword";
 
     public TreeEmployeePanel(String entityId) {
         super(entityId);
@@ -51,8 +52,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
-        addFirstChildLink("Skill Set", SkillSet_NODE);
-        addFirstChildLink("Reset Password",ResetPassword_NODE);
+        addFirstChildLink("Skill Set", SKILL_SET_NODE, new TreeSkillSetPanel(entityId).getRoot());
+        addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
     }
 
     @Override
@@ -82,14 +83,14 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(entityId));
             TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
         }
-        if (SkillSet_NODE.equals(entityNodeKey)) {
+        if (SKILL_SET_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
         }
-         if (ResetPassword_NODE.equals(entityNodeKey)) {
+        if (RESET_PASSWORD_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
-            
+
         }
     }
 

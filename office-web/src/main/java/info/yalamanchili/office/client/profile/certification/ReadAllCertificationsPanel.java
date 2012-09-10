@@ -30,6 +30,12 @@ public class ReadAllCertificationsPanel extends ReadAllComposite {
         initTable("Certification", OfficeWelcome.constants);
     }
 
+    public ReadAllCertificationsPanel(String parentId) {
+        instance = this;
+        this.parentId = parentId;
+        initTable("Certification", OfficeWelcome.constants);
+    }
+
     public ReadAllCertificationsPanel(JSONArray array) {
         instance = this;
         initTable("Certification", array, OfficeWelcome.constants);
@@ -85,13 +91,13 @@ public class ReadAllCertificationsPanel extends ReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String arg0) {
                         postDeleteSuccess();
                     }
                 });
     }
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "certification/delete/" + entityId;
     }
@@ -99,7 +105,7 @@ public class ReadAllCertificationsPanel extends ReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Certification Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear(); 
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCertificationsPanel());
     }
 

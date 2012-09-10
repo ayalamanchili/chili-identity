@@ -30,6 +30,12 @@ public class ReadAllSkillsPanel extends ReadAllComposite {
         initTable("Skill", OfficeWelcome.constants);
     }
 
+    public ReadAllSkillsPanel(String parentId) {
+        instance = this;
+        this.parentId = parentId;
+        initTable("Skill", OfficeWelcome.constants);
+    }
+
     public ReadAllSkillsPanel(JSONArray array) {
         instance = this;
         initTable("Skill", array, OfficeWelcome.constants);
@@ -41,6 +47,7 @@ public class ReadAllSkillsPanel extends ReadAllComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        logger.info("rrr:" + result);
                         postFetchTable(result);
                     }
                 });
