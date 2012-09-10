@@ -10,7 +10,6 @@ import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
-import java.sql.Date;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -28,7 +27,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProfileNotificationService {
-
+    
     @Autowired
     protected SecurityService securityService;
     @Autowired
@@ -44,10 +43,11 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Resume Updated");
-        String messageText = emp.getFirstName() + " " + emp.getLastName()  + "'s Resume Updated";
+        String messageText = emp.getFirstName() + " " + emp.getLastName() + "'s Resume Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
+    
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
         String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
@@ -57,15 +57,19 @@ public class ProfileNotificationService {
         String messageText = "New User " + user.getUsername().toString() + " Is Created";
         email.setBody(messageText);
         messagingService.sendEmail(email);
-        
-        // Email Intimation for User
-        Email emailUser = new Email();
-        emailUser.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
-        emailUser.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id are" + user.getUsername().toString() + " and You can obtain Password from HR to access our portal at http://apps.sstech.us/portal";
-        emailUser.setBody(messageTextforuser);
-    }
 
+        // Email Intimation for User
+        Email newUserEmailObj = new Email();
+        info.yalamanchili.office.entity.profile.Email newUserEmail = user.getEmployee().getPrimaryEmail();
+        Set<String> newUserEmails = new HashSet<String>();
+        newUserEmails.add(newUserEmail.getEmail());
+        newUserEmailObj.setTos(newUserEmails);
+        newUserEmailObj.setSubject("Welcome to System Soft Portal");
+        String messageTextforuser = "Your Username and Employee Id is:" + user.getUsername().toString() + ": and You can obtain Password by contacting HR dept. Access Portal at http://apps.sstech.us/portal";
+        newUserEmailObj.setBody(messageTextforuser);
+        messagingService.sendEmail(newUserEmailObj);
+    }
+    
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
         String[] roles = {"ROLE_ADMIN", "ROLE_HR","ROLE_ACCOUNTANT","ROLE_PAYROLL"};
@@ -75,25 +79,25 @@ public class ProfileNotificationService {
         String messageText = "Employee Address For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
-
+        
     }
-    public void BirthdayNotification()
-    {
-       javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + "where  day(dateOfBirth.dateTime) = :date and month(dateOfBirth.dateTime) = :month ");
-       findUserQuery.setParameter("date", Calendar.getInstance().DATE);
-       findUserQuery.setParameter("month", Calendar.getInstance().MONTH);
-       
-       List lstResult = findUserQuery.getResultList();
+    
+    public void BirthdayNotification() {
+        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + "where  day(dateOfBirth.dateTime) = :date and month(dateOfBirth.dateTime) = :month ");
+        findUserQuery.setParameter("date", Calendar.getInstance().DATE);
+        findUserQuery.setParameter("month", Calendar.getInstance().MONTH);
+        
+        List lstResult = findUserQuery.getResultList();
         for (int i = 0; i < lstResult.size(); i++) {
-            Employee empres = new  Employee();
-             Set<String> emailto = new HashSet<String>();
-             Email email = new Email();
-             emailto.add(empres.getPrimaryEmail().getEmail());
-             email.setTos(emailto);
-             email.setSubject("Birthday Wishes");
-             String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
-             email.setBody(messageText);
-             messagingService.sendEmail(email);
+            Employee empres = new Employee();
+            Set<String> emailto = new HashSet<String>();
+            Email email = new Email();
+            emailto.add(empres.getPrimaryEmail().getEmail());
+            email.setTos(emailto);
+            email.setSubject("Birthday Wishes");
+            String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
+            email.setBody(messageText);
+            messagingService.sendEmail(email);
         }
     }
 }

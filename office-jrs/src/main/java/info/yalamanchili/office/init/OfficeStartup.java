@@ -44,6 +44,7 @@ public class OfficeStartup {
     protected CRole recruiterRole;
     protected CRole accountantRole;
     protected CRole payrollRole;
+
     protected void startup() {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
         if (config.getInitRefData()) {
@@ -138,7 +139,7 @@ public class OfficeStartup {
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
 
-        adminPrimaryEmail.setEmail("bkmallipeddi@gmail.com");
+        adminPrimaryEmail.setEmail("yphanikumar@gmail.com");
 
 
 
@@ -146,7 +147,7 @@ public class OfficeStartup {
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
         adminSecondaryEmail.setPrimaryEmail(false);
-        adminSecondaryEmail.setEmail("balamallipeddi@gmail.com");
+        adminSecondaryEmail.setEmail("anu@yalamanchili.info");
 
         Phone adminCellPhone = new Phone();
         adminCellPhone.setPhoneNumber("7038889999");
@@ -447,6 +448,7 @@ public class OfficeStartup {
             recruiterRole = em.merge(role);
         }
     }
+
     public void accountantRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTANT") == null) {
             CRole role = new CRole();
@@ -454,13 +456,15 @@ public class OfficeStartup {
             accountantRole = em.merge(role);
         }
     }
-     public void payrollRole() {
+
+    public void payrollRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_PAYROLL") == null) {
             CRole role = new CRole();
             role.setRolename("ROLE_PAYROLL");
             payrollRole = em.merge(role);
         }
     }
+
     protected void userUser() {
         if (EntityQueryUtils.findEntity(em, CUser.class, "username", "useruser") == null) {
             CUser user = new CUser();
