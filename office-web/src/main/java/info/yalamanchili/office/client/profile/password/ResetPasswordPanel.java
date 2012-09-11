@@ -6,6 +6,7 @@ package info.yalamanchili.office.client.profile.password;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.fields.PasswordField;
@@ -33,6 +34,8 @@ public class ResetPasswordPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject rstpassword = new JSONObject();
         assignEntityValueFromField("newPassword", rstpassword);
+        rstpassword.put("userName",new JSONString("dummy"));
+        rstpassword.put("oldPassword",new JSONString("abcde"));
         return rstpassword;
     }
 
