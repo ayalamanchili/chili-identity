@@ -90,9 +90,9 @@ public class ChangePasswordPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
 //        addField("userName", false, true, DataType.STRING_FIELD);
-        addField("Old Password", false, true, DataType.PASSWORD_FIELD);
-        addField("New Password", false, true, DataType.PASSWORD_FIELD);
-        addField("Confirm Password", false, true, DataType.PASSWORD_FIELD);
+        addField("oldPassword", false, true, DataType.PASSWORD_FIELD);
+        addField("newPassword", false, true, DataType.PASSWORD_FIELD);
+        addField("confirmPassword", false, true, DataType.PASSWORD_FIELD);
     }
 
     @Override
