@@ -26,7 +26,7 @@ public class ChangePasswordPanel extends CreateComposite {
     public ChangePasswordPanel(CreateCompositeType type) {
 
         super(type);
-        initCreateComposite("Change Password", OfficeWelcome.constants);
+        initCreateComposite("ChangePassword", OfficeWelcome.constants);
         create.setText("Change Password");
     }
 
