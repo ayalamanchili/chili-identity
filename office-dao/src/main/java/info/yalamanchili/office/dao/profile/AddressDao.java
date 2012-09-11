@@ -5,6 +5,7 @@ package info.yalamanchili.office.dao.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.AddressType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +26,20 @@ public class AddressDao extends CRUDDao<Address> {
 	public AddressDao() {
 		super(Address.class);
 	}
-
+        @Override
+        public Address save(Address entity) {
+        if (entity.getId() != null) {
+            Address updatedAddress = null;
+            updatedAddress = super.save(entity);
+            if (entity.getAddressType() == null) {
+                updatedAddress.setAddressType(null);
+            } else {
+                updatedAddress.setAddressType(em.find(AddressType.class, entity.getAddressType().getId()));
+            }
+            return em.merge(updatedAddress);
+        }
+        return super.save(entity);
+        }
 	@Override
 	public EntityManager getEntityManager() {
 		return em;
