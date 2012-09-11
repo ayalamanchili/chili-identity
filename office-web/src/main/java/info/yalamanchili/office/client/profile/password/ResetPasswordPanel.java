@@ -26,7 +26,7 @@ public class ResetPasswordPanel extends CreateComposite {
     public ResetPasswordPanel(CreateCompositeType type) {
 
         super(type);
-        initCreateComposite("Reset Password", OfficeWelcome.constants);
+        initCreateComposite("ResetPassword", OfficeWelcome.constants);
         create.setText("Reset Password");
     }
 
