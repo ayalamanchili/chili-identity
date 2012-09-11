@@ -128,7 +128,7 @@ public class OfficeStartup {
         adminEmp.setStartDate(new Date());
 
         Address adminAddress = new Address();
-        adminAddress.setAddressType(getHomeAddressType());
+        adminAddress.setAddressType(getOfficeAddressType());
         adminAddress.setStreet1("2110 wilkes ct");
         adminAddress.setStreet2("apt 123");
         adminAddress.setCity("Herndon");
@@ -229,7 +229,18 @@ public class OfficeStartup {
             return em.merge(homeAddressType);
         }
     }
-
+    protected AddressType getOfficeAddressType() {
+        Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
+                + " where addressType=:addressTypeParam");
+        getAddressType.setParameter("addressTypeParam", "OFFICE");
+        if (getAddressType.getResultList().size() > 0) {
+            return (AddressType) getAddressType.getResultList().get(0);
+        } else {
+            AddressType officeAddressType = new AddressType();
+            officeAddressType.setAddressType("OFFICE");
+            return em.merge(officeAddressType);
+        }
+    }
     protected EmailType getWorkEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
