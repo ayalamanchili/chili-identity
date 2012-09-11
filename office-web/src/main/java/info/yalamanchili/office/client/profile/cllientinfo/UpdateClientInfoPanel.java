@@ -14,7 +14,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class UpdateClientInfoPanel extends UpdateComposite {
 
     public UpdateClientInfoPanel(JSONObject entity) {
-        initUpdateComposite(entity, "ClientInformation", OfficeWelcome.constants);
+        initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
     }
 
     @Override
