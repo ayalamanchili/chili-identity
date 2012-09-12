@@ -18,10 +18,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
+ * This class contains tasks that are triggered by scheduler
  *
  * @author ayalamanchili
  */
-@Service
 public class TaskService {
 
     @PersistenceContext
@@ -29,7 +29,6 @@ public class TaskService {
     @Autowired
     protected MessagingService messagingService;
 
-//    @Scheduled(fixedRate = 10000)
     public void birthdayNotification() {
         System.out.println("----------------RUNNING BIRTHDAY NOTIFICATION---------------");
         javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + "where  day(dateOfBirth.dateTime) = :date and month(dateOfBirth.dateTime) = :month ");
