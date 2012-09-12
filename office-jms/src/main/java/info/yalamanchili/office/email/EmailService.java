@@ -8,6 +8,7 @@ import info.chili.spring.SpringContext;
 import java.util.logging.Logger;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+
 import org.springframework.stereotype.Component;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 

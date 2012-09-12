@@ -11,9 +11,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,7 +25,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProfileNotificationService {
-    
+
     @Autowired
     protected SecurityService securityService;
     @Autowired
@@ -36,7 +34,7 @@ public class ProfileNotificationService {
     public EmployeeDao employeeDao;
     @PersistenceContext
     public EntityManager em;
-    
+
     @Async
     public void skillSetUpdatedNotification(Employee emp) {
         String[] roles = {"ROLE_RECRUITER"};
@@ -47,7 +45,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
         String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
@@ -69,35 +67,16 @@ public class ProfileNotificationService {
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
-    
+
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
-        String[] roles = {"ROLE_ADMIN", "ROLE_HR","ROLE_ACCOUNTANT","ROLE_PAYROLL"};
+        String[] roles = {"ROLE_ADMIN", "ROLE_HR", "ROLE_ACCOUNTANT", "ROLE_PAYROLL"};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Address Updated");
         String messageText = "Employee Address For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
-        
-    }
-    
-    public void BirthdayNotification() {
-        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + "where  day(dateOfBirth.dateTime) = :date and month(dateOfBirth.dateTime) = :month ");
-        findUserQuery.setParameter("date", Calendar.getInstance().DATE);
-        findUserQuery.setParameter("month", Calendar.getInstance().MONTH);
-        
-        List lstResult = findUserQuery.getResultList();
-        for (int i = 0; i < lstResult.size(); i++) {
-            Employee empres = new Employee();
-            Set<String> emailto = new HashSet<String>();
-            Email email = new Email();
-            emailto.add(empres.getPrimaryEmail().getEmail());
-            email.setTos(emailto);
-            email.setSubject("Birthday Wishes");
-            String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
-            email.setBody(messageText);
-            messagingService.sendEmail(email);
-        }
+
     }
 }
