@@ -16,7 +16,7 @@
     <!--Task Scheduler -->
     <task:scheduled-tasks scheduler="taskScheduler">
         <!--task:scheduled ref="taskService" method="birthdayNotification" fixed="5000"/-->
-        <task:scheduled ref="taskService" method="birthdayNotification" cron="0 5 1 * * ?"/>
+        <task:scheduled ref="taskService" method="birthdayNotification" fixed-delay="5000"/>
     </task:scheduled-tasks>
     <task:scheduler id="taskScheduler" pool-size="1"/> 
     
