@@ -37,7 +37,7 @@ public class TaskService {
         System.out.println("day :" + Calendar.getInstance().DATE);
         System.out.println("month :" + Calendar.getInstance().MONTH);
         
-        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  day(dateOfBirth) = 13 and month(dateOfBirth) = 9 ");
+        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  day(dateOfBirth)=:date1 and month(dateOfBirth)=:month1 ");
         findUserQuery.setParameter("date1", Calendar.getInstance().DATE);
         findUserQuery.setParameter("month1", Calendar.getInstance().MONTH);
 
