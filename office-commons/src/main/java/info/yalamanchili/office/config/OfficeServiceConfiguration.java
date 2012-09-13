@@ -18,6 +18,8 @@ public class OfficeServiceConfiguration {
     protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData;
+    @Value("#{officeProperties['enableLoginInterceptor']}")
+    protected Boolean enableLoginInterceptor;
     protected Boolean isSendMail = true;
 
     @ManagedAttribute
@@ -38,6 +40,13 @@ public class OfficeServiceConfiguration {
         this.initRefData = initRefData;
     }
 
+    public Boolean getEnableLoginInterceptor() {
+        return enableLoginInterceptor;
+    }
+
+    public void setEnableLoginInterceptor(Boolean enableLoginInterceptor) {
+        this.enableLoginInterceptor = enableLoginInterceptor;
+    }
     public Boolean getIsSendEmail() {
         return isSendMail;
     }
