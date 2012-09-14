@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.profile.address;
 
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
@@ -26,7 +27,8 @@ public class CreateAddressPopupPanel extends CreateAddressPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully added employee address");
         GenericPopup.instance().hide();
-       ProfileHome.instance().refreshAddresses();
+        ProfileHome.instance().refreshAddresses();
     }
 }
