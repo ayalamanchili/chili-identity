@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.gwt.utils.JSONUtils;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.phone.CreatePhonePopupPanel;
@@ -35,6 +36,7 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("successfully deleted Emails information");
         ProfileHome.instance().refreshClientInformation();
     }
 

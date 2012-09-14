@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
@@ -26,6 +27,7 @@ public class CreateClientInfoPopupPanel extends CreateClientInfoPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully added Reports To");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshClientInformation();
     }
