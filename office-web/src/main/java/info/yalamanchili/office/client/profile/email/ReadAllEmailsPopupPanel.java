@@ -9,6 +9,7 @@ import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 
 public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
 
@@ -29,6 +30,7 @@ public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("successfully deleted Emails information");
         ProfileHome.instance();
         ProfileHome.instance().refreshEmails();
     }
