@@ -5,6 +5,7 @@
 package info.yalamanchili.office.client.profile.emergencycnt;
 
 import com.google.gwt.json.client.JSONObject;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
@@ -20,6 +21,7 @@ public class UpdateEmergencyContactPopupPanel extends UpdateEmergencyContactPane
 
     @Override
     protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully updated Emergency Contact information");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshEmergencyContactsPanel();
     }

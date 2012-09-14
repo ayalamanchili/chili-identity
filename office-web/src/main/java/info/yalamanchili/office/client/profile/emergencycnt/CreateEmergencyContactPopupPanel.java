@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.profile.emergencycnt;
 
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
@@ -27,6 +28,7 @@ public class CreateEmergencyContactPopupPanel extends CreateEmergencyContactPane
 
     @Override
     protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully added Emergency Contact");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshEmergencyContactsPanel();
     }

@@ -102,7 +102,7 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully deleted Emails information");
+        new ResponseStatusWidget().show("successfully deleted Emergency Contact information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
