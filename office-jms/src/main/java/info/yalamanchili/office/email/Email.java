@@ -18,6 +18,7 @@ public class Email implements Serializable {
     protected Set<String> bccs;
     protected String subject;
     protected String body;
+    protected boolean isHtml = false;
 
     public Email() {
     }
@@ -60,6 +61,14 @@ public class Email implements Serializable {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public boolean getIsHtml() {
+        return isHtml;
+    }
+
+    public void setIsHtml(boolean isHtml) {
+        this.isHtml = isHtml;
     }
 
     @Override

@@ -23,14 +23,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SocialNotificationService {
-
+    
     @Autowired
     protected SecurityService securityService;
     @Autowired
     protected MessagingService messagingService;
     @Autowired
     public EmployeeDao employeeDao;
-
+    
     @Async
     public void sendNewCompanyPostNotification(String PostContent) {
         String[] roles = {"ROLE_USER", "ROLE_HR", "ROLE_ADMIN"};
@@ -39,6 +39,6 @@ public class SocialNotificationService {
         email.setSubject("New Post in company feed");
         email.setBody(PostContent);
         messagingService.sendEmail(email);
-
+        
     }
 }
