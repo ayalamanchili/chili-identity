@@ -34,12 +34,14 @@ public class TaskService {
 
     public void birthdayNotification() {
         System.out.println("----------------RUNNING BIRTHDAY NOTIFICATION---------------");
-        System.out.println("day :" + Calendar.getInstance().DATE);
-        System.out.println("month :" + Calendar.getInstance().MONTH);
+        System.out.println("day :" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        int monthb = Calendar.getInstance().get(Calendar.MONTH);
+        monthb = monthb + 1;
+        System.out.println("month :" + monthb);
         
         javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  day(dateOfBirth)=:date1 and month(dateOfBirth)=:month1 ");
-        findUserQuery.setParameter("date1", Calendar.getInstance().DATE);
-        findUserQuery.setParameter("month1", Calendar.getInstance().MONTH);
+        findUserQuery.setParameter("date1", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        findUserQuery.setParameter("month1", monthb);
 
         List lstResult = findUserQuery.getResultList();
          Iterator itr = lstResult.iterator();
