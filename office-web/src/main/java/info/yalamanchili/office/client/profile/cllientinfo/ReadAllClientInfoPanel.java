@@ -105,7 +105,7 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-         new ResponseStatusWidget().show("successfully deleted Emails information");
+         new ResponseStatusWidget().show("successfully deleted Reports To information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
