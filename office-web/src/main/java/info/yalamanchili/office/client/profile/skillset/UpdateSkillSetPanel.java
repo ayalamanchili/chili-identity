@@ -22,17 +22,22 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class UpdateSkillSetPanel extends UpdateComposite {
-
+    
     private static Logger logger = Logger.getLogger(UpdateSkillSetPanel.class.getName());
-    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl");
+    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl") {
+        @Override
+        public void onUploadComplete() {
+            postUpdateSuccess(null);
+        }
+    };
     protected String employeeId;
-
+    
     public UpdateSkillSetPanel(String employeeId) {
         this.employeeId = employeeId;
         initUpdateComposite(entity, "SkillSet", OfficeWelcome.constants);
         loadSkillSet();
     }
-
+    
     protected void loadSkillSet() {
         HttpService.HttpServiceAsync.instance().doGet(getURI(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -44,14 +49,14 @@ public class UpdateSkillSetPanel extends UpdateComposite {
             }
         });
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject skillSet = new JSONObject();
         skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
         return skillSet;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -60,48 +65,47 @@ public class UpdateSkillSetPanel extends UpdateComposite {
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
             }
-
+            
             @Override
             public void onSuccess(String arg0) {
                 uploadResume(arg0);
-                postUpdateSuccess(arg0);
             }
         });
-
+        
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
     }
-
+    
     protected void uploadResume(String entityId) {
         resumeUploadPanel.upload(entityId.trim());
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated employee Skill Information");
 //        TabPanel.instance().myOfficePanel.clear();
 //        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(result));
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     protected void addWidgets() {
         entityDisplayWidget.add(resumeUploadPanel);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + employeeId;

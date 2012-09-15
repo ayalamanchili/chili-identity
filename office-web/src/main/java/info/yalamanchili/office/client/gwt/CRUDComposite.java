@@ -132,7 +132,11 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
             FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName,
-                    "name");
+                    "name") {
+                @Override
+                public void onUploadComplete() {
+                }
+            };
             entityDisplayWidget.add(fileUploadPanel);
         }
         if (DataType.RICH_TEXT_AREA.equals(type)) {

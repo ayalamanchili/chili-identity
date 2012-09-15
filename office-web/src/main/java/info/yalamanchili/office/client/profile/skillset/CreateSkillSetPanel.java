@@ -6,12 +6,11 @@ package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.FileUploadPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -23,7 +22,12 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     protected String employeeId;
     private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
-    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl");
+    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl") {
+        @Override
+        public void onUploadComplete() {
+            postCreateSuccess(null);
+        }
+    };
 
     public CreateSkillSetPanel(String employeeId) {
         super(CreateCompositeType.CREATE);
@@ -58,7 +62,6 @@ public class CreateSkillSetPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
                         uploadResume(arg0);
                     }
                 });
@@ -83,8 +86,6 @@ public class CreateSkillSetPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully created skllset");
-//        TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(result));
     }
 
     @Override

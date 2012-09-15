@@ -38,20 +38,25 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class CreateCompanyPostWidget extends ALComposite implements ClickHandler, FocusHandler, KeyUpHandler {
-    
-    private static Logger logger = Logger.getLogger(CreateEmployeePostWidget.class.getName());
+
+    private static Logger logger = Logger.getLogger(CreateCompanyPostWidget.class.getName());
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel mainPanel = new FlowPanel();
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     final RichTextArea textArea = new RichTextArea();
     final RichTextToolBar toolBar = new RichTextToolBar(textArea);
     Button createPostB = new Button("Share");
-    FileUploadPanel fileUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL");
-    
+    FileUploadPanel fileUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL") {
+        @Override
+        public void onUploadComplete() {
+            postCreateSuccess(null);
+        }
+    };
+
     public CreateCompanyPostWidget() {
         init(captionPanel);
     }
-    
+
     @Override
     protected void addWidgets() {
         captionPanel.setCaptionHTML("System Soft Feed...");
@@ -62,14 +67,14 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
         mainPanel.add(buttonsPanel);
         captionPanel.setContentWidget(mainPanel);
     }
-    
+
     @Override
     protected void addListeners() {
         createPostB.addClickHandler(this);
         textArea.addKeyUpHandler(this);
         textArea.addFocusHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         mainPanel.addStyleName(".createPostWidget");
@@ -77,41 +82,41 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
         textArea.setHeight("80%");
         createPostB.setEnabled(false);
     }
-    
+
     protected JSONObject populatePostEntity() {
         JSONObject post = new JSONObject();
         post.put("postContent", new JSONString(textArea.getHTML()));
         if (fileUploadPanel.getFileUpload().getFilename() != null && !"".equals(fileUploadPanel.getFileUpload().getFilename().trim())) {
-            JSONArray postImages = new JSONArray();
-            JSONObject postImage1 = new JSONObject();
-            postImage1.put("fileURL", fileUploadPanel.getFileName());
+            JSONArray postFiles = new JSONArray();
+            JSONObject postFile = new JSONObject();
+            postFile.put("fileURL", fileUploadPanel.getFileName());
+            postFile.put("fileType", new JSONString("IMAGE"));
             if (Utils.isImage(fileUploadPanel.getFileName().stringValue())) {
-                postImage1.put("fileType", new JSONString("IMAGE"));
-            } else if (Utils.isImage(fileUploadPanel.getFileName().stringValue())) {
-                postImage1.put("fileType", new JSONString("FILE"));
+                postFile.put("fileType", new JSONString("IMAGE"));
+            } else if (Utils.isDocument(fileUploadPanel.getFileName().stringValue())) {
+                postFile.put("fileType", new JSONString("FILE"));
             } else {
                 Window.alert("Unsupported file extension");
                 throw new RuntimeException("unsupported file type");
             }
-            logger.info(postImage1.toString());
-            postImages.set(0, postImage1);
-            post.put("postFiles", postImages);
+            logger.info(postFile.toString());
+            postFiles.set(0, postFile);
+            post.put("postFiles", postFiles);
         }
         return post;
     }
-    
+
     protected void createCompanyPostClicked(JSONObject post) {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        
                         uploadFiles(arg0);
-                        postCreateSuccess(arg0);
                     }
                 });
     }
-    
+//TODO move this to abstract class
+
     protected void uploadFiles(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
@@ -119,29 +124,29 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
             fileUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
         }
     }
-    
+
     protected void postCreateSuccess(String result) {
         textArea.setText("");
         new ResponseStatusWidget().show("Successfully Shared");
         TabPanel.instance().socialPanel.entityPanel.clear();
         TabPanel.instance().socialPanel.entityPanel.add(new CompanyFeedHome());
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createPostB)) {
             createCompanyPostClicked(populatePostEntity());
         }
     }
-    
+
     @Override
     public void onFocus(FocusEvent event) {
     }
-    
+
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "social/createCompanyPost";
     }
-    
+
     @Override
     public void onKeyUp(KeyUpEvent event) {
         if (textArea.getText().length() >= 2) {

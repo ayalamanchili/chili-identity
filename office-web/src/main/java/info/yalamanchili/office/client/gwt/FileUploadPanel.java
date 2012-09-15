@@ -11,12 +11,19 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 import com.google.gwt.user.client.ui.Label;
 import info.yalamanchili.gwt.utils.Utils;
+import java.util.logging.Logger;
 
-public class FileUploadPanel extends ALComposite implements ClickHandler {
+public abstract class FileUploadPanel extends ALComposite implements ClickHandler, SubmitHandler, SubmitCompleteHandler {
 
+    private static Logger logger = Logger.getLogger(FileUploadPanel.class.getName());
     protected String filePrefix;
+    protected boolean submitted = false;
     FlowPanel panel = new FlowPanel();
     FormPanel formPanel = new FormPanel();
     Label label = new Label("upload");
@@ -24,6 +31,7 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
     Button submit = new Button("Upload");
 
     public FileUploadPanel(ConstantsWithLookup constants, String attributeName, String className, String filePrefix) {
+        instance = this;
         label.setText(Utils.getAttributeLabel(attributeName, className, constants));
         this.filePrefix = filePrefix;
         init(formPanel);
@@ -33,6 +41,8 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         submit.addClickHandler(this);
+        formPanel.addSubmitHandler(this);
+        formPanel.addSubmitCompleteHandler(this);
     }
 
     @Override
@@ -82,5 +92,23 @@ public class FileUploadPanel extends ALComposite implements ClickHandler {
             return fileName;
         }
 
+    }
+    private static FileUploadPanel instance;
+
+    public static FileUploadPanel instance() {
+        return instance;
+    }
+
+    public abstract void onUploadComplete();
+
+    @Override
+    public void onSubmitComplete(SubmitCompleteEvent event) {
+        logger.info("on submit complete");
+        onUploadComplete();
+    }
+
+    @Override
+    public void onSubmit(SubmitEvent event) {
+        logger.info("on submit");
     }
 }

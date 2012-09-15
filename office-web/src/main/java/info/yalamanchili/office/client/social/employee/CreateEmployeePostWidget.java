@@ -38,7 +38,12 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     RichTextArea createPostTextArea = new RichTextArea();
     Button createPostB = new Button("Share");
-    FileUploadPanel imageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL");
+    FileUploadPanel imageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL") {
+        @Override
+        public void onUploadComplete() {
+            postCreateSuccess(null);
+        }
+    };
 
     public CreateEmployeePostWidget() {
         init(captionPanel);
@@ -91,7 +96,6 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
                     public void onResponse(String arg0) {
                         createPostTextArea.setText("");
                         uploadImage(arg0);
-                        postCreateSuccess(arg0);
                     }
                 });
     }
@@ -100,6 +104,7 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
         if (postFiles.size() > 0) {
+            logger.info(imageUploadPanel.toString());
             imageUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
         }
     }

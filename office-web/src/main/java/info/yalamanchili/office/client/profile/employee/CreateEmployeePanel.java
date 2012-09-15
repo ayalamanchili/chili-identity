@@ -17,7 +17,12 @@ import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWi
 public class CreateEmployeePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
-    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL");
+    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL") {
+        @Override
+        public void onUploadComplete() {
+            postCreateSuccess(null);
+        }
+    };
 
     public CreateEmployeePanel(CreateCompositeType type) {
         super(type);
@@ -81,7 +86,6 @@ public class CreateEmployeePanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
                         uploadImage(arg0);
                     }
                 });

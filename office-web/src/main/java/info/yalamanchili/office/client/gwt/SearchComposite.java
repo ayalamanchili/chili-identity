@@ -131,7 +131,14 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(dropDownField);
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
-            FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName, "name");
+            FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName, "name"){
+
+                @Override
+                public void onUploadComplete() {
+                   
+                }
+                
+            };
             advancedSearchPanel.add(fileUploadPanel);
         }
         if (DataType.RICH_TEXT_AREA.equals(type)) {
