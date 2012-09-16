@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import info.yalamanchili.gwt.composite.ALComposite;
 
-public class MultiSelectBox extends ALComposite implements ClickHandler {
+public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
 
     private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
     FlowPanel panel = new FlowPanel();
@@ -31,19 +31,16 @@ public class MultiSelectBox extends ALComposite implements ClickHandler {
     Map<String, String> available;
     Set<String> selected;
     List<String> tempSelectedItems = new ArrayList<String>();
-    
-    /* holds the selected varialbes in temp */
 
-    public MultiSelectBox(String title, Map<String, String> available,
-            Set<String> selected) {
+    /* holds the selected varialbes in temp */
+    public MultiSelectBox() {
         init(panel);
-        titleLabel.setText(title);
-        this.available = available;
-        this.selected = selected;
-        this.popuplateWidget();
     }
 
-    private void popuplateWidget() {
+    public void popuplateWidget(String title, MultiSelectObj obj) {
+        titleLabel.setText(title);
+        this.available = obj.getAvailable();
+        this.selected = obj.getSelected();
         for (String id : available.keySet()) {
             if (selected.contains(id)) {
                 selectedListBox.insertItem(available.get(id), id.toString(),
@@ -104,7 +101,10 @@ public class MultiSelectBox extends ALComposite implements ClickHandler {
                 tempSelectedItems.add(id);
             }
         }
+        selectionChanged(getSelectedIds());
     }
+
+    public abstract void selectionChanged(List<String> selectedIds);
 
     /* returns the selected ids */
     public List<String> getSelectedIds() {

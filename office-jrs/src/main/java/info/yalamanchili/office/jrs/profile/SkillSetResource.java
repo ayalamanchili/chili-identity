@@ -13,7 +13,7 @@ import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.jrs.MuitiSelectObj;
+import info.yalamanchili.office.jrs.MultiSelectObj;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -44,8 +44,8 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     //TODO use jpa query to improve performance
     @GET
     @Path("/skills/{empId}/{start}/{limit}")
-    public MuitiSelectObj getSkills(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
-        MuitiSelectObj obj = new MuitiSelectObj();
+    public MultiSelectObj getSkills(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
+        MultiSelectObj obj = new MultiSelectObj();
         SkillSet skillSet = (SkillSet) getDao().findById(empId);
         SkillDao skillDao = (SkillDao) SpringContext.getBean("skillDao");
         for (Skill skill : skillDao.query(start, limit)) {
@@ -59,8 +59,8 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
 
     @GET
     @Path("/certifications/{empId}/{start}/{limit}")
-    public MuitiSelectObj getCertifications(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
-        MuitiSelectObj obj = new MuitiSelectObj();
+    public MultiSelectObj getCertifications(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
+        MultiSelectObj obj = new MultiSelectObj();
         SkillSet skillSet = (SkillSet) getDao().findById(empId);
         CertificationDao certificationDao = (CertificationDao) SpringContext.getBean("certificationDao");
         for (Certification certification : certificationDao.query(start, limit)) {

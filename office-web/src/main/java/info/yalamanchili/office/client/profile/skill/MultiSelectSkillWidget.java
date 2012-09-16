@@ -8,13 +8,18 @@ import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.MultiSelectComposite;
 import info.yalamanchili.office.client.gwt.Utils;
+import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
 public class MultiSelectSkillWidget extends MultiSelectComposite {
+
+    private static Logger logger = Logger.getLogger(MultiSelectSkillWidget.class.getName());
 
     public MultiSelectSkillWidget(String name, String parentId) {
         super(name, parentId);
@@ -26,8 +31,7 @@ public class MultiSelectSkillWidget extends MultiSelectComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        multiSelectBox = Utils.getMultiSelectBox(name, arg0);
-                        panel.add(multiSelectBox);
+                        multiSelectBox.popuplateWidget("Skills", Utils.getMultiSelectBox(arg0));
                     }
                 });
     }
@@ -35,5 +39,10 @@ public class MultiSelectSkillWidget extends MultiSelectComposite {
     @Override
     protected String getMultiSelectUrl() {
         return OfficeWelcome.constants.root_url() + "skillset/skills/" + parentId + "/0/10";
+    }
+
+    @Override
+    protected void selectionChanged(List<String> selectedIds) {
+        logger.info(selectedIds.toString());
     }
 }

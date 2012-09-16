@@ -2,27 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs;
+package info.yalamanchili.office.client.gwt;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author ayalamanchili
  */
-@XmlRootElement
-@XmlType
-public class MuitiSelectObj {
+public class MultiSelectObj {
 
     protected Map<String, String> available;
     protected Set<String> selected;
 
-    public MuitiSelectObj() {
+    public MultiSelectObj() {
     }
 
     public Map<String, String> getAvailable() {
@@ -52,7 +48,7 @@ public class MuitiSelectObj {
         if (getSelected() == null) {
             selected = new HashSet<String>();
         }
-      selected.add(key);
+        selected.add(key);
     }
 
     @Override
