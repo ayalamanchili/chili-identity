@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-
+//TODO extend tree item?
 public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem> {
 
     private static TreePanelComposite instance;
@@ -34,6 +34,12 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 
     public JSONObject getEntity() {
         return entity;
+    }
+
+    public TreePanelComposite(JSONObject entity) {
+        instance = this;
+        initWidget(panel);
+        this.entity = entity;
     }
 
     public TreePanelComposite(String entityId) {

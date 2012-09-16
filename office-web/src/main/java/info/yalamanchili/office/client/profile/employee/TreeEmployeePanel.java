@@ -15,13 +15,18 @@ import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPane
 import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPanel;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
+import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
 
 public class TreeEmployeePanel extends TreePanelComposite {
 
+    private static Logger logger = Logger.getLogger(TreeEmployeePanel.class.getName());
     protected static final String ADDRESS_NODE = "address";
     protected static final String EMAIL_NODE = "email";
     protected static final String PHONE_NODE = "phone";
@@ -29,6 +34,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String SKILL_SET_NODE = "skillset";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
+    protected TreeSkillSetPanel skillSetTreePanel;
 
     public TreeEmployeePanel(String entityId) {
         super(entityId);
@@ -52,7 +58,14 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
-        addFirstChildLink("Skill Set", SKILL_SET_NODE, new TreeSkillSetPanel(entityId).getRoot());
+        HttpService.HttpServiceAsync.instance().doGet(getSkillSetURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        skillSetTreePanel = new TreeSkillSetPanel(JSONParser.parseLenient(arg0).isObject());
+                        addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
+                    }
+                });
         addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
     }
 
@@ -92,16 +105,23 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
 
         }
+        //TODO review
+        else{
+            skillSetTreePanel.treeNodeSelected(entityNodeKey);
+        }
     }
 
     @Override
     public JSONObject loadEntity() {
-        // TODO Auto-generated method stub
-        return null;
+        return OfficeWelcome.instance().employee;
     }
 
     @Override
     public void showEntity() {
         // TODO Auto-generated method stub
+    }
+
+    protected String getSkillSetURI() {
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + entityId;
     }
 }

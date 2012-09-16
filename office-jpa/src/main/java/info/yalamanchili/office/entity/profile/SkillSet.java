@@ -59,7 +59,6 @@ public class SkillSet extends AbstractEntity {
         this.resumeUrl = resumeUrl;
     }
 
-    @XmlTransient
     public List<Skill> getSkills() {
         if (this.skills == null) {
             this.skills = new ArrayList<Skill>();
@@ -71,7 +70,6 @@ public class SkillSet extends AbstractEntity {
         this.skills = skills;
     }
 
-    @XmlTransient
     public List<Certification> getCertifications() {
         if (this.certifications == null) {
             this.certifications = new ArrayList<Certification>();
