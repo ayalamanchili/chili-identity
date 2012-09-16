@@ -29,7 +29,7 @@ public class TreeSkillSetPanel extends TreePanelComposite {
 
     public TreeSkillSetPanel(JSONObject entity) {
         super(entity);
-        entityId = JSONUtils.toString(entity, "id");
+        this.entityId = JSONUtils.toString(entity, "id");
         init("SkillSet", OfficeWelcome.constants);
         logger.info("www" + entity);
     }
@@ -63,7 +63,7 @@ public class TreeSkillSetPanel extends TreePanelComposite {
 
     @Override
     public JSONObject loadEntity() {
-        return entity;
+        return null;
     }
 
     @Override

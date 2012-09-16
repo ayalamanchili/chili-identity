@@ -39,6 +39,12 @@ public class MuitiSelectCertificationWidget extends MultiSelectComposite {
     }
 
     @Override
-    protected void selectionChanged(List<String> selectedIds) {
+    protected void itemsSelected(List<String> selectedIds) {
+        
+    }
+
+    @Override
+    protected void itemsUnselected(List<String> selectedIds) {
+       
     }
 }

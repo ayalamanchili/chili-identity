@@ -20,8 +20,13 @@ public abstract class MultiSelectComposite extends Composite {
     protected FlowPanel panel = new FlowPanel();
     protected MultiSelectBox multiSelectBox = new MultiSelectBox() {
         @Override
-        public void selectionChanged(List<String> selectedIds) {
-            MultiSelectComposite.this.selectionChanged(selectedIds);
+        public void itemsSelected(List<String> selectedIds) {
+            MultiSelectComposite.this.itemsSelected(selectedIds);
+        }
+
+        @Override
+        public void itemsUnselected(List<String> selectedIds) {
+            MultiSelectComposite.this.itemsUnselected(selectedIds);
         }
     };
 
@@ -33,7 +38,9 @@ public abstract class MultiSelectComposite extends Composite {
         loadData();
     }
 
-    protected abstract void selectionChanged(List<String> selectedIds);
+    protected abstract void itemsSelected(List<String> selectedIds);
+
+    protected abstract void itemsUnselected(List<String> selectedIds);
 
     protected abstract void loadData();
 

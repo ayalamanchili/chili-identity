@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import info.yalamanchili.gwt.composite.ALComposite;
 
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
-
+    
     private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
     FlowPanel panel = new FlowPanel();
     Label titleLabel = new Label();
@@ -36,7 +36,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     public MultiSelectBox() {
         init(panel);
     }
-
+    
     public void popuplateWidget(String title, MultiSelectObj obj) {
         titleLabel.setText(title);
         this.available = obj.getAvailable();
@@ -51,7 +51,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
             }
         }
     }
-
+    
     @Override
     public void addWidgets() {
         panel.add(titleLabel);
@@ -60,13 +60,13 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         panel.add(unselectButton);
         panel.add(selectedListBox);
     }
-
+    
     @Override
     public void addListeners() {
         selectButton.addClickHandler(this);
         unselectButton.addClickHandler(this);
     }
-
+    
     @Override
     public void configure() {
         availableListBox.setVisibleItemCount(10);
@@ -81,7 +81,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         unselectButton
                 .addStyleName("y-gwt-multipleSelectWidget-unselectButton");
     }
-
+    
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(selectButton)) {
             tempSelectedItems = new ArrayList<String>();
@@ -91,6 +91,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
                 removeSelectedItems(availableListBox);
                 tempSelectedItems.add(id);
             }
+            itemsSelected(getSelectedIds());
         }
         if (event.getSource().equals(unselectButton)) {
             tempSelectedItems = new ArrayList<String>();
@@ -100,17 +101,19 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
                 removeSelectedItems(selectedListBox);
                 tempSelectedItems.add(id);
             }
+            itemsUnselected(getSelectedIds());
         }
-        selectionChanged(getSelectedIds());
     }
-
-    public abstract void selectionChanged(List<String> selectedIds);
+    
+    public abstract void itemsSelected(List<String> selectedIds);
+    
+    public abstract void itemsUnselected(List<String> selectedIds);
 
     /* returns the selected ids */
     public List<String> getSelectedIds() {
         return tempSelectedItems;
     }
-
+    
     private Set<String> getSelectedIds(ListBox listBox) {
         Set<String> ids = new HashSet<String>();
         for (int i = 0; i < listBox.getItemCount(); i++) {
@@ -120,7 +123,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         }
         return ids;
     }
-
+    
     protected void removeSelectedItems(ListBox listBox) {
         for (int i = 0; i < listBox.getItemCount(); i++) {
             if (listBox.isItemSelected(i)) {
