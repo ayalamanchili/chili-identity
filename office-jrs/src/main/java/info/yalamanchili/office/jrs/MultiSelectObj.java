@@ -26,6 +26,9 @@ public class MultiSelectObj {
     }
 
     public Map<String, String> getAvailable() {
+        if (available == null) {
+            this.available = new HashMap<String, String>();
+        }
         return available;
     }
 
@@ -34,6 +37,9 @@ public class MultiSelectObj {
     }
 
     public Set<String> getSelected() {
+        if (selected == null) {
+            this.selected = new HashSet<String>();
+        }
         return selected;
     }
 
@@ -42,17 +48,11 @@ public class MultiSelectObj {
     }
 
     public void addAvailable(String key, String value) {
-        if (getAvailable() == null) {
-            available = new HashMap<String, String>();
-        }
-        available.put(key, value);
+        getAvailable().put(key, value);
     }
 
     public void addSelected(String key) {
-        if (getSelected() == null) {
-            selected = new HashSet<String>();
-        }
-      selected.add(key);
+        getSelected().add(key);
     }
 
     @Override

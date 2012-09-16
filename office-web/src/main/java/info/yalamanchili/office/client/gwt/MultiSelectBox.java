@@ -26,8 +26,8 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     Label titleLabel = new Label();
     ListBox availableListBox = new ListBox(true);
     ListBox selectedListBox = new ListBox(true);
-    public Button selectButton = new Button("  >>  ");
-    public Button unselectButton = new Button("  <<  ");
+    public Button selectButton = new Button("  Add  ");
+    public Button unselectButton = new Button("  Remove  ");
     Map<String, String> available;
     Set<String> selected;
     List<String> tempSelectedItems = new ArrayList<String>();

@@ -19,13 +19,13 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class MultiSelectSkillWidget extends MultiSelectComposite {
-    
+
     private static Logger logger = Logger.getLogger(MultiSelectSkillWidget.class.getName());
-    
+
     public MultiSelectSkillWidget(String name, String parentId) {
         super(name, parentId);
     }
-    
+
     @Override
     protected void loadData() {
         HttpService.HttpServiceAsync.instance().doGet(getMultiSelectUrl(), OfficeWelcome.instance().getHeaders(), true,
@@ -36,10 +36,9 @@ public class MultiSelectSkillWidget extends MultiSelectComposite {
                     }
                 });
     }
-    
+
     @Override
     protected void itemsSelected(List<String> selectedIds) {
-        logger.info("items selected" + selectedIds);
         HttpService.HttpServiceAsync.instance().doGet(getAddSkillsUrl(selectedIds), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -48,23 +47,36 @@ public class MultiSelectSkillWidget extends MultiSelectComposite {
                     }
                 });
     }
-    
+
     @Override
     protected void itemsUnselected(List<String> selectedIds) {
-        logger.info("items unselected" + selectedIds);
+        HttpService.HttpServiceAsync.instance().doGet(getRemoveSkillsUrl(selectedIds), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("saved");
+                    }
+                });
     }
-    
+
     @Override
     protected String getMultiSelectUrl() {
         return OfficeWelcome.constants.root_url() + "skillset/skills/" + parentId + "/0/10";
     }
-    
+
+    protected String getRemoveSkillsUrl(List<String> unselectedIds) {
+        String url = OfficeWelcome.constants.root_url() + "skillset/skills/remove/" + parentId + "?";
+        for (String id : unselectedIds) {
+            url = url.concat("id=" + id + "&");
+        }
+        return url;
+    }
+
     protected String getAddSkillsUrl(List<String> selectedIds) {
         String url = OfficeWelcome.constants.root_url() + "skillset/skills/add/" + parentId + "?";
         for (String id : selectedIds) {
             url = url.concat("id=" + id + "&");
         }
-        logger.info(url);
         return url;
     }
 }
