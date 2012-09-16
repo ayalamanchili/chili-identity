@@ -31,8 +31,9 @@ public class MultiSelectBox extends ALComposite implements ClickHandler {
     Map<String, String> available;
     Set<String> selected;
     List<String> tempSelectedItems = new ArrayList<String>();
-
+    
     /* holds the selected varialbes in temp */
+
     public MultiSelectBox(String title, Map<String, String> available,
             Set<String> selected) {
         init(panel);
