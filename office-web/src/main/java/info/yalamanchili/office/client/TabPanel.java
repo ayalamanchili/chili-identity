@@ -28,7 +28,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout homePanel = new EntityLayout();
     public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
-    public EntityLayout myTaePanel = new EntityLayout();
+    public EntityLayout myTimeandExpensePanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
 
     public TabPanel() {
@@ -39,7 +39,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
-        tabPanel.add(myTaePanel, "TimeSheet", false);
+        tabPanel.add(myTimeandExpensePanel, "TimeSheet", false);
         tabPanel.add(profilePanel, "Profile", false);
         tabPanel.addSelectionHandler(this);
         tabPanel.selectTab(MY_OFFICE_TAB);
@@ -87,11 +87,11 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     }
 
-    public void selectTaeTab() {
-        myTaePanel.entityPanel.clear();
-        myTaePanel.sidePanelTop.clear();
-        myTaePanel.entityPanel.add(new ProfileHome());
-        myTaePanel.sidePanelTop.add(new ProfileSidePanel());
+    public void selectTimeandExpenseTab() {
+       myTimeandExpensePanel.entityPanel.clear();
+       myTimeandExpensePanel.sidePanelTop.clear();
+       myTimeandExpensePanel.entityPanel.add(new ProfileHome());
+       myTimeandExpensePanel.sidePanelTop.add(new ProfileSidePanel());
     }
 
     public void selectProfileTab() {
@@ -118,8 +118,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         return myOfficePanel;
     }
 
-    public EntityLayout getTaePanel() {
-        return myTaePanel;
+    public EntityLayout getTimeandExpensePanel() {
+        return myTimeandExpensePanel;
     }
 
     public EntityLayout getProfilePanel() {
