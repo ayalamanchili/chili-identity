@@ -22,7 +22,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public final static Integer HOME_TAB = 0;
     public final static Integer SOCIAL_TAB = 1;
     public final static Integer MY_OFFICE_TAB = 2;
-    public final static Integer MY_TAE_TAB = 3;
+    public final static Integer TimeandExpense_TAB = 3;
     public final static Integer PROFILE_TAB = 4;
     protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
     public EntityLayout homePanel = new EntityLayout();
@@ -57,7 +57,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (selectedTabIndex.getSelectedItem().equals(MY_OFFICE_TAB)) {
             selectAdminTab();
         }
-        if (selectedTabIndex.getSelectedItem().equals(MY_TAE_TAB)) {
+        if (selectedTabIndex.getSelectedItem().equals(TimeandExpense_TAB)) {
             selectAdminTab();
         }
         if (selectedTabIndex.getSelectedItem().equals(PROFILE_TAB)) {
