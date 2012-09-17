@@ -26,6 +26,11 @@ import java.util.logging.Logger;
 
 public class TreeEmployeePanel extends TreePanelComposite {
 
+    private static TreeEmployeePanel instance;
+
+    public static TreeEmployeePanel instance() {
+        return instance;
+    }
     private static Logger logger = Logger.getLogger(TreeEmployeePanel.class.getName());
     protected static final String ADDRESS_NODE = "address";
     protected static final String EMAIL_NODE = "email";
@@ -38,6 +43,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
     public TreeEmployeePanel(String entityId) {
         super(entityId);
+        instance = this;
         init("Employee", OfficeWelcome.constants);
     }
 
@@ -62,8 +68,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        skillSetTreePanel = new TreeSkillSetPanel(JSONParser.parseLenient(arg0).isObject());
-                        addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
+                        if (arg0 != null && JSONParser.parseLenient(arg0).isObject() != null) {
+                            skillSetTreePanel = new TreeSkillSetPanel(JSONParser.parseLenient(arg0).isObject());
+                            addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
+                        }
                     }
                 });
         addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
@@ -104,9 +112,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
 
-        }
-        //TODO review
-        else{
+        } //TODO review
+        else {
             skillSetTreePanel.treeNodeSelected(entityNodeKey);
         }
     }

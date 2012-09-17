@@ -35,7 +35,6 @@ public class UpdateEmailPanel extends UpdateComposite {
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("primaryEmail", entity);
         assignEntityValueFromField("emailType", entity);
-        logger.info(entity.toString());
         return entity;
     }
 
@@ -55,6 +54,7 @@ public class UpdateEmailPanel extends UpdateComposite {
         });
     }
 
+    @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Email information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
