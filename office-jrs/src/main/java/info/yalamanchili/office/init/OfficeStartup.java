@@ -97,7 +97,7 @@ public class OfficeStartup {
         Email userPrimaryEmail = new Email();
         userPrimaryEmail.setEmailType(getWorkEmailType());
         userPrimaryEmail.setPrimaryEmail(true);
-        userPrimaryEmail.setEmail("user@gmail.com");
+        userPrimaryEmail.setEmail("prasanthissv@gmail.com");
 
         Email userSecondaryEmail = new Email();
         userSecondaryEmail.setPrimaryEmail(false);
@@ -139,7 +139,7 @@ public class OfficeStartup {
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
 
-        adminPrimaryEmail.setEmail("yphanikumar@gmail.com");
+        adminPrimaryEmail.setEmail("prasanthi.p@sstech.mobi");
 
 
 
