@@ -5,7 +5,7 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.dao.Client.ClientEntityDao;
+import info.yalamanchili.office.dao.Client.ClientDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 public class ClientResource extends CRUDResource<Client> 
      {
      @Autowired
-    public ClientEntityDao cliententityDao;
+    public ClientDao cliententityDao;
      
       @Override
     public CRUDDao getDao() {
