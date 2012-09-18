@@ -27,7 +27,7 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
 
     public ReadAllProjectsPanel() {
         instance = this;
-        initTable("Project", OfficeWelcome.constants);
+        initTable("Client", OfficeWelcome.constants);
     }
 
     public ReadAllProjectsPanel(JSONArray array) {
