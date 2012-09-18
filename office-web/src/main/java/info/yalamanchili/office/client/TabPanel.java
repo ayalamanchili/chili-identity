@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.social.SocialSidePanel;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
-import info.yalamanchili.office.client.tae.ReadAllProjectsPanel;
+import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 

@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.tae;
+package info.yalamanchili.office.client.tae.client;
 
+import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
