@@ -13,8 +13,10 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.env.OfficeClientConfigDev;
@@ -47,9 +49,18 @@ public class OfficeWelcome implements EntryPoint {
         this.employee = user.get("employee").isObject();
         this.employeeId = employee.get("id").isString().stringValue();
         initUserRoles(user);
-        logger.info(roles.toString());
-        RootLayout rootLayout = new RootLayout();
-        RootLayoutPanel.get().add(rootLayout);
+        GWT.runAsync(new RunAsyncCallback() {
+            public void onFailure(Throwable caught) {
+                Window.alert("Code download failed");
+            }
+
+            public void onSuccess() {
+                logger.info(roles.toString());
+                RootLayout rootLayout = new RootLayout();
+                RootLayoutPanel.get().add(rootLayout);
+            }
+        });
+
     }
 
     protected void initUserRoles(JSONObject userObj) {
