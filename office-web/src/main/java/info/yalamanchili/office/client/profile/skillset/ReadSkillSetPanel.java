@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.config.OfficeClientConfig;
 import java.util.logging.Logger;
 
 /**
@@ -89,7 +90,7 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(resumeL)) {
-            String fileURL = OfficeWelcome.constants.file_download_url() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
             logger.info("file url:" + fileURL);
             Window.open(fileURL, "_blank", "");
         }

@@ -16,6 +16,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import info.yalamanchili.office.client.config.OfficeClientConfig;
+import info.yalamanchili.office.client.env.OfficeClientConfigDev;
 
 public class OfficeWelcome implements EntryPoint {
 
@@ -29,9 +31,11 @@ public class OfficeWelcome implements EntryPoint {
     public List<String> roles = new ArrayList<String>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
+    public static OfficeClientConfig config = GWT.create(OfficeClientConfig.class);
 
     @Override
     public void onModuleLoad() {
+        logger.info(config.getFileDownloadUrl());
         instance = this;
         LoginPanel loginPanel = new LoginPanel();
         loginPanel.showLoginWindow();

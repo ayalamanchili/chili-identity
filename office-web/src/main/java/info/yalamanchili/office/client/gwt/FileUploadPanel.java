@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 import com.google.gwt.user.client.ui.Label;
 import info.yalamanchili.gwt.utils.Utils;
+import info.yalamanchili.office.client.config.OfficeClientConfig;
 import java.util.logging.Logger;
 
 public abstract class FileUploadPanel extends ALComposite implements ClickHandler, SubmitHandler, SubmitCompleteHandler {
@@ -50,7 +51,7 @@ public abstract class FileUploadPanel extends ALComposite implements ClickHandle
         formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
         formPanel.setMethod(FormPanel.METHOD_POST);
         fileUpload.setName(filePrefix);
-        formPanel.setAction(OfficeWelcome.constants.file_upload_url());
+        formPanel.setAction(OfficeWelcome.config.getFileUploadUrl());
     }
 
     @Override

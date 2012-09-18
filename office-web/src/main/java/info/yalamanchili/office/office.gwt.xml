@@ -33,4 +33,8 @@
     <source path='client' />
     <!-- this is a temp should remove-->
     <inherits name='com.google.gwt.user.Debug'/>
+    
+    <replace-with class="info.yalamanchili.office.client.env.OfficeClientConfigProd">
+        <when-type-is class="info.yalamanchili.office.client.config.OfficeClientConfig" />
+    </replace-with>
 </module>
