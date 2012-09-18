@@ -27,7 +27,7 @@ public class ReadAllSOWPanel extends ReadAllComposite {
 
     public ReadAllSOWPanel() {
         instance = this;
-        initTable("Client", OfficeWelcome.constants);
+        initTable("StatementOfWork", OfficeWelcome.constants);
     }
 
     public ReadAllSOWPanel(JSONArray array) {
@@ -60,7 +60,6 @@ public class ReadAllSOWPanel extends ReadAllComposite {
         table.setText(0, 4, getKeyValue("StartDate"));
         table.setText(0, 5, getKeyValue("EndDate"));
         table.setText(0, 6, getKeyValue("BillRate"));
-        table.setText(0, 7, getKeyValue("TimeSheets"));
         table.setText(0, 8, getKeyValue("Project"));
     }
 
