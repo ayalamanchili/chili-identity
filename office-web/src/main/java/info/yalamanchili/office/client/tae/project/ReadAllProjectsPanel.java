@@ -58,6 +58,7 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
         table.setText(0, 2, getKeyValue("Description"));
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
+        table.setText(0, 5, getKeyValue("Client"));
     }
 
     @Override
@@ -70,6 +71,7 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
             table.setText(i, 3, JSONUtils.toString(entity, "startDate"));
             table.setText(i, 4, JSONUtils.toString(entity, "endDate"));
+            table.setText(i, 5, JSONUtils.toString(entity, "client"));
         }
     }
 
