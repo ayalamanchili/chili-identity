@@ -1,6 +1,6 @@
 package info.yalamanchili.office.server;
 
-import info.yalamanchili.http.SyncHttp;
+import info.chili.http.SyncHttp;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.config.OfficeWebConfiguration;
 

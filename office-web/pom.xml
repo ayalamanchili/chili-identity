@@ -22,8 +22,8 @@
             <version>${yalamanchili.version}</version>
         </dependency>
         <dependency>
-            <groupId>info.yalamanchili.commons</groupId>
-            <artifactId>yalamanchili-commons</artifactId>
+            <groupId>info.chili</groupId>
+            <artifactId>chili-commons</artifactId>
             <version>${yalamanchili.version}</version>
         </dependency>
         <dependency>
