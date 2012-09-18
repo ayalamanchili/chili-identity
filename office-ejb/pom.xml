@@ -21,10 +21,5 @@
             <artifactId>office-dao</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>info.yalamanchili.office</groupId>
-            <artifactId>office-cits-adapter</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 </project>

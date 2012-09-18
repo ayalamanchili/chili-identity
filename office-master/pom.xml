@@ -168,9 +168,7 @@
         </dependency>
     </dependencies>
     <modules>
-		<module>../office-commons</module>
-        <!-- adapters-->
-        <module>../office-cits-adapter</module>
+        <module>../office-commons</module>
         <!-- Service -->
         <module>../office-jpa</module>
         <module>../office-jms</module>
