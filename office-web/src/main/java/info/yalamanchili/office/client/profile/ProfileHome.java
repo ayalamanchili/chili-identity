@@ -4,6 +4,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPopupPanel;
@@ -11,16 +13,25 @@ import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
+import info.yalamanchili.office.client.profile.certification.MuitiSelectCertificationWidget;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.employee.ChangePasswordPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
+import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
+import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
+import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
+import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite implements ClickHandler {
@@ -38,7 +49,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel addressesPanel;
     protected DisclosurePanel clientInfoPanel;
     protected DisclosurePanel emergencyContactsPanel;
-    protected DisclosurePanel skillSetPanel;
+    protected DisclosurePanel skillSetDP;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
     protected ClickableLink changePassword = new ClickableLink("Change Password");
 
@@ -212,24 +223,49 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         emergencyContactsPanel.setOpen(true);
     }
     /* SkillSet Panel */
+//TODO clean up
 
     protected void addSkillSetPanel() {
-        skillSetPanel = new DisclosurePanel("SkillSet");
-        panel.add(skillSetPanel);
-        skillSetPanel.addStyleName("profileHome");
-        skillSetPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+        skillSetDP = new DisclosurePanel("SkillSet");
+        final FlowPanel skillSetPanel = new FlowPanel();
+        panel.add(skillSetDP);
+        skillSetDP.addStyleName("profileHome");
+        skillSetDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-                skillSetPanel.setContent(
-                        new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
+                skillSetDP.setContent(skillSetPanel);
+                skillSetPanel.clear();
+                HttpService.HttpServiceAsync.instance().doGet(getSkillSetUrl(OfficeWelcome.instance().employeeId), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response != null && !response.isEmpty()) {
+                                    JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
+                                    skillSetPanel.add(new ReadSkillSetPopupPanel(skillSet));
+                                    skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id")));
+                                    skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id")));
+                                } else {
+                                    TabPanel.instance().myOfficePanel.entityPanel.clear();
+                                    if (Auth.isAdmin() || Auth.isHR()) {
+                                        skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
+                                    }
+                                }
+                            }
+                        });
+
 
             }
         });
     }
+//TODO remove and access from ReadAllSkillSetPanel
+
+    public String getSkillSetUrl(String empId) {
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + empId;
+    }
 
     public void refreshSkillSetPanel() {
-        skillSetPanel.setOpen(false);
-        skillSetPanel.setOpen(true);
+        skillSetDP.setOpen(false);
+        skillSetDP.setOpen(true);
     }
 
     @Override

@@ -31,8 +31,15 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(ReadSkillSetPanel.class.getName());
     ClickableLink resumeL = new ClickableLink("Resume");
 
+    public ReadSkillSetPanel() {
+    }
+
     public ReadSkillSetPanel(String id) {
         initReadComposite(id, "SkillSet", OfficeWelcome.constants);
+    }
+
+    public ReadSkillSetPanel(JSONObject entity) {
+        initReadComposite(entity, "SkillSet", OfficeWelcome.constants);
     }
 
     @Override
@@ -97,7 +104,7 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
     }
 
     @Override
-    protected String getURI() {
+    public String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + entityId;
     }
 }

@@ -20,6 +20,10 @@ public class ReadSkillSetPopupPanel extends ReadSkillSetPanel {
         super(employeeId);
     }
 
+    public ReadSkillSetPopupPanel(JSONObject skillSet) {
+        super(skillSet);
+    }
+
     @Override
     protected void onLoadSuccess(String response) {
         if (response != null && !response.isEmpty()) {
