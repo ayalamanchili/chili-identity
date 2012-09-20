@@ -5,7 +5,7 @@
 package info.yalamanchili.office.dao.tae;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.entity.time.TimeSheet;
+import info.yalamanchili.office.entity.client.StatementOfWork;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
  * @author bala
  */
 @Component
-public class SOWDao extends CRUDDao<TimeSheet> {
+public class SOWDao extends CRUDDao<StatementOfWork> {
 
     public SOWDao() {
-        super(TimeSheet.class);
+        super(StatementOfWork.class);
     }
     @PersistenceContext
     protected EntityManager em;
