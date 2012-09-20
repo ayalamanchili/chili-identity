@@ -7,6 +7,8 @@ package info.yalamanchili.office.jrs.tae;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.tae.SOWDao;
 import info.yalamanchili.office.entity.time.TimeSheet;
+import info.yalamanchili.office.entity.client.StatementOfWork;
+import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.jrs.CRUDResource;
 
 import java.util.List;
@@ -26,7 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author bala
  */
-public class SOWResource extends CRUDResource<TimeSheet> {
+@Path("sow")
+@Component
+@Transactional
+@Scope("request")
+public class SOWResource extends CRUDResource<StatementOfWork> {
 
     @Autowired
     public SOWDao sowDao;
@@ -41,7 +47,7 @@ public class SOWResource extends CRUDResource<TimeSheet> {
     public static class SOWTable {
 
         protected Long size;
-        protected List<TimeSheet> entities;
+        protected List<StatementOfWork> entities;
 
         public Long getSize() {
             return size;
@@ -52,11 +58,11 @@ public class SOWResource extends CRUDResource<TimeSheet> {
         }
 
         @XmlElement
-        public List<TimeSheet> getEntities() {
+        public List<StatementOfWork> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<TimeSheet> entities) {
+        public void setEntities(List<StatementOfWork> entities) {
             this.entities = entities;
         }
     }
