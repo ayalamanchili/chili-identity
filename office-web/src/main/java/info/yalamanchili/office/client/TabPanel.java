@@ -61,7 +61,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             selectAdminTab();
         }
         if (selectedTabIndex.getSelectedItem().equals(TimeandExpense_TAB)) {
-            selectAdminTab();
+            selectTimeandExpenseTab();
         }
         if (selectedTabIndex.getSelectedItem().equals(PROFILE_TAB)) {
             selectProfileTab();
@@ -92,8 +92,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectTimeandExpenseTab() {
         TimeandExpensePanel.entityPanel.clear();
         TimeandExpensePanel.sidePanelTop.clear();
-        myOfficePanel.entityTitlePanel.add(new TAEMenu());
+
+        TimeandExpensePanel.entityTitlePanel.add(new TAEMenu());
         TimeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
+
 
     }
 
