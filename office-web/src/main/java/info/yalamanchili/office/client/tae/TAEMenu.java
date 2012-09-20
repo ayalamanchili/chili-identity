@@ -20,9 +20,9 @@ public class TAEMenu extends Composite{
      MenuBar tAEMenuBar = new MenuBar(false);
      public TAEMenu() {
         initWidget(tAEMenuBar);
-        configureAdminMenu();
+        configureTAEMenu();
     }
-       protected void configureAdminMenu() {
+       protected void configureTAEMenu() {
         MenuBar menu = new MenuBar(true);
         tAEMenuBar.addItem("TAEMenu", menu);
         tAEMenuBar.addStyleName("entityMenuBar");
