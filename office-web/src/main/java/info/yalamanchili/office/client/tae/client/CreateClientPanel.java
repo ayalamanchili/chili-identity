@@ -31,12 +31,12 @@ public class CreateClientPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject emailtype = new JSONObject();
+        JSONObject clnt = new JSONObject();
 
-        assignEntityValueFromField("name", emailtype);
-        assignEntityValueFromField("description", emailtype);
-        logger.info(emailtype.toString());
-        return emailtype;
+        assignEntityValueFromField("name", clnt);
+        assignEntityValueFromField("description", clnt);
+        logger.info(clnt.toString());
+        return clnt;
     }
 
     @Override
