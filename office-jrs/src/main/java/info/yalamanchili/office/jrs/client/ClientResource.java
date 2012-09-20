@@ -5,12 +5,14 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.dao.Client.ClientDao;
+import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -28,13 +30,21 @@ import org.springframework.stereotype.Component;
 public class ClientResource extends CRUDResource<Client> 
      {
      @Autowired
-    public ClientDao cliententityDao;
+    public ClientDao clientDao;
      
       @Override
     public CRUDDao getDao() {
-        return cliententityDao;
+        return clientDao;
     }
 
+     @GET
+    @Path("/{start}/{limit}")
+    public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        ClientTable tableObj = new ClientTable();
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
     @XmlRootElement
     @XmlType
     public static class ClientTable {
