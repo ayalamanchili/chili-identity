@@ -113,7 +113,7 @@ public class ReadAllSOWPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSOWPanel(getEntity(entityId)));
+        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new UpdateSOWPanel(getEntity(entityId)));
     }
 }
