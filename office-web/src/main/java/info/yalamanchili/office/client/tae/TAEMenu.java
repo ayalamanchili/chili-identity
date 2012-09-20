@@ -36,10 +36,10 @@ public class TAEMenu extends Composite{
     }
         Command clientsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllClientsPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ClientSidePanel());
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllClientsPanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new ClientSidePanel());
         }
     };
 }
