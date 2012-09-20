@@ -81,7 +81,7 @@ public static ReadAllClientsPanel instance;
 
     @Override
     public void viewClicked(String entityId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
@@ -100,7 +100,7 @@ public static ReadAllClientsPanel instance;
     }
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Skill Information");
+        new ResponseStatusWidget().show("Successfully deleted Client Information");
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
         TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
     }
