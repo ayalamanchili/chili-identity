@@ -5,7 +5,7 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.dao.Client.ClientDao;
+import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
