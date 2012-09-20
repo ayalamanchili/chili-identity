@@ -65,7 +65,7 @@ public class CreateClientPanel extends CreateComposite {
         new ResponseStatusWidget().show("successfully Client created");
         TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
     }
 
     @Override
