@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 
 /**
@@ -19,6 +21,8 @@ import org.hibernate.annotations.ForeignKey;
  * @author ayalamanchili
  */
 @Entity
+@XmlRootElement
+@XmlType
 public class TimeSheet extends AbstractEntity {
 
     @NotNull

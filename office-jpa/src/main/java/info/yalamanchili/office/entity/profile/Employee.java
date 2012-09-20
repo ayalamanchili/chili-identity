@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -64,6 +65,7 @@ public class Employee extends Contact {
      * @generated
      */
     @ManyToOne
+//    @NotNull
     @ForeignKey(name = "FK_EmployeeType_Employees")
     protected EmployeeType employeeType;
     /**

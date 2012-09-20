@@ -6,12 +6,16 @@ package info.yalamanchili.office.entity.client;
 
 import info.yalamanchili.jpa.AbstractEntity;
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author ayalamanchili
  */
 @Entity
+@XmlRootElement
+@XmlType
 public class Client extends AbstractEntity {
 
     protected String name;

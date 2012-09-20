@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 
 /**
@@ -21,6 +23,8 @@ import org.hibernate.annotations.ForeignKey;
  * @author ayalamanchili
  */
 @Entity
+@XmlRootElement
+@XmlType
 public class TimeSheetPeriod extends AbstractEntity {
 
     @Temporal(javax.persistence.TemporalType.DATE)

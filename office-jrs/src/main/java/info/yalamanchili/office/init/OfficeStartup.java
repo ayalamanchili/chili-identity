@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class OfficeStartup {
-
+    
     @PersistenceContext
     protected EntityManager em;
     protected CUser userUser;
@@ -44,7 +44,7 @@ public class OfficeStartup {
     protected CRole recruiterRole;
     protected CRole accountantRole;
     protected CRole payrollRole;
-
+    
     protected void startup() {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
         if (config.getInitRefData()) {
@@ -54,7 +54,7 @@ public class OfficeStartup {
             initTestData();
         }
     }
-
+    
     protected void initRoles() {
         userRole();
         adminRole();
@@ -63,7 +63,7 @@ public class OfficeStartup {
         accountantRole();
         payrollRole();
     }
-
+    
     protected void initUsers() {
         userUser();
         userAdmin();
@@ -73,6 +73,12 @@ public class OfficeStartup {
      *
      */
     protected void initTestData() {
+        
+        Company c1 = new Company();
+        c1.setName("sstech");
+        c1 = em.merge(c1);
+
+
         // User Employee
         Employee userEmp = new Employee();
         userEmp.setEmployeeId("uuser");
@@ -81,11 +87,8 @@ public class OfficeStartup {
         userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
         userEmp.setSex(Sex.MALE);
         userEmp.setStartDate(new Date());
-
-        Company c1 = new Company();
-        c1.setName("sstech");
-        c1 = em.merge(c1);
-
+        userEmp.setEmployeeType(getInternalEmployeeType());
+        
         Address userAddress = new Address();
         userAddress.setAddressType(getHomeAddressType());
         userAddress.setStreet1("2110 wilkes ct");
@@ -93,21 +96,21 @@ public class OfficeStartup {
         userAddress.setCity("Herndon");
         userAddress.setState("VA");
         userAddress.setCountry("USA");
-
+        
         Email userPrimaryEmail = new Email();
         userPrimaryEmail.setEmailType(getWorkEmailType());
         userPrimaryEmail.setPrimaryEmail(true);
         userPrimaryEmail.setEmail("prasanthissv@gmail.com");
-
+        
         Email userSecondaryEmail = new Email();
         userSecondaryEmail.setPrimaryEmail(false);
         userSecondaryEmail.setEmailType(getPersonalEmailType());
         userSecondaryEmail.setEmail("user_secondary@gmail.com");
-
+        
         Phone userCellPhone = new Phone();
         userCellPhone.setPhoneNumber("7031112222");
         userCellPhone.setPhoneType(getCellPhoneType());
-
+        
         userEmp.addPhone(userCellPhone);
         userEmp.addAddress(userAddress);
         userEmp.addEmail(userPrimaryEmail);
@@ -115,7 +118,7 @@ public class OfficeStartup {
         userEmp.addClientInformation(userClientInfo());
         userEmp.addEmergencyContact(userEmergencyContact());
         userEmp = em.merge(userEmp);
-
+        
         userUser.setEmployee(userEmp);
         userUser = em.merge(userUser);
         // Admin Employee
@@ -126,7 +129,8 @@ public class OfficeStartup {
         adminEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -3));
         adminEmp.setSex(Sex.FEMALE);
         adminEmp.setStartDate(new Date());
-
+        adminEmp.setEmployeeType(getConsultantEmployeeType());
+        
         Address adminAddress = new Address();
         adminAddress.setAddressType(getOfficeAddressType());
         adminAddress.setStreet1("2110 wilkes ct");
@@ -134,34 +138,31 @@ public class OfficeStartup {
         adminAddress.setCity("Herndon");
         adminAddress.setState("VA");
         adminAddress.setCountry("USA");
-
+        
         Email adminPrimaryEmail = new Email();
         adminPrimaryEmail.setEmailType(getWorkEmailType());
         adminPrimaryEmail.setPrimaryEmail(true);
-
+        
         adminPrimaryEmail.setEmail("prasanthi.p@sstech.mobi");
-
-
-
-
+        
         Email adminSecondaryEmail = new Email();
         adminSecondaryEmail.setEmailType(getPersonalEmailType());
         adminSecondaryEmail.setPrimaryEmail(false);
         adminSecondaryEmail.setEmail("anu@yalamanchili.info");
-
+        
         Phone adminCellPhone = new Phone();
         adminCellPhone.setPhoneNumber("7038889999");
         adminCellPhone.setPhoneType(getCellPhoneType());
-
+        
         adminEmp.addPhone(adminCellPhone);
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
         adminEmp = em.merge(adminEmp);
-
+        
         adminUser.setEmployee(adminEmp);
         adminUser = em.merge(adminUser);
-
+        
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());
         userSkillSet.setResumeUrl("ResumeURL");
@@ -169,7 +170,7 @@ public class OfficeStartup {
         userSkillSet.getSkills().add(getJavaSkill());
         userSkillSet.getSkills().add(getDOTNETSkill());
         userSkillSet = em.merge(userSkillSet);
-
+        
         userEmp.setSkillSet(userSkillSet);
         userEmp = em.merge(userEmp);
 
@@ -179,24 +180,24 @@ public class OfficeStartup {
         userPost1.setPostContent("this is my first post by user");
         userPost1.setEmployee(userEmp);
         userPost1 = em.merge(userPost1);
-
+        
         Post userPostReply1 = new Post();
         userPostReply1.setPostContent("this is a sample reply to user post by admin");
         userPostReply1.setPostTimeStamp(new Date());
         userPostReply1.setEmployee(adminEmp);
         userPostReply1.setParentPost(userPost1);
         userPostReply1 = em.merge(userPostReply1);
-
-
+        
+        
         Post userPost2 = new Post();
         userPost2.setPostTimeStamp(new Date());
         userPost2.setPostContent("<h3>This is a Sample System Soft news letter</h3><b>this is my company post by admin</b>");
         userPost2.setEmployee(userEmp);
         userPost2.setCompany(c1);
         userPost2 = em.merge(userPost2);
-
+        
     }
-
+    
     protected void initRefData() {
         // Address Types
         getHomeAddressType();
@@ -216,7 +217,7 @@ public class OfficeStartup {
         getInternalEmployeeType();
         getConsultantEmployeeType();
     }
-
+    
     protected AddressType getHomeAddressType() {
         Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
                 + " where addressType=:addressTypeParam");
@@ -229,6 +230,7 @@ public class OfficeStartup {
             return em.merge(homeAddressType);
         }
     }
+    
     protected AddressType getOfficeAddressType() {
         Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
                 + " where addressType=:addressTypeParam");
@@ -241,6 +243,7 @@ public class OfficeStartup {
             return em.merge(officeAddressType);
         }
     }
+    
     protected EmailType getWorkEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
@@ -253,7 +256,7 @@ public class OfficeStartup {
             return em.merge(homeEmailType);
         }
     }
-
+    
     protected EmailType getPersonalEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
@@ -266,7 +269,7 @@ public class OfficeStartup {
             return em.merge(homeEmailType);
         }
     }
-
+    
     protected PhoneType getCellPhoneType() {
         Query getCellPhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
                 + " where phoneType=:phoneTypeParam");
@@ -279,7 +282,7 @@ public class OfficeStartup {
             return em.merge(cellPhoneType);
         }
     }
-
+    
     protected PhoneType getHomePhoneType() {
         Query getHomePhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
                 + " where phoneType=:phoneTypeParam");
@@ -292,7 +295,7 @@ public class OfficeStartup {
             return em.merge(cellPhoneType);
         }
     }
-
+    
     protected Skill getJavaSkill() {
         Query getSkillQuery = em.createQuery("from " + Skill.class.getCanonicalName()
                 + " where name=:nameParam");
@@ -306,7 +309,7 @@ public class OfficeStartup {
             return em.merge(javaSkill);
         }
     }
-
+    
     protected Skill getDOTNETSkill() {
         Query getSkillQuery = em.createQuery("from " + Skill.class.getCanonicalName()
                 + " where name=:nameParam");
@@ -320,7 +323,7 @@ public class OfficeStartup {
             return em.merge(javaSkill);
         }
     }
-
+    
     protected Certification getJAVACertification() {
         Query getCertificationQuery = em.createQuery("from " + Certification.class.getCanonicalName()
                 + " where name=:nameParam");
@@ -334,7 +337,7 @@ public class OfficeStartup {
             return em.merge(certification);
         }
     }
-
+    
     protected Certification getDOTNETCertification() {
         Query getCertificationQuery = em.createQuery("from " + Certification.class.getCanonicalName()
                 + " where name=:nameParam");
@@ -348,7 +351,7 @@ public class OfficeStartup {
             return em.merge(certification);
         }
     }
-
+    
     protected EmployeeType getInternalEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
@@ -362,7 +365,7 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
-
+    
     protected EmployeeType getConsultantEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
@@ -376,16 +379,16 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
-
+    
     public ClientInformation userClientInfo() {
         Phone userClientInfoContactPhone = new Phone();
         userClientInfoContactPhone.setPhoneNumber("1313131313");
         userClientInfoContactPhone = em.merge(userClientInfoContactPhone);
-
+        
         Email userReportsToEmail = new Email();
         userReportsToEmail.setEmail("userreportsto@email.com");
         userReportsToEmail.setPrimaryEmail(true);
-
+        
         Contact userClientInfoContact = new Contact();
         userClientInfoContact.setFirstName("user reports to");
         userClientInfoContact.setLastName("user reports to last name");
@@ -393,7 +396,7 @@ public class OfficeStartup {
         userClientInfoContact.addPhone(userClientInfoContactPhone);
         userClientInfoContact.addEmail(userReportsToEmail);
         userClientInfoContact = em.merge(userClientInfoContact);
-
+        
         ClientInformation clientInfo = new ClientInformation();
         clientInfo.setContact(userClientInfoContact);
         clientInfo.setRtPrimary(true);
@@ -401,17 +404,17 @@ public class OfficeStartup {
         clientInfo.setConsultantJobTitle("QA Qngineer");
         return em.merge(clientInfo);
     }
-
+    
     public EmergencyContact userEmergencyContact() {
         Phone userECPhone = new Phone();
         userECPhone.setPhoneNumber("1212121211");
         userECPhone = em.merge(userECPhone);
-
+        
         Email userECEmail = new Email();
         userECEmail.setEmail("userec@gmail.com");
         userECEmail.setPrimaryEmail(true);
         userECEmail = em.merge(userECEmail);
-
+        
         Contact userEmergencyContact = new Contact();
         userEmergencyContact.setFirstName("user emergency contact");
         userEmergencyContact.setLastName("user emergency contact last name");
@@ -419,15 +422,15 @@ public class OfficeStartup {
         userEmergencyContact.addPhone(userECPhone);
         userEmergencyContact.addEmail(userECEmail);
         userEmergencyContact = em.merge(userEmergencyContact);
-
-
+        
+        
         EmergencyContact emergencyContact = new EmergencyContact();
         emergencyContact.setContact(userEmergencyContact);
         emergencyContact.setEcPrimary(true);
         emergencyContact.setRelation("Wife");
         return em.merge(emergencyContact);
     }
-
+    
     public void userRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_USER") == null) {
             CRole role = new CRole();
@@ -435,7 +438,7 @@ public class OfficeStartup {
             userRole = em.merge(role);
         }
     }
-
+    
     public void hrRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_HR") == null) {
             CRole role = new CRole();
@@ -443,7 +446,7 @@ public class OfficeStartup {
             hrRole = em.merge(role);
         }
     }
-
+    
     public void adminRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_ADMIN") == null) {
             CRole role = new CRole();
@@ -451,7 +454,7 @@ public class OfficeStartup {
             adminRole = em.merge(role);
         }
     }
-
+    
     public void recruiterRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_RECRUITER") == null) {
             CRole role = new CRole();
@@ -459,7 +462,7 @@ public class OfficeStartup {
             recruiterRole = em.merge(role);
         }
     }
-
+    
     public void accountantRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_ACCOUNTANT") == null) {
             CRole role = new CRole();
@@ -467,7 +470,7 @@ public class OfficeStartup {
             accountantRole = em.merge(role);
         }
     }
-
+    
     public void payrollRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_PAYROLL") == null) {
             CRole role = new CRole();
@@ -475,7 +478,7 @@ public class OfficeStartup {
             payrollRole = em.merge(role);
         }
     }
-
+    
     protected void userUser() {
         if (EntityQueryUtils.findEntity(em, CUser.class, "username", "useruser") == null) {
             CUser user = new CUser();
@@ -486,7 +489,7 @@ public class OfficeStartup {
             userUser = em.merge(user);
         }
     }
-
+    
     protected void userAdmin() {
         if (EntityQueryUtils.findEntity(em, CUser.class, "username", "adminadmin") == null) {
             CUser user = new CUser();

@@ -27,17 +27,17 @@ import org.springframework.stereotype.Component;
 @Path("client")
 @Component
 @Scope("request")
-public class ClientResource extends CRUDResource<Client> 
-     {
-     @Autowired
+public class ClientResource extends CRUDResource<Client> {
+
+    @Autowired
     public ClientDao clientDao;
-     
-      @Override
+
+    @Override
     public CRUDDao getDao() {
         return clientDao;
     }
 
-     @GET
+    @GET
     @Path("/{start}/{limit}")
     public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ClientTable tableObj = new ClientTable();
@@ -45,6 +45,7 @@ public class ClientResource extends CRUDResource<Client>
         tableObj.setSize(getDao().size());
         return tableObj;
     }
+
     @XmlRootElement
     @XmlType
     public static class ClientTable {
@@ -69,5 +70,4 @@ public class ClientResource extends CRUDResource<Client>
             this.entities = entities;
         }
     }
-    
 }

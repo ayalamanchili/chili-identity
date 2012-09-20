@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -23,6 +25,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  */
 @Entity
+@XmlRootElement
+@XmlType
 public class StatementOfWork extends AbstractEntity {
 
     @NotEmpty
