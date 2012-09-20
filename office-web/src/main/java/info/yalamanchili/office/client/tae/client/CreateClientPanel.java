@@ -13,6 +13,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.emailtype.CreateEmailTypePanel;
+import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -64,6 +65,7 @@ public class CreateClientPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully Client created");
         TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
+        TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
         TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
     }
