@@ -2,7 +2,7 @@ package info.yalamanchili.office.client;
 
 public class Auth {
 	private enum ROLES {
-		ROLE_USER, ROLE_HR, ROLE_ACCCOUNTS, ROLE_ADMIN
+		ROLE_USER, ROLE_HR, ROLE_ACCOUNTANT, ROLE_ADMIN,ROLE_PAYROLL
 	}
 
 	public static boolean isAdmin() {
@@ -20,4 +20,19 @@ public class Auth {
 			return false;
 		}
 	}
+        public static boolean isAccountant() {
+		if (OfficeWelcome.instance().roles.contains(ROLES.ROLE_ACCOUNTANT.name())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+        public static boolean isPayroll() {
+		if (OfficeWelcome.instance().roles.contains(ROLES.ROLE_PAYROLL.name())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+       
 }
