@@ -15,21 +15,25 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingInterceptor {
+
     @Autowired
     public OfficeServiceConfiguration officeServiceConfiguration;
-    
     private static final Log log = LogFactory.getLog(LoggingInterceptor.class);
 
     @Before("execution(* info.yalamanchili.office..*.*(..))")
     public void logBefore(JoinPoint joinPoint) {
-        //if(officeServiceConfiguration.getEnableLoginInterceptor()){
+        //dont log call to OfficeServiceConfiguration.EnableLogginIntereptor
+        if (joinPoint.getSignature().toShortString().contains("EnableLoginInterceptor")) {
+            return;
+        }
+        if (officeServiceConfiguration.getEnableLoginInterceptor()) {
             if (log.isInfoEnabled()) {
                 log.info("-------------- invoking ---------------- :" + joinPoint.getSignature());
                 for (Object input : joinPoint.getArgs()) {
                     log.info("with input:" + ReflectionToStringBuilder.toString(input));
                 }
             }
-        //}
+        }
     }
 
     @AfterReturning(pointcut = "execution(* info.yalamanchili.office..*.*(..))", returning = "result")

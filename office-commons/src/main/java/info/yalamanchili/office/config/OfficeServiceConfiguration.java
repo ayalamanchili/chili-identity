@@ -40,6 +40,7 @@ public class OfficeServiceConfiguration {
         this.initRefData = initRefData;
     }
 
+    @ManagedAttribute
     public Boolean getEnableLoginInterceptor() {
         return enableLoginInterceptor;
     }
@@ -47,12 +48,14 @@ public class OfficeServiceConfiguration {
     public void setEnableLoginInterceptor(Boolean enableLoginInterceptor) {
         this.enableLoginInterceptor = enableLoginInterceptor;
     }
-    public Boolean getIsSendEmail() {
+
+    @ManagedAttribute
+    public Boolean getIsSendMail() {
         return isSendMail;
     }
 
-    public void setIsSendEmail(Boolean IsSendEmail) {
-        this.isSendMail = IsSendEmail;
+    public void setIsSendMail(Boolean isSendMail) {
+        this.isSendMail = isSendMail;
     }
 
     @ManagedOperation
