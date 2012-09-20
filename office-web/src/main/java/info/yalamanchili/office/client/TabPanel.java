@@ -13,6 +13,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.social.SocialSidePanel;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.TAEMenu;
@@ -43,9 +44,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
-        if (Auth.isAdmin()|| Auth.isAccountant()||Auth.isPayroll())
-        {
-        tabPanel.add(TimeandExpensePanel, "TimeSheet", false);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTANT, ROLE.ROLE_ADMIN, ROLE.ROLE_PAYROLL)) {
+            tabPanel.add(TimeandExpensePanel, "TimeSheet", false);
         }
         tabPanel.add(profilePanel, "Profile", false);
         tabPanel.addSelectionHandler(this);
