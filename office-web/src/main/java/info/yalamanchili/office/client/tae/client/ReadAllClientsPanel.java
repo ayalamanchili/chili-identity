@@ -101,14 +101,14 @@ public static ReadAllClientsPanel instance;
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Skill Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientsPanel());
+        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateClientPanel(getEntity(entityId)));
+        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new UpdateClientPanel(getEntity(entityId)));
     }
     
 }
