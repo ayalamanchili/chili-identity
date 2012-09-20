@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.social.SocialSidePanel;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
+import info.yalamanchili.office.client.tae.TAEMenu;
+import info.yalamanchili.office.client.tae.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
@@ -90,7 +92,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectTimeandExpenseTab() {
         TimeandExpensePanel.entityPanel.clear();
         TimeandExpensePanel.sidePanelTop.clear();
-        TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
+        myOfficePanel.entityTitlePanel.add(new TAEMenu());
+        TimeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
 
     }
 
