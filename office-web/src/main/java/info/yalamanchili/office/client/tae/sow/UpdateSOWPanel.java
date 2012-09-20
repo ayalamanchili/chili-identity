@@ -5,57 +5,100 @@
 package info.yalamanchili.office.client.tae.sow;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
+import info.yalamanchili.office.client.rpc.HttpService;
 
 /**
  *
  * @author Prashanthi
  */
-public class UpdateSOWPanel extends UpdateComposite{
+public class UpdateSOWPanel extends UpdateComposite {
+
+    public UpdateSOWPanel(JSONObject entity) {
+        initUpdateComposite(entity, "StatementOfWork", OfficeWelcome.constants);
+    }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("sowUrl", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("billRate", entity);
+        assignEntityValueFromField("project", entity);
+        assignEntityValueFromField("timeSheets", entity);
+        return entity;
     }
 
     @Override
     protected void updateButtonClicked() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // OfficeWelcome.logger.info("dddd"+entity);
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
+
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("sowUrl", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("billRate", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("project", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("timeSheets", entity, DataType.STRING_FIELD);
     }
 
     @Override
     protected void postUpdateSuccess(String result) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        new ResponseStatusWidget().show("successfully updated Employee Statement Of Work Information");
+        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
     }
 
     @Override
     protected void addListeners() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected void configure() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected void addWidgets() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        addField("name", false, true, DataType.STRING_FIELD);
+        addField("description", false, false, DataType.STRING_FIELD);
+        addField("sowUrl", false, true, DataType.STRING_FIELD);
+        addField("startDate", false, false, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("billRate", false, false, DataType.STRING_FIELD);
+        addField("project", false, true, DataType.STRING_FIELD);
+        addField("timeSheets", false, false, DataType.STRING_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected String getURI() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return OfficeWelcome.constants.root_url() + "statementofwork";
     }
-    
 }
