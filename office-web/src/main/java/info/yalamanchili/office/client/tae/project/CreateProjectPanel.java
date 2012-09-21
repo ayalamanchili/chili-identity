@@ -5,8 +5,13 @@
 package info.yalamanchili.office.client.tae.project;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.TreeClientPanel;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,6 +19,7 @@ import info.yalamanchili.office.client.gwt.CreateComposite;
  */
 public class CreateProjectPanel extends CreateComposite {
 
+     private static Logger logger = Logger.getLogger(CreateProjectPanel.class.getName());
     public CreateProjectPanel(CreateComposite.CreateCompositeType type)
     {
         super(type);
@@ -21,12 +27,31 @@ public class CreateProjectPanel extends CreateComposite {
     }
     @Override
     protected JSONObject populateEntityFromFields() {
-        throw new UnsupportedOperationException("Not supported yet.");
+          JSONObject project = new JSONObject();
+
+        assignEntityValueFromField("name", project);
+        assignEntityValueFromField("description", project);
+        assignEntityValueFromField("startDate", project);
+        assignEntityValueFromField("endDate", project);
+        logger.info(project.toString());
+        return project;
     }
 
     @Override
     protected void createButtonClicked() {
-       
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -51,7 +76,10 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        
+        addField("name", false, true, DataType.STRING_FIELD);
+        addField("description", false, true, DataType.STRING_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
     }
 
     @Override
@@ -61,7 +89,7 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return OfficeWelcome.constants.root_url() + "client/project" + TreeClientPanel.instance().getEntityId();
     }
     
 }
