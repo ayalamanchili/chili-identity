@@ -24,7 +24,7 @@ public class TreeSOWPanel extends TreePanelComposite {
         return instance;
     }
     private static Logger logger = Logger.getLogger(TreeSOWPanel.class.getName());
-    protected static final String PROJECT_NODE = "project";
+    protected static final String TIMESHEETS_NODE = " timesheets";
 
     public TreeSOWPanel(String entityId) {
         super(entityId);
@@ -42,12 +42,12 @@ public class TreeSOWPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        addFirstChildLink("Project", PROJECT_NODE);
+        addFirstChildLink(" timesheets", TIMESHEETS_NODE);
     }
 
     @Override
     public void treeNodeSelected(String entityNodeKey) {
-        if (PROJECT_NODE.equals(entityNodeKey)) {
+        if (TIMESHEETS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
             TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
             TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ProjectOptionsPanel());
