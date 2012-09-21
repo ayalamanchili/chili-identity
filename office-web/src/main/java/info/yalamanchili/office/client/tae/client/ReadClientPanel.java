@@ -5,8 +5,12 @@
 package info.yalamanchili.office.client.tae.client;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ReadComposite;
+import info.yalamanchili.office.client.rpc.HttpService;
 
 /**
  *
@@ -30,37 +34,48 @@ public class ReadClientPanel extends ReadComposite {
 	}
     @Override
     public void loadEntity(String entityId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+				new ALAsyncCallback<String>() {
+
+					@Override
+					public void onResponse(String response) {
+						entity = (JSONObject) JSONParser.parseLenient(response);
+						populateFieldsFromEntity(entity);
+					}
+
+				});
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
+		assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
     }
 
     @Override
     protected void addListeners() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     protected void configure() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     protected void addWidgets() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        addField("name", true, false, DataType.STRING_FIELD);
+		addField("description", true, false, DataType.STRING_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     protected String getURI() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return OfficeWelcome.constants.root_url() + "client/" + entityId;
     }
     
 }
