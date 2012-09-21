@@ -39,7 +39,12 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+      
+    }
+
+    @Override
+    protected void addButtonClicked() {
+         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -51,12 +56,7 @@ public class CreateProjectPanel extends CreateComposite {
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
-                });
-    }
-
-    @Override
-    protected void addButtonClicked() {
-        
+                }); 
     }
 
     @Override
@@ -89,7 +89,7 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-       return OfficeWelcome.constants.root_url() + "client/project" + TreeClientPanel.instance().getEntityId();
+       return OfficeWelcome.constants.root_url() + "client/project/" + TreeClientPanel.instance().getEntityId();
     }
     
 }
