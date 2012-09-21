@@ -41,13 +41,13 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         initWidget(tabPanel);
         tabPanel.addStyleName("tabPanel");
         tabPanel.setHeight("5");
-        tabPanel.add(homePanel, "Home", false);
-        tabPanel.add(socialPanel, "Social", false);
-        tabPanel.add(myOfficePanel, "My Office", false);
+        tabPanel.insert(homePanel, "Home", false,HOME_TAB);
+        tabPanel.insert(socialPanel, "Social", false,SOCIAL_TAB);
+        tabPanel.insert(myOfficePanel, "My Office", false,MY_OFFICE_TAB);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTANT, ROLE.ROLE_ADMIN, ROLE.ROLE_PAYROLL)) {
-            tabPanel.add(TimeandExpensePanel, "TimeSheet", false);
+            tabPanel.insert(TimeandExpensePanel, "TimeSheet", false,TimeandExpense_TAB);
         }
-        tabPanel.add(profilePanel, "Profile", false);
+        tabPanel.insert(profilePanel, "Profile", false,PROFILE_TAB);
         tabPanel.addSelectionHandler(this);
         tabPanel.selectTab(MY_OFFICE_TAB);
     }
