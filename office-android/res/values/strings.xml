@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello office-android!</string>
     <string name="app_name">office-android</string>
+    <string name="page_size">10</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_loginB">Login</string>
 </resources>
