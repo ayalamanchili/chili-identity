@@ -90,6 +90,6 @@ public class CreateClientPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "client";
+        return OfficeWelcome.constants.root_url() + "client" ;
     }
 }
