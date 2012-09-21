@@ -33,7 +33,10 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
         this.parentId = parentId;
         initTable("Project", OfficeWelcome.constants);
     }
-
+    public ReadAllProjectsPanel() {
+        instance = this;
+        initTable("Project", OfficeWelcome.constants);
+    }
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllProjectsPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
