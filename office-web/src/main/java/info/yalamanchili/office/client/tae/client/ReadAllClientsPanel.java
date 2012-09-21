@@ -111,6 +111,8 @@ public static ReadAllClientsPanel instance;
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
+        TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
         TabPanel.instance().TimeandExpensePanel.entityPanel.add(new UpdateClientPanel(getEntity(entityId)));
     }
