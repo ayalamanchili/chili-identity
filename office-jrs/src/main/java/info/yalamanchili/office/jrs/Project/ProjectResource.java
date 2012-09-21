@@ -6,10 +6,10 @@ package info.yalamanchili.office.jrs.Project;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
-import info.yalamanchili.office.entity.client.Client;
+
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.jrs.client.ClientResource;
+
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -37,7 +37,8 @@ public class ProjectResource extends CRUDResource<Object> {
     public CRUDDao getDao() {
         return projectDao;
     }
-     @GET
+
+    @GET
     @Path("/{start}/{limit}")
     public ProjectResource.ProjectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ProjectResource.ProjectTable tableObj = new ProjectResource.ProjectTable();
