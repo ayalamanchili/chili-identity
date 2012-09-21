@@ -58,12 +58,12 @@ public class TreeClientPanel extends TreePanelComposite {
 
     @Override
     public JSONObject loadEntity() {
-        throw new UnsupportedOperationException("Not supported yet.");
+         return null;
     }
 
     @Override
     public void showEntity() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
     
 }
