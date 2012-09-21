@@ -11,7 +11,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.tae.client.ClientSidePanel;
 import info.yalamanchili.office.client.tae.client.ReadAllClientsPanel;
-//import info.yalamanchili.office.client.tae.project.
+import info.yalamanchili.office.client.tae.project.ProjectSidePanel;
 import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 /**
  *
@@ -48,7 +48,7 @@ public class TAEMenu extends Composite{
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllProjectsPanel());
-            //TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new ProjectSidePanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new ProjectSidePanel());
         }
     };
 }
