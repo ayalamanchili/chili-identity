@@ -13,7 +13,9 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.TreeClientPanel;
 import java.util.logging.Logger;
 
 /**
@@ -25,14 +27,11 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllProjectsPanel.class.getName());
     public static ReadAllProjectsPanel instance;
 
-    public ReadAllProjectsPanel() {
+  
+    public ReadAllProjectsPanel(String parentId) {
         instance = this;
-        initTable("Client", OfficeWelcome.constants);
-    }
-
-    public ReadAllProjectsPanel(JSONArray array) {
-        instance = this;
-        initTable("Project", array, OfficeWelcome.constants);
+        this.parentId = parentId;
+        initTable("Project", OfficeWelcome.constants);
     }
 
     @Override
@@ -105,7 +104,7 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
 
         new ResponseStatusWidget().show("Successfully deleted Projects Information");
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(TreeClientPanel.instance().getEntityId()));
     }
 
     @Override
