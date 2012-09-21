@@ -50,9 +50,9 @@ public class TreeClientPanel extends TreePanelComposite {
     @Override
     public void treeNodeSelected(String entityNodeKey) {
           if (PROJECT_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ProjectOptionsPanel());
+            TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
+            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ProjectOptionsPanel());
         }
     }
 
