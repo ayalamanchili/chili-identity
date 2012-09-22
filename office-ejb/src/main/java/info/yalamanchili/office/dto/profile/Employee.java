@@ -4,7 +4,9 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Sex;
+import info.yalamanchili.service.validation.Valid;
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
@@ -45,6 +47,8 @@ public class Employee implements Serializable {
     @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
     protected String phoneNumber;
+    @NotNull(message = "{employeetype.not.null.msg}")
+    protected EmployeeType employeeType;
 
     public Employee() {
     }
@@ -151,6 +155,14 @@ public class Employee implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public EmployeeType getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
     }
 
     @Override

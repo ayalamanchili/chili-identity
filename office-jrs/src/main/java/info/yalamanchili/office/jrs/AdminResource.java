@@ -2,6 +2,7 @@ package info.yalamanchili.office.jrs;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.commons.EntityQueryUtils;
+import info.yalamanchili.office.dao.CuserDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.security.CRole;
 import javax.ws.rs.PathParam;
 
@@ -79,6 +81,7 @@ public class AdminResource {
         String employeeId = generateEmployeeId(employee);
         user.setUsername(employeeId);
         emp.setEmployeeId(employeeId);
+        emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
@@ -86,7 +89,7 @@ public class AdminResource {
         user.setEmployee(emp);
         user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", "ROLE_USER"));
         user.setEnabled(true);
-        user = em.merge(user);
+        user = CuserDao.instance().save(user);
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(user);
         return user.getEmployee().getId().toString();

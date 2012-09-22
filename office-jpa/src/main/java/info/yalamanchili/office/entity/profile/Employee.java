@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -64,8 +65,9 @@ public class Employee extends Contact {
     /**
      * @generated
      */
-    @ManyToOne
-//    @NotNull
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @NotNull(message = "{employeetype.not.null.msg}")
+    @Valid
     @ForeignKey(name = "FK_EmployeeType_Employees")
     protected EmployeeType employeeType;
     /**

@@ -25,7 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Unique(entity = EmployeeType.class, fields = {"name"}, message = "{employeetype.name.not.unique.msg}")
 public class EmployeeType extends AbstractEntity {
 
-    @NotEmpty(message = "{employeetype.not.empty.msg}")
+    @NotEmpty(message = "{employeetype.name.not.empty.msg}")
     protected String name;
     protected String description;
 

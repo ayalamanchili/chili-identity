@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -22,8 +23,8 @@ import info.yalamanchili.gwt.composite.ALComposite;
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
     
     private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
+    CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel panel = new FlowPanel();
-    Label titleLabel = new Label();
     ListBox availableListBox = new ListBox(true);
     ListBox selectedListBox = new ListBox(true);
     public Button selectButton = new Button("  Add  ");
@@ -34,11 +35,11 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
 
     /* holds the selected varialbes in temp */
     public MultiSelectBox() {
-        init(panel);
+        init(captionPanel);
     }
     
     public void popuplateWidget(String title, MultiSelectObj obj) {
-        titleLabel.setText(title);
+        captionPanel.setCaptionHTML(title);
         this.available = obj.getAvailable();
         this.selected = obj.getSelected();
         for (String id : available.keySet()) {
@@ -54,11 +55,11 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     
     @Override
     public void addWidgets() {
-        panel.add(titleLabel);
         panel.add(availableListBox);
         panel.add(selectButton);
         panel.add(unselectButton);
         panel.add(selectedListBox);
+        captionPanel.setContentWidget(panel);
     }
     
     @Override
@@ -71,7 +72,6 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     public void configure() {
         availableListBox.setVisibleItemCount(10);
         selectedListBox.setVisibleItemCount(10);
-        titleLabel.addStyleName("y-gwt-titleLabel");
         panel.addStyleName("y-gwt-multipleSelectWidget");
         availableListBox
                 .addStyleName("y-gwt-multipleSelectWidget-availableListBox");

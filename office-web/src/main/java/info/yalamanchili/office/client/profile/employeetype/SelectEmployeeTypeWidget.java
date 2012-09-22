@@ -53,5 +53,6 @@ public class SelectEmployeeTypeWidget extends SelectComposite {
 
     @Override
     protected void validate() {
+        clearMessage();
     }
 }
