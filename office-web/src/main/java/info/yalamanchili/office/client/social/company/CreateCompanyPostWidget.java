@@ -111,7 +111,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                         textArea.setText("");
+                        textArea.setText("");
                         uploadFiles(arg0);
                     }
                 });
@@ -121,13 +121,11 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     protected void uploadFiles(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
-        if (postFiles.size() > 0) {
-            fileUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
-        }
+        fileUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
     }
 
     protected void postCreateSuccess(String result) {
-      
+
         new ResponseStatusWidget().show("Successfully Shared");
         TabPanel.instance().socialPanel.entityPanel.clear();
         TabPanel.instance().socialPanel.entityPanel.add(new CompanyFeedHome());
