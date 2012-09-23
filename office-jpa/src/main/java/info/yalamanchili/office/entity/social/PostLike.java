@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.entity.social;
 
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

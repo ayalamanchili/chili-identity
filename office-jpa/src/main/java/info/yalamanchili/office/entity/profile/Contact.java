@@ -3,7 +3,7 @@
  */
 package info.yalamanchili.office.entity.profile;
 
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 
 import java.util.ArrayList;
 import java.util.Date;

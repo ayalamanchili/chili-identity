@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.entity.client;
 
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import java.math.BigDecimal;
 import java.util.Date;

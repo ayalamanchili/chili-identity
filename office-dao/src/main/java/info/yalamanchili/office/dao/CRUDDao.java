@@ -9,7 +9,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.commons.DataType;
 import info.yalamanchili.commons.ReflectionUtils;
 import info.yalamanchili.commons.SearchUtils;
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import java.util.Arrays;
 import info.chili.beans.BeanMapper;
 import java.util.List;

@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.entity.time;
 
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;

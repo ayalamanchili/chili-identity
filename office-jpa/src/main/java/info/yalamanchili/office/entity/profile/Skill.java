@@ -5,7 +5,7 @@
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.validation.Unique;
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;

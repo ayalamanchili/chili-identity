@@ -1,12 +1,10 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * Automanage Copyright (C) 2011 yalamanchili.info
  */
-
 package info.yalamanchili.office.entity;
 
 import info.chili.jpa.validation.Unique;
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
@@ -24,7 +22,6 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
-
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
@@ -33,153 +30,147 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
- @Unique(entity = Company.class, fields = {"name"}, message="{company.name.not.unique.msg}")
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"name"}))
+@Unique(entity = Company.class, fields = {"name"}, message = "{company.name.not.unique.msg}")
 public class Company extends AbstractEntity {
-	/**
-	 * @generated
-	 */
-	@Transient
-	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @generated
-	 */
-	@Field
-	@NotEmpty
-       
-	protected String name;
+    /**
+     * @generated
+     */
+    @Transient
+    private static final long serialVersionUID = 1L;
+    /**
+     * @generated
+     */
+    @Field
+    @NotEmpty
+    protected String name;
+    /**
+     * @generated
+     */
+    @Past
+    @Field(index = Index.UN_TOKENIZED)
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date establishedDate;
+    /**
+     * @generated
+     */
+    @Field
+    protected String logoURL;
+    /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
+    protected List<Employee> employees;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
+    protected List<Post> posts;
 
-	/**
-	 * @generated
-	 */
-	@Past
-	@Field(index = Index.UN_TOKENIZED)
-        @Temporal(javax.persistence.TemporalType.DATE)
-	protected Date establishedDate;
+    /**
+     * @generated
+     */
+    public Company() {
+        super();
+    }
 
-	/**
-	 * @generated
-	 */
-	@Field
-	protected String logoURL;
+    /**
+     * @generated
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @generated
-	 */
+    /**
+     * @generated
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
-	protected List<Employee> employees;
+    /**
+     * @generated
+     */
+    public Date getEstablishedDate() {
+        return establishedDate;
+    }
 
-	@OneToMany(mappedBy = "company", cascade = CascadeType.MERGE)
-	protected List<Post> posts;
+    /**
+     * @generated
+     */
+    public void setEstablishedDate(Date establishedDate) {
+        this.establishedDate = establishedDate;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Company() {
-		super();
-	}
+    /**
+     * @generated
+     */
+    public String getLogoURL() {
+        return logoURL;
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * @generated
+     */
+    public void setLogoURL(String logoURL) {
+        this.logoURL = logoURL;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<Employee> getEmployees() {
+        if (this.employees == null) {
+            this.employees = new ArrayList<Employee>();
+        }
+        return this.employees;
+    }
 
-	/**
-	 * @generated
-	 */
-	public Date getEstablishedDate() {
-		return establishedDate;
-	}
+    /**
+     * @generated
+     */
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setEstablishedDate(Date establishedDate) {
-		this.establishedDate = establishedDate;
-	}
+    /**
+     * @generated
+     */
+    public void addEmployee(Employee entity) {
+        if (entity == null) {
+            return;
+        }
+        getEmployees().add(entity);
+        entity.setCompany(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	public String getLogoURL() {
-		return logoURL;
-	}
+    @XmlTransient
+    public List<Post> getPosts() {
+        if (this.posts == null) {
+            this.posts = new ArrayList<Post>();
+        }
+        return this.posts;
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setLogoURL(String logoURL) {
-		this.logoURL = logoURL;
-	}
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
-	/**
-	 * @generated
-	 */
-	@XmlTransient
-	public List<Employee> getEmployees() {
-		if (this.employees == null) {
-			this.employees = new ArrayList<Employee>();
-		}
-		return this.employees;
-	}
+    public void addPost(Post post) {
+        if (post == null) {
+            return;
+        }
+        getPosts().add(post);
+        post.setCompany(this);
+    }
 
-	/**
-	 * @generated
-	 */
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
-	}
-
-	/**
-	 * @generated
-	 */
-	public void addEmployee(Employee entity) {
-		if (entity == null) {
-			return;
-		}
-		getEmployees().add(entity);
-		entity.setCompany(this);
-	}
-
-	@XmlTransient
-	public List<Post> getPosts() {
-		if (this.posts == null) {
-			this.posts = new ArrayList<Post>();
-		}
-		return this.posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-
-	public void addPost(Post post) {
-		if (post == null) {
-			return;
-		}
-		getPosts().add(post);
-		post.setCompany(this);
-	}
-
-	/**
-	 * @generated
-	 */
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getName());
-		sb.append(":");
-		return sb.toString();
-	}
-
+    /**
+     * @generated
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName());
+        sb.append(":");
+        return sb.toString();
+    }
 }

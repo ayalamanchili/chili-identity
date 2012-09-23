@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.entity.client;
 
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
