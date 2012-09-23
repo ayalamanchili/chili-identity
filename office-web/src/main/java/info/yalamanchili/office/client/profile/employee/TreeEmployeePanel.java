@@ -113,7 +113,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
 
         } //TODO review
-        else {
+        else if (skillSetTreePanel != null) {
             skillSetTreePanel.treeNodeSelected(entityNodeKey);
         }
     }

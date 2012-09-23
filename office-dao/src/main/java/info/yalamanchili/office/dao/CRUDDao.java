@@ -10,9 +10,8 @@ import info.yalamanchili.commons.DataType;
 import info.yalamanchili.commons.ReflectionUtils;
 import info.yalamanchili.commons.SearchUtils;
 import info.yalamanchili.jpa.AbstractEntity;
-import info.yalamanchili.mapper.BeanMapper;
 import java.util.Arrays;
-
+import info.chili.beans.BeanMapper;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -63,7 +62,6 @@ public abstract class CRUDDao<T> {
         if (entity instanceof AbstractEntity) {
             if (((AbstractEntity) entity).getId() != null) {
                 entity = (T) BeanMapper.merge(entity, findById(((AbstractEntity) entity).getId()));
-
             }
         }
         return getEntityManager().merge(entity);

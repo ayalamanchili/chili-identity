@@ -241,7 +241,7 @@ public abstract class CRUDComposite extends Composite {
             }
         }
         //Dropdown
-        if (fields.get(fieldKey) instanceof SelectComposite) {
+        if (fields.get(fieldKey) instanceof SelectComposite && entity.get(fieldKey) != null) {
             SelectComposite selectComposite = (SelectComposite) fields.get(fieldKey);
             selectComposite.setSelectedValue(entity.get(fieldKey).isObject());
         }

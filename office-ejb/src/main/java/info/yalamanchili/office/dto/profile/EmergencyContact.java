@@ -24,7 +24,7 @@ public class EmergencyContact implements Serializable {
     protected Long id;
     @NotEmpty(message = "{relation.not.empty.msg}")
     protected String relation;
-    protected boolean ecPrimary;
+    protected Boolean ecPrimary;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
     protected String middleInitial;
@@ -54,15 +54,16 @@ public class EmergencyContact implements Serializable {
     public void setRelation(String relation) {
         this.relation = relation;
     }
-    
-    public boolean isEcPrimary() {
+
+    public Boolean getEcPrimary() {
         return ecPrimary;
     }
-    
-    public void setEcPrimary(boolean ecPrimary) {
+
+    public void setEcPrimary(Boolean ecPrimary) {
         this.ecPrimary = ecPrimary;
     }
     
+  
     public String getFirstName() {
         return firstName;
     }

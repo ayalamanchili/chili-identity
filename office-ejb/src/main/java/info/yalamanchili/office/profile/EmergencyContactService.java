@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.profile;
 
-import info.yalamanchili.mapper.BeanMapper;
+import info.chili.beans.BeanMapper;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
@@ -52,7 +52,7 @@ public class EmergencyContactService {
         contact = em.merge(contact);
         //emergencycontact
         EmergencyContact emergencyCnt = new EmergencyContact();
-        emergencyCnt.setEcPrimary(ec.isEcPrimary());
+        emergencyCnt.setEcPrimary(ec.getEcPrimary());
         emergencyCnt.setRelation(ec.getRelation());
         emergencyCnt.setContact(contact);
         emergencyCnt.setEmployee(emp);

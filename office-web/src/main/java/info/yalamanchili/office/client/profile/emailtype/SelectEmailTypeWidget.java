@@ -18,6 +18,7 @@ public class SelectEmailTypeWidget extends SelectComposite {
         super(OfficeWelcome.constants, "emailType", "EmailType", "emailType", readOnly, isRequired);
     }
 
+    @Override
     protected void fetchDropDownData() {
         HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -28,6 +29,7 @@ public class SelectEmailTypeWidget extends SelectComposite {
         });
     }
 
+    @Override
     protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
         return OfficeWelcome.constants.root_url() + "emailtype/dropdown/" + start.toString() + "/" + limit.toString();
     }
