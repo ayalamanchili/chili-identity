@@ -10,6 +10,8 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.tae.project.ProjectOptionsPanel;
 import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
+import info.yalamanchili.office.client.tae.sow.SOWOptionsPanel;
+import info.yalamanchili.office.client.tae.sow.ReadAllSOWPanel;
 import java.util.logging.Logger;
 
 /**
@@ -51,6 +53,8 @@ public class TreeSOWPanel extends TreePanelComposite {
             TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
             TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
             TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ProjectOptionsPanel());
+            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new SOWOptionsPanel());
+            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
         }
     }
 
