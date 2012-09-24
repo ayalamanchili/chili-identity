@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Path("project")
 @Component
 @Scope("request")
-public class ProjectResource extends CRUDResource<Object> {
+public class ProjectResource extends CRUDResource<Project> {
 
     @Autowired
     public ProjectDao projectDao;
