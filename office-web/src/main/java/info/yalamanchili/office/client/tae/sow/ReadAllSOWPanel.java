@@ -35,6 +35,11 @@ public class ReadAllSOWPanel extends ReadAllComposite {
         instance = this;
         initTable("StatementOfWork", array, OfficeWelcome.constants);
     }
+     public ReadAllSOWPanel(String parentId) {
+        instance = this;
+        this.parentId = parentId;
+        initTable("Project", OfficeWelcome.constants);
+    }
 
     @Override
     public void preFetchTable(int start) {
