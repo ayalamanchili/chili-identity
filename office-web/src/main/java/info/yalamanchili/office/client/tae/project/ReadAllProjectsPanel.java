@@ -4,9 +4,11 @@
  */
 package info.yalamanchili.office.client.tae.project;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -60,7 +62,7 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
         table.setText(0, 2, getKeyValue("Description"));
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
-        table.setText(0, 5, getKeyValue("Client"));
+       // table.setText(0, 5, getKeyValue("Client"));
     }
 
     @Override
@@ -71,9 +73,10 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, JSONUtils.toString(entity, "startDate"));
-            table.setText(i, 4, JSONUtils.toString(entity, "endDate"));
-            table.setText(i, 5, JSONUtils.toString(entity, "client"));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            
+            //table.setText(i, 5, JSONUtils.toString(entity, "client"));
         }
     }
 
