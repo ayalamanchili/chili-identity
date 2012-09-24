@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -25,6 +26,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  */
 @Entity
+@Audited
 @XmlRootElement
 @XmlType
 public class StatementOfWork extends AbstractEntity {

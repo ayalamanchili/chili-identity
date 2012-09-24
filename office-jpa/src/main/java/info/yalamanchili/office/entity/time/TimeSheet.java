@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 
 /**
  *
@@ -23,6 +24,7 @@ import org.hibernate.annotations.ForeignKey;
 @Entity
 @XmlRootElement
 @XmlType
+@Audited
 public class TimeSheet extends AbstractEntity {
 
     @NotNull

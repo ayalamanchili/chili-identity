@@ -7,10 +7,10 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.validation.Unique;
 import info.chili.jpa.AbstractEntity;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Audited
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Skill.class, fields = {"name"}, message = "{skill.name.not.unique.msg}")

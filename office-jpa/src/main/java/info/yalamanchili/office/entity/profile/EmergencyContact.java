@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -27,6 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Audited
 public class EmergencyContact extends AbstractEntity {
 
     /**

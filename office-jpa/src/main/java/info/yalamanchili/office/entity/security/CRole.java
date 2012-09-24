@@ -15,8 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 
 @Entity
+@Audited
 @XmlRootElement
 @Unique(entity = CRole.class, fields = {"rolename"}, idName = "roleId")
 public class CRole implements Serializable {

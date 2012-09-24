@@ -24,9 +24,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@Audited
 @XmlRootElement
 @XmlType
 @Table(uniqueConstraints =

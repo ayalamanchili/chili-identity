@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -19,6 +20,7 @@ import org.hibernate.search.annotations.Indexed;
 @Indexed
 @XmlRootElement
 @Entity
+@Audited
 public class PostLike extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;

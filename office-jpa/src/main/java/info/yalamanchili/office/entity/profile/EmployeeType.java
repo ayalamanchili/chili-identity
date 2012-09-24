@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -20,6 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Audited
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = EmployeeType.class, fields = {"name"}, message = "{employeetype.name.not.unique.msg}")

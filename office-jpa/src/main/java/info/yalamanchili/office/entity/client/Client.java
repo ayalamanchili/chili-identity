@@ -13,12 +13,14 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.envers.Audited;
 
 /**
  *
  * @author ayalamanchili
  */
 @Entity
+@Audited
 @XmlRootElement
 @XmlType
 public class Client extends AbstractEntity {

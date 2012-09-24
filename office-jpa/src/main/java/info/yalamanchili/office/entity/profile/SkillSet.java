@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -26,6 +27,7 @@ import org.hibernate.search.annotations.Indexed;
 @Indexed
 @XmlRootElement
 @Entity
+@Audited
 public class SkillSet extends AbstractEntity {
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)

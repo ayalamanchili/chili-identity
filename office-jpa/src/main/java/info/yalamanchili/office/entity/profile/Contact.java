@@ -21,6 +21,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.envers.Audited;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -35,6 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @XmlRootElement
 @Entity
+@Audited
 @Indexed
 //@Table(uniqueConstraints =@UniqueConstraint(columnNames = {"firstName", "lastName"}))
 public class Contact extends AbstractEntity {

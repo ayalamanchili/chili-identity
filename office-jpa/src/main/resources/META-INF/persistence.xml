@@ -30,6 +30,7 @@
         <class>info.yalamanchili.office.entity.client.Client</class>
         <class>info.yalamanchili.office.entity.client.Project</class>
         <class>info.yalamanchili.office.entity.client.StatementOfWork</class>
+        <class>info.chili.hibernate.envers.AuditRevisionEntity</class>
         <properties>
             <property name="hibernate.show_sql" value="${db.show.sql}"/>
             <property name="hibernate.format_sql" value="${db.format.sql}"/>
@@ -47,6 +48,19 @@
             <!-- Hibernate Search -->
             <property name="hibernate.search.default.directory_provider" value="org.hibernate.search.store.FSDirectoryProvider"/>
             <property name="hibernate.search.default.indexBase" value="c:/office/lucene/indexes"/>
+            <!-- Hibernate Envers-->
+            <property name="hibernate.ejb.event.post-insert"
+                      value="org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener" />
+            <property name="hibernate.ejb.event.post-update"
+                      value="org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener" />
+            <property name="hibernate.ejb.event.post-delete"
+                      value="org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener" />
+            <property name="hibernate.ejb.event.pre-collection-update"
+                      value="org.hibernate.envers.event.AuditEventListener" />
+            <property name="hibernate.ejb.event.pre-collection-remove"
+                      value="org.hibernate.envers.event.AuditEventListener" />
+            <property name="hibernate.ejb.event.post-collection-recreate"
+                      value="org.hibernate.envers.event.AuditEventListener" />
         </properties>
     </persistence-unit>
 </persistence>

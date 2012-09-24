@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.envers.Audited;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -25,6 +26,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Audited
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"addressType"}))
 @Unique(entity = AddressType.class, fields = {"addressType"}, message = "{addresstype.name.not.unique.msg}")

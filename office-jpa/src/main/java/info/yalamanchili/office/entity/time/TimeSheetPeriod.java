@@ -17,12 +17,14 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 
 /**
  *
  * @author ayalamanchili
  */
 @Entity
+@Audited
 @XmlRootElement
 @XmlType
 public class TimeSheetPeriod extends AbstractEntity {

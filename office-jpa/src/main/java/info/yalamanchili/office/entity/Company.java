@@ -6,7 +6,6 @@ package info.yalamanchili.office.entity;
 import info.chili.jpa.validation.Unique;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 
 import java.util.ArrayList;
@@ -17,11 +16,13 @@ import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.envers.Audited;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
@@ -30,6 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @XmlRootElement
 @Entity
+@Audited
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Company.class, fields = {"name"}, message = "{company.name.not.unique.msg}")
