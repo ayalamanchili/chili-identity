@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author bala
  */
-@Path("sow")
+@Path("statementofwork")
 @Component
 @Transactional
 @Scope("request")
