@@ -7,7 +7,9 @@ package info.yalamanchili.office.client.tae.project;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.client.TreeClientPanel;
@@ -61,7 +63,9 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        
+        new ResponseStatusWidget().show("Project successfully created");
+        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(TreeClientPanel.instance().getEntityId()));
     }
 
     @Override
