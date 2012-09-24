@@ -31,7 +31,7 @@ public class CreateSOWPanel extends CreateComposite {
 
     public CreateSOWPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("SOW", OfficeWelcome.constants);
+        initCreateComposite("StatementOfWork", OfficeWelcome.constants);
     }
 
     @Override
@@ -94,6 +94,6 @@ public class CreateSOWPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "sow";
+        return OfficeWelcome.constants.root_url() + "statementofwork";
     }
 }    
