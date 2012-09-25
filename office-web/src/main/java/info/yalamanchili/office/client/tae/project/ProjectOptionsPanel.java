@@ -47,7 +47,7 @@ public class ProjectOptionsPanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addProjectLink)) {
 			TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-			TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateProjectPanel(CreateCompositeType.ADD));
+			TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateProjectPanel(CreateCompositeType.ADD,false));
 		}
     }
     
