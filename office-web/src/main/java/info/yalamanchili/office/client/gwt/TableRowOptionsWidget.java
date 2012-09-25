@@ -41,6 +41,9 @@ public class TableRowOptionsWidget extends ALComposite {
 
     @Override
     protected void configure() {
+        readLink.addStyleName("readL");
+        updateLink.addStyleName("updateLink");
+        deleteLink.addStyleName("deleteLink");
         panel.setSpacing(10);
     }
 
