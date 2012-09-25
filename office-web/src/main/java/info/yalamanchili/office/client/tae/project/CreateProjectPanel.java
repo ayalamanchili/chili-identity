@@ -7,11 +7,13 @@ package info.yalamanchili.office.client.tae.project;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.SelectClientWidget;
 import info.yalamanchili.office.client.tae.client.TreeClientPanel;
 import java.util.logging.Logger;
 
@@ -22,9 +24,13 @@ import java.util.logging.Logger;
 public class CreateProjectPanel extends CreateComposite {
 
      private static Logger logger = Logger.getLogger(CreateProjectPanel.class.getName());
-    public CreateProjectPanel(CreateComposite.CreateCompositeType type)
+     protected boolean showClient;
+     SelectClientWidget clientT = new SelectClientWidget(showClient, false);
+     
+    public CreateProjectPanel(CreateComposite.CreateCompositeType type,boolean showclnt)
     {
         super(type);
+        this.showClient = showclnt;
         initCreateComposite("Project", OfficeWelcome.constants);
     }
     @Override
@@ -41,11 +47,12 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-      
+      addButtonClicked();
     }
 
     @Override
     protected void addButtonClicked() {
+        logger.info("url-------------"+getURI());
          HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -84,6 +91,11 @@ public class CreateProjectPanel extends CreateComposite {
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
+        if(showClient)
+         {
+           addDropDown("client", new SelectClientWidget(false, false));
+         }  
+       
     }
 
     @Override
@@ -93,7 +105,14 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-       return OfficeWelcome.constants.root_url() + "client/project/" + TreeClientPanel.instance().getEntityId();
+        String clntId= null;
+        if(showClient){
+        SelectClientWidget clientT = (SelectClientWidget) fields.get("client");
+         clntId= JSONUtils.toString(clientT.getSelectedObject(), "id"); 
+        }else{
+         clntId= TreeClientPanel.instance().getEntityId();
+        }
+        return OfficeWelcome.constants.root_url() + "client/project/" +clntId;
     }
-    
+       
 }
