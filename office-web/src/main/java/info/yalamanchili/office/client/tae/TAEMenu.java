@@ -15,6 +15,8 @@ import info.yalamanchili.office.client.tae.project.ProjectSidePanel;
 import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.tae.sow.SOWSidePanel;
 import info.yalamanchili.office.client.tae.sow.ReadAllSOWPanel;
+import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
+//import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodPanel;
 /**
  *
  * @author ayalamanchili
@@ -35,7 +37,7 @@ public class TAEMenu extends Composite{
             menu.addItem("Clients", clientsMaintainenceCmd);
             menu.addItem("Projects",projectsMaintainenceCmd);
             menu.addItem("SOW",sowMaintainenceCmd);
-      
+            menu.addItem("Pay Periods",payperiodsMaintainenceCmd);
         }
     }
         Command clientsMaintainenceCmd = new Command() {
@@ -60,6 +62,14 @@ public class TAEMenu extends Composite{
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllSOWPanel());
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new SOWSidePanel());
+        }
+    };
+         Command payperiodsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            //TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheetPeriodPanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetPeriodSidePanel());
         }
     };
 }
