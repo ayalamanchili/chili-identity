@@ -31,7 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class StatementOfWork extends AbstractEntity {
 
-    @NotEmpty
+    @NotEmpty(message = "{statementofwork.not.empty.msg}")
     protected String name;
     protected String description;
     protected String sowUrl;
