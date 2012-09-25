@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -25,6 +26,7 @@ import org.hibernate.envers.Audited;
 @XmlType
 public class Client extends AbstractEntity {
 
+    @NotEmpty(message = "{client.not.empty.msg}")
     protected String name;
     protected String description;
     //TODO
