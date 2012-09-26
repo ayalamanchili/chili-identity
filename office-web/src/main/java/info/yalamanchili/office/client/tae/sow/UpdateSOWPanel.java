@@ -11,7 +11,9 @@ import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
+import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.project.SelectProjectWidget;
 
 /**
  *
@@ -61,8 +63,8 @@ public class UpdateSOWPanel extends UpdateComposite {
         assignFieldValueFromEntity("sowUrl", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("billRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("project", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("billRate", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("project", entity, null);
 //        assignFieldValueFromEntity("timeSheets", entity, DataType.STRING_FIELD);
     }
 
@@ -88,8 +90,8 @@ public class UpdateSOWPanel extends UpdateComposite {
         addField("sowUrl", false, true, DataType.STRING_FIELD);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("billRate", false, false, DataType.CURRENCY_FIELD);
-        addField("project", false, true, DataType.STRING_FIELD);
+        addField("billRate", false, false, DataType.STRING_FIELD);
+        addDropDown("project", new SelectProjectWidget(false, false));
 //        addField("timeSheets", false, false, DataType.STRING_FIELD);
     }
 
