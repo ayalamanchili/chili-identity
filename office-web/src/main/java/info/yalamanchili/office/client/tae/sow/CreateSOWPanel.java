@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.emailtype.CreateEmailTypePanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.project.SelectProjectWidget;
 import info.yalamanchili.office.client.tae.sow.SOWSidePanel;
 import info.yalamanchili.office.client.tae.sow.ReadAllSOWPanel;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ public class CreateSOWPanel extends CreateComposite {
         assignEntityValueFromField("startDate", sow);
         assignEntityValueFromField("endDate", sow);
          assignEntityValueFromField("billRate", sow);
+         assignEntityValueFromField("project", sow);
         logger.info(sow.toString());
         return sow;
     }
@@ -91,6 +93,7 @@ public class CreateSOWPanel extends CreateComposite {
         addField("startDate",false,false,DataType.DATE_FIELD);
         addField("endDate",false,false,DataType.DATE_FIELD);
         addField("billRate",false,false,DataType.CURRENCY_FIELD);
+        addDropDown("project", new SelectProjectWidget(false, false));
     }
 
     @Override
