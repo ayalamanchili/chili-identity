@@ -32,7 +32,7 @@ public class UpdateSOWPanel extends UpdateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("billRate", entity);
         assignEntityValueFromField("project", entity);
-        assignEntityValueFromField("timeSheets", entity);
+//        assignEntityValueFromField("timeSheets", entity);
         return entity;
     }
 
@@ -61,9 +61,9 @@ public class UpdateSOWPanel extends UpdateComposite {
         assignFieldValueFromEntity("sowUrl", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("billRate", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("billRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("project", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("timeSheets", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("timeSheets", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -88,9 +88,9 @@ public class UpdateSOWPanel extends UpdateComposite {
         addField("sowUrl", false, true, DataType.STRING_FIELD);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("billRate", false, false, DataType.STRING_FIELD);
+        addField("billRate", false, false, DataType.CURRENCY_FIELD);
         addField("project", false, true, DataType.STRING_FIELD);
-        addField("timeSheets", false, false, DataType.STRING_FIELD);
+//        addField("timeSheets", false, false, DataType.STRING_FIELD);
     }
 
     @Override
