@@ -5,12 +5,16 @@
 package info.yalamanchili.office.entity.client;
 
 import info.chili.jpa.AbstractEntity;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -36,6 +40,9 @@ public class Project extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Client_Projects")
     protected Client client;
+
+     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    protected List<StatementOfWork> SOWS;
 
     public String getName() {
         return name;
@@ -76,7 +83,26 @@ public class Project extends AbstractEntity {
     public void setClient(Client client) {
         this.client = client;
     }
+   
+      public void setSOWS(List<StatementOfWork> SOWS) {
+        this.SOWS = SOWS;
+    }
 
+    public List<StatementOfWork> getSOWS() {
+         if (this.SOWS == null) {
+            this.SOWS = new ArrayList<StatementOfWork>();
+        }
+        return this.SOWS;
+    }
+   
+     public void addSOW(StatementOfWork entity) {
+        if (entity == null) {
+            return;
+        }
+        getSOWS().add(entity);
+        entity.setProject(this);
+    }
+     
     @Override
     public String toString() {
         return "Project{" + "name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + '}';
