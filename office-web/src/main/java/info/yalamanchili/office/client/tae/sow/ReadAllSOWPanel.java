@@ -15,7 +15,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.profile.certification.UpdateCertificationPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -40,7 +39,7 @@ public class ReadAllSOWPanel extends ReadAllComposite {
      public ReadAllSOWPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Project", OfficeWelcome.constants);
+        initTable("StatementOfWork", OfficeWelcome.constants);
     }
 
     @Override
@@ -68,7 +67,7 @@ public class ReadAllSOWPanel extends ReadAllComposite {
         table.setText(0, 4, getKeyValue("StartDate"));
         table.setText(0, 5, getKeyValue("EndDate"));
         table.setText(0, 6, getKeyValue("BillRate"));
-//        table.setText(0, 8, getKeyValue("Project"));
+//        table.setText(0, 7, getKeyValue("Project"));
     }
 
     @Override
@@ -83,7 +82,7 @@ public class ReadAllSOWPanel extends ReadAllComposite {
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 6, JSONUtils.toString(entity, "billRate"));
 //            table.setText(i, 7, JSONUtils.toString(entity, "timeSheets"));
-//            table.setText(i, 8, JSONUtils.toString(entity, "project"));
+//            table.setText(i, 7, JSONUtils.toString(entity, "project"));
         }
     }
 
