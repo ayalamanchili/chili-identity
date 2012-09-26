@@ -210,6 +210,13 @@ public abstract class CRUDComposite extends Composite {
                 entity.put(fieldKey, field.getSelectedObject());
             }
         }
+         if (fields.get(fieldKey) instanceof CurrencyField) {
+            CurrencyField field = (CurrencyField) fields.get(fieldKey);
+            if (field.getValue() != null) {
+                entity.put(fieldKey, new JSONString(field.getValue()));
+            }
+        }
+         
     }
 
     protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
