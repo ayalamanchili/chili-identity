@@ -4,9 +4,11 @@
  */
 package info.yalamanchili.office.client.tae.sow;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -66,7 +68,7 @@ public class ReadAllSOWPanel extends ReadAllComposite {
         table.setText(0, 4, getKeyValue("StartDate"));
         table.setText(0, 5, getKeyValue("EndDate"));
         table.setText(0, 6, getKeyValue("BillRate"));
-        table.setText(0, 8, getKeyValue("Project"));
+//        table.setText(0, 8, getKeyValue("Project"));
     }
 
     @Override
@@ -77,11 +79,11 @@ public class ReadAllSOWPanel extends ReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
             table.setText(i, 3, JSONUtils.toString(entity, "sowUrl"));
-            table.setText(i, 4, JSONUtils.toString(entity, "startDate"));
-            table.setText(i, 5, JSONUtils.toString(entity, "endDate"));
-            table.setText(i, 6, JSONUtils.toString(entity, "billDate"));
-            table.setText(i, 7, JSONUtils.toString(entity, "timeSheets"));
-            table.setText(i, 8, JSONUtils.toString(entity, "project"));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 6, JSONUtils.toString(entity, "billRate"));
+//            table.setText(i, 7, JSONUtils.toString(entity, "timeSheets"));
+//            table.setText(i, 8, JSONUtils.toString(entity, "project"));
         }
     }
 
