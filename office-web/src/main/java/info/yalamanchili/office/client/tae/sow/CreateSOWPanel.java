@@ -8,6 +8,7 @@ import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -102,6 +103,11 @@ public class CreateSOWPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "statementofwork";
+         String projectId= null;
+       
+        SelectProjectWidget projectT = (SelectProjectWidget) fields.get("project");
+         projectId= JSONUtils.toString(projectT.getSelectedObject(), "id"); 
+       
+        return OfficeWelcome.constants.root_url() + "project/sow/" + projectId ;
     }
 }    
