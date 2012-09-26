@@ -5,13 +5,12 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.dao.profile.PhoneDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
-import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -19,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +35,12 @@ public class SkillResource extends CRUDResource<Skill> {
     @Autowired
     public SkillDao skillDao;
 
+    @PUT
+    @Secured("ROLE_ADMIN")
+    public Skill save(Skill entity) {
+        return super.save(entity);
+    }
+
     @GET
     @Path("/{start}/{limit}")
     public SkillTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -48,11 +54,10 @@ public class SkillResource extends CRUDResource<Skill> {
     public CRUDDao getDao() {
         return skillDao;
     }//
-    
 
     @XmlRootElement
     @XmlType
-    public static class SkillTable{
+    public static class SkillTable {
 
         protected Long size;
         protected List<Skill> entities;
