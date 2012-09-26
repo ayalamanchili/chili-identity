@@ -8,10 +8,12 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
 
 import info.yalamanchili.office.entity.client.Project;
+import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.jrs.CRUDResource;
 
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -46,7 +48,15 @@ public class ProjectResource extends CRUDResource<Project> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-
+    
+   @PUT
+    @Path("/sow/{projectId}")
+    public void addSOW(@PathParam("projectId") Long projectId,StatementOfWork SOW) {
+        
+        Project project = (Project) getDao().findById(projectId);
+        
+        project.addSOW(SOW);
+    }
     @XmlRootElement
     @XmlType
     public static class ProjectTable {
