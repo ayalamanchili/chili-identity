@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.social.notification;
 
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
@@ -23,23 +24,23 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SocialNotificationService {
-    
+
     @Autowired
     protected SecurityService securityService;
     @Autowired
     protected MessagingService messagingService;
     @Autowired
     public EmployeeDao employeeDao;
-    
+
     @Async
     public void sendNewCompanyPostNotification(String PostContent) {
-        String[] roles = {"ROLE_USER", "ROLE_HR", "ROLE_ADMIN"};
+        String[] roles = {OfficeRoles.ROLE_USER, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_ADMIN};
         Email email = new Email();
         email.setIsHtml(true);
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New Post in company feed");
         email.setBody(PostContent);
         messagingService.sendEmail(email);
-        
+
     }
 }

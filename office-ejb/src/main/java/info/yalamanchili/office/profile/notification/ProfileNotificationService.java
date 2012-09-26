@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.profile.notification;
 
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
@@ -37,7 +38,7 @@ public class ProfileNotificationService {
 
     @Async
     public void skillSetUpdatedNotification(Employee emp) {
-        String[] roles = {"ROLE_RECRUITER"};
+        String[] roles = {OfficeRoles.ROLE_RECRUITER};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Resume Updated");
@@ -48,7 +49,7 @@ public class ProfileNotificationService {
 
     @Async
     public void sendNewUserCreatedNotification(CUser user) {
-        String[] roles = {"ROLE_ADMIN", "ROLE_HR"};
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New System Soft Office User Created");
@@ -70,7 +71,7 @@ public class ProfileNotificationService {
 
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
-        String[] roles = {"ROLE_ADMIN", "ROLE_HR", "ROLE_ACCOUNTANT", "ROLE_PAYROLL"};
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Employee Address Updated");

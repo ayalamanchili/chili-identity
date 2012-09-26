@@ -8,6 +8,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.OfficeRoles;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -36,7 +37,7 @@ public class SkillResource extends CRUDResource<Skill> {
     public SkillDao skillDao;
 
     @PUT
-    @Secured("ROLE_ADMIN")
+    @Secured(OfficeRoles.ROLE_ADMIN)
     public Skill save(Skill entity) {
         return super.save(entity);
     }

@@ -44,7 +44,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTANT, ROLE.ROLE_ADMIN, ROLE.ROLE_PAYROLL)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME)) {
             tabPanel.add(TimeandExpensePanel, "TimeSheet", false);
         }
         tabPanel.add(profilePanel, "Profile", false);

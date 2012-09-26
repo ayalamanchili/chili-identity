@@ -42,7 +42,7 @@ public class CreateSOWPanel extends CreateComposite {
         assignEntityValueFromField("description", sow);
         assignEntityValueFromField("startDate", sow);
         assignEntityValueFromField("endDate", sow);
-         assignEntityValueFromField("billRate", sow);
+        assignEntityValueFromField("billRate", sow);
          assignEntityValueFromField("project", sow);
         logger.info(sow.toString());
         return sow;
