@@ -36,12 +36,14 @@ public class CreateSOWPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject clnt = new JSONObject();
-
-        assignEntityValueFromField("name", clnt);
-        assignEntityValueFromField("description", clnt);
-        logger.info(clnt.toString());
-        return clnt;
+        JSONObject sow = new JSONObject();
+        assignEntityValueFromField("name", sow);
+        assignEntityValueFromField("description", sow);
+        assignEntityValueFromField("startDate", sow);
+        assignEntityValueFromField("endDate", sow);
+         assignEntityValueFromField("billRate", sow);
+        logger.info(sow.toString());
+        return sow;
     }
 
     @Override
@@ -86,6 +88,9 @@ public class CreateSOWPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
+        addField("startDate",false,false,DataType.DATE_FIELD);
+        addField("endDate",false,false,DataType.DATE_FIELD);
+        addField("billRate",false,false,DataType.CURRENCY_FIELD);
     }
 
     @Override
