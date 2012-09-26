@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.jrs.CRUDResource;
 
 import java.util.List;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 
 import javax.ws.rs.Path;
@@ -42,6 +43,14 @@ public class SOWResource extends CRUDResource<StatementOfWork> {
         return sowDao;
     }
 
+     @GET
+    @Path("/{start}/{limit}")
+    public SOWTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        SOWTable tableObj = new SOWTable();
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
     @XmlRootElement
     @XmlType
     public static class SOWTable {
