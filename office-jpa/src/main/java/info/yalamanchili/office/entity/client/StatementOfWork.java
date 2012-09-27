@@ -36,10 +36,10 @@ public class StatementOfWork extends AbstractEntity {
     protected String description;
     protected String sowUrl;
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{endDate.not.empty.msg}")
     protected Date endDate;
     protected BigDecimal billRate;
     @ManyToOne(cascade = CascadeType.MERGE)
