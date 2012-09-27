@@ -30,6 +30,7 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.security.CRole;
 import javax.ws.rs.PathParam;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 @Path("admin")
 @Produces("application/json")
@@ -52,32 +53,34 @@ public class AdminResource {
     public EmployeeDao employeeDao;
     @PersistenceContext
     EntityManager em;
-
+    
     @Path("/login")
     @PUT
     public CUser login(CUser user) {
         return securityService.login(user);
     }
-
+    
     @Path("/changepassword/{empId}")
     @PUT
     public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.changePassword(empId, user);
     }
-
+    
     @Path("/resetpassword/{empId}")
     @PUT
     public CUser resetPassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        return employeeService.ResetPassword(empId, user);
+        return employeeService.resetPassword(empId, user);
     }
-
+    
     @Path("/createuser")
     @PUT
     @Produces("application/text")
     public String createUser(info.yalamanchili.office.dto.profile.Employee employee) {
+        ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
         CUser user = mapper.map(employee, CUser.class);
+        user.setPasswordHash(encoder.encodePassword(user.getPasswordHash(), null));
         Employee emp = mapper.map(employee, Employee.class);
         String employeeId = generateEmployeeId(employee);
         user.setUsername(employeeId);
@@ -95,7 +98,7 @@ public class AdminResource {
         profileNotificationService.sendNewUserCreatedNotification(user);
         return user.getEmployee().getId().toString();
     }
-
+    
     private String generateEmployeeId(info.yalamanchili.office.dto.profile.Employee emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -105,7 +108,7 @@ public class AdminResource {
         }
         return empId;
     }
-
+    
     @Path("/currentuser")
     @GET
     public Employee getCurrentUser() {

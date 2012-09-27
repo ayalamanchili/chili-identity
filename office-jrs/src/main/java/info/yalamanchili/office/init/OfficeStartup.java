@@ -28,6 +28,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OfficeStartup {
 
+    ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
     @PersistenceContext
     protected EntityManager em;
     protected CUser userUser;
@@ -66,6 +68,7 @@ public class OfficeStartup {
     }
 
     protected void initUsers() {
+
         userUser();
         userAdmin();
     }
@@ -481,10 +484,11 @@ public class OfficeStartup {
     }
 
     protected void userUser() {
+        ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
         if (EntityQueryUtils.findEntity(em, CUser.class, "username", "useruser") == null) {
             CUser user = new CUser();
             user.setUsername("useruser");
-            user.setPasswordHash("useruser");
+            user.setPasswordHash(encoder.encodePassword("useruser", null));
             user.addRole(userRole);
             user.setEnabled(true);
             userUser = em.merge(user);
@@ -492,10 +496,11 @@ public class OfficeStartup {
     }
 
     protected void userAdmin() {
+        ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
         if (EntityQueryUtils.findEntity(em, CUser.class, "username", "adminadmin") == null) {
             CUser user = new CUser();
             user.setUsername("adminadmin");
-            user.setPasswordHash("adminadmin");
+            user.setPasswordHash(encoder.encodePassword("adminadmin", null));
             user.setEnabled(true);
             user.addRole(userRole);
             user.addRole(adminRole);
