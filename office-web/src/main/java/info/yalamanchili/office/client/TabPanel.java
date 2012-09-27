@@ -24,11 +24,6 @@ import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     private static Logger logger = Logger.getLogger(TabPanel.class.getName());
-    public final static Integer HOME_TAB = 0;
-    public final static Integer SOCIAL_TAB = 1;
-    public final static Integer MY_OFFICE_TAB = 2;
-    public final static Integer TimeandExpense_TAB = 3;
-    public final static Integer PROFILE_TAB = 4;
     protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
     public EntityLayout homePanel = new EntityLayout();
     public EntityLayout socialPanel = new EntityLayout();
@@ -49,7 +44,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
         tabPanel.add(profilePanel, "Profile", false);
         tabPanel.addSelectionHandler(this);
-        tabPanel.selectTab(MY_OFFICE_TAB);
+        tabPanel.selectTab(2);
     }
 
     @Override
