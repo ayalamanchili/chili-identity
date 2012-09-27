@@ -87,7 +87,7 @@ public class Project extends AbstractEntity {
       public void setSOWS(List<StatementOfWork> SOWS) {
         this.SOWS = SOWS;
     }
-
+     @XmlTransient
     public List<StatementOfWork> getSOWS() {
          if (this.SOWS == null) {
             this.SOWS = new ArrayList<StatementOfWork>();
