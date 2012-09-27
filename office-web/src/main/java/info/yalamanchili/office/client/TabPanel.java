@@ -54,20 +54,20 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     @Override
     public void onSelection(SelectionEvent<Integer> selectedTabIndex) {
-        logger.info(selectedTabIndex.getSelectedItem().toString());
-        if (selectedTabIndex.getSelectedItem().equals(HOME_TAB)) {
+        logger.info(tabPanel.getWidget(selectedTabIndex.getSelectedItem()).toString());
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(homePanel)) {
             selectHomeTab();
         }
-        if (selectedTabIndex.getSelectedItem().equals(SOCIAL_TAB)) {
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(socialPanel)) {
             selectSocialTab();
         }
-        if (selectedTabIndex.getSelectedItem().equals(MY_OFFICE_TAB)) {
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(myOfficePanel)) {
             selectAdminTab();
         }
-        if (selectedTabIndex.getSelectedItem().equals(TimeandExpense_TAB)) {
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(TimeandExpensePanel)) {
             selectTimeandExpenseTab();
         }
-        if (selectedTabIndex.getSelectedItem().equals(PROFILE_TAB)) {
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(profilePanel)) {
             selectProfileTab();
         }
     }
