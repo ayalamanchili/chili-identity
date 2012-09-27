@@ -27,15 +27,15 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
 
     public CreateTimeSheetPeriodPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Time Sheet Period", OfficeWelcome.constants);
+        initCreateComposite("TimeSheetPeriod", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clnt = new JSONObject();
 
-        assignEntityValueFromField("name", clnt);
-        assignEntityValueFromField("description", clnt);
+        assignEntityValueFromField("startDate", clnt);
+        assignEntityValueFromField("endDate", clnt);
         logger.info(clnt.toString());
         return clnt;
     }
@@ -80,8 +80,8 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
     }
 
     @Override
