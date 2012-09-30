@@ -28,5 +28,7 @@
 		      where user.userId = userroles.userId and userroles.roleId= role.roleId and user.username =?  " />
         </authentication-provider>
     </authentication-manager>
-
+    <beans:bean id ="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" >
+        <beans:constructor-arg value="256"/>
+    </beans:bean>
 </beans:beans>
