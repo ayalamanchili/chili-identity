@@ -24,12 +24,15 @@ import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.Project;
+import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.security.SecurityUtils;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,13 +50,21 @@ public class OfficeStartup {
     protected CRole recruiterRole;
     protected CRole accountantRole;
     protected CRole payrollRole;
+    protected Employee userEmp;
+    protected Employee adminEmp;
+    protected Company sstechCmp;
 
     protected void startup() {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
+        //This data is required in production
         if (config.getInitRefData()) {
             initRoles();
             initUsers();
             initRefData();
+            initSampleEmployees();
+        }
+        //This is not required in prod mode
+        if (config.getInitTestData()) {
             initTestData();
         }
     }
@@ -68,7 +79,6 @@ public class OfficeStartup {
     }
 
     protected void initUsers() {
-
         userUser();
         userAdmin();
     }
@@ -76,15 +86,9 @@ public class OfficeStartup {
     /**
      *
      */
-    protected void initTestData() {
-
-        Company c1 = new Company();
-        c1.setName("sstech");
-        c1 = em.merge(c1);
-
-
+    protected void initSampleEmployees() {
         // User Employee
-        Employee userEmp = new Employee();
+        userEmp = new Employee();
         userEmp.setEmployeeId("uuser");
         userEmp.setFirstName("user");
         userEmp.setLastName("user");
@@ -126,7 +130,7 @@ public class OfficeStartup {
         userUser.setEmployee(userEmp);
         userUser = em.merge(userUser);
         // Admin Employee
-        Employee adminEmp = new Employee();
+        adminEmp = new Employee();
         adminEmp.setEmployeeId("aadmin");
         adminEmp.setFirstName("admin");
         adminEmp.setLastName("admin");
@@ -197,12 +201,19 @@ public class OfficeStartup {
         userPost2.setPostTimeStamp(new Date());
         userPost2.setPostContent("<h3>This is a Sample System Soft news letter</h3><b>this is my company post by admin</b>");
         userPost2.setEmployee(userEmp);
-        userPost2.setCompany(c1);
+        userPost2.setCompany(sstechCmp);
         userPost2 = em.merge(userPost2);
 
     }
 
+    /**
+     * This data must be present in the DB for all other functions
+     */
     protected void initRefData() {
+        sstechCmp = new Company();
+        sstechCmp.setName("System Soft Technologies");
+        sstechCmp = em.merge(sstechCmp);
+
         // Address Types
         getHomeAddressType();
         // Email Types
@@ -211,15 +222,20 @@ public class OfficeStartup {
         // Phone Types
         getCellPhoneType();
         getHomePhoneType();
+        //Employee Type
+        getInternalEmployeeType();
+        getConsultantEmployeeType();
+    }
+
+    protected void initTestData() {
         //Skills
         getJavaSkill();
         getDOTNETSkill();
         //Certifications
         getJAVACertification();
         getDOTNETCertification();
-        //Employee Type
-        getInternalEmployeeType();
-        getConsultantEmployeeType();
+        //TAE
+        techSysClient();
     }
 
     protected AddressType getHomeAddressType() {
@@ -433,6 +449,26 @@ public class OfficeStartup {
         emergencyContact.setEcPrimary(true);
         emergencyContact.setRelation("Wife");
         return em.merge(emergencyContact);
+    }
+
+    public Client techSysClient() {
+        Client techSysClient = new Client();
+        techSysClient.setName("Tech Systems");
+
+        Project techSysProj1 = new Project();
+        techSysProj1.setName("ecomm project");
+        techSysProj1.setStartDate(DateUtils.getNextMonth(new Date(), -6));
+        techSysProj1.setEndDate(DateUtils.getNextMonth(new Date(), 6));
+        techSysClient.addProject(techSysProj1);
+
+        StatementOfWork techSysSow1 = new StatementOfWork();
+        techSysSow1.setName("Tech Systems-ecomm proj--sow1");
+        techSysSow1.setStartDate(new Date());
+        techSysSow1.setEndDate(DateUtils.getNextMonth(new Date(), -3));
+        techSysSow1.setBillRate(new BigDecimal("100.00"));
+        techSysProj1.addSOW(techSysSow1);
+
+        return em.merge(techSysClient);
     }
 
     public void userRole() {

@@ -40,8 +40,7 @@ public class Project extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Client_Projects")
     protected Client client;
-
-     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     protected List<StatementOfWork> SOWS;
 
     public String getName() {
@@ -83,26 +82,27 @@ public class Project extends AbstractEntity {
     public void setClient(Client client) {
         this.client = client;
     }
-   
-      public void setSOWS(List<StatementOfWork> SOWS) {
+
+    public void setSOWS(List<StatementOfWork> SOWS) {
         this.SOWS = SOWS;
     }
-     @XmlTransient
+
+    @XmlTransient
     public List<StatementOfWork> getSOWS() {
-         if (this.SOWS == null) {
+        if (this.SOWS == null) {
             this.SOWS = new ArrayList<StatementOfWork>();
         }
         return this.SOWS;
     }
-   
-     public void addSOW(StatementOfWork entity) {
+
+    public void addSOW(StatementOfWork entity) {
         if (entity == null) {
             return;
         }
         getSOWS().add(entity);
         entity.setProject(this);
     }
-     
+
     @Override
     public String toString() {
         return "Project{" + "name=" + name + ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + '}';

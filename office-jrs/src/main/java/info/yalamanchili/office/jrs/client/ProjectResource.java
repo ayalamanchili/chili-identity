@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.Project;
+package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ProjectDao;

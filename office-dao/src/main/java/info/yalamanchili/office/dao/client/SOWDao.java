@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dao.tae;
+package info.yalamanchili.office.dao.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.StatementOfWork;

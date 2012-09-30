@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.tae;
+package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.dao.tae.SOWDao;
+import info.yalamanchili.office.dao.client.SOWDao;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.time.TimeSheet;

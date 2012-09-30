@@ -41,7 +41,7 @@ public class TAEMenu extends Composite {
         if (Auth.isAdmin() || Auth.isHR()) {
             menu.addItem("Clients", clientsMaintainenceCmd);
             menu.addItem("Projects", projectsMaintainenceCmd);
-            menu.addItem("SOW", sowMaintainenceCmd);
+            menu.addItem("Statement Of Work's", sowMaintainenceCmd);
             menu.addItem("Pay Periods", payperiodsMaintainenceCmd);
             menu.addItem("TimeSheets", timeSheetsMaintainenceCmd);
         }

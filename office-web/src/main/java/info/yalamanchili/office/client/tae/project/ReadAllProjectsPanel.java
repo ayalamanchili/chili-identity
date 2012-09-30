@@ -15,7 +15,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.client.TreeClientPanel;
 import java.util.logging.Logger;
@@ -29,16 +28,17 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllProjectsPanel.class.getName());
     public static ReadAllProjectsPanel instance;
 
-  
     public ReadAllProjectsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("Project", OfficeWelcome.constants);
     }
+
     public ReadAllProjectsPanel() {
         instance = this;
         initTable("Project", OfficeWelcome.constants);
     }
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllProjectsPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
@@ -51,10 +51,6 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
 
     }
 
-    public String getReadAllProjectsPanelURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "project/" + start.toString() + "/" + limit.toString();
-    }
-
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -62,7 +58,7 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
         table.setText(0, 2, getKeyValue("Description"));
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
-       // table.setText(0, 5, getKeyValue("Client"));
+        // table.setText(0, 5, getKeyValue("Client"));
     }
 
     @Override
@@ -75,7 +71,7 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            
+
             //table.setText(i, 5, JSONUtils.toString(entity, "client"));
         }
     }
@@ -119,5 +115,13 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
         TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
         TabPanel.instance().TimeandExpensePanel.entityPanel.add(new UpdateProjectPanel(getEntity(entityId)));
+    }
+
+    public String getReadAllProjectsPanelURL(Integer start, String limit) {
+        if (parentId != null) {
+            return OfficeWelcome.constants.root_url() + "client/projects/" + parentId + "/" + start.toString() + "/" + limit.toString();
+        } else {
+            return OfficeWelcome.constants.root_url() + "project/" + start.toString() + "/" + limit.toString();
+        }
     }
 }
