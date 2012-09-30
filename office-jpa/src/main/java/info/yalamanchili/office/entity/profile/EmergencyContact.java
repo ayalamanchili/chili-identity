@@ -57,7 +57,7 @@ public class EmergencyContact extends AbstractEntity {
     /**
      * @NOT generated
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_Contact_EmergencyContacts")
     @Valid
     protected Contact contact;

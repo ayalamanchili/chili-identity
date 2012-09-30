@@ -32,17 +32,19 @@ public class EmergencyContact implements Serializable {
     protected String lastName;
     protected Sex sex;
     @Email
+    @NotEmpty
     protected String email;
     @Size(min = 10, max = 10)
+    @NotEmpty
     protected String phoneNumber;
-    
+
     public EmergencyContact() {
     }
 
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -50,7 +52,7 @@ public class EmergencyContact implements Serializable {
     public String getRelation() {
         return relation;
     }
-    
+
     public void setRelation(String relation) {
         this.relation = relation;
     }
@@ -62,56 +64,55 @@ public class EmergencyContact implements Serializable {
     public void setEcPrimary(Boolean ecPrimary) {
         this.ecPrimary = ecPrimary;
     }
-    
-  
+
     public String getFirstName() {
         return firstName;
     }
-    
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    
+
     public String getMiddleInitial() {
         return middleInitial;
     }
-    
+
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
-    
+
     public String getLastName() {
         return lastName;
     }
-    
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    
+
     public Sex getSex() {
         return sex;
     }
-    
+
     public void setSex(Sex sex) {
         this.sex = sex;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
-    
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    
+
     @Override
     public String toString() {
         return "EmergencyContact{" + "id=" + id + ", relation=" + relation + ", ecPrimary=" + ecPrimary + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName=" + lastName + ", sex=" + sex + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';

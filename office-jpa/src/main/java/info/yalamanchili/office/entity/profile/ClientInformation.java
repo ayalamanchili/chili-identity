@@ -40,7 +40,7 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_ClientInformations")
     protected Employee employee;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_Contact_ClientInformations")
     @Valid
     protected Contact contact;

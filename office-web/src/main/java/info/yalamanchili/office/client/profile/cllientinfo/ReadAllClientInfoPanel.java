@@ -12,7 +12,6 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllClientInfoPanel extends ReadAllComposite {
@@ -49,7 +48,8 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
         table.setText(0, 3, getKeyValue("First Name"));
         table.setText(0, 4, getKeyValue("Last Name"));
         table.setText(0, 5, getKeyValue("Phone Number"));
-        table.setText(0, 6, getKeyValue("Consultant Job Title"));
+        table.setText(0, 6, getKeyValue("Email"));
+        table.setText(0, 7, getKeyValue("Consultant Job Title"));
 
     }
 
@@ -64,7 +64,8 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 4, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "consultantJobTitle"));
+            table.setText(i, 6, JSONUtils.toString(entity, "email"));
+            table.setText(i, 7, JSONUtils.toString(entity, "consultantJobTitle"));
         }
     }
 
@@ -87,15 +88,16 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
     public void viewClicked(String entityId) {
         // TODO Auto-generated method stub
     }
-  public String getDeleteURL(String entityId) {
+
+    public String getDeleteURL(String entityId) {
         return OfficeWelcome.constants.root_url() + "clientinformation/delete/" + entityId;
-               
+
     }
+
     @Override
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String arg0) {
                         postDeleteSuccess();
@@ -105,7 +107,7 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-         new ResponseStatusWidget().show("successfully deleted Reports To information");
+        new ResponseStatusWidget().show("successfully deleted Reports To information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());

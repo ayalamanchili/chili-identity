@@ -22,12 +22,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EmergencyContactService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     public void addEmergencyContact(Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
         Employee emp = (Employee) em.find(Employee.class, empId);
         Contact contact = new Contact();
@@ -58,12 +58,25 @@ public class EmergencyContactService {
         emergencyCnt.setEmployee(emp);
         em.merge(emergencyCnt);
     }
-
+    
     public info.yalamanchili.office.dto.profile.EmergencyContact update(info.yalamanchili.office.dto.profile.EmergencyContact ec) {
-        //TODO implement mapping for contact,phone and email
+        //TODO user dozer mapping?
         EmergencyContact ecEntity = em.find(EmergencyContact.class, ec.getId());
         ecEntity = (EmergencyContact) BeanMapper.merge(ec, ecEntity);
-        BeanMapper.merge(ecEntity.getContact(), ec);
+        //Contact
+        ecEntity.getContact().setFirstName(ec.getFirstName());
+        ecEntity.getContact().setLastName(ec.getLastName());
+        ecEntity.getContact().setMiddleInitial(ec.getMiddleInitial());
+        ecEntity.getContact().setSex(ec.getSex());
+        //Email
+        if (ecEntity.getContact().getEmails().size() > 0) {
+            ecEntity.getContact().getEmails().get(0).setEmail(ec.getEmail());
+        }
+        //Phone
+        if (ecEntity.getContact().getPhones().size() > 0) {
+            ecEntity.getContact().getPhones().get(0).setPhoneNumber(ec.getPhoneNumber());
+        }
+        em.merge(ecEntity);
         return ec;
     }
 }

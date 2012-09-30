@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class ClientInformation implements Serializable {
-    
+
     protected Long id;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
@@ -31,93 +31,95 @@ public class ClientInformation implements Serializable {
     protected String consultantJobTitle;
     protected boolean rtPrimary;
     @org.hibernate.validator.constraints.Email
+    @NotEmpty
     protected String email;
+    @NotEmpty
     @Size(min = 10, max = 10)
     protected String phoneNumber;
-    
+
     public ClientInformation() {
     }
-    
+
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getFirstName() {
         return firstName;
     }
-    
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    
+
     public String getLastName() {
         return lastName;
     }
-    
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    
+
     public String getMiddleInitial() {
         return middleInitial;
     }
-    
+
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
-    
+
     public Sex getSex() {
         return sex;
     }
-    
+
     public void setSex(Sex sex) {
         this.sex = sex;
     }
-    
+
     public String getReportsToRole() {
         return reportsToRole;
     }
-    
+
     public void setReportsToRole(String reportsToRole) {
         this.reportsToRole = reportsToRole;
     }
-    
+
     public String getConsultantJobTitle() {
         return consultantJobTitle;
     }
-    
+
     public void setConsultantJobTitle(String consultantJobTitle) {
         this.consultantJobTitle = consultantJobTitle;
     }
-    
+
     public boolean isRtPrimary() {
         return rtPrimary;
     }
-    
+
     public void setRtPrimary(boolean rtPrimary) {
         this.rtPrimary = rtPrimary;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
-    
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    
+
     @Override
     public String toString() {
         return "ClientInformation{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", sex=" + sex + ", reportsToRole=" + reportsToRole + ", consultantJobTitle=" + consultantJobTitle + ", rtPrimary=" + rtPrimary + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';

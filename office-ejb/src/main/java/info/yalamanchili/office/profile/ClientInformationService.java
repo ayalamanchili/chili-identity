@@ -65,6 +65,20 @@ public class ClientInformationService {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         ciEntity = (ClientInformation) BeanMapper.merge(ci, ciEntity);
+                //Contact
+        ciEntity.getContact().setFirstName(ci.getFirstName());
+        ciEntity.getContact().setLastName(ci.getLastName());
+        ciEntity.getContact().setMiddleInitial(ci.getMiddleInitial());
+        ciEntity.getContact().setSex(ci.getSex());
+        //Email
+        if (ciEntity.getContact().getEmails().size() > 0) {
+            ciEntity.getContact().getEmails().get(0).setEmail(ci.getEmail());
+        }
+        //Phone
+        if (ciEntity.getContact().getPhones().size() > 0) {
+            ciEntity.getContact().getPhones().get(0).setPhoneNumber(ci.getPhoneNumber());
+        }
+        em.merge(ciEntity);
         return ci;
     }
 }
