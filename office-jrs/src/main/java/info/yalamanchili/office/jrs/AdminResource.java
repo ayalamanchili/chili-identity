@@ -29,6 +29,7 @@ import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.security.CRole;
+import info.yalamanchili.office.security.SecurityUtils;
 import javax.ws.rs.PathParam;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
@@ -78,9 +79,8 @@ public class AdminResource {
     @PUT
     @Produces("application/text")
     public String createUser(info.yalamanchili.office.dto.profile.Employee employee) {
-        ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
         CUser user = mapper.map(employee, CUser.class);
-        user.setPasswordHash(encoder.encodePassword(user.getPasswordHash(), null));
+        user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
         Employee emp = mapper.map(employee, Employee.class);
         String employeeId = generateEmployeeId(employee);
         user.setUsername(employeeId);

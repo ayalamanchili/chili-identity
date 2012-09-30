@@ -1,14 +1,13 @@
 package info.yalamanchili.office.dao.security;
 
-import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
+import info.yalamanchili.office.security.SecurityUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -24,8 +23,7 @@ public class SecurityService {
         Query findUserQuery = em.createQuery("from " + CUser.class.getCanonicalName()
                 + " where username=:userNameParam and passwordHash=:passwordParam", CUser.class);
         findUserQuery.setParameter("userNameParam", user.getUsername());
-        ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
-        findUserQuery.setParameter("passwordParam", encoder.encodePassword(user.getPasswordHash(), null));
+        findUserQuery.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
         try {
             return (CUser) findUserQuery.getSingleResult();
         } catch (NoResultException e) {
