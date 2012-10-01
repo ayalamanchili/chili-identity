@@ -33,7 +33,7 @@ public class TimeSheetPeriod extends AbstractEntity {
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{startDate.not.empty.msg}")
+    @NotNull(message = "{enddate.not.empty.msg}")
     protected Date endDate;
     @OneToMany(mappedBy = "timeSheetPeriod")
     protected List<TimeSheet> timeSheets;
