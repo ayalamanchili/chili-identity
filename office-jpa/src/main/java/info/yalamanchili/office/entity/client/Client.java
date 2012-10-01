@@ -5,11 +5,14 @@
 package info.yalamanchili.office.entity.client;
 
 import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.validation.Unique;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -24,6 +27,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"name"}))
+@Unique(entity = Client.class, fields = {"name"}, message = "{client.name.not.unique.msg}")
 public class Client extends AbstractEntity {
 
     @NotEmpty(message = "{client.not.empty.msg}")
