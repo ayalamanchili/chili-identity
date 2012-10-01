@@ -8,11 +8,12 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Component;
 /**
  *
  * @author bala
  */
-
+@Component
 public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
 
     @PersistenceContext
