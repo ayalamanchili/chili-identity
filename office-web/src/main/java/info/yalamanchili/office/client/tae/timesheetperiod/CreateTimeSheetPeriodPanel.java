@@ -67,7 +67,7 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
         TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
         TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TimeSheetPeriodSidePanel());
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        //TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTimeSheetPeriodPanel());
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
     }
 
     @Override
