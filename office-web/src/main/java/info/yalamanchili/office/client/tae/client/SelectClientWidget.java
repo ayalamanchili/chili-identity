@@ -48,7 +48,7 @@ public class SelectClientWidget extends SelectComposite {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
-        return OfficeWelcome.constants.root_url() + "client/dropdown/" + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "statementofwork/dropdown/" + start.toString() + "/" + limit.toString();
     }
 
     @Override
