@@ -82,7 +82,7 @@ public class TAEMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            //TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheetPeriodPanel());
+            //TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheet());
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetSidePanel());
         }
     };
