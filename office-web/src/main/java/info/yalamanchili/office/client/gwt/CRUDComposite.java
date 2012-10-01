@@ -210,8 +210,16 @@ public abstract class CRUDComposite extends Composite {
                 entity.put(fieldKey, field.getSelectedObject());
             }
         }
+        //Currency Field
          if (fields.get(fieldKey) instanceof CurrencyField) {
             CurrencyField field = (CurrencyField) fields.get(fieldKey);
+            if (field.getValue() != null) {
+                entity.put(fieldKey, new JSONString(field.getValue()));
+            }
+        }
+         //Float Field
+          if (fields.get(fieldKey) instanceof FloatField) {
+            FloatField field = (FloatField) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
@@ -246,6 +254,16 @@ public abstract class CRUDComposite extends Composite {
             } else if ("false".equalsIgnoreCase(JSONUtils.toString(entity, fieldKey))) {
                 field.setValid(false);
             }
+        }
+        // Currency Field
+         if (DataType.CURRENCY_FIELD.equals(type)) {
+            CurrencyField field = (CurrencyField) fields.get(fieldKey);
+            field.setValue(JSONUtils.toString(entity, fieldKey));
+        }
+         //Float Field
+           if (DataType.FLOAT_FIELD.equals(type)) {
+            FloatField field = (FloatField) fields.get(fieldKey);
+            field.setValue(JSONUtils.toString(entity, fieldKey));
         }
         //Dropdown
         if (fields.get(fieldKey) instanceof SelectComposite && entity.get(fieldKey) != null) {
