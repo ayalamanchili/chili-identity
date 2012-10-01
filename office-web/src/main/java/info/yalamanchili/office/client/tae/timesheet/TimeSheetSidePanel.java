@@ -49,7 +49,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtimeSheetlink)) {
             TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-//            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateTimesheetPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
