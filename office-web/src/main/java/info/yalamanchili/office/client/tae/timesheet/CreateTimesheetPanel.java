@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.tae.sow.SelectSOWWidget;
 
 
 /**
@@ -39,32 +40,33 @@ public class CreateTimesheetPanel extends CreateComposite {
         assignEntityValueFromField("saturdayBilledHours", ts);
         assignEntityValueFromField("sundayPaidHours", ts);
         assignEntityValueFromField("sundayBilledHours", ts);
+        assignEntityValueFromField("notes", ts);
         return ts;
     }
 
     @Override
     protected void createButtonClicked() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     protected void addButtonClicked() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     protected void postCreateSuccess(String result) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     protected void addListeners() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     protected void configure() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
@@ -86,7 +88,7 @@ public class CreateTimesheetPanel extends CreateComposite {
          addField("sundayPaidHours", false, true, DataType.FLOAT_FIELD);
          addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
          addField("notes", false, true, DataType.STRING_FIELD);
-//         addDropDown("project", new Selectempl(false, false));
+         addDropDown("StatementofWork", new SelectSOWWidget(false, false));
 //         addDropDown("project", new SelectProjectWidget(false, false));
 //         addDropDown("project", new SelectProjectWidget(false, false));
     }
@@ -99,7 +101,7 @@ public class CreateTimesheetPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return OfficeWelcome.constants.root_url() + "timesheet" ;
     }
     
 }
