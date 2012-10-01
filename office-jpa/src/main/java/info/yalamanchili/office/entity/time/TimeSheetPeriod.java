@@ -30,10 +30,10 @@ import org.hibernate.envers.Audited;
 public class TimeSheetPeriod extends AbstractEntity {
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date endDate;
     @OneToMany(mappedBy = "timeSheetPeriod")
     protected List<TimeSheet> timeSheets;
