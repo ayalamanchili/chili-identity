@@ -36,11 +36,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class SOWResource extends CRUDResource<StatementOfWork> {
 
     @Autowired
-    public SOWDao sowDao;
+    public SOWDao sOWDao;
 
     @Override
     public CRUDDao getDao() {
-        return sowDao;
+        return sOWDao;
     }
 
      @GET
