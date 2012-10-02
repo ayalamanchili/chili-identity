@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.tae.project.ProjectSidePanel;
 import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.tae.sow.SOWSidePanel;
 import info.yalamanchili.office.client.tae.sow.ReadAllSOWPanel;
+import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
@@ -82,7 +83,7 @@ public class TAEMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            //TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheet());
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel());
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetSidePanel());
         }
     };
