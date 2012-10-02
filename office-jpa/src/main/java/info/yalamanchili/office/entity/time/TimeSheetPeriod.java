@@ -75,6 +75,6 @@ public class TimeSheetPeriod extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "TimeSheetPeriod{" + "startDate=" + startDate + ", endDate=" + endDate + ", timeSheets=" + timeSheets + '}';
+        return "TimeSheetPeriod{" + "name=" + name + "startDate=" + startDate + ", endDate=" + endDate + ", timeSheets=" + timeSheets + '}';
     }
 }
