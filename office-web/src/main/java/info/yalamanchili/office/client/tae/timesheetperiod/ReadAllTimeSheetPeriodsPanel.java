@@ -54,10 +54,10 @@ public class ReadAllTimeSheetPeriodsPanel extends ReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        //table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 1, getKeyValue("Name"));
         //table.setText(0, 2, getKeyValue("Description"));
-        table.setText(0, 1, getKeyValue("StartDate"));
-        table.setText(0, 2, getKeyValue("EndDate"));
+        table.setText(0, 2, getKeyValue("StartDate"));
+        table.setText(0, 3, getKeyValue("EndDate"));
     }
 
     @Override
@@ -67,9 +67,9 @@ public class ReadAllTimeSheetPeriodsPanel extends ReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             //table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            //table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
 
             //table.setText(i, 5, JSONUtils.toString(entity, "client"));
         }
