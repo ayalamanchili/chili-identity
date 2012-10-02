@@ -5,10 +5,16 @@
 package info.yalamanchili.office.client.tae.timesheet;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.sow.SelectSOWWidget;
+import java.util.logging.Logger;
 
 
 /**
@@ -17,6 +23,7 @@ import info.yalamanchili.office.client.tae.sow.SelectSOWWidget;
  */
 public class CreateTimesheetPanel extends CreateComposite {
 
+     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.timesheet.CreateTimesheetPanel.class.getName());
     public CreateTimesheetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Timesheet", OfficeWelcome.constants);
@@ -41,12 +48,26 @@ public class CreateTimesheetPanel extends CreateComposite {
         assignEntityValueFromField("sundayPaidHours", ts);
         assignEntityValueFromField("sundayBilledHours", ts);
         assignEntityValueFromField("notes", ts);
+        ts.put("timeSheetStatus",new JSONString("Approved") );
+        ts.put("timeSheetCategory",new JSONString("Regular"));
         return ts;
     }
 
     @Override
     protected void createButtonClicked() {
-        
+         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -56,7 +77,7 @@ public class CreateTimesheetPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        
+       new ResponseStatusWidget().show("Timesheet Successfully created");
     }
 
     @Override
@@ -89,7 +110,7 @@ public class CreateTimesheetPanel extends CreateComposite {
          addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
          addField("notes", false, true, DataType.STRING_FIELD);
          addDropDown("StatementofWork", new SelectSOWWidget(false, false));
-//         addDropDown("project", new SelectProjectWidget(false, false));
+         addDropDown("Employee", new SelectEmployeeWidget(false, false));
 //         addDropDown("project", new SelectProjectWidget(false, false));
     }
 
