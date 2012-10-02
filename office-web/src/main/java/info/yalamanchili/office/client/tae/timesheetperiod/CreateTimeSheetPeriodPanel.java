@@ -33,7 +33,7 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clnt = new JSONObject();
-
+        assignEntityValueFromField("name", clnt);
         assignEntityValueFromField("startDate", clnt);
         assignEntityValueFromField("endDate", clnt);
         logger.info(clnt.toString());
@@ -80,6 +80,7 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        addField("name", false, true, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
     }
