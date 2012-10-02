@@ -24,6 +24,7 @@ public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
     }
     @Override
     protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("name", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         return entity;
@@ -47,6 +48,7 @@ public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
     }
@@ -72,6 +74,7 @@ public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        addField("name", false, true, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
     }
