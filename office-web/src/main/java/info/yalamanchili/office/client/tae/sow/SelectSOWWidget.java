@@ -21,7 +21,7 @@ import java.util.Map;
 public class SelectSOWWidget extends SelectComposite {
 
       public SelectSOWWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "statementOfWork", "StatementOfWork", "name", readOnly, isRequired);
+        super(OfficeWelcome.constants,"statementOfWork","StatementOfWork", "name", readOnly, isRequired);
     }
     @Override
     protected void fetchDropDownData() {
