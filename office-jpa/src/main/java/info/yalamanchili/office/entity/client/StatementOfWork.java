@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -103,7 +104,7 @@ public class StatementOfWork extends AbstractEntity {
     public void setProject(Project project) {
         this.project = project;
     }
-
+  @XmlTransient
     public List<TimeSheet> getTimeSheets() {
         return timeSheets;
     }
