@@ -4,13 +4,16 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.commons.EntityQueryUtils;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.CuserDao;
+import info.yalamanchili.office.dao.profile.CertificationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.CroleDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.security.User;
+import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
@@ -128,11 +131,27 @@ public class AdminResource {
     @GET
     @Path("/role/add/{empId}/")
     public void addUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
+        EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
+        CUser user = (CUser) em.find(CUser.class, empDao.getUser(empId).getUserId());
+        CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
+        for (Long roleId : ids) {
+            CRole role = cRoleDao.findById(roleId);
+            user.addRole(role);
+        }
     }
 
     @GET
     @Path("/role/remove/{empId}/")
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
+        EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
+        CUser user = (CUser) em.find(CUser.class, empDao.getUser(empId).getUserId());
+        CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
+        for (Long roleId : ids) {
+            CRole role = cRoleDao.findById(roleId);
+            if (ids.contains(roleId)) {
+                user.getRoles().remove(role);
+            }
+        }
     }
 
     @GET

@@ -116,7 +116,7 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     public void removeCertifications(@PathParam("skillSetId") Long skillSetId, @QueryParam("id") List<Long> ids) {
         //TODO move some logic to jpa
         SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
-        CertificationDao certificationDao = (CertificationDao) SpringContext.getBean("certificationDao");
+        CertificationDao certificationDao = SpringContext.getBean(CertificationDao.class);
         for (Long certificationId : ids) {
             Certification certification = certificationDao.findById(certificationId);
             if (ids.contains(certificationId)) {
