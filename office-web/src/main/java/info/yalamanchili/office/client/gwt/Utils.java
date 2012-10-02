@@ -8,11 +8,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**

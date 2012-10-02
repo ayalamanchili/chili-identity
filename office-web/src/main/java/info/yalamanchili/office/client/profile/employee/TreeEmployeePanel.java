@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
+import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -38,6 +39,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String REPORTS_TO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String SKILL_SET_NODE = "skillset";
+    protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected TreeSkillSetPanel skillSetTreePanel;
 
@@ -54,7 +56,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -74,6 +75,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
                         }
                     }
                 });
+        addFirstChildLink("Roles", ROLES_NODE);
         addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
     }
 
@@ -107,6 +109,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
+        }
+        if (ROLES_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectRoleWidget("Roles", OfficeWelcome.instance().employeeId));
         }
         if (RESET_PASSWORD_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();

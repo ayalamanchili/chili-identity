@@ -11,7 +11,10 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
@@ -40,6 +43,18 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return Newemail;
 
+    }
+
+    public CUser getUser(Long empId) {
+        Query getUserQ = getEntityManager().createQuery("from " + CUser.class.getCanonicalName() + " user where user.employee.id=:empIdParam");
+        getUserQ.setParameter("empIdParam", empId);
+        try {
+            return (CUser) getUserQ.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (NonUniqueResultException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

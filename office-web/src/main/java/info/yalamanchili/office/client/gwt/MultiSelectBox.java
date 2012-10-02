@@ -13,15 +13,19 @@ import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import info.yalamanchili.gwt.composite.ALComposite;
+import info.yalamanchili.gwt.utils.JSONUtils;
 
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
-    
+
     private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel panel = new FlowPanel();
@@ -37,7 +41,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     public MultiSelectBox() {
         init(captionPanel);
     }
-    
+
     public void popuplateWidget(String title, MultiSelectObj obj) {
         captionPanel.setCaptionHTML(title);
         this.available = obj.getAvailable();
@@ -52,7 +56,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
             }
         }
     }
-    
+
     @Override
     public void addWidgets() {
         panel.add(availableListBox);
@@ -61,13 +65,13 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         panel.add(selectedListBox);
         captionPanel.setContentWidget(panel);
     }
-    
+
     @Override
     public void addListeners() {
         selectButton.addClickHandler(this);
         unselectButton.addClickHandler(this);
     }
-    
+
     @Override
     public void configure() {
         availableListBox.setVisibleItemCount(10);
@@ -81,7 +85,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         unselectButton
                 .addStyleName("y-gwt-multipleSelectWidget-unselectButton");
     }
-    
+
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(selectButton)) {
             tempSelectedItems = new ArrayList<String>();
@@ -104,16 +108,16 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
             itemsUnselected(getSelectedIds());
         }
     }
-    
+
     public abstract void itemsSelected(List<String> selectedIds);
-    
+
     public abstract void itemsUnselected(List<String> selectedIds);
 
     /* returns the selected ids */
     public List<String> getSelectedIds() {
         return tempSelectedItems;
     }
-    
+
     private Set<String> getSelectedIds(ListBox listBox) {
         Set<String> ids = new HashSet<String>();
         for (int i = 0; i < listBox.getItemCount(); i++) {
@@ -123,12 +127,27 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         }
         return ids;
     }
-    
+
     protected void removeSelectedItems(ListBox listBox) {
         for (int i = 0; i < listBox.getItemCount(); i++) {
             if (listBox.isItemSelected(i)) {
                 listBox.removeItem(i);
             }
         }
+    }
+
+    public static MultiSelectObj getMultiSelectBox(String response) {
+        MultiSelectObj obj = new MultiSelectObj();
+        JSONObject multiSelectObj = (JSONObject) JSONParser.parseLenient(response);
+        JSONArray availableArray = JSONUtils.toJSONArray(multiSelectObj.get("available").isObject().get("entry"));
+        for (int i = 0; i < availableArray.size(); i++) {
+            JSONObject availableEntry = (JSONObject) availableArray.get(i);
+            obj.addAvailable(JSONUtils.toString(availableEntry, "key"), JSONUtils.toString(availableEntry, "value"));
+        }
+        JSONArray selectedArray = JSONUtils.toJSONArray(multiSelectObj.get("selected"));
+        for (int i = 0; i < selectedArray.size(); i++) {
+            obj.addSelected(selectedArray.get(i).isString().stringValue());
+        }
+        return obj;
     }
 }
