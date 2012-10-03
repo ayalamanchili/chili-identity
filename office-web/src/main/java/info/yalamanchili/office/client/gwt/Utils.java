@@ -16,20 +16,5 @@ import java.util.logging.Logger;
  */
 public class Utils {
 
-    private static Logger logger = Logger.getLogger(Utils.class.getName());
-
-    public static MultiSelectObj getMultiSelectBox(String response) {
-        MultiSelectObj obj = new MultiSelectObj();
-        JSONObject multiSelectObj = (JSONObject) JSONParser.parseLenient(response);
-        JSONArray availableArray = JSONUtils.toJSONArray(multiSelectObj.get("available").isObject().get("entry"));
-        for (int i = 0; i < availableArray.size(); i++) {
-            JSONObject availableEntry = (JSONObject) availableArray.get(i);
-            obj.addAvailable(JSONUtils.toString(availableEntry, "key"), JSONUtils.toString(availableEntry, "value"));
-        }
-        JSONArray selectedArray = JSONUtils.toJSONArray(multiSelectObj.get("selected"));
-        for (int i = 0; i < selectedArray.size(); i++) {
-            obj.addSelected(selectedArray.get(i).isString().stringValue());
-        }
-        return obj;
-    }
+    
 }

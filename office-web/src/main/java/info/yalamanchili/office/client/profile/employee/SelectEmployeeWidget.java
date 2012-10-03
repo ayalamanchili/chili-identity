@@ -21,7 +21,7 @@ import java.util.Map;
 public class SelectEmployeeWidget extends SelectComposite {
 
     public SelectEmployeeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "employee", "Employee", "firstName", readOnly, isRequired);
+        super(OfficeWelcome.constants, "Employee", "firstName", readOnly, isRequired);
     }
 
     @Override

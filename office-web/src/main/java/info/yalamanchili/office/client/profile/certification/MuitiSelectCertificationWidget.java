@@ -28,7 +28,7 @@ public class MuitiSelectCertificationWidget extends MultiSelectComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        multiSelectBox.popuplateWidget("Certifications", Utils.getMultiSelectBox(arg0));
+                        multiSelectBox.popuplateWidget("Certifications", multiSelectBox.getMultiSelectBox(arg0));
                     }
                 });
     }

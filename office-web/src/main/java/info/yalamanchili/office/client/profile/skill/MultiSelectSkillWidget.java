@@ -32,7 +32,7 @@ public class MultiSelectSkillWidget extends MultiSelectComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        multiSelectBox.popuplateWidget("Skills", Utils.getMultiSelectBox(arg0));
+                        multiSelectBox.popuplateWidget("Skills", multiSelectBox.getMultiSelectBox(arg0));
                     }
                 });
     }

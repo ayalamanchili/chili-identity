@@ -15,7 +15,7 @@ import com.google.gwt.json.client.JSONObject;
 public class SelectEmailTypeWidget extends SelectComposite {
 
     public SelectEmailTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "emailType", "EmailType", "emailType", readOnly, isRequired);
+        super(OfficeWelcome.constants, "EmailType", "emailType", readOnly, isRequired);
     }
 
     @Override

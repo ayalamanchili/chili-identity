@@ -21,7 +21,7 @@ import java.util.Map;
 public class SelectEmployeeTypeWidget extends SelectComposite {
 
     public SelectEmployeeTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "employeeType", "EmployeeType", "name", readOnly, isRequired);
+        super(OfficeWelcome.constants, "EmployeeType", "name", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {

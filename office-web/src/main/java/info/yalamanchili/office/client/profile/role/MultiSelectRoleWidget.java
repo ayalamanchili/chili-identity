@@ -32,7 +32,7 @@ public class MultiSelectRoleWidget extends MultiSelectComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        multiSelectBox.popuplateWidget("Roles", Utils.getMultiSelectBox(arg0));
+                        multiSelectBox.popuplateWidget("Roles", multiSelectBox.getMultiSelectBox(arg0));
                     }
                 });
     }

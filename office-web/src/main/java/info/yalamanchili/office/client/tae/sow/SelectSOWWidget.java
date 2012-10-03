@@ -20,12 +20,13 @@ import java.util.Map;
  */
 public class SelectSOWWidget extends SelectComposite {
 
-      public SelectSOWWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants,"statementOfWork","StatementOfWork", "name", readOnly, isRequired);
+    public SelectSOWWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "StatementOfWork", "name", readOnly, isRequired);
     }
+
     @Override
     protected void fetchDropDownData() {
-          HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -55,5 +56,4 @@ public class SelectSOWWidget extends SelectComposite {
     protected void validate() {
         clearMessage();
     }
-    
 }

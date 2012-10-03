@@ -1,11 +1,5 @@
 package info.yalamanchili.office.client.gwt;
 
-import info.yalamanchili.gwt.utils.JSONUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -16,6 +10,10 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.ListBox;
 import info.yalamanchili.gwt.composite.BaseField;
+import info.yalamanchili.gwt.utils.JSONUtils;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public abstract class SelectComposite extends BaseField implements ClickHandler, ChangeHandler {
     
@@ -27,8 +25,8 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     protected String attributeKey = null;
     protected JSONObject selectedObject = null;
     
-    public SelectComposite(ConstantsWithLookup constants, String attributeName, String className, String attributeKey, Boolean readOnly, Boolean isRequired) {
-        super(constants, attributeName, className, readOnly, isRequired);
+    public SelectComposite(ConstantsWithLookup constants, String className, String attributeKey, Boolean readOnly, Boolean isRequired) {
+        super(constants, info.yalamanchili.gwt.utils.Utils.getStringCamelCase(className), className, readOnly, isRequired);
         this.type = attributeName;
         this.attributeKey = attributeKey;
         configureAddMainWidget();

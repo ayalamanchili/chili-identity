@@ -21,7 +21,7 @@ import java.util.Map;
 public class SelectClientWidget extends SelectComposite {
 
      public SelectClientWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "client", "Client", "name", readOnly, isRequired);
+        super(OfficeWelcome.constants, "Client", "name", readOnly, isRequired);
     }
     @Override
     protected void fetchDropDownData() {

@@ -15,7 +15,7 @@ import com.google.gwt.json.client.JSONObject;
 public class SelectPhoneTypeWidget extends SelectComposite {
 
     public SelectPhoneTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "phoneType", "PhoneType", "phoneType", readOnly, isRequired);
+        super(OfficeWelcome.constants, "PhoneType", "phoneType", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {

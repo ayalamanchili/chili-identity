@@ -20,12 +20,13 @@ import java.util.Map;
  */
 public class SelectProjectWidget extends SelectComposite {
 
-      public SelectProjectWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "project", "Project", "name", readOnly, isRequired);
+    public SelectProjectWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "Project", "name", readOnly, isRequired);
     }
+
     @Override
     protected void fetchDropDownData() {
-          HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -36,7 +37,7 @@ public class SelectProjectWidget extends SelectComposite {
 
     @Override
     protected Map<Integer, String> populateValues(JSONArray entities) {
-         Map<Integer, String> values = new HashMap<Integer, String>();
+        Map<Integer, String> values = new HashMap<Integer, String>();
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
@@ -53,7 +54,6 @@ public class SelectProjectWidget extends SelectComposite {
 
     @Override
     protected void validate() {
-         clearMessage();
+        clearMessage();
     }
-    
 }
