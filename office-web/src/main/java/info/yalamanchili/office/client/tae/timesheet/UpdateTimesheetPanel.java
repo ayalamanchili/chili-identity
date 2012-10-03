@@ -47,8 +47,8 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignEntityValueFromField("notes", ts);
         ts.put("timeSheetStatus",new JSONString("Approved") );
         ts.put("timeSheetCategory",new JSONString("Regular"));
-        assignEntityValueFromField("StatementofWork",ts);
-        assignEntityValueFromField("Employee",ts);
+        assignEntityValueFromField("statementOfWork",ts);
+        assignEntityValueFromField("employee",ts);
         return ts;
     }
 
@@ -86,8 +86,8 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("saturdayBilledHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("sundayPaidHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("sundayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("StatementofWork", entity, null);
-        assignFieldValueFromEntity("Employee", entity, null);
+        assignFieldValueFromEntity("statementOfWork", entity, null);
+        assignFieldValueFromEntity("employee", entity, null);
     }
 
     @Override
@@ -126,8 +126,8 @@ public class UpdateTimesheetPanel extends UpdateComposite {
          addField("sundayPaidHours", false, true, DataType.FLOAT_FIELD);
          addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
          addField("notes", false, true, DataType.STRING_FIELD);
-         addDropDown("StatementofWork", new SelectSOWWidget(false, false));
-         addDropDown("Employee", new SelectEmployeeWidget(false, false));
+         addDropDown("statementOfWork", new SelectSOWWidget(false, false));
+         addDropDown("employee", new SelectEmployeeWidget(false, false));
     }
 
     @Override
