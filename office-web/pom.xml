@@ -12,11 +12,6 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
-            <groupId>com.smartgwt</groupId>
-            <artifactId>smartgwt</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
             <groupId>info.yalamanchili</groupId>
             <artifactId>chili-gwt</artifactId>
             <version>${yalamanchili.version}</version>
@@ -118,6 +113,9 @@
     </dependencies>
     <build>
         <finalName>office-web</finalName>
+        <filters>
+            <filter>src/main/resources/office-web-dev.properties</filter>
+        </filters>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -136,7 +134,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin
                 </artifactId>
-                <version>2.4.0</version>
+                <version>${gwt.plugin.version}</version>
                 <dependencies>
                 </dependencies>
                 <configuration>
@@ -167,6 +165,47 @@
                             <goal>i18n</goal>
                             <goal>compile</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--maven gwt resource filtering-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>filter-sources</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/gwt-extra</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <filtering>true</filtering>
+                                    <directory>src/main/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>add-source-gwt</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/gwt-extra</source>
+                            </sources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -215,7 +254,7 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>gwt-maven-plugin
                         </artifactId>
-                        <version>2.4.0</version>
+                        <version>${gwt.plugin.version}</version>
                         <dependencies>
                         </dependencies>
                         <configuration>
@@ -298,8 +337,8 @@
     </distributionManagement>
     <properties>
         <yalamanchili.version>1.1-SNAPSHOT</yalamanchili.version>
-        <gwt.version>2.4.0</gwt.version>
-        <gwt.plugin.version>2.4.0</gwt.plugin.version>
+        <gwt.version>2.5.0-rc1</gwt.version>
+        <gwt.plugin.version>2.5.0-rc1</gwt.plugin.version>
         <http.client.version>4.2</http.client.version>
         <spring.version>3.1.1.RELEASE</spring.version>
     </properties>

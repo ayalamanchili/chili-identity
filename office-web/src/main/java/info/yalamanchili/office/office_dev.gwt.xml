@@ -7,8 +7,9 @@
     <set-property name="gwt.logging.firebugHandler" value="ENABLED" />
     <set-property name="gwt.logging.popupHandler" value="DISABLED" />
 
-    <!-- SMART GWT-->
-    <inherits name="com.smartgwt.SmartGwt"/>
+    <!-- GWT Super Dev mode -->
+    <add-linker name="xsiframe"/>
+    <set-configuration-property name="devModeRedirectEnabled" value="true"/>
     
     <!--HTTP Module -->
     <inherits name='com.google.gwt.http.HTTP' />
