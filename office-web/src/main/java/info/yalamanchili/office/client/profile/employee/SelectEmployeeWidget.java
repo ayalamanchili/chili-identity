@@ -18,11 +18,12 @@ import java.util.Map;
  *
  * @author raghu
  */
-public class SelectEmployeeWidget extends SelectComposite{
+public class SelectEmployeeWidget extends SelectComposite {
 
-     public SelectEmployeeWidget(Boolean readOnly, Boolean isRequired) {
+    public SelectEmployeeWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "employee", "Employee", "firstName", readOnly, isRequired);
     }
+
     @Override
     protected void fetchDropDownData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
@@ -36,11 +37,12 @@ public class SelectEmployeeWidget extends SelectComposite{
 
     @Override
     protected Map<Integer, String> populateValues(JSONArray entities) {
-          Map<Integer, String> values = new HashMap<Integer, String>();
+        Map<Integer, String> values = new HashMap<Integer, String>();
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
             String value = JSONUtils.toString(entity, attributeKey);
+            value = value + " " + JSONUtils.toString(entity, "lastName");
             values.put(id, value);
         }
         return values;
@@ -53,7 +55,6 @@ public class SelectEmployeeWidget extends SelectComposite{
 
     @Override
     protected void validate() {
-         clearMessage();
+        clearMessage();
     }
-    
 }

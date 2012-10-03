@@ -40,7 +40,7 @@ public class SelectEmailTypeWidget extends SelectComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
-            String value = JSONUtils.toString(entity, "emailType");
+            String value = JSONUtils.toString(entity, attributeKey);
             values.put(id, value);
         }
         return values;
