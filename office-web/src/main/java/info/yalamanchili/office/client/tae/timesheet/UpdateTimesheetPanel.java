@@ -45,6 +45,10 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignEntityValueFromField("sundayPaidHours", ts);
         assignEntityValueFromField("sundayBilledHours", ts);
         assignEntityValueFromField("notes", ts);
+        ts.put("timeSheetStatus",new JSONString("Approved") );
+        ts.put("timeSheetCategory",new JSONString("Regular"));
+        assignEntityValueFromField("StatementofWork",ts);
+        assignEntityValueFromField("Employee",ts);
         return ts;
     }
 
