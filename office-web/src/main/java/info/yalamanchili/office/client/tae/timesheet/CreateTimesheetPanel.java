@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -78,6 +79,8 @@ public class CreateTimesheetPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
        new ResponseStatusWidget().show("Timesheet Successfully created");
+       TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
     }
 
     @Override
