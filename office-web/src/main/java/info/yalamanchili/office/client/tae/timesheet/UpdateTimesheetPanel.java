@@ -97,6 +97,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("statementOfWork", entity, null);
         assignFieldValueFromEntity("employee", entity, null);
         assignFieldValueFromEntity("timeSheetPeriod",entity,null);
+        assignFieldValueFromEntity("notes",entity,null);
     }
     
     @Override
