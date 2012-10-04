@@ -31,9 +31,9 @@ public class ClientInformation implements Serializable {
     protected String consultantJobTitle;
     protected boolean rtPrimary;
     @org.hibernate.validator.constraints.Email
-    @NotEmpty
+    @NotEmpty(message = "{clientinformation.email.not.empty.msg}")
     protected String email;
-    @NotEmpty
+    @NotEmpty(message = "{clientinformation.phoneNumber.not.empty.msg}")
     @Size(min = 10, max = 10)
     protected String phoneNumber;
 
