@@ -55,7 +55,7 @@ public class CreateTimesheetPanel extends CreateComposite {
         entity.put("timeSheetCategory", new JSONString("Regular"));
         assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("statementOfWork", entity);
-        assignEntityValueFromField("timesheetperiod",entity);
+        assignEntityValueFromField("timeSheetPeriod",entity);
         logger.info("99999999999" + entity);
         return entity;
 
