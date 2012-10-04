@@ -120,7 +120,7 @@ public class CreateTimesheetPanel extends CreateComposite {
          addField("notes", false, true, DataType.STRING_FIELD);
          addDropDown("statementofWork", new SelectSOWWidget(false, true));
          addDropDown("employee", new SelectEmployeeWidget(false, true));
-         addDropDown("timesheetperiod", new SelectTimesheetPeriodWidget(false, true));
+         addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, true));
 
     }
 

@@ -5,18 +5,15 @@
 package info.yalamanchili.office.entity.time;
 
 import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,7 +27,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class TimeSheetPeriod extends AbstractEntity {
-    
+
     @NotEmpty(message = "{name.not.empty.msg}")
     @Field
     protected String name;
@@ -42,13 +39,15 @@ public class TimeSheetPeriod extends AbstractEntity {
     protected Date endDate;
     @OneToMany(mappedBy = "timeSheetPeriod")
     protected List<TimeSheet> timeSheets;
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public void setName(String name){
-        this.name=name;
+
+    public void setName(String name) {
+        this.name = name;
     }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -65,6 +64,7 @@ public class TimeSheetPeriod extends AbstractEntity {
         this.endDate = endDate;
     }
 
+    @XmlTransient
     public List<TimeSheet> getTimeSheets() {
         return timeSheets;
     }
@@ -75,6 +75,6 @@ public class TimeSheetPeriod extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "TimeSheetPeriod{" + "name=" + name + "startDate=" + startDate + ", endDate=" + endDate + ", timeSheets=" + timeSheets + '}';
+        return "TimeSheetPeriod{" + "name=" + name + ", startDate=" + startDate + ", endDate=" + endDate + '}';
     }
 }

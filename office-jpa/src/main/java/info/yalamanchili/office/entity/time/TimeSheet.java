@@ -236,6 +236,8 @@ public class TimeSheet extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "TimeSheet{" + "timeSheetCategory=" + timeSheetCategory + ", timeSheetStatus=" + timeSheetStatus + ", paidRate=" + paidRate + ", billedRate=" + billedRate + ", mondayPaidHours=" + mondayPaidHours + ", mondayBilledHours=" + mondayBilledHours + ", tuesdayPaidHours=" + tuesdayPaidHours + ", tuesdayBilledHours=" + tuesdayBilledHours + ", wednesdayPaidHours=" + wednesdayPaidHours + ", wednesdayBilledHours=" + wednesdayBilledHours + ", thursdayPaidHours=" + thursdayPaidHours + ", thursdayBilledHours=" + thursdayBilledHours + ", fridayPaidHours=" + fridayPaidHours + ", fridayBilledHours=" + fridayBilledHours + ", saturdayPaidHours=" + saturdayPaidHours + ", saturdayBilledHours=" + saturdayBilledHours + ", sundayPaidHours=" + sundayPaidHours + ", sundayBilledHours=" + sundayBilledHours + ", notes=" + notes + ", timeSheetPeriod=" + timeSheetPeriod + ", statementOfWork=" + statementOfWork + '}';
+        return "TimeSheet{" + "timeSheetCategory=" + timeSheetCategory + ", timeSheetStatus=" + timeSheetStatus + ", paidRate=" + paidRate + ", billedRate=" + billedRate + ", mondayPaidHours=" + mondayPaidHours + ", mondayBilledHours=" + mondayBilledHours + ", tuesdayPaidHours=" + tuesdayPaidHours + ", tuesdayBilledHours=" + tuesdayBilledHours + ", wednesdayPaidHours=" + wednesdayPaidHours + ", wednesdayBilledHours=" + wednesdayBilledHours + ", thursdayPaidHours=" + thursdayPaidHours + ", thursdayBilledHours=" + thursdayBilledHours + ", fridayPaidHours=" + fridayPaidHours + ", fridayBilledHours=" + fridayBilledHours + ", saturdayPaidHours=" + saturdayPaidHours + ", saturdayBilledHours=" + saturdayBilledHours + ", sundayPaidHours=" + sundayPaidHours + ", sundayBilledHours=" + sundayBilledHours + ", notes=" + notes + '}';
     }
+
+    
 }
