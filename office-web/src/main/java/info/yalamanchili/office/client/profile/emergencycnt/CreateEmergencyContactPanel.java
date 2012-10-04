@@ -89,8 +89,8 @@ public class CreateEmergencyContactPanel extends CreateComposite {
         addEnumField("sex", false, false, strs);
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("email", false, false, DataType.STRING_FIELD);
-        addField("phoneNumber", false, false, DataType.LONG_FIELD);
+        addField("email", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.LONG_FIELD);
     }
 
     @Override
