@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.sow.SelectSOWWidget;
+import info.yalamanchili.office.client.tae.timesheetperiod.SelectTimesheetPeriodWidget;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +33,7 @@ public class CreateTimesheetPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
+
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("paidRate", entity);
         assignEntityValueFromField("billedRate", entity);
@@ -53,8 +55,10 @@ public class CreateTimesheetPanel extends CreateComposite {
         entity.put("timeSheetCategory", new JSONString("Regular"));
         assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("statementOfWork", entity);
+        assignEntityValueFromField("timesheetperiod",entity);
         logger.info("99999999999" + entity);
         return entity;
+
     }
 
     @Override
@@ -95,25 +99,28 @@ public class CreateTimesheetPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("paidRate", false, true, DataType.CURRENCY_FIELD);
-        addField("billedRate", false, true, DataType.CURRENCY_FIELD);
-        addField("mondayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("mondayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("tuesdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("tuesdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("wednesdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("wednesdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("thursdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("thursdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("fridayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("fridayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("saturdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("saturdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("sundayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("notes", false, true, DataType.STRING_FIELD);
-        addDropDown("statementofWork", new SelectSOWWidget(false, false));
-        addDropDown("employee", new SelectEmployeeWidget(false, false));
+
+         addField("paidRate", false, true, DataType.CURRENCY_FIELD);
+         addField("billedRate", false, true, DataType.CURRENCY_FIELD);
+         addField("mondayPaidHours", false, true, DataType.FLOAT_FIELD);
+         addField("mondayBilledHours", false, true, DataType.FLOAT_FIELD);
+         addField("tuesdayPaidHours", false, true, DataType.FLOAT_FIELD);
+         addField("tuesdayBilledHours", false, true, DataType.FLOAT_FIELD);
+         addField("wednesdayPaidHours", false, true, DataType.FLOAT_FIELD);
+         addField("wednesdayBilledHours", false, true, DataType.FLOAT_FIELD);
+         addField("thursdayPaidHours", false, true, DataType.FLOAT_FIELD);
+         addField("thursdayBilledHours", false, true, DataType.FLOAT_FIELD);
+         addField("fridayPaidHours", false, true, DataType.FLOAT_FIELD);
+         addField("fridayBilledHours", false, true, DataType.FLOAT_FIELD);
+         addField("saturdayPaidHours", false, true, DataType.FLOAT_FIELD);
+         addField("saturdayBilledHours", false, true, DataType.FLOAT_FIELD);
+         addField("sundayPaidHours", false, true, DataType.FLOAT_FIELD);
+         addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
+         addField("notes", false, true, DataType.STRING_FIELD);
+         addDropDown("statementofWork", new SelectSOWWidget(false, false));
+         addDropDown("employee", new SelectEmployeeWidget(false, false));
+         addDropDown("timesheetperiod", new SelectTimesheetPeriodWidget(false, false));
+
     }
 
     @Override
