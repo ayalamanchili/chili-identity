@@ -21,12 +21,12 @@ import java.util.Map;
 public class SelectEmployeeWidget extends SelectComposite {
 
     public SelectEmployeeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Employee", "firstName", readOnly, isRequired);
+        super(OfficeWelcome.constants, "Employee", readOnly, isRequired);
     }
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "firstName", "lastName"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -36,21 +36,8 @@ public class SelectEmployeeWidget extends SelectComposite {
     }
 
     @Override
-    protected Map<Integer, String> populateValues(JSONArray entities) {
-        Map<Integer, String> values = new HashMap<Integer, String>();
-        for (int i = 1; i <= entities.size(); i++) {
-            JSONObject entity = (JSONObject) entities.get(i - 1);
-            Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
-            String value = JSONUtils.toString(entity, attributeKey);
-            value = value + " " + JSONUtils.toString(entity, "lastName");
-            values.put(id, value);
-        }
-        return values;
-    }
-
-    @Override
-    protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/" + start.toString() + "/" + limit.toString();
+    protected String getDropDownURL(Integer start, Integer limit, String... columns) {
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "employee/dropdown", start, limit, columns);
     }
 
     @Override

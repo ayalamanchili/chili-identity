@@ -15,11 +15,11 @@ import com.google.gwt.json.client.JSONObject;
 public class SelectPhoneTypeWidget extends SelectComposite {
 
     public SelectPhoneTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "PhoneType", "phoneType", readOnly, isRequired);
+        super(OfficeWelcome.constants, "PhoneType", readOnly, isRequired);
     }
 
     protected void fetchDropDownData() {
-        HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, null, null, null),
+        HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "phoneType"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -28,20 +28,9 @@ public class SelectPhoneTypeWidget extends SelectComposite {
         });
     }
 
-    protected String getDropDownURL(Integer start, Integer limit, String param1, String param2, String param3) {
-        return OfficeWelcome.constants.root_url() + "phonetype/dropdown/" + start.toString() + "/" + limit.toString();
-    }
-
     @Override
-    protected Map<Integer, String> populateValues(JSONArray entities) {
-        Map<Integer, String> values = new HashMap<Integer, String>();
-        for (int i = 1; i <= entities.size(); i++) {
-            JSONObject entity = (JSONObject) entities.get(i - 1);
-            Integer id = Integer.valueOf(JSONUtils.toString(entity, "id"));
-            String value = JSONUtils.toString(entity, "phoneType");
-            values.put(id, value);
-        }
-        return values;
+    protected String getDropDownURL(Integer start, Integer limit, String... columns) {
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "phonetype/dropdown", start, limit, columns);
     }
 
     @Override
