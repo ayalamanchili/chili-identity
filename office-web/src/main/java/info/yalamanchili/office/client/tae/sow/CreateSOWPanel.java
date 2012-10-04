@@ -94,7 +94,7 @@ public class CreateSOWPanel extends CreateComposite {
         addField("startDate",false,false,DataType.DATE_FIELD);
         addField("endDate",false,false,DataType.DATE_FIELD);
         addField("billRate",false,false,DataType.CURRENCY_FIELD);
-        addDropDown("project", new SelectProjectWidget(false, false));
+        addDropDown("project", new SelectProjectWidget(false, true));
     }
 
     @Override
