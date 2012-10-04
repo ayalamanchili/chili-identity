@@ -32,6 +32,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
     
     @Override
     protected JSONObject populateEntityFromFields() {
+
         assignEntityValueFromField("paidRate", entity);
         assignEntityValueFromField("billedRate", entity);
         assignEntityValueFromField("mondayPaidHours", entity);
@@ -54,6 +55,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignEntityValueFromField("statementOfWork", entity);
         assignEntityValueFromField("employee", entity);
         return entity;
+
     }
     
     @Override
