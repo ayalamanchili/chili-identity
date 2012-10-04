@@ -95,7 +95,7 @@ public class CreateProjectPanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         if (showClient) {
-            addDropDown("client", new SelectClientWidget(false, false));
+            addDropDown("client", new SelectClientWidget(false, true));
         }
 
     }
