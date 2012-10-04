@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.sow.SelectSOWWidget;
+import info.yalamanchili.office.client.tae.timesheetperiod.SelectTimesheetPeriodWidget;
 import java.util.logging.Logger;
 
 /**
@@ -54,6 +55,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         entity.put("timeSheetCategory", new JSONString("Regular"));
         assignEntityValueFromField("statementOfWork", entity);
         assignEntityValueFromField("employee", entity);
+        assignEntityValueFromField("timeSheetPeriod",entity);
         return entity;
 
     }
@@ -94,6 +96,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("sundayBilledHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("statementOfWork", entity, null);
         assignFieldValueFromEntity("employee", entity, null);
+        assignFieldValueFromEntity("timeSheetPeriod",entity,null);
     }
     
     @Override
@@ -132,6 +135,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         addField("notes", false, true, DataType.STRING_FIELD);
         addDropDown("statementOfWork", new SelectSOWWidget(false, false));
         addDropDown("employee", new SelectEmployeeWidget(false, false));
+        addDropDown("timeSheetPeriod",new SelectTimesheetPeriodWidget(false, false));
     }
     
     @Override
