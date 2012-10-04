@@ -4,9 +4,12 @@
  */
 package info.yalamanchili.office.jrs;
 
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.CRUDDao;
+import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -46,10 +49,14 @@ public abstract class CRUDResource<T> {
 
     @GET
     @Path("/dropdown/{start}/{limit}")
-    public List<T> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
-            @QueryParam("param1") String param1, @QueryParam("param2") String param2,
-            @QueryParam("param3") String param3) {
-        return getDao().queryByParams(start, limit, param1, param2, param3);
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        List<Entry> result = new ArrayList<Entry>();
+        Map<String, String> values = getDao().queryByParams(start, limit, columns.toArray(new String[columns.size()]));
+        for (String key : values.keySet()) {
+            result.add(new Entry(key, values.get(key)));
+        }
+        return result;
     }
 
     @GET
