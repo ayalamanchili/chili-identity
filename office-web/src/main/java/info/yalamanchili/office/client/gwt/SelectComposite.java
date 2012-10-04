@@ -76,7 +76,8 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
 
     public void populateSelectedValue() {
         for (int i = 0; i < listBox.getItemCount(); i++) {
-            if (listBox.getItemText(i) != null && listBox.getItemText(i).equalsIgnoreCase(JSONUtils.toString(selectedObject, "value"))) {
+            //TODO make primary key static
+            if (listBox.getItemText(i) != null && listBox.getValue(i).equalsIgnoreCase(JSONUtils.toString(selectedObject, "id"))) {
                 listBox.setSelectedIndex(i);
             }
         }
