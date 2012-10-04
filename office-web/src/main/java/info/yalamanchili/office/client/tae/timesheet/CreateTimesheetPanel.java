@@ -118,9 +118,9 @@ public class CreateTimesheetPanel extends CreateComposite {
          addField("sundayPaidHours", false, true, DataType.FLOAT_FIELD);
          addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
          addField("notes", false, true, DataType.STRING_FIELD);
-         addDropDown("statementofWork", new SelectSOWWidget(false, false));
-         addDropDown("employee", new SelectEmployeeWidget(false, false));
-         addDropDown("timesheetperiod", new SelectTimesheetPeriodWidget(false, false));
+         addDropDown("statementofWork", new SelectSOWWidget(false, true));
+         addDropDown("employee", new SelectEmployeeWidget(false, true));
+         addDropDown("timesheetperiod", new SelectTimesheetPeriodWidget(false, true));
 
     }
 
