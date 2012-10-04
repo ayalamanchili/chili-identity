@@ -13,6 +13,7 @@ import info.chili.jpa.AbstractEntity;
 import java.util.Arrays;
 import info.chili.beans.BeanMapper;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -46,9 +47,8 @@ public abstract class CRUDDao<T> {
         return findAllQuery.getResultList();
     }
 
-    public List<T> queryByParams(int start, int limit, String... params) {
-        // TODO implement the query by params
-        return query(start, limit);
+    public Map<String, String> queryByParams(int start, int limit, String... params) {
+        return QueryUtils.getListBoxValues(getEntityManager(), entityCls, start, limit, params);
     }
 
     public <T> List<String> getSuggestionsForName(String name, Class<?> entityCls, Integer start, Integer limit) {
