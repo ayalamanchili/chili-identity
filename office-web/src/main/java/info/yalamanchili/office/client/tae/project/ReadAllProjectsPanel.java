@@ -106,7 +106,13 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
 
         new ResponseStatusWidget().show("Successfully deleted Projects Information");
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
+          if (parentId != null) {
         TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(TreeClientPanel.instance().getEntityId()));
+          }
+          else
+          {
+           TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
+          }
     }
 
     @Override
