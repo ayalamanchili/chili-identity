@@ -91,6 +91,9 @@ public class Employee extends Contact {
     protected CUser user;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<TimeSheet> timeSheets;
+    @OneToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_Preferences_Employee")
+    protected Preferences preferences;
 
     /**
      * @generated
@@ -236,6 +239,15 @@ public class Employee extends Contact {
 
     public void setSkillSet(SkillSet skillSet) {
         this.skillSet = skillSet;
+    }
+
+    @XmlTransient
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
     }
 
     @XmlTransient

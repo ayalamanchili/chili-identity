@@ -16,6 +16,7 @@
         <class>info.yalamanchili.office.entity.profile.EmergencyContact</class>
         <class>info.yalamanchili.office.entity.profile.ClientInformation</class>
         <class>info.yalamanchili.office.entity.profile.SkillSet</class>
+        <class>info.yalamanchili.office.entity.profile.Preferences</class>
         <class>info.yalamanchili.office.entity.profile.Skill</class>
         <class>info.yalamanchili.office.entity.profile.Certification</class>
         <!-- Social-->
