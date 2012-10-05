@@ -17,8 +17,10 @@ import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPane
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
+import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPanel;
 import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
@@ -39,6 +41,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String REPORTS_TO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String SKILL_SET_NODE = "skillset";
+    protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected TreeSkillSetPanel skillSetTreePanel;
@@ -75,7 +78,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
                         }
                     }
                 });
-        addFirstChildLink("Roles", ROLES_NODE);
+        addFirstChildLink("Preferences", PREFERENCES_NODE);
+        if (Auth.isAdmin()) {
+            addFirstChildLink("Roles", ROLES_NODE);
+        }
         addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
     }
 
@@ -110,6 +116,20 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
         }
+        if (PREFERENCES_NODE.equals(entityNodeKey)) {
+            HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
+                            if (arg0 != null && preferences != null) {
+                                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePreferencesPanel(preferences));
+                            }
+                        }
+                    });
+
+        }
         if (ROLES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectRoleWidget("Roles", OfficeWelcome.instance().employeeId));
@@ -136,5 +156,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
     protected String getSkillSetURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + entityId;
+    }
+
+    protected String getPreferencesURI() {
+        return OfficeWelcome.constants.root_url() + "employee/preferences/" + entityId;
     }
 }
