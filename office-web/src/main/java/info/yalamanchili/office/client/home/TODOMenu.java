@@ -19,6 +19,7 @@ public class TODOMenu extends Composite {
     public TODOMenu() {
 
         initWidget(tODOMenuBar);
+        configureTOTDOMenu();
     }
 
     protected void configureTOTDOMenu() {
