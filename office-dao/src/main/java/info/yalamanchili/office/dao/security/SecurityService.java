@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SecurityService {
+//TODO need to remove extended scope
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     protected EntityManager em;
@@ -25,7 +26,10 @@ public class SecurityService {
         findUserQuery.setParameter("userNameParam", user.getUsername());
         findUserQuery.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
         try {
-            return (CUser) findUserQuery.getSingleResult();
+            CUser s = (CUser) findUserQuery.getSingleResult();
+            //TODO need to have this sice the user or roles infor is not getting refreshed
+            em.refresh(s);
+            return s;
         } catch (NoResultException e) {
             return null;
         } catch (Exception e) {

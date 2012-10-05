@@ -144,7 +144,7 @@
             </activation>
             <build> 
                 <filters>
-                    <filter>src/main/resources/database-dev.properties</filter>
+                    <filter>src/main/resources/env/database-dev.properties</filter>
                 </filters>
             </build>
         </profile>
@@ -152,7 +152,7 @@
             <id>prod</id>
             <build> 
                 <filters>
-                    <filter>src/main/resources/database-prod.properties</filter>
+                    <filter>src/main/resources/env/database-prod.properties</filter>
                 </filters>
             </build>
         </profile>
