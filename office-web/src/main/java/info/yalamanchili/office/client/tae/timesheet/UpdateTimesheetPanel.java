@@ -23,14 +23,14 @@ import java.util.logging.Logger;
  * @author raghu
  */
 public class UpdateTimesheetPanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateTimesheetPanel.class.getName());
-    
+
     public UpdateTimesheetPanel(JSONObject entity) {
         initUpdateComposite(entity, "Timesheet", OfficeWelcome.constants);
         logger.info("0000" + entity.toString());
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
 
@@ -55,11 +55,11 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         entity.put("timeSheetCategory", new JSONString("Regular"));
         assignEntityValueFromField("statementOfWork", entity);
         assignEntityValueFromField("employee", entity);
-        assignEntityValueFromField("timeSheetPeriod",entity);
+        assignEntityValueFromField("timeSheetPeriod", entity);
         return entity;
 
     }
-    
+
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -68,14 +68,14 @@ public class UpdateTimesheetPanel extends UpdateComposite {
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
             }
-            
+
             @Override
             public void onSuccess(String arg0) {
                 postUpdateSuccess(arg0);
             }
         });
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("paidRate", entity, DataType.CURRENCY_FIELD);
@@ -96,25 +96,25 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("sundayBilledHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("statementOfWork", entity, null);
         assignFieldValueFromEntity("employee", entity, null);
-        assignFieldValueFromEntity("timeSheetPeriod",entity,null);
-        assignFieldValueFromEntity("notes",entity,null);
+        assignFieldValueFromEntity("timeSheetPeriod", entity, null);
+        assignFieldValueFromEntity("notes", entity, null);
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee Time Sheet Information");
         TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
         TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("paidRate", false, true, DataType.CURRENCY_FIELD);
@@ -136,13 +136,13 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         addField("notes", false, true, DataType.STRING_FIELD);
         addDropDown("statementOfWork", new SelectSOWWidget(false, false));
         addDropDown("employee", new SelectEmployeeWidget(false, false));
-        addDropDown("timeSheetPeriod",new SelectTimesheetPeriodWidget(false, false));
+        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, false));
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "timesheet";
