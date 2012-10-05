@@ -120,6 +120,15 @@ public class EmployeeResource extends CRUDResource<Employee> {
         profileNotificationservice.skillSetUpdatedNotification(emp);
         return emp.getSkillSet().getId().toString();
     }
+    /* Preferences*/
+
+    @GET
+    @Path("/preferences/{empId}")
+    public Preferences getPreferences(@PathParam("empId") long empId) {
+        Employee emp = (Employee) getDao().findById(empId);
+        return emp.getPreferences();
+
+    }
 
     /* Email */
     @GET
@@ -142,7 +151,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             email.setEmailType(emailType);
         }
         //email = getDao().getEntityManager.(emp, email);
-        email=employeeDao.updatePrimaryEmail(emp, email);
+        email = employeeDao.updatePrimaryEmail(emp, email);
         emp.addEmail(email);
     }
 
@@ -159,7 +168,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
 //
 //    }
     /* Phone */
-
     @GET
     @Path("/phones/{id}/{start}/{limit}")
     public PhoneTable getPhones(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -226,12 +234,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
         emergencyContactService.addEmergencyContact(empId, ec);
     }
+
     @GET
     @Path("/searchEmployee/{searchText}/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.Employee> searchEmployee(@PathParam("searchText") String searchText, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.Employee> employees = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
-        for (Object empObj : getDao().search(searchText,start, limit,true)) {
+        for (Object empObj : getDao().search(searchText, start, limit, true)) {
             employees.add(info.yalamanchili.office.dto.profile.Employee.map(mapper, (Employee) empObj));
         }
         return employees;
@@ -241,11 +250,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.Employee> searchEmployee(Employee entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.Employee> employees = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
-        for (Object empObj : getDao().search(entity,start, limit)) {
+        for (Object empObj : getDao().search(entity, start, limit)) {
             employees.add(info.yalamanchili.office.dto.profile.Employee.map(mapper, (Employee) empObj));
         }
         return employees;
     }
+
     @Override
     public CRUDDao getDao() {
         return employeeDao;

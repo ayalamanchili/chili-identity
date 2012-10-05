@@ -27,6 +27,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
+import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -97,6 +98,10 @@ public class OfficeStartup {
         userEmp.setStartDate(new Date());
         userEmp.setEmployeeType(getInternalEmployeeType());
 
+        Preferences userPrefs = new Preferences();
+        userPrefs.setEnableEmailNotifications(Boolean.TRUE);
+        userEmp.setPreferences(userPrefs);
+
         Address userAddress = new Address();
         userAddress.setAddressType(getHomeAddressType());
         userAddress.setStreet1("2110 wilkes ct");
@@ -138,6 +143,10 @@ public class OfficeStartup {
         adminEmp.setSex(Sex.FEMALE);
         adminEmp.setStartDate(new Date());
         adminEmp.setEmployeeType(getConsultantEmployeeType());
+
+        Preferences adminPrefs = new Preferences();
+        adminPrefs.setEnableEmailNotifications(Boolean.TRUE);
+        adminEmp.setPreferences(adminPrefs);
 
         Address adminAddress = new Address();
         adminAddress.setAddressType(getOfficeAddressType());
