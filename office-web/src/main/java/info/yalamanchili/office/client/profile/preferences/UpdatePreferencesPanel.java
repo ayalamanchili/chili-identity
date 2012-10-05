@@ -35,7 +35,7 @@ public class UpdatePreferencesPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("street1", entity);
+        assignEntityValueFromField("enableEmailNotifications", entity);
         return entity;
     }
 
@@ -58,7 +58,6 @@ public class UpdatePreferencesPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated employee preferences");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
     }
 
     @Override
