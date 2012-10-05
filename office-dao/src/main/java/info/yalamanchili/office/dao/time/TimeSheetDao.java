@@ -27,7 +27,7 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
     @Override
     public TimeSheet save(TimeSheet entity) {
         if (entity.getId() != null) {
-            entity = (TimeSheet) BeanMapper.merge(entity, getEntityManager().find(TimeSheet.class, em));
+            entity = (TimeSheet) BeanMapper.merge(entity, getEntityManager().find(TimeSheet.class, entity.getId()));
         }
         //Statemenet of work
         if (entity.getStatementOfWork() == null) {
