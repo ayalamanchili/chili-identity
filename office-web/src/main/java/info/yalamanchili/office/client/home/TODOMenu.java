@@ -25,7 +25,7 @@ public class TODOMenu extends Composite {
     protected void configureTOTDOMenu() {
 
         MenuBar menu = new MenuBar(true);
-        tODOMenuBar.addItem("MENU", menu);
+        tODOMenuBar.addItem("Menu", menu);
         tODOMenuBar.addStyleName("entityMenuBar");
 
         menu.addItem("TODO", todoMaintainenceCmd);
