@@ -94,6 +94,8 @@ public class Employee extends Contact {
     @OneToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_Preferences_Employee")
     protected Preferences preferences;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    protected List<Todo> todo;
 
     /**
      * @generated
@@ -232,6 +234,26 @@ public class Employee extends Contact {
         post.setEmployee(this);
     }
 
+     @XmlTransient
+    public List<Todo> getTodo() {
+        if (this.todo == null) {
+            this.todo = new ArrayList<Todo>();
+        }
+        return this.todo;
+    }
+
+    public void setTodo(List<Todo> todo) {
+        this.todo = todo;
+    }
+
+    public void addTodo(Todo todo) {
+        if (todo == null) {
+            return;
+        }
+        getTodo().add(todo);
+        todo.setEmployee(this);
+    }
+    
     @XmlTransient
     public SkillSet getSkillSet() {
         return skillSet;
