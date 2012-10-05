@@ -1,0 +1,81 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.entity.profile;
+
+import info.yalamanchili.jpa.AbstractEntity;
+import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
+/**
+ *
+ * @author raghu
+ */
+@Indexed
+@XmlRootElement
+@Entity
+@Audited
+public class Todo extends AbstractEntity{
+    
+    @Field
+    protected String name;
+
+    @Field
+    protected String description;
+
+    @Field
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date tododate;
+    
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_Todo")
+    protected Employee employee;
+      
+     public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getTododate() {
+        return tododate;
+    }
+    
+     public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTododate(Date tododate) {
+        this.tododate = tododate;
+    }
+    
+     @XmlElement
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
+     @Override
+    public String toString() {
+        return "Todo{" + "name=" + name + ", description=" + description + ", tododate=" + tododate + '}';
+    }
+}
