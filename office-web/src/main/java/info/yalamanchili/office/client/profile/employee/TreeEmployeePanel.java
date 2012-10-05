@@ -132,7 +132,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (ROLES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectRoleWidget("Roles", OfficeWelcome.instance().employeeId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectRoleWidget("Roles", entityId));
         }
         if (RESET_PASSWORD_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
