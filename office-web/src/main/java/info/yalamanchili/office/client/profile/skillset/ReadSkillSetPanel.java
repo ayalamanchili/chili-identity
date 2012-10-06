@@ -17,9 +17,7 @@ import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.config.OfficeClientConfig;
 import java.util.logging.Logger;
 
 /**
