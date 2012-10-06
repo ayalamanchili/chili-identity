@@ -19,6 +19,12 @@
             <artifactId>office-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>info.yalamanchili.office</groupId>
+            <artifactId>office-jpa</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- Spring JMS and Active MQ -->
         <dependency>
             <groupId>org.springframework</groupId>

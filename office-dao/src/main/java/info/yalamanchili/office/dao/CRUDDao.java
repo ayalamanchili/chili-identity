@@ -12,6 +12,7 @@ import info.yalamanchili.commons.SearchUtils;
 import info.chili.jpa.AbstractEntity;
 import java.util.Arrays;
 import info.chili.beans.BeanMapper;
+import info.chili.spring.SpringContext;
 import java.util.List;
 import java.util.Map;
 

@@ -25,23 +25,20 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 @Audited
-public class Todo extends AbstractEntity{
-    
+public class Todo extends AbstractEntity {
+
     @Field
     protected String name;
-
     @Field
     protected String description;
-
     @Field
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date tododate;
-    
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_Todo")
     protected Employee employee;
-      
-     public String getName() {
+
+    public String getName() {
         return name;
     }
 
@@ -52,8 +49,8 @@ public class Todo extends AbstractEntity{
     public Date getTododate() {
         return tododate;
     }
-    
-     public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -64,8 +61,8 @@ public class Todo extends AbstractEntity{
     public void setTododate(Date tododate) {
         this.tododate = tododate;
     }
-    
-     @XmlElement
+
+    @XmlElement
     public Employee getEmployee() {
         return employee;
     }
@@ -73,8 +70,8 @@ public class Todo extends AbstractEntity{
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-    
-     @Override
+
+    @Override
     public String toString() {
         return "Todo{" + "name=" + name + ", description=" + description + ", tododate=" + tododate + '}';
     }

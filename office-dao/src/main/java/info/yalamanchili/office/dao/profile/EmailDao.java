@@ -6,6 +6,7 @@ import info.yalamanchili.office.entity.profile.EmailType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
@@ -20,6 +21,16 @@ public class EmailDao extends CRUDDao<Email> {
 
     public EmailDao() {
         super(Email.class);
+    }
+
+    public Email findEmail(String emailAddress) {
+        Query getEmailQ = getEntityManager().createQuery("from " + Email.class.getCanonicalName() + " email where email.email=:emailAddressParam");
+        getEmailQ.setParameter("emailAddressParam", emailAddress);
+        if (getEmailQ.getResultList().size() > 0) {
+            return (Email) getEmailQ.getResultList().get(0);
+        } else {
+            return null;
+        }
     }
 
     public Email save(Email entity) {
