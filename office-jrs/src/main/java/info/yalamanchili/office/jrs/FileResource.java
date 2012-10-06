@@ -52,7 +52,6 @@ public class FileResource {
 
     @GET
     @Path("/download")
-    @Produces("image/*")
     public Response downloadFile(@QueryParam("path") String path, @QueryParam("entityId") String entityId) {
         ResponseBuilder response = null;
         if (path == null || path.trim().length() < 1) {
@@ -66,8 +65,7 @@ public class FileResource {
             if (file.exists()) {
                 log.info("downloading---------:" + file.getPath());
                 response = Response.ok((Object) file);
-                response.header("Content-Disposition", "attachment; filename=" + file.getName());
-                response.header("Content-Type", "application/pdf");
+                setContentHeaders(response, file.getName());
                 return response.build();
             } else {
                 response = Response.status(Response.Status.NOT_FOUND);
@@ -85,6 +83,17 @@ public class FileResource {
         } else {
             return path;
         }
+    }
+
+    protected void setContentHeaders(ResponseBuilder response, String fileName) {
+        if (info.chili.commons.FileUtils.isPDF(fileName)) {
+            response.header("Content-Disposition", "filename=" + fileName);
+            response.header("Content-Type", "application/pdf");
+            return;
+        }
+        //Content disposition with attachement forces the browser to download as attachment(avod inconsistent file type handles by browser)
+        response.header("Content-Disposition", "attachment; filename=" + fileName);
+        response.header("Content-Length", fileName);
     }
 
     protected void processImageUpload(HttpServletRequest request) {
