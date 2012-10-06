@@ -18,6 +18,7 @@ import info.yalamanchili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -27,16 +28,26 @@ import java.util.logging.Logger;
 public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadSkillSetPanel.class.getName());
+    protected String empId;
+    private static ReadSkillSetPanel instance;
+
+    public static ReadSkillSetPanel instance() {
+        return instance;
+    }
     ClickableLink resumeL = new ClickableLink("Resume");
 
     public ReadSkillSetPanel() {
+        instance = this;
     }
 
-    public ReadSkillSetPanel(String id) {
-        initReadComposite(id, "SkillSet", OfficeWelcome.constants);
+    public ReadSkillSetPanel(String empId) {
+        instance = this;
+        this.empId = empId;
+        initReadComposite("SkillSet", OfficeWelcome.constants);
     }
 
     public ReadSkillSetPanel(JSONObject entity) {
+        instance = this;
         initReadComposite(entity, "SkillSet", OfficeWelcome.constants);
     }
 
@@ -74,7 +85,7 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
         } else {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             if (Auth.isAdmin() || Auth.isHR()) {
-                TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(entityId));
+                TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(empId));
             }
         }
     }
@@ -103,6 +114,6 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
 
     @Override
     public String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/skillset/" + entityId;
+        return OfficeWelcome.constants.root_url() + "employee/skillset/" + empId;
     }
 }

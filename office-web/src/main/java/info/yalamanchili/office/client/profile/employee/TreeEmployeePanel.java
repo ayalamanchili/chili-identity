@@ -44,7 +44,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
-    protected TreeSkillSetPanel skillSetTreePanel;
+    protected TreeSkillSetPanel skillSetTreePanel = new TreeSkillSetPanel(OfficeWelcome.instance().employeeId);
 
     public TreeEmployeePanel(String entityId) {
         super(entityId);
@@ -68,16 +68,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
-        HttpService.HttpServiceAsync.instance().doGet(getSkillSetURI(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        if (arg0 != null && JSONParser.parseLenient(arg0).isObject() != null) {
-                            skillSetTreePanel = new TreeSkillSetPanel(JSONParser.parseLenient(arg0).isObject());
-                            addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
-                        }
-                    }
-                });
+        addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
         addFirstChildLink("Preferences", PREFERENCES_NODE);
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
@@ -113,7 +104,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
+            //TODO mode this to comp
             TabPanel.instance().myOfficePanel.entityPanel.clear();
+            skillSetTreePanel.loadEntity();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {
@@ -145,17 +138,13 @@ public class TreeEmployeePanel extends TreePanelComposite {
     }
 
     @Override
-    public JSONObject loadEntity() {
-        return OfficeWelcome.instance().employee;
+    public void loadEntity() {
+        entity = OfficeWelcome.instance().employee;
     }
 
     @Override
     public void showEntity() {
         // TODO Auto-generated method stub
-    }
-
-    protected String getSkillSetURI() {
-        return OfficeWelcome.constants.root_url() + "employee/skillset/" + entityId;
     }
 
     protected String getPreferencesURI() {

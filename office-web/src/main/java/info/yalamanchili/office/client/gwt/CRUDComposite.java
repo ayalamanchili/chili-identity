@@ -53,6 +53,11 @@ public abstract class CRUDComposite extends Composite {
     }
 
     public String getEntityId() {
+        if (entityId == null && entity != null) {
+            if (JSONUtils.toString(entity, "id") != null) {
+                return JSONUtils.toString(entity, "id");
+            }
+        }
         return entityId;
     }
     protected Boolean readOnly;
@@ -211,20 +216,20 @@ public abstract class CRUDComposite extends Composite {
             }
         }
         //Currency Field
-         if (fields.get(fieldKey) instanceof CurrencyField) {
+        if (fields.get(fieldKey) instanceof CurrencyField) {
             CurrencyField field = (CurrencyField) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
-         //Float Field
-          if (fields.get(fieldKey) instanceof FloatField) {
+        //Float Field
+        if (fields.get(fieldKey) instanceof FloatField) {
             FloatField field = (FloatField) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
-         
+
     }
 
     protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
@@ -256,12 +261,12 @@ public abstract class CRUDComposite extends Composite {
             }
         }
         // Currency Field
-         if (DataType.CURRENCY_FIELD.equals(type)) {
+        if (DataType.CURRENCY_FIELD.equals(type)) {
             CurrencyField field = (CurrencyField) fields.get(fieldKey);
             field.setValue(JSONUtils.toString(entity, fieldKey));
         }
-         //Float Field
-           if (DataType.FLOAT_FIELD.equals(type)) {
+        //Float Field
+        if (DataType.FLOAT_FIELD.equals(type)) {
             FloatField field = (FloatField) fields.get(fieldKey);
             field.setValue(JSONUtils.toString(entity, fieldKey));
         }

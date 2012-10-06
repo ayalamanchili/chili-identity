@@ -57,8 +57,8 @@ public class TreeClientPanel extends TreePanelComposite {
     }
 
     @Override
-    public JSONObject loadEntity() {
-         return null;
+    public void loadEntity() {
+        
     }
 
     @Override
