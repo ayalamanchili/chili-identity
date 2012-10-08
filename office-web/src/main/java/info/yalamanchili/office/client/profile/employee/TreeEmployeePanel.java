@@ -72,8 +72,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Preferences", PREFERENCES_NODE);
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
+            addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
         }
-        addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
+       
     }
 
     @Override
