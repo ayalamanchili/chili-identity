@@ -28,7 +28,7 @@ public class TODOMenu extends Composite {
         tODOMenuBar.addItem("Menu", menu);
         tODOMenuBar.addStyleName("entityMenuBar");
 
-        menu.addItem("TODO", todoMaintainenceCmd);
+        menu.addItem("TODO's", todoMaintainenceCmd);
     }
     Command todoMaintainenceCmd = new Command() {
         @Override
