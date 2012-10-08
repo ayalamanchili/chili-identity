@@ -69,10 +69,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
-        addFirstChildLink("Preferences", PREFERENCES_NODE);
+        
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
+            addFirstChildLink("Preferences", PREFERENCES_NODE);
         }
        
     }
