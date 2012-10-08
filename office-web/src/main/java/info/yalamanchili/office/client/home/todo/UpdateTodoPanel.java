@@ -58,11 +58,11 @@ public class UpdateTodoPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated Todo Employee");
-        TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
-        // TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new ProjectSidePanel());
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        //TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
+        new ResponseStatusWidget().show("Successfully Updated Todo Information");
+        TabPanel.instance().homePanel.sidePanelTop.clear();
+        // TabPanel.instance().homePanel.sidePanelTop.add(new ProjectSidePanel());
+        TabPanel.instance().homePanel.entityPanel.clear();
+        //TabPanel.instance().homePanel.entityPanel.add(new ReadAllProjectsPanel());
     }
 
     @Override
