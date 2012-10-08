@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import info.yalamanchili.gwt.composite.ALComposite;
@@ -29,7 +30,9 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel panel = new FlowPanel();
+    Label avaliableL = new Label("Available");
     ListBox availableListBox = new ListBox(true);
+    Label selectedL = new Label("Selected");
     ListBox selectedListBox = new ListBox(true);
     public Button selectButton = new Button("  Add  ");
     public Button unselectButton = new Button("  Remove  ");
@@ -59,10 +62,13 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
 
     @Override
     public void addWidgets() {
+        panel.add(avaliableL);
         panel.add(availableListBox);
         panel.add(selectButton);
         panel.add(unselectButton);
+        panel.add(selectedL);
         panel.add(selectedListBox);
+
         captionPanel.setContentWidget(panel);
     }
 
@@ -76,6 +82,8 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     public void configure() {
         availableListBox.setVisibleItemCount(10);
         selectedListBox.setVisibleItemCount(10);
+        avaliableL.addStyleName("y-gwt-multipleSelectWidget-availabelLabel");
+        selectedL.addStyleName("y-gwt-multipleSelectWidget-selectedLabel");
         panel.addStyleName("y-gwt-multipleSelectWidget");
         availableListBox
                 .addStyleName("y-gwt-multipleSelectWidget-availableListBox");

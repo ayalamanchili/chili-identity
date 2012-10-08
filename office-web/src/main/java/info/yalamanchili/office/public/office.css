@@ -46,7 +46,7 @@
 }
 .gwt-DisclosurePanel .header {
     color: d96230;
-/*    background-color: #F7F7F7;*/
+    /*    background-color: #F7F7F7;*/
 }
 .gwt-DisclosurePanel a {
     color: #054c78;
@@ -79,11 +79,11 @@
 
 }
 /*Text insiise the tabel START*/
-.readAllCompositeCAptionPanel{
+.readAllCompositeCaptionPanel{
 
 }
 /*Text insiise the tabel END*/
-.readAllCompositeCAptionPanel legend {
+.readAllCompositeCaptionPanel legend {
     font-weight: bold;
     color:#e16802;
     font-style: italic;
@@ -145,7 +145,7 @@ legend {
 }
 /*post css start*/
 .readRepliesPanel{
-/*    border: 1px solid #3e3e3e;*/
+    /*    border: 1px solid #3e3e3e;*/
     width: 100%;
     background-color: #F7F7F7;
 
@@ -156,7 +156,7 @@ legend {
 }
 .postRichTextBox{
     width: 100%;
-/*    border-color: #919191;*/
+    /*    border-color: #919191;*/
     border-width: 0px;
     background-color: #F7F7F7;
     font-family: Tahoma;
@@ -347,25 +347,6 @@ body{
 
 }
 
-/*.y-gwt-CreateEntityCaptionPanel{
-    color: #bc033d;
-}
-
-*//*.y-gwt-CreateEntityDisplayWidget{
-    
-   color: #000000;
-}*//*
-
-.y-gwt-CreateBasePanel{
-    
-    color: #bc033d;
-}*/
-/*fieldset {
-    color: green;
-}*/
-
-/*chili=gwt-end*/
-
 .loginB{
     color: 054c78;
 }
@@ -376,93 +357,94 @@ body{
     border: 3px solid #054c78;
     padding: 3px;
 }
-
-/*.y-gwt-CreateEntityCaptionPanel {
-    color:#c31f41;
-}*/
-
-/*.readAllCompositeCP{
-    color: #ff00ea;
-}*/
+/* Multiselect box */
+.y-gwt-multipleSelectWidget-availabelLabel{
+    font-weight: bold;
+    font-size: 10pt;
+}
+.y-gwt-multipleSelectWidget-selectedLabel{
+    font-weight: bold;
+    font-size: 10pt;
+}
 /*gwt date picker example*/
 .gwt-DatePicker {
-  border: 1px solid #f1f1f1;
-  border-bottom: 2px solid #f1f1f1;
-  color: 6b6b6b;
-  cursor: default;
-  width: 7em;
+    border: 1px solid #f1f1f1;
+    border-bottom: 2px solid #f1f1f1;
+    color: 6b6b6b;
+    cursor: default;
+    width: 7em;
 }
 
 .datePickerDay,.datePickerWeekdayLabel,.datePickerWeekendLabel {
-  font-family: Arial;
-  font-size: 65%;
-  padding: 2px;
-  text-align: center;
-  padding: 2px;
-  outline: none;
-  cursor: default;
+    font-family: Arial;
+    font-size: 65%;
+    padding: 2px;
+    text-align: center;
+    padding: 2px;
+    outline: none;
+    cursor: default;
 }
 
 .gwt-DatePicker td,.datePickerMonthSelector  td :focus {
-  outline: none
+    outline: none
 }
 
 .gwt-DateBox input {
-  width: 8em;
+    width: 8em;
 }
 
 /* 
 * Calendar styles 
 */
 .datePickerDays {
-  background-color: white;
-  width: 100%;
+    background-color: white;
+    width: 100%;
 }
 
 .datePickerWeekdayLabel {
-  background: #dbe6de;
+    background: #dbe6de;
 }
 
 .datePickerWeekendLabel {
-  background: #dbe7ef;
+    background: #dbe7ef;
 }
 
 .datePickerDay {
-  padding: 1px;
-  cursor: hand;
-  width: 1em;
+    padding: 1px;
+    cursor: hand;
+    width: 1em;
 }
 
 .datePickerDayIsToday {
-  border: 1px solid black;
-  padding: 0px;
+    border: 1px solid black;
+    padding: 0px;
 }
 
 .datePickerDayIsWeekend {
-  background: #f1f1f1;
+    background: #f1f1f1;
 }
 
 .datePickerDayIsFiller {
-  color: #bfbfbf;
-  padding: 1px;
-  cursor: hand;
+    color: #bfbfbf;
+    padding: 1px;
+    cursor: hand;
 }
 
 .datePickerDayIsSelected {
-  background: #aaccee;
+    background: #aaccee;
 }
 
 .datePickerDayIsDisabled {
-  color: graytext;
+    color: graytext;
 }
 
 .datePickerDayIsHighlighted {
-  border: 1px solid #eeeeee;
-  padding: 0px;
+    border: 1px solid #eeeeee;
+    padding: 0px;
 }
 
 .datePickerDayIsSelectedAndHighlighted {
-   background: #bbddff;
+    background: #bbddff;
 }
 
 
@@ -470,24 +452,24 @@ body{
 * Month selector styles 
 */
 .datePickerMonthSelector {
-  background: #dbe6de;
-  width: 100%;
-  text-align: center;
+    background: #dbe6de;
+    width: 100%;
+    text-align: center;
 }
 
 .datePickerMonth {
-  text-align: center;
-  vertical-align: center;
-  white-space: nowrap;
-  font-weight: bold;
-  font-size: 70%;
+    text-align: center;
+    vertical-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 70%;
 }
 
 .datePickerPreviousButton {
-   text-align: left;
+    text-align: left;
 }
 
 .datePickerNextButton {
-     text-align: right; 
+    text-align: right; 
 }
 /* gwt date picker end*/
