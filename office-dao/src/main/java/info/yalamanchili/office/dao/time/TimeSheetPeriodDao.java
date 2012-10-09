@@ -36,8 +36,8 @@ public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
         Calendar c2 = Calendar.getInstance();
         c1.setTime(entity.getStartDate());
         c2.setTime(entity.getEndDate());
-        if(c1.get(Calendar.DAY_OF_WEEK) !=1 || c2.get(Calendar.DAY_OF_WEEK) !=5 ){
-            //throw exception
+        if(c1.get(Calendar.DAY_OF_WEEK) !=2 || c2.get(Calendar.DAY_OF_WEEK) !=1 ){
+           throw new RuntimeException("StartDate and EndDate are invalid");
         }
 
         if (entity instanceof AbstractEntity) {
