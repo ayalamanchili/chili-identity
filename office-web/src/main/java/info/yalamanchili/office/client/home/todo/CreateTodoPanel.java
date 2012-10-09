@@ -60,7 +60,7 @@ public class CreateTodoPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully Time Sheet Period created");
+        new ResponseStatusWidget().show("Successfully Todo created");
         TabPanel.instance().homePanel.sidePanelTop.clear();
         TabPanel.instance().homePanel.sidePanelTop.add(new TodoSidePanel());
         TabPanel.instance().homePanel.entityPanel.clear();
