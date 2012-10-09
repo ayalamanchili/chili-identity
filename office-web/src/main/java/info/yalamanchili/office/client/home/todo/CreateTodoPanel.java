@@ -61,10 +61,10 @@ public class CreateTodoPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully Time Sheet Period created");
-        TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TodoSidePanel());
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTodosPanel());
+        TabPanel.instance().homePanel.sidePanelTop.clear();
+        TabPanel.instance().homePanel.sidePanelTop.add(new TodoSidePanel());
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new ReadAllTodosPanel());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class CreateTodoPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, true, DataType.DATE_FIELD);
+        addField("description", false, true, DataType.STRING_FIELD);
         addField("tododate", false, true, DataType.DATE_FIELD);
     }
 
