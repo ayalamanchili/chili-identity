@@ -40,7 +40,7 @@ public class ReadAllTodosPanel extends ReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllTimeSheetPeriodsPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllTodosPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -116,7 +116,7 @@ public class ReadAllTodosPanel extends ReadAllComposite {
         TabPanel.instance().homePanel.entityPanel.add(new UpdateTodoPanel(getEntity(entityId)));
     }
 
-    public String getReadAllTimeSheetPeriodsPanelURL(Integer start, String limit) {
+    public String getReadAllTodosPanelURL(Integer start, String limit) {
             return OfficeWelcome.constants.root_url() + "todo/" + start.toString() + "/" + limit.toString();
     }
 }
