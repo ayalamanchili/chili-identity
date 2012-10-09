@@ -7,6 +7,9 @@ package info.yalamanchili.office.client.home;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.home.todo.ReadAllTodosPanel;
+import info.yalamanchili.office.client.home.todo.TodoSidePanel;
 
 /**
  *
@@ -34,6 +37,10 @@ public class TODOMenu extends Composite {
         @Override
         public void execute() {
             
+            TabPanel.instance().getHomePanel().entityPanel.clear();
+            TabPanel.instance().getHomePanel().sidePanelTop.clear();
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTodosPanel());
+            TabPanel.instance().getHomePanel().sidePanelTop.add(new TodoSidePanel());
         }
     };
 }
