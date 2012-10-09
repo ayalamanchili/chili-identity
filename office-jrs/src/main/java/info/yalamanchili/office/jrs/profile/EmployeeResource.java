@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
         return tableObj;
     }
 
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        super.delete(id);
+    }
 
     /* Address */
     @GET
