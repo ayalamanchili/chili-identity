@@ -47,8 +47,8 @@ public class TodoSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtodolink)) {
-            TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateTodoPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new CreateTodoPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
     
