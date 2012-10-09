@@ -104,16 +104,16 @@ public class ReadAllTodosPanel extends ReadAllComposite {
     public void postDeleteSuccess() {
 
         new ResponseStatusWidget().show("Successfully deleted TimeSheet Period Information");
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTodosPanel());
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new ReadAllTodosPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
         //TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
         //TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new UpdateTodoPanel(getEntity(entityId)));
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new UpdateTodoPanel(getEntity(entityId)));
     }
 
     public String getReadAllTimeSheetPeriodsPanelURL(Integer start, String limit) {
