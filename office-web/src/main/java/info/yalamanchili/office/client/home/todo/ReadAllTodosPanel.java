@@ -68,7 +68,7 @@ public class ReadAllTodosPanel extends ReadAllComposite {
             //table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "todoDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "tododate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             //table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
 
             //table.setText(i, 5, JSONUtils.toString(entity, "client"));
@@ -103,7 +103,7 @@ public class ReadAllTodosPanel extends ReadAllComposite {
     @Override
     public void postDeleteSuccess() {
 
-        new ResponseStatusWidget().show("Successfully deleted TimeSheet Period Information");
+        new ResponseStatusWidget().show("Successfully deleted Todo Information");
         TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new ReadAllTodosPanel());
     }
