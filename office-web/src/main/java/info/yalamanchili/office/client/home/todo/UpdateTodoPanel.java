@@ -76,7 +76,7 @@ public class UpdateTodoPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, true, DataType.STRING_FIELD);
+        addField("description", false, false, DataType.STRING_FIELD);
         addField("tododate", false, true, DataType.DATE_FIELD);
     }
 
