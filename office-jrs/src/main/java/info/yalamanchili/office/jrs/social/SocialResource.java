@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import javax.ws.rs.POST;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -76,6 +77,7 @@ public class SocialResource {
 
     @PUT
     @Path("/createCompanyPost")
+     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public Post createCompanyPost(Post companypost) {
         /*List<String> Emails=null;*/
         socialnotificationservice.sendNewCompanyPostNotification(companypost.getPostContent());
@@ -85,6 +87,7 @@ public class SocialResource {
 
     @PUT
     @Path("/liked/{postId}")
+   
     public void liked(@PathParam("postId") Long postId) {
         socialDao.liked(postId);
     }
