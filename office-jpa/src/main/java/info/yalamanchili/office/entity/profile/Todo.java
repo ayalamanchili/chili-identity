@@ -16,6 +16,7 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -28,6 +29,7 @@ import org.hibernate.search.annotations.Indexed;
 public class Todo extends AbstractEntity {
 
     @Field
+    @NotEmpty(message = "{todo.name.not.empty.msg}")
     protected String name;
     @Field
     protected String description;
