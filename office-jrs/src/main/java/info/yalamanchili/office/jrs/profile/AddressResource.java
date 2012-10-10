@@ -13,12 +13,14 @@ import java.util.List;
 import javax.ws.rs.PUT;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Path("address")
@@ -41,6 +43,7 @@ public class AddressResource extends CRUDResource<Address> {
     }
 
     @PUT
+     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public Address save(Address address) {
         Employee emp = securityService.getCurrentUser();
         if (address.getId() == null) {
@@ -52,6 +55,14 @@ public class AddressResource extends CRUDResource<Address> {
         }
     }
 
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        super.delete(id);
+    }
+    
     @XmlRootElement
     @XmlType
     public static class AddressTable {
