@@ -306,6 +306,7 @@ public abstract class CRUDComposite extends Composite {
     protected void processValidationErrors(JSONValue errorsObj) {
         clearMessages();
         JSONArray errorsArray = JSONUtils.toJSONArray(errorsObj.isObject().get("Error"));
+        String genericErrorMessage=null;
         for (int i = 0; i < errorsArray.size(); i++) {
             JSONObject err = (JSONObject) errorsArray.get(i);
             JSONString errSource = err.get("source").isString();
@@ -313,8 +314,16 @@ public abstract class CRUDComposite extends Composite {
             if (errSource != null && fields.get(getErrorProperty(errSource.stringValue())) != null) {
                 field.setMessage(err.get("description").isString().stringValue());
             } else {
-                new ResponseStatusWidget().show("Generic Error" + err.get("source").isString().stringValue() + ":" + err.get("description").isString().stringValue());
+                //Generic error not specific to any field / class level error
+                if(genericErrorMessage==null){
+                   genericErrorMessage= new String();
+                   genericErrorMessage=genericErrorMessage.concat("Error:");
+                }
+               genericErrorMessage= genericErrorMessage.concat(err.get("source").isString().stringValue() + ":" + err.get("description").isString().stringValue());
             }
+        }
+        if(genericErrorMessage!=null){
+           new ResponseStatusWidget().show(genericErrorMessage);
         }
     }
 
