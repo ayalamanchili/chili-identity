@@ -31,6 +31,7 @@ import javax.ws.rs.QueryParam;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +72,7 @@ public class AdminResource {
 
     @Path("/resetpassword/{empId}")
     @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CUser resetPassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.resetPassword(empId, user);
@@ -79,6 +81,7 @@ public class AdminResource {
     @Path("/createuser")
     @PUT
     @Produces("application/text")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public String createUser(info.yalamanchili.office.dto.profile.Employee employee) {
         CUser user = mapper.map(employee, CUser.class);
         user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
@@ -86,7 +89,7 @@ public class AdminResource {
         String employeeId = generateEmployeeId(employee);
         user.setUsername(employeeId);
         emp.setEmployeeId(employeeId);
-        Preferences prefs= new Preferences();
+        Preferences prefs = new Preferences();
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
@@ -115,6 +118,7 @@ public class AdminResource {
 
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MultiSelectObj getUserRoles(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
         MultiSelectObj obj = new MultiSelectObj();
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
@@ -131,6 +135,7 @@ public class AdminResource {
 
     @GET
     @Path("/role/add/{empId}/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void addUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
         CUser user = (CUser) em.find(CUser.class, empDao.getUser(empId).getUserId());
@@ -143,6 +148,7 @@ public class AdminResource {
 
     @GET
     @Path("/role/remove/{empId}/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
         CUser user = (CUser) em.find(CUser.class, empDao.getUser(empId).getUserId());
