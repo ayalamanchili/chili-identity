@@ -15,21 +15,21 @@ import info.yalamanchili.office.client.home.todo.TodoSidePanel;
  *
  * @author Prashanthi
  */
-public class TODOMenu extends Composite {
+public class HomeMenu extends Composite {
 
-    MenuBar tODOMenuBar = new MenuBar(false);
+    MenuBar homeMenuBar = new MenuBar(false);
 
-    public TODOMenu() {
+    public HomeMenu() {
 
-        initWidget(tODOMenuBar);
+        initWidget(homeMenuBar);
         configureTOTDOMenu();
     }
 
     protected void configureTOTDOMenu() {
 
         MenuBar menu = new MenuBar(true);
-        tODOMenuBar.addItem("Menu", menu);
-        tODOMenuBar.addStyleName("entityMenuBar");
+        homeMenuBar.addItem("Menu", menu);
+        homeMenuBar.addStyleName("entityMenuBar");
 
         menu.addItem("TODO's", todoMaintainenceCmd);
     }
