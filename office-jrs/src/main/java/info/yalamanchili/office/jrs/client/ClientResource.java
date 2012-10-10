@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
@@ -41,6 +42,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/{start}/{limit}")
+     
     public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ClientTable tableObj = new ClientTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -50,6 +52,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/projects/{id}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public ProjectTable getProjects(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ProjectTable tableObj = new ProjectTable();
@@ -61,6 +64,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @PUT
     @Path("/project/{clientId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addProject(@PathParam("clientId") Long clientId, Project project) {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addProject(project);

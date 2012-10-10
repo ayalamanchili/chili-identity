@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,6 +43,7 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @GET
     @Path("/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public ProjectResource.ProjectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ProjectResource.ProjectTable tableObj = new ProjectResource.ProjectTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -50,13 +52,30 @@ public class ProjectResource extends CRUDResource<Project> {
     }
     
    @PUT
-    @Path("/sow/{projectId}")
+   @Path("/sow/{projectId}")
+   @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addSOW(@PathParam("projectId") Long projectId,StatementOfWork SOW) {
         
         Project project = (Project) getDao().findById(projectId);
         
         project.addSOW(SOW);
     }
+   
+    @PUT
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @Override
+    public Project save(Project entity) {
+        return super.save(entity);
+    }
+    
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        super.delete(id);
+    }
+     
     @XmlRootElement
     @XmlType
     public static class ProjectTable {
