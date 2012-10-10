@@ -10,8 +10,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -62,7 +62,7 @@ public class Todo extends AbstractEntity {
         this.tododate = tododate;
     }
 
-    @XmlElement
+    @XmlTransient
     public Employee getEmployee() {
         return employee;
     }

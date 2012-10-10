@@ -18,11 +18,11 @@ import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author bala
  */
-
 @Path("todo")
 @Component
 @Scope("request")
