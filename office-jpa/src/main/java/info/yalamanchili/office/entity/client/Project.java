@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -34,8 +35,10 @@ public class Project extends AbstractEntity {
     protected String name;
     protected String description;
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{endDate.not.empty.msg}")
     protected Date endDate;
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Client_Projects")
