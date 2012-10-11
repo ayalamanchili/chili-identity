@@ -1,6 +1,5 @@
 /* an individual tab*/
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
-    /*background: url("../icons/tab_100.png");*/
     background: url("../images/Tab_button.png");
     /*    background-color: #919191;*/
 
@@ -50,6 +49,19 @@
 }
 .gwt-DisclosurePanel a {
     color: #054c78;
+}
+.gwt-StackPanel .gwt-StackPanelItem {
+    font-weight: normal;
+    font-size: 12pt;
+    width: 100%;
+}
+
+
+.gwt-StackPanel .gwt-StackPanelItem-selected {
+    background-color: blue;
+}
+.createTODOL{
+    font-size: 8pt;
 }
 .y-gwt-PagingBar {
     font-weight: bold;

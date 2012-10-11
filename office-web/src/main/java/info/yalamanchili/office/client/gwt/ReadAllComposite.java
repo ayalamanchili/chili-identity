@@ -286,4 +286,9 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     protected String getKeyValue(String id) {
         return Utils.getKeyValue(id, constants);
     }
+
+    protected void refresh() {
+        table.removeAllRows();
+        preFetchTable(0);
+    }
 }

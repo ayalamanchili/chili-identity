@@ -17,11 +17,11 @@ import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
+
 /**
  *
  * @author bala
  */
-
 public class ReadAllTodosPanel extends ReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllTodosPanel.class.getName());
@@ -54,24 +54,14 @@ public class ReadAllTodosPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Description"));
-        table.setText(0, 3, getKeyValue("TodoDate"));
-        //table.setText(0, 3, getKeyValue("EndDate"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
-
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            //table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "tododate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            //table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-
-            //table.setText(i, 5, JSONUtils.toString(entity, "client"));
         }
     }
 
@@ -102,21 +92,16 @@ public class ReadAllTodosPanel extends ReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-
         new ResponseStatusWidget().show("Successfully deleted Todo Information");
-        TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new ReadAllTodosPanel());
+       refresh();
     }
 
     @Override
     public void updateClicked(String entityId) {
-        //TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
-        //TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
-        TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new UpdateTodoPanel(getEntity(entityId)));
+        refresh();
     }
 
     public String getReadAllTodosPanelURL(Integer start, String limit) {
-            return OfficeWelcome.constants.root_url() + "todo/" + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "todo/" + start.toString() + "/" + limit.toString();
     }
 }

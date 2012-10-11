@@ -73,10 +73,11 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectHomeTab() {
         homePanel.entityPanel.clear();
         homePanel.sidePanelTop.clear();
+        homePanel.sidePanelBottom.clear();
         homePanel.entityTitlePanel.add(new HomeMenu());
         homePanel.entityPanel.add(new ReadAllTodosPanel());
         homePanel.sidePanelTop.add(new TodoSidePanel());
-//        homePanel.sidePanelBottom.add(new HomeStackPanel());
+        homePanel.sidePanelBottom.add(new HomeStackPanel());
     }
 
     public void selectSocialTab() {
