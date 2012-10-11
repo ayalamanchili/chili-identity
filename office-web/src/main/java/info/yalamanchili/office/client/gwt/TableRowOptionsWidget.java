@@ -4,6 +4,8 @@ import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
 
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.yalamanchili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.resources.OfficeImages;
@@ -41,6 +43,13 @@ public class TableRowOptionsWidget extends ALComposite {
 
     @Override
     protected void configure() {
+        deleteLink.addMouseOverHandler(new MouseOverHandler() {
+
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
         readLink.addStyleName("readL");
         updateLink.addStyleName("updateLink");
         deleteLink.addStyleName("deleteLink");

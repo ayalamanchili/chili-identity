@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.home;
 
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
 import info.yalamanchili.gwt.composite.ALComposite;
 
@@ -29,6 +30,7 @@ public class HomeStackPanel extends ALComposite {
 
     @Override
     protected void addWidgets() {
-        
+        panel.add(new Label("TODO widget"), "TODO's");
+        panel.add(new Label("Messages Widget"), "Messages");
     }
 }
