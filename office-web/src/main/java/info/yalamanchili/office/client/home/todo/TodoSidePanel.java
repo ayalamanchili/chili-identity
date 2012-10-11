@@ -39,9 +39,9 @@ public class TodoSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-         if (Auth.isAdmin() || Auth.isHR()) {
+        
             todoSidesidepanel.add(createtodolink);
-        }
+       
     }
 
     @Override
