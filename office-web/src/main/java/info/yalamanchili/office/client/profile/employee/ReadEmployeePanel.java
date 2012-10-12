@@ -8,83 +8,83 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import info.yalamanchili.office.client.Auth;
 
 public class ReadEmployeePanel extends ReadComposite {
 
-	private static ReadEmployeePanel instance;
+    private static ReadEmployeePanel instance;
 
-	public static ReadEmployeePanel instance() {
-		return instance;
-	}
+    public static ReadEmployeePanel instance() {
+        return instance;
+    }
 
-	public ReadEmployeePanel(JSONObject entity) {
-		instance = this;
-		initReadComposite(entity, "Employee", OfficeWelcome.constants);
-	}
+    public ReadEmployeePanel(JSONObject entity) {
+        instance = this;
+        initReadComposite(entity, "Employee", OfficeWelcome.constants);
+    }
 
-	public ReadEmployeePanel(String id) {
-		initReadComposite(id, "Employee", OfficeWelcome.constants);
-	}
+    public ReadEmployeePanel(String id) {
+        initReadComposite(id, "Employee", OfficeWelcome.constants);
+    }
 
-	@Override
-	public void loadEntity(String entityId) {
-		HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
-				new ALAsyncCallback<String>() {
+    @Override
+    public void loadEntity(String entityId) {
+        HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
 
-					@Override
-					public void onResponse(String response) {
-						entity = (JSONObject) JSONParser.parseLenient(response);
-						populateFieldsFromEntity(entity);
-					}
+    }
 
-				});
+    @Override
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
+        if (Auth.isAdmin() || Auth.isHR()) {
+            assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
+        }
+        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
+    }
 
-	}
+    @Override
+    protected void addListeners() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void populateFieldsFromEntity(JSONObject entity) {
-		assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-		assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
-		assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-		assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-                assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
-	}
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void addListeners() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void addWidgets() {
+        addField("firstName", true, false, DataType.STRING_FIELD);
+        addField("middleInitial", true, false, DataType.STRING_FIELD);
+        addField("lastName", true, false, DataType.STRING_FIELD);
+        addField("employeeId", true, false, DataType.STRING_FIELD);
+        if (Auth.isAdmin() || Auth.isHR()) {
+            addField("dateOfBirth", true, false, DataType.DATE_FIELD);
+        }
+        String[] strs = {"MALE", "FEMALE"};
+        addEnumField("sex", true, false, strs);
+        addField("startDate", true, false, DataType.DATE_FIELD);
 
-	}
+    }
 
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void addWidgets() {
-		addField("firstName", true, false, DataType.STRING_FIELD);
-		addField("middleInitial", true, false, DataType.STRING_FIELD);
-		addField("lastName", true, false, DataType.STRING_FIELD);
-                addField("employeeId", true, false, DataType.STRING_FIELD);
-		addField("dateOfBirth", true, false, DataType.DATE_FIELD);
-		String[] strs = { "MALE", "FEMALE" };
-		addEnumField("sex", true, false, strs);
-		addField("startDate", true, false, DataType.DATE_FIELD);
-                
-	}
-
-	@Override
-	protected void addWidgetsBeforeCaptionPanel() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected String getURI() {
-		return OfficeWelcome.constants.root_url() + "employee/" + entityId;
-	}
-
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "employee/" + entityId;
+    }
 }
