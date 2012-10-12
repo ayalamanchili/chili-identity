@@ -16,7 +16,9 @@ import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPane
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
@@ -44,6 +46,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
+    protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel = new TreeSkillSetPanel(OfficeWelcome.instance().employeeId);
 
     public TreeEmployeePanel(String entityId) {
@@ -74,6 +77,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Roles", ROLES_NODE);
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
             addFirstChildLink("Preferences", PREFERENCES_NODE);
+            addFirstChildLink("Deactivation",DEACTIVATION_USER_NODE);
         }
        
     }
@@ -110,6 +114,19 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             skillSetTreePanel.loadEntity();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
+        }
+        if(DEACTIVATION_USER_NODE.equals(entityNodeKey))
+        {
+           if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
+               HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                           new ResponseStatusWidget().show("Successfully deactivated User"); 
+                        }
+                    });
+           }
+           
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {
             HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -151,5 +168,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
     protected String getPreferencesURI() {
         return OfficeWelcome.constants.root_url() + "employee/preferences/" + entityId;
+    }
+     protected String getDeactivateuserURL() {
+        return OfficeWelcome.instance().constants.root_url() + "admin/deactivateuser/" + entityId;
     }
 }
