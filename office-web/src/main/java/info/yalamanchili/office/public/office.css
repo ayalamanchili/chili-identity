@@ -44,7 +44,7 @@
     margin-bottom:3px; 
 }
 .gwt-DisclosurePanel .header {
-    color: d96230;
+    color: #d96230;
     /*    background-color: #F7F7F7;*/
 }
 .gwt-DisclosurePanel a {
@@ -58,16 +58,19 @@
 
 
 .gwt-StackPanel .gwt-StackPanelItem-selected {
-    background-color: blue;
+/*    background-color: blue;*/
+    background-image:  url("../images/tab_button_click.png");
 }
 .createTODOL{
     font-size: 8pt;
+    background-image: url("../images/tab_button_click.png");
+    
 }
 .y-gwt-PagingBar {
     font-weight: bold;
     font-size: 10pt;
     color: #e16802;
-    /*background-color: #919191;*/
+/*    background-color: #c0c0c0;*/
     background: url("../images/Indexbar.png");
     width: 100%;
     height: 34px;
@@ -85,10 +88,24 @@
 .y-gwt-Table {
     font-size: 10pt;
     font-family: helvetica, arial ;
-    background-color: #f7f7f7;
+    background-color: #eef2fd;
     width: 100%;
     text-align:center;
+/*    border: 1px;
+    border-bottom-width: 5px;
+    border-color: white;*/
 
+}
+.y-gwt-Table tr
+{
+
+ border-bottom-width: 2px;
+border-bottom-style: dotted;
+}
+.y-gwt-Table tr:hover 
+{
+	background: #dae6fe;
+	color: #054c78;
 }
 /*Text insiise the tabel START*/
 .readAllCompositeCaptionPanel{
@@ -114,7 +131,7 @@ legend {
     width: 100%;
     color:#595959;
     align:center;
-}
+    }
 
 .gwt-Tree .gwt-TreeItem-selected {
     font-weight: bold;
@@ -345,7 +362,7 @@ body{
     border-bottom-color: #bc033d;
     border-bottom-width: 1px;
     background-color: #83acff;
-    background: url("../images/menubar_bg.png");
+/*    background: url("../images/menubar_bg.png");*/
 
 
 }
@@ -355,12 +372,12 @@ body{
 }
 
 .gwt-DisclosurePanel-open .header TD {
-    color: #Green;
+    color: Green;
 
 }
 
 .loginB{
-    color: 054c78;
+    color: #054c78;
 }
 
 .genericPopup {
@@ -382,7 +399,7 @@ body{
 .gwt-DatePicker {
     border: 1px solid #f1f1f1;
     border-bottom: 2px solid #f1f1f1;
-    color: 6b6b6b;
+    color: #6b6b6b;
     cursor: default;
     width: 7em;
 }
@@ -430,6 +447,9 @@ body{
 .datePickerDayIsToday {
     border: 1px solid black;
     padding: 0px;
+    font-weight:bolder;
+    
+    
 }
 
 .datePickerDayIsWeekend {
@@ -451,12 +471,12 @@ body{
 }
 
 .datePickerDayIsHighlighted {
-    border: 1px solid #eeeeee;
+    border: 1px solid #c6c6c6;
     padding: 0px;
 }
 
 .datePickerDayIsSelectedAndHighlighted {
-    background: #bbddff;
+    background: #f7f7f7;
 }
 
 
