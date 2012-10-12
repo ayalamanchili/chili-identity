@@ -78,6 +78,15 @@ public class AdminResource {
         return employeeService.resetPassword(empId, user);
     }
 
+    @Path("/deactivateuser/{empId}")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deactivateuser(@PathParam("empId") Long empId, User user) {
+     EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");    
+     employeeService.deactivateUser(empId, user);
+     }
+    
+    
     @Path("/createuser")
     @PUT
     @Produces("application/text")
