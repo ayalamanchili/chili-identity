@@ -124,11 +124,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     protected void configureTable() {
         table.addStyleName("y-gwt-Table");
         table.getRowFormatter().addStyleName(0, "y-gwt-TableHeader");
-        table.setBorderWidth(0);
-        table.setCellSpacing(0);
-        
-        
-        
+        table.setBorderWidth(1);
     }
 
     @Override
