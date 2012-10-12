@@ -57,4 +57,20 @@ public class EmployeeService {
         return em.merge(user1);
 
     }
+    
+    public void deactivateUser(Long empId, User user) {
+        CUser user1 = null;
+        javax.persistence.Query findUserQuery = em.createQuery("from CUser where employee.id=:empIdParam");
+        findUserQuery.setParameter("empIdParam", empId);
+        if (findUserQuery.getResultList().size() > 0) {
+            user1 = (CUser) findUserQuery.getResultList().get(0);
+        } else {
+            System.out.println("no user found");
+            
+
+        }
+        user1.setEnabled(false);
+         em.merge(user1);
+
+    }
 }
