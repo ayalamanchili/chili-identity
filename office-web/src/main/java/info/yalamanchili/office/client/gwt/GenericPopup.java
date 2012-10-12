@@ -7,7 +7,6 @@ package info.yalamanchili.office.client.gwt;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -27,9 +26,8 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
         return instance;
     }
     ClickableImage closeB = new ClickableImage("close", OfficeImages.INSTANCE.closeIcon_16_16());
-    
 
-    private GenericPopup(Composite widget) {
+    private GenericPopup(Composite widget, int left, int top) {
         instance = this;
         this.addStyleName("genericPopup");
         FlowPanel panel = new FlowPanel();
@@ -37,7 +35,7 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
         panel.add(widget);
         setWidget(panel);
         closeB.addClickHandler(this);
-        super.setPopupPosition(Window.getClientWidth() / 3, Window.getClientHeight() / 3);
+        super.setPopupPosition(left, top);
     }
 
     @Override
@@ -52,7 +50,16 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
             instance.hide();
         }
         instance = null;
-        new GenericPopup(widget);
+        new GenericPopup(widget, Window.getClientWidth() / 3, Window.getClientHeight() / 3);
+        instance.show();
+    }
+
+    public static void show(Composite widget, int left, int top) {
+        if (instance != null) {
+            instance.hide();
+        }
+        instance = null;
+        new GenericPopup(widget, left, top);
         instance.show();
     }
 }

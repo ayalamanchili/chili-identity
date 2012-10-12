@@ -4,15 +4,12 @@
  */
 package info.yalamanchili.office.client.home.todo;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -52,8 +49,6 @@ public class ReadAllTodosPanel extends ReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Name"));
     }
 
     @Override
@@ -63,12 +58,6 @@ public class ReadAllTodosPanel extends ReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
         }
-    }
-
-    @Override
-    protected void addOptionsWidget(int row, JSONObject entity) {
-
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -86,6 +75,11 @@ public class ReadAllTodosPanel extends ReadAllComposite {
                 });
     }
 
+    @Override
+    protected void addOptionsWidget(int row, JSONObject entity) {
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
+    }
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "todo/delete/" + entityId;
     }
@@ -93,7 +87,7 @@ public class ReadAllTodosPanel extends ReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Todo Information");
-       refresh();
+        refresh();
     }
 
     @Override

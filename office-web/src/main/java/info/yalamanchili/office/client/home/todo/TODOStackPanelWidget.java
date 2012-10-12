@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import info.yalamanchili.gwt.composite.ALComposite;
 import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 
 /**
  *
@@ -19,7 +21,7 @@ public class TODOStackPanelWidget extends ALComposite implements ClickHandler {
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-    protected ClickableLink createTODO = new ClickableLink("New TODO");
+    protected ClickableLink createTODOL = new ClickableLink("create");
     protected ReadAllTodosPanel readAllPanel = new ReadAllTodosPanel();
 
     public TODOStackPanelWidget() {
@@ -28,24 +30,25 @@ public class TODOStackPanelWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
+        createTODOL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        createTODO.addStyleName("createTODOL");
+        createTODOL.addStyleName("createTODOL");
     }
 
     @Override
     protected void addWidgets() {
-        mainPanel.add(createTODO);
+        mainPanel.add(createTODOL);
         mainPanel.add(readAllPanel);
         panel.add(mainPanel);
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(createTODO)) {
-            //TODO
+        if (event.getSource().equals(createTODOL)) {
+            GenericPopup.instance().show(new CreateTodoPanel(CreateComposite.CreateCompositeType.CREATE), createTODOL.getAbsoluteLeft(), createTODOL.getAbsoluteTop());
         }
     }
 }

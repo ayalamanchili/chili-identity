@@ -9,15 +9,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
+
 /**
  *
  * @author bala
  */
-
 public class CreateTodoPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.client.CreateClientPanel.class.getName());
@@ -31,9 +31,6 @@ public class CreateTodoPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject clnt = new JSONObject();
         assignEntityValueFromField("name", clnt);
-        assignEntityValueFromField("description", clnt);
-        assignEntityValueFromField("tododate", clnt);
-        logger.info(clnt.toString());
         return clnt;
     }
 
@@ -61,10 +58,8 @@ public class CreateTodoPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Todo created");
-        TabPanel.instance().homePanel.sidePanelTop.clear();
-        TabPanel.instance().homePanel.sidePanelTop.add(new TodoSidePanel());
-        TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new ReadAllTodosPanel());
+        ReadAllTodosPanel.instance.refresh();
+        GenericPopup.instance().hide();
     }
 
     @Override
@@ -78,8 +73,6 @@ public class CreateTodoPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
-        addField("tododate", false, true, DataType.DATE_FIELD);
     }
 
     @Override
@@ -88,6 +81,6 @@ public class CreateTodoPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "todo" ;
+        return OfficeWelcome.constants.root_url() + "todo";
     }
 }

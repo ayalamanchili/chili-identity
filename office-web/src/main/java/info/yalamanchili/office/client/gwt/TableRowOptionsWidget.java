@@ -19,7 +19,7 @@ public class TableRowOptionsWidget extends ALComposite implements MouseOverHandl
 
     public enum OptionsType {
 
-        READ, UPDATE, DELETE, READ_UPDATE, READ_UPDATE_DELETE, READ_DELETE
+        READ, UPDATE, DELETE, READ_UPDATE, READ_UPDATE_DELETE, READ_DELETE, UPDATE_DELETE
     };
     protected OptionsType type;
 
@@ -56,6 +56,12 @@ public class TableRowOptionsWidget extends ALComposite implements MouseOverHandl
         if (OptionsType.READ.equals(type)) {
             panel.add(readLink);
         }
+        if (OptionsType.UPDATE.equals(type)) {
+            panel.add(updateLink);
+        }
+        if (OptionsType.DELETE.equals(type)) {
+            panel.add(deleteLink);
+        }
         if (OptionsType.READ_UPDATE.equals(type)) {
             panel.add(readLink);
             panel.add(updateLink);
@@ -69,7 +75,10 @@ public class TableRowOptionsWidget extends ALComposite implements MouseOverHandl
             panel.add(readLink);
             panel.add(deleteLink);
         }
-
+        if (OptionsType.UPDATE_DELETE.equals(type)) {
+            panel.add(updateLink);
+            panel.add(deleteLink);
+        }
     }
 
     public ClickableImage getReadLink() {
