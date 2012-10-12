@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
+    <g:DockLayoutPanel unit='EM' addStyleNames='mainPanel'>
+        <g:north size='4'>
+            <ui:with field='officeImages' type='info.yalamanchili.office.client.resources.OfficeImages'/>
+            <ui:image field='logo' resource='{officeImages.logo}'></ui:image>
+        </g:north>
+        <g:center>
+            <g:FlowPanel ui:field='entityPanel'>
+            </g:FlowPanel>
+        </g:center>
+    </g:DockLayoutPanel>
+    <ui:style>
+        .statusPanel {
+        border-bottom-style: solid;
+        border-bottom-color: #fafbfe;
+        border-bottom-width: 2px;
+        }
+    </ui:style>
+</ui:UiBinder> 
