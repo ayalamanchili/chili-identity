@@ -20,6 +20,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.env.OfficeClientConfigDev;
+import info.yalamanchili.office.client.resources.OfficeImages;
 
 public class OfficeWelcome implements EntryPoint {
 
@@ -37,7 +38,7 @@ public class OfficeWelcome implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
-        logger.info(config.getFileDownloadUrl());
+        OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
         LoginPanel loginPanel = new LoginPanel();
         loginPanel.showLoginWindow();

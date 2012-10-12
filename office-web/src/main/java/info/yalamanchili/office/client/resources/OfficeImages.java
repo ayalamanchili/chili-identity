@@ -5,10 +5,11 @@
 package info.yalamanchili.office.client.resources;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.editor.client.Editor.Path;
 import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource.NotStrict;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
+import com.google.gwt.resources.client.ImageResource.RepeatStyle;
 
 /**
  *
@@ -17,6 +18,10 @@ import com.google.gwt.resources.client.ImageResource.ImageOptions;
 public interface OfficeImages extends ClientBundle {
 
     public static final OfficeImages INSTANCE = GWT.create(OfficeImages.class);
+
+    @Source("info/yalamanchili/office/public/office.css")
+    @NotStrict
+    OfficeCss officeCss();
 
     @Source("images/default-image.gif")
     @ImageOptions(height = 50, width = 50)
@@ -27,10 +32,36 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/default-image.gif")
     ImageResource defaultImage();
+
+    @Source("images/tab_button.png")
+    ImageResource tabButton();
+
+    @Source("images/tab_button_click.png")
+    ImageResource tabButtonClick();
+
+    @Source("images/index_bar.png")
+    @ImageOptions(repeatStyle = RepeatStyle.Horizontal)
+    ImageResource indexBar();
+
+    @Source("images/paging_bar.png")
+    @ImageOptions(repeatStyle = RepeatStyle.Horizontal)
+    ImageResource pagingBar();
+
+    @Source("images/search_bg.png")
+    ImageResource searchBG();
+
+    @Source("images/favicon.png")
+    ImageResource favicon();
+
+    @Source("images/home_button.png")
+    ImageResource homeButton();
+
+    @Source("images/menubar_bg.png")
+    ImageResource menuBarBG();
+
     /*
      * View Icons
      */
-
     @Source("images/view_icon_16_16.png")
     ImageResource viewIcon_16_16();
     /*

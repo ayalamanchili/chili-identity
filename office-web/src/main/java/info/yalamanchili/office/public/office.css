@@ -1,8 +1,7 @@
 /* an individual tab*/
-.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
-    background: url("../images/Tab_button.png");
-    /*    background-color: #919191;*/
-
+@sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
+    gwt-image: "tabButton";
+    height:auto;
     width: 106px;
     text-align: center;
     margin-left: 3px;
@@ -27,14 +26,14 @@
     background-color: #FFFFFF;
 
 }
-.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
+@sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
     margin-left: 3px;
     margin-right: 3px;
     font-size: 12pt;
     font-weight: 500;
     color: #FFFFFF;
-    /*    background-color: #f7f7f7;*/
-    background: url("../images/tab_button_click.png");
+    gwt-image:"tabButtonClick";
+    height:auto;
 }
 
 /* an element nested in each tab (useful for styling)*/
@@ -57,21 +56,19 @@
 }
 
 
-.gwt-StackPanel .gwt-StackPanelItem-selected {
-/*    background-color: blue;*/
-    background-image:  url("../images/tab_button_click.png");
+@sprite .gwt-StackPanel .gwt-StackPanelItem-selected {
+    gwt-image:  "tabButtonClick";
 }
-.createTODOL{
+@sprite .createTODOL{
     font-size: 8pt;
-    background-image: url("../images/tab_button_click.png");
-    
+    gwt-image:"tabButtonClick";
+
 }
-.y-gwt-PagingBar {
+@sprite .y-gwt-PagingBar {
     font-weight: bold;
     font-size: 10pt;
     color: #e16802;
-/*    background-color: #c0c0c0;*/
-    background: url("../images/Indexbar.png");
+    gwt-image : "indexBar";
     width: 100%;
     height: 34px;
 
@@ -91,21 +88,21 @@
     background-color: #eef2fd;
     width: 100%;
     text-align:center;
-/*    border: 1px;
-    border-bottom-width: 5px;
-    border-color: white;*/
+    /*    border: 1px;
+        border-bottom-width: 5px;
+        border-color: white;*/
 
 }
 .y-gwt-Table tr
 {
 
- border-bottom-width: 2px;
-border-bottom-style: dotted;
+    border-bottom-width: 2px;
+    border-bottom-style: dotted;
 }
 .y-gwt-Table tr:hover 
 {
-	background: #dae6fe;
-	color: #054c78;
+    background: #dae6fe;
+    color: #054c78;
 }
 /*Text insiise the tabel START*/
 .readAllCompositeCaptionPanel{
@@ -131,17 +128,17 @@ legend {
     width: 100%;
     color:#595959;
     align:center;
-    }
+}
 
 .gwt-Tree .gwt-TreeItem-selected {
     font-weight: bold;
     background-color: #D9D9D9;
 }
-.entityMenuBar {
+@sprite .entityMenuBar {
     width: 100%;
     border: 1px;
     border-color: #3e3e3e;
-    background: url("../images/menubar_bg.png");
+    gwt-image : "menuBarBG";
 
     /*background-color: #ededed;*/
 }
@@ -226,8 +223,8 @@ legend {
 }
 /*post css end*/
 /*image field css start*/
-.imageField-Image{
-    background-image: url("../src/main/resources/images/home_btn.png");
+@sprite .imageField-Image{
+    gwt-image: "homeButton";
 }
 /*image field css end*/
 .y-gwt-treePanelComposite-Node
@@ -256,9 +253,9 @@ body{
   border-color: #919191;  
 }*/
 /*Start For search textbox */
-.searchComposite{
+@sprite .searchComposite{
     /*background-color:#f7f7f7;*/
-    background: url("../images/Search_bg.png");
+    gwt-image: "searchBG";
 }
 /*End For search textbox */
 /*//TODO move back to chili-gwt*/
@@ -362,7 +359,7 @@ body{
     border-bottom-color: #bc033d;
     border-bottom-width: 1px;
     background-color: #83acff;
-/*    background: url("../images/menubar_bg.png");*/
+    /*    background: url("../images/menubar_bg.png");*/
 
 
 }
@@ -448,8 +445,8 @@ body{
     border: 1px solid black;
     padding: 0px;
     font-weight:bolder;
-    
-    
+
+
 }
 
 .datePickerDayIsWeekend {
