@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * @author yalamanchili
  */
 public abstract class SearchComposite extends Composite implements ClickHandler, KeyPressHandler {
-    
+
     private Logger logger = Logger.getLogger(SearchComposite.class.getName());
     /*
      * Panels
@@ -46,11 +46,11 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected ConstantsWithLookup constants;
     protected String entityName;
     protected Map<String, BaseField> fields = new HashMap<String, BaseField>();
-    
+
     public JSONObject getEntity() {
         return entity;
     }
-    
+
     protected void init(String title, String entityName, ConstantsWithLookup constants) {
         initWidget(captionPanel);
         this.entityName = entityName;
@@ -68,20 +68,20 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         configure();
         addWidgets();
     }
-    
+
     protected abstract void addListeners();
-    
+
     protected abstract void configure();
-    
+
     protected abstract void addWidgets();
-    
+
     protected String getSearchText() {
         return searchTB.getText();
     }
     /*
      * adding and getting Fields
      */
-    
+
     protected void addField(String attributeName, DataType type) {
         if (DataType.LONG_FIELD.equals(type)) {
             LongField longField = new LongField(constants,
@@ -131,13 +131,10 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(dropDownField);
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
-            FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName, "name"){
-
+            FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName, "name", false) {
                 @Override
                 public void onUploadComplete() {
-                   
                 }
-                
             };
             advancedSearchPanel.add(fileUploadPanel);
         }
@@ -154,14 +151,14 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(currencyField);
         }
     }
-    
+
     protected void addEnumField(String key, Boolean readOnly, Boolean isRequired, String[] values) {
         EnumField enumField = new EnumField(constants, key, entityName,
                 readOnly, isRequired, values);
         fields.put(key, enumField);
         advancedSearchPanel.add(enumField);
     }
-    
+
     protected void addDropDown(SelectComposite widget) {
         advancedSearchPanel.add(widget);
     }
@@ -199,15 +196,15 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             }
         }
     }
-    
+
     protected abstract JSONObject populateEntityFromFields();
-    
+
     protected abstract void search(String searchText);
-    
+
     protected abstract void search(JSONObject entity);
-    
+
     protected abstract void postSearchSuccess(String result);
-    
+
     protected void processSearchResult(String result) {
         searchTB.setText("");
         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
@@ -216,7 +213,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             postSearchSuccess(result);
         }
     }
-    
+
     @Override
     public void onKeyPress(KeyPressEvent event) {
         int keyCode = event.getUnicodeCharCode();
@@ -237,7 +234,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             }
         }
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == searchButton) {
@@ -250,10 +247,10 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
                 }
             }
         }
-        
+
     }
-    
+
     protected abstract String getSearchURI(String searchText, Integer start, Integer limit);
-    
+
     protected abstract String getSearchURI(Integer start, Integer limit);
 }

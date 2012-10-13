@@ -17,7 +17,7 @@ import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWi
 public class CreateEmployeePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
-    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL") {
+    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL",false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);

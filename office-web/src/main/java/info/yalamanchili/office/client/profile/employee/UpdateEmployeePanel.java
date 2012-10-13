@@ -14,7 +14,7 @@ import info.yalamanchili.office.client.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
     
-    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL") {
+    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL",false) {
         @Override
         public void onUploadComplete() {
             postUpdateSuccess(null);

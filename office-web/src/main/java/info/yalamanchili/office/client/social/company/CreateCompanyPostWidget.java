@@ -46,7 +46,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     final RichTextArea textArea = new RichTextArea();
     final RichTextToolBar toolBar = new RichTextToolBar(textArea);
     Button createPostB = new Button("Share");
-    FileUploadPanel fileUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL") {
+    FileUploadPanel fileUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL",false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);

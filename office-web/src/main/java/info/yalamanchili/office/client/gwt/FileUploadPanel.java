@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 import com.google.gwt.user.client.ui.Label;
 import info.yalamanchili.gwt.utils.Utils;
-import info.yalamanchili.office.client.config.OfficeClientConfig;
 import java.util.logging.Logger;
 
 public abstract class FileUploadPanel extends ALComposite implements ClickHandler, SubmitHandler, SubmitCompleteHandler {
@@ -25,15 +24,17 @@ public abstract class FileUploadPanel extends ALComposite implements ClickHandle
     private static Logger logger = Logger.getLogger(FileUploadPanel.class.getName());
     protected String filePrefix;
     protected boolean submitted = false;
+    protected boolean required;
     FlowPanel panel = new FlowPanel();
     FormPanel formPanel = new FormPanel();
     Label label = new Label("upload");
     FileUpload fileUpload = new FileUpload();
     Button submit = new Button("Upload");
 
-    public FileUploadPanel(ConstantsWithLookup constants, String attributeName, String className, String filePrefix) {
+    public FileUploadPanel(ConstantsWithLookup constants, String attributeName, String className, String filePrefix, boolean required) {
         instance = this;
-        label.setText(Utils.getAttributeLabel(attributeName, className, constants));
+        this.label.setText(Utils.getAttributeLabel(attributeName, className, constants));
+        this.required = required;
         this.filePrefix = filePrefix;
         init(formPanel);
         submit.setVisible(false);

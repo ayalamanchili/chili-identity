@@ -22,7 +22,7 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     protected String employeeId;
     private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
-    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl") {
+    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl",true) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
