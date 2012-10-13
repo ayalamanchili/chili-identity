@@ -8,24 +8,33 @@
 	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     
- 
-    <http auto-config="true" create-session="stateless" use-expressions="true" >
-        <http-basic />
+    <!-- Security url configuration -->
+    <http auto-config="true" create-session="stateless" use-expressions="true" entry-point-ref="digestEntryPoint">
         <intercept-url pattern="/*/file/*" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+        <custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER" />
     </http>
+    <!-- Digest Auth Filter -->
+    <beans:bean id="digestFilter" class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
+        <beans:property name="userDetailsService" ref="userService" />
+        <beans:property name="authenticationEntryPoint" ref="digestEntryPoint" />
+    </beans:bean>
+    <!--Digest Entry point -->
+    <beans:bean id="digestEntryPoint" class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
+        <beans:property name="realmName" value="Portal Authentication"/>
+        <beans:property name="key" value="acegi" />
+    </beans:bean>
+    
     <!-- Enable roles check annotations-->
     <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
     <authentication-manager>
         <authentication-provider>
-            <password-encoder ref="passwordEncoder" />
-            <jdbc-user-service data-source-ref="officeSecurityDataSource"
+            <!-- password encodeer is conflicting with digest auth filter so disabling it until the issue is resolved http://yalamanchili.info:8080/jira/browse/SSTO-473-->
+            <!--            <password-encoder ref="passwordEncoder" />-->
+            <jdbc-user-service  id="userService" data-source-ref="officeSecurityDataSource"
+                                users-by-username-query="select username, passwordHash ,enabled from CUser where username=?"
 
-                               users-by-username-query="
-		      select username, passwordHash ,enabled
-		      from CUser where username=?"
-
-                               authorities-by-username-query="select user.username, role.rolename from cuser user, crole role, userroles userroles 
+                                authorities-by-username-query="select user.username, role.rolename from cuser user, crole role, userroles userroles 
 		      where user.userId = userroles.userId and userroles.roleId= role.roleId and user.username =?  " />
         </authentication-provider>
     </authentication-manager>
