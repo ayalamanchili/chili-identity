@@ -3,7 +3,6 @@ package info.yalamanchili.office.client;
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.internalization.OfficeConstants;
 import info.yalamanchili.office.client.internalization.OfficeMessages;
-import info.yalamanchili.office.client.login.LoginPanel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,11 +18,11 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
-import info.yalamanchili.office.client.env.OfficeClientConfigDev;
+import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
 public class OfficeWelcome implements EntryPoint {
-
+    
     public static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
     public JSONObject user;
     public JSONObject employee;
@@ -35,16 +34,15 @@ public class OfficeWelcome implements EntryPoint {
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
     public static OfficeClientConfig config = GWT.create(OfficeClientConfig.class);
-
+    
     @Override
     public void onModuleLoad() {
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
-        LoginPanel loginPanel = new LoginPanel();
-        loginPanel.showLoginWindow();
-
+        RootLayoutPanel.get().add(new LoginPage());
+        
     }
-
+    
     public void onMainModuleLoad(JSONObject user) {
         this.user = user;
         this.employee = user.get("employee").isObject();
@@ -54,16 +52,17 @@ public class OfficeWelcome implements EntryPoint {
             public void onFailure(Throwable caught) {
                 Window.alert("Code download failed");
             }
-
+            
             public void onSuccess() {
                 logger.info(roles.toString());
+                RootLayoutPanel.get().clear();
                 RootLayout rootLayout = new RootLayout();
                 RootLayoutPanel.get().add(rootLayout);
             }
         });
-
+        
     }
-
+    
     protected void initUserRoles(JSONObject userObj) {
         logger.info(userObj.toString());
         JSONArray roles = JSONUtils.toJSONArray(userObj.get("roles"));
@@ -73,14 +72,14 @@ public class OfficeWelcome implements EntryPoint {
         }
     }
     private static OfficeWelcome instance;
-
+    
     public static OfficeWelcome instance() {
         if (instance == null) {
             return new OfficeWelcome();
         }
         return instance;
     }
-
+    
     public Map<String, String> getHeaders() {
         Map<String, String> headersMap = new HashMap<String, String>();
         headersMap.put("Content-Type", "application/json");
