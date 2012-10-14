@@ -18,8 +18,7 @@ public class SecurityUtils {
      * one
      */
     public static String encodePassword(String password, String salt) {
-//        ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
-//        return encoder.encodePassword(password, null);
-        return password;
+        ShaPasswordEncoder encoder = (ShaPasswordEncoder) SpringContext.getBean("passwordEncoder");
+        return encoder.encodePassword(password, null);
     }
 }
