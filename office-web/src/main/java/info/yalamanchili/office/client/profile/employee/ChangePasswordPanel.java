@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.profile.employee;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.gwt.fields.PasswordField;
@@ -33,10 +34,10 @@ public class ChangePasswordPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject chgpassword = new JSONObject();
-       // assignEntityValueFromField("userName", chgpassword);
+        // assignEntityValueFromField("userName", chgpassword);
         assignEntityValueFromField("oldPassword", chgpassword);
         assignEntityValueFromField("newPassword", chgpassword);
-         chgpassword.put("userName",new JSONString("dummy"));
+        chgpassword.put("userName", new JSONString("dummy"));
         return chgpassword;
     }
 
@@ -56,10 +57,8 @@ public class ChangePasswordPanel extends CreateComposite {
 
                                 GenericPopup.instance().hide();
                                 JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
-//                                OfficeWelcome.instance().username = JSONUtils.toString(user, "username");
-//                                OfficeWelcome.instance().password = JSONUtils.toString(user, "passwordHash");
-                                //OfficeWelcome.instance().onMainModuleLoad(user);
                                 new ResponseStatusWidget().show("Change Password successfu1");
+                                Window.Location.reload();
                             } else {
                                 new ResponseStatusWidget().show("Change Password failed");
                             }
