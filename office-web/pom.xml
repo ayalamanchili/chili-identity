@@ -96,6 +96,12 @@
             <artifactId>commons-codec</artifactId>
             <version>1.6</version>
         </dependency>
+        <!-- JSON for httpservice impl-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency>
         <!-- Tests deps -->
         <dependency>
             <groupId>junit</groupId>

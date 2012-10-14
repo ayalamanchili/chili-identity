@@ -1,10 +1,11 @@
 package info.yalamanchili.office.client;
 
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
+import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.AbstractStatusPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;
+import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
 
@@ -43,7 +44,13 @@ public class StatusPanel extends AbstractStatusPanel {
 
     @Override
     protected void logoutClicked() {
-        Window.Location.reload();
+        HttpServiceAsync.instance().logout(new ALAsyncCallback<Void>() {
+            @Override
+            public void onResponse(Void arg0) {
+                Window.Location.reload();
+            }
+        });
+
     }
 
     @Override

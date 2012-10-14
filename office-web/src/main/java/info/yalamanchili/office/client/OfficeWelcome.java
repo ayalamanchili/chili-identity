@@ -27,9 +27,6 @@ public class OfficeWelcome implements EntryPoint {
     public JSONObject user;
     public JSONObject employee;
     public String employeeId;
-    public String username;
-    //TODO This is not good find a better way
-    public String password;
     public List<String> roles = new ArrayList<String>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
@@ -79,16 +76,10 @@ public class OfficeWelcome implements EntryPoint {
         }
         return instance;
     }
-    
+    //TODO move to server
     public Map<String, String> getHeaders() {
         Map<String, String> headersMap = new HashMap<String, String>();
         headersMap.put("Content-Type", "application/json");
-        if (username != null) {
-            headersMap.put("username", username);
-        }
-        if (password != null) {
-            headersMap.put("password", password);
-        }
         return headersMap;
     }
 }

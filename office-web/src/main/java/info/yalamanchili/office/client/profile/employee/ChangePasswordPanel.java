@@ -56,8 +56,8 @@ public class ChangePasswordPanel extends CreateComposite {
 
                                 GenericPopup.instance().hide();
                                 JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
-                                OfficeWelcome.instance().username = JSONUtils.toString(user, "username");
-                                OfficeWelcome.instance().password = JSONUtils.toString(user, "passwordHash");
+//                                OfficeWelcome.instance().username = JSONUtils.toString(user, "username");
+//                                OfficeWelcome.instance().password = JSONUtils.toString(user, "passwordHash");
                                 //OfficeWelcome.instance().onMainModuleLoad(user);
                                 new ResponseStatusWidget().show("Change Password successfu1");
                             } else {

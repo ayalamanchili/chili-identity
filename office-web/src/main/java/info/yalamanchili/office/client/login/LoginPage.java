@@ -67,12 +67,7 @@ public class LoginPage extends Composite {
 
     protected void loginClicked() {
         JSONObject user = new JSONObject();
-        user.put("username", new JSONString(usernameTb.getText()));
-        user.put("passwordHash", new JSONString(passwordTb.getText()));
-        Map<String, String> headers = OfficeWelcome.instance().getHeaders();
-        headers.put("username", usernameTb.getText());
-        headers.put("password", passwordTb.getText());
-        HttpService.HttpServiceAsync.instance().doPut(getLoginURL(), user.toString(), headers, true, new AsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().login(usernameTb.getText(), passwordTb.getText(), new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
                 new ResponseStatusWidget().show("login failed");
@@ -81,8 +76,6 @@ public class LoginPage extends Composite {
             @Override
             public void onSuccess(String userString) {
                 if (userString != null && userString.trim().length() > 0) {
-                    OfficeWelcome.instance().username = usernameTb.getText();
-                    OfficeWelcome.instance().password = passwordTb.getText();
                     JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
                     OfficeWelcome.instance().onMainModuleLoad(user);
                 } else {
