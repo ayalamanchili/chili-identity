@@ -81,9 +81,9 @@ public class AdminResource {
     @Path("/deactivateuser/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deactivateuser(@PathParam("empId") Long empId, User user) {
+    public void deactivateuser(@PathParam("empId") Long empId) {
      EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");    
-     employeeService.deactivateUser(empId, user);
+     employeeService.deactivateUser(empId);
      }
     
     
