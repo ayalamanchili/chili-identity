@@ -18,6 +18,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.gwt.CreateComposite;
@@ -49,10 +50,15 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel = new TreeSkillSetPanel(OfficeWelcome.instance().employeeId);
 
-    public TreeEmployeePanel(String entityId) {
-        super(entityId);
+    public TreeEmployeePanel(JSONObject emp) {
+        super(emp);
         instance = this;
-        init("Employee", OfficeWelcome.constants);
+//        JSONUtils.toString(emp, entityId);
+        
+//        init("Employee", OfficeWelcome.constants);
+         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
+         init(name, OfficeWelcome.constants);
+        
     }
 
     @Override
@@ -170,6 +176,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         return OfficeWelcome.constants.root_url() + "employee/preferences/" + entityId;
     }
      protected String getDeactivateuserURL() {
-        return OfficeWelcome.instance().constants.root_url() + "admin/deactivateuser/" + entityId;
+        return OfficeWelcome.constants.root_url() + "admin/deactivateuser/" + entityId;
     }
 }
