@@ -104,7 +104,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(entityId));
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entityId));
+        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(getEntity(entityId)));
     }
 
     @Override
@@ -135,7 +135,7 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(entityId));
+        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(getEntity(entityId)));
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmployeePanel(getEntity(entityId)));
     }
