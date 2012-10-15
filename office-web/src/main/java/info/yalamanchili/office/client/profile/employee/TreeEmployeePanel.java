@@ -92,34 +92,34 @@ public class TreeEmployeePanel extends TreePanelComposite {
     public void treeNodeSelected(String entityNodeKey) {
         if (ADDRESS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
         }
         if (EMAIL_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
         }
         if (PHONE_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
         }
         if (REPORTS_TO_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
         }
         if (EMERGENCY_CONTACT_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             skillSetTreePanel.loadEntity();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(getEntityId()));
         }
         if(DEACTIVATION_USER_NODE.equals(entityNodeKey))
         {
@@ -150,7 +150,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (ROLES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectRoleWidget("Roles", entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectRoleWidget("Roles", getEntityId()));
         }
         if (RESET_PASSWORD_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -173,9 +173,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
     }
 
     protected String getPreferencesURI() {
-        return OfficeWelcome.constants.root_url() + "employee/preferences/" + entityId;
+        return OfficeWelcome.constants.root_url() + "employee/preferences/" + getEntityId();
     }
      protected String getDeactivateuserURL() {
-        return OfficeWelcome.constants.root_url() + "admin/deactivateuser/" + entityId;
+        return OfficeWelcome.constants.root_url() + "admin/deactivateuser/" + getEntityId();
     }
 }
