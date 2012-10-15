@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import info.yalamanchili.gwt.utils.JSONUtils;
 //TODO extend tree item?
 public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem> {
 
@@ -25,7 +26,11 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     protected TreeItem rootItem = new TreeItem("root");
 
     public String getEntityId() {
-        return entityId;
+        if (entityId == null && entity != null) {
+          return JSONUtils.toString(entity, "id");
+           }
+          return entityId;
+
     }
 
     public JSONObject getEntity() {
@@ -39,6 +44,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     public TreePanelComposite(JSONObject entity) {
         initWidget(panel);
         this.entity = entity;
+        this.entityId=JSONUtils.toString(entity,"id");
     }
 
     public TreePanelComposite(String entityId) {
