@@ -183,6 +183,19 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
         if (table.get("entities") != null) {
             entities = JSONUtils.toJSONArray(table.get("entities"));
             fillData(entities);
+            addRowStyles(entities.size());
+        }
+    }
+
+    protected void addRowStyles(int size) {
+        HTMLTable.RowFormatter rf = table.getRowFormatter();
+        for (int row = 1; row <= size; ++row) {
+            rf.addStyleName(row, "y-gwt-ReadAllComposite-Row");
+            if ((row % 2) != 0) {
+                rf.addStyleName(row, "y-gwt-ReadAllComposite-OddRow");
+            } else {
+                rf.addStyleName(row, "y-gwt-ReadAllComposite-EvenRow");
+            }
         }
     }
     protected JSONArray entities;

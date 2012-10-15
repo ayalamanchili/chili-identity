@@ -93,16 +93,21 @@
         border-color: white;*/
 
 }
-.y-gwt-Table tr
+.y-gwt-ReadAllComposite-Row
 {
-
     border-bottom-width: 2px;
     border-bottom-style: dotted;
 }
-.y-gwt-Table tr:hover 
+.y-gwt-ReadAllComposite-Row:hover 
 {
     background: #dae6fe;
     color: #054c78;
+}
+.y-gwt-ReadAllComposite-OddRow{
+    
+}
+.y-gwt-ReadAllComposite-EvenRow{
+    
 }
 /*Text insiise the tabel START*/
 .readAllCompositeCaptionPanel{
