@@ -58,7 +58,7 @@ public class EmployeeService {
 
     }
     
-    public void deactivateUser(Long empId, User user) {
+    public void deactivateUser(Long empId) {
         CUser user1 = null;
         javax.persistence.Query findUserQuery = em.createQuery("from CUser where employee.id=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);
