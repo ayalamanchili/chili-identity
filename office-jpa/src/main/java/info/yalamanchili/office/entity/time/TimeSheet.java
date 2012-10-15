@@ -33,20 +33,20 @@ public class TimeSheet extends AbstractEntity {
     protected TimeSheetStatus timeSheetStatus;
     protected BigDecimal paidRate;
     protected BigDecimal billedRate;
-    protected Double mondayPaidHours;
-    protected Double mondayBilledHours;
-    protected Double tuesdayPaidHours;
-    protected Double tuesdayBilledHours;
-    protected Double wednesdayPaidHours;
-    protected Double wednesdayBilledHours;
-    protected Double thursdayPaidHours;
-    protected Double thursdayBilledHours;
-    protected Double fridayPaidHours;
-    protected Double fridayBilledHours;
-    protected Double saturdayPaidHours;
-    protected Double saturdayBilledHours;
-    protected Double sundayPaidHours;
-    protected Double sundayBilledHours;
+    protected BigDecimal mondayPaidHours;
+    protected BigDecimal mondayBilledHours;
+    protected BigDecimal tuesdayPaidHours;
+    protected BigDecimal tuesdayBilledHours;
+    protected BigDecimal wednesdayPaidHours;
+    protected BigDecimal wednesdayBilledHours;
+    protected BigDecimal thursdayPaidHours;
+    protected BigDecimal thursdayBilledHours;
+    protected BigDecimal fridayPaidHours;
+    protected BigDecimal fridayBilledHours;
+    protected BigDecimal saturdayPaidHours;
+    protected BigDecimal saturdayBilledHours;
+    protected BigDecimal sundayPaidHours;
+    protected BigDecimal sundayBilledHours;
     protected String notes;
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_TimeSheetPeriod_TimeSheets")
@@ -90,115 +90,115 @@ public class TimeSheet extends AbstractEntity {
         this.billedRate = billedRate;
     }
 
-    public Double getMondayPaidHours() {
+    public BigDecimal getMondayPaidHours() {
         return mondayPaidHours;
     }
 
-    public void setMondayPaidHours(Double mondayPaidHours) {
+    public void setMondayPaidHours(BigDecimal mondayPaidHours) {
         this.mondayPaidHours = mondayPaidHours;
     }
 
-    public Double getMondayBilledHours() {
+    public BigDecimal getMondayBilledHours() {
         return mondayBilledHours;
     }
 
-    public void setMondayBilledHours(Double mondayBilledHours) {
+    public void setMondayBilledHours(BigDecimal mondayBilledHours) {
         this.mondayBilledHours = mondayBilledHours;
     }
 
-    public Double getTuesdayPaidHours() {
+    public BigDecimal getTuesdayPaidHours() {
         return tuesdayPaidHours;
     }
 
-    public void setTuesdayPaidHours(Double tuesdayPaidHours) {
+    public void setTuesdayPaidHours(BigDecimal tuesdayPaidHours) {
         this.tuesdayPaidHours = tuesdayPaidHours;
     }
 
-    public Double getTuesdayBilledHours() {
+    public BigDecimal getTuesdayBilledHours() {
         return tuesdayBilledHours;
     }
 
-    public void setTuesdayBilledHours(Double tuesdayBilledHours) {
+    public void setTuesdayBilledHours(BigDecimal tuesdayBilledHours) {
         this.tuesdayBilledHours = tuesdayBilledHours;
     }
 
-    public Double getWednesdayPaidHours() {
+    public BigDecimal getWednesdayPaidHours() {
         return wednesdayPaidHours;
     }
 
-    public void setWednesdayPaidHours(Double wednesdayPaidHours) {
+    public void setWednesdayPaidHours(BigDecimal wednesdayPaidHours) {
         this.wednesdayPaidHours = wednesdayPaidHours;
     }
 
-    public Double getWednesdayBilledHours() {
+    public BigDecimal getWednesdayBilledHours() {
         return wednesdayBilledHours;
     }
 
-    public void setWednesdayBilledHours(Double wednesdayBilledHours) {
+    public void setWednesdayBilledHours(BigDecimal wednesdayBilledHours) {
         this.wednesdayBilledHours = wednesdayBilledHours;
     }
 
-    public Double getThursdayPaidHours() {
+    public BigDecimal getThursdayPaidHours() {
         return thursdayPaidHours;
     }
 
-    public void setThursdayPaidHours(Double thursdayPaidHours) {
+    public void setThursdayPaidHours(BigDecimal thursdayPaidHours) {
         this.thursdayPaidHours = thursdayPaidHours;
     }
 
-    public Double getThursdayBilledHours() {
+    public BigDecimal getThursdayBilledHours() {
         return thursdayBilledHours;
     }
 
-    public void setThursdayBilledHours(Double thursdayBilledHours) {
+    public void setThursdayBilledHours(BigDecimal thursdayBilledHours) {
         this.thursdayBilledHours = thursdayBilledHours;
     }
 
-    public Double getFridayPaidHours() {
+    public BigDecimal getFridayPaidHours() {
         return fridayPaidHours;
     }
 
-    public void setFridayPaidHours(Double fridayPaidHours) {
+    public void setFridayPaidHours(BigDecimal fridayPaidHours) {
         this.fridayPaidHours = fridayPaidHours;
     }
 
-    public Double getFridayBilledHours() {
+    public BigDecimal getFridayBilledHours() {
         return fridayBilledHours;
     }
 
-    public void setFridayBilledHours(Double fridayBilledHours) {
+    public void setFridayBilledHours(BigDecimal fridayBilledHours) {
         this.fridayBilledHours = fridayBilledHours;
     }
 
-    public Double getSaturdayPaidHours() {
+    public BigDecimal getSaturdayPaidHours() {
         return saturdayPaidHours;
     }
 
-    public void setSaturdayPaidHours(Double saturdayPaidHours) {
+    public void setSaturdayPaidHours(BigDecimal saturdayPaidHours) {
         this.saturdayPaidHours = saturdayPaidHours;
     }
 
-    public Double getSaturdayBilledHours() {
+    public BigDecimal getSaturdayBilledHours() {
         return saturdayBilledHours;
     }
 
-    public void setSaturdayBilledHours(Double saturdayBilledHours) {
+    public void setSaturdayBilledHours(BigDecimal saturdayBilledHours) {
         this.saturdayBilledHours = saturdayBilledHours;
     }
 
-    public Double getSundayPaidHours() {
+    public BigDecimal getSundayPaidHours() {
         return sundayPaidHours;
     }
 
-    public void setSundayPaidHours(Double sundayPaidHours) {
+    public void setSundayPaidHours(BigDecimal sundayPaidHours) {
         this.sundayPaidHours = sundayPaidHours;
     }
 
-    public Double getSundayBilledHours() {
+    public BigDecimal getSundayBilledHours() {
         return sundayBilledHours;
     }
 
-    public void setSundayBilledHours(Double sundayBilledHours) {
+    public void setSundayBilledHours(BigDecimal sundayBilledHours) {
         this.sundayBilledHours = sundayBilledHours;
     }
 
@@ -238,6 +238,4 @@ public class TimeSheet extends AbstractEntity {
     public String toString() {
         return "TimeSheet{" + "timeSheetCategory=" + timeSheetCategory + ", timeSheetStatus=" + timeSheetStatus + ", paidRate=" + paidRate + ", billedRate=" + billedRate + ", mondayPaidHours=" + mondayPaidHours + ", mondayBilledHours=" + mondayBilledHours + ", tuesdayPaidHours=" + tuesdayPaidHours + ", tuesdayBilledHours=" + tuesdayBilledHours + ", wednesdayPaidHours=" + wednesdayPaidHours + ", wednesdayBilledHours=" + wednesdayBilledHours + ", thursdayPaidHours=" + thursdayPaidHours + ", thursdayBilledHours=" + thursdayBilledHours + ", fridayPaidHours=" + fridayPaidHours + ", fridayBilledHours=" + fridayBilledHours + ", saturdayPaidHours=" + saturdayPaidHours + ", saturdayBilledHours=" + saturdayBilledHours + ", sundayPaidHours=" + sundayPaidHours + ", sundayBilledHours=" + sundayBilledHours + ", notes=" + notes + '}';
     }
-
-    
 }
