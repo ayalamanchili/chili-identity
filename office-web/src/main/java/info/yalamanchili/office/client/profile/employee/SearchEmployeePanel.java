@@ -9,12 +9,13 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.gwt.utils.JSONUtils;
+import info.yalamanchili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -94,5 +95,21 @@ public class SearchEmployeePanel extends SearchComposite {
     protected String getSearchURI(Integer start, Integer limit) {
         return OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
                 + limit.toString();
+    }
+
+    @Override
+    protected void populateSuggestBoxes() {
+        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer,String> values=JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb=(SuggestBox) fields.get("firstName");
+                sb.loadData(values.values());
+            }
+        });
+    }
+
+    protected String getFirstNameDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10?column=id&column=firstName";
     }
 }

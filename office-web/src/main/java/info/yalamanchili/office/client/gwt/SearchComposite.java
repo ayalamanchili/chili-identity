@@ -38,6 +38,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
      * Advanced search Panels
      */
     protected DisclosurePanel disclosurePanel = new DisclosurePanel("Advanced Search");
+    //TODO make this lazy panel to lazy load
     protected FlowPanel advancedSearchPanel = new FlowPanel();
     /*
      * attributes
@@ -45,7 +46,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected JSONObject entity;
     protected ConstantsWithLookup constants;
     protected String entityName;
-    protected Map<String, BaseField> fields = new HashMap<String, BaseField>();
+    protected Map<String, Object> fields = new HashMap<String, Object>();
 
     public JSONObject getEntity() {
         return entity;
@@ -67,8 +68,11 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         addListeners();
         configure();
         addWidgets();
+        populateSuggestBoxes();
     }
 
+    protected abstract void populateSuggestBoxes();
+    
     protected abstract void addListeners();
 
     protected abstract void configure();
@@ -96,10 +100,10 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(integerField);
         }
         if (DataType.STRING_FIELD.equals(type)) {
-            StringField stringField = new StringField(constants,
-                    attributeName, entityName, false, false);
-            fields.put(attributeName, stringField);
-            advancedSearchPanel.add(stringField);
+            String name = info.yalamanchili.gwt.utils.Utils.getAttributeLabel(attributeName, entityName, constants);
+            info.yalamanchili.gwt.widgets.SuggestBox suggestBox = new info.yalamanchili.gwt.widgets.SuggestBox(name);
+            fields.put(attributeName, suggestBox);
+            advancedSearchPanel.add(suggestBox);
         }
         if (DataType.DATE_FIELD.equals(type)) {
             DateField dateField = new DateField(constants,
@@ -167,6 +171,12 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
+            if (field.getValue() != null) {
+                entity.put(fieldKey, new JSONString(field.getValue()));
+            }
+        }
+        if (fields.get(fieldKey) instanceof SuggestBox) {
+            SuggestBox field = (SuggestBox) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }

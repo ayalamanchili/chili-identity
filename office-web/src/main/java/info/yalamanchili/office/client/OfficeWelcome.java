@@ -79,7 +79,7 @@ public class OfficeWelcome implements EntryPoint {
     //TODO move to server
     public Map<String, String> getHeaders() {
         Map<String, String> headersMap = new HashMap<String, String>();
-        headersMap.put("Content-Type", "application/json");
+        
         return headersMap;
     }
 }
