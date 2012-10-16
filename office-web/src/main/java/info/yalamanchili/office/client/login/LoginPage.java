@@ -70,7 +70,7 @@ public class LoginPage extends Composite {
         HttpService.HttpServiceAsync.instance().login(usernameTb.getText(), passwordTb.getText(), new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
-                new ResponseStatusWidget().show("login failed");
+                new ResponseStatusWidget().show("Login failed, Please check your username and password");
             }
 
             @Override
@@ -79,7 +79,7 @@ public class LoginPage extends Composite {
                     JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
                     OfficeWelcome.instance().onMainModuleLoad(user);
                 } else {
-                    new ResponseStatusWidget().show("login failed");
+                    new ResponseStatusWidget().show("Login failed, Please check your username and password");
                 }
             }
         });
