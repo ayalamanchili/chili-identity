@@ -94,7 +94,7 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("entity" + entity.toString());
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
-        entityDisplayWidget.add(new SkillSetOptionsPanel(entityId));
+        entityDisplayWidget.add(new SkillSetOptionsPanel(empId));
     }
 
     @Override
