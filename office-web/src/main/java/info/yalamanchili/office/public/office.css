@@ -11,7 +11,10 @@
     color: #000000;
 
 }
-
+@sprite .gwt-TabLayoutPanelTabs{
+    gwt-image: "tabButton";
+     height:auto;
+}
 .tabPanel {
     height: 100%;
 
@@ -27,8 +30,8 @@
 
 }
 @sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
-    margin-left: 3px;
-    margin-right: 3px;
+    margin-left: 0px;
+    margin-right: 0px;
     font-size: 12pt;
     font-weight: 500;
     color: #FFFFFF;
@@ -364,7 +367,7 @@ body{
 .entityTitlePanel {
     border-bottom-color: #bc033d;
     border-bottom-width: 1px;
-    background-color: #83acff;
+    background-color: #b3c9f5;
     /*    background: url("../images/menubar_bg.png");*/
 
 
