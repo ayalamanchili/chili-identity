@@ -261,6 +261,7 @@ body{
 @sprite .searchComposite{
     /*background-color:#f7f7f7;*/
     gwt-image: "searchBG";
+    border: 0px;
 }
 /*End For search textbox */
 /*//TODO move back to chili-gwt*/
