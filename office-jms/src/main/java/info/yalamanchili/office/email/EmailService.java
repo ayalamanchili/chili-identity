@@ -104,7 +104,6 @@ public class EmailService {
         Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where email=:emailAddressParam");
         getEmailQ.setParameter("emailAddressParam", emailAddress);
         if (getEmailQ.getResultList().size() > 0) {
-            System.out.println("dddddd");
             return (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
         } else {
             return null;

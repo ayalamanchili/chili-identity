@@ -4,6 +4,7 @@ import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostLike;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.Company;
 import java.util.Date;
 
 
@@ -60,14 +61,19 @@ public class SocialDao {
 
     public Post createCompanyPost(Post newcompanypost) {
         newcompanypost.setEmployee(securityService.getCurrentUser());
-        newcompanypost.setCompany(companyDao.findByCompanyName("sstech"));
+        Company company = companyDao.findByCompanyName("System Soft Technologies");
+        if (company == null) {
+            throw new RuntimeException("Comnay not found");
+        }
+        newcompanypost.setCompany(company);
         newcompanypost.setPostTimeStamp(new Date());
         return em.merge(newcompanypost);
     }
-    public void liked(Long postId){
+
+    public void liked(Long postId) {
         PostLike like = new PostLike();
         like.setEmployee(securityService.getCurrentUser());
-        like.setPost(em.find(Post.class,postId));
+        like.setPost(em.find(Post.class, postId));
         em.merge(like);
     }
 }
