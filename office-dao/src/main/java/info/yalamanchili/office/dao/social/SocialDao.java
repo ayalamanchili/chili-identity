@@ -63,7 +63,7 @@ public class SocialDao {
         newcompanypost.setEmployee(securityService.getCurrentUser());
         Company company = companyDao.findByCompanyName("System Soft Technologies");
         if (company == null) {
-            throw new RuntimeException("Comnay not found");
+            throw new RuntimeException("company not found");
         }
         newcompanypost.setCompany(company);
         newcompanypost.setPostTimeStamp(new Date());
