@@ -60,11 +60,21 @@
 
 
 @sprite .gwt-StackPanel .gwt-StackPanelItem-selected {
-    gwt-image:  "tabButtonClick";
+    gwt-image:  "tabButton";
+    width: 200px;
 }
-@sprite .createTODOL{
-    font-size: 8pt;
-    gwt-image:"tabButtonClick";
+ @sprite.gwt-StackPanelItem gwt-StackPanelItem-first{
+   gwt-image:  "tabButton";  
+}
+
+
+@sprite .gwt-StackPanelItem .gwt-StackPanelItem-below-selected{
+    
+   gwt-image:  "tabButton"; 
+}
+.createTODOL{
+    font-size: 10pt;
+/*    gwt-image:"tabButton";*/
 
 }
 @sprite .y-gwt-PagingBar {
