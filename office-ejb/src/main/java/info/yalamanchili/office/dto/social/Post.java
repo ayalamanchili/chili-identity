@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dto.social;
 
 import info.yalamanchili.office.entity.social.PostFile;
+import info.yalamanchili.office.entity.social.PostLike;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -27,7 +28,9 @@ public class Post {
     protected Date postTimeStamp;
     protected Integer numberOfReplies;
     protected List<PostFile> postFiles;
-    
+    protected List<PostLike> postLikes;
+
+   
     public Long getId() {
         return id;
     }
@@ -85,6 +88,15 @@ public class Post {
         this.postFiles = postFiles;
     }
     
+    @XmlElement
+     public List<PostLike> getPostLikes() {
+        return postLikes;
+    }
+
+    public void setPostLikes(List<PostLike> postLikes) {
+        this.postLikes = postLikes;
+    }
+    
     @Override
     public String toString() {
         return "Post{" + "id=" + id + ", employeeName=" + employeeName + ", employeeImageUrl=" + employeeImageUrl + ", postContent=" + postContent + ", postTimeStamp=" + postTimeStamp + ", numberOfReplies=" + numberOfReplies + '}';
@@ -98,6 +110,7 @@ public class Post {
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
             dto.setEmployeeImageUrl(entity.getEmployee().getImageURL());
             dto.setPostFiles(entity.getPostFiles());
+            dto.setPostLikes(entity.getPostLikes());
         }
         return dto;
     }
