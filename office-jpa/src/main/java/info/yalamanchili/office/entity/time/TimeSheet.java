@@ -34,33 +34,33 @@ public class TimeSheet extends AbstractEntity {
     protected TimeSheetStatus timeSheetStatus;
     protected BigDecimal paidRate;
     protected BigDecimal billedRate;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal mondayPaidHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal mondayBilledHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal tuesdayPaidHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal tuesdayBilledHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal wednesdayPaidHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal wednesdayBilledHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal thursdayPaidHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal thursdayBilledHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal fridayPaidHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal fridayBilledHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal saturdayPaidHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal saturdayBilledHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal sundayPaidHours;
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.length.invalid.msg}")
+    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal sundayBilledHours;
     protected String notes;
     @ManyToOne(cascade = CascadeType.MERGE)
