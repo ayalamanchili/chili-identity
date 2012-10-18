@@ -9,6 +9,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -41,7 +42,7 @@ public class PostLike extends AbstractEntity {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-
+    @XmlTransient
     public Post getPost() {
         return post;
     }
