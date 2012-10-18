@@ -1,4 +1,15 @@
 /* an individual tab*/
+/* Footer */
+.footerPanel {
+    border-top-style: solid;
+    border-top-color: #c8c8cb;
+    border-top-width: 1px;
+}
+.footerLabel{
+    font-size:8pt;
+    text-align: center;
+}
+/* TabLayout Panel */
 @sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
     gwt-image: "tabButton";
     height:auto;
@@ -17,7 +28,6 @@
 }
 .tabPanel {
     height: 100%;
-
 }
 .y-gwt-AbstractStatusPanel-LogoLink {
     width: 100%;

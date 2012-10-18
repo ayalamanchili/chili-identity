@@ -10,6 +10,9 @@ import com.google.gwt.resources.client.CssResource;
  *
  * @author ayalamanchili
  */
-public interface OfficeCss extends CssResource{
-    
+public interface OfficeCss extends CssResource {
+
+    String footerPanel();
+
+    String footerLabel();
 }

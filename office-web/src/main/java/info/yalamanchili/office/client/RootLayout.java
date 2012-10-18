@@ -19,6 +19,9 @@ public class RootLayout extends Composite {
 
 	@UiField
 	public FlowPanel entityPanel;
+        
+        @UiField
+        public FlowPanel footerPanel;
 
 	private static RootLayoutUiBinder uiBinder = GWT
 			.create(RootLayoutUiBinder.class);

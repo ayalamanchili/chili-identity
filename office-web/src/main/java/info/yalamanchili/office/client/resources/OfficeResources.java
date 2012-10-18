@@ -7,7 +7,4 @@ public interface OfficeResources extends ClientBundle {
 
     public static final OfficeResources INSTANCE = GWT
             .create(OfficeResources.class);
-
-    @Source("info/yalamanchili/office/public/office.css")
-    OfficeCss officeCss();
 }

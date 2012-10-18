@@ -1,22 +1,28 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
-	<g:DockLayoutPanel unit='EM' addStyleNames='mainPanel'>
-		<g:north size='4'>
-			<g:FlowPanel ui:field='statusPanel' styleName="{style.statusPanel}">
-				<office:StatusPanel></office:StatusPanel>
-			</g:FlowPanel>
-		</g:north>
-		<g:center>
-			<g:FlowPanel ui:field='entityPanel'>
-			</g:FlowPanel>
-		</g:center>
-	</g:DockLayoutPanel>
-	<ui:style>
-		.statusPanel {
-			border-bottom-style: solid;
-			border-bottom-color: #fafbfe;
-			border-bottom-width: 2px;
-		}
-	</ui:style>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
+    <ui:with field='officeImages' type='info.yalamanchili.office.client.resources.OfficeImages'/>
+    <g:DockLayoutPanel unit='EM' addStyleNames='mainPanel'>
+        <g:north size='4'>
+            <g:FlowPanel ui:field='statusPanel' styleName="{style.statusPanel}">
+                <office:StatusPanel></office:StatusPanel>
+            </g:FlowPanel>
+        </g:north>
+        <g:center>
+            <g:FlowPanel ui:field='entityPanel'>
+            </g:FlowPanel>
+        </g:center>
+        <g:south size='1.5'>
+            <g:FlowPanel ui:field='footerPanel' styleName="{officeImages.officeCss.footerPanel}">
+                <g:Label styleName="{officeImages.officeCss.footerLabel}">COPYRIGHT © 2012 sstech.us - All Rights Reserved</g:Label>
+            </g:FlowPanel>
+        </g:south>
+    </g:DockLayoutPanel>
+    <ui:style>
+        .statusPanel {
+        border-bottom-style: solid;
+        border-bottom-color: #fafbfe;
+        border-bottom-width: 2px;
+        }
+    </ui:style>
 </ui:UiBinder> 
