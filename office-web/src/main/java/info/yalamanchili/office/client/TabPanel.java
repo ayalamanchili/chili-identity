@@ -24,7 +24,7 @@ import info.yalamanchili.office.client.tae.client.ReadAllClientsPanel;
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     private static Logger logger = Logger.getLogger(TabPanel.class.getName());
-    protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
+    protected TabLayoutPanel tabPanel = new TabLayoutPanel(2.0, Unit.EM);
     public EntityLayout homePanel = new EntityLayout();
     public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
@@ -35,7 +35,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         instance = this;
         initWidget(tabPanel);
         tabPanel.addStyleName("tabPanel");
-        tabPanel.setHeight("5");
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
