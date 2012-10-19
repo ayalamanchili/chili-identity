@@ -35,17 +35,18 @@ public class TAEMenu extends Composite {
 
     protected void configureTAEMenu() {
         MenuBar menu = new MenuBar(true);
-        tAEMenuBar.addItem("Menu", menu);
-        tAEMenuBar.addStyleName("entityMenuBar");
+//        tAEMenuBar.addItem("Menu", menu);
+       
         
         
         if (Auth.isAdmin() || Auth.isHR()) {
-            menu.addItem("Clients", clientsMaintainenceCmd);
-            menu.addItem("Projects", projectsMaintainenceCmd);
-            menu.addItem("Statement Of Work's", sowMaintainenceCmd);
-            menu.addItem("Pay Periods", payperiodsMaintainenceCmd);
-            menu.addItem("TimeSheets", timeSheetsMaintainenceCmd);
+            tAEMenuBar.addItem("Clients", clientsMaintainenceCmd);
+            tAEMenuBar.addItem("Projects", projectsMaintainenceCmd);
+            tAEMenuBar.addItem("Statement Of Work's", sowMaintainenceCmd);
+            tAEMenuBar.addItem("Pay Periods", payperiodsMaintainenceCmd);
+            tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
         }
+         tAEMenuBar.addStyleName("entityMenuBar");
     }
     Command clientsMaintainenceCmd = new Command() {
         public void execute() {
