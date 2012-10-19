@@ -34,7 +34,7 @@ public class SocialService {
     public List<Post> getEmployeeFeed(int start, int limit) {
         List<Post> empFeed = new ArrayList<Post>();
         for (info.yalamanchili.office.entity.social.Post entity : socialDao.getEmployeeFeed(start, limit)) {
-            empFeed.add(Post.map(mapper, entity));
+            empFeed.add(Post.map(em,mapper, entity));
         }
         return empFeed;
     }
@@ -42,7 +42,7 @@ public class SocialService {
     public List<Post> getCompanyFeed(int start, int limit) {
         List<Post> compFeed = new ArrayList<Post>();
         for (info.yalamanchili.office.entity.social.Post entity : socialDao.getCompanyFeed(start, limit)) {
-            compFeed.add(Post.map(mapper, entity));
+            compFeed.add(Post.map(em,mapper, entity));
         }
         return compFeed;
     }
@@ -50,7 +50,7 @@ public class SocialService {
         List<Post> replies = new ArrayList<Post>();
         info.yalamanchili.office.entity.social.Post parenPost = em.find(info.yalamanchili.office.entity.social.Post.class, Long.valueOf(parentPostId));
         for (info.yalamanchili.office.entity.social.Post entity : parenPost.getReplies()) {
-            replies.add(Post.map(mapper, entity));
+            replies.add(Post.map(em,mapper, entity));
         }
         return replies;
     }
