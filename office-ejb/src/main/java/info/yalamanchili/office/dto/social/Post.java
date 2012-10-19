@@ -8,6 +8,9 @@ import info.yalamanchili.office.entity.social.PostFile;
 import info.yalamanchili.office.entity.social.PostLike;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -20,7 +23,7 @@ import org.dozer.Mapper;
 @XmlRootElement
 @XmlType
 public class Post {
-    
+
     protected Long id;
     protected String employeeName;
     protected String employeeImageUrl;
@@ -28,81 +31,82 @@ public class Post {
     protected Date postTimeStamp;
     protected Integer numberOfReplies;
     protected List<PostFile> postFiles;
-    protected List<PostLike> postLikes;
+    protected List<String> postLikes;
+    @PersistenceContext
+    protected EntityManager em;
 
-   
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getEmployeeName() {
         return employeeName;
     }
-    
+
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
-    
+
     public String getEmployeeImageUrl() {
         return employeeImageUrl;
     }
-    
+
     public void setEmployeeImageUrl(String employeeImageUrl) {
         this.employeeImageUrl = employeeImageUrl;
     }
-    
+
     public String getPostContent() {
         return postContent;
     }
-    
+
     public void setPostContent(String postContent) {
         this.postContent = postContent;
     }
-    
+
     public Date getPostTimeStamp() {
         return postTimeStamp;
     }
-    
+
     public void setPostTimeStamp(Date postTimeStamp) {
         this.postTimeStamp = postTimeStamp;
     }
-    
+
     public Integer getNumberOfReplies() {
         return numberOfReplies;
     }
-    
+
     public void setNumberOfReplies(Integer numberOfReplies) {
         this.numberOfReplies = numberOfReplies;
     }
-    
+
     @XmlElement
     public List<PostFile> getPostFiles() {
         return postFiles;
     }
-    
+
     public void setPostFiles(List<PostFile> postFiles) {
         this.postFiles = postFiles;
     }
-    
+
     @XmlElement
-     public List<PostLike> getPostLikes() {
+    public List<String> getPostLikes() {
         return postLikes;
     }
 
-    public void setPostLikes(List<PostLike> postLikes) {
+    public void setPostLikes(List<String> postLikes) {
         this.postLikes = postLikes;
     }
-    
+
     @Override
     public String toString() {
         return "Post{" + "id=" + id + ", employeeName=" + employeeName + ", employeeImageUrl=" + employeeImageUrl + ", postContent=" + postContent + ", postTimeStamp=" + postTimeStamp + ", numberOfReplies=" + numberOfReplies + '}';
     }
-    
-    public static Post map(Mapper mapper, info.yalamanchili.office.entity.social.Post entity) {
+
+    public static Post map(EntityManager em, Mapper mapper, info.yalamanchili.office.entity.social.Post entity) {
         Post dto = mapper.map(entity, Post.class);
         //TODO user query to find size rather than whole entity
         dto.setNumberOfReplies(entity.getReplies().size());
@@ -110,7 +114,16 @@ public class Post {
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
             dto.setEmployeeImageUrl(entity.getEmployee().getImageURL());
             dto.setPostFiles(entity.getPostFiles());
-            dto.setPostLikes(entity.getPostLikes());
+//            Query getEmpDetailsQuery = em.createQuery("pl.employee.firstName pl.employee.lastName from PostLike pl where pl.post=:postParam");
+//            getEmpDetailsQuery.setParameter("postParam", dto);
+////            Query getListBoxValues = em.createQuery(q);
+//
+//            for (Object obj : getEmpDetailsQuery.getResultList()) {
+//                Object[] obs = (Object[]) obj;
+//          String firstName=(String) obs[0];
+//                String lastName = (String) obs[1];
+//                dto.getPostLikes().add(firstName+" "+lastName);
+//            }
         }
         return dto;
     }
