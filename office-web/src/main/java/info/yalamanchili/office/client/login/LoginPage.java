@@ -6,6 +6,8 @@ package info.yalamanchili.office.client.login;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
@@ -55,6 +57,32 @@ public class LoginPage extends Composite {
     @UiHandler("loginB")
     void handleLogin(ClickEvent e) {
         loginClicked();
+    }
+
+    @UiHandler("usernameTb")
+    public void onKeyPressUserNameTb(KeyPressEvent event) {
+        int keyCode = event.getUnicodeCharCode();
+        if (keyCode == 0) {
+            // Probably Firefox
+            keyCode = event.getNativeEvent().getKeyCode();
+        }
+        if (keyCode == KeyCodes.KEY_ENTER) {
+            // Do something when Enter is pressed.
+            loginClicked();
+        }
+    }
+
+    @UiHandler("passwordTb")
+    public void onKeyPressPasswordTb(KeyPressEvent event) {
+        int keyCode = event.getUnicodeCharCode();
+        if (keyCode == 0) {
+            // Probably Firefox
+            keyCode = event.getNativeEvent().getKeyCode();
+        }
+        if (keyCode == KeyCodes.KEY_ENTER) {
+            // Do something when Enter is pressed.
+            loginClicked();
+        }
     }
 
     interface LoginPageUiBinder extends UiBinder<Widget, LoginPage> {
