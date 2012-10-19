@@ -114,16 +114,14 @@ public class Post {
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
             dto.setEmployeeImageUrl(entity.getEmployee().getImageURL());
             dto.setPostFiles(entity.getPostFiles());
-//            Query getEmpDetailsQuery = em.createQuery("pl.employee.firstName pl.employee.lastName from PostLike pl where pl.post=:postParam");
-//            getEmpDetailsQuery.setParameter("postParam", dto);
-////            Query getListBoxValues = em.createQuery(q);
-//
-//            for (Object obj : getEmpDetailsQuery.getResultList()) {
-//                Object[] obs = (Object[]) obj;
-//          String firstName=(String) obs[0];
-//                String lastName = (String) obs[1];
-//                dto.getPostLikes().add(firstName+" "+lastName);
-//            }
+            Query getEmpDetailsQuery = em.createQuery("select postLike.employee.firstName, postLike.employee.lastName from PostLike postLike where postLike.post=:postParam");
+            getEmpDetailsQuery.setParameter("postParam", entity);
+            for (Object obj : getEmpDetailsQuery.getResultList()) {
+                Object[] obs = (Object[]) obj;
+                String firstName = (String) obs[0];
+                String lastName = (String) obs[1];
+                dto.getPostLikes().add(firstName + " " + lastName);
+            }
         }
         return dto;
     }
