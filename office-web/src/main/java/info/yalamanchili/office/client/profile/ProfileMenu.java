@@ -33,20 +33,21 @@ public class ProfileMenu extends Composite {
 
     protected void configureAdminMenu() {
         MenuBar menu = new MenuBar(true);
-        profileMenuBar.addItem("Menu", menu);
-        profileMenuBar.addStyleName("entityMenuBar");
+//        profileMenuBar.addItem("Menu", menu);
+       
 
 
-        menu.addItem("Employees", employeeMaintainenceCmd);
+        profileMenuBar.addItem("Employees", employeeMaintainenceCmd);
 
         if (Auth.isAdmin() || Auth.isHR()) {
-            menu.addItem("Skills", skillsMaintainenceCmd);
-            menu.addItem("Certifications", certificationsMaintainenceCmd);
-            menu.addItem("EmployeeTypes", employeeTypesMaintainenceCmd);
-            menu.addItem("PhoneType", phoneTypesMaintainenceCmd);
-            menu.addItem("AddressType", addressTypesMaintainenceCmd);
-            menu.addItem("EmailType", emailTypesMaintainenceCmd);
+            profileMenuBar.addItem("Skills", skillsMaintainenceCmd);
+            profileMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
+            profileMenuBar.addItem("EmployeeTypes", employeeTypesMaintainenceCmd);
+            profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
+            profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
+            profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
         }
+         profileMenuBar.addStyleName("entityMenuBar");
     }
     Command employeeMaintainenceCmd = new Command() {
         public void execute() {
