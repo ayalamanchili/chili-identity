@@ -13,7 +13,6 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import info.yalamanchili.gwt.fields.*;
 import com.google.gwt.user.client.ui.*;
-import info.yalamanchili.gwt.composite.BaseField;
 import info.yalamanchili.gwt.date.DateUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import java.util.HashMap;
@@ -72,7 +71,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     }
 
     protected abstract void populateSuggestBoxes();
-    
+
     protected abstract void addListeners();
 
     protected abstract void configure();
@@ -175,8 +174,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
-        if (fields.get(fieldKey) instanceof SuggestBox) {
-            SuggestBox field = (SuggestBox) fields.get(fieldKey);
+        if (fields.get(fieldKey) instanceof info.yalamanchili.gwt.widgets.SuggestBox) {
+            info.yalamanchili.gwt.widgets.SuggestBox field = (info.yalamanchili.gwt.widgets.SuggestBox) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
