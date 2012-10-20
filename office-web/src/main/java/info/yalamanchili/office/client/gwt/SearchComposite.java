@@ -14,6 +14,7 @@ import com.google.gwt.json.client.*;
 import info.yalamanchili.gwt.fields.*;
 import com.google.gwt.user.client.ui.*;
 import info.yalamanchili.gwt.date.DateUtils;
+import info.yalamanchili.gwt.utils.JSONUtils;
 import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
 import java.util.HashMap;
 import java.util.Map;
@@ -212,14 +213,15 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
 
     protected abstract void search(JSONObject entity);
 
-    protected abstract void postSearchSuccess(String result);
+    protected abstract void postSearchSuccess(JSONArray result);
 
     protected void processSearchResult(String result) {
         searchTB.setText("");
         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
             new ResponseStatusWidget().show("no results");
         } else {
-            postSearchSuccess(result);
+            JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get(entityName.toLowerCase()));
+            postSearchSuccess(results);
         }
     }
 

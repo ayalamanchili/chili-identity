@@ -61,7 +61,7 @@ public class SearchEmployeePanel extends SearchComposite {
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
-                postSearchSuccess(result);
+                processSearchResult(result);
                 searchTB.setText("");
             }
         });
@@ -73,15 +73,14 @@ public class SearchEmployeePanel extends SearchComposite {
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
-                postSearchSuccess(result);
+                processSearchResult(result);
             }
         });
     }
 
     @Override
-    protected void postSearchSuccess(String result) {
+    protected void postSearchSuccess(JSONArray results) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get("employee"));
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
     }
 
