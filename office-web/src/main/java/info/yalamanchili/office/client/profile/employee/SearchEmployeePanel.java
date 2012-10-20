@@ -6,7 +6,6 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;

@@ -52,7 +52,7 @@ public abstract class CRUDResource<T> {
     public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         List<Entry> result = new ArrayList<Entry>();
-        Map<String, String> values = getDao().queryByParams(start, limit, columns.toArray(new String[columns.size()]));
+        Map<String, String> values = getDao().getEntityStringMapByParams(start, limit, columns.toArray(new String[columns.size()]));
         for (String key : values.keySet()) {
             result.add(new Entry(key, values.get(key)));
         }

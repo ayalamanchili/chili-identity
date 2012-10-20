@@ -48,8 +48,8 @@ public abstract class CRUDDao<T> {
         return findAllQuery.getResultList();
     }
 
-    public Map<String, String> queryByParams(int start, int limit, String... params) {
-        return QueryUtils.getListBoxValues(getEntityManager(), entityCls, start, limit, params);
+    public Map<String, String> getEntityStringMapByParams(int start, int limit, String... params) {
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), entityCls, start, limit, params);
     }
 
     public <T> List<String> getSuggestionsForName(String name, Class<?> entityCls, Integer start, Integer limit) {
