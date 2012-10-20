@@ -9,6 +9,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import info.yalamanchili.gwt.fields.*;
@@ -38,7 +40,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
      * Advanced search Panels
      */
     protected DisclosurePanel disclosurePanel = new DisclosurePanel("Advanced Search");
-    //TODO make this lazy panel to lazy load
+    
     protected FlowPanel advancedSearchPanel = new FlowPanel();
     /*
      * attributes
@@ -61,6 +63,12 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         searchTB.addKeyPressHandler(this);
         mainPanel.add(searchTB);
         disclosurePanel.setContent(advancedSearchPanel);
+        disclosurePanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+               populateSuggestBoxes();
+            }
+        });
         mainPanel.add(disclosurePanel);
         mainPanel.add(searchButton);
         captionPanel.setContentWidget(mainPanel);
@@ -68,7 +76,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         addListeners();
         configure();
         addWidgets();
-        populateSuggestBoxes();
+        
     }
 
     protected abstract void populateSuggestBoxes();
