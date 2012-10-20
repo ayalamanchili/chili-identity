@@ -108,6 +108,7 @@ public class SearchEmployeePanel extends SearchComposite {
     }
 
     protected String getFirstNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10?column=id&column=firstName";
+        //TODO think anout the limit
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=firstName";
     }
 }
