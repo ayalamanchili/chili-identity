@@ -1,7 +1,7 @@
 package info.yalamanchili.office.jrs;
 
+import info.chili.commons.EntityQueryUtils;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.commons.EntityQueryUtils;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.CuserDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;

@@ -1,6 +1,8 @@
 package info.yalamanchili.office.dao.profile;
 
-import info.yalamanchili.mapper.BeanMapper;
+
+
+import info.chili.beans.BeanMapper;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.ClientInformation;

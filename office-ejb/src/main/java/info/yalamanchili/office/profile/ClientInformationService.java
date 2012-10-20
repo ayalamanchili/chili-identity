@@ -4,7 +4,8 @@
  */
 package info.yalamanchili.office.profile;
 
-import info.yalamanchili.mapper.BeanMapper;
+
+import info.chili.beans.BeanMapper;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;

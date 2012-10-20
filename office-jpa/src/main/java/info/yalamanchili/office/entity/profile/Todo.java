@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.entity.profile;
 
-import info.yalamanchili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractEntity;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

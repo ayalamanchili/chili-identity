@@ -12,7 +12,7 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
-            <groupId>info.yalamanchili</groupId>
+            <groupId>info.chili</groupId>
             <artifactId>chili-gwt</artifactId>
             <version>${yalamanchili.version}</version>
         </dependency>

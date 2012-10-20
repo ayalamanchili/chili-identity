@@ -6,7 +6,6 @@ package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Sex;
-import info.yalamanchili.service.validation.Valid;
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
