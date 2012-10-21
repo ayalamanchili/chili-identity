@@ -68,12 +68,14 @@ public abstract class FileuploadField extends ALComposite implements ClickHandle
 
     @Override
     public void onClick(ClickEvent arg0) {
+        clearMessage();
         if (arg0.getSource().equals(submit)) {
             formPanel.submit();
         }
     }
 
     public void upload(String entityId) {
+        clearMessage();
         setEntityId(entityId);
         formPanel.submit();
     }
@@ -84,6 +86,10 @@ public abstract class FileuploadField extends ALComposite implements ClickHandle
         } else {
             return false;
         }
+    }
+
+    public void clearMessage() {
+        message.setHTML("");
     }
 
     public void setMessage(String text) {
