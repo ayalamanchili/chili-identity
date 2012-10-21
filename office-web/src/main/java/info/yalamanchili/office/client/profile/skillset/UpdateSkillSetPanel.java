@@ -7,12 +7,12 @@ package info.yalamanchili.office.client.profile.skillset;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
+import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class UpdateSkillSetPanel extends UpdateComposite {
     
     private static Logger logger = Logger.getLogger(UpdateSkillSetPanel.class.getName());
-    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl",true) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl",true) {
         @Override
         public void onUploadComplete() {
             postUpdateSuccess(null);

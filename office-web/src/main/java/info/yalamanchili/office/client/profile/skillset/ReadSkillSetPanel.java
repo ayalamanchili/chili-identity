@@ -6,18 +6,18 @@ package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.fields.DataType;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ReadComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
-import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 import java.util.logging.Logger;
 

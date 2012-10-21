@@ -6,11 +6,11 @@ package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
+import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -22,7 +22,7 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     protected String employeeId;
     private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
-    FileUploadPanel resumeUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl",true) {
+    FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
@@ -96,5 +96,14 @@ public class CreateSkillSetPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + employeeId;
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if(resumeUploadPanel.isEmpty()){
+            resumeUploadPanel.setMessage("Please select a file");
+            return false;
+        }
+        return true;
     }
 }

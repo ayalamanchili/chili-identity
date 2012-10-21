@@ -1,6 +1,6 @@
 package info.yalamanchili.office.client.profile.employee;
 
-import info.yalamanchili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 

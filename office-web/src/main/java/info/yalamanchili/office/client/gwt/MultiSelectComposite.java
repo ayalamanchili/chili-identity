@@ -6,7 +6,7 @@ package info.yalamanchili.office.client.gwt;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import info.yalamanchili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.ALComposite;
 import java.util.List;
 
 /**

@@ -5,16 +5,16 @@ import info.yalamanchili.office.client.gwt.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
+import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
     
-    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL",false) {
+    FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL",false) {
         @Override
         public void onUploadComplete() {
             postUpdateSuccess(null);

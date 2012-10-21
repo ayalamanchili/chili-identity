@@ -5,7 +5,7 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONObject;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 

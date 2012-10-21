@@ -1,7 +1,7 @@
 package info.yalamanchili.office.client.social;
 
-import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.utils.JSONUtils;
 
 import java.util.logging.Logger;
 
@@ -15,12 +15,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.date.DateUtils;
-import info.yalamanchili.gwt.widgets.ClickableImage;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.widgets.ClickableImage;
 
-import info.yalamanchili.gwt.widgets.ClickableLink;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.config.OfficeClientConfig;

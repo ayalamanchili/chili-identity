@@ -10,7 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import info.yalamanchili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
 /**

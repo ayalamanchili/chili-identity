@@ -1,19 +1,19 @@
 package info.yalamanchili.office.client.gwt;
 
-import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.composite.BaseField;
-import info.yalamanchili.gwt.fields.BooleanField;
-import info.yalamanchili.gwt.fields.CurrencyField;
-import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.fields.DateField;
-import info.yalamanchili.gwt.fields.EnumField;
-import info.yalamanchili.gwt.fields.FloatField;
-import info.yalamanchili.gwt.fields.IntegerField;
-import info.yalamanchili.gwt.fields.LongField;
-import info.yalamanchili.gwt.fields.PasswordField;
-import info.yalamanchili.gwt.fields.RichTextField;
-import info.yalamanchili.gwt.fields.StringField;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.CurrencyField;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FloatField;
+import info.chili.gwt.fields.IntegerField;
+import info.chili.gwt.fields.LongField;
+import info.chili.gwt.fields.PasswordField;
+import info.chili.gwt.fields.RichTextField;
+import info.chili.gwt.fields.StringField;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import info.yalamanchili.gwt.date.DateUtils;
+import info.chili.gwt.date.DateUtils;
 
 public abstract class CRUDComposite extends Composite {
 
@@ -136,7 +136,7 @@ public abstract class CRUDComposite extends Composite {
             entityDisplayWidget.add(dropDownField);
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
-            FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName,
+            FileuploadField fileUploadPanel = new FileuploadField(constants, attributeName, entityName,
                     "name",isRequired) {
                 @Override
                 public void onUploadComplete() {

@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.client.profile.phone;
 
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;

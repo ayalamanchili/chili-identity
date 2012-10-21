@@ -9,8 +9,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.ListBox;
-import info.yalamanchili.gwt.composite.BaseField;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.utils.JSONUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -24,7 +24,7 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     protected JSONObject selectedObject = null;
 
     public SelectComposite(ConstantsWithLookup constants, String className, Boolean readOnly, Boolean isRequired) {
-        super(constants, info.yalamanchili.gwt.utils.Utils.getStringCamelCase(className), className, readOnly, isRequired);
+        super(constants, info.chili.gwt.utils.Utils.getStringCamelCase(className), className, readOnly, isRequired);
         configureAddMainWidget();
         setReadOnly(readOnly);
         fetchDropDownData();

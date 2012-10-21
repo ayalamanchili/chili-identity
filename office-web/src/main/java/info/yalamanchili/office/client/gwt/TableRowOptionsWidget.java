@@ -1,12 +1,12 @@
 package info.yalamanchili.office.client.gwt;
 
-import info.yalamanchili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.ALComposite;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import info.yalamanchili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
 public class TableRowOptionsWidget extends ALComposite implements MouseOverHandler {

@@ -4,6 +4,17 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.LongField;
+import info.chili.gwt.fields.IntegerField;
+import info.chili.gwt.fields.FloatField;
+import info.chili.gwt.fields.StringField;
+import info.chili.gwt.fields.RichTextField;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.CurrencyField;
+import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.PasswordField;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -13,11 +24,10 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
-import info.yalamanchili.gwt.fields.*;
 import com.google.gwt.user.client.ui.*;
-import info.yalamanchili.gwt.date.DateUtils;
-import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -108,8 +118,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(integerField);
         }
         if (DataType.STRING_FIELD.equals(type)) {
-            String name = info.yalamanchili.gwt.utils.Utils.getAttributeLabel(attributeName, entityName, constants);
-            info.yalamanchili.gwt.widgets.SuggestBox suggestBox = new info.yalamanchili.gwt.widgets.SuggestBox(name);
+            String name = info.chili.gwt.utils.Utils.getAttributeLabel(attributeName, entityName, constants);
+            info.chili.gwt.widgets.SuggestBox suggestBox = new info.chili.gwt.widgets.SuggestBox(name);
             fields.put(attributeName, suggestBox);
             advancedSearchPanel.add(suggestBox);
         }
@@ -143,7 +153,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(dropDownField);
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
-            FileUploadPanel fileUploadPanel = new FileUploadPanel(constants, attributeName, entityName, "name", false) {
+            FileuploadField fileUploadPanel = new FileuploadField(constants, attributeName, entityName, "name", false) {
                 @Override
                 public void onUploadComplete() {
                 }
@@ -183,8 +193,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
-        if (fields.get(fieldKey) instanceof info.yalamanchili.gwt.widgets.SuggestBox) {
-            info.yalamanchili.gwt.widgets.SuggestBox field = (info.yalamanchili.gwt.widgets.SuggestBox) fields.get(fieldKey);
+        if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
+            info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }

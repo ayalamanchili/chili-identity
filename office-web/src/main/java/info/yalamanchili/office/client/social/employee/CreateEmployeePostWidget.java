@@ -21,12 +21,12 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.gwt.FileuploadField;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
@@ -38,7 +38,7 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     RichTextArea createPostTextArea = new RichTextArea();
     Button createPostB = new Button("Share");
-    FileUploadPanel imageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL",false) {
+    FileuploadField imageUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL",false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);

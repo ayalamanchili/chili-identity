@@ -22,8 +22,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.utils.JSONUtils;
 
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
 

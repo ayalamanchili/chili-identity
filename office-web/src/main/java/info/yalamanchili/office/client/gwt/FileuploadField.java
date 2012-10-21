@@ -1,6 +1,6 @@
 package info.yalamanchili.office.client.gwt;
 
-import info.yalamanchili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,13 +15,14 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import info.yalamanchili.gwt.utils.Utils;
+import info.chili.gwt.utils.Utils;
 import java.util.logging.Logger;
+//TODO extend from BaseField
+public abstract class FileuploadField extends ALComposite implements ClickHandler, SubmitHandler, SubmitCompleteHandler {
 
-public abstract class FileUploadPanel extends ALComposite implements ClickHandler, SubmitHandler, SubmitCompleteHandler {
-
-    private static Logger logger = Logger.getLogger(FileUploadPanel.class.getName());
+    private static Logger logger = Logger.getLogger(FileuploadField.class.getName());
     protected String filePrefix;
     protected boolean submitted = false;
     protected boolean required;
@@ -29,9 +30,10 @@ public abstract class FileUploadPanel extends ALComposite implements ClickHandle
     FormPanel formPanel = new FormPanel();
     Label label = new Label("upload");
     FileUpload fileUpload = new FileUpload();
+    protected HTML message = new HTML();
     Button submit = new Button("Upload");
 
-    public FileUploadPanel(ConstantsWithLookup constants, String attributeName, String className, String filePrefix, boolean required) {
+    public FileuploadField(ConstantsWithLookup constants, String attributeName, String className, String filePrefix, boolean required) {
         instance = this;
         this.label.setText(Utils.getAttributeLabel(attributeName, className, constants));
         this.required = required;
@@ -59,6 +61,7 @@ public abstract class FileUploadPanel extends ALComposite implements ClickHandle
     protected void addWidgets() {
         panel.add(label);
         panel.add(fileUpload);
+        panel.add(message);
         panel.add(submit);
         formPanel.add(panel);
     }
@@ -73,6 +76,18 @@ public abstract class FileUploadPanel extends ALComposite implements ClickHandle
     public void upload(String entityId) {
         setEntityId(entityId);
         formPanel.submit();
+    }
+
+    public boolean isEmpty() {
+        if (fileUpload.getFilename() == null || fileUpload.getFilename().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setMessage(String text) {
+        message.setHTML(text);
     }
 
     public JSONString getFileName() {
@@ -95,9 +110,9 @@ public abstract class FileUploadPanel extends ALComposite implements ClickHandle
         }
 
     }
-    private static FileUploadPanel instance;
+    private static FileuploadField instance;
 
-    public static FileUploadPanel instance() {
+    public static FileuploadField instance() {
         return instance;
     }
 

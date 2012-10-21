@@ -2,10 +2,10 @@ package info.yalamanchili.office.client.social;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.composite.ALComposite;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 import java.util.logging.Logger;

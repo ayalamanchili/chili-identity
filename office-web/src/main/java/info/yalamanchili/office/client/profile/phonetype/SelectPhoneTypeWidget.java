@@ -1,8 +1,8 @@
 package info.yalamanchili.office.client.profile.phonetype;
 
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 

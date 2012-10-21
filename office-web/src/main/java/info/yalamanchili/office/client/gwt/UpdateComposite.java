@@ -25,9 +25,11 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
     }
 
     public void onClick(ClickEvent event) {
-        if (event.getSource() == update) {
-            entity = populateEntityFromFields();
-            updateButtonClicked();
+        entity = populateEntityFromFields();
+        if (processClientSideValidations(entity)) {
+            if (event.getSource() == update) {
+                updateButtonClicked();
+            }
         }
     }
 
@@ -36,6 +38,14 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
     protected abstract void updateButtonClicked();
 
     public abstract void populateFieldsFromEntity(JSONObject entity);
+
+    /**
+     * override this method to handle any client side validation before calling
+     * the server
+     */
+    protected boolean processClientSideValidations(JSONObject entity) {
+        return true;
+    }
 
     protected abstract void postUpdateSuccess(String result);
 }

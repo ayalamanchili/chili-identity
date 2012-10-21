@@ -1,10 +1,10 @@
 package info.yalamanchili.office.client.gwt;
 
-import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.fields.ListBoxField;
-import info.yalamanchili.gwt.utils.Alignment;
-import info.yalamanchili.gwt.utils.Utils;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.ListBoxField;
+import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.Utils;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 
 import java.util.HashMap;

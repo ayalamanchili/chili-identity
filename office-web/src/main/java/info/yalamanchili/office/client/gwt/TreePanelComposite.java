@@ -1,6 +1,6 @@
 package info.yalamanchili.office.client.gwt;
 
-import info.yalamanchili.gwt.utils.Utils;
+import info.chili.gwt.utils.Utils;
 
 import java.util.logging.Logger;
 
@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import info.yalamanchili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.JSONUtils;
 //TODO extend tree item?
 public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem> {
 

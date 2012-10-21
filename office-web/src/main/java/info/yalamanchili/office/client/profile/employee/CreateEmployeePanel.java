@@ -1,11 +1,11 @@
 package info.yalamanchili.office.client.profile.employee;
 
-import info.yalamanchili.gwt.fields.DataType;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.FileUploadPanel;
+import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
@@ -17,7 +17,7 @@ import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWi
 public class CreateEmployeePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
-    FileUploadPanel empImageUploadPanel = new FileUploadPanel(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL",false) {
+    FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL",false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);

@@ -4,8 +4,8 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
-import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 

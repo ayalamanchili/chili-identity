@@ -1,9 +1,9 @@
 package info.yalamanchili.office.client;
 
 import com.google.gwt.user.client.Window;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.widgets.AbstractStatusPanel;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.AbstractStatusPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 

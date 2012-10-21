@@ -52,11 +52,21 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
     @Override
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
-        if (event.getSource() == create) {
-            createButtonClicked();
+        if (processClientSideValidations(entity)) {
+            if (event.getSource() == create) {
+                createButtonClicked();
+            }
+            if (event.getSource() == add) {
+                addButtonClicked();
+            }
         }
-        if (event.getSource() == add) {
-            addButtonClicked();
-        }
+    }
+
+    /**
+     * override this method to handle any client side validation before calling
+     * the server
+     */
+    protected boolean processClientSideValidations(JSONObject entity) {
+        return true;
     }
 }

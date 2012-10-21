@@ -2,7 +2,7 @@ package info.yalamanchili.office.client.gwt;
 
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
-import info.yalamanchili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 import java.util.logging.Logger;

@@ -6,12 +6,12 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.fields.DataType;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.widgets.SuggestBox;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.Map;

@@ -8,8 +8,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import info.yalamanchili.gwt.composite.ALComposite;
-import info.yalamanchili.gwt.widgets.ClickableLink;
+import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 

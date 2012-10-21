@@ -6,7 +6,7 @@ package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import info.yalamanchili.gwt.fields.DataType;
+import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 

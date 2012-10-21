@@ -21,7 +21,7 @@
     <extend-property name="locale" values="ES" />
 
     <!-- used to include chili-gwt project in gwt compiler path -->
-    <inherits name='info.yalamanchili.chili-gwt' />
+    <inherits name='info.chili.chili-gwt' />
 
     <!-- gwt client bundle to load resources -->
     <inherits name="com.google.gwt.resources.Resources" />

@@ -17,9 +17,9 @@ import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPane
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
-import info.yalamanchili.gwt.utils.JSONUtils;
-import info.yalamanchili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;

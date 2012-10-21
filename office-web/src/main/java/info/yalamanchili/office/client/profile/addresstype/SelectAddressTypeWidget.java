@@ -1,6 +1,6 @@
 package info.yalamanchili.office.client.profile.addresstype;
 
-import info.yalamanchili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
