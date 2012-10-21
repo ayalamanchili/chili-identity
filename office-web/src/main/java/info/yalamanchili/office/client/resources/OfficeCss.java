@@ -15,4 +15,6 @@ public interface OfficeCss extends CssResource {
     String footerPanel();
 
     String footerLabel();
+    
+    String orange_light();
 }

@@ -1,3 +1,5 @@
+/* defining main colors in the applciation */
+@def orange_light #d96230;
 /* an individual tab*/
 /* Footer */
 .footerPanel {
@@ -57,7 +59,7 @@
     margin-bottom:3px; 
 }
 .gwt-DisclosurePanel .header {
-    color: #d96230;
+    color: orange_light;
     /*    background-color: #F7F7F7;*/
 }
 .gwt-DisclosurePanel a {
