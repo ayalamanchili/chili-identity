@@ -33,7 +33,7 @@ public abstract class FileuploadField extends ALComposite implements ClickHandle
     protected HTML message = new HTML();
     Button submit = new Button("Upload");
 
-    public FileuploadField(ConstantsWithLookup constants, String attributeName, String className, String filePrefix, boolean required) {
+    public FileuploadField(ConstantsWithLookup constants, String className, String attributeName, String filePrefix, boolean required) {
         instance = this;
         this.label.setText(Utils.getAttributeLabel(attributeName, className, constants));
         this.required = required;
