@@ -102,6 +102,7 @@ public class SearchEmployeePanel extends SearchComposite {
             public void onResponse(String entityString) {
                 Map<Integer,String> values=JSONUtils.convertKeyValuePairs(entityString);
                 SuggestBox sb=(SuggestBox) fields.get("firstName");
+                sb=(SuggestBox) fields.get("lastName");
                 sb.loadData(values.values());
             }
         });
@@ -109,6 +110,6 @@ public class SearchEmployeePanel extends SearchComposite {
 
     protected String getFirstNameDropDownUrl() {
         //TODO think anout the limit
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=firstName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=firstName@column=lastName";
     }
 }
