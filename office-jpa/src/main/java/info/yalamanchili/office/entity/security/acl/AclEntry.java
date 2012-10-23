@@ -16,7 +16,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-//@Table(name = "acl_entry")
 @Table(name = "acl_entry", uniqueConstraints = {
     @UniqueConstraint(columnNames = {
         "acl_object_identity", "ace_order"})})

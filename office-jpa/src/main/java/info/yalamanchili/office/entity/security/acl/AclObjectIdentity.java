@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 @Table(name = "acl_object_identity", uniqueConstraints = {
     @UniqueConstraint(columnNames = {
         "object_id_class", "object_id_identity"})})
-//@Table(name = "acl_object_identity")
 public class AclObjectIdentity implements Serializable {
 
     @Id
