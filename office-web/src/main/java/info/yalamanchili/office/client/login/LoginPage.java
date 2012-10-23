@@ -44,6 +44,8 @@ public class LoginPage extends Composite {
     @UiField
     Image loginLogo;
     @UiField
+    Image loginFeatures;
+    @UiField
     Label usernameL;
     @UiField
     TextBox usernameTb;
