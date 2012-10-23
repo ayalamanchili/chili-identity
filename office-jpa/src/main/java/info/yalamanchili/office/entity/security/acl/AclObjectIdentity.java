@@ -5,6 +5,7 @@
 package info.yalamanchili.office.entity.security.acl;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,10 +16,10 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-//@Table(name = "acl_object_identity", uniqueConstraints = {
-//    @UniqueConstraint(columnNames = {
-//        "object_id_class", "object_id_identity"})})
-@Table(name = "acl_object_identity")
+@Table(name = "acl_object_identity", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {
+        "object_id_class", "object_id_identity"})})
+//@Table(name = "acl_object_identity")
 public class AclObjectIdentity implements Serializable {
 
     @Id
@@ -26,16 +27,16 @@ public class AclObjectIdentity implements Serializable {
     private Long id;
     @NotNull
     @ManyToOne(targetEntity = info.yalamanchili.office.entity.security.acl.AclClass.class)
-    @JoinColumn
+    @JoinColumn(name = "object_id_class")
     private AclClass object_id_class;
     @NotNull
     private Long object_id_identity;
     @ManyToOne(targetEntity = info.yalamanchili.office.entity.security.acl.AclObjectIdentity.class)
-    @JoinColumn
+    @JoinColumn(name = "parent_object")
     private AclObjectIdentity parent_object;
     @NotNull
     @ManyToOne(targetEntity = info.yalamanchili.office.entity.security.acl.AclSid.class)
-    @JoinColumn
+    @JoinColumn(name = "owner_sid")
     private AclSid owner_sid;
     @NotNull
     private boolean entries_inheriting;

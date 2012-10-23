@@ -5,6 +5,7 @@
 package info.yalamanchili.office.entity.security.acl;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,10 +16,10 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "acl_entry")
-//@Table(name = "acl_entry", uniqueConstraints = {
-//    @UniqueConstraint(columnNames = {
-//        "acl_object_identity", "ace_order"})})
+//@Table(name = "acl_entry")
+@Table(name = "acl_entry", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {
+        "acl_object_identity", "ace_order"})})
 public class AclEntry implements Serializable {
 
     @Id
@@ -26,13 +27,13 @@ public class AclEntry implements Serializable {
     private Long id;
     @NotNull
     @ManyToOne(targetEntity = AclObjectIdentity.class)
-    @JoinColumn
+    @JoinColumn(name = "acl_object_identity")
     private AclObjectIdentity acl_object_identity;
     @NotNull
     private Integer ace_order;
     @NotNull
     @ManyToOne(targetEntity = AclSid.class)
-    @JoinColumn
+    @JoinColumn(name = "sid")
     private AclSid sid;
     @NotNull
     private Integer mask;

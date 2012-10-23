@@ -13,9 +13,7 @@
         <intercept-url pattern="/*/file/*" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
     </http>
-    
-    <!-- Enable roles check annotations-->
-    <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
+     
     <authentication-manager>
         <authentication-provider>
             <password-encoder ref="passwordEncoder" />
