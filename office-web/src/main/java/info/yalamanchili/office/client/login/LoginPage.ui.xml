@@ -29,11 +29,15 @@
         </g:north>
         <g:center>
             <g:FlowPanel ui:field='loginCenterPanel'>
+            <g:Image ui:field='loginFeatures' resource='{officeImages.loginFeatures}'/>          
             </g:FlowPanel>
+               
+          
+    
         </g:center>
         <g:south size='1.5'>
             <g:FlowPanel ui:field='footerPanel' styleName="{officeImages.officeCss.footerPanel}">
-                <g:Label styleName="{officeImages.officeCss.footerLabel}">COPYRIGHT © 2012 sstech.us - All Rights Reserved</g:Label>
+                <g:Label styleName="{officeImages.officeCss.footerLabel}">COPYRIGHT ï¿½ 2012 sstech.us - All Rights Reserved</g:Label>
             </g:FlowPanel>
         </g:south>
     </g:DockLayoutPanel>
