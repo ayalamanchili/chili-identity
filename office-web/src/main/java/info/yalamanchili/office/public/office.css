@@ -1,7 +1,7 @@
 /* defining main colors in the applciation */
 @def orange_light #f09974;
 
-/*@def orange_dark #E16802;*/
+@def orange_dark #E16802;
 /* an individual tab*/
 /* Footer */
 
@@ -10,8 +10,6 @@
     border-top-style: solid;
     border-top-color: #c8c8cb;
     border-top-width: 1px;
-    background-color: #666666;
-   
 }
 .footerLabel{
     font-size:8pt;
@@ -97,7 +95,7 @@
 @sprite .y-gwt-PagingBar {
     font-weight: bold;
     font-size: 10pt;
-    color: #E16802;
+    color: orange_dark;
     gwt-image : "indexBar";
     width: 100%;
     height: 34px;

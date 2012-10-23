@@ -53,12 +53,4 @@
         width: 30px;
         }
     </ui:style>
-    <!--<ui:style>
-        .loginFeatures {
-        width: 100%;
-        padding: 10px;
-       
-        }
-        
-    </ui:style>-->
 </ui:UiBinder> 
