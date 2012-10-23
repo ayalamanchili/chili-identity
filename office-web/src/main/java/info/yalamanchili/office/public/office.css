@@ -70,10 +70,11 @@
     font-weight: normal;
     font-size: 12pt;
     width: 100%;
+    text-align: center;
 }
 
 @sprite .gwt-StackPanel .gwt-StackPanelItem-selected {
-    gwt-image:"tabButtonClick";
+    gwt-image:"tabButton";
     width: 200px;
 }
 .createTODOL{
@@ -166,18 +167,30 @@ legend {
 }
 .gwt-MenuItem {
     cursor: pointer;
-    border: 1px solid;
-    border-color: #e16802;
-    background-color: #DAE6FE;
     padding: 3px 34px;
-    border-radius: 5px;
+    color: #666666;
+    border-right: 1px;
+    border-right-color: #dae6fe;
+    border-right-width: 1px;
+    
 }
 
+/*    .gwt-MenuBar-horizontal .gwt-MenuItem {
+        background-color: none;
+        color: #666666;
+    }*/
+    
+.gwt-MenuItem-selected:hover{
+    background-color: #dae6fe;
+    font-color:#666666;
+    }    
+    
 .gwt-MenuItem-selected {
-    background-color: #FFFFFF;
-    font-size: 12pt;
-    /*    color:#FFFFFF;*/
-}
+/*    background-color: #dae6fe;*/
+    font-color:#FFFFFF;
+    
+    }    
+
 
 
 .genericPopup{
