@@ -28,12 +28,13 @@
             </g:Grid>
         </g:north>
         <g:center>
-            <g:FlowPanel ui:field='loginCenterPanel'>
-            <g:Image ui:field='loginFeatures' resource='{officeImages.loginFeatures}'/>          
+            <!--<g:Gridcen styleName="{style.loginFeatures}">-->
+           <g:FlowPanel ui:field='loginCenterPanel' styleName="{officeImages.officeCss.loginCenterPanel}">
+            <g:Image ui:field='loginFeatures'  resource='{officeImages.loginFeatures}'/>          
             </g:FlowPanel>
                
           
-    
+         <!--</g:Gridcen>-->
         </g:center>
         <g:south size='1.5'>
             <g:FlowPanel ui:field='footerPanel' styleName="{officeImages.officeCss.footerPanel}">
@@ -52,4 +53,12 @@
         width: 30px;
         }
     </ui:style>
+    <!--<ui:style>
+        .loginFeatures {
+        width: 100%;
+        padding: 10px;
+       
+        }
+        
+    </ui:style>-->
 </ui:UiBinder> 
