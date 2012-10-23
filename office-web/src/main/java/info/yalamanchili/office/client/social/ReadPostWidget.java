@@ -90,10 +90,16 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     }
 
     protected void displayPostStatus(JSONObject post) {
+        logger.info("33333"+post.toString());
+//        logger.info("44444"+ post.get("postLikes").toString());
         String postTimeStamp = JSONUtils.toString(post, "postTimeStamp");
+        JSONArray postlikeno = JSONUtils.toJSONArray(post.get("postLikes"));
+        String poststatus = " No of Likes :" +  postlikeno.size() ;
         if (DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM) != null) {
-            postStatusPanel.setText("Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
+            postStatusPanel.setText(poststatus + ";  Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
         }
+        
+       
     }
 
     @Override
@@ -155,7 +161,9 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     protected abstract void viewClicked();
 
     private void postCreateSuccess(String arg0) {
+        
         new ResponseStatusWidget().show("Successfully Liked");
+         
     }
 
     public String getlikeURL() {
