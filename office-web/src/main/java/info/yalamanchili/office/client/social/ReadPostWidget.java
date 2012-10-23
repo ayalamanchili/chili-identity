@@ -97,7 +97,7 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         String poststatus = "";
         if(postlikeno.size() > 0)
         {
-          poststatus =   postlikeno.size() + " likes this ; " ;
+          poststatus =  "  " +  postlikeno.size() + " likes this ; " ;
         }
         if (DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM) != null) {
             postStatusPanel.setText(poststatus + " Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
