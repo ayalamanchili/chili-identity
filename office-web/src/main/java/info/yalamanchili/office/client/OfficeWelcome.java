@@ -22,7 +22,7 @@ import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
 public class OfficeWelcome implements EntryPoint {
-    
+
     public static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
     public JSONObject user;
     public JSONObject employee;
@@ -31,25 +31,27 @@ public class OfficeWelcome implements EntryPoint {
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
     public static OfficeClientConfig config = GWT.create(OfficeClientConfig.class);
-    
+
     @Override
     public void onModuleLoad() {
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
         RootLayoutPanel.get().add(new LoginPage());
-        
+
     }
-    
+
     public void onMainModuleLoad(JSONObject user) {
         this.user = user;
         this.employee = user.get("employee").isObject();
         this.employeeId = employee.get("id").isString().stringValue();
         initUserRoles(user);
         GWT.runAsync(new RunAsyncCallback() {
+            @Override
             public void onFailure(Throwable caught) {
                 Window.alert("Code download failed");
             }
-            
+
+            @Override
             public void onSuccess() {
                 logger.info(roles.toString());
                 RootLayoutPanel.get().clear();
@@ -57,9 +59,9 @@ public class OfficeWelcome implements EntryPoint {
                 RootLayoutPanel.get().add(rootLayout);
             }
         });
-        
+
     }
-    
+
     protected void initUserRoles(JSONObject userObj) {
         logger.info(userObj.toString());
         JSONArray roles = JSONUtils.toJSONArray(userObj.get("roles"));
@@ -69,7 +71,7 @@ public class OfficeWelcome implements EntryPoint {
         }
     }
     private static OfficeWelcome instance;
-    
+
     public static OfficeWelcome instance() {
         if (instance == null) {
             return new OfficeWelcome();
@@ -77,9 +79,10 @@ public class OfficeWelcome implements EntryPoint {
         return instance;
     }
     //TODO move to server
+
     public Map<String, String> getHeaders() {
         Map<String, String> headersMap = new HashMap<String, String>();
-        
+
         return headersMap;
     }
 }

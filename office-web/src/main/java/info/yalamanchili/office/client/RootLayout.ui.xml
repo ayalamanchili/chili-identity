@@ -14,7 +14,7 @@
         </g:center>
         <g:south size='1.5'>
             <g:FlowPanel ui:field='footerPanel' styleName="{officeImages.officeCss.footerPanel}">
-                <g:Label styleName="{officeImages.officeCss.footerLabel}">COPYRIGHT © 2012 sstech.us - All Rights Reserved</g:Label>
+                <g:Label styleName="{officeImages.officeCss.footerLabel}">COPYRIGHT &copy; 2012 sstech.us - All Rights Reserved</g:Label>
             </g:FlowPanel>
         </g:south>
     </g:DockLayoutPanel>

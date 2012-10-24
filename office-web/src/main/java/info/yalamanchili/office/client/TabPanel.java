@@ -1,5 +1,7 @@
 package info.yalamanchili.office.client;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.ProfileMenu;
 import info.yalamanchili.office.client.profile.ProfileSidePanel;
@@ -11,7 +13,9 @@ import java.util.logging.Logger;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.home.HomeStackPanel;
@@ -50,19 +54,59 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void onSelection(SelectionEvent<Integer> selectedTabIndex) {
         logger.info(tabPanel.getWidget(selectedTabIndex.getSelectedItem()).toString());
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(homePanel)) {
-            selectHomeTab();
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectHomeTab();
+                }
+            });
         }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(socialPanel)) {
-            selectSocialTab();
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectSocialTab();
+                }
+            });
         }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(myOfficePanel)) {
-            selectAdminTab();
+            myOfficeTab();
         }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(TimeandExpensePanel)) {
-            selectTimeandExpenseTab();
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectTimeandExpenseTab();
+                }
+            });
         }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(profilePanel)) {
-            selectProfileTab();
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectProfileTab();
+                }
+            });
         }
     }
 
@@ -80,7 +124,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         socialPanel.entityPanel.add(new EmployeeFeedHome());
     }
 
-    public void selectAdminTab() {
+    public void myOfficeTab() {
         myOfficePanel.entityPanel.clear();
         myOfficePanel.sidePanelTop.clear();
         myOfficePanel.entityTitlePanel.add(new ProfileMenu());
