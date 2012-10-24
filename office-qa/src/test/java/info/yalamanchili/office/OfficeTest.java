@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office;
 
+import info.yalamanchili.office.integration.TestUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
