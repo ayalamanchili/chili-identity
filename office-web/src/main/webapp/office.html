@@ -9,6 +9,25 @@
                 src="office/office.nocache.js">
 
         </script>
+        <script type="text/javascript" language="javascript">        
+            document.write('<div id="loading">Loading - please wait...<img src="http://www.darkmatter101.org/site/wp-content/themes/mimbo2.2/images/mashup/ajax-loader.gif" width="12" height="12" border="0" alt=""><br/></div>');
+            function addLoadEvent(func) {
+                var oldonload = window.onload;
+                if (typeof window.onload != 'function') {
+                    window.onload = func;
+                } else {
+                    window.onload = function() {
+                        if (oldonload) {
+                            oldonload();
+                        }
+                        func();
+                    }
+                }
+            }
+            addLoadEvent(function() {
+                document.getElementById("loading").style.display="none";
+            });
+        </script>
     </head>
     <body>
         <iframe src="javascript:''" id="__gwt_historyFrame"  style="position:absolute;width:0;height:0;border:0"></iframe>
