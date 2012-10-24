@@ -9,7 +9,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>office-jms</artifactId>
     <packaging>jar</packaging>
-
     <name>office-jms</name>
     <url>http://maven.apache.org</url>
 
@@ -53,6 +52,10 @@
             <version>${spring.version}</version>
         </dependency>
     </dependencies>
+    <scm>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-jms</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-jms</url>
+    </scm> 
     <properties>
         <spring.version>3.1.1.RELEASE</spring.version>
     </properties>

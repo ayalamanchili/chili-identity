@@ -207,8 +207,20 @@
                 <artifactId>taglist-maven-plugin</artifactId>
                 <version>2.4</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.2</version>
+                <configuration>
+                    <autoversionsubmodules>true</autoversionsubmodules>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+    <scm>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-master</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-master</url>
+    </scm>    
     <!-- download artifacts from this repo -->
     <repositories>
         <repository>
@@ -256,7 +268,7 @@
     </distributionManagement>
     <properties>
         <office.version>1.0-SNAPSHOT</office.version>
-        <chili.version>1.1-SNAPSHOT</chili.version>
+        <chili.version>1.1</chili.version>
         <arquillian.version>1.0.0.Alpha4</arquillian.version>
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.1.RELEASE</spring.security.version>

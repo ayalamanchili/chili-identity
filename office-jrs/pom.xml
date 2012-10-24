@@ -150,6 +150,10 @@
             </plugin>
         </plugins>
     </build>
+    <scm>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-jrs</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-jrs</url>
+    </scm>     
     <!-- download artifacts from this repo -->
     <repositories>
         <repository>
@@ -205,7 +209,6 @@
         </snapshotRepository>
     </distributionManagement>
     <properties>
-        <yalamanchili.version>1.1-SNAPSHOT</yalamanchili.version>
         <jersy.version>1.8</jersy.version>
         <spring.version>3.1.1.RELEASE</spring.version>
     </properties>

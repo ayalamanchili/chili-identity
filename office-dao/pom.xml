@@ -27,4 +27,8 @@
 		<plugins>
 		</plugins>
 	</build>
+    <scm>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-dao</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-dao</url>
+    </scm>         
 </project>

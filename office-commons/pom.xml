@@ -9,7 +9,6 @@
     </parent>
     <groupId>info.yalamanchili.office</groupId>
     <artifactId>office-commons</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>office-commons</name>
     <dependencies>
@@ -51,4 +50,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <scm>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-commons</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-commons</url>
+    </scm>     
 </project>
