@@ -42,6 +42,7 @@ public class OfficeAclService {
         } catch (NotFoundException nfe) {
             acl = aclSercice.createAcl(oi);
         }
+        acl.setOwner(sid);
         acl.insertAce(acl.getEntries().size(), p, sid, true);
         aclSercice.updateAcl(acl);
     }
