@@ -28,7 +28,6 @@ public class AclDataInit {
             if (aclSid == null) {
                 AclSid newAclSid = new AclSid();
                 newAclSid.setSid(user.getUsername());
-                //TODO this is this?
                 newAclSid.setPrincipal(true);
                 em.persist(newAclSid);
             }
