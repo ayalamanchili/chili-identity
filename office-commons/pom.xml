@@ -13,6 +13,11 @@
     <packaging>jar</packaging>
     <name>office-commons</name>
     <dependencies>
+        <dependency>
+            <groupId>info.yalamanchili.office</groupId>
+            <artifactId>office-jpa</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>

@@ -61,6 +61,8 @@ public class OfficeStartup {
         if (config.getInitRefData()) {
             initRoles();
             initUsers();
+            AclDataInit.initAclClassData(em);
+            AclDataInit.initAclSids(em);
             initRefData();
             initSampleEmployees();
         }

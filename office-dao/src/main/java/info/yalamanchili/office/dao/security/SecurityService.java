@@ -52,6 +52,7 @@ public class SecurityService {
         return user.getEmployee();
     }
 
+    //TODO move to different method
     public Set<String> getEmailsAddressesForRoles(List<String> roles) {
         Set<String> emails = new HashSet<String>();
         Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
