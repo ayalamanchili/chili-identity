@@ -56,9 +56,9 @@ public class ReadAllPostsPanel extends ALComposite implements ClickHandler {
                 String postId = JSONUtils.toString(post, "id");
                 if (!postIds.contains(postId)) {
                     postIds.add(postId);
-                    if (SocialSidePanel.isEmployeedFeedSelected()) {
+                    if (SocialMenu.isEmployeedFeedSelected()) {
                         postsPanel.add(new ReadEmployeePostPanel(post, true));
-                    } else if (SocialSidePanel.isCompanyFeedSelected()) {
+                    } else if (SocialMenu.isCompanyFeedSelected()) {
                         postsPanel.add(new ReadCompanyPostPanel(post, true));
                     }
 
@@ -92,7 +92,7 @@ public class ReadAllPostsPanel extends ALComposite implements ClickHandler {
     }
 
     protected String getPostFeedURL(Integer start, Integer limit) {
-        if (SocialSidePanel.isEmployeedFeedSelected() == true) {
+        if (SocialMenu.isEmployeedFeedSelected() == true) {
             return OfficeWelcome.constants.root_url() + "social/employeefeed/" + start.toString() + "/" + limit.toString();
         } else {
             return OfficeWelcome.constants.root_url() + "social/companyfeed/" + start.toString() + "/" + limit.toString();
