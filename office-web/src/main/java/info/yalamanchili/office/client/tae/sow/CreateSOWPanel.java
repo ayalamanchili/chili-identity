@@ -91,8 +91,8 @@ public class CreateSOWPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
-        addField("startDate",false,false,DataType.DATE_FIELD);
-        addField("endDate",false,false,DataType.DATE_FIELD);
+        addField("startDate",false,true,DataType.DATE_FIELD);
+        addField("endDate",false,true,DataType.DATE_FIELD);
         addField("billRate",false,false,DataType.CURRENCY_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
     }
