@@ -20,7 +20,7 @@ import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 public class SocialSidePanel extends ALComposite implements ClickHandler {
 
     FlowPanel panel = new FlowPanel();
-    private static boolean IsEmployeeFeedSelected = true;
+    private static boolean IsEmployeeFeedSelected = false;
     ClickableLink employeeFeedL = new ClickableLink("Employee Feed");
     ClickableLink companyFeedL = new ClickableLink("System Soft Feed");
 
@@ -64,7 +64,7 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
 
     public static boolean isCompanyFeedSelected() {
         return !IsEmployeeFeedSelected;
-    }
+    } 
 
     protected void showEmployeeFeed() {
         TabPanel.instance().socialPanel.entityPanel.clear();
