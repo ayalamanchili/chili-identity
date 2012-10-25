@@ -88,10 +88,10 @@ public class UpdateSOWPanel extends UpdateComposite {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("sowUrl", false, true, DataType.STRING_FIELD);
-        addField("startDate", false, false, DataType.DATE_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("billRate", false, false, DataType.CURRENCY_FIELD);
-        addDropDown("project", new SelectProjectWidget(false, false));
+        addDropDown("project", new SelectProjectWidget(false, true));
 //        addField("timeSheets", false, false, DataType.STRING_FIELD);
     }
 
