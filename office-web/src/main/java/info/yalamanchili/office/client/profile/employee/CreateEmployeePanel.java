@@ -57,12 +57,12 @@ public class CreateEmployeePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employeeType", new SelectEmployeeTypeWidget(false, false));
+        addDropDown("employeeType", new SelectEmployeeTypeWidget(false, true));
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("dateOfBirth", false, false, DataType.DATE_FIELD);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
