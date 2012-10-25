@@ -21,7 +21,7 @@ public class TODOStackPanelWidget extends ALComposite implements ClickHandler {
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-    protected ClickableLink createTODOL = new ClickableLink("create");
+    protected ClickableLink createTODOL = new ClickableLink("Create");
     protected ReadAllTodosPanel readAllPanel = new ReadAllTodosPanel();
 
     public TODOStackPanelWidget() {
