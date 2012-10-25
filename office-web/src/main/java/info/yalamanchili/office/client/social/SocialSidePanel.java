@@ -20,7 +20,7 @@ import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 public class SocialSidePanel extends ALComposite implements ClickHandler {
 
     FlowPanel panel = new FlowPanel();
-    private static boolean IsEmployeeFeedSelected = false;
+//    private static boolean IsEmployeeFeedSelected = false;
     ClickableLink employeeFeedL = new ClickableLink("Employee Feed");
     ClickableLink companyFeedL = new ClickableLink("System Soft Feed");
 
@@ -49,22 +49,22 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(employeeFeedL)) {
-            IsEmployeeFeedSelected = true;
-            showEmployeeFeed();
-        } else if (event.getSource().equals(companyFeedL)) {
-            IsEmployeeFeedSelected = false;
-            showCompanyFeed();
-        }
+//        if (event.getSource().equals(employeeFeedL)) {
+//            IsEmployeeFeedSelected = true;
+//            showEmployeeFeed();
+//        } else if (event.getSource().equals(companyFeedL)) {
+//            IsEmployeeFeedSelected = false;
+//            showCompanyFeed();
+//        }
     }
 
-    public static boolean isEmployeedFeedSelected() {
-        return IsEmployeeFeedSelected;
-    }
-
-    public static boolean isCompanyFeedSelected() {
-        return !IsEmployeeFeedSelected;
-    } 
+//    public static boolean isEmployeedFeedSelected() {
+//        return IsEmployeeFeedSelected;
+//    }
+//
+//    public static boolean isCompanyFeedSelected() {
+//        return !IsEmployeeFeedSelected;
+//    } 
 
     protected void showEmployeeFeed() {
         TabPanel.instance().socialPanel.entityPanel.clear();
