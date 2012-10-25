@@ -20,7 +20,7 @@ import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 public class SocialMenu extends Composite {
     MenuBar tAEMenuBar = new MenuBar(false);
     FlowPanel panel = new FlowPanel();
-    private static boolean IsEmployeeFeedSelected = false;
+    private static boolean IsEmployeeFeedSelected = true;
 
     public SocialMenu() {
         initWidget(tAEMenuBar);
