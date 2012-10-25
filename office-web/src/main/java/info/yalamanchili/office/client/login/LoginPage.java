@@ -11,6 +11,8 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.storage.client.Storage;
+import com.google.gwt.storage.client.StorageMap;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -93,16 +95,40 @@ public class LoginPage extends Composite {
     public LoginPage() {
         initWidget(uiBinder.createAndBindUi(this));
         loginB.addStyleName("loginB");
+        populateUsername();
+    }
+//TODO move to chili gwt as abstract common methods
+
+    protected void populateUsername() {
+        Storage officeLclStorage = null;
+        officeLclStorage = Storage.getLocalStorageIfSupported();
+        if (officeLclStorage != null) {
+            StorageMap officeMap = new StorageMap(officeLclStorage);
+            if (officeMap.containsKey("office-username") == true) {
+                String username = officeMap.get("office-username");
+                usernameTb.setText(username);
+            }
+        }
+    }
+
+    protected void storeUsername() {
+        Storage officeLclStorage = null;
+        officeLclStorage = Storage.getLocalStorageIfSupported();
+        if (officeLclStorage != null) {
+            StorageMap officeMap = new StorageMap(officeLclStorage);
+            if (officeMap.containsKey("office-username") != true) {
+                officeMap.put("office-username", usernameTb.getText());
+            }
+        }
     }
 
     protected void loginClicked() {
+        storeUsername();
         JSONObject user = new JSONObject();
         HttpService.HttpServiceAsync.instance().login(usernameTb.getText(), passwordTb.getText(), new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
-
                 new ResponseStatusWidget().show("Login failed, Please check your username and password");
-
             }
 
             @Override
