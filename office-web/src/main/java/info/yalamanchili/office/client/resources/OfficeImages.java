@@ -70,8 +70,6 @@ public interface OfficeImages extends ClientBundle {
     @Source("images/view_icon_16_16.png")
     ImageResource viewIcon_16_16();
 
-    @Source("images/view_h_icon_16_16.png")
-    ImageResource viewhIcon_16_16();
     /*
      * Update Edit Icons
      */
