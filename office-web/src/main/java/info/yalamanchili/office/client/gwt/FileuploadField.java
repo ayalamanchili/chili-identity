@@ -75,9 +75,13 @@ public abstract class FileuploadField extends ALComposite implements ClickHandle
     }
 
     public void upload(String entityId) {
-        clearMessage();
-        setEntityId(entityId);
-        formPanel.submit();
+        if (!isEmpty()) {
+            clearMessage();
+            setEntityId(entityId);
+            formPanel.submit();
+        } else {
+            onUploadComplete();
+        }
     }
 
     public boolean isEmpty() {
