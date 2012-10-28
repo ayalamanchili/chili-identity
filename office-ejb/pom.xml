@@ -2,7 +2,7 @@
     <parent>
         <groupId>info.yalamanchili.office</groupId>
         <artifactId>office-master</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
         <relativePath>../office-master/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -22,7 +22,7 @@
         </dependency>
     </dependencies>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-ejb</connection>
-        <url>http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-ejb</url>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-ejb</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-ejb</url>
     </scm> 
 </project>

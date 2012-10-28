@@ -3,7 +3,7 @@
     <parent>
         <groupId>info.yalamanchili.office</groupId>
         <artifactId>office-master</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
         <relativePath>../office-master/pom.xml</relativePath>
     </parent>
     <groupId>info.yalamanchili.office</groupId>
@@ -50,7 +50,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-commons</connection>
-        <url>http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-commons</url>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-commons</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-commons</url>
     </scm>     
 </project>
