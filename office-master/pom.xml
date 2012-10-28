@@ -4,7 +4,7 @@
     <groupId>info.yalamanchili.office</groupId>
     <artifactId>office-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>office-master</name>
     <url>http://somecompany.com</url>
     <dependencies>
@@ -218,8 +218,8 @@
         </plugins>
     </build>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-master</connection>
-        <url>http://yalamanchili.info:8080/projects/office/trunk/office-master</url>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-master</connection>
+        <url>http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-master</url>
     </scm>    
     <!-- download artifacts from this repo -->
     <repositories>

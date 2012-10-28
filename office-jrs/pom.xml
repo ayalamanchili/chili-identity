@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>info.yalamanchili.office</groupId>
         <artifactId>office-master</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../office-master/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -151,8 +150,8 @@
         </plugins>
     </build>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-jrs</connection>
-        <url>http://yalamanchili.info:8080/projects/office/trunk/office-jrs</url>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-jrs</connection>
+        <url>http://yalamanchili.info:8080/projects/office/tags/office-master-1.0/office-jrs</url>
     </scm>     
     <!-- download artifacts from this repo -->
     <repositories>
