@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>info.yalamanchili.office</groupId>
     <artifactId>office-android</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>office-android</name>
     <properties>
