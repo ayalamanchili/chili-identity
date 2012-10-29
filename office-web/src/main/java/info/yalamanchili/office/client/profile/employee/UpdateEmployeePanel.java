@@ -21,6 +21,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
     };
 
+
     public static Object instance() {
         return null;
     }
@@ -54,7 +55,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
             @Override
             public void onSuccess(String arg0) {
+
                 uploadImage(JSONUtils.toString(entity, "id"));
+
             }
         });
 
@@ -91,7 +94,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
+
         entityDisplayWidget.add(empImageUploadPanel);
+
     }
 
     @Override
@@ -108,9 +113,11 @@ public class UpdateEmployeePanel extends UpdateComposite {
         empImageUploadPanel.upload(entityId.trim());
     }
 
+
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee information");
+       
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
     }
