@@ -35,9 +35,9 @@ public class Message extends AbstractEntity {
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date messageTs;
-    @OneToMany(mappedBy = "employee")
+    @OneToMany
     protected List<Employee> tos;
-    @OneToMany(mappedBy = "employee")
+    @OneToMany
     protected List<Employee> replies;
     @ManyToOne
     protected Employee from;
