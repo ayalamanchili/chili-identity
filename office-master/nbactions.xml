@@ -19,4 +19,15 @@
                 <activatedProfile>prod</activatedProfile>
             </activatedProfiles>
         </action>
+        <action>
+            <actionName>CUSTOM-clean install -DskipTests</actionName>
+            <displayName>clean install -DskipTests</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
     </actions>
