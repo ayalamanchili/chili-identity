@@ -21,6 +21,8 @@
         <class>info.yalamanchili.office.entity.profile.Certification</class>
         <!-- TODO-->
         <class>info.yalamanchili.office.entity.profile.Todo</class>
+        <!-- Message-->
+        <class>info.yalamanchili.office.entity.message.Message</class>
         <!-- Social-->
         <class>info.yalamanchili.office.entity.social.Post</class>
         <!--Time-->

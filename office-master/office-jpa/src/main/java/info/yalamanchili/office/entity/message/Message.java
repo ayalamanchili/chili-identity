@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -23,7 +24,6 @@ import org.hibernate.search.annotations.Indexed;
  * @author Prashanthi
  */
 @Indexed
-@XmlRootElement
 @Entity
 @Audited
 public class Message extends AbstractEntity {
@@ -40,6 +40,7 @@ public class Message extends AbstractEntity {
     @OneToMany
     protected List<Employee> replies;
     @ManyToOne
+    @ForeignKey(name = "FK_Employee_Messages")
     protected Employee from;
 
     public Message() {
@@ -70,7 +71,6 @@ public class Message extends AbstractEntity {
         this.messageTs = messageTs;
     }
 
-    @XmlElement
     public List<Employee> getTos() {
         return tos;
     }
@@ -79,7 +79,6 @@ public class Message extends AbstractEntity {
         this.tos = tos;
     }
 
-    @XmlElement
     public List<Employee> getReplies() {
         return replies;
     }
@@ -88,7 +87,6 @@ public class Message extends AbstractEntity {
         this.replies = replies;
     }
 
-    @XmlElement
     public Employee getFrom() {
         return from;
     }
@@ -99,6 +97,8 @@ public class Message extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Messages{" + "subject=" + subject + ", message=" + message + ", messsageTs=" + messageTs + " , tos=" + tos + ", replies=" + replies + ", from=" + from + '}';
+        return "Message{" + "subject=" + subject + ", message=" + message + ", messageTs=" + messageTs + ", tos=" + tos + ", replies=" + replies + ", from=" + from + '}';
     }
+
+    
 }
