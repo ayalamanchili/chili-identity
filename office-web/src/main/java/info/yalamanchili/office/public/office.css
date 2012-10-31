@@ -207,6 +207,9 @@ legend {
 .gwt-MenuItem-selected:hover{
     background-color: blue_mid;
     font-color:#666666;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.30s;  
+    -webkit-transition-timing-function: linear, ease-in;  
     }    
     
 .gwt-MenuItem-selected {
