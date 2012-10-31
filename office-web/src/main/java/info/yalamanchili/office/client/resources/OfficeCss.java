@@ -22,4 +22,12 @@ public interface OfficeCss extends CssResource {
     String orange_light();
 
     String orange_dark();
+    
+    String blue_light();
+   
+    String blue_mid();
+  
+    String blue_dark();
+    
+    String white();
 }
