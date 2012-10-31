@@ -191,11 +191,13 @@ legend {
 }
 .gwt-MenuItem {
     cursor: pointer;
-    padding: 3px 40px;
+    padding: 3px;
     color: #666666;
     border-right: 1px;
     border-right-color: blue_mid;
     border-right-width: 1px;
+    width: 120px;
+    text-align: center;
     
 }
 
