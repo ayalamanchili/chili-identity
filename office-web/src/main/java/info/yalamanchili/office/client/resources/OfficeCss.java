@@ -29,5 +29,7 @@ public interface OfficeCss extends CssResource {
   
     String blue_dark();
     
+    String blue_font();
+    
     String white();
 }
