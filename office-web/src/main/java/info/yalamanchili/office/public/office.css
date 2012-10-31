@@ -28,13 +28,10 @@
 }
 
 .loginCenterPanel{
-/*   alignment-baseline:central;
-   vertical-align: middle;*/
-/*   margin-left: 105px;*/
-    -fx-alignment: center;
-    margin-left: auto;
-    margin-right: auto; 
-   
+
+
+   margin-left: 105px;
+  
 }
 /* TabLayout Panel */
 @sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
@@ -146,7 +143,7 @@
     background: blue_mid;
     color: blue_font;
     -webkit-transition-property: background-color;  
-    -webkit-transition-duration: 0.40s;  
+    -webkit-transition-duration: 0.30s;  
     -webkit-transition-timing-function: linear, ease-in;  
 }
 .y-gwt-ReadAllComposite-OddRow{
