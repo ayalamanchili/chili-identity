@@ -9,6 +9,8 @@
 
 @def blue_dark #b3c9f5;
 
+@def blue_font #054c78;
+
 @def white #FFFFFF;
 
 /* an individual tab*/
@@ -82,7 +84,7 @@
     /*    background-color: #F7F7F7;*/
 }
 .gwt-DisclosurePanel a {
-    color: #054c78;
+    color: blue_font;
 }
 @sprite .gwt-StackPanel .gwt-StackPanelItem {
     gwt-image:  "tabButton";
@@ -115,7 +117,7 @@
     background-color: blue_mid;
     font-weight: bold;
     font-size: 11pt;
-    color: #054c78;
+    color: blue_font;
     text-align:center;  
 }
 
@@ -138,7 +140,10 @@
 .y-gwt-ReadAllComposite-Row:hover 
 {
     background: blue_mid;
-    color: #054c78;
+    color: blue_font;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.50s;  
+    -webkit-transition-timing-function: linear, ease-in;  
 }
 .y-gwt-ReadAllComposite-OddRow{
 
@@ -316,7 +321,7 @@ body{
 /*//TODO move back to chili-gwt*/
 /*chili-gwt start*/
 .y-gwt-ClickableLink {
-    color: #054c78;
+    color: blue_font;
     cursor: pointer;
     cursor: hand;
     font-family: helvetica, arial sans-serif;
@@ -434,13 +439,13 @@ body{
 }
 
 .loginB{
-    color: #054c78;
+    color: blue_font;
 }
 
 .genericPopup {
 
     background-color: #EDEDED;
-    border: 3px solid #054c78;
+    border: 3px solid blue_font;
     padding: 3px;
 }
 /* Multiselect box */
