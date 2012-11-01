@@ -30,8 +30,11 @@ public interface OfficeImages extends ClientBundle {
     @Source("images/logo.png")
     ImageResource logo();
     
-    @Source("images/login_pg_features.png")
+    @Source("images/loginFeaturesImage.png")
     ImageResource loginFeatures();
+    
+    @Source("images/loginCenterImage.png")
+    ImageResource loginCenter();
 
     @Source("images/default-image.gif")
     ImageResource defaultImage();
