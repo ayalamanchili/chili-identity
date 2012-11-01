@@ -39,7 +39,7 @@ public class MessageResource extends CRUDResource<MessageDto> {
     
     @XmlRootElement
     @XmlType
-    public static class EmergencyContactTable {
+    public static class MessageTable {
 
         protected Long size;
         protected List<MessageDto> entities;
