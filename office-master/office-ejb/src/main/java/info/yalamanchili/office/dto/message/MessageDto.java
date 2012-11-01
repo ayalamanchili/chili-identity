@@ -71,14 +71,17 @@ public class MessageDto implements Serializable {
         for (Employee emp : entity.getTos()) {
             Entry to = new Entry();
             to.setId(emp.getEmployeeId());
-            to.setValue(emp.getFirstName());
+            to.setValue(emp.getFirstName() + " " + emp.getLastName());
             
             messageDto.getTos().add(to);
 
         }
+
+
         Entry from = new Entry();
         from.setId(entity.getFrom().getEmployeeId());
         from.setValue(entity.getFrom().getFirstName());
+
 
         messageDto.setFrom(from);
         return messageDto;
