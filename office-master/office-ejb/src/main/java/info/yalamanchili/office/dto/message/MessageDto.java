@@ -4,29 +4,28 @@
  */
 package info.yalamanchili.office.dto.message;
 
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
 import org.dozer.Mapper;
 
 /**
  *
  * @author raghu
  */
-public class MessageDto implements Serializable{
-    protected String subject;
+public class MessageDto implements Serializable {
 
-   
+    protected String subject;
     protected String message;
     protected Date messageTs;
-    protected List<Shortemp> tos;
-    protected List<Shortemp> from;
-    
-     public String getSubject() {
+    protected List<Entry> tos;
+    protected Entry from;
+
+    public String getSubject() {
         return subject;
     }
 
@@ -38,15 +37,7 @@ public class MessageDto implements Serializable{
         return messageTs;
     }
 
-    public List<Shortemp> getTos() {
-        return tos;
-    }
-
-    public List<Shortemp> getFrom() {
-        return from;
-    }
-    
-     public void setSubject(String subject) {
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 
@@ -58,35 +49,39 @@ public class MessageDto implements Serializable{
         this.messageTs = messageTs;
     }
 
-    public void setTos(List<Shortemp> tos) {
+    public List<Entry> getTos() {
+        return tos;
+    }
+
+    public void setTos(List<Entry> tos) {
         this.tos = tos;
     }
 
-    public void setFrom(List<Shortemp> from) {
+    public Entry getFrom() {
+        return from;
+    }
+
+    public void setFrom(Entry from) {
         this.from = from;
     }
-    
-     public static MessageDto map(Mapper mapper, info.yalamanchili.office.entity.message.Message  entity) {
-     MessageDto msgmap = mapper.map(entity, MessageDto.class);
 
-        for(Employee emp : entity.getTos())
-        {
-            Shortemp semp = new Shortemp();
-            semp.setId(emp.getId()) ;
-            semp.setEmployeeName(emp.getFirstName() +" "+ emp.getLastName());
-            msgmap.getTos().add(semp);
+    public static MessageDto map(Mapper mapper, info.yalamanchili.office.entity.message.Message entity) {
+        MessageDto messageDto = mapper.map(entity, MessageDto.class);
+
+        for (Employee emp : entity.getTos()) {
+            Entry to = new Entry();
+            to.setId(emp.getEmployeeId());
+            to.setValue(emp.getFirstName());
+            
+            messageDto.getTos().add(to);
+
         }
-         for(Employee emp : entity.getReplies())
-        {
-            Shortemp semp = new Shortemp();
-            semp.setId(emp.getId()) ;
-            semp.setEmployeeName(emp.getFirstName() +" "+ emp.getLastName());
-            msgmap.getTos().add(semp);
-        }
-    
-     return msgmap;
-     
-     }
+        Entry from = new Entry();
+        from.setId(entity.getFrom().getEmployeeId());
+        from.setValue(entity.getFrom().getFirstName());
+
+        messageDto.setFrom(from);
+        return messageDto;
+
+    }
 }
-
-
