@@ -7,7 +7,7 @@
 
 @def blue_mid #dae6fe;
 
-@def blue_dark #b3c9f5;
+@def blue_dark #c3d7ff;
 
 @def blue_font #054c78;
 
@@ -30,7 +30,7 @@
 .loginCenterPanel{
 
 
-   margin-left: 105px;
+/*   margin-left: 105px;*/
   
 }
 /* TabLayout Panel */
@@ -72,6 +72,7 @@
     color: white;
     gwt-image:"tabButtonClick";
     height:auto;
+    text-shadow: 0px 1px 2px #4d4d4d;
 }
 
 /* an element nested in each tab (useful for styling)*/
