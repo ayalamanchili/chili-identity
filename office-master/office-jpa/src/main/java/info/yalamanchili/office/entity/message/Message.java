@@ -8,6 +8,7 @@ import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -38,7 +39,7 @@ public class Message extends AbstractEntity {
     @OneToMany
     protected List<Employee> tos;
     @OneToMany
-    protected List<Employee> replies;
+    protected List<Message> replies;
     @ManyToOne
     @ForeignKey(name = "FK_Employee_Messages")
     protected Employee from;
@@ -79,11 +80,11 @@ public class Message extends AbstractEntity {
         this.tos = tos;
     }
 
-    public List<Employee> getReplies() {
+    public List<Message> getReplies() {
         return replies;
     }
 
-    public void setReplies(List<Employee> replies) {
+    public void setReplies(List<Message> replies) {
         this.replies = replies;
     }
 
