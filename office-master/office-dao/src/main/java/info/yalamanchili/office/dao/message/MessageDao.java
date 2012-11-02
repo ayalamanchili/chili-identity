@@ -4,7 +4,9 @@
  */
 package info.yalamanchili.office.dao.message;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.message.Message;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,5 +29,9 @@ public class MessageDao extends CRUDDao<Message> {
 
     public MessageDao() {
         super(Message.class);
+    }
+
+    public static MessageDao instance() {
+        return SpringContext.getBean(MessageDao.class);
     }
 }
