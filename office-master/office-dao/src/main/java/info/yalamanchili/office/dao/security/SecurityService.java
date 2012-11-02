@@ -1,5 +1,6 @@
 package info.yalamanchili.office.dao.security;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -65,5 +66,9 @@ public class SecurityService {
         }
         System.out.println(emails);
         return emails;
+    }
+
+    public static SecurityService instance() {
+       return SpringContext.getBean(SecurityService.class);
     }
 }
