@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.home.HomeStackPanel;
+import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
 import info.yalamanchili.office.client.social.SocialMenu;
 import info.yalamanchili.office.client.social.SocialSidePanel;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
@@ -116,6 +117,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         homePanel.sidePanelTop.clear();
         homePanel.sidePanelBottom.clear();
         homePanel.sidePanelBottom.add(new HomeStackPanel());
+        homePanel.entityPanel.add(new ReadAllMessagePanel());
     }
 
     public void selectSocialTab() {
