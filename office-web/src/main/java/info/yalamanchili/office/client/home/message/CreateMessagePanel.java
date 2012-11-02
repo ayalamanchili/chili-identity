@@ -24,7 +24,7 @@ public class CreateMessagePanel extends CreateComposite {
 
     public CreateMessagePanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Todo", OfficeWelcome.constants);
+        initCreateComposite("Message", OfficeWelcome.constants);
     }
 
     @Override
