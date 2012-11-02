@@ -8,11 +8,17 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dto.message.MessageDto;
 import info.yalamanchili.office.dao.message.MessageDao;
+import info.yalamanchili.office.entity.message.Message;
+import info.yalamanchili.office.jrs.client.ClientResource;
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.List;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -31,12 +37,39 @@ public class MessageResource extends CRUDResource<MessageDto> {
 
     @Autowired
     public MessageDao messageDao;
+//    @Autowired
+//    public messag emergencyContactService;
+    private Mapper mapper;
      
     @Override
     public CRUDDao getDao() {
         return messageDao;
     }
     
+//    @GET
+//    @Path("/{start}/{limit}")
+//     
+//    public MessageResource.MessageTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+//        MessageResource.MessageTable tableObj = new MessageResource.MessageTable();
+//        tableObj.setEntities(getDao().query(start, limit));
+//        tableObj.setSize(getDao().size());
+//        return tableObj;
+//    }
+    
+    
+    @GET
+    @Path("/{start}/{limit}")
+    public MessageTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        List<info.yalamanchili.office.dto.message.MessageDto> msgs = new ArrayList<info.yalamanchili.office.dto.message.MessageDto>();
+        MessageTable tableObj = new MessageTable();
+        for (Object msgObj : getDao().query(start, limit)) {
+            msgs.add(info.yalamanchili.office.dto.message.MessageDto.map(mapper, (Message)msgObj));
+        }
+        tableObj.setEntities(msgs);
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
+      
     @XmlRootElement
     @XmlType
     public static class MessageTable {
