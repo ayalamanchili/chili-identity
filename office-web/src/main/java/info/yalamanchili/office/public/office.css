@@ -145,7 +145,10 @@
     color: blue_font;
     -webkit-transition-property: background-color;  
     -webkit-transition-duration: 0.30s;  
-    -webkit-transition-timing-function: linear, ease-in;  
+    -webkit-transition-timing-function: linear, ease-in; 
+    -moz-transition-property: background-color;  
+    -moz-transition-duration: 0.30s;  
+    -moz-transition-timing-function: linear, ease-in; 
 }
 .y-gwt-ReadAllComposite-OddRow{
 
