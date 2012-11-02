@@ -6,6 +6,7 @@ package info.yalamanchili.office.entity.message;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -73,11 +74,18 @@ public class Message extends AbstractEntity {
     }
 
     public List<Employee> getTos() {
+        if (this.tos == null) {
+            this.tos = new ArrayList<Employee>();
+        }
         return tos;
     }
 
     public void setTos(List<Employee> tos) {
         this.tos = tos;
+    }
+
+    public void addTo(Employee fromEmp) {
+        this.tos.add(fromEmp);
     }
 
     public List<Message> getReplies() {
@@ -100,6 +108,4 @@ public class Message extends AbstractEntity {
     public String toString() {
         return "Message{" + "subject=" + subject + ", message=" + message + ", messageTs=" + messageTs + ", tos=" + tos + ", replies=" + replies + ", from=" + from + '}';
     }
-
-    
 }
