@@ -50,7 +50,7 @@ public class MessageStackPanelWidget extends ALComposite implements ClickHandler
     @Override
     public void onClick(ClickEvent event) {
          if (event.getSource().equals(createMsgL)) {
-            GenericPopup.instance().show(new CreateTodoPanel(CreateComposite.CreateCompositeType.CREATE), createMsgL.getAbsoluteLeft(), createMsgL.getAbsoluteTop());
+            GenericPopup.instance().show(new CreateMessagePanel(CreateComposite.CreateCompositeType.CREATE), createMsgL.getAbsoluteLeft(), createMsgL.getAbsoluteTop());
         }
     }
     
