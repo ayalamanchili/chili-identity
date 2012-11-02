@@ -26,21 +26,16 @@
                     </g:customCell>
                 </g:row>             
             </g:Grid>
-        </g:north>
-        
-        <g:west size='30'>
-               <g:Image ui:field='loginFeatures'  resource='{officeImages.loginFeatures}'/>           
-        </g:west>
-        
+        </g:north>      
         <g:center>
             <!--<g:Gridcen styleName="{style.loginFeatures}">-->
-           <g:FlowPanel ui:field='loginCenterPanel' styleName="{officeImages.officeCss.loginCenterPanel}">
-            
-            <g:Image ui:field='loginCenter'  resource='{officeImages.loginCenter}'/>           
+            <g:FlowPanel ui:field='loginCenterPanel' styleName="{officeImages.officeCss.loginCenterPanel}">
+                <g:Image ui:field='loginFeatures'  resource='{officeImages.loginFeatures}'/>
+                <g:Image ui:field='loginCenter'  resource='{officeImages.loginCenter}'/>           
             </g:FlowPanel>
                
           
-         <!--</g:Gridcen>-->
+            <!--</g:Gridcen>-->
         </g:center>
         <g:south size='1.5'>
             <g:FlowPanel ui:field='footerPanel' styleName="{officeImages.officeCss.footerPanel}">
