@@ -11,12 +11,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 
 /**
  *
  * @author raghu
  */
+@XmlRootElement(name = "Message")
+@XmlType
 public class MessageDto implements Serializable {
 
     protected String subject;
