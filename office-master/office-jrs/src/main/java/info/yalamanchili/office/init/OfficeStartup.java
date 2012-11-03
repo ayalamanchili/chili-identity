@@ -2,6 +2,7 @@ package info.yalamanchili.office.init;
 
 import info.chili.commons.DateUtils;
 import info.chili.commons.EntityQueryUtils;
+import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Address;
@@ -27,6 +28,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
+import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.math.BigDecimal;
@@ -54,6 +56,7 @@ public class OfficeStartup {
     protected Employee userEmp;
     protected Employee adminEmp;
     protected Company sstechCmp;
+    protected Folder driveFolder;
 
     protected void startup() {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
@@ -86,9 +89,6 @@ public class OfficeStartup {
         userAdmin();
     }
 
-    /**
-     *
-     */
     protected void initSampleEmployees() {
         // User Employee
         userEmp = new Employee();
@@ -221,9 +221,19 @@ public class OfficeStartup {
      * This data must be present in the DB for all other functions
      */
     protected void initRefData() {
-        sstechCmp = new Company();
-        sstechCmp.setName("System Soft Technologies");
-        sstechCmp = em.merge(sstechCmp);
+        // Company
+        if (QueryUtils.findEntity(em, Company.class, "name", "System Soft Technologies") == null) {
+            sstechCmp = new Company();
+            sstechCmp.setName("System Soft Technologies");
+            sstechCmp = em.merge(sstechCmp);
+        }
+        //DriveFolder
+        if (QueryUtils.findEntity(em, Folder.class, "name", "DRIVE") == null) {
+            driveFolder = new Folder();
+            driveFolder.setName("DRIVE");
+            driveFolder.setDescription("Root folder for System Soft Drive");
+            driveFolder = em.merge(driveFolder);
+        }
 
         // Address Types
         getHomeAddressType();
