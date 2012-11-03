@@ -29,6 +29,12 @@
             <version>${gwt.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Html5 video player-->
+        <dependency>
+            <groupId>fr.hd3d.html5</groupId>
+            <artifactId>video</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>

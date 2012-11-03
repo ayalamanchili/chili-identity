@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.help.HelpHome;
 import info.yalamanchili.office.client.home.HomeStackPanel;
 import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
 import info.yalamanchili.office.client.social.SocialMenu;
@@ -36,6 +37,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout myOfficePanel = new EntityLayout();
     public EntityLayout TimeandExpensePanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
+    public EntityLayout helpPanel = new EntityLayout();
 
     public TabPanel() {
         instance = this;
@@ -48,6 +50,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             tabPanel.add(TimeandExpensePanel, "TimeSheet", false);
         }
         tabPanel.add(profilePanel, "Profile", false);
+        tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
         tabPanel.selectTab(2);
     }
@@ -110,6 +113,19 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 }
             });
         }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(helpPanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectHelpTab();
+                }
+            });
+        }
     }
 
     public void selectHomeTab() {
@@ -153,6 +169,12 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         profilePanel.sidePanelTop.clear();
         profilePanel.entityPanel.add(new ProfileHome());
         profilePanel.sidePanelTop.add(new ProfileSidePanel());
+    }
+
+    public void selectHelpTab() {
+        helpPanel.entityPanel.clear();
+        helpPanel.sidePanelTop.clear();
+        helpPanel.entityPanel.add(new HelpHome());
     }
     private static TabPanel instance;
 
