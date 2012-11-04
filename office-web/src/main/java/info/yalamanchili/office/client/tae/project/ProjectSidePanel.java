@@ -47,8 +47,8 @@ public class ProjectSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createprojectlink)) {
-            TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE,true));
+            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE,true));
         }
     }
     

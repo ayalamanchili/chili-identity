@@ -50,11 +50,11 @@ public class TreeSOWPanel extends TreePanelComposite {
     @Override
     public void treeNodeSelected(String entityNodeKey) {
         if (TIMESHEET_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ProjectOptionsPanel());
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new SOWOptionsPanel());
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
+            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ProjectOptionsPanel());
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new SOWOptionsPanel());
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
         }
     }
 

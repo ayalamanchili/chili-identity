@@ -60,10 +60,10 @@ public class UpdateProjectPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated project");
-        TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new ProjectSidePanel());
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear(); 
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ProjectSidePanel());
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear(); 
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
     }
 
     @Override

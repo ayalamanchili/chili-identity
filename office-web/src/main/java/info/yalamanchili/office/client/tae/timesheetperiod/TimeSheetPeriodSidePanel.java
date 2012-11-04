@@ -47,8 +47,8 @@ public class TimeSheetPeriodSidePanel extends ALComposite implements ClickHandle
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtimesheetperiodlink)) {
-            TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateTimeSheetPeriodPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateTimeSheetPeriodPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
     

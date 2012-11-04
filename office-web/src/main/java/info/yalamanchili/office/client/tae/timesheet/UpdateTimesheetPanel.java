@@ -103,8 +103,8 @@ public class UpdateTimesheetPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee Time Sheet Information");
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
     }
 
     @Override

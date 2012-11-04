@@ -128,14 +128,14 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
     @Override
     public void postDeleteSuccess() {
        new ResponseStatusWidget().show("Successfully Deleted Time Sheet Information");
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel()); 
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel()); 
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new UpdateTimesheetPanel(getEntity(entityId)));
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateTimesheetPanel(getEntity(entityId)));
     }
     
 }

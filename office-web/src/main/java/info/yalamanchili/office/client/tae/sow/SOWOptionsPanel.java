@@ -47,8 +47,8 @@ public class SOWOptionsPanel extends ALComposite implements ClickHandler{
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addSOWLink)) {
-			TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-			TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateSOWPanel(CreateCompositeType.ADD));
+			TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+			TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateSOWPanel(CreateCompositeType.ADD));
 		}
     }
     

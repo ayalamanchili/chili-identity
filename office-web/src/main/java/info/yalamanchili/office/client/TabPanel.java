@@ -15,14 +15,14 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.drive.DriveEntityPanel;
+import info.yalamanchili.office.client.drive.DriveTreePanel;
 import info.yalamanchili.office.client.help.HelpHome;
 import info.yalamanchili.office.client.home.HomeStackPanel;
 import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
 import info.yalamanchili.office.client.social.SocialMenu;
-import info.yalamanchili.office.client.social.SocialSidePanel;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.TAEMenu;
 import info.yalamanchili.office.client.tae.client.ClientSidePanel;
@@ -35,7 +35,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout homePanel = new EntityLayout();
     public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
-    public EntityLayout TimeandExpensePanel = new EntityLayout();
+    public EntityLayout timeandExpensePanel = new EntityLayout();
+    public EntityLayout drivePanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
     public EntityLayout helpPanel = new EntityLayout();
 
@@ -47,8 +48,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME)) {
-            tabPanel.add(TimeandExpensePanel, "TimeSheet", false);
+            tabPanel.add(timeandExpensePanel, "TimeSheet", false);
         }
+        tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(profilePanel, "Profile", false);
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
@@ -87,7 +89,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(myOfficePanel)) {
             myOfficeTab();
         }
-        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(TimeandExpensePanel)) {
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(timeandExpensePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
                 public void onFailure(Throwable caught) {
@@ -97,6 +99,19 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 @Override
                 public void onSuccess() {
                     selectTimeandExpenseTab();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(drivePanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectDriveTab();
                 }
             });
         }
@@ -155,11 +170,20 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectTimeandExpenseTab() {
-        TimeandExpensePanel.entityPanel.clear();
-        TimeandExpensePanel.sidePanelTop.clear();
-        TimeandExpensePanel.entityTitlePanel.add(new TAEMenu());
-        TimeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
-        TimeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
+        timeandExpensePanel.entityPanel.clear();
+        timeandExpensePanel.sidePanelTop.clear();
+        timeandExpensePanel.entityTitlePanel.add(new TAEMenu());
+        timeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
+        timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
+
+
+    }
+
+    public void selectDriveTab() {
+        drivePanel.entityPanel.clear();
+        drivePanel.sidePanelTop.clear();
+        drivePanel.entityPanel.add(new DriveEntityPanel());
+        drivePanel.sidePanelTop.add(new DriveTreePanel());
 
 
     }
@@ -195,7 +219,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public EntityLayout getTimeandExpensePanel() {
-        return TimeandExpensePanel;
+        return timeandExpensePanel;
     }
 
     public EntityLayout getProfilePanel() {

@@ -56,7 +56,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
         this.constants = constants;
         panel.add(tree);
         panel.addStyleName("y-gwt-TreePanel");
-        addRooNode(entityNodeNameKey);
+        addRootNode(entityNodeNameKey);
         tree.addSelectionHandler(this);
         addListeners();
         configure();
@@ -82,7 +82,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
         }
     }
 
-    protected void addRooNode(String name) {
+    protected void addRootNode(String name) {
         // TODO get the roo node name from constants
         rootItem.setText(name);
         rootItem.addStyleName("y-gwt-treePanelComposite-RootNode");

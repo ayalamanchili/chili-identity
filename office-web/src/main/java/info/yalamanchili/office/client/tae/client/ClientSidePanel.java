@@ -47,8 +47,8 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createclientlink)) {
-            TabPanel.instance().TimeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().TimeandExpensePanel.entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
     

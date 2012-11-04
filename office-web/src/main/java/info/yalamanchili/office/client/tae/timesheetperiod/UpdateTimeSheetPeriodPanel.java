@@ -56,10 +56,10 @@ public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Time Sheet Period");
-        TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TimeSheetPeriodSidePanel());
-        TabPanel.instance().TimeandExpensePanel.entityPanel.clear(); 
-        TabPanel.instance().TimeandExpensePanel.entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TimeSheetPeriodSidePanel());
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear(); 
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
     }
 
     @Override
