@@ -25,6 +25,7 @@
         <class>info.yalamanchili.office.entity.message.Message</class>
         <!-- Drive-->
         <class>info.yalamanchili.office.entity.drive.Folder</class>
+        <class>info.yalamanchili.office.entity.drive.File</class>
         <!-- Social-->
         <class>info.yalamanchili.office.entity.social.Post</class>
         <!--Time-->

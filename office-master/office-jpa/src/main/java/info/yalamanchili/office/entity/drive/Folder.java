@@ -25,9 +25,11 @@ public class Folder extends AbstractEntity {
     protected String description;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     protected List<Folder> children;
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ForeignKey(name = "FK_ParentFolder_ChildrenFolders")
     protected Folder parent;
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL)
+    protected List<File> files;
 
     public Folder() {
     }
@@ -59,12 +61,33 @@ public class Folder extends AbstractEntity {
         this.children = children;
     }
 
+    public void addChild(Folder folder) {
+        this.getChildren().add(folder);
+        folder.setParent(this);
+    }
+
     public Folder getParent() {
         return parent;
     }
 
     public void setParent(Folder parent) {
         this.parent = parent;
+    }
+
+    public List<File> getFiles() {
+        if (this.files == null) {
+            this.files = new ArrayList<File>();
+        }
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
+
+    public void addFile(File file) {
+        this.getFiles().add(file);
+        file.setFolder(this);
     }
 
     @Override

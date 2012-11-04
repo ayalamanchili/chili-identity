@@ -26,6 +26,7 @@ public class FolderDto {
     protected String description;
     protected FolderDto parent;
     protected List<FolderDto> children;
+    protected List<FileDto> files;
 
     public Long getId() {
         return id;
@@ -70,6 +71,18 @@ public class FolderDto {
 
     public void setChildren(List<FolderDto> children) {
         this.children = children;
+    }
+
+    @XmlTransient
+    public List<FileDto> getFiles() {
+        if (this.files == null) {
+            this.files = new ArrayList<FileDto>();
+        }
+        return files;
+    }
+
+    public void setFiles(List<FileDto> files) {
+        this.files = files;
     }
 
     public static FolderDto map(Mapper mapper, Folder folder) {
