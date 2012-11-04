@@ -257,6 +257,11 @@ public class OfficeStartup {
         getDOTNETCertification();
         //TAE
         techSysClient();
+        
+        Folder hrFolder= new Folder();
+        hrFolder.setName("HR");
+        hrFolder.setParent(driveFolder);
+        em.merge(hrFolder);
     }
 
     protected AddressType getHomeAddressType() {

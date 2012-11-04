@@ -75,12 +75,6 @@
             <activatedProfile>prod</activatedProfile>
         </activatedProfiles>
     </action>
-    <action>
-            <actionName>CUSTOM-tomcat6:run debug</actionName>
-            <displayName>tomcat6:run debug</displayName>
-            <goals>
-                <goal>tomcat6:run</goal>
-            </goals>
-        </action>
+    
         
 </actions>
