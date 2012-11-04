@@ -4,16 +4,22 @@
  */
 package info.yalamanchili.office.client.drive;
 
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.gwt.TreeEntityItem;
+import info.yalamanchili.office.client.home.todo.CreateTodoPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -22,7 +28,8 @@ import java.util.logging.Logger;
  *
  * @author yphanikumar
  */
-public class DriveTreePanel extends ALComposite {
+//TODO move generic/common logic to abstracttreepanel
+public class DriveTreePanel extends ALComposite implements SelectionHandler<TreeItem> {
 
     private static Logger logger = Logger.getLogger(TreeEmployeePanel.class.getName());
     protected FlowPanel panel = new FlowPanel();
@@ -59,6 +66,7 @@ public class DriveTreePanel extends ALComposite {
 
     @Override
     protected void addListeners() {
+        tree.addSelectionHandler(this);
     }
 
     @Override
@@ -104,7 +112,17 @@ public class DriveTreePanel extends ALComposite {
         return null;
     }
 
+    protected TreeEntityItem getSelectedNode() {
+        return (TreeEntityItem) tree.getSelectedItem();
+    }
+
     protected String getDriveTreeUrl() {
         return OfficeWelcome.constants.root_url() + "drive/tree";
+    }
+
+    @Override
+    public void onSelection(SelectionEvent<TreeItem> event) {
+        TreeEntityItem selectedNode = (TreeEntityItem) event.getSelectedItem();
+        GenericPopup.instance().show(new DriveFolderOptionsWidget(), selectedNode.getAbsoluteLeft(), selectedNode.getAbsoluteTop());
     }
 }
