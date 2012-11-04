@@ -21,10 +21,19 @@ import org.dozer.Mapper;
 @XmlType
 public class FolderDto {
 
+    protected Long id;
     protected String name;
     protected String description;
     protected FolderDto parent;
     protected List<FolderDto> children;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
