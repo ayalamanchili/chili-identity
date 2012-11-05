@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -21,6 +22,7 @@ import org.hibernate.annotations.ForeignKey;
 @Entity
 public class Folder extends AbstractEntity {
 
+    @NotEmpty
     protected String name;
     protected String description;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)

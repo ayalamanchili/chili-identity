@@ -47,7 +47,8 @@ public class DriveResource {
     
     @PUT
     @Path("/addfile/{folderId}")
-    public void addFile(@PathParam("folderId") Long folderId, FileDto file) {
-        driveService.addFile(folderId, file);
+    @Produces("application/text")
+    public String addFile(@PathParam("folderId") Long folderId, FileDto file) {
+        return driveService.addFile(folderId, file);
     }
 }

@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.gwt;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.TreeItem;
+import info.chili.gwt.utils.JSONUtils;
 
 /**
  *
@@ -35,6 +36,9 @@ public class TreeEntityItem extends TreeItem {
     }
 
     public String getEntityId() {
+        if (entityId == null) {
+            return JSONUtils.toString(entity, "id");
+        }
         return entityId;
     }
 

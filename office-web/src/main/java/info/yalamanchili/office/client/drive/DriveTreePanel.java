@@ -32,10 +32,16 @@ import java.util.logging.Logger;
 public class DriveTreePanel extends ALComposite implements SelectionHandler<TreeItem> {
 
     private static Logger logger = Logger.getLogger(TreeEmployeePanel.class.getName());
+    private static DriveTreePanel instance;
+
+    public static DriveTreePanel instance() {
+        return instance;
+    }
     protected FlowPanel panel = new FlowPanel();
     protected Tree tree = new Tree();
 
     public DriveTreePanel() {
+        instance = this;
         init(panel);
         initTree();
     }
@@ -52,6 +58,11 @@ public class DriveTreePanel extends ALComposite implements SelectionHandler<Tree
                 }
             }
         });
+    }
+
+    protected void refresh() {
+        tree.clear();
+        initTree();
     }
 
     protected void buildDriveTree(JSONObject parent, JSONArray children) {
@@ -123,6 +134,6 @@ public class DriveTreePanel extends ALComposite implements SelectionHandler<Tree
     @Override
     public void onSelection(SelectionEvent<TreeItem> event) {
         TreeEntityItem selectedNode = (TreeEntityItem) event.getSelectedItem();
-        GenericPopup.instance().show(new DriveFolderOptionsWidget(), selectedNode.getAbsoluteLeft(), selectedNode.getAbsoluteTop());
+        GenericPopup.instance().show(new DriveFolderOptionsWidget(), selectedNode.getAbsoluteLeft() + selectedNode.getOffsetWidth(), selectedNode.getAbsoluteTop());
     }
 }

@@ -10,6 +10,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -18,13 +20,16 @@ import javax.persistence.Temporal;
 @Entity
 public class File extends AbstractEntity {
 
+    @NotEmpty
     protected String name;
+    @NotEmpty
     protected String fileUrl;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date createdTs;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date updatedTs;
     @ManyToOne(cascade = CascadeType.ALL)
+    @NotNull
     protected Folder folder;
 
     public File() {

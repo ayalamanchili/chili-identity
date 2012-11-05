@@ -30,7 +30,7 @@ public class FileDao extends CRUDDao<File> {
         return em;
     }
 
-    public static FolderDao instance() {
+    public static FileDao instance() {
         return SpringContext.getBean(FileDao.class);
     }
 }

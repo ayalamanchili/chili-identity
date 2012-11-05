@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -22,6 +23,7 @@ import org.dozer.Mapper;
 public class FolderDto {
 
     protected Long id;
+    @NotEmpty
     protected String name;
     protected String description;
     protected FolderDto parent;

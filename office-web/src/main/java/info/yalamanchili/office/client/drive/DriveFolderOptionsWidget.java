@@ -9,6 +9,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 
 /**
  *
@@ -51,8 +53,10 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     }
 
     protected void newFolderLinkClicked() {
+        GenericPopup.instance().show(new CreateFolderPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     protected void newFileLinkClicked() {
+        GenericPopup.instance().show(new CreateFilePanel());
     }
 }

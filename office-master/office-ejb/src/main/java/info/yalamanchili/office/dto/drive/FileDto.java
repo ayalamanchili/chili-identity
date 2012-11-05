@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -20,7 +21,9 @@ import org.dozer.Mapper;
 public class FileDto {
 
     protected Long id;
+    @NotEmpty
     protected String name;
+    @NotEmpty
     protected String fileUrl;
     protected Date createdTs;
     protected Date updatedTs;
