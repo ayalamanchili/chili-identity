@@ -27,6 +27,7 @@ import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel
 import info.yalamanchili.office.client.profile.employee.ChangePasswordPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
+import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPanel;
 import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
 import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
@@ -50,6 +51,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel clientInfoPanel;
     protected DisclosurePanel emergencyContactsPanel;
     protected DisclosurePanel skillSetDP;
+    protected DisclosurePanel preferencesPanel;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
     protected ClickableLink changePassword = new ClickableLink("Change Password");
 
@@ -80,6 +82,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         addClientInfoPanel();
         addEmergencyContactsPanel();
         addSkillSetPanel();
+        addPreferencesPanel();
     }
     /*
      * Read Employee Panel
@@ -246,9 +249,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
                                     skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id")));
                                 } else {
                                     TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                    if (Auth.isAdmin() || Auth.isHR()) {
-                                        skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
-                                    }
+                                    skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
                                 }
                             }
                         });
@@ -266,6 +267,40 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     public void refreshSkillSetPanel() {
         skillSetDP.setOpen(false);
         skillSetDP.setOpen(true);
+    }
+
+    protected void addPreferencesPanel() {
+        preferencesPanel = new DisclosurePanel("Preferences");
+        panel.add(preferencesPanel);
+        preferencesPanel.addStyleName("profileHome");
+        preferencesPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String arg0) {
+                                JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
+                                if (arg0 != null && preferences != null) {
+                                    preferencesPanel.clear();
+                                    preferencesPanel.setContent(
+                                            new UpdatePreferencesPanel(preferences));
+                                }
+                            }
+                        });
+
+
+            }
+        });
+    }
+
+    public void refreshPreferencesPanel() {
+        preferencesPanel.setOpen(false);
+        preferencesPanel.setOpen(true);
+    }
+
+    protected String getPreferencesURI() {
+        return OfficeWelcome.constants.root_url() + "employee/preferences/" + OfficeWelcome.instance().employeeId;
     }
 
     @Override

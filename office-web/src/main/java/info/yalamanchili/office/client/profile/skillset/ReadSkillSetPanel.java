@@ -14,6 +14,7 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
@@ -86,6 +87,8 @@ public class ReadSkillSetPanel extends ReadComposite implements ClickHandler {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             if (Auth.isAdmin() || Auth.isHR()) {
                 TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(empId));
+            } else {
+                TabPanel.instance().myOfficePanel.entityPanel.add(new HTML("no SkillSet information"));
             }
         }
     }
