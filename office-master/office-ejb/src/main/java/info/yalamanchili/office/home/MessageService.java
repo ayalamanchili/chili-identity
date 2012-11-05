@@ -17,11 +17,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Prashanthi
  */
+@Component
 public class MessageService {
 
     @PersistenceContext
@@ -29,7 +31,7 @@ public class MessageService {
     @Autowired
     protected Mapper mapper;
 
-    public void createMessage(MessageDto messageDto) {
+    public MessageDto createMessage(MessageDto messageDto) {
         Message newMessage = new Message();
         newMessage.setSubject(messageDto.getSubject());
         newMessage.setMessage(messageDto.getMessage());
@@ -43,6 +45,7 @@ public class MessageService {
         }
 
         MessageDao.instance().save(newMessage);
+        return null;
     }
 
     public static MessageService instance() {
