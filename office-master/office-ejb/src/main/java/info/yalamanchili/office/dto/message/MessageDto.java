@@ -54,6 +54,9 @@ public class MessageDto implements Serializable {
     }
 
     public List<Entry> getTos() {
+        if (this.tos == null) {
+            this.tos = new ArrayList<Entry>();
+        }
         return tos;
     }
 
@@ -76,7 +79,7 @@ public class MessageDto implements Serializable {
             Entry to = new Entry();
             to.setId(emp.getEmployeeId());
             to.setValue(emp.getFirstName() + " " + emp.getLastName());
-            
+
             messageDto.getTos().add(to);
 
         }
