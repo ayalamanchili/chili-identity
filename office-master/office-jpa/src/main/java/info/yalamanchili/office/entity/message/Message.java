@@ -72,7 +72,7 @@ public class Message extends AbstractEntity {
     public void setMessageTs(Date messageTs) {
         this.messageTs = messageTs;
     }
-
+    @XmlElement
     public List<Employee> getTos() {
         if (this.tos == null) {
             this.tos = new ArrayList<Employee>();
@@ -87,7 +87,7 @@ public class Message extends AbstractEntity {
     public void addTo(Employee fromEmp) {
         this.tos.add(fromEmp);
     }
-
+    @XmlElement
     public List<Message> getReplies() {
         return replies;
     }
@@ -95,7 +95,7 @@ public class Message extends AbstractEntity {
     public void setReplies(List<Message> replies) {
         this.replies = replies;
     }
-
+   @XmlElement
     public Employee getFrom() {
         return from;
     }
