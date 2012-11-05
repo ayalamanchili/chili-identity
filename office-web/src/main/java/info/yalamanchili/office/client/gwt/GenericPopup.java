@@ -35,6 +35,7 @@ public class GenericPopup extends PopupPanel implements ClickHandler {
         panel.add(widget);
         setWidget(panel);
         closeB.addClickHandler(this);
+        setAutoHideEnabled(true);
         super.setPopupPosition(left, top);
     }
 
