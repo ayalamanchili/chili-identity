@@ -37,12 +37,35 @@ public class MessageResource extends CRUDResource<MessageDto> {
 
     @Autowired
     public MessageDao messageDao;
+
+    @Autowired
+    public MessageService messageService;
+
+
     private Mapper mapper;
 
     @Override
     public CRUDDao getDao() {
         return messageDao;
     }
+
+    
+//    @GET
+//    @Path("/{start}/{limit}")
+//     
+//    public MessageResource.MessageTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+//        MessageResource.MessageTable tableObj = new MessageResource.MessageTable();
+//        tableObj.setEntities(getDao().query(start, limit));
+//        tableObj.setSize(getDao().size());
+//        return tableObj;
+//    }
+    
+    @PUT
+    public MessageDto save(MessageDto entity) {
+       return  messageService.createMessage(entity);
+    }
+
+
 
     @GET
     @Path("/{start}/{limit}")
