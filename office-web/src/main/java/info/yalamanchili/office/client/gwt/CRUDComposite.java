@@ -137,7 +137,7 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
             FileuploadField fileUploadPanel = new FileuploadField(constants, attributeName, entityName,
-                    "name",isRequired) {
+                    "name", isRequired) {
                 @Override
                 public void onUploadComplete() {
                 }
@@ -155,6 +155,11 @@ public abstract class CRUDComposite extends Composite {
             currencyField.addStyleName("y-gwt-CurrencyField");
             fields.put(attributeName, currencyField);
             entityDisplayWidget.add(currencyField);
+        }
+        if (DataType.SUGGEST_FIELD.equals(type)) {
+            info.chili.gwt.widgets.SuggestBox suggestBox = new info.chili.gwt.widgets.SuggestBox(constants, attributeName, entityName, readOnly, isRequired);
+            fields.put(attributeName, suggestBox);
+            entityDisplayWidget.add(suggestBox);
         }
     }
 
@@ -229,7 +234,12 @@ public abstract class CRUDComposite extends Composite {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
-
+        if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
+            info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
+            if (field.getValue() != null) {
+                entity.put(fieldKey, new JSONString(field.getValue()));
+            }
+        }
     }
 
     protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
@@ -263,6 +273,10 @@ public abstract class CRUDComposite extends Composite {
         // Currency Field
         if (DataType.CURRENCY_FIELD.equals(type)) {
             CurrencyField field = (CurrencyField) fields.get(fieldKey);
+            field.setValue(JSONUtils.toString(entity, fieldKey));
+        }
+        if (DataType.SUGGEST_FIELD.equals(type)) {
+            info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
             field.setValue(JSONUtils.toString(entity, fieldKey));
         }
         //Float Field
@@ -306,7 +320,7 @@ public abstract class CRUDComposite extends Composite {
     protected void processValidationErrors(JSONValue errorsObj) {
         clearMessages();
         JSONArray errorsArray = JSONUtils.toJSONArray(errorsObj.isObject().get("Error"));
-        String genericErrorMessage=null;
+        String genericErrorMessage = null;
         for (int i = 0; i < errorsArray.size(); i++) {
             JSONObject err = (JSONObject) errorsArray.get(i);
             JSONString errSource = err.get("source").isString();
@@ -315,15 +329,15 @@ public abstract class CRUDComposite extends Composite {
                 field.setMessage(err.get("description").isString().stringValue());
             } else {
                 //Generic error not specific to any field / class level error
-                if(genericErrorMessage==null){
-                   genericErrorMessage= new String();
-                   genericErrorMessage=genericErrorMessage.concat("Error:");
+                if (genericErrorMessage == null) {
+                    genericErrorMessage = new String();
+                    genericErrorMessage = genericErrorMessage.concat("Error:");
                 }
-               genericErrorMessage= genericErrorMessage.concat(err.get("source").isString().stringValue() + ":" + err.get("description").isString().stringValue());
+                genericErrorMessage = genericErrorMessage.concat(err.get("source").isString().stringValue() + ":" + err.get("description").isString().stringValue());
             }
         }
-        if(genericErrorMessage!=null){
-           new ResponseStatusWidget().show(genericErrorMessage);
+        if (genericErrorMessage != null) {
+            new ResponseStatusWidget().show(genericErrorMessage);
         }
     }
 

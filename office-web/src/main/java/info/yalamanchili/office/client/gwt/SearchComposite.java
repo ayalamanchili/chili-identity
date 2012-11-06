@@ -50,7 +50,6 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
      * Advanced search Panels
      */
     protected DisclosurePanel disclosurePanel = new DisclosurePanel("Advanced Search");
-    
     protected FlowPanel advancedSearchPanel = new FlowPanel();
     /*
      * attributes
@@ -76,7 +75,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         disclosurePanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-               populateSuggestBoxes();
+                populateSuggestBoxes();
             }
         });
         mainPanel.add(disclosurePanel);
@@ -86,7 +85,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         addListeners();
         configure();
         addWidgets();
-        
+
     }
 
     protected abstract void populateSuggestBoxes();
@@ -118,8 +117,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(integerField);
         }
         if (DataType.STRING_FIELD.equals(type)) {
-            String name = info.chili.gwt.utils.Utils.getAttributeLabel(attributeName, entityName, constants);
-            info.chili.gwt.widgets.SuggestBox suggestBox = new info.chili.gwt.widgets.SuggestBox(name);
+            info.chili.gwt.widgets.SuggestBox suggestBox = new info.chili.gwt.widgets.SuggestBox(constants,
+                    attributeName, entityName, false, false);
             fields.put(attributeName, suggestBox);
             advancedSearchPanel.add(suggestBox);
         }
