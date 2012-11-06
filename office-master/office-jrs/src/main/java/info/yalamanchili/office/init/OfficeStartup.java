@@ -83,6 +83,7 @@ public class OfficeStartup {
         recruiterRole();
         expenseRole();
         payrollRole();
+        driveRole();
     }
 
     protected void initUsers() {
