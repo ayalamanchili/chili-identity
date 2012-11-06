@@ -53,6 +53,7 @@ public class OfficeStartup {
     protected CRole recruiterRole;
     protected CRole accountantRole;
     protected CRole payrollRole;
+    protected CRole driveRole;
     protected Employee userEmp;
     protected Employee adminEmp;
     protected Company sstechCmp;
@@ -505,6 +506,14 @@ public class OfficeStartup {
         }
     }
 
+      public void driveRole() {
+        if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_DRIVE) == null) {
+            CRole role = new CRole();
+            role.setRolename(OfficeRoles.ROLE_DRIVE);
+            driveRole = em.merge(role);
+        }
+    }
+
     public void hrRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_HR) == null) {
             CRole role = new CRole();
@@ -566,6 +575,7 @@ public class OfficeStartup {
             user.addRole(adminRole);
             user.addRole(recruiterRole);
             user.addRole(accountantRole);
+            user.addRole(driveRole);
             adminUser = em.merge(user);
         }
     }
