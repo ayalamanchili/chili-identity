@@ -6,12 +6,16 @@ package info.yalamanchili.office.client.home.message;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +25,7 @@ import java.util.logging.Logger;
 public class CreateMessagePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.client.CreateClientPanel.class.getName());
+    protected SuggestBox tosSuggestBox = new SuggestBox(constants, "tos", "Message", false, true);
 
     public CreateMessagePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -70,10 +75,12 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void configure() {
+        initTosSuggesBox();
     }
 
     @Override
     protected void addWidgets() {
+        entityDisplayWidget.add(tosSuggestBox);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("message", false, true, DataType.STRING_FIELD);
         addField("messageTs", false, true, DataType.DATE_FIELD);
@@ -86,5 +93,21 @@ public class CreateMessagePanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "message";
+    }
+
+    protected void initTosSuggesBox() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                tosSuggestBox.loadData(values.values());
+            }
+        });
+    }
+
+    protected String getEmployeeIdsDropDownUrl() {
+        //TODO think anout the limit
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=employeeId";
     }
 }
