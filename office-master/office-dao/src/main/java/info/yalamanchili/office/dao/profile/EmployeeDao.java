@@ -60,7 +60,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public Employee getEmployeWithEmpId(String empId) {
-        Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.empId=:empIdParam");
+        Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
         try {
             return (Employee) getEmployeQ.getSingleResult();
