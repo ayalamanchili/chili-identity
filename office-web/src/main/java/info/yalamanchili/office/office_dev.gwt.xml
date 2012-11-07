@@ -25,6 +25,9 @@
     <!-- GWT HTML5 Video support-->
     <inherits name='fr.hd3d.html5.video.HTML5Video'/>
     
+    <!--guava-->
+    <inherits name="com.google.common.base.Base"/>
+    
     <!-- gwt client bundle to load resources -->
     <inherits name="com.google.gwt.resources.Resources" />
     <entry-point class="info.yalamanchili.office.client.OfficeWelcome" />

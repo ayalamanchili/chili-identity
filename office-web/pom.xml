@@ -35,6 +35,17 @@
             <artifactId>video</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- gauve -gwt-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-gwt</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -362,5 +373,6 @@
         <gwt.plugin.version>2.5.0-rc1</gwt.plugin.version>
         <http.client.version>4.2</http.client.version>
         <spring.version>3.1.1.RELEASE</spring.version>
+        <guava.version>13.0</guava.version>
     </properties>
 </project>

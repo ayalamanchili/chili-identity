@@ -4,7 +4,11 @@
  */
 package info.yalamanchili.office.client.home.message;
 
+import com.google.common.base.Splitter;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -38,7 +42,29 @@ public class CreateMessagePanel extends CreateComposite {
         assignEntityValueFromField("subject", msg);
         assignEntityValueFromField("message", msg);
         assignEntityValueFromField("messageTs", msg);
+        msg.put("tos", populateTos());
+        logger.info(msg.toString());
         return msg;
+    }
+
+    protected JSONArray populateTos() {
+        JSONArray array = new JSONArray();
+
+        String tos = tosSuggestBox.getValue();
+        int i = 0;
+        for (String toStr : splitString(tos)) {
+            if (!toStr.isEmpty()) {
+                JSONObject to = new JSONObject();
+                to.put("id", new JSONString(toStr));
+                array.set(i, to);
+            }
+            i++;
+        }
+        return array;
+    }
+
+    public static Iterable<String> splitString(String str) {
+        return Splitter.on(" ").split(str);
     }
 
     @Override
