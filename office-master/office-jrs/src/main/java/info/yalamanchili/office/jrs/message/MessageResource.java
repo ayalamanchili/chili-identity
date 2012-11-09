@@ -39,6 +39,7 @@ public class MessageResource extends CRUDResource<MessageDto> {
     public MessageDao messageDao;
     @Autowired
     public MessageService messageService;
+
     private Mapper mapper;
 
     @Override

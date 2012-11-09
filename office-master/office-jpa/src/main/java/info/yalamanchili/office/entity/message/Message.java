@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -37,7 +36,7 @@ public class Message extends AbstractEntity {
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date messageTs;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     protected List<Employee> tos;
     @OneToMany
     protected List<Message> replies;

@@ -31,6 +31,9 @@ public class MessageService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    
+    @Autowired
+    protected MessageDao messageDao;
 
     public MessageDto createMessage(MessageDto messageDto) {
         Message newMessage = new Message();
@@ -44,6 +47,7 @@ public class MessageService {
                 newMessage.addTo(EmployeeDao.instance().getEmployeWithEmpId(emp.getId()));
             }
         }
+        messageDao.save(newMessage);
         return null;
     }
 
