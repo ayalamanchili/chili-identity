@@ -27,10 +27,4 @@
     <beans:bean id ="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" >
         <beans:constructor-arg value="256"/>
     </beans:bean>
-    
-    
-    <beans:bean id="hibernateStringEncryptor" class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
-        <beans:property name="registeredName" value="hibernateStringEncryptor"/>
-        <beans:property name="password" value="${jasypt.password}"/>
-    </beans:bean>
 </beans:beans>

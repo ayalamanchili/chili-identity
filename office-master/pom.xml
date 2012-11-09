@@ -138,13 +138,6 @@
             <artifactId>ehcache-core</artifactId>
             <version>2.0.0</version>
         </dependency>
-        <!-- JASYPT-->
-        <dependency>
-            <groupId>org.jasypt</groupId>
-            <artifactId>jasypt</artifactId>
-            <version>1.7</version>
-            <scope>compile</scope>
-        </dependency>
         <!--Spring Tests-->
         <dependency>
             <groupId>org.springframework</groupId>

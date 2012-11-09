@@ -28,11 +28,6 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  * @author ayalamanchili
  * @generated
  */
-@TypeDef (name="encryptedString", typeClass= EncryptedStringType.class,
-    parameters= {
-        @Parameter(name="encryptorRegisteredName",  value="hibernateStringEncryptor")
-    }
-)
 @XmlRootElement
 @Entity
 @Audited
@@ -80,7 +75,6 @@ public class Email extends AbstractEntity {
     /**
      * @generated
      */
-    @Type(type="encryptedString")
     public String getEmail() {
         return email;
     }
