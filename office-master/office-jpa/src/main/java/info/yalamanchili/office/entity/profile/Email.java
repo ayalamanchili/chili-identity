@@ -21,7 +21,6 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jasypt.hibernate.type.EncryptedStringType;
 
 /**
  * @todo add comment for javadoc
