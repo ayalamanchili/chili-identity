@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dto.drive;
 
 import info.yalamanchili.office.entity.drive.File;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement(name = "File")
 @XmlType
-public class FileDto {
+public class FileDto  implements Serializable{
 
     protected Long id;
     @NotEmpty

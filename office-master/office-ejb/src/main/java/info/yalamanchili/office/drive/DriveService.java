@@ -46,15 +46,13 @@ public class DriveService {
         file.setFolder(folder);
         return FileDao.instance().save(file).getId().toString();
     }
-    
-      public List<FileDto> getFiles(Long folderId){
-           Folder folder=folderDao.findById(folderId);
-           List<FileDto> targetfds = new  ArrayList<FileDto>();
-              for (File fs : folder.getFiles())
-              {
-               targetfds.add(FileDto.map(mapper, (File)fs)); 
-              }
-            return targetfds;
-        }
 
+    public List<FileDto> getFiles(Long folderId) {
+        Folder folder = folderDao.findById(folderId);
+        List<FileDto> targetfds = new ArrayList<FileDto>();
+        for (File file : folder.getFiles()) {
+            targetfds.add(FileDto.map(mapper, file));
+        }
+        return targetfds;
+    }
 }

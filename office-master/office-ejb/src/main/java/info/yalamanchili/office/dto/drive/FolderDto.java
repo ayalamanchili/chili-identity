@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dto.drive;
 
 import info.yalamanchili.office.entity.drive.Folder;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement(name = "Folder")
 @XmlType
-public class FolderDto {
+public class FolderDto implements Serializable {
 
     protected Long id;
     @NotEmpty
