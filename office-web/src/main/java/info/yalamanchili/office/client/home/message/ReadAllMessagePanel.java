@@ -50,6 +50,12 @@ public class ReadAllMessagePanel extends ReadAllComposite {
 
     @Override
     public void createTableHeader() {
+
+        table.setText(0, 0, getKeyValue("Table_Action"));   
+        table.setText(0, 1, getKeyValue("Subject"));
+        table.setText(0, 2, getKeyValue("Message"));
+        table.setText(0, 3, getKeyValue("MessageTs"));
+       
     }
 
     @Override
@@ -66,7 +72,6 @@ public class ReadAllMessagePanel extends ReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-       
     }
 
     @Override
