@@ -10,7 +10,9 @@ import info.yalamanchili.office.dto.drive.FileDto;
 import info.yalamanchili.office.dto.drive.FolderDto;
 import info.yalamanchili.office.entity.drive.File;
 import info.yalamanchili.office.entity.drive.Folder;
+import java.util.ArrayList;
 import org.dozer.Mapper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,4 +46,15 @@ public class DriveService {
         file.setFolder(folder);
         return FileDao.instance().save(file).getId().toString();
     }
+    
+      public List<FileDto> getFiles(Long folderId){
+           Folder folder=folderDao.findById(folderId);
+           List<FileDto> targetfds = new  ArrayList<FileDto>();
+              for (File fs : folder.getFiles())
+              {
+               targetfds.add(FileDto.map(mapper, (File)fs)); 
+              }
+            return targetfds;
+        }
+
 }
