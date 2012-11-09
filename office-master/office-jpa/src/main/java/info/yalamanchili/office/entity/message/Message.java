@@ -85,7 +85,7 @@ public class Message extends AbstractEntity {
     }
 
     public void addTo(Employee fromEmp) {
-        this.tos.add(fromEmp);
+        this.getTos().add(fromEmp);
     }
     @XmlElement
     public List<Message> getReplies() {
