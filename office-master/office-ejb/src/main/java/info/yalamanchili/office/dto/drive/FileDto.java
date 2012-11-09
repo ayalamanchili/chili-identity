@@ -6,6 +6,8 @@ package info.yalamanchili.office.dto.drive;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -81,5 +83,30 @@ public class FileDto {
     public static FileDto map(Mapper mapper, File file) {
         FileDto fileDto = mapper.map(file, FileDto.class);
         return fileDto;
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class FileTable {
+
+        protected Long size;
+        protected List<FileDto> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<FileDto> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<FileDto> entities) {
+            this.entities = entities;
+        }
     }
 }

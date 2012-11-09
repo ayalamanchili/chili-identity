@@ -91,4 +91,29 @@ public class FolderDto {
         FolderDto folderDto = mapper.map(folder, FolderDto.class);
         return folderDto;
     }
+
+    @XmlRootElement
+    @XmlType
+    public static class FolderTable {
+
+        protected Long size;
+        protected List<FolderDto> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<FolderDto> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<FolderDto> entities) {
+            this.entities = entities;
+        }
+    }
 }
