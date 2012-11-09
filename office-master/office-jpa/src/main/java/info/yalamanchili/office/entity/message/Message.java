@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -36,7 +37,7 @@ public class Message extends AbstractEntity {
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date messageTs;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @ManyToMany
     protected List<Employee> tos;
     @OneToMany
     protected List<Message> replies;
