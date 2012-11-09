@@ -16,6 +16,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.gwt.TreeEntityItem;
@@ -135,5 +136,8 @@ public class DriveTreePanel extends ALComposite implements SelectionHandler<Tree
     public void onSelection(SelectionEvent<TreeItem> event) {
         TreeEntityItem selectedNode = (TreeEntityItem) event.getSelectedItem();
         GenericPopup.instance().show(new DriveFolderOptionsWidget(), selectedNode.getAbsoluteLeft() + selectedNode.getOffsetWidth(), selectedNode.getAbsoluteTop());
+        TabPanel.instance().drivePanel.entityPanel.clear();
+        TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(selectedNode.getEntityId()));
+        
     }
 }
