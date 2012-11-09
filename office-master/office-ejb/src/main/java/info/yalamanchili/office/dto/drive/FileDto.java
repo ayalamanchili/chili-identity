@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dto.drive;
 
-import java.io.File;
+import info.yalamanchili.office.entity.drive.File;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
