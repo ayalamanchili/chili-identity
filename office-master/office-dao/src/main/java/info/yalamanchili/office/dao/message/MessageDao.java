@@ -4,6 +4,8 @@
  */
 package info.yalamanchili.office.dao.message;
 
+import info.chili.beans.BeanMapper;
+import info.chili.jpa.AbstractEntity;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.security.SecurityService;
