@@ -14,18 +14,25 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.jasypt.hibernate.type.EncryptedStringType;
 
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
  * @generated
  */
-@Indexed
+@TypeDef (name="encryptedString", typeClass= EncryptedStringType.class,
+    parameters= {
+        @Parameter(name="encryptorRegisteredName",  value="hibernateStringEncryptor")
+    }
+)
 @XmlRootElement
 @Entity
 @Audited
@@ -42,6 +49,7 @@ public class Email extends AbstractEntity {
     @org.hibernate.validator.constraints.Email
     // @Unique(entity = Email.class, property = "email", message="{email.not.unique.msg}")
     @NotEmpty(message = "{email.not.empty.msg}")
+    @Type(type = "encryptedString")
     protected String email;
     /**
      * @generated
@@ -72,6 +80,7 @@ public class Email extends AbstractEntity {
     /**
      * @generated
      */
+    @Type(type="encryptedString")
     public String getEmail() {
         return email;
     }
