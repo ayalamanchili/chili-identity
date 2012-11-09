@@ -6,6 +6,7 @@ package info.yalamanchili.office.jrs.drive;
 
 import info.yalamanchili.office.drive.DriveService;
 import info.yalamanchili.office.dto.drive.FileDto;
+import info.yalamanchili.office.dto.drive.FileDto.FileTable;
 import info.yalamanchili.office.dto.drive.FolderDto;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -54,8 +55,9 @@ public class DriveResource {
     }
 
     @GET
-    @Path("/files/{folderId}")
-    public List<FileDto> getFiles(@PathParam("folderId") long id) {
-        return driveService.getFiles(id);
+    @Path("/files/{folderId}/{start}/{limit}")
+     @Produces("application/text")
+    public FileTable getFiles(@PathParam("folderId") long id,@PathParam("start") int start, @PathParam("limit") int limit) {
+        return driveService.getFiles(id,start,limit);
     }
 }
