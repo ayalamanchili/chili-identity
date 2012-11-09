@@ -16,6 +16,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -91,8 +92,10 @@ public class CreateMessagePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Message Sent");
-        ReadAllMessagePanel.instance.refresh();
-        GenericPopup.instance().hide();
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
+//        ReadAllMessagePanel.instance.refresh();
+//        GenericPopup.instance().hide();
     }
 
     @Override
