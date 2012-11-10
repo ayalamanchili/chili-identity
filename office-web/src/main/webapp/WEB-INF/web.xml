@@ -1,35 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
 
-	<!-- Reroute google rpc calls through a spring dispatcherservlet -->
-	<servlet>
-		<servlet-name>dispatcher</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- Reroute google rpc calls through a spring dispatcherservlet -->
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 
-		<!-- We're using an annotation based web application context -->
-		<init-param>
-			<param-name>contextClass</param-name>
-			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
-		</init-param>
-		<!-- The spring @Configuration can be found here -->
-		<!-- TODO chage this to class path file -->
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>info.yalamanchili.office.server.config.OfficeSpringConfiguration</param-value>
-		</init-param>
+        <!-- We're using an annotation based web application context -->
+        <init-param>
+            <param-name>contextClass</param-name>
+            <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+        </init-param>
+        <!-- The spring @Configuration can be found here -->
+        <!-- TODO chage this to class path file -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>info.yalamanchili.office.server.config.OfficeSpringConfiguration</param-value>
+        </init-param>
 
-	</servlet>
+    </servlet>
 
-	<servlet-mapping>
-		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/office/rpc/*</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/office/rpc/*</url-pattern>
+    </servlet-mapping>
+        
+    <!-- Image/File Upload -->
+    <servlet>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <servlet-class>info.yalamanchili.office.server.FileServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <url-pattern>/office/rpc/fileService</url-pattern>
+    </servlet-mapping>
 
-
-	<welcome-file-list>
-		<welcome-file>office.html</welcome-file>
-	</welcome-file-list>
+    <welcome-file-list>
+        <welcome-file>office.html</welcome-file>
+    </welcome-file-list>
 </web-app>

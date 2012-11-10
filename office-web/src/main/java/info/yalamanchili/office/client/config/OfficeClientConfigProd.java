@@ -13,10 +13,10 @@ import info.yalamanchili.office.client.config.OfficeClientConfig;
 public class OfficeClientConfigProd implements OfficeClientConfig {
 
     public String getFileUploadUrl() {
-        return "https://apps.sstech.us/office/resources/file/upload";
+        return "https://apps.sstech.us/office-web/office/rpc/fileService";
     }
 
     public String getFileDownloadUrl() {
-        return "https://apps.sstech.us/office/resources/file/download?path=";
+        return "https://apps.sstech.us/office-web/office/rpc/fileService?path=";
     }
 }

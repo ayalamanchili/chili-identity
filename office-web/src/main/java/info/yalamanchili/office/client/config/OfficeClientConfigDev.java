@@ -13,10 +13,11 @@ import info.yalamanchili.office.client.config.OfficeClientConfig;
 public class OfficeClientConfigDev implements OfficeClientConfig {
 
     public String getFileUploadUrl() {
-        return "http://localhost:9080/office/resources/file/upload";
+        return "http://localhost:9090/office-web/office/rpc/fileService";
     }
+//TODO make this commom url  and remove the path and let the fileservice servlet handle the logic
 
     public String getFileDownloadUrl() {
-        return "http://localhost:9080/office/resources/file/download?path=";
+        return "http://localhost:9090/office-web/office/rpc/fileService?path=";
     }
 }

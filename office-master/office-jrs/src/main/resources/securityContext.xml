@@ -10,7 +10,6 @@
     
     <!-- Security url configuration -->
     <http auto-config="true" create-session="stateless" use-expressions="true">
-        <intercept-url pattern="/*/file/*" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
     </http>
      
