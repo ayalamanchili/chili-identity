@@ -77,4 +77,12 @@ public class HttpServiceImpl extends BaseRemoteService implements HttpService {
                 "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
         return headers;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
