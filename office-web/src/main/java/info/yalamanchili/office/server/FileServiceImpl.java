@@ -35,6 +35,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  *
  * @author yphanikumar
+ *
+ */
+/**
+ * This servlet acts a proxy routher to fileService to add authentication header
  */
 @RequestMapping("/**/fileService")
 @Scope("session")
@@ -51,86 +55,31 @@ public class FileServiceImpl extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.log(Level.INFO, "in FileService Post");
-        swapPostUrlAndHeaders(request, officeWebConfiguration.getOfficeServicesUrl() + "file/upload", true);
+        //prepare request
+        HttpPost post = new HttpPost(officeWebConfiguration.getOfficeServicesUrl() + "file/upload");
+        HttpHelper.copyHeaders(request, post, "Content-Length", "Host");
+        HttpHelper.copyBody(request, post);
+        addAuthenticationHeader(post);
+        //Make call
+        HttpResponse resp = HttpHelper.getHttpClient(true).execute(post);
+        //process and map response back
+        HttpHelper.copyStatusAndHeaders(response, resp);
+        HttpHelper.copyBody(response, resp);
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.log(Level.INFO, "in FileService Get");
-        logger.log(Level.INFO, request.getQueryString());
+        //prepare request
         HttpGet get = new HttpGet(officeWebConfiguration.getOfficeServicesUrl() + "file/download?" + request.getQueryString());
-        //transfer headers
-        Enumeration<String> headers = request.getHeaderNames();
-        while (headers.hasMoreElements()) {
-            String headerName = headers.nextElement();
-            String headerValue = request.getHeader(headerName);
-            // Skip Content-Length and Host
-            String lowerHeader = headerName.toLowerCase();
-            if (lowerHeader.equals("content-length") == false && lowerHeader.equals("host") == false) {
-                get.addHeader(headerName, headerValue);
-            }
-        }
+        HttpHelper.copyHeaders(request, get, "Content-Length", "Host");
         addAuthenticationHeader(get);
         //TODO change to false
+        //Make call
         HttpResponse resp = HttpHelper.getHttpClient(true).execute(get);
-
-        // Transfer status code to the response
-        StatusLine status = resp.getStatusLine();
-        response.setStatus(status.getStatusCode());
-        // resp.setStatus(status.getStatusCode(), status.getReasonPhrase()); // This seems to be deprecated. Yes status message is "ambigous", but I don't approve
-
-        // Transfer headers to the response
-        Header[] responseHeaders = resp.getAllHeaders();
-        for (int i = 0; i < responseHeaders.length; i++) {
-            Header header = responseHeaders[i];
-            response.addHeader(header.getName(), header.getValue());
-        }
-
-        // Transfer proxy response entity to the servlet response
-        HttpEntity entity = resp.getEntity();
-        InputStream input = entity.getContent();
-        OutputStream output = response.getOutputStream();
-        int b = input.read();
-        while (b != -1) {
-            output.write(b);
-            b = input.read();
-        }
-
-        // Clean up
-        input.close();
-        output.close();
-    }
-
-    /**
-     * this method will change the request url with one provided and add any
-     * additional headers provided
-     */
-    public String swapPostUrlAndHeaders(HttpServletRequest request, String url, boolean newClient) throws IOException {
-        HttpPost post = new HttpPost(url);
-        int contentLength = request.getContentLength();
-        InputStreamEntity entity = new InputStreamEntity(request.getInputStream(), contentLength);
-        post.setEntity(entity);
-        Enumeration<String> headers = request.getHeaderNames();
-        while (headers.hasMoreElements()) {
-            String headerName = headers.nextElement();
-            String headerValue = request.getHeader(headerName);
-            // Skip Content-Length and Host
-            String lowerHeader = headerName.toLowerCase();
-            if (lowerHeader.equals("content-length") == false && lowerHeader.equals("host") == false) {
-                post.addHeader(headerName, headerValue);
-            }
-        }
-        logger.log(Level.INFO, "post url{0}", post.getURI().getPath());
-        return SyncHttp.executeHttpCall(post, null,
-                getAuthenticationHeaders(), newClient);
-    }
-
-    protected Map<String, String> getAuthenticationHeaders() {
-        Map<String, String> headers = new HashMap<String, String>();
-        //TODO get user and password from sessiona and add they
-        headers.put("Authorization",
-                "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
-        return headers;
+        //process and map response back
+        HttpHelper.copyStatusAndHeaders(response, resp);
+        HttpHelper.copyBody(response, resp);
     }
 
     protected void addAuthenticationHeader(HttpRequestBase request) {
