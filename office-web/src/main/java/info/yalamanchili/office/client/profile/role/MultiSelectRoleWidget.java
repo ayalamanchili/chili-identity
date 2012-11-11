@@ -8,7 +8,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.MultiSelectComposite;
-import info.yalamanchili.office.client.gwt.Utils;
 import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.List;

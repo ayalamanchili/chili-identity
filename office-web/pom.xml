@@ -18,6 +18,7 @@
             <artifactId>chili-commons</artifactId>
             <version>${chili.version}</version>
         </dependency>
+        <!--GWT-->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
@@ -46,6 +47,7 @@
             <artifactId>guava-gwt</artifactId>
             <version>${guava.version}</version>
         </dependency>
+        <!--spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>

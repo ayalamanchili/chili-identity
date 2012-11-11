@@ -7,10 +7,8 @@ package info.yalamanchili.office.client.gwt;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import java.util.logging.Logger;
 
 /**
@@ -24,6 +22,12 @@ public class FileField extends ClickableLink implements ClickHandler {
 
     public FileField(String name, String fileUrl) {
         super(name);
+        this.fileUrl = fileUrl;
+        this.addClickHandler(this);
+    }
+
+    public FileField(String fileUrl) {
+        super(Utils.getFileNameFromUrl(fileUrl));
         this.fileUrl = fileUrl;
         this.addClickHandler(this);
     }
