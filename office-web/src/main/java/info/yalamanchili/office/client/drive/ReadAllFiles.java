@@ -6,9 +6,12 @@ package info.yalamanchili.office.client.drive;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -26,6 +29,11 @@ public class ReadAllFiles extends ReadAllComposite {
     public ReadAllFiles(String parentId) {
         instance = this;
         this.parentId = parentId;
+        initTable("Files", OfficeWelcome.constants);
+    }
+
+    private ReadAllFiles() {
+        instance = this;
         initTable("Files", OfficeWelcome.constants);
     }
 
@@ -51,6 +59,7 @@ public class ReadAllFiles extends ReadAllComposite {
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Created Time Stamp"));
         table.setText(0, 3, getKeyValue("Updated Time Stamp"));
+        table.setText(0, 4, getKeyValue("File"));
     }
 
     @Override
@@ -67,7 +76,7 @@ public class ReadAllFiles extends ReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -76,13 +85,30 @@ public class ReadAllFiles extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
+
+        if (Window.confirm("Are you sure? All Files details will be deleted")) {
+            HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess();
+                        }
+                    });
+        }
     }
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully deleted Files Information");
+        TabPanel.instance().drivePanel.entityPanel.clear();
+        TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles());
     }
 
     @Override
     public void updateClicked(String entityId) {
+    }
+
+    private String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "drive/delete/" + entityId;
     }
 }
