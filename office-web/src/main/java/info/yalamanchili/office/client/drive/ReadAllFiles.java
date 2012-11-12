@@ -106,7 +106,7 @@ public class ReadAllFiles extends ReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Files Information");
         TabPanel.instance().drivePanel.entityPanel.clear();
-        TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles());
+        TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(DriveTreePanel.instance().getSelectedNode().getEntityId()));
     }
 
     @Override
@@ -114,6 +114,6 @@ public class ReadAllFiles extends ReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "drive/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "drive/files/delete/" + entityId;
     }
 }
