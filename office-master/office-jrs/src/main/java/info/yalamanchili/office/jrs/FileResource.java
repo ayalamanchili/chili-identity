@@ -1,5 +1,6 @@
 package info.yalamanchili.office.jrs;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 
 import java.io.File;
@@ -74,6 +75,10 @@ public class FileResource {
 
     }
 
+    public void deleteFile(String url, String entityId) {
+        //TODO implement
+    }
+
     protected String swapEntityId(String path, String entityId) {
         if (entityId != null && path.contains("entityId")) {
             return path.replace("entityId", entityId);
@@ -115,5 +120,9 @@ public class FileResource {
                 throw new RuntimeException("Error saving File:" + fileurl + ": to disk.", e);
             }
         }
+    }
+
+    public static FileResource instance() {
+        return SpringContext.getBean(FileResource.class);
     }
 }
