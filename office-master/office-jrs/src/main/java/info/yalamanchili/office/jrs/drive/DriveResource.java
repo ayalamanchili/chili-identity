@@ -56,8 +56,7 @@ public class DriveResource {
 
     @GET
     @Path("/files/{folderId}/{start}/{limit}")
-     @Produces("application/text")
-    public FileTable getFiles(@PathParam("folderId") long id,@PathParam("start") int start, @PathParam("limit") int limit) {
-        return driveService.getFiles(id,start,limit);
+    public FileTable getFiles(@PathParam("folderId") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return driveService.getFiles(id, start, limit);
     }
 }
