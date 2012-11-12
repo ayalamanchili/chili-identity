@@ -4,10 +4,13 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.TreeItem;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
+import info.yalamanchili.office.client.drive.DriveFolderOptionsWidget;
 
 /**
  *
@@ -18,15 +21,25 @@ public class TreeEntityItem extends TreeItem {
     protected JSONObject entity;
     protected String entityId;
     protected String key;
+    protected FolderLabel itemWIdget = new FolderLabel() {
+        @Override
+        public void handleRightClick(ContextMenuEvent event) {
+            rightClick(event);
+        }
+    };
 
     public TreeEntityItem(ConstantsWithLookup constants, String key, JSONObject entity) {
-        super(key);
+        super();
+        super.setWidget(itemWIdget);
+        itemWIdget.setText(Utils.getKeyValue(key, constants));
         this.key = key;
         this.entity = entity;
     }
 
     public TreeEntityItem(ConstantsWithLookup constants, String key, String entityId) {
-        super(key);
+        super();
+        super.setWidget(itemWIdget);
+        itemWIdget.setText(Utils.getKeyValue(key, constants));
         this.key = key;
         this.entityId = entityId;
     }
@@ -44,5 +57,9 @@ public class TreeEntityItem extends TreeItem {
 
     public String getKey() {
         return key;
+    }
+
+    public void rightClick(ContextMenuEvent event) {
+        GenericPopup.instance().show(new DriveFolderOptionsWidget(), event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
     }
 }

@@ -135,7 +135,6 @@ public class DriveTreePanel extends ALComposite implements SelectionHandler<Tree
     @Override
     public void onSelection(SelectionEvent<TreeItem> event) {
         TreeEntityItem selectedNode = (TreeEntityItem) event.getSelectedItem();
-        GenericPopup.instance().show(new DriveFolderOptionsWidget(), selectedNode.getAbsoluteLeft() + selectedNode.getOffsetWidth(), selectedNode.getAbsoluteTop());
         TabPanel.instance().drivePanel.entityPanel.clear();
         TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(selectedNode.getEntityId()));
         
