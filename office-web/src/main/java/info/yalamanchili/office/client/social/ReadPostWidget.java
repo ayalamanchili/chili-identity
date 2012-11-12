@@ -19,16 +19,12 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.widgets.ClickableImage;
 
-import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.gwt.FileField;
 import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.social.company.ReadCompanyPostPanel;
 //TODO make this abstract
 public abstract class ReadPostWidget extends ALComposite implements ClickHandler {
 
@@ -82,7 +78,7 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
                 }
                 if ("FILE".equals(JSONUtils.toString(postFile, "fileType"))) {
                     String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(postFile, "fileURL") + "&entityId=" + JSONUtils.toString(postFile, "id");
-                    FileField fileField = new FileField("attachment", fileURL);
+                    FileField fileField = new FileField(fileURL);
                     attachmentsPanel.add(fileField);
                 }
             }
@@ -90,20 +86,17 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     }
 
     protected void displayPostStatus(JSONObject post) {
-        logger.info("33333"+post.toString());
-//        logger.info("44444"+ post.get("postLikes").toString());
         String postTimeStamp = JSONUtils.toString(post, "postTimeStamp");
         JSONArray postlikeno = JSONUtils.toJSONArray(post.get("postLikes"));
         String poststatus = "";
-        if(postlikeno.size() > 0)
-        {
-          poststatus =  "  " +  postlikeno.size() + " likes for this ; " ;
+        if (postlikeno.size() > 0) {
+            poststatus = "  " + postlikeno.size() + " likes for this ; ";
         }
         if (DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM) != null) {
             postStatusPanel.setText(poststatus + " Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
         }
-        
-       
+
+
     }
 
     @Override
@@ -166,9 +159,9 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     protected abstract void viewClicked();
 
     private void postCreateSuccess(String arg0) {
-        
+
         new ResponseStatusWidget().show("Successfully Liked");
-         
+
     }
 
     public String getlikeURL() {

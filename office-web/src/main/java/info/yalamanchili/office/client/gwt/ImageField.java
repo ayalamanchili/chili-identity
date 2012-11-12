@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import info.chili.gwt.utils.FileUtils;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
@@ -22,14 +23,15 @@ public class ImageField extends ALComposite {
     Image image = new Image();
 
     public ImageField(String labelName, String url, String entityId, final int width, final int height, boolean showLabel) {
-        if (url == null || url.trim().length() < 1) {
-            setDefaultImage(width, height);
-        }
         label.setText(labelName);
         label.setVisible(showLabel);
         setPixelSize(width, height);
         image.addStyleName("imageField-Image");
-        image.setUrl(OfficeWelcome.config.getFileDownloadUrl()+ url + "&entityId=" + entityId);
+        if (url == null || url.trim().length() < 1) {
+            setDefaultImage(width, height);
+        } else {
+            image.setUrl(OfficeWelcome.config.getFileDownloadUrl() + url + "&entityId=" + entityId);
+        }
         image.addErrorHandler(new ErrorHandler() {
             public void onError(ErrorEvent event) {
                 setDefaultImage(width, height);

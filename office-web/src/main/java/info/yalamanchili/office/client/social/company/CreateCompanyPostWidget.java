@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.RichTextToolBar;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -30,7 +31,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.social.employee.CreateEmployeePostWidget;
 import java.util.logging.Logger;
 
 /**
@@ -46,7 +46,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     final RichTextArea textArea = new RichTextArea();
     final RichTextToolBar toolBar = new RichTextToolBar(textArea);
     Button createPostB = new Button("Share");
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL",false) {
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL", false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
@@ -91,9 +91,9 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
             JSONObject postFile = new JSONObject();
             postFile.put("fileURL", fileUploadPanel.getFileName());
             postFile.put("fileType", new JSONString("IMAGE"));
-            if (Utils.isImage(fileUploadPanel.getFileName().stringValue())) {
+            if (FileUtils.isImage(fileUploadPanel.getFileName().stringValue())) {
                 postFile.put("fileType", new JSONString("IMAGE"));
-            } else if (Utils.isDocument(fileUploadPanel.getFileName().stringValue())) {
+            } else if (FileUtils.isDocument(fileUploadPanel.getFileName().stringValue())) {
                 postFile.put("fileType", new JSONString("FILE"));
             } else {
                 Window.alert("Unsupported file extension");
