@@ -12,6 +12,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.FileField;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -60,6 +61,7 @@ public class ReadAllFiles extends ReadAllComposite {
         table.setText(0, 2, getKeyValue("Created Time Stamp"));
         table.setText(0, 3, getKeyValue("Updated Time Stamp"));
         table.setText(0, 4, getKeyValue("File"));
+        table.setText(0, 5, getKeyValue("FileField"));
     }
 
     @Override
@@ -71,6 +73,9 @@ public class ReadAllFiles extends ReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
             table.setText(i, 3, JSONUtils.toString(entity, "createdTs"));
             table.setText(i, 4, JSONUtils.toString(entity, "updatedTs"));
+            String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            FileField fileField = new FileField(fileURL);
+            table.setWidget(i, 5, fileField);
         }
     }
 
