@@ -17,12 +17,12 @@ public class OfficeServiceConfiguration {
     protected EntityManager em;
     protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
-    protected Boolean initRefData;
+    protected Boolean initRefData=false;
     @Value("#{officeProperties['initTestData']}")
-    protected Boolean initTestData;
+    protected Boolean initTestData=false;
     @Value("#{officeProperties['enableLoginInterceptor']}")
-    protected Boolean enableLoginInterceptor;
-    protected Boolean isSendMail = true;
+    protected Boolean enableLoginInterceptor=false;
+    protected Boolean isSendMail = false;
 
     @ManagedAttribute
     public String getContentManagementLocationRoot() {
