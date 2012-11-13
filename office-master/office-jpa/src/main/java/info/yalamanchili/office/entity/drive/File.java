@@ -28,7 +28,7 @@ public class File extends AbstractEntity {
     protected Date createdTs;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date updatedTs;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull
     protected Folder folder;
 
