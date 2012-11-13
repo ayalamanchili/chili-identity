@@ -25,7 +25,7 @@ public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
     @Override
     public void updateClicked(String entityId) {
         UpdateEmailPopupPanel updateEmailPanel = new UpdateEmailPopupPanel(getEntity(entityId));
-        GenericPopup.instance().show(updateEmailPanel);
+        new GenericPopup(updateEmailPanel).show();
     }
 
     @Override
@@ -43,6 +43,6 @@ public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
     @Override
     protected void createButtonClicked() {
         CreateEmailPopupPanel createPanel = new CreateEmailPopupPanel(CreateComposite.CreateCompositeType.ADD);;
-        GenericPopup.instance().show(createPanel);
+        new GenericPopup(createPanel).show();
     }
 }

@@ -58,8 +58,10 @@ public class TreeEntityItem extends TreeItem {
     public String getKey() {
         return key;
     }
+//TODO this does not belong here
 
     public void rightClick(ContextMenuEvent event) {
-        GenericPopup.instance().show(new DriveFolderOptionsWidget(), event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
+        DriveFolderOptionsWidget menu = new DriveFolderOptionsWidget();
+        new GenericPopup(menu, "driveMenu", event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY()).show();
     }
 }

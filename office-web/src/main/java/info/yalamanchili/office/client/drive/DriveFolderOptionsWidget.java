@@ -6,9 +6,10 @@ package info.yalamanchili.office.client.drive;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 
@@ -19,8 +20,8 @@ import info.yalamanchili.office.client.gwt.GenericPopup;
 public class DriveFolderOptionsWidget extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
-    ClickableLink createFolderL = new ClickableLink("add sub folder");
-    ClickableLink createFileL = new ClickableLink("add file");
+    FolderMenuLabel createFolderL = new FolderMenuLabel("add sub folder");
+    FolderMenuLabel createFileL = new FolderMenuLabel("add file");
 
     public DriveFolderOptionsWidget() {
         init(panel);
@@ -53,10 +54,21 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     }
 
     protected void newFolderLinkClicked() {
-        GenericPopup.instance().show(new CreateFolderPanel(CreateComposite.CreateCompositeType.CREATE));
+        new GenericPopup(new CreateFolderPanel(CreateComposite.CreateCompositeType.CREATE)).show();
     }
 
     protected void newFileLinkClicked() {
-        GenericPopup.instance().show(new CreateFilePanel());
+        new GenericPopup(new CreateFilePanel()).show();
+    }
+
+    /**
+     * Extends gwt label and ad common style class
+     */
+    public class FolderMenuLabel extends Label {
+
+        public FolderMenuLabel(String txt) {
+            super(txt);
+            this.addStyleName("folderMenuLabel");
+        }
     }
 }

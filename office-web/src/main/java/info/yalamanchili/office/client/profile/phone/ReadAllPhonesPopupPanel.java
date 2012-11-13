@@ -31,7 +31,7 @@ public class ReadAllPhonesPopupPanel extends ReadAllPhonesPanel {
     @Override
     public void updateClicked(String entityId) {
         UpdatePhonePopupPanel updatePhonePanel = new UpdatePhonePopupPanel(getEntity(entityId));
-        GenericPopup.instance().show(updatePhonePanel);
+        new GenericPopup(updatePhonePanel).show();
     }
 
     @Override
@@ -49,6 +49,6 @@ public class ReadAllPhonesPopupPanel extends ReadAllPhonesPanel {
     @Override
     protected void createButtonClicked() {
         CreatePhonePopupPanel createPanel = new CreatePhonePopupPanel(CreateComposite.CreateCompositeType.ADD);;
-        GenericPopup.instance().show(createPanel);
+        new GenericPopup(createPanel).show();
     }
 }

@@ -30,7 +30,7 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
     @Override
     public void updateClicked(String entityId) {
         UpdateAddressPopupPanel updateaddressPanel = new UpdateAddressPopupPanel(getEntity(entityId));
-        GenericPopup.instance().show(updateaddressPanel);
+        new GenericPopup(updateaddressPanel).show();
     }
 
     @Override
@@ -48,6 +48,6 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
     @Override
     protected void createButtonClicked() {
         CreateAddressPopupPanel createPanel = new CreateAddressPopupPanel(CreateComposite.CreateCompositeType.ADD);;
-         GenericPopup.instance().show(createPanel);
+        new GenericPopup(createPanel).show();
     }
 }

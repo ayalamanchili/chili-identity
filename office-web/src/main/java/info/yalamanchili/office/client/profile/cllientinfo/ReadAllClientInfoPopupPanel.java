@@ -31,7 +31,7 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
     @Override
     public void updateClicked(String entityId) {
         UpdateClientInfoPopupPanel updateReportsToPanel = new UpdateClientInfoPopupPanel(getEntity(entityId));
-      GenericPopup.instance().show(updateReportsToPanel);
+        new GenericPopup(updateReportsToPanel).show();
     }
 
     @Override
@@ -48,6 +48,6 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
     @Override
     protected void createButtonClicked() {
         CreateClientInfoPopupPanel createPanel = new CreateClientInfoPopupPanel(CreateComposite.CreateCompositeType.ADD);;
-       GenericPopup.instance().show(createPanel);
+        new GenericPopup(createPanel).show();
     }
 }

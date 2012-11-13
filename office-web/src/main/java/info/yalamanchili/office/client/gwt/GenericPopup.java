@@ -18,49 +18,45 @@ import info.yalamanchili.office.client.resources.OfficeImages;
  * @author anu
  */
 //TODO move to chili-gwt
-public class GenericPopup extends PopupPanel implements ClickHandler {
+public class GenericPopup extends PopupPanel {
 
     private static GenericPopup instance;
 
     public static GenericPopup instance() {
         return instance;
     }
-    ClickableImage closeB = new ClickableImage("close", OfficeImages.INSTANCE.closeIcon_16_16());
 
-    private GenericPopup(Composite widget, int left, int top) {
+    public GenericPopup(Composite widget, int left, int top) {
         instance = this;
-        this.addStyleName("genericPopup");
+        addWidgets(widget, left, top);
+        configure();
+    }
+     public GenericPopup(Composite widget,String styleName, int left, int top) {
+        instance = this;
+        addWidgets(widget, left, top);
+        configure();
+        useStyleName(styleName);
+    }
+
+    public GenericPopup(Composite widget) {
+        addWidgets(widget, Window.getClientWidth() / 3, Window.getClientHeight() / 3);
+        configure();
+    }
+
+    protected void addWidgets(Composite widget, int left, int top) {
         FlowPanel panel = new FlowPanel();
-        panel.add(closeB);
         panel.add(widget);
         setWidget(panel);
-        closeB.addClickHandler(this);
-        setAutoHideEnabled(true);
         super.setPopupPosition(left, top);
     }
 
-    @Override
-    public void onClick(ClickEvent event) {
-        if (event.getSource().equals(closeB)) {
-            this.hide();
-        }
+    protected void configure() {
+        setAutoHideEnabled(true);
+        this.addStyleName("genericPopup");
     }
 
-    public static void show(Composite widget) {
-        if (instance != null) {
-            instance.hide();
-        }
-        instance = null;
-        new GenericPopup(widget, Window.getClientWidth() / 3, Window.getClientHeight() / 3);
-        instance.show();
-    }
-
-    public static void show(Composite widget, int left, int top) {
-        if (instance != null) {
-            instance.hide();
-        }
-        instance = null;
-        new GenericPopup(widget, left, top);
-        instance.show();
+    public void useStyleName(String styleName) {
+        this.removeStyleName("genericPopup");
+        this.addStyleName(styleName);
     }
 }

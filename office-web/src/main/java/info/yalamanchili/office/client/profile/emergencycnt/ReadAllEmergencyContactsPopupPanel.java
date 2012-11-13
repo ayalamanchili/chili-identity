@@ -30,7 +30,7 @@ public class ReadAllEmergencyContactsPopupPanel extends ReadAllEmergencyContacts
     @Override
     public void updateClicked(String entityId) {
         UpdateEmergencyContactPopupPanel updateEmergencyContactPanel = new UpdateEmergencyContactPopupPanel(getEntity(entityId));
-        GenericPopup.instance().show(updateEmergencyContactPanel);
+        new GenericPopup(updateEmergencyContactPanel).show();
     }
 
     @Override
@@ -47,6 +47,6 @@ public class ReadAllEmergencyContactsPopupPanel extends ReadAllEmergencyContacts
     @Override
     protected void createButtonClicked() {
         CreateEmergencyContactPopupPanel createPanel = new CreateEmergencyContactPopupPanel(CreateComposite.CreateCompositeType.ADD);;
-        GenericPopup.instance().show(createPanel);
+        new GenericPopup(createPanel).show();
     }
 }

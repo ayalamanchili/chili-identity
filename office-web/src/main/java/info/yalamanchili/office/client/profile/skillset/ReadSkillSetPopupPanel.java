@@ -31,7 +31,7 @@ public class ReadSkillSetPopupPanel extends ReadSkillSetPanel {
             populateFieldsFromEntity(entity);
         } else {
             CreateSkillSetPopupPanel CreateSkillSetPanel = new CreateSkillSetPopupPanel(entityId);
-            GenericPopup.instance().show(CreateSkillSetPanel);
+            new GenericPopup(CreateSkillSetPanel).show();
         }
     }
 

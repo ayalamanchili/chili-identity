@@ -48,7 +48,7 @@ public class TODOStackPanelWidget extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createTODOL)) {
-            GenericPopup.instance().show(new CreateTodoPanel(CreateComposite.CreateCompositeType.CREATE), createTODOL.getAbsoluteLeft(), createTODOL.getAbsoluteTop());
+            new GenericPopup(new CreateTodoPanel(CreateComposite.CreateCompositeType.CREATE), createTODOL.getAbsoluteLeft(), createTODOL.getAbsoluteTop()).show();
         }
     }
 }
