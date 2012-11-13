@@ -23,38 +23,41 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DriveService {
-    
+
     @Autowired
     protected Mapper mapper;
     @Autowired
     protected FolderDao folderDao;
-    
+
     public FolderDto getDriveFolderTree() {
         Folder driveFolder = folderDao.getDriveFolder();
         return FolderDto.map(mapper, driveFolder);
     }
-    
+
     public void addFolder(Long parentFolderId, FolderDto folderDto) {
         Folder parentFolder = folderDao.findById(parentFolderId);
         Folder folder = mapper.map(folderDto, Folder.class);
         parentFolder.addChild(folder);
         folderDao.save(parentFolder);
     }
-    
+
     public String addFile(Long folderId, FileDto fileDto) {
         Folder folder = folderDao.findById(folderId);
         File file = mapper.map(fileDto, File.class);
         file.setFolder(folder);
         return FileDao.instance().save(file).getId().toString();
     }
-    
+
     public FileTable getFiles(Long folderId, Integer start, Integer limit) {
+        FileTable fileTable = new FileTable();
         Folder folder = folderDao.findById(folderId);
+        if (folder == null) {
+            return fileTable;
+        }
         List<FileDto> files = new ArrayList<FileDto>();
         for (File file : folder.getFiles()) {
             files.add(FileDto.map(mapper, file));
         }
-        FileTable fileTable = new FileTable();
         fileTable.setEntities(files);
         fileTable.setSize(Long.valueOf(files.size()));
         return fileTable;
