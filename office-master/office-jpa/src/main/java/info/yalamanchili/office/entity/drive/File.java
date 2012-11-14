@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 public class File extends AbstractEntity {
 
-    @NotEmpty
+    @NotEmpty(message = "{file.not.empty.msg}")
     protected String name;
     @NotEmpty
     protected String fileUrl;
