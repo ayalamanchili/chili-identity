@@ -20,6 +20,7 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -31,6 +32,7 @@ import org.hibernate.search.annotations.Indexed;
 public class Message extends AbstractEntity {
 
     @Field
+    @NotEmpty(message = "{subject.not.empty.msg}")
     protected String subject;
     @Field
     protected String message;
