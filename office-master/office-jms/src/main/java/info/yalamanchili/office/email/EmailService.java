@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.email;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.logging.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,6 +26,8 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring3.SpringTemplateEngine;
 
 /**
  *
@@ -38,25 +41,27 @@ public class EmailService {
 
     @Async
     public void sendEmail(final Email email) {
+        final SpringTemplateEngine templateEngine = (SpringTemplateEngine) SpringContext.getBean("templateEngine");
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
                 Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
                 mimeMessage.setRecipients(Message.RecipientType.TO, tos);
                 mimeMessage.setSubject(email.getSubject());
-                if (email.isHtml) {
-                    message.setText(email.getBody(), true);
-                } else {
-                    message.setText(email.getBody());
-                }
+
+                final Context ctx = new Context();
+                ctx.setVariable("email", email);
+
+                String htmlContent = templateEngine.process(email.getTemplateName(), ctx);
+                message.setText(htmlContent, true);
+
             }
         };
         try {
             logger.info("sending email:" + email);
             mailSender.send(preparator);
         } catch (MailException ex) {
-            // simply log it and go on...
-            System.err.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -87,7 +92,8 @@ public class EmailService {
     }
 
     protected boolean notificationsEnabled(String emailAddress) {
-        if (findEmail(emailAddress).getContact() instanceof Employee) {
+        info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
+        if (email != null && email.getContact() instanceof Employee) {
             Employee emp = (Employee) findEmail(emailAddress).getContact();
             if (!emp.getPreferences().getEnableEmailNotifications()) {
                 return false;
@@ -95,7 +101,6 @@ public class EmailService {
         }
         return true;
     }
-    
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     protected EntityManager em;
 

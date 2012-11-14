@@ -19,6 +19,7 @@ public class Email implements Serializable {
     protected String subject;
     protected String body;
     protected boolean isHtml = false;
+    protected String templateName = "default_email_template.html";
 
     public Email() {
     }
@@ -69,6 +70,14 @@ public class Email implements Serializable {
 
     public void setIsHtml(boolean isHtml) {
         this.isHtml = isHtml;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
     @Override
