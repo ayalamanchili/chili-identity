@@ -12,6 +12,7 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.message.MessageDto;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.Date;
 //import java.util.Map.Entry;
 //info.chili.service.jrs.types.Entry;
 import javax.persistence.EntityManager;
@@ -39,7 +40,8 @@ public class MessageService {
         Message newMessage = new Message();
         newMessage.setSubject(messageDto.getSubject());
         newMessage.setMessage(messageDto.getMessage());
-        newMessage.setMessageTs(messageDto.getMessageTs());
+//        newMessage.setMessageTs(messageDto.getMessageTs());
+           newMessage.setMessageTs(new Date());
         newMessage.setFrom(SecurityService.instance().getCurrentUser());
         for (Entry emp : messageDto.getTos()) {
             Employee toEmployee = EmployeeDao.instance().getEmployeWithEmpId(emp.getId());
