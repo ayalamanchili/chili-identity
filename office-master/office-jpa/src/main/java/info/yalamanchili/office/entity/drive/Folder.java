@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 public class Folder extends AbstractEntity {
 
-    @NotEmpty
+    @NotEmpty(message = "{folder.not.empty.msg}")
     protected String name;
     protected String description;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
