@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 public class CreateMessagePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateMessagePanel.class.getName());
-    protected SuggestBox tosSuggestBox = new SuggestBox(constants, "tos", "Message", false, true);
+    protected SuggestBox tosSuggestBox = new SuggestBox(constants, "Tos", "Message", false, true);
 
     public CreateMessagePanel(CreateComposite.CreateCompositeType type) {
         super(type);
