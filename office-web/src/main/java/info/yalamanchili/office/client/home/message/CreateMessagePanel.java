@@ -42,7 +42,7 @@ public class CreateMessagePanel extends CreateComposite {
         JSONObject msg = new JSONObject();
         assignEntityValueFromField("subject", msg);
         assignEntityValueFromField("message", msg);
-        assignEntityValueFromField("messageTs", msg);
+//        assignEntityValueFromField("messageTs", msg);
         msg.put("tos", populateTos());
         logger.info(msg.toString());
         return msg;
@@ -92,10 +92,13 @@ public class CreateMessagePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Message Sent");
+
+
         TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
 //        ReadAllMessagePanel.instance.refresh();
 //        GenericPopup.instance().hide();
+
     }
 
     @Override
@@ -112,7 +115,7 @@ public class CreateMessagePanel extends CreateComposite {
         entityDisplayWidget.add(tosSuggestBox);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("message", false, true, DataType.STRING_FIELD);
-        addField("messageTs", false, true, DataType.DATE_FIELD);
+//        addField("messageTs", false, true, DataType.DATE_FIELD);
     }
 
     @Override
