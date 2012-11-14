@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class FileDto  implements Serializable{
 
     protected Long id;
-    @NotEmpty
+    @NotEmpty(message = "{file.not.empty.msg}")
     protected String name;
     @NotEmpty
     protected String fileUrl;

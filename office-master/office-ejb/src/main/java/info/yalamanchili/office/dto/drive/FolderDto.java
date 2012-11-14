@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class FolderDto implements Serializable {
 
     protected Long id;
-    @NotEmpty
+    @NotEmpty(message = "{folder.not.empty.msg}")
     protected String name;
     protected String description;
     protected FolderDto parent;

@@ -14,6 +14,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -23,6 +24,7 @@ import org.dozer.Mapper;
 @XmlType
 public class MessageDto implements Serializable {
 
+    @NotEmpty(message = "{subject.not.empty.msg}")
     protected String subject;
     protected String message;
     protected Date messageTs;
