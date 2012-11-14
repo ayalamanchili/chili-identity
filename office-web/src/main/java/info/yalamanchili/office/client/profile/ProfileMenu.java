@@ -46,6 +46,7 @@ public class ProfileMenu extends Composite {
             profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
+            profileMenuBar.addItem("Notifications", notificationsMaintainenceCmd);
         }
          profileMenuBar.addStyleName("entityMenuBar");
     }
@@ -106,6 +107,17 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
+
+
+        }
+    };
+    
+   Command notificationsMaintainenceCmd = new Command() {
+        public void execute() {
+//            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+//            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
+//            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new notificationSidePanel());
 
 
         }
