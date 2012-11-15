@@ -1,0 +1,61 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.entity.profile;
+
+import info.chili.jpa.AbstractEntity;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
+
+/**
+ *
+ * @author Prashanthi
+ */
+@Indexed
+@Entity
+@Audited
+@XmlRootElement
+public class NotificationGroup extends AbstractEntity {
+
+    @Field
+    @NotEmpty(message = "{name.not.empty.msg}")
+    protected String name;
+    @ManyToMany
+    @ForeignKey(name = "FK_Employees_NotificationGroup")
+    protected List<Employee> employees;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Employee> getEmployees() {
+        if (this.employees == null) {
+            this.employees = new ArrayList<Employee>();
+        }
+
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    @Override
+    public String toString() {
+
+        return "NotificationGroup{" + "name=" + name + ", employees=" + employees + '}';
+    }
+}
