@@ -20,22 +20,21 @@ import java.util.logging.Logger;
  */
 public class NotificationSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger=Logger.getLogger(NotificationSidePanel.class.getName());
-    public FlowPanel notificationsidepanel=new FlowPanel();
-    ClickableLink createnotificationlink= new ClickableLink("Create Notification");
-    
-     public NotificationSidePanel(){
+    private static Logger logger = Logger.getLogger(NotificationSidePanel.class.getName());
+    public FlowPanel notificationsidepanel = new FlowPanel();
+    ClickableLink createnotificationlink = new ClickableLink("Create Notification");
+
+    public NotificationSidePanel() {
         init(notificationsidepanel);
     }
-     
+
     @Override
     protected void addListeners() {
-       createnotificationlink.addClickHandler(this);
+        createnotificationlink.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -47,10 +46,10 @@ public class NotificationSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-         if (event.getSource().equals(createnotificationlink)) {
+        if (event.getSource().equals(createnotificationlink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateNotificationPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateNotificationGroupPanel());
         }
     }
-    
 }
