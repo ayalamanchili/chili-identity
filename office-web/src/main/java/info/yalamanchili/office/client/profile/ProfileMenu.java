@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
 import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
+import info.yalamanchili.office.client.profile.notification.NotificationSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 
@@ -114,10 +115,10 @@ public class ProfileMenu extends Composite {
     
    Command notificationsMaintainenceCmd = new Command() {
         public void execute() {
-//            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-//            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
 //            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
-//            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new notificationSidePanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new NotificationSidePanel());
 
 
         }
