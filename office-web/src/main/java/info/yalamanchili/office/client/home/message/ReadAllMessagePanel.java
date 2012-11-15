@@ -65,7 +65,7 @@ public class ReadAllMessagePanel extends ReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "subject"));
             table.setText(i, 2, JSONUtils.toString(entity, "message"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "messageTs"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "messageTs"), DateTimeFormat.PredefinedFormat.DATE_TIME_FULL));
             table.setText(i, 4, JSONUtils.toString(entity, "from"));
         }
     }
