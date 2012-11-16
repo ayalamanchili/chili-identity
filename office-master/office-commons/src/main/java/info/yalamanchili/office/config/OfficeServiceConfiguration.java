@@ -1,5 +1,6 @@
 package info.yalamanchili.office.config;
 
+import info.chili.spring.SpringContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -17,12 +18,12 @@ public class OfficeServiceConfiguration {
     protected EntityManager em;
     protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
-    protected Boolean initRefData=false;
+    protected Boolean initRefData = false;
     @Value("#{officeProperties['initTestData']}")
-    protected Boolean initTestData=false;
+    protected Boolean initTestData = false;
     @Value("#{officeProperties['enableLoginInterceptor']}")
-    protected Boolean enableLoginInterceptor=false;
-    protected Boolean isSendMail = false;
+    protected Boolean enableLoginInterceptor = false;
+    protected Boolean isSendMail = true;
 
     @ManagedAttribute
     public String getContentManagementLocationRoot() {
@@ -79,5 +80,9 @@ public class OfficeServiceConfiguration {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public static OfficeServiceConfiguration instance() {
+        return SpringContext.getBean(OfficeServiceConfiguration.class);
     }
 }
