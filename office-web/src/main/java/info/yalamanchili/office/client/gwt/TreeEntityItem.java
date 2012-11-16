@@ -34,6 +34,7 @@ public class TreeEntityItem extends TreeItem {
         itemWIdget.setText(Utils.getKeyValue(key, constants));
         this.key = key;
         this.entity = entity;
+        
     }
 
     public TreeEntityItem(ConstantsWithLookup constants, String key, String entityId) {
@@ -42,6 +43,7 @@ public class TreeEntityItem extends TreeItem {
         itemWIdget.setText(Utils.getKeyValue(key, constants));
         this.key = key;
         this.entityId = entityId;
+        
     }
 
     public JSONObject getEntity() {
