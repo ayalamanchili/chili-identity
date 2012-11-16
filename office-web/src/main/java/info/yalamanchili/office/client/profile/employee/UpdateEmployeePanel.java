@@ -10,6 +10,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.FileuploadField;
+import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
@@ -38,6 +39,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("employeeType", entity);
         if (!empImageUploadPanel.isEmpty()) {
             entity.put("imageURL", empImageUploadPanel.getFileName());
         }
@@ -71,6 +73,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("employeeType", entity,null);
         //TODO add image panel for employee image
     }
 
@@ -87,6 +90,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         // same here update them
+        addDropDown("employeeType", new SelectEmployeeTypeWidget(false, false));
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
@@ -94,7 +98,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
-
+         
         entityDisplayWidget.add(empImageUploadPanel);
 
     }
