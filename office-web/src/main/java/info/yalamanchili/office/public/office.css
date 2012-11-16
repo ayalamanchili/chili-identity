@@ -182,22 +182,28 @@ legend {
     width: 100%;
     color:#595959;
     align:center;
+    
+}
+.gwt-TreeItem{
+    
+    padding:0px;
 }
 
-
 .gwt-TreeItem:hover{
-    border-bottom: 1px double;
-/*   text-spacing: 2px;
+   
+   text-spacing: 2px;
     background-color: blue_mid;
     font-color:#666666;
     -webkit-transition-property: background-color;  
-    -webkit-transition-duration: 0.2s;  
-    -webkit-transition-timing-function: linear, ease-in;  */
+    -webkit-transition-duration: 0.1s;  
+    -webkit-transition-timing-function: linear, ease-in;  
 }
 
 .gwt-Tree .gwt-TreeItem-selected {
     font-weight: bold;
-    border-bottom: 3px double;
+    color: orange_dark;
+    
+    
    
 }
 @sprite .entityMenuBar {
@@ -229,7 +235,7 @@ legend {
     background-color: blue_mid;
     font-color:#666666;
     -webkit-transition-property: background-color;  
-    -webkit-transition-duration: 0.30s;  
+    -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;  
     }    
     
@@ -319,6 +325,7 @@ legend {
     font-family: Arial;
     font-size: 11pt;
     font-weight: 100;
+    
 }
 
 .y-gwt-treePanelComposite-RootNode
@@ -327,6 +334,7 @@ legend {
     font-family: Arial;
     font-size: 13pt;
     font-weight: 300;
+    padding: 3px;
 }
 
 body{
@@ -646,7 +654,7 @@ body{
     background-color: blue_mid;
     font-color:#666666;
     -webkit-transition-property: background-color;  
-    -webkit-transition-duration: 0.2s;  
+    -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;
 }
 /* Drive Styling End */
