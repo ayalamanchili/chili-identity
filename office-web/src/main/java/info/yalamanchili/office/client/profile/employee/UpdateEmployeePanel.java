@@ -40,6 +40,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("employeeType", entity);
+        assignEntityValueFromField("jobTitle", entity);
         if (!empImageUploadPanel.isEmpty()) {
             entity.put("imageURL", empImageUploadPanel.getFileName());
         }
@@ -74,6 +75,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("employeeType", entity,null);
+        assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         //TODO add image panel for employee image
     }
 
@@ -98,6 +100,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
+        addField("jobTitle", false, true, DataType.STRING_FIELD);
          
         entityDisplayWidget.add(empImageUploadPanel);
 
