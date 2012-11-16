@@ -29,6 +29,7 @@ public abstract class FolderLabel extends Label implements ContextMenuHandler {
     
     public FolderLabel() {
         this.addDomHandler(this, ContextMenuEvent.getType());
+        this.addStyleName("folderLabel");
     }
     
     @Override
@@ -37,7 +38,7 @@ public abstract class FolderLabel extends Label implements ContextMenuHandler {
         event.preventDefault();
         event.stopPropagation();
         handleRightClick(event);
-        this.addStyleName("FolderLabel");
+        
     }
     
     public abstract void handleRightClick(ContextMenuEvent event);
