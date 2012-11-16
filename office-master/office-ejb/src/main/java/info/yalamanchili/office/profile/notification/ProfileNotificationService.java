@@ -53,7 +53,7 @@ public class ProfileNotificationService {
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New User " + user.getUsername().toString() + " Is Created";
+        String messageText = "New User " + user.getEmployee().getFirstName() + "," + user.getEmployee().getLastName() + "," + user.getUsername().toString() + " Is Created";
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
