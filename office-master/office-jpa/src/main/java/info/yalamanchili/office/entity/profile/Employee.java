@@ -52,6 +52,16 @@ public class Employee extends Contact {
     @NotEmpty(message = "{employeeId.not.empty.msg}")
     @Field
     protected String employeeId;
+    
+    protected String jobTitle;
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
     /**
      * @generated
      */
