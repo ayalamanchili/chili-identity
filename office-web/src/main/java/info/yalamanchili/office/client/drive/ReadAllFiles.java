@@ -70,12 +70,12 @@ public class ReadAllFiles extends ReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 2, JSONUtils.toString(entity, "name"));
-            table.setText(i, 3, JSONUtils.toString(entity, "createdTs"));
-            table.setText(i, 4, JSONUtils.toString(entity, "updatedTs"));
+            table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            table.setText(i, 2, JSONUtils.toString(entity, "createdTs"));
+            table.setText(i, 3, JSONUtils.toString(entity, "updatedTs"));
             String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField(fileURL);
-            table.setWidget(i, 5, fileField);
+            table.setWidget(i, 4, fileField);
         }
     }
 
