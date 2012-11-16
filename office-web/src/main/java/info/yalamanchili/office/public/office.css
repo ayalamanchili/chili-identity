@@ -13,6 +13,8 @@
 
 @def white #FFFFFF;
 
+@def grey_light #F7F7F7;
+
 /* an individual tab*/
 /* Footer */
 
@@ -182,9 +184,21 @@ legend {
     align:center;
 }
 
+
+.gwt-TreeItem:hover{
+    border-bottom: 1px double;
+/*   text-spacing: 2px;
+    background-color: blue_mid;
+    font-color:#666666;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.2s;  
+    -webkit-transition-timing-function: linear, ease-in;  */
+}
+
 .gwt-Tree .gwt-TreeItem-selected {
     font-weight: bold;
-    background-color: #D9D9D9;
+    border-bottom: 3px double;
+   
 }
 @sprite .entityMenuBar {
     width: 100%;
@@ -225,12 +239,14 @@ legend {
     
     }    
 
-
+    .y-gwt-CreateBasePanel{
+        vertical-align: middle;
+    }
 
 .genericPopup{
     background-color: #ededed;
-    border: 3px solid #919191;
-    padding: 3px;
+    border: 1px solid #919191;
+    padding: 1px;
 }
 .socialSidePanel{
     /*    background-color: #ededed;*/
@@ -242,7 +258,7 @@ legend {
 .readRepliesPanel{
     /*    border: 1px solid #3e3e3e;*/
     width: 100%;
-    background-color: #F7F7F7;
+    background-color: grey_light;
 
 }
 .replyPostWidget{
@@ -253,7 +269,7 @@ legend {
     width: 100%;
     /*    border-color: #919191;*/
     border-width: 0px;
-    background-color: #F7F7F7;
+    background-color: grey_light;
     font-family: Tahoma;
 }
 .readPostImagePanel{
@@ -267,13 +283,14 @@ legend {
 .postStatusPanel{
     width:100%;
     font-size: 12px;
-    background-color: #F7F7F7;
+    background-color: grey_light;
     color: #b2b2b2;
 }
 .postMainPanel{
     float:right;
     width: 96%;
-    background-color: #F7F7F7; 
+    background-color: grey_light; 
+    font-family: Tahoma;
 }
 .createPostTextArea{
     width: 100%;
@@ -323,7 +340,7 @@ body{
 }*/
 /*Start For search textbox */
 @sprite .searchComposite{
-    /*background-color:#f7f7f7;*/
+    /*background-color:grey_light;*/
     gwt-image: "searchBG";
     border: 0px;
 }
@@ -452,12 +469,7 @@ body{
     color: blue_font;
 }
 
-.genericPopup {
 
-    background-color: #EDEDED;
-    border: 3px solid blue_font;
-    padding: 3px;
-}
 /* Multiselect box */
 .y-gwt-multipleSelectWidget-availabelLabel{
     font-weight: bold;
@@ -548,7 +560,7 @@ body{
 }
 
 .datePickerDayIsSelectedAndHighlighted {
-    background: #f7f7f7;
+    background: grey_light;
 }
 
 
@@ -577,3 +589,65 @@ body{
     text-align: right; 
 }
 /* gwt date picker end*/
+
+/* Drive Styling Start */
+
+.folderLabel{
+/*    border-style: solid;
+    border-width: 1px;
+    border-color: #000000;*/
+    width: 100%;
+    padding:5px;
+    
+/*   background-color: blue_mid;  */
+}
+
+.folderLabel:hover{
+    
+  text-spacing: 2px;
+    background-color: blue_mid;
+    font-color:#666666;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.2s;  
+    -webkit-transition-timing-function: linear, ease-in;
+}
+
+/*.gwt-PopupPanel driveMenu{
+    
+    background-color: #000000;
+}
+
+.gwt-PopupPanel driveMenu:hover{
+    
+    background-color: blue_mid;
+}*/
+
+.popupContent{
+    
+    background-color: grey_light;
+    margin:2px;
+/*    padding:10px;*/
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E7E7E7;
+    
+ }
+.folderMenuLabel{
+    padding:5px;
+    width: 130px;
+    text-align: left;
+/*    margin-left: 10px;*/
+/*    background-color: #000000;*/
+    
+}
+
+.folderMenuLabel:hover{
+     text-spacing: 2px;
+    background-color: blue_mid;
+    font-color:#666666;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.2s;  
+    -webkit-transition-timing-function: linear, ease-in;
+}
+/* Drive Styling End */
+
