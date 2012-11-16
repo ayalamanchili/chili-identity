@@ -1,7 +1,102 @@
-<html>
-    <head><title>System Soft Portal</title></head>
-    <body background="#FFFFFF">
-        <h4>System Soft Email Notification</h4>
-        <p th:text="${email.subject}"> </p>
-    </body>
+<html >
+<head>
+<title>System Soft Portal</title>
+<style type="text/css">
+    *{
+       margin: 0px;
+       padding: 0px;
+        
+    }    
+
+body {
+/*background-color:#CCC;*/
+}
+.wrapper {
+	width:700px;
+	height:650px;
+	margin-left:auto;
+	margin-right:auto;
+	border-style:solid;
+	border-width:1px;
+	border-color:#000000;
+	border-radius:10px;
+	
+}
+.header {
+	width:700px;
+	height:100px;
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #C3D7FF));
+	/*border-style:solid;
+	border-width:1px;
+	border-color:#000000;*/
+	border-top-right-radius:10px;
+	border-top-left-radius:10px;
+	}
+.logo {
+	width:200px;
+	height:75px;
+	float:left;
+	padding-top:25px;
+	padding-left:30px;
+}
+.content {
+	width:700px;
+	height:500px;
+	background-color:#FFFFFF;
+	float:left;
+	font-family:Tahoma, Geneva, sans-serif;
+	text-decoration:underline;
+	text-align:center;
+	/*border-style:solid;
+	border-width:1px;
+	border-color:#532156;*/
+	
+}
+.footer {
+	width:700px;
+	height:50px;
+	background-color:#ebebe4;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:10px;
+	line-height:75px;
+	clear:both;
+	/*border-style:solid;
+	border-width:1px;
+	border-color:#000000;*/
+	border-bottom-right-radius:10px;
+	border-bottom-left-radius:10px;
+}
+
+
+    
+</style>
+
+
+</head>
+
+<body>
+<div class="wrapper">
+<div class="header">
+<div class="logo"><img src="http://yalamanchili.googlecode.com/files/sst-logo.png" /></div>
+</div>
+
+
+
+<div class="content"><div>
+      <h4>System Soft Portal Notification</h4>
+    </div>
+    <div>
+      <p th:text="${email.subject}"> </p>
+      <p th:text="${email.body}"> </p>
+    </div></div>
+
+</div>
+<div class="footer"><p>COPYRIGHT © 2012 sstech.us - All Rights Reserved</p></div>
+
+
+
+</body>
 </html>
