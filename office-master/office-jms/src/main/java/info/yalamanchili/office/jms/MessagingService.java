@@ -1,5 +1,6 @@
 package info.yalamanchili.office.jms;
 
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.email.Email;
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -22,14 +23,16 @@ public class MessagingService {
     protected Destination emailQueue;
 
     public void sendEmail(final Email email) {
-        offcieJmsTemplate.send(emailQueue, new MessageCreator() {
-            @Override
-            public Message createMessage(Session arg0) throws JMSException {
+        if (OfficeServiceConfiguration.instance().getIsSendMail()) {
+            offcieJmsTemplate.send(emailQueue, new MessageCreator() {
+                @Override
+                public Message createMessage(Session arg0) throws JMSException {
 
-                ObjectMessage msg = arg0.createObjectMessage();
-                msg.setObject(email);
-                return msg;
-            }
-        });
+                    ObjectMessage msg = arg0.createObjectMessage();
+                    msg.setObject(email);
+                    return msg;
+                }
+            });
+        }
     }
 }

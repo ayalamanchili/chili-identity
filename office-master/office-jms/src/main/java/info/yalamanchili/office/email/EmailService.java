@@ -48,10 +48,10 @@ public class EmailService {
                 Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
                 mimeMessage.setRecipients(Message.RecipientType.TO, tos);
                 mimeMessage.setSubject(email.getSubject());
-
+                
                 final Context ctx = new Context();
                 ctx.setVariable("email", email);
-
+                
                 String htmlContent = templateEngine.process(email.getTemplateName(), ctx);
                 message.setText(htmlContent, true);
 
