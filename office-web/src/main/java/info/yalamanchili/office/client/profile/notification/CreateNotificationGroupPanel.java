@@ -4,15 +4,75 @@
  */
 package info.yalamanchili.office.client.profile.notification;
 
-import info.chili.gwt.composite.ALComposite;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlowPanel;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
 
 /**
  *
  * @author anuyalamanchili
  */
-public class CreateNotificationGroupPanel extends ALComposite {
+public class CreateNotificationGroupPanel extends CreateComposite {
 
-    public CreateNotificationGroupPanel() {
+    private static Logger logger = Logger.getLogger(CreateNotificationGroupPanel.class.getName());
+    protected FlowPanel panel = new FlowPanel();
+    protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", null);
+
+    public CreateNotificationGroupPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
+        initCreateComposite("NotificationGroup", OfficeWelcome.constants);
+    }
+
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        JSONObject notificationGroup = new JSONObject();
+        assignEntityValueFromField("name", notificationGroup);
+        JSONArray employees = new JSONArray();
+        int i = 0;
+        for (String empId : employeeSelectWidget.getMultiSelectBox().getSelectedIds()) {
+            JSONObject emp = new JSONObject();
+            emp.put("id", new JSONString(empId));
+            employees.set(i, emp);
+            i++;
+        }
+        logger.info(notificationGroup.toString());
+        return notificationGroup;
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
+    }
+
+    @Override
+    protected void addButtonClicked() {
+    }
+
+    @Override
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully created Notification Group");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
     }
 
     @Override
@@ -25,5 +85,16 @@ public class CreateNotificationGroupPanel extends ALComposite {
 
     @Override
     protected void addWidgets() {
+        addField("name", false, true, DataType.STRING_FIELD);
+        entityDisplayWidget.add(employeeSelectWidget);
+    }
+
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "notification/creategroup";
     }
 }

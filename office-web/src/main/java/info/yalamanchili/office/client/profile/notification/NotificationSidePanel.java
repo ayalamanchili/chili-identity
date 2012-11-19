@@ -23,6 +23,7 @@ public class NotificationSidePanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(NotificationSidePanel.class.getName());
     public FlowPanel notificationsidepanel = new FlowPanel();
     ClickableLink createnotificationlink = new ClickableLink("Create Notification");
+    ClickableLink createnotificationGrouplink = new ClickableLink("Create Notification Group");
 
     public NotificationSidePanel() {
         init(notificationsidepanel);
@@ -31,6 +32,7 @@ public class NotificationSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         createnotificationlink.addClickHandler(this);
+        createnotificationGrouplink.addClickHandler(this);
     }
 
     @Override
@@ -41,6 +43,7 @@ public class NotificationSidePanel extends ALComposite implements ClickHandler {
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.isHR()) {
             notificationsidepanel.add(createnotificationlink);
+            notificationsidepanel.add(createnotificationGrouplink);
         }
     }
 
@@ -49,7 +52,10 @@ public class NotificationSidePanel extends ALComposite implements ClickHandler {
         if (event.getSource().equals(createnotificationlink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateNotificationPanel(CreateComposite.CreateCompositeType.CREATE));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateNotificationGroupPanel());
+        }
+        if (event.getSource().equals(createnotificationGrouplink)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateNotificationGroupPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

@@ -45,4 +45,8 @@ public abstract class MultiSelectComposite extends Composite {
     protected abstract void loadData();
 
     protected abstract String getMultiSelectUrl();
+    
+    public MultiSelectBox getMultiSelectBox(){
+        return multiSelectBox;
+    }
 }
