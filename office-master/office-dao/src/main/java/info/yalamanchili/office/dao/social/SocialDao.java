@@ -1,5 +1,6 @@
 package info.yalamanchili.office.dao.social;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostLike;
@@ -75,5 +76,13 @@ public class SocialDao {
         like.setEmployee(securityService.getCurrentUser());
         like.setPost(em.find(Post.class, postId));
         em.merge(like);
+    }
+      public void delete(Long id) {
+        try {
+           em.remove(em.find(Post.class, id));
+           em.flush();
+        } catch (javax.persistence.PersistenceException e) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", "cannot delete due to associated data");
+        }
     }
 }
