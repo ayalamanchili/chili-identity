@@ -7,6 +7,7 @@ package info.yalamanchili.office.profile;
 
 import info.chili.beans.BeanMapper;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -28,6 +29,8 @@ public class ClientInformationService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    @Autowired
+    protected ProfileNotificationService  ProfileNotificationService;
 
 
     public void addClientInformation(Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
@@ -60,6 +63,7 @@ public class ClientInformationService {
         entity.setContact(contact);
         entity.setEmployee(emp);
         em.merge(entity);
+        ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
     }
 
     public info.yalamanchili.office.dto.profile.ClientInformation update(info.yalamanchili.office.dto.profile.ClientInformation ci) {
@@ -80,6 +84,7 @@ public class ClientInformationService {
             ciEntity.getContact().getPhones().get(0).setPhoneNumber(ci.getPhoneNumber());
         }
         em.merge(ciEntity);
+        ProfileNotificationService.sendClientInformationUpdatedNotification(ciEntity.getEmployee());
         return ci;
     }
 }
