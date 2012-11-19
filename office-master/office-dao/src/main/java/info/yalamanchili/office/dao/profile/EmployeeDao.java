@@ -7,9 +7,12 @@ package info.yalamanchili.office.dao.profile;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.security.CUser;
 
 import javax.persistence.EntityManager;
@@ -32,6 +35,16 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     public EmployeeDao() {
         super(Employee.class);
+    }
+
+    public Employee save(Employee entity) {
+        if (entity.getId() != null) {
+            Employee updatedEmployee = null;
+            updatedEmployee = super.save(entity);
+            updatedEmployee.setEmployeeType(em.find(EmployeeType.class, entity.getEmployeeType().getId()));
+            return em.merge(updatedEmployee);
+        }
+        return super.save(entity);
     }
 
     public Email updatePrimaryEmail(Contact emp, Email Newemail) {

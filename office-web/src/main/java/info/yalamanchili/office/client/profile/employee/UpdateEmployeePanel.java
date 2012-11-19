@@ -15,13 +15,13 @@ import info.yalamanchili.office.client.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
 
+    protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
         public void onUploadComplete() {
             postUpdateSuccess(null);
         }
     };
-
 
     public static Object instance() {
         return null;
@@ -39,11 +39,14 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("startDate", entity);
-        assignEntityValueFromField("employeeType", entity);
         assignEntityValueFromField("jobTitle", entity);
         if (!empImageUploadPanel.isEmpty()) {
             entity.put("imageURL", empImageUploadPanel.getFileName());
         }
+        //hack to swap employeetype value attribute with name attribute
+        JSONObject employeeType = employeeSelectWidget.getSelectedObject();
+        employeeType.put("name", employeeType.get("value"));
+        entity.put("employeeType", employeeType);
         return entity;
     }
 
@@ -74,7 +77,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("employeeType", entity,null);
+        assignFieldValueFromEntity("employeeType", entity, null);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         //TODO add image panel for employee image
     }
@@ -92,7 +95,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         // same here update them
-        addDropDown("employeeType", new SelectEmployeeTypeWidget(false, false));
+        addDropDown("employeeType", employeeSelectWidget);
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
@@ -101,7 +104,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("jobTitle", false, true, DataType.STRING_FIELD);
-         
+
         entityDisplayWidget.add(empImageUploadPanel);
 
     }
@@ -120,11 +123,10 @@ public class UpdateEmployeePanel extends UpdateComposite {
         empImageUploadPanel.upload(entityId.trim());
     }
 
-
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee information");
-       
+
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
     }
