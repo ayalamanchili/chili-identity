@@ -14,7 +14,7 @@ public class ClientInfoOptionsPanel extends ALComposite implements ClickHandler 
 
 	protected HorizontalPanel panel = new HorizontalPanel();
 
-	protected ClickableLink addClientInfoLink = new ClickableLink("Add Client Inoformation");
+	protected ClickableLink addClientInfoLink = new ClickableLink("Add Client Information");
 
 	public ClientInfoOptionsPanel() {
 		init(panel);
