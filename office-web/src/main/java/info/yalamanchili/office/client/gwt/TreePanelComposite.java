@@ -10,9 +10,9 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import info.chili.gwt.utils.JSONUtils;
 //TODO extend tree item?
 public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem> {
@@ -27,9 +27,9 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 
     public String getEntityId() {
         if (entityId == null && entity != null) {
-          return JSONUtils.toString(entity, "id");
-           }
-          return entityId;
+            return JSONUtils.toString(entity, "id");
+        }
+        return entityId;
 
     }
 
@@ -44,7 +44,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     public TreePanelComposite(JSONObject entity) {
         initWidget(panel);
         this.entity = entity;
-        this.entityId=JSONUtils.toString(entity,"id");
+        this.entityId = JSONUtils.toString(entity, "id");
     }
 
     public TreePanelComposite(String entityId) {
@@ -84,14 +84,16 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 
     protected void addRootNode(String name) {
         // TODO get the roo node name from constants
-        rootItem.setText(name);
+        TreeItemLabel label = new TreeItemLabel(name);
+        rootItem.setWidget(label);;
         rootItem.addStyleName("y-gwt-treePanelComposite-RootNode");
         tree.addItem(rootItem);
     }
 
     protected void addFirstChildLink(String childNodeName, String childNodeKey) {
         // TODO get the name from constants
-        TreeItem child = new TreeItem(Utils.getKeyValue(childNodeName, constants));
+        TreeItemLabel label = new TreeItemLabel(Utils.getKeyValue(childNodeName, constants));
+        TreeItem child = new TreeItem(label);
         child.addStyleName("y-gwt-treePanelComposite-Node");
 
         child.setUserObject(childNodeKey);
@@ -99,7 +101,8 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     }
 
     protected void addFirstChildLink(String childNodeName, String childNodeKey, TreeItem treeItem) {
-        treeItem.setText(childNodeName);
+        TreeItemLabel label = new TreeItemLabel(Utils.getKeyValue(childNodeName, constants));
+        treeItem.setWidget(label);
         treeItem.setUserObject(childNodeKey);
         rootItem.addItem(treeItem);
     }
@@ -125,4 +128,12 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     public abstract void loadEntity();
 
     public abstract void showEntity();
+
+    public class TreeItemLabel extends Label {
+
+        public TreeItemLabel(String name) {
+            super(name);
+            this.addStyleName("treeItemLabel");
+        }
+    }
 }
