@@ -63,6 +63,15 @@ public class SocialResource {
         return socialDao.createPost(post);
     }
 
+    // For deleting Employee feed and company Feed
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public void delete(@PathParam("id") Long id) {
+        socialDao.delete(id);
+    }
+     
+     
     @PUT
     @Path("/addreply/{parentPostId}")
     public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply) {
