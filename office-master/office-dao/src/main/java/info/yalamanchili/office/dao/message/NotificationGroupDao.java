@@ -6,15 +6,16 @@ package info.yalamanchili.office.dao.message;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author anuyalamanchili
  */
+@Component
 public class NotificationGroupDao extends CRUDDao<NotificationGroup> {
 
     @PersistenceContext

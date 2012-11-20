@@ -22,20 +22,20 @@ import java.util.logging.Logger;
  * @author anuyalamanchili
  */
 public class CreateNotificationGroupPanel extends CreateComposite {
-
+    
     private static Logger logger = Logger.getLogger(CreateNotificationGroupPanel.class.getName());
     protected FlowPanel panel = new FlowPanel();
     protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", null);
-
+    
     public CreateNotificationGroupPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("NotificationGroup", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject notificationGroup = new JSONObject();
-        assignEntityValueFromField("name", notificationGroup);
+        JSONObject entity = new JSONObject();
+        assignEntityValueFromField("name", entity);
         JSONArray employees = new JSONArray();
         int i = 0;
         for (String empId : employeeSelectWidget.getMultiSelectBox().getSelectedIds()) {
@@ -44,10 +44,11 @@ public class CreateNotificationGroupPanel extends CreateComposite {
             employees.set(i, emp);
             i++;
         }
-        logger.info(notificationGroup.toString());
-        return notificationGroup;
+        entity.put("employees", employees);
+        logger.info(entity.toString());
+        return entity;
     }
-
+    
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -57,44 +58,45 @@ public class CreateNotificationGroupPanel extends CreateComposite {
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-
+                    
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
                 });
     }
-
+    
     @Override
     protected void addButtonClicked() {
     }
-
+    
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully created Notification Group");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllNotificationGroupsPanel());
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         entityDisplayWidget.add(employeeSelectWidget);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "notification/creategroup";
+        return OfficeWelcome.constants.root_url() + "notification/group/create";
     }
 }

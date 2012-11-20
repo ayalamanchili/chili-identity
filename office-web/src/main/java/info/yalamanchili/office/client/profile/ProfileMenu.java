@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
 import info.yalamanchili.office.client.profile.notification.NotificationSidePanel;
+import info.yalamanchili.office.client.profile.notification.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 
@@ -35,7 +36,7 @@ public class ProfileMenu extends Composite {
     protected void configureAdminMenu() {
         MenuBar menu = new MenuBar(true);
 //        profileMenuBar.addItem("Menu", menu);
-       
+
 
 
         profileMenuBar.addItem("Employees", employeeMaintainenceCmd);
@@ -49,7 +50,7 @@ public class ProfileMenu extends Composite {
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             profileMenuBar.addItem("Notifications", notificationsMaintainenceCmd);
         }
-         profileMenuBar.addStyleName("entityMenuBar");
+        profileMenuBar.addStyleName("entityMenuBar");
     }
     Command employeeMaintainenceCmd = new Command() {
         public void execute() {
@@ -112,12 +113,11 @@ public class ProfileMenu extends Composite {
 
         }
     };
-    
-   Command notificationsMaintainenceCmd = new Command() {
+    Command notificationsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new NotificationSidePanel());
 
 
