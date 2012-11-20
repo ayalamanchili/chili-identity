@@ -86,8 +86,8 @@ public class ProfileNotificationService {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME,OfficeRoles.ROLE_RECRUITER};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
-        email.setSubject("Client Information Addition");
-        String messageText = "Client Information For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
+        email.setSubject("Client Information Added/Updated");
+        String messageText = "Client Information For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Added/Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
