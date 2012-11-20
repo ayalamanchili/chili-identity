@@ -32,7 +32,7 @@ public class EmergencyContact implements Serializable {
     protected String lastName;
     protected Sex sex;
     @Email
-    @NotEmpty(message = "{emergencycontact.email.not.empty.msg}")
+//    @NotEmpty(message = "{emergencycontact.email.not.empty.msg}")
     protected String email;
     @Size(min = 10, max = 10)
     @NotEmpty(message = "{emergencycontact.phoneNumber.not.empty.msg}")
