@@ -10,6 +10,7 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -27,6 +28,8 @@ public class EmergencyContactService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    @Autowired
+    protected ProfileNotificationService ProfileNotificationService;
     
     public void addEmergencyContact(Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
         Employee emp = (Employee) em.find(Employee.class, empId);
@@ -57,6 +60,7 @@ public class EmergencyContactService {
         emergencyCnt.setContact(contact);
         emergencyCnt.setEmployee(emp);
         em.merge(emergencyCnt);
+        ProfileNotificationService.sendEmergencyContactUpdateNotification(emp);
     }
     
     public info.yalamanchili.office.dto.profile.EmergencyContact update(info.yalamanchili.office.dto.profile.EmergencyContact ec) {
@@ -77,6 +81,7 @@ public class EmergencyContactService {
             ecEntity.getContact().getPhones().get(0).setPhoneNumber(ec.getPhoneNumber());
         }
         em.merge(ecEntity);
+        ProfileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
         return ec;
     }
 }
