@@ -71,10 +71,10 @@
     margin-right: 0px;
     font-size: 12pt;
     font-weight: 500;
-    color: white;
+    color: #064c78;
     gwt-image:"tabButtonClick";
     height:auto;
-    text-shadow: 0px 1px 2px #4d4d4d;
+/*    text-shadow: 0px 1px 2px #4d4d4d;*/
 }
 
 /* an element nested in each tab (useful for styling)*/
@@ -184,16 +184,26 @@ legend {
     align:center;
     
 }
-.gwt-TreeItem{
+
+
+.treeItemLabel{
     
-    padding:0px;
+    padding: 5px;
+}
+
+.treeItemLabel:hover{
+    
+   background-color: blue_mid;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.1s;  
+    -webkit-transition-timing-function: linear, ease-in;
 }
 
 .gwt-TreeItem:hover{
    
-   text-spacing: 2px;
+   
     background-color: blue_mid;
-    font-color:#666666;
+    
     -webkit-transition-property: background-color;  
     -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;  
