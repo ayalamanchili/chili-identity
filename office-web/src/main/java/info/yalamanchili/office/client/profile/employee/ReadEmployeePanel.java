@@ -9,10 +9,12 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 public class ReadEmployeePanel extends ReadComposite {
 
     private static ReadEmployeePanel instance;
+protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
 
     public static ReadEmployeePanel instance() {
         return instance;
@@ -42,6 +44,7 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("employeeType", entity, null);
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -51,6 +54,8 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
+         assignFieldValueFromEntity("employeeType", entity, null);
     }
 
     @Override
@@ -65,6 +70,7 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("employeeType", employeeSelectWidget);
         addField("firstName", true, false, DataType.STRING_FIELD);
         addField("middleInitial", true, false, DataType.STRING_FIELD);
         addField("lastName", true, false, DataType.STRING_FIELD);
@@ -75,7 +81,7 @@ public class ReadEmployeePanel extends ReadComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", true, false, strs);
         addField("startDate", true, false, DataType.DATE_FIELD);
-
+         addField("jobTitle", true, false, DataType.STRING_FIELD);
     }
 
     @Override
