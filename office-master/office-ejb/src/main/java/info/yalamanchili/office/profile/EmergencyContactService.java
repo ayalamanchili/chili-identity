@@ -75,9 +75,13 @@ public class EmergencyContactService {
         //Email
         if((ec.getEmail() != null)&&(!ec.getEmail().isEmpty()))
         {
-        if (ecEntity.getContact().getEmails().size() > 0) {
+            if (ecEntity.getContact().getEmails().size() > 0) {
             ecEntity.getContact().getEmails().get(0).setEmail(ec.getEmail());
+             }
         }
+        else if((ec.getEmail() == null)&&(ec.getEmail().isEmpty()))
+        {
+          ecEntity.getContact().getEmails().remove(ecEntity.getContact().getEmails().get(0));
         }
         //Phone
         if (ecEntity.getContact().getPhones().size() > 0) {
