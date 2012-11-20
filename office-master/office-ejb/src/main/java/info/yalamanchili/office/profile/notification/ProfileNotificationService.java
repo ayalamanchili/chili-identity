@@ -80,14 +80,26 @@ public class ProfileNotificationService {
         messagingService.sendEmail(email);
 
     }
-    
-     @Async
+
+    @Async
     public void sendClientInformationUpdatedNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME,OfficeRoles.ROLE_RECRUITER};
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Client Information Added/Updated");
         String messageText = "Client Information For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Added/Updated";
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
+
+    }
+
+    @Async
+    public void sendEmergencyContactUpdateNotification(Employee emp) {
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
+        Email email = new Email();
+        email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setSubject("Emergency Contact Addition");
+        String messageText = "Emergency Contact For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
