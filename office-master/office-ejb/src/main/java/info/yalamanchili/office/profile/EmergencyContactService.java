@@ -39,7 +39,7 @@ public class EmergencyContactService {
         contact.setSex(ec.getSex());
         //Email
 
-        if (ec.getEmail() != null) {
+        if ((ec.getEmail() != null) && (!ec.getEmail().isEmpty()) ){
             Email email = new Email();
             email.setEmail(ec.getEmail());
             email.setPrimaryEmail(Boolean.TRUE);
@@ -73,8 +73,11 @@ public class EmergencyContactService {
         ecEntity.getContact().setMiddleInitial(ec.getMiddleInitial());
         ecEntity.getContact().setSex(ec.getSex());
         //Email
+        if((ec.getEmail() != null)&&(!ec.getEmail().isEmpty()))
+        {
         if (ecEntity.getContact().getEmails().size() > 0) {
             ecEntity.getContact().getEmails().get(0).setEmail(ec.getEmail());
+        }
         }
         //Phone
         if (ecEntity.getContact().getPhones().size() > 0) {
