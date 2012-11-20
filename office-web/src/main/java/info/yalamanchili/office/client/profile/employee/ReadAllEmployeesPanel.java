@@ -71,7 +71,9 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
         table.setText(0, 5, getKeyValue("Phone"));
         table.setText(0, 6, getKeyValue("Sex"));
         table.setText(0, 7, getKeyValue("Image"));
-        table.setText(0, 8, getKeyValue("Start Date"));
+//        table.setText(0, 8, getKeyValue("Start Date"));
+        table.setText(0, 8, getKeyValue("Job Title"));
+        table.setText(0, 9, getKeyValue("Type"));
     }
 
     @Override
@@ -86,7 +88,10 @@ public class ReadAllEmployeesPanel extends ReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
             table.setText(i, 6, JSONUtils.toString(entity, "sex"));
             table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
-            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+// (orginal table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+//            table.setText(i, 8, JSONUtils.toString(entity, "startDate"));
+            table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
+            table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "employeeType"));
         }
     }
 
