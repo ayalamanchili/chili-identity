@@ -28,7 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Audited
 @Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"phoneType"}))
+@UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = NotificationGroup.class, fields = {"name"}, message = "{notificationgroup.name.not.unique.msg}")
 @XmlRootElement
 public class NotificationGroup extends AbstractEntity {
