@@ -46,7 +46,7 @@ public class EmailService {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
                 Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
-                mimeMessage.setRecipients(Message.RecipientType.TO, tos);
+                mimeMessage.setRecipients(Message.RecipientType.BCC, tos);
                 mimeMessage.setSubject(email.getSubject());
 
                 final Context ctx = new Context();
