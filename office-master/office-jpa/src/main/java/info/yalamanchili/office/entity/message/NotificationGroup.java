@@ -5,11 +5,14 @@
 package info.yalamanchili.office.entity.message;
 
 import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -24,6 +27,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Indexed
 @Entity
 @Audited
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"phoneType"}))
+@Unique(entity = NotificationGroup.class, fields = {"name"}, message = "{notificationgroup.name.not.unique.msg}")
 @XmlRootElement
 public class NotificationGroup extends AbstractEntity {
 
