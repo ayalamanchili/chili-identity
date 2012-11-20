@@ -41,9 +41,12 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
     @Autowired
     public NotificationGroupDao notificationGroupDao;
 
-    @Path("/group/create")
+    @Path("/group/save")
     @PUT
-    public void createNotificationGroup(NotificationGroup group) {
+    public void saveNotificationGroup(NotificationGroup group) {
+        if (group.getId() != null) {
+            group = (NotificationGroup) getDao().findById(group.getId());
+        }
         List<Employee> emps = new ArrayList<Employee>();
         emps.addAll(group.getEmployees());
         group.setEmployees(null);
@@ -83,7 +86,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
     }
 
     @Override
-    public CRUDDao getDao() {
+    public NotificationGroupDao getDao() {
         return notificationGroupDao;
     }
 

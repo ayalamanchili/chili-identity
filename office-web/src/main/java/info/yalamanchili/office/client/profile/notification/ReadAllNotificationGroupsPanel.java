@@ -8,13 +8,10 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
-import info.yalamanchili.office.client.profile.employeetype.UpdateEmployeeTypePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -97,5 +94,7 @@ public class ReadAllNotificationGroupsPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateNotificationGroupPanel(getEntity(entityId)));
     }
 }

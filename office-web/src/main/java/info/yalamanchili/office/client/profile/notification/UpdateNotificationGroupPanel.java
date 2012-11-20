@@ -8,12 +8,12 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.UpdateComposite;
+import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -21,20 +21,17 @@ import java.util.logging.Logger;
  *
  * @author anuyalamanchili
  */
-public class CreateNotificationGroupPanel extends CreateComposite {
-    
-    private static Logger logger = Logger.getLogger(CreateNotificationGroupPanel.class.getName());
-    protected FlowPanel panel = new FlowPanel();
-    protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", null);
-    
-    public CreateNotificationGroupPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
-        initCreateComposite("NotificationGroup", OfficeWelcome.constants);
+public class UpdateNotificationGroupPanel extends UpdateComposite {
+
+    private static Logger logger = Logger.getLogger(UpdateNotificationGroupPanel.class.getName());
+    protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", getEntityId());
+
+    public UpdateNotificationGroupPanel(JSONObject entity) {
+        initUpdateComposite(entity, "NotificationGroup", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         JSONArray employees = new JSONArray();
         int i = 0;
@@ -48,53 +45,54 @@ public class CreateNotificationGroupPanel extends CreateComposite {
         logger.info(entity.toString());
         return entity;
     }
-    
+
     @Override
-    protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
-                    
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
+
     }
-    
+
     @Override
-    protected void addButtonClicked() {
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
     }
-    
+
     @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully created Notification Group");
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("successfully updated Notification Group");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllNotificationGroupsPanel());
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         entityDisplayWidget.add(employeeSelectWidget);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "notification/group/save";
