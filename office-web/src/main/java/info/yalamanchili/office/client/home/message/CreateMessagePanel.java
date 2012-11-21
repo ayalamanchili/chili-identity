@@ -10,10 +10,12 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.RichTextToolBar;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -31,6 +33,8 @@ public class CreateMessagePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateMessagePanel.class.getName());
     protected SuggestBox tosSuggestBox = new SuggestBox(constants, "Tos", "Message", false, true);
+    final RichTextArea textArea = new RichTextArea();
+    final RichTextToolBar toolBar = new RichTextToolBar(textArea);
 
     public CreateMessagePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -41,8 +45,7 @@ public class CreateMessagePanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject msg = new JSONObject();
         assignEntityValueFromField("subject", msg);
-        assignEntityValueFromField("message", msg);
-//        assignEntityValueFromField("messageTs", msg);
+        entity.put("message", new JSONString(textArea.getHTML()));
         msg.put("tos", populateTos());
         logger.info(msg.toString());
         return msg;
@@ -114,7 +117,8 @@ public class CreateMessagePanel extends CreateComposite {
     protected void addWidgets() {
         entityDisplayWidget.add(tosSuggestBox);
         addField("subject", false, true, DataType.STRING_FIELD);
-        addField("message", false, true, DataType.STRING_FIELD);
+        entityDisplayWidget.add(toolBar);
+        entityDisplayWidget.add(textArea);
 //        addField("messageTs", false, true, DataType.DATE_FIELD);
     }
 
