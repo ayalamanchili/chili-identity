@@ -20,6 +20,7 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.widgets.ClickableImage;
 
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileField;
 import info.yalamanchili.office.client.gwt.ImageField;
@@ -134,7 +135,10 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         postMainPanel.add(postStatusPanel);
         optionsPanel.add(likeB);
         optionsPanel.add(viewIcon);
+        if(Auth.isAdmin())
+        {
         optionsPanel.add(deleteLink);
+        }
         postMainPanel.add(optionsPanel);
     }
 
