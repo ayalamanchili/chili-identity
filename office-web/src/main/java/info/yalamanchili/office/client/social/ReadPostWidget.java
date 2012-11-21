@@ -43,6 +43,7 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     protected ClickableImage likeB = new ClickableImage("Like", OfficeImages.INSTANCE.likeIcon_16_16());
     protected ClickableImage replyLink = new ClickableImage("reply", OfficeImages.INSTANCE.replyIcon_16_16());
     protected ClickableImage viewIcon = new ClickableImage("view", OfficeImages.INSTANCE.viewIcon_16_16());
+    protected ClickableImage deleteLink = new ClickableImage("delete", OfficeImages.INSTANCE.deleteIcon_16_16());
 
     public ReadPostWidget(JSONObject post, boolean showReplyOption) {
         this.post = post;
@@ -104,6 +105,7 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         replyLink.addClickHandler(this);
         likeB.addClickHandler(this);
         viewIcon.addClickHandler(this);
+        deleteLink.addClickHandler(this);
 //        postStatusPanel.addMouseOverHandler(this);
     }
 
@@ -130,6 +132,7 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         postMainPanel.add(postStatusPanel);
         optionsPanel.add(likeB);
         optionsPanel.add(viewIcon);
+        optionsPanel.add(deleteLink);
         postMainPanel.add(optionsPanel);
     }
 
@@ -154,6 +157,15 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         if (arg0.getSource().equals(viewIcon)) {
             viewClicked();
         }
+        if (arg0.getSource().equals(deleteLink)) {
+            HttpService.HttpServiceAsync.instance().doPut(getdeleteURL(), null, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess(arg0);
+                        }
+                    });
+        }
     }
 
     protected abstract void viewClicked();
@@ -163,8 +175,17 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         new ResponseStatusWidget().show("Successfully Liked");
 
     }
+    
+    private void postDeleteSuccess(String arg0) {
+
+        new ResponseStatusWidget().show("Successfully Deleted");
+
+    }
 
     public String getlikeURL() {
         return OfficeWelcome.constants.root_url() + "social/liked/" + String.valueOf(postId);
+    }
+     public String getdeleteURL() {
+        return OfficeWelcome.constants.root_url() + "social/delete/" + String.valueOf(postId);
     }
 }
