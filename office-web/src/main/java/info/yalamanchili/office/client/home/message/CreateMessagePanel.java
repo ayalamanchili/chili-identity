@@ -31,6 +31,9 @@ import java.util.logging.Logger;
  */
 public class CreateMessagePanel extends CreateComposite {
 
+    
+    
+    
     private static Logger logger = Logger.getLogger(CreateMessagePanel.class.getName());
     protected SuggestBox tosSuggestBox = new SuggestBox(constants, "Tos", "Message", false, true);
     final RichTextArea textArea = new RichTextArea();
@@ -45,7 +48,7 @@ public class CreateMessagePanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject msg = new JSONObject();
         assignEntityValueFromField("subject", msg);
-        entity.put("message", new JSONString(textArea.getHTML()));
+        msg.put("message", new JSONString(textArea.getHTML()));
         msg.put("tos", populateTos());
         logger.info(msg.toString());
         return msg;
@@ -90,6 +93,7 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
+        createButtonClicked();
     }
 
     @Override
@@ -115,6 +119,7 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        entityDisplayWidget.add(toolBar);
         entityDisplayWidget.add(tosSuggestBox);
         addField("subject", false, true, DataType.STRING_FIELD);
         entityDisplayWidget.add(toolBar);
