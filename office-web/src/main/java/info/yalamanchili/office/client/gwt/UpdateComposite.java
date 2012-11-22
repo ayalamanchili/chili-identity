@@ -14,8 +14,8 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
     protected Button update = new Button("update");
 
     public void initUpdateComposite(JSONObject entity, String className, final ConstantsWithLookup constants) {
-        init(className, false, constants);
         this.entity = entity;
+        init(className, false, constants);
         entityCaptionPanel.addStyleName("y-gwt-UpdateEntityCaptionPanel");
         entityDisplayWidget.addStyleName("y-gwt-UpdateEntityDisplayWidget");
         basePanel.addStyleName("y-gwt-UpdateBasePanel");

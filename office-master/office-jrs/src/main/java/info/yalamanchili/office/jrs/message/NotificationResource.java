@@ -44,12 +44,13 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
     @Path("/group/save")
     @PUT
     public void saveNotificationGroup(NotificationGroup group) {
-        if (group.getId() != null) {
-            group = (NotificationGroup) getDao().findById(group.getId());
-        }
         List<Employee> emps = new ArrayList<Employee>();
         emps.addAll(group.getEmployees());
-        group.setEmployees(null);
+        if (group.getId() != null) {
+            group = (NotificationGroup) getDao().findById(group.getId());
+        } else {
+            group.setEmployees(null);
+        }
         for (Employee employee : emps) {
             Employee emp = EmployeeDao.instance().findById(employee.getId());
             group.getEmployees().add(emp);

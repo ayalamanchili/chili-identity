@@ -49,7 +49,7 @@ public class MultiSelectEmployeeWidget extends MultiSelectComposite {
         if (parentId == null) {
             return OfficeWelcome.constants.root_url() + "notification/group/employees/0/0/500";
         } else {
-            return OfficeWelcome.constants.root_url() + "notification/group/employees/parentId/0/500";
+            return OfficeWelcome.constants.root_url() + "notification/group/employees/" + parentId + "/0/500";
         }
     }
 }

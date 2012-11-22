@@ -13,7 +13,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
-import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -24,9 +23,10 @@ import java.util.logging.Logger;
 public class UpdateNotificationGroupPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateNotificationGroupPanel.class.getName());
-    protected MultiSelectEmployeeWidget employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", getEntityId());
+    protected MultiSelectEmployeeWidget employeeSelectWidget;
 
     public UpdateNotificationGroupPanel(JSONObject entity) {
+        logger.info(entity.toString());
         initUpdateComposite(entity, "NotificationGroup", OfficeWelcome.constants);
     }
 
@@ -85,6 +85,7 @@ public class UpdateNotificationGroupPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", getEntityId());
         addField("name", false, true, DataType.STRING_FIELD);
         entityDisplayWidget.add(employeeSelectWidget);
     }
