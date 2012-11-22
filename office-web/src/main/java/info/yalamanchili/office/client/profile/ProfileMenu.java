@@ -44,7 +44,7 @@ public class ProfileMenu extends Composite {
         if (Auth.isAdmin() || Auth.isHR()) {
             profileMenuBar.addItem("Skills", skillsMaintainenceCmd);
             profileMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
-            profileMenuBar.addItem("EmployeeTypes", employeeTypesMaintainenceCmd);
+            profileMenuBar.addItem("EmployeeType", employeeTypesMaintainenceCmd);
             profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
