@@ -9,6 +9,8 @@ import info.yalamanchili.office.dto.drive.FileDto;
 import info.yalamanchili.office.dto.drive.FileDto.FileTable;
 import info.yalamanchili.office.dto.drive.FolderDto;
 import info.yalamanchili.office.dao.drive.FileDao;
+import info.yalamanchili.office.entity.drive.File;
+import info.yalamanchili.office.jrs.FileResource;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -36,9 +38,6 @@ public class DriveResource {
 
     @Autowired
     protected DriveService driveService;
-    
-   
-    
 
     @Path("/tree")
     @GET
@@ -63,9 +62,11 @@ public class DriveResource {
     @Path("/files/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void deletefile(@PathParam("id") Long id) {
+        File file = FileDao.instance().findById(id);
         FileDao.instance().delete(id);
+        FileResource.instance().deleteFile(file.getFileUrl(), file.getId().toString());
     }
-     
+
     @GET
     @Path("/files/{folderId}/{start}/{limit}")
     public FileTable getFiles(@PathParam("folderId") long id, @PathParam("start") int start, @PathParam("limit") int limit) {

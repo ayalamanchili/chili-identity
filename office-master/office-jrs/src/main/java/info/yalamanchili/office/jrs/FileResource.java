@@ -44,7 +44,7 @@ public class FileResource {
     @Path("/upload")
     public Response uploadFile(@Context HttpServletRequest request) {
         log.info("---------------uploading file-----------------");
-        processImageUpload(request);
+        processFileUpload(request);
         return Response.ok().build();
     }
 
@@ -74,9 +74,23 @@ public class FileResource {
         }
 
     }
+//TODO move to commons
 
-    public void deleteFile(String url, String entityId) {
-        //TODO implement
+    public boolean deleteFile(String path, String entityId) {
+        File file = null;
+        path = swapEntityId(path, entityId);
+        try {
+            file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + path);
+            if (file.exists()) {
+                log.info("deleting---------:" + file.getPath());
+                return file.delete();
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting file" + e);
+        }
+
     }
 
     protected String swapEntityId(String path, String entityId) {
@@ -98,7 +112,7 @@ public class FileResource {
         response.header("Content-Length", fileName);
     }
 
-    protected void processImageUpload(HttpServletRequest request) {
+    protected void processFileUpload(HttpServletRequest request) {
         FileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
         List<FileItem> items = null;
