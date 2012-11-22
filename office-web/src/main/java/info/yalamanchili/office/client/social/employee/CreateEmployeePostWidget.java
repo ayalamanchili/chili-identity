@@ -16,6 +16,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -23,6 +24,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileuploadField;
@@ -83,6 +85,15 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
             JSONObject postImage1 = new JSONObject();
             postImage1.put("fileURL", imageUploadPanel.getFileName());
             postImage1.put("fileType", new JSONString("IMAGE"));
+            if (FileUtils.isImage(imageUploadPanel.getFileName().stringValue())) {
+                postImage1.put("fileType", new JSONString("IMAGE"));
+            } else if (FileUtils.isDocument(imageUploadPanel.getFileName().stringValue())) {
+                postImage1.put("fileType", new JSONString("FILE"));
+            } else {
+                Window.alert("Unsupported file extension");
+                throw new RuntimeException("unsupported file type");
+            }
+            logger.info(postImage1.toString());
             postImages.set(0, postImage1);
             post.put("postFiles", postImages);
         }
