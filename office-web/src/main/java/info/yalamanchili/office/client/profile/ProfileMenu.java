@@ -8,7 +8,6 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -19,8 +18,6 @@ import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
 import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
-import info.yalamanchili.office.client.profile.notification.NotificationSidePanel;
-import info.yalamanchili.office.client.profile.notification.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 
@@ -35,9 +32,6 @@ public class ProfileMenu extends Composite {
 
     protected void configureAdminMenu() {
         MenuBar menu = new MenuBar(true);
-//        profileMenuBar.addItem("Menu", menu);
-
-
 
         profileMenuBar.addItem("Employees", employeeMaintainenceCmd);
 
@@ -48,7 +42,6 @@ public class ProfileMenu extends Composite {
             profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
-            profileMenuBar.addItem("Notifications", notificationsMaintainenceCmd);
         }
         profileMenuBar.addStyleName("entityMenuBar");
     }
@@ -109,16 +102,6 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
-
-
-        }
-    };
-    Command notificationsMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new NotificationSidePanel());
 
 
         }

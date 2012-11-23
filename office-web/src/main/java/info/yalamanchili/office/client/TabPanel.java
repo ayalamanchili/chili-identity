@@ -17,11 +17,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.admin.AdminMenu;
 import info.yalamanchili.office.client.drive.DriveEntityPanel;
 import info.yalamanchili.office.client.drive.DriveTreePanel;
 import info.yalamanchili.office.client.help.HelpHome;
 import info.yalamanchili.office.client.home.HomeStackPanel;
 import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
+import info.yalamanchili.office.client.profile.notificationgroup.NotificationGroupSidePanel;
+import info.yalamanchili.office.client.profile.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.social.SocialMenu;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.TAEMenu;
@@ -38,6 +41,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout timeandExpensePanel = new EntityLayout();
     public EntityLayout drivePanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
+    public EntityLayout adminPanel = new EntityLayout();
     public EntityLayout helpPanel = new EntityLayout();
 
     public TabPanel() {
@@ -52,6 +56,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(profilePanel, "Profile", false);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_EXPENSE)) {
+            tabPanel.add(adminPanel, "Admin", false);
+        }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
         tabPanel.selectTab(2);
@@ -128,7 +135,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 }
             });
         }
-        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(helpPanel)) {
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(profilePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
                 public void onFailure(Throwable caught) {
@@ -137,7 +144,20 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
                 @Override
                 public void onSuccess() {
-                    selectHelpTab();
+                    selectProfileTab();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(adminPanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectAdminTab();
                 }
             });
         }
@@ -195,6 +215,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         profilePanel.sidePanelTop.add(new ProfileSidePanel());
     }
 
+    public void selectAdminTab() {
+        adminPanel.entityPanel.clear();
+        adminPanel.sidePanelTop.clear();
+        adminPanel.entityTitlePanel.add(new AdminMenu());
+        adminPanel.entityPanel.add(new ReadAllNotificationGroupsPanel());
+        adminPanel.sidePanelTop.add(new NotificationGroupSidePanel());
+    }
+
     public void selectHelpTab() {
         helpPanel.entityPanel.clear();
         helpPanel.sidePanelTop.clear();
@@ -224,5 +252,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public EntityLayout getProfilePanel() {
         return profilePanel;
+    }
+
+    public EntityLayout getAdminPanel() {
+        return adminPanel;
     }
 }
