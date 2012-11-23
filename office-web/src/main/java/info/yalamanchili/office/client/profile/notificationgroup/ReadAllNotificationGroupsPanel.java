@@ -49,7 +49,6 @@ public class ReadAllNotificationGroupsPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Employees"));
     }
 
     @Override
@@ -71,6 +70,8 @@ public class ReadAllNotificationGroupsPanel extends ReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new ReadNotificationGroupPanel(getEntity(entityId)));
     }
 
     @Override
@@ -94,7 +95,7 @@ public class ReadAllNotificationGroupsPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateNotificationGroupPanel(getEntity(entityId)));
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new UpdateNotificationGroupPanel(getEntity(entityId)));
     }
 }

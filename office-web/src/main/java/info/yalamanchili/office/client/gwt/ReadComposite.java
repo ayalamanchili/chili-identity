@@ -6,11 +6,11 @@ import com.google.gwt.json.client.JSONObject;
 public abstract class ReadComposite extends CRUDComposite {
 
     protected void initReadComposite(JSONObject entity, String className, final ConstantsWithLookup constants) {
+        this.entity = entity;
         init(className, true, constants);
         entityCaptionPanel.addStyleName("y-gwt-ReadEntityCaptionPanel");
         entityDisplayWidget.addStyleName("y-gwt-ReadEntityDisplayWidget");
         basePanel.addStyleName("y-gwt-ReadBasePanel");
-        this.entity = entity;
         populateFieldsFromEntity(entity);
     }
 
