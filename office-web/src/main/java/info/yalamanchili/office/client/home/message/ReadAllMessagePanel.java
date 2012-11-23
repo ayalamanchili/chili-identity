@@ -12,8 +12,10 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
+import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -35,6 +37,11 @@ public class ReadAllMessagePanel extends ReadAllComposite {
     public ReadAllMessagePanel() {
         instance = this;
         initTable("Message", OfficeWelcome.constants);
+    }
+    
+      public ReadAllMessagePanel(JSONArray array) {
+        instance = this;
+        initTable("Message", array, OfficeWelcome.constants);
     }
 
     @Override
@@ -72,6 +79,7 @@ public class ReadAllMessagePanel extends ReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -80,10 +88,24 @@ public class ReadAllMessagePanel extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
+    }
+
+     protected String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "message/delete/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully deleted Message Information");
+       TabPanel.instance().homePanel.entityPanel.clear(); 
+        TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
     }
 
     @Override
