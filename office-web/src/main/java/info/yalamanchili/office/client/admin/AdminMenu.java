@@ -9,8 +9,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.notificationgroup.NotificationGroupSidePanel;
-import info.yalamanchili.office.client.profile.notificationgroup.ReadAllNotificationGroupsPanel;
+import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroupSidePanel;
+import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 
 /**
  *
