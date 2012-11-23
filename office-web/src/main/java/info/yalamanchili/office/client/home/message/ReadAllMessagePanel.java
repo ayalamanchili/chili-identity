@@ -84,6 +84,8 @@ public class ReadAllMessagePanel extends ReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new ReadMessagePanel(entityId));
     }
 
     @Override
