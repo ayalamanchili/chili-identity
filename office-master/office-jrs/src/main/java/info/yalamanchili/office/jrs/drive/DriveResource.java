@@ -9,7 +9,9 @@ import info.yalamanchili.office.dto.drive.FileDto;
 import info.yalamanchili.office.dto.drive.FileDto.FileTable;
 import info.yalamanchili.office.dto.drive.FolderDto;
 import info.yalamanchili.office.dao.drive.FileDao;
+import info.yalamanchili.office.dao.drive.FolderDao;
 import info.yalamanchili.office.entity.drive.File;
+import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.jrs.FileResource;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -65,6 +67,15 @@ public class DriveResource {
         File file = FileDao.instance().findById(id);
         FileDao.instance().delete(id);
         FileResource.instance().deleteFile(file.getFileUrl(), file.getId().toString());
+    }
+    
+     @PUT
+    @Path("/folder/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public void deletefolder(@PathParam("id") Long id) {
+        Folder folder = FolderDao.instance().findById(id);
+        FolderDao.instance().delete(id);
+        
     }
 
     @GET
