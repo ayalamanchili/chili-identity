@@ -24,12 +24,21 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class MessageDto implements Serializable {
 
+    protected Long id;
     @NotEmpty(message = "{subject.not.empty.msg}")
     protected String subject;
     protected String message;
     protected Date messageTs;
     protected List<Entry> tos;
     protected Entry from;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getSubject() {
         return subject;
