@@ -32,16 +32,15 @@ public class MessageService {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
     @Autowired
     protected MessageDao messageDao;
 
-    public MessageDto createMessage(MessageDto messageDto) {
+    public MessageDto save(MessageDto messageDto) {
         Message newMessage = new Message();
         newMessage.setSubject(messageDto.getSubject());
         newMessage.setMessage(messageDto.getMessage());
 //        newMessage.setMessageTs(messageDto.getMessageTs());
-           newMessage.setMessageTs(new Date());
+        newMessage.setMessageTs(new Date());
         newMessage.setFrom(SecurityService.instance().getCurrentUser());
         for (Entry emp : messageDto.getTos()) {
             Employee toEmployee = EmployeeDao.instance().getEmployeWithEmpId(emp.getId());
@@ -51,6 +50,11 @@ public class MessageService {
         }
         messageDao.save(newMessage);
         return null;
+    }
+
+    public MessageDto read(Long id) {
+        Message message = MessageDao.instance().findById(id);
+        return MessageDto.map(mapper, message);
     }
 
     public static MessageService instance() {

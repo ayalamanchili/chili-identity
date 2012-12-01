@@ -18,12 +18,12 @@ import info.yalamanchili.office.client.rpc.HttpService;
  *
  * @author raghu
  */
-public class ReadMessagePanel extends ReadComposite{
+public class ReadMessagePanel extends ReadComposite {
 
-private static ReadMessagePanel instance;
-final RichTextArea textArea = new RichTextArea();
+    private static ReadMessagePanel instance;
+    final RichTextArea bodyTextArea = new RichTextArea();
 
- public static ReadMessagePanel instance() {
+    public static ReadMessagePanel instance() {
         return instance;
     }
 
@@ -35,10 +35,10 @@ final RichTextArea textArea = new RichTextArea();
     public ReadMessagePanel(String id) {
         initReadComposite(id, "Message", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
-         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -52,35 +52,30 @@ final RichTextArea textArea = new RichTextArea();
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("tos", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("subject", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("message", entity, DataType.STRING_FIELD);
-         textArea.setHTML(JSONUtils.toString(entity, "postContent"));
+        bodyTextArea.setHTML(JSONUtils.toString(entity, "message"));
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
     protected void addWidgets() {
         addField("tos", true, false, DataType.STRING_FIELD);
         addField("subject", true, false, DataType.STRING_FIELD);
-        addField("message", true, false, DataType.STRING_FIELD);
+        entityDisplayWidget.add(bodyTextArea);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "message/" + entityId;
     }
-    
 }

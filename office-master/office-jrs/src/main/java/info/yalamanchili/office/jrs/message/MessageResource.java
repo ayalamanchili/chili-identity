@@ -48,8 +48,16 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @PUT
+    @Override
     public MessageDto save(MessageDto entity) {
-        return messageService.createMessage(entity);
+        return messageService.save(entity);
+    }
+
+    @GET
+    @Override
+    @Path("/{id}")
+    public MessageDto read(@PathParam("id") Long id) {
+        return messageService.read(id);
     }
 
     @GET
@@ -63,12 +71,6 @@ public class MessageResource extends CRUDResource<MessageDto> {
         tableObj.setEntities(msgs);
         tableObj.setSize(getDao().size());
         return tableObj;
-    }
-
-    @PUT
-    @Path("/{start}/{limit}")
-    public void createMessage(MessageDto message) {
-        MessageService.instance().createMessage(message);
     }
 
     @XmlRootElement
