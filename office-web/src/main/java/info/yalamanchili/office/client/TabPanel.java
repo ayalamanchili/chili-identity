@@ -135,19 +135,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 }
             });
         }
-        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(profilePanel)) {
-            GWT.runAsync(new RunAsyncCallback() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
-                    selectProfileTab();
-                }
-            });
-        }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(adminPanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
@@ -158,6 +145,19 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 @Override
                 public void onSuccess() {
                     selectAdminTab();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(helpPanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Code download failed");
+                }
+
+                @Override
+                public void onSuccess() {
+                    selectHelpTab();
                 }
             });
         }
