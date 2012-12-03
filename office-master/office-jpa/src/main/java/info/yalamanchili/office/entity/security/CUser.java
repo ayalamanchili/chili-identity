@@ -54,7 +54,6 @@ public class CUser implements Serializable {
     }
 
     @NotEmpty(message = "{username.not.empty.msg}")
-    @Pattern(regexp = "[A-Za-z0-9]+")
     public String getUsername() {
         return username;
     }
