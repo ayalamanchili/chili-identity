@@ -45,7 +45,7 @@ public class Email extends AbstractEntity {
     /**
      * @NOT generated
      */
-    @org.hibernate.validator.constraints.Email
+    @org.hibernate.validator.constraints.Email(message="Enter a valid email asddress")
     // @Unique(entity = Email.class, property = "email", message="{email.not.unique.msg}")
     @NotEmpty(message = "{email.not.empty.msg}")
     @Type(type = "encryptedString")
