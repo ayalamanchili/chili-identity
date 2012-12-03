@@ -42,7 +42,7 @@ public class Employee implements Serializable {
     protected Sex sex;
     protected String imageURL;
     protected Date startDate;
-    @Email
+    @Email(message="Enter a valid email address ")
     @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
     protected String phoneNumber;
