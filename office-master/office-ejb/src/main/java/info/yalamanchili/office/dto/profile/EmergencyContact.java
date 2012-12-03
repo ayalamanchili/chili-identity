@@ -31,10 +31,10 @@ public class EmergencyContact implements Serializable {
     @NotEmpty(message = "{lastName.not.empty.msg}")
     protected String lastName;
     protected Sex sex;
-    @Email
+    @Email(message="Enter a valid email asddress")
 //    @NotEmpty(message = "{emergencycontact.email.not.empty.msg}")
     protected String email;
-    @Size(min = 10, max = 10)
+    @Size(min = 10, max = 10,message="{emergnecycontact.phoneNumber.lenght.invalid.msg}")
     @NotEmpty(message = "{emergencycontact.phoneNumber.not.empty.msg}")
     protected String phoneNumber;
 
