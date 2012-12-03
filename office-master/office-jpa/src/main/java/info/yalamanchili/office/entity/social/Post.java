@@ -40,7 +40,7 @@ public class Post extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Field(index = Index.UN_TOKENIZED)
     protected Date postTimeStamp;
-    @NotEmpty
+    @NotEmpty(message="{postContent.not.empty.msg}")
     protected String postContent;
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_Posts")
