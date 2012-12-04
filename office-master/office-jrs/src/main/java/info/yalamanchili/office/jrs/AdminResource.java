@@ -82,11 +82,10 @@ public class AdminResource {
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deactivateuser(@PathParam("empId") Long empId) {
-     EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");    
-     employeeService.deactivateUser(empId);
-     }
-    
-    
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        employeeService.deactivateUser(empId);
+    }
+
     @Path("/createuser")
     @PUT
     @Produces("application/text")
@@ -121,6 +120,9 @@ public class AdminResource {
         findUserQuery.setParameter("empIdParam", empId);
         if (findUserQuery.getResultList().size() > 0) {
             empId = empId + Integer.toString(emp.getDateOfBirth().getDate());
+        }
+        if (empId.contains(" ")) {
+            empId = empId.replace(" ", "_");
         }
         return empId;
     }

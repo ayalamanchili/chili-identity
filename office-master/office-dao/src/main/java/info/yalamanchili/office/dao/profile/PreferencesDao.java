@@ -8,6 +8,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Preferences;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  * @author yphanikumar
  */
 @Component
+@Scope("request")
 public class PreferencesDao extends CRUDDao<Preferences> {
 
     @PersistenceContext

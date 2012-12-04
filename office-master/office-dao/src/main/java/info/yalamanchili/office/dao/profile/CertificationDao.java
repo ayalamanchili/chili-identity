@@ -9,6 +9,7 @@ import info.yalamanchili.office.entity.profile.Certification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
  * @author bala
  */
 @Component
+@Scope("request")
 public class CertificationDao extends CRUDDao<Certification> {
 
     public CertificationDao() {

@@ -14,12 +14,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 import java.util.Calendar;
+import org.springframework.context.annotation.Scope;
 
 /**
  *
  * @author bala
  */
 @Component
+@Scope("request")
 public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
 
     @PersistenceContext

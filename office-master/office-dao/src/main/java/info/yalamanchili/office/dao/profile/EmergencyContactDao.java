@@ -8,10 +8,12 @@ import info.yalamanchili.office.entity.profile.EmergencyContact;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
 
 @Component
+@Scope("request")
 public class EmergencyContactDao extends CRUDDao<EmergencyContact> {
 	@PersistenceContext
 	protected EntityManager em;

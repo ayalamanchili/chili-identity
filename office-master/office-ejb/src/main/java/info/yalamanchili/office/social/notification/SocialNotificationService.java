@@ -15,6 +15,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
  * @author Bapuji
  */
 @Component
+@Scope("request")
 public class SocialNotificationService {
 
     @Autowired

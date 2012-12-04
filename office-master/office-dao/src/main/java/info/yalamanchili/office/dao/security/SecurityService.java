@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Component;
 
 @Component
+@Scope("request")
 public class SecurityService {
 //TODO need to remove extended scope
 

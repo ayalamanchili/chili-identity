@@ -9,6 +9,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @author anuyalamanchili
  */
 @Component
+@Scope("request")
 public class NotificationGroupDao extends CRUDDao<NotificationGroup> {
 
     @PersistenceContext

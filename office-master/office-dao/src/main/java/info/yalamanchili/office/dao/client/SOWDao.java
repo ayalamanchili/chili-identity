@@ -9,6 +9,7 @@ import info.yalamanchili.office.entity.client.StatementOfWork;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @author bala
  */
 @Component
+@Scope("request")
 public class SOWDao extends CRUDDao<StatementOfWork> {
 
     public SOWDao() {

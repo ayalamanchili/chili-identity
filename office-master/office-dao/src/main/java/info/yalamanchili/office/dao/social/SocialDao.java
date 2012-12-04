@@ -16,11 +16,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 
 import org.springframework.stereotype.Component;
 
 @Component
+@Scope("request")
 public class SocialDao {
 
     @Autowired

@@ -10,6 +10,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.drive.Folder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
  * @author yphanikumar
  */
 @Component
+@Scope("request")
 public class FolderDao extends CRUDDao<Folder> {
 
     @PersistenceContext

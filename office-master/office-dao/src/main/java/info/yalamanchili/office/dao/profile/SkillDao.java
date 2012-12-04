@@ -9,6 +9,7 @@ import info.yalamanchili.office.entity.profile.Skill;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @author raghu
  */
 @Component
+@Scope("request")
 public class SkillDao extends CRUDDao<Skill> {
     
     public SkillDao()

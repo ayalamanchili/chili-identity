@@ -23,11 +23,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.context.annotation.Scope;
 
 /**
  *
  * @author ayalamanchili
  */
+@Scope("request")
 public abstract class CRUDDao<T> {
 
     private static final Log log = LogFactory.getLog(CRUDDao.class);

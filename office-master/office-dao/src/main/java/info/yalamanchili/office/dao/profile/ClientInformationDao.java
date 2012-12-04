@@ -9,10 +9,12 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
 
 @Component
+@Scope("request")
 public class ClientInformationDao extends CRUDDao<ClientInformation> {
 
 	@PersistenceContext

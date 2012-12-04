@@ -11,6 +11,7 @@ import info.yalamanchili.office.entity.Company;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.context.annotation.Scope;
 
 
 
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
+@Scope("request")
 public class CompanyDao extends CRUDDao<Company> {
 
     @PersistenceContext

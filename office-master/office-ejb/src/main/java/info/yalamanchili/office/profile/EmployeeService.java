@@ -11,6 +11,7 @@ import info.yalamanchili.office.security.SecurityUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
  * @author raghu
  */
 @Component
+@Scope("request")
 public class EmployeeService {
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)

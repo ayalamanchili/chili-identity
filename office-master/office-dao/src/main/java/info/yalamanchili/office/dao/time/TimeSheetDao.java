@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
  * @author Prashanthi
  */
 @Component
+@Scope("request")
 public class TimeSheetDao extends CRUDDao<TimeSheet> {
 
     @PersistenceContext

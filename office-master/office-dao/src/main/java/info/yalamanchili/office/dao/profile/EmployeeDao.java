@@ -20,6 +20,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
+@Scope("request")
 public class EmployeeDao extends CRUDDao<Employee> {
 
     @PersistenceContext
