@@ -1,7 +1,6 @@
 package info.yalamanchili.office.server.config;
 
 import info.yalamanchili.office.config.OfficeWebConfiguration;
-import info.yalamanchili.office.server.FileServiceImpl;
 import info.yalamanchili.office.server.HttpServiceImpl;
 
 import java.util.HashMap;
@@ -9,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.ConnectorServerFactoryBean;
 import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
@@ -17,6 +17,7 @@ import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
 public class OfficeSpringConfiguration {
 
     @Bean
+    @Scope(value = "session")
     public HttpServiceImpl httpServiceImpl() {
         return new HttpServiceImpl();
     }

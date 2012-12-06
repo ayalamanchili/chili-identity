@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/**/httpService")
-@Scope("session")
 public class HttpServiceImpl extends BaseRemoteService implements HttpService {
 
+    
     private static final long serialVersionUID = 1L;
     private final static Logger logger = Logger.getLogger(HttpServiceImpl.class.getName());
     private String username;

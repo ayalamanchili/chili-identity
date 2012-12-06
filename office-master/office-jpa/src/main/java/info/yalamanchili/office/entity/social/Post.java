@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -40,7 +41,8 @@ public class Post extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Field(index = Index.UN_TOKENIZED)
     protected Date postTimeStamp;
-    @NotEmpty(message="{postContent.not.empty.msg}")
+    @NotEmpty(message = "{postContent.not.empty.msg}")
+    @Lob
     protected String postContent;
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_Posts")

@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 
@@ -50,7 +51,7 @@ public class CRole implements Serializable {
     @JoinTable(name = "RoleGroups", joinColumns =
     @JoinColumn(name = "RoleId"), inverseJoinColumns =
     @JoinColumn(name = "GroupId"))
-    @XmlElement
+    @XmlTransient
     @ForeignKey(name = "FK_Groupes_CRoles")
     public Set<CRole> getGroups() {
         if (groups == null) {

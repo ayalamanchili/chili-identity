@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class SecurityService {
 //TODO need to remove extended scope
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     protected EntityManager em;
 
     public CUser login(CUser user) {
@@ -71,6 +71,6 @@ public class SecurityService {
     }
 
     public static SecurityService instance() {
-       return SpringContext.getBean(SecurityService.class);
+        return SpringContext.getBean(SecurityService.class);
     }
 }

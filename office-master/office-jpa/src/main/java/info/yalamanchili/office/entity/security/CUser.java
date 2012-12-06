@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -93,7 +94,7 @@ public class CUser implements Serializable {
     }
     protected Employee employee;
 
-    @ManyToMany(targetEntity = CRole.class)
+    @ManyToMany(targetEntity = CRole.class, fetch = FetchType.EAGER)
     @ForeignKey(name = "FK_CRoles_CUsers")
     @JoinTable(name = "UserRoles", joinColumns =
     @JoinColumn(name = "UserId"), inverseJoinColumns =
