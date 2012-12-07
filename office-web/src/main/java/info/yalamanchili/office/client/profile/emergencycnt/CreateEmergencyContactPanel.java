@@ -32,7 +32,9 @@ public class CreateEmergencyContactPanel extends CreateComposite {
         assignEntityValueFromField("relation", emergencyCnt);
         assignEntityValueFromField("ecPrimary", emergencyCnt);
         assignEntityValueFromField("email", emergencyCnt);
+        assignEntityValueFromField("countryCode", emergencyCnt);
         assignEntityValueFromField("phoneNumber", emergencyCnt);
+        assignEntityValueFromField("extension", emergencyCnt);
         logger.info(emergencyCnt.toString());
         return emergencyCnt;
     }
@@ -90,7 +92,9 @@ public class CreateEmergencyContactPanel extends CreateComposite {
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("email", false, false, DataType.STRING_FIELD);
+        addField("countryCode", false, true, DataType.STRING_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
+        addField("extension", false, true, DataType.STRING_FIELD);
     }
 
     @Override
