@@ -101,8 +101,8 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("extension", false, false, DataType.LONG_FIELD);
-        addField("countryCode", false, false, DataType.LONG_FIELD);
+        addField("extension", false, true, DataType.LONG_FIELD);
+        addField("countryCode", false, true, DataType.LONG_FIELD);
     }
 
     @Override
