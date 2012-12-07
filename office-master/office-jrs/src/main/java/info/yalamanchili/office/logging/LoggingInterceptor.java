@@ -38,6 +38,10 @@ public class LoggingInterceptor {
 
     @AfterReturning(pointcut = "execution(* info.yalamanchili.office..*.*(..))", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
+        //dont log call to OfficeServiceConfiguration.EnableLogginIntereptor
+        if (joinPoint.getSignature().toShortString().contains("EnableLoginInterceptor")) {
+            return;
+        }
         if (log.isInfoEnabled()) {
             log.info("------------ returning------------------ :" + joinPoint.getSignature() + "------------ with result :"
                     + ReflectionToStringBuilder.toString(result));

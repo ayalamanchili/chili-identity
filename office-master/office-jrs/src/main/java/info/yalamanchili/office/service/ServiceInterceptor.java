@@ -4,11 +4,14 @@ import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.ReasonCode;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
+import info.yalamanchili.office.logging.LoggingInterceptor;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,10 +34,11 @@ import org.springframework.stereotype.Component;
 //have to specify the order so that this is run before the transaction advice runs to handle all possible exceptions
 @Order(100)
 public class ServiceInterceptor {
-
+    
+    private static final Log log = LogFactory.getLog(ServiceInterceptor.class);
     @Autowired
     protected ServiceMessages serviceMessages;
-
+    
     @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..))")
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
@@ -53,7 +57,9 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } catch (Exception e) {
-            e.printStackTrace();
+            if (log.isErrorEnabled()) {
+                log.error(e);
+            }
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", e.getMessage());
         }
         checkForErrors();
@@ -72,7 +78,7 @@ public class ServiceInterceptor {
                     .toString(), "INVALID_INPUT", violation.getMessage()));
         }
     }
-
+    
     protected void checkForErrors() {
         if (serviceMessages.isNotEmpty()) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, serviceMessages.getErrors());
