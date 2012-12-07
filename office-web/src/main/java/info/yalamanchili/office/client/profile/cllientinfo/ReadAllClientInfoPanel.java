@@ -50,6 +50,8 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
         table.setText(0, 5, getKeyValue("Phone Number"));
         table.setText(0, 6, getKeyValue("Email"));
         table.setText(0, 7, getKeyValue("Consultant Job Title"));
+        table.setText(0, 8, getKeyValue("Extension"));
+        table.setText(0, 9, getKeyValue("CountryCode"));
 
     }
 
@@ -66,6 +68,8 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
             table.setText(i, 6, JSONUtils.toString(entity, "email"));
             table.setText(i, 7, JSONUtils.toString(entity, "consultantJobTitle"));
+            table.setText(i, 8, JSONUtils.toString(entity, "extension"));
+            table.setText(i, 9, JSONUtils.toString(entity, "countryCode"));
         }
     }
 
