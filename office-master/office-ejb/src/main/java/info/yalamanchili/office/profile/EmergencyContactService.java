@@ -54,6 +54,8 @@ public class EmergencyContactService {
             Phone phone = new Phone();
             contact.addPhone(phone);
             phone.setPhoneNumber(ec.getPhoneNumber());
+            phone.setCountryCode(ec.getCountryCode());
+            phone.setExtension(ec.getExtension());
         }
         //contact
         contact = em.merge(contact);
@@ -96,6 +98,8 @@ public class EmergencyContactService {
         //Phone
         if (ecEntity.getContact().getPhones().size() > 0) {
             ecEntity.getContact().getPhones().get(0).setPhoneNumber(ec.getPhoneNumber());
+            ecEntity.getContact().getPhones().get(0).setCountryCode(ec.getCountryCode());
+            ecEntity.getContact().getPhones().get(0).setExtension(ec.getExtension());
         }
         em.merge(ecEntity);
         profileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
