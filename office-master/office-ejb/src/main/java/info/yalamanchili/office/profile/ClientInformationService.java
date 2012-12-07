@@ -4,7 +4,6 @@
  */
 package info.yalamanchili.office.profile;
 
-
 import info.chili.beans.BeanMapper;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
@@ -32,8 +31,7 @@ public class ClientInformationService {
     @Autowired
     protected Mapper mapper;
     @Autowired
-    protected ProfileNotificationService  ProfileNotificationService;
-
+    protected ProfileNotificationService ProfileNotificationService;
 
     public void addClientInformation(Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
         Employee emp = (Employee) em.find(Employee.class, empId);
@@ -52,8 +50,10 @@ public class ClientInformationService {
         //phone
         if (clientInformation.getPhoneNumber() != null) {
             Phone phone = new Phone();
-            contact.addPhone(phone);
+            phone.setCountryCode(clientInformation.getCountryCode());
             phone.setPhoneNumber(clientInformation.getPhoneNumber());
+            phone.setExtension(clientInformation.getExtension());
+            contact.addPhone(phone);
         }
         //contact
         contact = em.merge(contact);
@@ -72,7 +72,7 @@ public class ClientInformationService {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         ciEntity = (ClientInformation) BeanMapper.merge(ci, ciEntity);
-                //Contact
+        //Contact
         ciEntity.getContact().setFirstName(ci.getFirstName());
         ciEntity.getContact().setLastName(ci.getLastName());
         ciEntity.getContact().setMiddleInitial(ci.getMiddleInitial());
@@ -84,6 +84,8 @@ public class ClientInformationService {
         //Phone
         if (ciEntity.getContact().getPhones().size() > 0) {
             ciEntity.getContact().getPhones().get(0).setPhoneNumber(ci.getPhoneNumber());
+            ciEntity.getContact().getPhones().get(0).setCountryCode(ci.getCountryCode());
+            ciEntity.getContact().getPhones().get(0).setExtension(ci.getExtension());
         }
         em.merge(ciEntity);
         ProfileNotificationService.sendClientInformationUpdatedNotification(ciEntity.getEmployee());
