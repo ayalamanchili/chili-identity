@@ -28,7 +28,9 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         assignEntityValueFromField("relation", entity);
         assignEntityValueFromField("ecPrimary", entity);
         assignEntityValueFromField("email", entity);
+        assignEntityValueFromField("countryCode", entity);
         assignEntityValueFromField("phoneNumber", entity);
+        assignEntityValueFromField("extension", entity);
         return entity;
     }
 
@@ -67,7 +69,9 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -95,7 +99,9 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("email", false, false, DataType.STRING_FIELD);
+        addField("countryCode", false, true, DataType.STRING_FIELD);
         addField("phoneNumber", false, true, DataType.STRING_FIELD);
+        addField("extension", false, true, DataType.STRING_FIELD);
 
     }
 
