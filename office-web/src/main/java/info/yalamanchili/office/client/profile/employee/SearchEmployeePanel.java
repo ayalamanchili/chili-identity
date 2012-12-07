@@ -14,6 +14,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -61,7 +62,7 @@ public class SearchEmployeePanel extends SearchComposite {
             @Override
             public void onResponse(String result) {
                 processSearchResult(result);
-                searchTB.setText("");
+//                searchTB.setText("");
             }
         });
     }
@@ -96,7 +97,18 @@ public class SearchEmployeePanel extends SearchComposite {
     }
 
     @Override
-    protected void populateSuggestBoxes() {
+    protected void populateSearchSuggestBox() {
+        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                loadSearchSuggestions(values.values());
+            }
+        });
+    }
+
+    @Override
+    protected void populateAdvancedSuggestBoxes() {
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {

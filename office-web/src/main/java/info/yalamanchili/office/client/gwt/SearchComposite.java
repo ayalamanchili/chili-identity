@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.*;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -44,7 +45,9 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
      */
     protected CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-    protected TextBox searchTB = new TextBox();
+    //search suggestbox
+    MultiWordSuggestOracle data = new MultiWordSuggestOracle();
+    com.google.gwt.user.client.ui.SuggestBox searchTB = new com.google.gwt.user.client.ui.SuggestBox(data);
     protected Button searchButton = new Button("Search");
     /*
      * Advanced search Panels
@@ -75,7 +78,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         disclosurePanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-                populateSuggestBoxes();
+                populateAdvancedSuggestBoxes();
             }
         });
         mainPanel.add(disclosurePanel);
@@ -85,10 +88,12 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         addListeners();
         configure();
         addWidgets();
-
+        populateSearchSuggestBox();
     }
 
-    protected abstract void populateSuggestBoxes();
+    protected abstract void populateSearchSuggestBox();
+
+    protected abstract void populateAdvancedSuggestBoxes();
 
     protected abstract void addListeners();
 
@@ -97,7 +102,11 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected abstract void addWidgets();
 
     protected String getSearchText() {
-        return searchTB.getText();
+        if (searchTB.getValue() != null && searchTB.getValue().trim().length() > 0) {
+            return searchTB.getValue().trim();
+        } else {
+            return null;
+        }
     }
     /*
      * adding and getting Fields
@@ -252,7 +261,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         if (keyCode == KeyCodes.KEY_ENTER) {
             // Do something when Enter is pressed.
 
-            if (getSearchText() != null && getSearchText().trim().length() > 0) {
+            if (getSearchText() != null) {
                 search(getSearchText());
             } else {
                 entity = populateEntityFromFields();
@@ -276,6 +285,10 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             }
         }
 
+    }
+
+    public void loadSearchSuggestions(Collection<String> inputs) {
+        data.addAll(inputs);
     }
 
     protected abstract String getSearchURI(String searchText, Integer start, Integer limit);
