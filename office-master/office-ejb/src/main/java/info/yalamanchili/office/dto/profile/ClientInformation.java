@@ -4,6 +4,7 @@ package info.yalamanchili.office.dto.profile;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import javax.validation.constraints.Size;
@@ -30,12 +31,16 @@ public class ClientInformation implements Serializable {
     protected String reportsToRole;
     protected String consultantJobTitle;
     protected boolean rtPrimary;
-    @org.hibernate.validator.constraints.Email(message="Enter a valid email address ")
+    @org.hibernate.validator.constraints.Email(message = "Enter a valid email address ")
     @NotEmpty(message = "{clientinformation.email.not.empty.msg}")
     protected String email;
-    @Size(min = 10, max = 10,message="{clientinformation.phoneNumber.length.invalid.msg}")
+    @Size(min = 10, max = 10, message = "{clientinformation.phoneNumber.length.invalid.msg}")
     @NotEmpty(message = "{clientinformation.phoneNumber.not.empty.msg}")
     protected String phoneNumber;
+    @Size(min = 0, max = 4, message = "{clientinformation.extension.length.invalid.msg}")
+    protected String extension;
+    @Size(min = 0, max = 4, message = "{clientinformation.countryCode.length.invalid.msg}")
+    protected String countryCode;
 
     public ClientInformation() {
     }
@@ -120,9 +125,25 @@ public class ClientInformation implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
     @Override
     public String toString() {
-        return "ClientInformation{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", sex=" + sex + ", reportsToRole=" + reportsToRole + ", consultantJobTitle=" + consultantJobTitle + ", rtPrimary=" + rtPrimary + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
+        return "ClientInformation{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", sex=" + sex + ", reportsToRole=" + reportsToRole + ", consultantJobTitle=" + consultantJobTitle + ", rtPrimary=" + rtPrimary + ", extension=" + extension + ", phoneNumber=" + phoneNumber + ", email=" + email + ", countryCode=" + countryCode + '}';
     }
 
     //TODO move this to seperate class?
@@ -130,6 +151,8 @@ public class ClientInformation implements Serializable {
         ClientInformation reportsTo = mapper.map(entity, ClientInformation.class);
         mapper.map(entity.getContact(), reportsTo);
         if (entity.getContact().getPhones().size() > 0) {
+            Phone phone = entity.getContact().getPhones().get(0);
+            mapper.map(phone, reportsTo);
             mapper.map(entity.getContact().getPhones().get(0), reportsTo);
         }
         if (entity.getContact().getPrimaryEmail() != null) {
