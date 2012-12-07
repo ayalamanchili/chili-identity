@@ -33,6 +33,8 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("lastName", clientInfo);
         assignEntityValueFromField("phoneNumber", clientInfo);
         assignEntityValueFromField("email", clientInfo);
+        assignEntityValueFromField("extension", clientInfo);
+        assignEntityValueFromField("countryCode", clientInfo);
         return clientInfo;
     }
 
@@ -90,6 +92,8 @@ public class CreateClientInfoPanel extends CreateComposite {
         addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
+        addField("extension", false, false, DataType.LONG_FIELD);
+        addField("countryCode", false, false, DataType.LONG_FIELD);
     }
 
     @Override
