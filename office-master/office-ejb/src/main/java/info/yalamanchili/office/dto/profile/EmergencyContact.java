@@ -34,6 +34,10 @@ public class EmergencyContact implements Serializable {
     @Email(message="Enter a valid email asddress")
 //    @NotEmpty(message = "{emergencycontact.email.not.empty.msg}")
     protected String email;
+    protected String countryCode;
+
+   
+    protected String extension;
     @Size(min = 10, max = 10,message="{emergnecycontact.phoneNumber.lenght.invalid.msg}")
     @NotEmpty(message = "{emergencycontact.phoneNumber.not.empty.msg}")
     protected String phoneNumber;
@@ -112,6 +116,22 @@ public class EmergencyContact implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    
+     public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
 
     @Override
     public String toString() {
@@ -124,6 +144,9 @@ public class EmergencyContact implements Serializable {
         mapper.map(entity.getContact(), emergencyContact);
         if (entity.getContact().getPhones().size() > 0) {
             mapper.map(entity.getContact().getPhones().get(0), emergencyContact);
+//            mapper.map(entity.getContact().getPhones().get(0).getCountryCode(),emergencyContact);
+//            mapper.map(entity.getContact().getPhones().get(0).getExtension(),emergencyContact);
+            
         }
         if (entity.getContact().getPrimaryEmail() != null) {
             mapper.map(entity.getContact().getPrimaryEmail(), emergencyContact);
