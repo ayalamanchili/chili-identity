@@ -65,8 +65,8 @@ public class OfficeStartup {
         if (config.getInitRefData()) {
             initRoles();
             initUsers();
-            AclDataInit.initAclClassData(em);
-            AclDataInit.initAclSids(em);
+            AclDataInit aclDataInit = SpringContext.getBean(AclDataInit.class);
+            aclDataInit.initAclRefData();
             initRefData();
             initSampleEmployees();
         }
@@ -259,8 +259,8 @@ public class OfficeStartup {
         getDOTNETCertification();
         //TAE
         techSysClient();
-        
-        Folder hrFolder= new Folder();
+
+        Folder hrFolder = new Folder();
         hrFolder.setName("HR");
         hrFolder.setParent(driveFolder);
         em.merge(hrFolder);
@@ -507,7 +507,7 @@ public class OfficeStartup {
         }
     }
 
-      public void driveRole() {
+    public void driveRole() {
         if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_DRIVE) == null) {
             CRole role = new CRole();
             role.setRolename(OfficeRoles.ROLE_DRIVE);

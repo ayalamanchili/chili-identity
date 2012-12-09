@@ -16,6 +16,7 @@
         <property name="beans">
             <map>
                 <entry key="bean:name=OfficeSeviceConfiguration" value-ref="officeServiceConfiguration" />
+                <entry key="bean:name=AclDataInit" value-ref="aclDataInit" />
             </map>
         </property>
     </bean>

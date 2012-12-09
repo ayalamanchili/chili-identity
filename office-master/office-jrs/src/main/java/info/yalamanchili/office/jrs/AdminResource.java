@@ -85,7 +85,7 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         employeeService.deactivateUser(empId);
     }
-
+//TODO refactor this to use securityservice
     @Path("/createuser")
     @PUT
     @Produces("application/text")

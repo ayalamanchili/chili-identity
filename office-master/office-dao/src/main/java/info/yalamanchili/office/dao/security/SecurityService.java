@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class SecurityService {
-//TODO need to remove extended scope
 
     @PersistenceContext
     protected EntityManager em;
@@ -55,7 +54,7 @@ public class SecurityService {
         return user.getEmployee();
     }
 
-    //TODO move to different method
+    //TODO move to seperatex class
     public Set<String> getEmailsAddressesForRoles(List<String> roles) {
         Set<String> emails = new HashSet<String>();
         Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
