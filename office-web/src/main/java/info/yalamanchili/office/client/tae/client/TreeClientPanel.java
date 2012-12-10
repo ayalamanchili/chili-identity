@@ -25,6 +25,7 @@ public class TreeClientPanel extends TreePanelComposite {
     }
     private static Logger logger = Logger.getLogger(TreeClientPanel.class.getName());
     protected static final String PROJECT_NODE = "project";
+    protected static final String CLIENTLOCATION_NODE = "clientlocation";
     
      public TreeClientPanel(String entityId) {
         super(entityId);
@@ -45,6 +46,7 @@ public class TreeClientPanel extends TreePanelComposite {
     @Override
     protected void addWidgets() {
         addFirstChildLink("Project", PROJECT_NODE);
+        addFirstChildLink("Client Location", CLIENTLOCATION_NODE);
     }
 
     @Override
@@ -54,6 +56,10 @@ public class TreeClientPanel extends TreePanelComposite {
             TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
             TabPanel.instance().timeandExpensePanel.entityPanel.add(new ProjectOptionsPanel());
         }
+          if(CLIENTLOCATION_NODE.equals(entityNodeKey))
+          {
+            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+          }
     }
 
     @Override
