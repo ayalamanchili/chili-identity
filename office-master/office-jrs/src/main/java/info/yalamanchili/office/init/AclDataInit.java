@@ -52,7 +52,7 @@ public class AclDataInit {
     public void initAclClassData() {
         Set<String> entityClassNames = new HashSet<String>();
         for (EntityType<?> entity : em.getMetamodel().getEntities()) {
-            entityClassNames.add(entity.getClass().getCanonicalName());
+            entityClassNames.add(entity.getName());
         }
         entityClassNames.addAll(aclClassMap);
         for (String entityClassName : entityClassNames) {
