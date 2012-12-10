@@ -52,7 +52,6 @@ public class Employee extends Contact {
     @NotEmpty(message = "{employeeId.not.empty.msg}")
     @Field
     protected String employeeId;
-    
     protected String jobTitle;
 
     public void setJobTitle(String jobTitle) {
@@ -97,13 +96,27 @@ public class Employee extends Contact {
     @OneToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Employee")
     protected SkillSet skillSet;
-    @OneToOne(mappedBy = "employee")
+    /**
+     * CUser
+     */
+    //TODO change cascade type to just persist and remove
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @ForeignKey(name = "FK_Employee_CUser")
     protected CUser user;
+    /**
+     * timesheets
+     */
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<TimeSheet> timeSheets;
     @OneToOne(cascade = CascadeType.ALL)
+    /**
+     * preferences
+     */
     @ForeignKey(name = "FK_Preferences_Employee")
     protected Preferences preferences;
+    /**
+     * todos
+     */
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<Todo> todos;
 
@@ -281,8 +294,9 @@ public class Employee extends Contact {
     public void setPreferences(Preferences preferences) {
         this.preferences = preferences;
     }
+//TODO make this transient and get the roles from dto
 
-    @XmlTransient
+    @XmlElement
     public CUser getUser() {
         return user;
     }

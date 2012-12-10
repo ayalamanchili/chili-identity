@@ -3,7 +3,6 @@ package info.yalamanchili.office.jrs;
 import info.chili.commons.EntityQueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.dao.CuserDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.CroleDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -59,7 +58,7 @@ public class AdminResource {
 
     @Path("/login")
     @PUT
-    public CUser login(CUser user) {
+    public Employee login(CUser user) {
         return securityService.login(user);
     }
 
@@ -86,16 +85,24 @@ public class AdminResource {
         employeeService.deactivateUser(empId);
     }
 //TODO refactor this to use securityservice
+
     @Path("/createuser")
     @PUT
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public String createUser(info.yalamanchili.office.dto.profile.Employee employee) {
-        CUser user = mapper.map(employee, CUser.class);
-        user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
         Employee emp = mapper.map(employee, Employee.class);
         String employeeId = generateEmployeeId(employee);
+
+        //Create CUser
+        CUser user = mapper.map(employee, CUser.class);
+        user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
         user.setUsername(employeeId);
+        user.setEnabled(true);
+        user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_USER));
+        user = securityService.createCuser(user);
+
+        //Create employee with basic information
         emp.setEmployeeId(employeeId);
         Preferences prefs = new Preferences();
         prefs.setEnableEmailNotifications(Boolean.TRUE);
@@ -105,13 +112,10 @@ public class AdminResource {
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
         emp.addEmail(email);
-        user.setEmployee(emp);
-        user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_USER));
-        user.setEnabled(true);
-        user = CuserDao.instance().save(user);
+        emp = employeeDao.save(emp);
         //Email notification
-        profileNotificationService.sendNewUserCreatedNotification(user);
-        return user.getEmployee().getId().toString();
+        profileNotificationService.sendNewUserCreatedNotification(emp);
+        return emp.getId().toString();
     }
 
     private String generateEmployeeId(info.yalamanchili.office.dto.profile.Employee emp) {

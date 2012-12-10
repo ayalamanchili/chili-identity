@@ -91,15 +91,6 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return em;
     }
 
-    @Override
-    public void delete(Long id) {
-        Employee emp = findById(id);
-        CUser cuser = emp.getUser();
-        em.remove(cuser);
-        em.flush();
-
-    }
-
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }

@@ -164,18 +164,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
         emp.addEmail(email);
     }
 
-//    public Email UpdatePrimaryEmail(Employee emp, Email Newemail) {
-//        if (emp.getPrimaryEmail() == null) {
-//            Newemail.setPrimaryEmail(Boolean.TRUE);
-//        } else {
-//            if (Newemail.getPrimaryEmail()) {
-//                Email chkEmail = emp.getPrimaryEmail();
-//                chkEmail.setPrimaryEmail(Boolean.FALSE);
-//            }
-//        }
-//        return Newemail;
-//
-//    }
     /* Phone */
     @GET
     @Path("/phones/{id}/{start}/{limit}")

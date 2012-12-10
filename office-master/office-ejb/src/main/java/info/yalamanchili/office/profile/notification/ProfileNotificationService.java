@@ -50,23 +50,23 @@ public class ProfileNotificationService {
     }
 
     @Async
-    public void sendNewUserCreatedNotification(CUser user) {
+    public void sendNewUserCreatedNotification(Employee employee) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
         Email email = new Email();
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New System Soft Office User Created");
-        String messageText = "New User " + user.getEmployee().getFirstName() + "," + user.getEmployee().getLastName() + "," + user.getUsername().toString() + " Is Created";
+        String messageText = "New User " + employee.getFirstName() + "," + employee.getLastName() + "," + employee.getEmployeeId() + " Is Created";
         email.setBody(messageText);
         messagingService.sendEmail(email);
 
         // Email Intimation for User
         Email newUserEmailObj = new Email();
-        info.yalamanchili.office.entity.profile.Email newUserEmail = user.getEmployee().getPrimaryEmail();
+        info.yalamanchili.office.entity.profile.Email newUserEmail = employee.getPrimaryEmail();
         Set<String> newUserEmails = new HashSet<String>();
         newUserEmails.add(newUserEmail.getEmail());
         newUserEmailObj.setTos(newUserEmails);
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id is:" + user.getUsername().toString() + ": and You can obtain Password by contacting HR dept. Access Portal at http://apps.sstech.us/portal";
+        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + ": and You can obtain Password by contacting HR dept. Access Portal at http://apps.sstech.us/portal";
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }

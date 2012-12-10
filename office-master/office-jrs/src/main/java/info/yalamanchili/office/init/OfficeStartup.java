@@ -134,10 +134,9 @@ public class OfficeStartup {
         userEmp.addEmail(userSecondaryEmail);
         userEmp.addClientInformation(userClientInfo());
         userEmp.addEmergencyContact(userEmergencyContact());
+        userEmp.setUser(userUser);
         userEmp = em.merge(userEmp);
 
-        userUser.setEmployee(userEmp);
-        userUser = em.merge(userUser);
         // Admin Employee
         adminEmp = new Employee();
         adminEmp.setEmployeeId("aadmin");
@@ -179,10 +178,8 @@ public class OfficeStartup {
         adminEmp.addAddress(adminAddress);
         adminEmp.addEmail(adminPrimaryEmail);
         adminEmp.addEmail(adminSecondaryEmail);
+        adminEmp.setUser(adminUser);
         adminEmp = em.merge(adminEmp);
-
-        adminUser.setEmployee(adminEmp);
-        adminUser = em.merge(adminUser);
 
         SkillSet userSkillSet = new SkillSet();
         userSkillSet.setLastUpdated(new Date());

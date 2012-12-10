@@ -19,7 +19,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -81,19 +80,6 @@ public class CUser implements Serializable {
         this.enabled = enabled;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @ForeignKey(name = "FK_Employee_CUser")
-    @Valid
-    @XmlElement
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-    protected Employee employee;
-
     @ManyToMany(targetEntity = CRole.class, fetch = FetchType.EAGER)
     @ForeignKey(name = "FK_CRoles_CUsers")
     @JoinTable(name = "UserRoles", joinColumns =
@@ -117,6 +103,6 @@ public class CUser implements Serializable {
 
     @Override
     public String toString() {
-        return "CUser{" + "userId=" + userId + ", username=" + username + ", passwordHash=" + passwordHash + ", enabled=" + enabled + ", roles=" + roles + ", employee=" + employee + '}';
+        return "CUser{" + "userId=" + userId + ", username=" + username + ", enabled=" + enabled + ", roles=" + roles + '}';
     }
 }

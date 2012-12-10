@@ -1,5 +1,6 @@
 package info.yalamanchili.office.dao.security;
 
+import info.chili.http.HttpHelper;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
@@ -7,31 +8,33 @@ import info.yalamanchili.office.security.SecurityUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.logging.Logger;
 import javax.persistence.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
 public class SecurityService {
 
+    private final static Logger logger = Logger.getLogger(SecurityService.class.getName());
     @PersistenceContext
     protected EntityManager em;
 
-    public CUser login(CUser user) {
-        Query findUserQuery = em.createQuery("from " + CUser.class.getCanonicalName()
-                + " where username=:userNameParam and passwordHash=:passwordParam", CUser.class);
-        findUserQuery.setParameter("userNameParam", user.getUsername());
-        findUserQuery.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
+//TODO move to chili-security SecurityService
+    public CUser createCuser(CUser user) {
+        return em.merge(user);
+    }
+
+    public Employee login(CUser user) {
+        TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam and emp.user.passwordHash=:passwordParam", Employee.class);
+        query.setParameter("userNameParam", user.getUsername());
+        query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
+
         try {
-            CUser s = (CUser) findUserQuery.getSingleResult();
-            //TODO need to have this sice the user or roles infor is not getting refreshed
-            em.refresh(s);
-            return s;
+            return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         } catch (Exception e) {
@@ -42,30 +45,31 @@ public class SecurityService {
     public Employee getCurrentUser() {
         CUser user = null;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Query getUserQuery = em.createQuery("from " + CUser.class.getName() + " where username=:usernameParam", CUser.class);
-        getUserQuery.setParameter("usernameParam", auth.getName());
+        TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
+        getUserQuery.setParameter("employeeIdParam", auth.getName());
         try {
-            user = (CUser) getUserQuery.getSingleResult();
+            return getUserQuery.getSingleResult();
         } catch (NonUniqueResultException e) {
             throw new RuntimeException(e);
         } catch (NoResultException e) {
             return null;
         }
-        return user.getEmployee();
     }
 
-    //TODO move to seperatex class
+    //TODO move to seperate class
     public Set<String> getEmailsAddressesForRoles(List<String> roles) {
         Set<String> emails = new HashSet<String>();
         Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
         getUsersInRoleQuery.setParameter("roles", roles);
         List<CUser> users = getUsersInRoleQuery.getResultList();
+        //TODO improve the query into a single query
         for (CUser user : users) {
-            if (user.getEmployee().getPrimaryEmail() != null) {
-                emails.add(user.getEmployee().getPrimaryEmail().getEmail());
-            }
+            TypedQuery<Employee> getEmployeeQuery = em.createQuery("from Employee where user=:userParam", Employee.class);
+            getEmployeeQuery.setParameter("userParam", user);
+            Employee emp = getEmployeeQuery.getSingleResult();
+            emails.add(emp.getPrimaryEmail().getEmail());
         }
-        System.out.println(emails);
+        logger.info("emails:" + emails);
         return emails;
     }
 

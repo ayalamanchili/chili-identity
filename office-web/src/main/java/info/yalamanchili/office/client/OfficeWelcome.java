@@ -24,7 +24,6 @@ import info.yalamanchili.office.client.resources.OfficeImages;
 public class OfficeWelcome implements EntryPoint {
 
     public static Logger logger = Logger.getLogger(OfficeWelcome.class.getName());
-    public JSONObject user;
     public JSONObject employee;
     public String employeeId;
     public List<String> roles = new ArrayList<String>();
@@ -40,11 +39,10 @@ public class OfficeWelcome implements EntryPoint {
 
     }
 
-    public void onMainModuleLoad(JSONObject user) {
-        this.user = user;
-        this.employee = user.get("employee").isObject();
+    public void onMainModuleLoad(JSONObject employee) {
+        this.employee = employee;
         this.employeeId = employee.get("id").isString().stringValue();
-        initUserRoles(user);
+        initUserRoles(employee);
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onFailure(Throwable caught) {
@@ -62,9 +60,10 @@ public class OfficeWelcome implements EntryPoint {
 
     }
 
-    protected void initUserRoles(JSONObject userObj) {
-        logger.info(userObj.toString());
-        JSONArray roles = JSONUtils.toJSONArray(userObj.get("roles"));
+    protected void initUserRoles(JSONObject employee) {
+        JSONObject user = employee.get("user").isObject();
+        logger.info(user.toString());
+        JSONArray roles = JSONUtils.toJSONArray(user.get("roles"));
         for (int i = 0; i < roles.size(); i++) {
             JSONObject role = (JSONObject) roles.get(i);
             this.roles.add(role.get("rolename").isString().stringValue());
