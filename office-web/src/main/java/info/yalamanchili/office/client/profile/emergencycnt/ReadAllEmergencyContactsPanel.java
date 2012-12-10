@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
@@ -89,7 +90,9 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        // TODO Auto-generated method stub
+       TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmergencyContactPanel(entityId));
+        
     }
 
     @Override
