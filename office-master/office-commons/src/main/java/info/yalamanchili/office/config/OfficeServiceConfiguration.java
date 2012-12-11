@@ -3,7 +3,6 @@ package info.yalamanchili.office.config;
 import info.chili.spring.SpringContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +15,7 @@ public class OfficeServiceConfiguration {
 
     @PersistenceContext
     protected EntityManager em;
-    protected String contentManagementLocationRoot = "C://content-management//office/";
+    protected String contentManagementLocationRoot = "/Users/anuyalamanchili//office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData = false;
     @Value("#{officeProperties['initTestData']}")
