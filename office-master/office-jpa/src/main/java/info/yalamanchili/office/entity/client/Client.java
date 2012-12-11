@@ -6,10 +6,13 @@ package info.yalamanchili.office.entity.client;
 
 import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
+import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Contact;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -38,8 +41,18 @@ public class Client extends AbstractEntity {
     //TODO
 //    protected List<Contact> contacts;
 
-     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     protected List<Project> projects;
+    
+    @ManyToMany
+    protected List<Address> addresses;
+
+   
+    
+    @ManyToMany 
+    protected List<Contact> contacts;
+
+     
      
     public String getName() {
         return name;
@@ -80,6 +93,22 @@ public class Client extends AbstractEntity {
         }
         getProjects().add(entity);
         entity.setClient(this);
+    }
+    
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+    
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
     
     @Override
