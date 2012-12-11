@@ -33,6 +33,6 @@ public class AclResource {
     @Path("/permission/add/{className}/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void addPermissions(@PathParam("className") String className, @PathParam("id") Long id, @QueryParam("permission") List<String> permissions) {
-        officeAclService.insertBasicPermissions(className, id, permissions);
+        officeAclService.addBasicPermissions(className, id, permissions);
     }
 }

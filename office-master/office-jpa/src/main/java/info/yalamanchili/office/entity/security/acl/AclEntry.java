@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "acl_entry", uniqueConstraints = {
     @UniqueConstraint(columnNames = {
         "acl_object_identity", "ace_order"})})
+//TODO this shoudl inherit org.springframework.security.acls.model.AccessControlEntry
 public class AclEntry implements Serializable {
 
     @Id

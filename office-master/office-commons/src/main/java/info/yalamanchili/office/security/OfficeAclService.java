@@ -12,6 +12,7 @@ import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
+import org.springframework.security.acls.model.AccessControlEntry;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.acls.model.ObjectIdentity;
@@ -33,8 +34,45 @@ public class OfficeAclService {
     public JdbcMutableAclService getAclService() {
         return aclSercice;
     }
+//TODO add sid to input
 
-    public void insertBasicPermissions(String className, Long id, List<String> permissions) {
+    public void addBasicPermissions(String className, Long id, List<String> permissions) {
+        //get mutable ACL
+        MutableAcl acl = findAcl(className, id);
+        //Set SID
+        Sid sid = new PrincipalSid(SecurityUtils.getCurrentUser());
+        acl.setOwner(sid);
+
+        for (String permString : permissions) {
+            Permission p = mapPermisson(permString);
+            if (p != null) {
+                acl.insertAce(acl.getEntries().size(), p, sid, true);
+                aclSercice.updateAcl(acl);
+            }
+        }
+    }
+
+    public void removePermissions(String className, Long id, List<String> permissions) {
+        //get mutable ACL
+        MutableAcl acl = findAcl(className, id);
+        //Set SID
+        Sid sid = new PrincipalSid(SecurityUtils.getCurrentUser());
+        acl.setOwner(sid);
+
+        for (String permString : permissions) {
+            Permission p = mapPermisson(permString);
+            if (p != null) {
+                for (AccessControlEntry ace : acl.getEntries()) {
+                    if(ace.getPermission().getMask()==p.getMask()){
+//                      TODO aclSercice.
+                    }
+                }
+
+            }
+        }
+    }
+
+    private MutableAcl findAcl(String className, Long id) {
         Class entityCls;
         try {
             entityCls = Class.forName(className);
@@ -43,34 +81,32 @@ public class OfficeAclService {
             throw new RuntimeException(ex);
         }
         ObjectIdentity oi = new ObjectIdentityImpl(entityCls, id);
-        Sid sid = new PrincipalSid(SecurityUtils.getCurrentUser());
-        MutableAcl acl = null;
         try {
-            acl = (MutableAcl) aclSercice.readAclById(oi);
+            return (MutableAcl) aclSercice.readAclById(oi);
         } catch (NotFoundException nfe) {
-            acl = aclSercice.createAcl(oi);
+            return aclSercice.createAcl(oi);
         }
-        acl.setOwner(sid);
-        for (String permString : permissions) {
-            Permission p = null;
-            if (permString.trim().equalsIgnoreCase("READ")) {
-                p = BasePermission.READ;
-            }
-            if (permString.trim().equalsIgnoreCase("WRITE")) {
-                p = BasePermission.WRITE;
-            }
-            if (permString.trim().equalsIgnoreCase("CREATE")) {
-                p = BasePermission.CREATE;
-            }
-            if (permString.trim().equalsIgnoreCase("DELETE")) {
-                p = BasePermission.DELETE;
-            }
-            if (p != null) {
-                acl.insertAce(acl.getEntries().size(), p, sid, true);
-                aclSercice.updateAcl(acl);
-            }
-        }
+    }
 
+    private Permission mapPermisson(String prmsString) {
+        if (!prmsString.isEmpty()) {
+            if (prmsString.trim().equalsIgnoreCase("READ")) {
+                return BasePermission.READ;
+            }
+            if (prmsString.trim().equalsIgnoreCase("UPDATE")) {
+                return BasePermission.WRITE;
+            }
+            if (prmsString.trim().equalsIgnoreCase("CREATE")) {
+                return BasePermission.CREATE;
+            }
+            if (prmsString.trim().equalsIgnoreCase("DELETE")) {
+                return BasePermission.DELETE;
+            }
+            if (prmsString.trim().equalsIgnoreCase("ADMIN")) {
+                return BasePermission.ADMINISTRATION;
+            }
+        }
+        return null;
     }
 
     public static OfficeAclService instance() {
