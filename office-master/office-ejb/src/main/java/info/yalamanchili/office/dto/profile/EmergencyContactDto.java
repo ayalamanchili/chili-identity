@@ -144,8 +144,15 @@ public class EmergencyContactDto implements Serializable {
         mapper.map(entity.getContact(), emergencyContact);
         if (entity.getContact().getPhones().size() > 0) {
             mapper.map(entity.getContact().getPhones().get(0), emergencyContact);
+           if (entity.getContact().getPhones().get(0).getCountryCode() != null)
+           {
             mapper.map(entity.getContact().getPhones().get(0).getCountryCode(),emergencyContact);
-            mapper.map(entity.getContact().getPhones().get(0).getExtension(),emergencyContact);
+           }
+           if(entity.getContact().getPhones().get(0).getExtension() != null)           
+           {
+           mapper.map(entity.getContact().getPhones().get(0).getExtension(),emergencyContact);
+           }
+            
 
         }
         if (entity.getContact().getPrimaryEmail() != null) {
