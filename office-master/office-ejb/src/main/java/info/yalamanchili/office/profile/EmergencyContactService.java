@@ -5,6 +5,8 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.beans.BeanMapper;
+import info.yalamanchili.office.dao.profile.EmergencyContactDao;
+import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
@@ -33,6 +35,8 @@ public class EmergencyContactService {
     protected Mapper mapper;
     @Autowired
     protected ProfileNotificationService profileNotificationService;
+     @Autowired
+     protected EmergencyContactDao emergencyContactDao;
 
     //TODO try to consolidate add and update
     public void addEmergencyContact(Long empId, info.yalamanchili.office.dto.profile.EmergencyContactDto ec) {
@@ -106,5 +110,8 @@ public class EmergencyContactService {
         return ec;
     }
     
-    
+       public EmergencyContactDto read(Long id) {
+        EmergencyContact ec = emergencyContactDao.findById(id);
+        return EmergencyContactDto.map(mapper, ec);
+    }
 }
