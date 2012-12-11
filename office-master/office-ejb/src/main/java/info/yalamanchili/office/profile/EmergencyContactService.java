@@ -35,7 +35,7 @@ public class EmergencyContactService {
     protected ProfileNotificationService profileNotificationService;
 
     //TODO try to consolidate add and update
-    public void addEmergencyContact(Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
+    public void addEmergencyContact(Long empId, info.yalamanchili.office.dto.profile.EmergencyContactDto ec) {
         Employee emp = (Employee) em.find(Employee.class, empId);
         Contact contact = new Contact();
         contact.setFirstName(ec.getFirstName());
@@ -69,7 +69,7 @@ public class EmergencyContactService {
         profileNotificationService.sendEmergencyContactUpdateNotification(emp);
     }
 
-    public info.yalamanchili.office.dto.profile.EmergencyContact update(info.yalamanchili.office.dto.profile.EmergencyContact ec) {
+    public info.yalamanchili.office.dto.profile.EmergencyContactDto update(info.yalamanchili.office.dto.profile.EmergencyContactDto ec) {
         //TODO user dozer mapping?
         EmergencyContact ecEntity = em.find(EmergencyContact.class, ec.getId());
         ecEntity = (EmergencyContact) BeanMapper.merge(ec, ecEntity);
@@ -105,4 +105,6 @@ public class EmergencyContactService {
         profileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
         return ec;
     }
+    
+    
 }
