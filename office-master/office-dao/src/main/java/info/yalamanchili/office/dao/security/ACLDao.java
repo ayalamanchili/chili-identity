@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-public class ACLService {
+public class ACLDao {
 
     @PersistenceContext
     protected EntityManager em;

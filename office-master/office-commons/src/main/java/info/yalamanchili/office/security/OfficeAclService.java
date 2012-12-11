@@ -5,8 +5,9 @@
 package info.yalamanchili.office.security;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.entity.profile.EmployeeType;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
+@Scope("request")
 public class OfficeAclService {
 
     @Autowired
@@ -32,10 +34,16 @@ public class OfficeAclService {
         return aclSercice;
     }
 
-    public void insertBasicPermissions(Class entitycls, Long id) {
-        ObjectIdentity oi = new ObjectIdentityImpl(entitycls, id);
+    public void insertBasicPermissions(String className, Long id, List<String> permissions) {
+        Class entityCls;
+        try {
+            entityCls = Class.forName(className);
+        } catch (ClassNotFoundException ex) {
+            //TODO throw service exception with code 400 (invalid request)
+            throw new RuntimeException(ex);
+        }
+        ObjectIdentity oi = new ObjectIdentityImpl(entityCls, id);
         Sid sid = new PrincipalSid(SecurityUtils.getCurrentUser());
-        Permission p = BasePermission.READ;
         MutableAcl acl = null;
         try {
             acl = (MutableAcl) aclSercice.readAclById(oi);
@@ -43,8 +51,26 @@ public class OfficeAclService {
             acl = aclSercice.createAcl(oi);
         }
         acl.setOwner(sid);
-        acl.insertAce(acl.getEntries().size(), p, sid, true);
-        aclSercice.updateAcl(acl);
+        for (String permString : permissions) {
+            Permission p = null;
+            if (permString.trim().equalsIgnoreCase("READ")) {
+                p = BasePermission.READ;
+            }
+            if (permString.trim().equalsIgnoreCase("WRITE")) {
+                p = BasePermission.WRITE;
+            }
+            if (permString.trim().equalsIgnoreCase("CREATE")) {
+                p = BasePermission.CREATE;
+            }
+            if (permString.trim().equalsIgnoreCase("DELETE")) {
+                p = BasePermission.DELETE;
+            }
+            if (p != null) {
+                acl.insertAce(acl.getEntries().size(), p, sid, true);
+                aclSercice.updateAcl(acl);
+            }
+        }
+
     }
 
     public static OfficeAclService instance() {

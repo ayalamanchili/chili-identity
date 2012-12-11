@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,14 @@ public class SkillResource extends CRUDResource<Skill> {
     @Override
     public Skill save(Skill entity) {
         return super.save(entity);
+    }
+
+    @GET
+    @Path("/{id}")
+//    @PostAuthorize("hasPermission(returnObject, 'READ')")
+    @Override
+    public Skill read(@PathParam("id")Long id) {
+        return super.read(id);
     }
 
     @GET
