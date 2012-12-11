@@ -38,22 +38,13 @@ public class Client extends AbstractEntity {
     @NotEmpty(message = "{client.not.empty.msg}")
     protected String name;
     protected String description;
-    //TODO
-//    protected List<Contact> contacts;
-
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     protected List<Project> projects;
-    
     @ManyToMany
-    protected List<Address> addresses;
-
-   
-    
-    @ManyToMany 
+    protected List<Address> locations;
+    @ManyToMany
     protected List<Contact> contacts;
 
-     
-     
     public String getName() {
         return name;
     }
@@ -69,8 +60,8 @@ public class Client extends AbstractEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-     /**
+
+    /**
      * @generated
      */
     @XmlTransient
@@ -87,6 +78,7 @@ public class Client extends AbstractEntity {
     public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
+
     public void addProject(Project entity) {
         if (entity == null) {
             return;
@@ -94,23 +86,24 @@ public class Client extends AbstractEntity {
         getProjects().add(entity);
         entity.setClient(this);
     }
-    
-    public List<Address> getAddresses() {
-        return addresses;
+
+    public List<Address> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Address> locations) {
+        this.locations = locations;
     }
 
     public List<Contact> getContacts() {
         return contacts;
     }
-    
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
     }
-    
+
+
     @Override
     public String toString() {
         return "Client{" + "name=" + name + ", description=" + description + '}';
