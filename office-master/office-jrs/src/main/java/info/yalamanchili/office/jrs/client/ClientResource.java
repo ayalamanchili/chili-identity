@@ -11,6 +11,7 @@ import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
+import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -63,6 +64,18 @@ public class ClientResource extends CRUDResource<Client> {
         return tableObj;
     }
 
+     @GET
+    @Path("/clientlocation/{id}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public AddressTable getClientLocations(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        AddressTable tableObj = new AddressTable();
+        Client elient = (Client) getDao().findById(id);
+        tableObj.setEntities(elient.getLocations());
+        tableObj.setSize((long) elient.getLocations().size());
+        return tableObj;
+    }
+     
     @PUT
     @Path("/project/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
