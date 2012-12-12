@@ -95,6 +95,14 @@ public class Client extends AbstractEntity {
         this.locations = locations;
     }
 
+     public void addLocations(Address entity) {
+        if (entity == null) {
+            return;
+        }
+        getLocations().add(entity);
+//        entity.setClient(this);
+    }
+     
     public List<Contact> getContacts() {
         return contacts;
     }
