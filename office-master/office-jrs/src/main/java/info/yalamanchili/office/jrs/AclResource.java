@@ -28,11 +28,18 @@ public class AclResource {
 
     @Autowired
     protected OfficeAclService officeAclService;
-
+//TODO change to put
     @GET
     @Path("/permission/add/{className}/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void addPermissions(@PathParam("className") String className, @PathParam("id") Long id, @QueryParam("permission") List<String> permissions) {
         officeAclService.addBasicPermissions(className, id, permissions);
+    }
+
+    @GET
+    @Path("/permission/remove/{className}/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void removePermissions(@PathParam("className") String className, @PathParam("id") Long id, @QueryParam("permission") List<String> permissions) {
+        officeAclService.removePermissions(className, id, permissions);
     }
 }

@@ -62,9 +62,12 @@ public class OfficeAclService {
         for (String permString : permissions) {
             Permission p = mapPermisson(permString);
             if (p != null) {
+                int i = 0;
                 for (AccessControlEntry ace : acl.getEntries()) {
-                    if(ace.getPermission().getMask()==p.getMask()){
-//                      TODO aclSercice.
+                    if (ace.getPermission().getMask() == p.getMask()) {
+                        acl.deleteAce(i);
+                        aclSercice.updateAcl(acl);
+                        i++;
                     }
                 }
 
