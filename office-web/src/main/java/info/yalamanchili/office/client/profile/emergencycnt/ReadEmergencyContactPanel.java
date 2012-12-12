@@ -12,6 +12,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ReadComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,7 +21,8 @@ import info.yalamanchili.office.client.rpc.HttpService;
 public class ReadEmergencyContactPanel extends ReadComposite{
 
  private static ReadEmergencyContactPanel instance;
-
+private static Logger logger = Logger.getLogger(ReadEmergencyContactPanel.class.getName());
+ 
   public static ReadEmergencyContactPanel instance() {
         return instance;
     }
@@ -40,6 +42,7 @@ public class ReadEmergencyContactPanel extends ReadComposite{
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
+                        logger.info("read ec6 response"+response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
                     }
