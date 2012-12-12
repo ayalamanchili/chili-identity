@@ -7,6 +7,7 @@ package info.yalamanchili.office.jrs.profile;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -216,9 +217,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
             @PathParam("limit") int limit) {
         EmergencyContactTable tableObj = new EmergencyContactTable();
         Employee emp = (Employee) getDao().findById(id);
-        List<info.yalamanchili.office.dto.profile.EmergencyContact> emergencyContacts = new ArrayList<info.yalamanchili.office.dto.profile.EmergencyContact>();
+        List<EmergencyContactDto> emergencyContacts = new ArrayList<EmergencyContactDto>();
         for (EmergencyContact ec : emp.getEmergencyContacts()) {
-            emergencyContacts.add(info.yalamanchili.office.dto.profile.EmergencyContact.map(mapper, ec));
+            emergencyContacts.add(EmergencyContactDto.map(mapper, ec));
         }
         tableObj.setEntities(emergencyContacts);
         tableObj.setSize((long) emp.getEmergencyContacts().size());
@@ -227,9 +228,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/emergencycontact/{empId}")
-    public void addEmergencyContact(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.EmergencyContact ec) {
+    public void addEmergencyContact(@PathParam("empId") Long empId,EmergencyContactDto ecDto) {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
-        emergencyContactService.addEmergencyContact(empId, ec);
+        emergencyContactService.addEmergencyContact(empId, ecDto);
     }
 
     @GET
