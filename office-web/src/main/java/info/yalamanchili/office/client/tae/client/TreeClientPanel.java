@@ -8,6 +8,9 @@ import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
+import info.yalamanchili.office.client.tae.clientcontact.ClientContactOptionsPanel;
+import info.yalamanchili.office.client.tae.clientlocation.ClientLocationOptionsPanel;
+import info.yalamanchili.office.client.tae.clientlocation.ReadAllClientLocationsPanel;
 import info.yalamanchili.office.client.tae.project.ProjectOptionsPanel;
 import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 import java.util.logging.Logger;
@@ -59,6 +62,8 @@ public class TreeClientPanel extends TreePanelComposite {
           if(CLIENTLOCATION_NODE.equals(entityNodeKey))
           {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientLocationsPanel(entityId));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ClientLocationOptionsPanel());
           }
     }
 
