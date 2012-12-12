@@ -8,6 +8,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import java.util.List;
@@ -68,6 +69,14 @@ public class ClientResource extends CRUDResource<Client> {
     public void addProject(@PathParam("clientId") Long clientId, Project project) {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addProject(project);
+    }
+    
+     @PUT
+    @Path("/clientlocation/{clientId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public void addclientlocation(@PathParam("clientId") Long clientId,Address address) {
+        Client clnt = (Client) getDao().findById(clientId);
+        clnt.addLocations(address);
     }
 
     @XmlRootElement
