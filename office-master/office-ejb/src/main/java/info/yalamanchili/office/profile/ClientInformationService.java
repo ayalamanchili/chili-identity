@@ -5,6 +5,8 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.beans.BeanMapper;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -32,8 +34,10 @@ public class ClientInformationService {
     protected Mapper mapper;
     @Autowired
     protected ProfileNotificationService ProfileNotificationService;
+    @Autowired
+    protected ClientInformationDao clientInformationDao;
 
-    public void addClientInformation(Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
+    public void addClientInformation(Long empId, info.yalamanchili.office.dto.profile.ClientInformationDto clientInformation) {
         Employee emp = (Employee) em.find(Employee.class, empId);
         Contact contact = new Contact();
         contact.setFirstName(clientInformation.getFirstName());
@@ -68,7 +72,7 @@ public class ClientInformationService {
         ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
     }
 
-    public info.yalamanchili.office.dto.profile.ClientInformation update(info.yalamanchili.office.dto.profile.ClientInformation ci) {
+    public info.yalamanchili.office.dto.profile.ClientInformationDto update(info.yalamanchili.office.dto.profile.ClientInformationDto ci) {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         ciEntity = (ClientInformation) BeanMapper.merge(ci, ciEntity);
@@ -90,5 +94,10 @@ public class ClientInformationService {
         em.merge(ciEntity);
         ProfileNotificationService.sendClientInformationUpdatedNotification(ciEntity.getEmployee());
         return ci;
+    }
+
+    public ClientInformationDto read(Long id) {
+        ClientInformation ec = clientInformationDao.findById(id);
+        return ClientInformationDto.map(mapper, ec);
     }
 }
