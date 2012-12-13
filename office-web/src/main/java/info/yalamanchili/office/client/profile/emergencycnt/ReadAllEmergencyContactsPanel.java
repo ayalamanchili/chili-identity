@@ -68,8 +68,8 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "relation"));
             table.setText(i, 5, JSONUtils.toString(entity, "email"));
             table.setText(i, 6, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 7, JSONUtils.toString(entity, "countryCode"));
-            table.setText(i, 8, JSONUtils.toString(entity, "extension"));
+//            table.setText(i, 7, JSONUtils.toString(entity, "countryCode"));
+//            table.setText(i, 8, JSONUtils.toString(entity, "extension"));
         }
     }
 
@@ -90,16 +90,15 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-       TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmergencyContactPanel(entityId));
-        
+
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String arg0) {
                         postDeleteSuccess();
@@ -121,7 +120,8 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateEmergencyContactPanel(getEntity(entityId)));
 
     }
-     protected String getDeleteURL(String entityId) {
+
+    protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "emergencycontact/delete/" + entityId;
     }
 }
