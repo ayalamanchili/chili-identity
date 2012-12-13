@@ -3,7 +3,7 @@ package info.yalamanchili.office.jrs.profile;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.dto.profile.ClientInformation;
+import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.profile.ClientInformationService;
 import java.util.List;
 import javax.ws.rs.PUT;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class ClientInformationResource extends CRUDResource<ClientInformation> {
+public class ClientInformationResource extends CRUDResource<ClientInformationDto> {
 
     @Autowired
     protected ClientInformationDao clientInformationDao;
@@ -33,7 +33,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @PUT
-    public ClientInformation save(ClientInformation entity) {
+    public ClientInformationDto save(ClientInformationDto entity) {
         return ClientInformationService.update(entity);
     }
 
@@ -42,7 +42,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     public static class ClientInformationTable {
 
         protected Long size;
-        protected List<ClientInformation> entities;
+        protected List<ClientInformationDto> entities;
 
         public Long getSize() {
             return size;
@@ -53,11 +53,11 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         }
 
         @XmlElement
-        public List<ClientInformation> getEntities() {
+        public List<ClientInformationDto> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<ClientInformation> entities) {
+        public void setEntities(List<ClientInformationDto> entities) {
             this.entities = entities;
         }
     }
