@@ -28,11 +28,11 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "ClientInfoPanel", OfficeWelcome.constants);
+        initReadComposite(entity, "ClientInfo", OfficeWelcome.constants);
     }
 
     public ReadClientInfoPanel(String id) {
-        initReadComposite(id, "ClientInfoPanel", OfficeWelcome.constants);
+        initReadComposite(id, "ClientInfo", OfficeWelcome.constants);
     }
 
     @Override
@@ -50,16 +50,17 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignEntityValueFromField("consultantJobTitle", entity);
-        assignEntityValueFromField("reportsToRole", entity);
-        assignEntityValueFromField("rtPrimary", entity);
-        assignEntityValueFromField("firstName", entity);
-        assignEntityValueFromField("middleInitial", entity);
-        assignEntityValueFromField("lastName", entity);
-        assignEntityValueFromField("phoneNumber", entity);
-        assignEntityValueFromField("email", entity);
-        assignEntityValueFromField("extension", entity);
-        assignEntityValueFromField("countryCode", entity);
+        assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("reportsToRole", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("rtPrimary", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
     }
 
     @Override
