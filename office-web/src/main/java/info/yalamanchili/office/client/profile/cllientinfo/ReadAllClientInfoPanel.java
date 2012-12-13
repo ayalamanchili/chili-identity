@@ -50,8 +50,8 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
         table.setText(0, 5, getKeyValue("Phone Number"));
         table.setText(0, 6, getKeyValue("Email"));
         table.setText(0, 7, getKeyValue("Consultant Job Title"));
-        table.setText(0, 8, getKeyValue("Extension"));
-        table.setText(0, 9, getKeyValue("CountryCode"));
+//        table.setText(0, 8, getKeyValue("Extension"));
+//        table.setText(0, 9, getKeyValue("CountryCode"));
 
     }
 
