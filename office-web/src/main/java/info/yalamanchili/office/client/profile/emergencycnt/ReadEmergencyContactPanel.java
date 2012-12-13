@@ -18,12 +18,12 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class ReadEmergencyContactPanel extends ReadComposite{
+public class ReadEmergencyContactPanel extends ReadComposite {
 
- private static ReadEmergencyContactPanel instance;
-private static Logger logger = Logger.getLogger(ReadEmergencyContactPanel.class.getName());
- 
-  public static ReadEmergencyContactPanel instance() {
+    private static ReadEmergencyContactPanel instance;
+    private static Logger logger = Logger.getLogger(ReadEmergencyContactPanel.class.getName());
+
+    public static ReadEmergencyContactPanel instance() {
         return instance;
     }
 
@@ -35,14 +35,14 @@ private static Logger logger = Logger.getLogger(ReadEmergencyContactPanel.class.
     public ReadEmergencyContactPanel(String id) {
         initReadComposite(id, "EmergencyContact", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
-         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info("read ec6 response"+response);
+                        logger.info("read ec6 response" + response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
                     }
@@ -55,22 +55,20 @@ private static Logger logger = Logger.getLogger(ReadEmergencyContactPanel.class.
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("relation", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("ecPrimary", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("relation", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("ecPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-         assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
-         assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
-         assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-       
     }
 
     @Override
@@ -83,19 +81,17 @@ private static Logger logger = Logger.getLogger(ReadEmergencyContactPanel.class.
         addField("relation", true, false, DataType.STRING_FIELD);
         addField("ecPrimary", true, false, DataType.BOOLEAN_FIELD);
         addField("email", true, false, DataType.STRING_FIELD);
-        addField("countryCode", true, false, DataType.STRING_FIELD);
+        addField("countryCode", true, false, DataType.LONG_FIELD);
         addField("phoneNumber", true, false, DataType.LONG_FIELD);
-        addField("extension", true, false, DataType.STRING_FIELD);
+        addField("extension", true, false, DataType.LONG_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-       
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "emergencycontact/" + entityId;
     }
-    
 }
