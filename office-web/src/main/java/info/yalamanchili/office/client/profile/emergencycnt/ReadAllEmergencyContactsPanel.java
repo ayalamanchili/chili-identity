@@ -53,8 +53,8 @@ public class ReadAllEmergencyContactsPanel extends ReadAllComposite {
         table.setText(0, 4, getKeyValue("Relation"));
         table.setText(0, 5, getKeyValue("Email"));
         table.setText(0, 6, getKeyValue("Phone Number"));
-        table.setText(0, 7, getKeyValue("Country Code"));
-        table.setText(0, 8, getKeyValue("Extension"));
+//        table.setText(0, 7, getKeyValue("Country Code"));
+//        table.setText(0, 8, getKeyValue("Extension"));
     }
 
     @Override
