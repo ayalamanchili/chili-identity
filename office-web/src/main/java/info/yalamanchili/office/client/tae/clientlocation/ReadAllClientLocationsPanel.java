@@ -27,7 +27,7 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite{
     public ReadAllClientLocationsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Client Location", OfficeWelcome.constants);
+        initTable("ClientLocation", OfficeWelcome.constants);
     }
     @Override
     public void preFetchTable(int start) {
