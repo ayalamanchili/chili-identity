@@ -56,11 +56,11 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -81,10 +81,10 @@ public class ReadClientInfoPanel extends ReadComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs);
         addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("extension", false, true, DataType.LONG_FIELD);
-        addField("countryCode", false, true, DataType.LONG_FIELD);
+        addField("extension", false, true, DataType.STRING_FIELD);
+        addField("countryCode", false, true, DataType.STRING_FIELD);
     }
 
     @Override
