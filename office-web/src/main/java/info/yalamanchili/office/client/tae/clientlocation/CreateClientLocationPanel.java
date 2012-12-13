@@ -26,7 +26,7 @@ public class CreateClientLocationPanel extends CreateComposite{
 
     public CreateClientLocationPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Client Location", OfficeWelcome.constants);
+        initCreateComposite("ClientLocation", OfficeWelcome.constants);
     }
     
     @Override
