@@ -6,8 +6,10 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.profile.ClientInformationService;
 import java.util.List;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -25,7 +27,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformationDto
     @Autowired
     protected ClientInformationDao clientInformationDao;
     @Autowired
-    protected ClientInformationService ClientInformationService;
+    protected ClientInformationService clientInformationService;
 
     @Override
     public CRUDDao getDao() {
@@ -34,7 +36,14 @@ public class ClientInformationResource extends CRUDResource<ClientInformationDto
 
     @PUT
     public ClientInformationDto save(ClientInformationDto entity) {
-        return ClientInformationService.update(entity);
+        return clientInformationService.update(entity);
+    }
+
+    @GET
+    @Override
+    @Path("/{id}")
+    public ClientInformationDto read(@PathParam("id") Long id) {
+        return clientInformationService.read(id);
     }
 
     @XmlRootElement
