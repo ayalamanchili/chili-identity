@@ -194,9 +194,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
             @PathParam("limit") int limit) {
         ClientInformationTable tableObj = new ClientInformationTable();
         Employee emp = (Employee) getDao().findById(id);
-        List<info.yalamanchili.office.dto.profile.ClientInformation> clientInfoDtos = new ArrayList<info.yalamanchili.office.dto.profile.ClientInformation>();
+        List<info.yalamanchili.office.dto.profile.ClientInformationDto> clientInfoDtos = new ArrayList<info.yalamanchili.office.dto.profile.ClientInformationDto>();
         for (ClientInformation entity : emp.getClientInformations()) {
-            clientInfoDtos.add(info.yalamanchili.office.dto.profile.ClientInformation.map(mapper, entity));
+            clientInfoDtos.add(info.yalamanchili.office.dto.profile.ClientInformationDto.map(mapper, entity));
         }
         tableObj.setEntities(clientInfoDtos);
         tableObj.setSize((long) emp.getClientInformations().size());
@@ -205,7 +205,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/clientinformation/{empId}")
-    public void addClientInformation(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ClientInformation clientInformation) {
+    public void addClientInformation(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ClientInformationDto clientInformation) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
         clientInformationService.addClientInformation(empId, clientInformation);
     }
