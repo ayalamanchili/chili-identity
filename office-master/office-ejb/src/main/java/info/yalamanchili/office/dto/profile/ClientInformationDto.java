@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement
 @XmlType
-public class ClientInformation implements Serializable {
+public class ClientInformationDto implements Serializable {
 
     protected Long id;
     @NotEmpty(message = "{firstName.not.empty.msg}")
@@ -42,7 +42,7 @@ public class ClientInformation implements Serializable {
     @Size(min = 0, max = 4, message = "{clientinformation.countryCode.length.invalid.msg}")
     protected String countryCode;
 
-    public ClientInformation() {
+    public ClientInformationDto() {
     }
 
     public Long getId() {
@@ -147,13 +147,20 @@ public class ClientInformation implements Serializable {
     }
 
     //TODO move this to seperate class?
-    public static ClientInformation map(Mapper mapper, info.yalamanchili.office.entity.profile.ClientInformation entity) {
-        ClientInformation reportsTo = mapper.map(entity, ClientInformation.class);
+    public static ClientInformationDto map(Mapper mapper, info.yalamanchili.office.entity.profile.ClientInformation entity) {
+        ClientInformationDto reportsTo = mapper.map(entity, ClientInformationDto.class);
         mapper.map(entity.getContact(), reportsTo);
         if (entity.getContact().getPhones().size() > 0) {
             Phone phone = entity.getContact().getPhones().get(0);
             mapper.map(phone, reportsTo);
             mapper.map(entity.getContact().getPhones().get(0), reportsTo);
+            if (entity.getContact().getPhones().get(0).getCountryCode() != null) {
+                mapper.map(entity.getContact().getPhones().get(0).getCountryCode(), reportsTo);
+            }
+            if (entity.getContact().getPhones().get(0).getExtension() != null) {
+                mapper.map(entity.getContact().getPhones().get(0).getExtension(), reportsTo);
+            }
+
         }
         if (entity.getContact().getPrimaryEmail() != null) {
             mapper.map(entity.getContact().getPrimaryEmail(), reportsTo);
