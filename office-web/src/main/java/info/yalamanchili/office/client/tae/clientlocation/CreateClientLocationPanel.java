@@ -7,7 +7,9 @@ package info.yalamanchili.office.client.tae.clientlocation;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -38,7 +40,7 @@ public class CreateClientLocationPanel extends CreateComposite{
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
         assignEntityValueFromField("zip", entity);
-        assignEntityValueFromField("addressType", entity);
+//        assignEntityValueFromField("addressType", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -66,7 +68,10 @@ public class CreateClientLocationPanel extends CreateComposite{
 
     @Override
     protected void postCreateSuccess(String result) {
-        
+        new ResponseStatusWidget().show("successfully added Client Location");
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ClientLocationOptionsPanel());
     }
 
     @Override
@@ -158,7 +163,7 @@ public class CreateClientLocationPanel extends CreateComposite{
         addEnumField("state", false, true, getStates().toArray(new String[0]));
         addEnumField("country", false, true, getCountries().toArray(new String[0]));
         addField("zip", false, false, DataType.LONG_FIELD);
-        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
+//        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
     }
 
     @Override
