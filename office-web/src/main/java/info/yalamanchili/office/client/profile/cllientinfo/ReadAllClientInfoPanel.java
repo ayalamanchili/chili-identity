@@ -68,8 +68,8 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
             table.setText(i, 6, JSONUtils.toString(entity, "email"));
             table.setText(i, 7, JSONUtils.toString(entity, "consultantJobTitle"));
-            table.setText(i, 8, JSONUtils.toString(entity, "extension"));
-            table.setText(i, 9, JSONUtils.toString(entity, "countryCode"));
+//            table.setText(i, 8, JSONUtils.toString(entity, "extension"));
+//            table.setText(i, 9, JSONUtils.toString(entity, "countryCode"));
         }
     }
 
@@ -90,7 +90,8 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        // TODO Auto-generated method stub
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(entityId));
     }
 
     public String getDeleteURL(String entityId) {
