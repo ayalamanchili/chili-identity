@@ -53,13 +53,13 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite{
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Type"));
-        table.setText(0, 2, getKeyValue("Street 1"));
-        table.setText(0, 3, getKeyValue("Street 2"));
-        table.setText(0, 4, getKeyValue("City"));
-        table.setText(0, 5, getKeyValue("State"));
-        table.setText(0, 6, getKeyValue("Country"));
-        table.setText(0, 7, getKeyValue("Zip"));
+
+        table.setText(0, 1, getKeyValue("Street 1"));
+        table.setText(0, 2, getKeyValue("Street 2"));
+        table.setText(0, 3, getKeyValue("City"));
+        table.setText(0, 4, getKeyValue("State"));
+        table.setText(0, 5, getKeyValue("Country"));
+        table.setText(0, 6, getKeyValue("Zip"));
     }
 
     @Override
@@ -67,13 +67,13 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite{
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
-            table.setText(i, 2, JSONUtils.toString(entity, "street1"));
-            table.setText(i, 3, JSONUtils.toString(entity, "street2"));
-            table.setText(i, 4, JSONUtils.toString(entity, "city"));
-            table.setText(i, 5, JSONUtils.toString(entity, "state"));
-            table.setText(i, 6, JSONUtils.toString(entity, "country"));
-            table.setText(i, 7, JSONUtils.toString(entity, "zip"));
+//            table.setText(i, 1, JSONUtils.toString(entity.get("addressType"), "addressType"));
+            table.setText(i, 1, JSONUtils.toString(entity, "street1"));
+            table.setText(i, 2, JSONUtils.toString(entity, "street2"));
+            table.setText(i, 3, JSONUtils.toString(entity, "city"));
+            table.setText(i, 4, JSONUtils.toString(entity, "state"));
+            table.setText(i, 5, JSONUtils.toString(entity, "country"));
+            table.setText(i, 6, JSONUtils.toString(entity, "zip"));
         }
     }
 
