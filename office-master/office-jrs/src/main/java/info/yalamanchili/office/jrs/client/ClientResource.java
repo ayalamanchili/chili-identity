@@ -9,9 +9,12 @@ import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
+import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
+import info.yalamanchili.office.jrs.profile.EmployeeResource.EmployeeTable;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -44,7 +47,6 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/{start}/{limit}")
-     
     public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ClientTable tableObj = new ClientTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -64,7 +66,7 @@ public class ClientResource extends CRUDResource<Client> {
         return tableObj;
     }
 
-     @GET
+    @GET
     @Path("/clientlocation/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public AddressTable getClientLocations(@PathParam("id") long id, @PathParam("start") int start,
@@ -75,7 +77,19 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize((long) elient.getLocations().size());
         return tableObj;
     }
-     
+
+    @GET
+    @Path("/clientcontact/{id}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public EmployeeTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        EmployeeTable tableObj = new EmployeeTable();
+        Client elient = (Client) getDao().findById(id);
+        tableObj.setEntities(elient.getContacts());
+        tableObj.setSize((long) elient.getContacts().size());
+        return tableObj;
+    }
+
     @PUT
     @Path("/project/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
@@ -83,13 +97,21 @@ public class ClientResource extends CRUDResource<Client> {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addProject(project);
     }
-    
-     @PUT
+
+    @PUT
     @Path("/clientlocation/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public void addclientlocation(@PathParam("clientId") Long clientId,Address address) {
+    public void addclientlocation(@PathParam("clientId") Long clientId, Address address) {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addLocations(address);
+    }
+
+    @PUT
+    @Path("/clientcontact/{clientId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public void addclientContact(@PathParam("clientId") Long clientId, Contact contact) {
+        Client clnt = (Client) getDao().findById(clientId);
+        clnt.addContact(contact);
     }
 
     @XmlRootElement
