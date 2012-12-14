@@ -85,7 +85,7 @@ public class ClientResource extends CRUDResource<Client> {
             @PathParam("limit") int limit) {
         EmployeeTable tableObj = new EmployeeTable();
         Client elient = (Client) getDao().findById(id);
-        tableObj.setEntities(elient.getContacts());
+//        tableObj.setEntities(elient.getContacts());
         tableObj.setSize((long) elient.getContacts().size());
         return tableObj;
     }
