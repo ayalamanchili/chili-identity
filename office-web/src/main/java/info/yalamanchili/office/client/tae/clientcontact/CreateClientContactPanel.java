@@ -68,9 +68,9 @@ public class CreateClientContactPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully added Client Location");
+        new ResponseStatusWidget().show("successfully added Client Contact");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        //TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactsPa(TreeClientPanel.instance().getEntityId()));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactPanel(TreeClientPanel.instance().getEntityId()));
         TabPanel.instance().timeandExpensePanel.entityPanel.add(new ClientContactOptionsPanel());
 
     }
