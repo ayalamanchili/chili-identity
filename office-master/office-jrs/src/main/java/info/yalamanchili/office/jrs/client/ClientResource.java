@@ -11,6 +11,7 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import  info.yalamanchili.office.dto.profile.ContactDto.ContactTable;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+
 
 /**
  *
@@ -86,11 +88,11 @@ public class ClientResource extends CRUDResource<Client> {
     @GET
     @Path("/clientcontact/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public EmployeeTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
+    public ContactTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
-        EmployeeTable tableObj = new EmployeeTable();
+        ContactTable  tableObj = new ContactTable();
         Client elient = (Client) getDao().findById(id);
-//        tableObj.setEntities(elient.get);
+        tableObj.setEntities(elient.getContacts());
         tableObj.setSize((long) elient.getContacts().size());
         return tableObj;
     }
