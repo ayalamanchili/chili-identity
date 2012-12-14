@@ -36,8 +36,8 @@ public class CreateClientContactPanel extends CreateComposite {
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("sex", entity);
-        assignEntityValueFromField("relation", entity);
-        assignEntityValueFromField("ecPrimary", entity);
+//        assignEntityValueFromField("relation", entity);
+//        assignEntityValueFromField("ecPrimary", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("countryCode", entity);
         assignEntityValueFromField("phoneNumber", entity);
@@ -70,7 +70,7 @@ public class CreateClientContactPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully added Client Location");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-//        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactsPanel(TreeClientPanel.instance().getEntityId()));
+        //TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactsPa(TreeClientPanel.instance().getEntityId()));
         TabPanel.instance().timeandExpensePanel.entityPanel.add(new ClientContactOptionsPanel());
 
     }
@@ -90,8 +90,8 @@ public class CreateClientContactPanel extends CreateComposite {
         addField("lastName", false, true, DataType.STRING_FIELD);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, false, strs);
-        addField("relation", false, true, DataType.STRING_FIELD);
-        addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
+//        addField("relation", false, true, DataType.STRING_FIELD);
+//        addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("email", false, false, DataType.STRING_FIELD);
         addField("countryCode", false, true, DataType.STRING_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
