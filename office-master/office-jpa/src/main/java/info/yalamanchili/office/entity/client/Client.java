@@ -86,7 +86,8 @@ public class Client extends AbstractEntity {
         getProjects().add(entity);
         entity.setClient(this);
     }
-   @XmlTransient
+
+    @XmlTransient
     public List<Address> getLocations() {
         return locations;
     }
@@ -95,14 +96,15 @@ public class Client extends AbstractEntity {
         this.locations = locations;
     }
 
-     public void addLocations(Address entity) {
+    public void addLocations(Address entity) {
         if (entity == null) {
             return;
         }
         getLocations().add(entity);
 //        entity.setClient(this);
     }
-    @XmlTransient 
+
+    @XmlTransient
     public List<Contact> getContacts() {
         return contacts;
     }
@@ -111,6 +113,13 @@ public class Client extends AbstractEntity {
         this.contacts = contacts;
     }
 
+    public void addContact(Contact contact) {
+        if (contact == null) {
+            return;
+        }
+        getContacts().add(contact);
+//       contact.setClient(this);
+    }
 
     @Override
     public String toString() {
