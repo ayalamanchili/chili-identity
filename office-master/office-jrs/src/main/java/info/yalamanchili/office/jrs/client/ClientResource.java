@@ -6,6 +6,7 @@ package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.Address;
@@ -16,6 +17,8 @@ import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
 import info.yalamanchili.office.jrs.profile.EmployeeResource.EmployeeTable;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -39,6 +42,8 @@ public class ClientResource extends CRUDResource<Client> {
 
     @Autowired
     public ClientDao clientDao;
+     @PersistenceContext
+    protected EntityManager em;
 
     @Override
     public CRUDDao getDao() {
@@ -85,7 +90,7 @@ public class ClientResource extends CRUDResource<Client> {
             @PathParam("limit") int limit) {
         EmployeeTable tableObj = new EmployeeTable();
         Client elient = (Client) getDao().findById(id);
-//        tableObj.setEntities(elient.getContacts());
+//        tableObj.setEntities(elient.get);
         tableObj.setSize((long) elient.getContacts().size());
         return tableObj;
     }
@@ -103,6 +108,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addclientlocation(@PathParam("clientId") Long clientId, Address address) {
         Client clnt = (Client) getDao().findById(clientId);
+        address = AddressDao.instance().save(address);
         clnt.addLocations(address);
     }
 
@@ -111,6 +117,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addclientContact(@PathParam("clientId") Long clientId, Contact contact) {
         Client clnt = (Client) getDao().findById(clientId);
+        contact=  em.merge(contact);
         clnt.addContact(contact);
     }
 
