@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.dao.profile;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
@@ -46,4 +47,8 @@ public class AddressDao extends CRUDDao<Address> {
 	public EntityManager getEntityManager() {
 		return em;
 	}
+        
+      public static AddressDao instance() {
+        return SpringContext.getBean(AddressDao.class);
+    }
 }
