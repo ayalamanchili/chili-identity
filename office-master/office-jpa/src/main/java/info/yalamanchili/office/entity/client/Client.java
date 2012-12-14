@@ -118,7 +118,7 @@ public class Client extends AbstractEntity {
             return;
         }
         getContacts().add(contact);
-//       contact.setClient(this);
+//      contact.setClient(this);
     }
 
     @Override
