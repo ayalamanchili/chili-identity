@@ -53,7 +53,6 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite{
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-
         table.setText(0, 1, getKeyValue("Street 1"));
         table.setText(0, 2, getKeyValue("Street 2"));
         table.setText(0, 3, getKeyValue("City"));
