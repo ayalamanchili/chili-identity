@@ -43,7 +43,6 @@ public class SecurityService {
     }
 
     public Employee getCurrentUser() {
-        CUser user = null;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", auth.getName());

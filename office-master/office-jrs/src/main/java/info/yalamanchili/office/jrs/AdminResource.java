@@ -101,6 +101,7 @@ public class AdminResource {
         user.setEnabled(true);
         user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_USER));
         user = securityService.createCuser(user);
+        emp.setUser(user);
 
         //Create employee with basic information
         emp.setEmployeeId(employeeId);
