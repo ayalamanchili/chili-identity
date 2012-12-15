@@ -11,7 +11,7 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
-import  info.yalamanchili.office.dto.profile.ContactDto.ContactTable;
+import info.yalamanchili.office.dto.profile.ContactDto.ContactTable;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -32,7 +32,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-
 /**
  *
  * @author raghu
@@ -44,7 +43,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @Autowired
     public ClientDao clientDao;
-     @PersistenceContext
+    @PersistenceContext
     protected EntityManager em;
 
     @Override
@@ -90,10 +89,10 @@ public class ClientResource extends CRUDResource<Client> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public ContactTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
-        ContactTable  tableObj = new ContactTable();
-        Client elient = (Client) getDao().findById(id);
-        tableObj.setEntities(elient.getContacts());
-        tableObj.setSize((long) elient.getContacts().size());
+        ContactTable tableObj = new ContactTable();
+        Client client = (Client) getDao().findById(id);
+        tableObj.setEntities(client.getContacts());
+        tableObj.setSize((long) client.getContacts().size());
         return tableObj;
     }
 
@@ -119,7 +118,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addclientContact(@PathParam("clientId") Long clientId, Contact contact) {
         Client clnt = (Client) getDao().findById(clientId);
-        contact=  em.merge(contact);
+        contact = em.merge(contact);
         clnt.addContact(contact);
     }
 
