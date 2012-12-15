@@ -27,7 +27,7 @@ public class ReadAllClientContactPanel extends ReadAllComposite {
     public ReadAllClientContactPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("ClientLocation", OfficeWelcome.constants);
+        initTable("ClientContact", OfficeWelcome.constants);
     }
 
     @Override
