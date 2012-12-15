@@ -20,9 +20,9 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class ReadAllClientContactPanel extends ReadAllComposite{
+public class ReadAllClientContactPanel extends ReadAllComposite {
 
-      private static Logger logger = Logger.getLogger(ReadAllClientContactPanel.class.getName());
+    private static Logger logger = Logger.getLogger(ReadAllClientContactPanel.class.getName());
     public static ReadAllClientContactPanel instance;
 
     public ReadAllClientContactPanel(String parentId) {
@@ -30,27 +30,11 @@ public class ReadAllClientContactPanel extends ReadAllComposite{
         this.parentId = parentId;
         initTable("ClientLocation", OfficeWelcome.constants);
     }
-    
-    @Override
-    protected void addListeners() {
-        
-    }
-
-    @Override
-    protected void configure() {
-        
-    }
-
-    @Override
-    protected void addWidgets() {
-       
-    }
 
     @Override
     public void preFetchTable(int start) {
-         HttpService.HttpServiceAsync.instance().doGet(getClientContactURL(start, OfficeWelcome.constants.tableSize()),
+        HttpService.HttpServiceAsync.instance().doGet(getClientContactURL(start, OfficeWelcome.constants.tableSize()),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-
             @Override
             public void onResponse(String result) {
                 logger.info(result);
@@ -58,8 +42,8 @@ public class ReadAllClientContactPanel extends ReadAllComposite{
             }
         });
     }
-    
-      public String getClientContactURL(Integer start, String limit) {
+
+    public String getClientContactURL(Integer start, String limit) {
         if (parentId != null) {
             return OfficeWelcome.constants.root_url() + "client/clientcontact/" + parentId + "/" + start.toString() + "/" + limit.toString();
         } else {
@@ -75,12 +59,12 @@ public class ReadAllClientContactPanel extends ReadAllComposite{
         table.setText(0, 4, getKeyValue("Email"));
         table.setText(0, 5, getKeyValue("Phone"));
         table.setText(0, 6, getKeyValue("Sex"));
-        
+
     }
 
     @Override
     public void fillData(JSONArray entities) {
-         for (int i = 1; i <= entities.size(); i++) {
+        for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
@@ -102,22 +86,17 @@ public class ReadAllClientContactPanel extends ReadAllComposite{
 
     @Override
     public void viewClicked(String entityId) {
-        
     }
 
     @Override
     public void deleteClicked(String entityId) {
-        
     }
 
     @Override
     public void postDeleteSuccess() {
-        
     }
 
     @Override
     public void updateClicked(String entityId) {
-        
     }
-    
 }
