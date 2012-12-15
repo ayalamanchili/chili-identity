@@ -60,6 +60,17 @@ public class ClientResource extends CRUDResource<Client> {
         return tableObj;
     }
 
+    /*
+     * Client Projects
+     */
+    @PUT
+    @Path("/project/{clientId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public void addProject(@PathParam("clientId") Long clientId, Project project) {
+        Client clnt = (Client) getDao().findById(clientId);
+        clnt.addProject(project);
+    }
+
     @GET
     @Path("/projects/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
@@ -72,16 +83,16 @@ public class ClientResource extends CRUDResource<Client> {
         return tableObj;
     }
 
-    @GET
-    @Path("/clientlocation/{id}/{start}/{limit}")
+    /*
+     * Client Contacts
+     */
+    @PUT
+    @Path("/clientcontact/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public AddressTable getClientLocations(@PathParam("id") long id, @PathParam("start") int start,
-            @PathParam("limit") int limit) {
-        AddressTable tableObj = new AddressTable();
-        Client elient = (Client) getDao().findById(id);
-        tableObj.setEntities(elient.getLocations());
-        tableObj.setSize((long) elient.getLocations().size());
-        return tableObj;
+    public void addclientContact(@PathParam("clientId") Long clientId, Contact contact) {
+        Client clnt = (Client) getDao().findById(clientId);
+        contact = em.merge(contact);
+        clnt.addContact(contact);
     }
 
     @GET
@@ -95,14 +106,9 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize((long) client.getContacts().size());
         return tableObj;
     }
-
-    @PUT
-    @Path("/project/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public void addProject(@PathParam("clientId") Long clientId, Project project) {
-        Client clnt = (Client) getDao().findById(clientId);
-        clnt.addProject(project);
-    }
+    /*
+     * Client Locations
+     */
 
     @PUT
     @Path("/clientlocation/{clientId}")
@@ -113,13 +119,16 @@ public class ClientResource extends CRUDResource<Client> {
         clnt.addLocations(address);
     }
 
-    @PUT
-    @Path("/clientcontact/{clientId}")
+    @GET
+    @Path("/clientlocation/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public void addclientContact(@PathParam("clientId") Long clientId, Contact contact) {
-        Client clnt = (Client) getDao().findById(clientId);
-        contact = em.merge(contact);
-        clnt.addContact(contact);
+    public AddressTable getClientLocations(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        AddressTable tableObj = new AddressTable();
+        Client elient = (Client) getDao().findById(id);
+        tableObj.setEntities(elient.getLocations());
+        tableObj.setSize((long) elient.getLocations().size());
+        return tableObj;
     }
 
     @XmlRootElement
