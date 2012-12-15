@@ -55,20 +55,20 @@ public class AdminResource {
     public EmployeeDao employeeDao;
     @PersistenceContext
     EntityManager em;
-
+    
     @Path("/login")
     @PUT
     public Employee login(CUser user) {
         return securityService.login(user);
     }
-
+    
     @Path("/changepassword/{empId}")
     @PUT
     public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.changePassword(empId, user);
     }
-
+    
     @Path("/resetpassword/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -76,7 +76,7 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.resetPassword(empId, user);
     }
-
+    
     @Path("/deactivateuser/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -117,7 +117,7 @@ public class AdminResource {
         profileNotificationService.sendNewUserCreatedNotification(emp);
         return emp.getId().toString();
     }
-
+    
     private String generateEmployeeId(info.yalamanchili.office.dto.profile.Employee emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -130,37 +130,35 @@ public class AdminResource {
         }
         return empId;
     }
-
+    
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MultiSelectObj getUserRoles(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
         MultiSelectObj obj = new MultiSelectObj();
-        EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
-        CUser user = (CUser) em.find(CUser.class, empDao.getUser(empId).getUserId());
+        Employee emp = em.find(Employee.class, empId);
         CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (CRole role : cRoleDao.query(start, limit)) {
             obj.addAvailable(role.getRoleId().toString(), role.getRolename());
         }
-        for (CRole role : user.getRoles()) {
+        for (CRole role : emp.getUser().getRoles()) {
             obj.addSelected(role.getRoleId().toString());
         }
         return obj;
     }
-
+    
     @GET
     @Path("/role/add/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void addUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
-        EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
-        CUser user = (CUser) em.find(CUser.class, empDao.getUser(empId).getUserId());
+        Employee emp = em.find(Employee.class, empId);
         CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (Long roleId : ids) {
             CRole role = cRoleDao.findById(roleId);
-            user.addRole(role);
+            emp.getUser().addRole(role);
         }
     }
-
+    
     @GET
     @Path("/role/remove/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -175,7 +173,7 @@ public class AdminResource {
             }
         }
     }
-
+    
     @GET
     public Employee getCurrentUser() {
         return securityService.getCurrentUser();
