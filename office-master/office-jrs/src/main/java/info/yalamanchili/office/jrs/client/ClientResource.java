@@ -6,17 +6,17 @@ package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
-import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.dto.profile.ContactDto.ContactTable;
+import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
-import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
-import info.yalamanchili.office.jrs.profile.EmployeeResource.EmployeeTable;
+import info.yalamanchili.office.mapper.profile.ContactMapper;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -89,20 +89,23 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Path("/clientcontact/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public void addclientContact(@PathParam("clientId") Long clientId, Contact contact) {
+    public void addclientContact(@PathParam("clientId") Long clientId, ContactDto dto) {
         Client clnt = (Client) getDao().findById(clientId);
-        contact = em.merge(contact);
-        clnt.addContact(contact);
+        clnt.addContact(ContactMapper.map(dto, null));
     }
 
     @GET
     @Path("/clientcontact/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public ContactTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
+    public ContactDtoTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
-        ContactTable tableObj = new ContactTable();
+        ContactDtoTable tableObj = new ContactDtoTable();
         Client client = (Client) getDao().findById(id);
-        tableObj.setEntities(client.getContacts());
+        List<ContactDto> dtos = new ArrayList<ContactDto>();
+        for (Contact entity : client.getContacts()) {
+            dtos.add(ContactMapper.map(entity));
+        }
+        tableObj.setEntities(dtos);
         tableObj.setSize((long) client.getContacts().size());
         return tableObj;
     }
@@ -115,7 +118,6 @@ public class ClientResource extends CRUDResource<Client> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addclientlocation(@PathParam("clientId") Long clientId, Address address) {
         Client clnt = (Client) getDao().findById(clientId);
-        address = AddressDao.instance().save(address);
         clnt.addLocations(address);
     }
 
