@@ -12,7 +12,7 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.tae.clientcontact.CreateClientContactPanel;
+import info.yalamanchili.office.client.profile.contact.CreateContactPanel;
 
 /**
  *

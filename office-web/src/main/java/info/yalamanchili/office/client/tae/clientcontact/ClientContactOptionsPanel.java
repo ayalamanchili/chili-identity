@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.tae.clientcontact;
 
+import info.yalamanchili.office.client.profile.contact.CreateContactPanel;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -19,13 +20,12 @@ import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 public class ClientContactOptionsPanel extends ALComposite implements ClickHandler {
 
     protected HorizontalPanel panel = new HorizontalPanel();
-
     protected ClickableLink addClientContactLink = new ClickableLink("Add Client Contact");
-        
+
     public ClientContactOptionsPanel() {
-		init(panel);
-	}
-    
+        init(panel);
+    }
+
     @Override
     protected void addListeners() {
         addClientContactLink.addClickHandler(this);
@@ -33,7 +33,7 @@ public class ClientContactOptionsPanel extends ALComposite implements ClickHandl
 
     @Override
     protected void configure() {
-       panel.setSpacing(5);
+        panel.setSpacing(5);
     }
 
     @Override
@@ -44,9 +44,8 @@ public class ClientContactOptionsPanel extends ALComposite implements ClickHandl
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientContactLink)) {
-			TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-			TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateClientContactPanel(CreateCompositeType.ADD));
-		}
+            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateClientContactPanel(CreateCompositeType.ADD));
+        }
     }
-    
 }
