@@ -40,9 +40,9 @@ public class Client extends AbstractEntity {
     protected String description;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     protected List<Project> projects;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
 
     public String getName() {

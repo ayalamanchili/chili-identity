@@ -7,16 +7,9 @@ package info.yalamanchili.office.client.profile.contact;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.tae.client.TreeClientPanel;
-import info.yalamanchili.office.client.tae.clientcontact.ClientContactOptionsPanel;
-import info.yalamanchili.office.client.tae.clientcontact.ClientContactOptionsPanel;
-import info.yalamanchili.office.client.tae.clientcontact.ReadAllClientContactPanel;
-import info.yalamanchili.office.client.tae.clientcontact.ReadAllClientContactPanel;
 import java.util.logging.Logger;
 
 /**
@@ -68,13 +61,7 @@ public abstract class CreateContactPanel extends CreateComposite {
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully added Client Contact");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactPanel(TreeClientPanel.instance().getEntityId()));
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ClientContactOptionsPanel());
-
-    }
+    protected abstract void postCreateSuccess(String result);
 
     @Override
     protected void addListeners() {

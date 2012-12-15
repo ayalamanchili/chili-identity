@@ -10,7 +10,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -55,7 +54,8 @@ public class ReadAllClientContactPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("First Name"));
-        table.setText(0, 2, getKeyValue("Last Name"));
+        table.setText(0, 2, getKeyValue("Middle Initial"));
+        table.setText(0, 3, getKeyValue("Last Name"));
         table.setText(0, 4, getKeyValue("Email"));
         table.setText(0, 5, getKeyValue("Phone"));
         table.setText(0, 6, getKeyValue("Sex"));
@@ -68,10 +68,11 @@ public class ReadAllClientContactPanel extends ReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
-            table.setText(i, 3, JSONUtils.toString(entity, "email"));
-            table.setText(i, 4, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 5, JSONUtils.toString(entity, "sex"));
+            table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
+            table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
+            table.setText(i, 4, JSONUtils.toString(entity, "email"));
+            table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
+            table.setText(i, 6, JSONUtils.toString(entity, "sex"));
         }
     }
 
