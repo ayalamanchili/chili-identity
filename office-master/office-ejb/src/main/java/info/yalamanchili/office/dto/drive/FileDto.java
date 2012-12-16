@@ -21,15 +21,15 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement(name = "File")
 @XmlType
-public class FileDto  implements Serializable{
+public class FileDto implements Serializable {
 
     protected Long id;
     @NotEmpty(message = "{file.not.empty.msg}")
     protected String name;
     @NotEmpty
     protected String fileUrl;
-    protected Date createdTs;
     protected Date updatedTs;
+    protected String updatedBy;
     protected FolderDto folder;
 
     public Long getId() {
@@ -56,20 +56,20 @@ public class FileDto  implements Serializable{
         this.fileUrl = fileUrl;
     }
 
-    public Date getCreatedTs() {
-        return createdTs;
-    }
-
-    public void setCreatedTs(Date createdTs) {
-        this.createdTs = createdTs;
-    }
-
     public Date getUpdatedTs() {
         return updatedTs;
     }
 
     public void setUpdatedTs(Date updatedTs) {
         this.updatedTs = updatedTs;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     @XmlTransient

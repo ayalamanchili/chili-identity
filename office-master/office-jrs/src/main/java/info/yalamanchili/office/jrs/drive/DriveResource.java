@@ -68,14 +68,12 @@ public class DriveResource {
         FileDao.instance().delete(id);
         FileResource.instance().deleteFile(file.getFileUrl(), file.getId().toString());
     }
-    
-     @PUT
+
+    @PUT
     @Path("/folder/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void deletefolder(@PathParam("id") Long id) {
-        Folder folder = FolderDao.instance().findById(id);
         FolderDao.instance().delete(id);
-        
     }
 
     @GET

@@ -9,9 +9,13 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -25,9 +29,8 @@ public class File extends AbstractEntity {
     @NotEmpty
     protected String fileUrl;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    protected Date createdTs;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date updatedTs;
+    protected String updatedBy;
     @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull
     protected Folder folder;
@@ -51,14 +54,6 @@ public class File extends AbstractEntity {
         this.fileUrl = fileUrl;
     }
 
-    public Date getCreatedTs() {
-        return createdTs;
-    }
-
-    public void setCreatedTs(Date createdTs) {
-        this.createdTs = createdTs;
-    }
-
     public Date getUpdatedTs() {
         return updatedTs;
     }
@@ -67,11 +62,32 @@ public class File extends AbstractEntity {
         this.updatedTs = updatedTs;
     }
 
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
     public Folder getFolder() {
         return folder;
     }
 
     public void setFolder(Folder folder) {
         this.folder = folder;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void populateAuditData() {
+        this.setUpdatedTs(new Date());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        this.setUpdatedBy(auth.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "File{" + "name=" + name + ", fileUrl=" + fileUrl + ", updatedTs=" + updatedTs + ", updatedBy=" + updatedBy + ", folder=" + folder + '}';
     }
 }
