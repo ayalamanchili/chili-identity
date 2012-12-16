@@ -4,16 +4,11 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.certification.MuitiSelectCertificationWidget;
 import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
-import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**

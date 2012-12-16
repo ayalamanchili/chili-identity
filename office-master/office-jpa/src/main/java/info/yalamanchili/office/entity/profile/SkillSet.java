@@ -13,6 +13,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -82,7 +84,6 @@ public class SkillSet extends AbstractEntity {
     public void setCertifications(List<Certification> certifications) {
         this.certifications = certifications;
     }
-    //TODO add per or post persist and merge to update/set the lastupdated date.
 
     @XmlTransient
     public Employee getEmployee() {
@@ -91,5 +92,16 @@ public class SkillSet extends AbstractEntity {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void populateUpdatedTimeStamp() {
+        this.setLastUpdated(new Date());
+    }
+
+    @Override
+    public String toString() {
+        return "SkillSet{" + "lastUpdated=" + lastUpdated + ", resumeUrl=" + resumeUrl + ", skills=" + skills + ", certifications=" + certifications + '}';
     }
 }

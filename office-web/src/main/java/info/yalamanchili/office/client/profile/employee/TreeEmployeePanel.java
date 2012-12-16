@@ -53,12 +53,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
     public TreeEmployeePanel(JSONObject emp) {
         super(emp);
         instance = this;
-//        JSONUtils.toString(emp, entityId);
-        
-//        init("Employee", OfficeWelcome.constants);
-         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
-         init(name, OfficeWelcome.constants);
-        
+        String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
+        init(name, OfficeWelcome.constants);
+
     }
 
     @Override
@@ -78,14 +75,14 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
-        
+
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
             addFirstChildLink("Preferences", PREFERENCES_NODE);
-            addFirstChildLink("Deactivation",DEACTIVATION_USER_NODE);
+            addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
-       
+
     }
 
     @Override
@@ -121,18 +118,17 @@ public class TreeEmployeePanel extends TreePanelComposite {
             skillSetTreePanel.loadEntity();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(getEntityId()));
         }
-        if(DEACTIVATION_USER_NODE.equals(entityNodeKey))
-        {
-           if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
-               HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                           new ResponseStatusWidget().show("Successfully deactivated User"); 
-                        }
-                    });
-           }
-           
+        if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
+            if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
+                HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String arg0) {
+                                new ResponseStatusWidget().show("Successfully deactivated User");
+                            }
+                        });
+            }
+
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {
             HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -175,7 +171,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected String getPreferencesURI() {
         return OfficeWelcome.constants.root_url() + "employee/preferences/" + getEntityId();
     }
-     protected String getDeactivateuserURL() {
+
+    protected String getDeactivateuserURL() {
         return OfficeWelcome.constants.root_url() + "admin/deactivateuser/" + getEntityId();
     }
 }

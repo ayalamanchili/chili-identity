@@ -108,6 +108,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/skillset/{empId}")
     public SkillSet getSkillSet(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
+        //If skillset not present create a empty skillset so certifications and skills can be added.
+        if (emp.getSkillSet() == null) {
+            SkillSet ss = new SkillSet();
+            emp.setSkillSet(ss);
+        }
         return emp.getSkillSet();
 
     }
@@ -124,7 +129,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
         } else {
             skillSetUpdated = skillset;
         }
-        skillSetUpdated.setLastUpdated(new Date());
         emp.setSkillSet(skillSetUpdated);
         emp = em.merge(emp);
         profileNotificationservice.skillSetUpdatedNotification(emp);
@@ -228,7 +232,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/emergencycontact/{empId}")
-    public void addEmergencyContact(@PathParam("empId") Long empId,EmergencyContactDto ecDto) {
+    public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContactDto ecDto) {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
         emergencyContactService.addEmergencyContact(empId, ecDto);
     }

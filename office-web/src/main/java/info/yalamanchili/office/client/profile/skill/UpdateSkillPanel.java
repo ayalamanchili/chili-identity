@@ -20,11 +20,11 @@ import java.util.logging.Logger;
  * @author prani
  */
 public class UpdateSkillPanel extends UpdateComposite {
-    
+
     public UpdateSkillPanel(JSONObject entity) {
         initUpdateComposite(entity, "Skill", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
@@ -34,7 +34,7 @@ public class UpdateSkillPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-       // OfficeWelcome.logger.info("dddd"+entity);
+        // OfficeWelcome.logger.info("dddd"+entity);
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
@@ -59,18 +59,16 @@ public class UpdateSkillPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee Skill Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear(); 
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSkillsPanel());
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -81,14 +79,10 @@ public class UpdateSkillPanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "skill";
     }
-    
-    
-    
 }
