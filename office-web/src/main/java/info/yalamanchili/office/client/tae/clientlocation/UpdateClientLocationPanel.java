@@ -25,16 +25,7 @@ public class UpdateClientLocationPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("firstName", entity);
-        assignEntityValueFromField("middleInitial", entity);
-        assignEntityValueFromField("lastName", entity);
-        assignEntityValueFromField("sex", entity);
-        assignEntityValueFromField("relation", entity);
-        assignEntityValueFromField("ecPrimary", entity);
-        assignEntityValueFromField("email", entity);
-        assignEntityValueFromField("countryCode", entity);
-        assignEntityValueFromField("phoneNumber", entity);
-        assignEntityValueFromField("extension", entity);
+       
         return entity;
     }
 
@@ -56,16 +47,7 @@ public class UpdateClientLocationPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("relation", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("ecPrimary", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
+       
     }
 
     @Override
@@ -89,17 +71,7 @@ public class UpdateClientLocationPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, false, strs);
-        addField("relation", false, true, DataType.STRING_FIELD);
-        addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("email", false, false, DataType.STRING_FIELD);
-        addField("countryCode", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
-        addField("extension", false, true, DataType.STRING_FIELD);
+       
     }
 
     @Override
