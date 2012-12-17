@@ -55,20 +55,20 @@ public class AdminResource {
     public EmployeeDao employeeDao;
     @PersistenceContext
     EntityManager em;
-    
+
     @Path("/login")
     @PUT
     public Employee login(CUser user) {
         return securityService.login(user);
     }
-    
+
     @Path("/changepassword/{empId}")
     @PUT
     public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.changePassword(empId, user);
     }
-    
+
     @Path("/resetpassword/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -76,7 +76,23 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.resetPassword(empId, user);
     }
-    
+
+    /**
+     * this method will be invoked to reset password when "forgot password" is
+     * clicked. a temp password is generated and saved. finally a email is sent
+     * to to employee primary email with password
+     *
+     * @param empId
+     */
+    @Path("/resetpassword/{empId}")
+    @GET
+    public void forgotPasswordReset(@PathParam("empId") Long empId) {
+        //call password generator to get temp password.
+        //Create a User object with the temp password.
+        //call the above resetPassword the password.
+        //send email with new password.
+    }
+
     @Path("/deactivateuser/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -118,7 +134,7 @@ public class AdminResource {
         profileNotificationService.sendNewUserCreatedNotification(emp);
         return emp.getId().toString();
     }
-    
+
     private String generateEmployeeId(info.yalamanchili.office.dto.profile.Employee emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -131,7 +147,7 @@ public class AdminResource {
         }
         return empId;
     }
-    
+
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -147,7 +163,7 @@ public class AdminResource {
         }
         return obj;
     }
-    
+
     @GET
     @Path("/role/add/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -159,7 +175,7 @@ public class AdminResource {
             emp.getUser().addRole(role);
         }
     }
-    
+
     @GET
     @Path("/role/remove/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -174,7 +190,7 @@ public class AdminResource {
             }
         }
     }
-    
+
     @GET
     public Employee getCurrentUser() {
         return securityService.getCurrentUser();

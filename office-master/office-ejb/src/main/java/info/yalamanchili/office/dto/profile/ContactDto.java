@@ -31,6 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class ContactDto implements Serializable {
 
+    protected Long id;
     /**
      * firstName
      */
@@ -80,6 +81,14 @@ public class ContactDto implements Serializable {
      */
     @Size(min = 0, max = 4, message = "{phone.extension.length.invalid.msg}")
     protected String extension;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
