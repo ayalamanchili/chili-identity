@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dto.profile.ContactDto;
@@ -18,12 +19,14 @@ import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -82,6 +85,8 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize((long) elient.getProjects().size());
         return tableObj;
     }
+    
+   
 
     /*
      * Client Contacts
@@ -108,6 +113,18 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setEntities(dtos);
         tableObj.setSize((long) client.getContacts().size());
         return tableObj;
+    }
+    
+      @GET
+    @Path("/clientcontact/dropdown/{start}/{limit}")
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        List<Entry> result = new ArrayList<Entry>();
+        Map<String, String> values = getDao().getEntityStringMapByParams(start, limit, columns.toArray(new String[columns.size()]));
+        for (String key : values.keySet()) {
+            result.add(new Entry(key, values.get(key)));
+        }
+        return result;
     }
     /*
      * Client Locations
