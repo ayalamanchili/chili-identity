@@ -79,7 +79,7 @@ public class CreateAddressPanel extends CreateComposite {
         // TODO Auto-generated method stub
     }
 
-    protected static List<String> getCountries() {
+    public static List<String> getCountries() {
         List<String> countries = new ArrayList<String>();
         countries.add("USA");
         countries.add("INDIA");
@@ -87,7 +87,7 @@ public class CreateAddressPanel extends CreateComposite {
     }
 
 //TODO externalize this
-    protected static List<String> getStates() {
+    public static List<String> getStates() {
         List<String> states = new ArrayList<String>();
         states.add("AL");
         states.add("AK");
