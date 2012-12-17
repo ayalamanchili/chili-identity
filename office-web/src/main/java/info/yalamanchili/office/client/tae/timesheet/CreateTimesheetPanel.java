@@ -35,27 +35,14 @@ public class CreateTimesheetPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
 
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("paidRate", entity);
-        assignEntityValueFromField("billedRate", entity);
-        assignEntityValueFromField("mondayPaidHours", entity);
-        assignEntityValueFromField("mondayBilledHours", entity);
-        assignEntityValueFromField("tuesdayPaidHours", entity);
-        assignEntityValueFromField("tuesdayBilledHours", entity);
-        assignEntityValueFromField("wednesdayPaidHours", entity);
-        assignEntityValueFromField("wednesdayBilledHours", entity);
-        assignEntityValueFromField("thursdayPaidHours", entity);
-        assignEntityValueFromField("thursdayBilledHours", entity);
-        assignEntityValueFromField("fridayPaidHours", entity);
-        assignEntityValueFromField("fridayBilledHours", entity);
-        assignEntityValueFromField("saturdayPaidHours", entity);
-        assignEntityValueFromField("saturdayBilledHours", entity);
-        assignEntityValueFromField("sundayPaidHours", entity);
-        assignEntityValueFromField("sundayBilledHours", entity);
-        entity.put("timeSheetStatus", new JSONString("Approved"));
-        entity.put("timeSheetCategory", new JSONString("Regular"));
         assignEntityValueFromField("employee", entity);
-        assignEntityValueFromField("statementOfWork", entity);
-        assignEntityValueFromField("timeSheetPeriod",entity);
+         assignEntityValueFromField("timeSheetPeriod",entity);
+         assignEntityValueFromField("startDate", entity);
+         assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("adpHours", entity);
+        assignEntityValueFromField("adpRate", entity);
+        assignEntityValueFromField("quickBooksHours", entity);
+        assignEntityValueFromField("quickBooksRate", entity);
         assignEntityValueFromField("notes",entity);
         logger.info("99999999999" + entity);
         return entity;
@@ -101,27 +88,15 @@ public class CreateTimesheetPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
 
-         addField("paidRate", false, true, DataType.CURRENCY_FIELD);
-         addField("billedRate", false, true, DataType.CURRENCY_FIELD);
-         addField("mondayPaidHours", false, true, DataType.FLOAT_FIELD);
-         addField("mondayBilledHours", false, true, DataType.FLOAT_FIELD);
-         addField("tuesdayPaidHours", false, true, DataType.FLOAT_FIELD);
-         addField("tuesdayBilledHours", false, true, DataType.FLOAT_FIELD);
-         addField("wednesdayPaidHours", false, true, DataType.FLOAT_FIELD);
-         addField("wednesdayBilledHours", false, true, DataType.FLOAT_FIELD);
-         addField("thursdayPaidHours", false, true, DataType.FLOAT_FIELD);
-         addField("thursdayBilledHours", false, true, DataType.FLOAT_FIELD);
-         addField("fridayPaidHours", false, true, DataType.FLOAT_FIELD);
-         addField("fridayBilledHours", false, true, DataType.FLOAT_FIELD);
-         addField("saturdayPaidHours", false, true, DataType.FLOAT_FIELD);
-         addField("saturdayBilledHours", false, true, DataType.FLOAT_FIELD);
-         addField("sundayPaidHours", false, true, DataType.FLOAT_FIELD);
-         addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
-         addField("notes", false, true, DataType.STRING_FIELD);
-         addDropDown("statementOfWork", new SelectSOWWidget(false, true));
          addDropDown("employee", new SelectEmployeeWidget(false, true));
          addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, true));
-
+         addField("startDate", false, true, DataType.DATE_FIELD);
+         addField("endDate", false, true, DataType.DATE_FIELD);
+         addField("adpHours", false, true, DataType.FLOAT_FIELD);
+         addField("adpRate", false, true, DataType.CURRENCY_FIELD);
+         addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
+         addField("quickBooksRate", false, true, DataType.CURRENCY_FIELD);
+         addField("notes", false, true, DataType.STRING_FIELD);
     }
 
     @Override
