@@ -30,40 +30,111 @@ import org.hibernate.envers.Audited;
 @Audited
 public class TimeSheet extends AbstractEntity {
 
-            
-
-    protected String notes;
-    
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_TimeSheetPeriod_TimeSheets")
-    protected TimeSheetPeriod timeSheetPeriod;
-
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Employee_TimeSheets")
-    protected Employee employee;
-
-    
+    /**
+     * quickbooksRate
+     */
     protected BigDecimal quickBooksRate;
-    
-    @NotNull 
+    /**
+     * quickBooks Hours
+     */
+    @NotNull
     @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal quickBooksHours;
-    
+    /**
+     * adp Rate
+     */
     protected BigDecimal adpRate;
-    
-    @NotNull 
+    /**
+     * ADP Hours
+     */
+    @NotNull
     @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal adpHours;
-     
+    /**
+     * start date Only populated if the dates differ from timesheet period start
+     * and enddates
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
-    
+    /**
+     * end date Only populated if the dates differ from timesheet period start
+     * and enddates
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{endDate.not.empty.msg}")
     protected Date endDate;
-    
-     
+    /**
+     * notes
+     */
+    protected String notes;
+    /**
+     * 
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_TimeSheetPeriod_TimeSheets")
+    protected TimeSheetPeriod timeSheetPeriod;
+    /**
+     * 
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_TimeSheets")
+    protected Employee employee;
+    /**
+     * 
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_StatementOfWork_TimeSheets")
+    protected StatementOfWork statementOfWork;
+
+    public BigDecimal getQuickBooksRate() {
+        return quickBooksRate;
+    }
+
+    public void setQuickBooksRate(BigDecimal quickBooksRate) {
+        this.quickBooksRate = quickBooksRate;
+    }
+
+    public BigDecimal getQuickBooksHours() {
+        return quickBooksHours;
+    }
+
+    public void setQuickBooksHours(BigDecimal quickBooksHours) {
+        this.quickBooksHours = quickBooksHours;
+    }
+
+    public BigDecimal getAdpRate() {
+        return adpRate;
+    }
+
+    public void setAdpRate(BigDecimal adpRate) {
+        this.adpRate = adpRate;
+    }
+
+    public BigDecimal getAdpHours() {
+        return adpHours;
+    }
+
+    public void setAdpHours(BigDecimal adpHours) {
+        this.adpHours = adpHours;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public String getNotes() {
         return notes;
     }
@@ -88,58 +159,17 @@ public class TimeSheet extends AbstractEntity {
         this.employee = employee;
     }
 
+    public StatementOfWork getStatementOfWork() {
+        return statementOfWork;
+    }
+
+    public void setStatementOfWork(StatementOfWork statementOfWork) {
+        this.statementOfWork = statementOfWork;
+    }
+
     @Override
     public String toString() {
-        return "TimeSheet{" + "adpHours=" + adpHours + ", adpRate=" + adpRate + ", quickBooksHours=" + quickBooksHours + ", quickBooksRate=" + quickBooksRate +  ", timeSheetPeriod=" + timeSheetPeriod +", notes=" + notes + '}';
+        return "TimeSheet{" + "quickBooksRate=" + quickBooksRate + ", quickBooksHours=" + quickBooksHours + ", adpRate=" + adpRate + ", adpHours=" + adpHours + ", startDate=" + startDate + ", endDate=" + endDate + ", notes=" + notes + ", timeSheetPeriod=" + timeSheetPeriod + ", employee=" + employee + ", statementOfWork=" + statementOfWork + '}';
     }
     
-
-    public void setAdpHours(BigDecimal adpHours) {
-        this.adpHours = adpHours;
-    }
-
-    public void setQuickBooksHours(BigDecimal quickBooksHours) {
-        this.quickBooksHours = quickBooksHours;
-    }
-
-    public void setAdpRate(BigDecimal adpRate) {
-        this.adpRate = adpRate;
-    }
-
-    public void setQuickBooksRate(BigDecimal quickBooksRate) {
-        this.quickBooksRate = quickBooksRate;
-    }
-
-    public BigDecimal getAdpHours() {
-        return adpHours;
-    }
-
-    public BigDecimal getQuickBooksHours() {
-        return quickBooksHours;
-    }
-
-    public BigDecimal getAdpRate() {
-        return adpRate;
-    }
-
-    public BigDecimal getQuickBooksRate() {
-        return quickBooksRate;
-    }
-    
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-     
 }

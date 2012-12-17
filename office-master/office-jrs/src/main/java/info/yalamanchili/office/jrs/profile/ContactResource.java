@@ -34,7 +34,6 @@ public class ContactResource extends CRUDResource<ContactDto> {
     }
 
     @PUT
-    @Path("/clientcontact")
     @Override
     public ContactDto save(ContactDto dto) {
         Contact entity = (Contact) getDao().findById(dto.getId());
