@@ -23,7 +23,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel {
      private static Logger logger = Logger.getLogger(CreateClientLocationPanel.class.getName());
     public CreateClientLocationPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-         initCreateComposite("ClientLocation", OfficeWelcome.constants);
+//         initCreateComposite("ClientLocation", OfficeWelcome.constants);
     }
 
       @Override
