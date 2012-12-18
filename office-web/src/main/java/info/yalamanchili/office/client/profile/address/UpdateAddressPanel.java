@@ -106,6 +106,6 @@ public class UpdateAddressPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         // TODO Auto-generated method stub
-        return OfficeWelcome.constants.root_url() + "address";
+        return OfficeWelcome.constants.root_url() + "address/employee";
     }
 }
