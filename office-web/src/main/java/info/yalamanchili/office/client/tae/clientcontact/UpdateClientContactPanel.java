@@ -9,8 +9,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.ClientSidePanel;
+import info.yalamanchili.office.client.tae.client.TreeClientPanel;
 
 /**
  *
@@ -66,6 +69,10 @@ public class UpdateClientContactPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated clientcontact");
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear(); 
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactPanel(TreeClientPanel.instance().getEntityId()));
     }
 
     @Override
@@ -87,7 +94,7 @@ public class UpdateClientContactPanel extends UpdateComposite {
         addEnumField("sex", false, false, strs);
         addField("email", false, false, DataType.STRING_FIELD);
         addField("countryCode", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
         addField("extension", false, true, DataType.STRING_FIELD);
     }
 
