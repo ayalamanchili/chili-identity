@@ -69,8 +69,8 @@ public class UpdateClientContactPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated clientcontact");
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
+//        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
+//        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
         TabPanel.instance().timeandExpensePanel.entityPanel.clear(); 
         TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactPanel(TreeClientPanel.instance().getEntityId()));
     }
