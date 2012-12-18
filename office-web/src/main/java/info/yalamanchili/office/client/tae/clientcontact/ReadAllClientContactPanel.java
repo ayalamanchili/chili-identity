@@ -10,9 +10,11 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.TreeClientPanel;
 import java.util.logging.Logger;
 
 /**
@@ -99,5 +101,9 @@ public class ReadAllClientContactPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateClientContactPanel(getEntity(entityId)));
     }
 }
