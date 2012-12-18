@@ -37,29 +37,29 @@ public class TimeSheet extends AbstractEntity {
     /**
      * quickBooks Hours
      */
-    @NotNull
+    @NotNull(message = "{quickBooksHours.not.empty.msg}")
     @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal quickBooksHours;
     /**
-     * adp Rate
+     * Adp Rate
      */
     protected BigDecimal adpRate;
     /**
      * ADP Hours
      */
-    @NotNull
+    @NotNull(message = "{adpHours.not.empty.msg}")
     @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal adpHours;
     /**
-     * start date Only populated if the dates differ from timesheet period start
-     * and enddates
+     * start date Only populated if the dates differ from time sheet period
+     * start and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     /**
-     * end date Only populated if the dates differ from timesheet period start
-     * and enddates
+     * end date Only populated if the dates differ from time sheet period start
+     * and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{endDate.not.empty.msg}")
@@ -69,19 +69,19 @@ public class TimeSheet extends AbstractEntity {
      */
     protected String notes;
     /**
-     * 
+     *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_TimeSheetPeriod_TimeSheets")
     protected TimeSheetPeriod timeSheetPeriod;
     /**
-     * 
+     *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_TimeSheets")
     protected Employee employee;
     /**
-     * 
+     *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_StatementOfWork_TimeSheets")
@@ -171,5 +171,4 @@ public class TimeSheet extends AbstractEntity {
     public String toString() {
         return "TimeSheet{" + "quickBooksRate=" + quickBooksRate + ", quickBooksHours=" + quickBooksHours + ", adpRate=" + adpRate + ", adpHours=" + adpHours + ", startDate=" + startDate + ", endDate=" + endDate + ", notes=" + notes + ", timeSheetPeriod=" + timeSheetPeriod + ", employee=" + employee + ", statementOfWork=" + statementOfWork + '}';
     }
-    
 }
