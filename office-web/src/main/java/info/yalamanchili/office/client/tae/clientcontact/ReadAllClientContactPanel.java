@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -30,6 +31,11 @@ public class ReadAllClientContactPanel extends ReadAllComposite {
         instance = this;
         this.parentId = parentId;
         initTable("ClientContact", OfficeWelcome.constants);
+    }
+
+    private ReadAllClientContactPanel() {
+        instance = this;
+        initTable("Clients", OfficeWelcome.constants);
     }
 
     @Override
@@ -93,10 +99,24 @@ public class ReadAllClientContactPanel extends ReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
+    }
+
+    private String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "client/clientcontact/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully deleted Client contact information");
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactPanel());
     }
 
     @Override
