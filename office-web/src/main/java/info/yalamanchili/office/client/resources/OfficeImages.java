@@ -29,15 +29,18 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/logo.png")
     ImageResource logo();
-    
+
     @Source("images/loginFeaturesImage.png")
     ImageResource loginFeatures();
-    
+
     @Source("images/loginCenterImage.png")
     ImageResource loginCenter();
 
     @Source("images/default-image.gif")
     ImageResource defaultImage();
+
+    @Source("images/forgot_password_icon.jpg")
+    ImageResource forgotPassword();
 
     @Source("images/Tab_button.png")
     @ImageOptions(repeatStyle = RepeatStyle.Horizontal)
@@ -76,7 +79,6 @@ public interface OfficeImages extends ClientBundle {
     /*
      * Update Edit Icons
      */
-
     @Source("images/update_icon_16_16.png")
     ImageResource updateIcon_16_16();
     /*

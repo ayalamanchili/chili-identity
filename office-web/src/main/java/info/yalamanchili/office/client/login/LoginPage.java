@@ -10,12 +10,12 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.storage.client.StorageMap;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -27,7 +27,6 @@ import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.rpc.HttpService;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -59,6 +58,8 @@ public class LoginPage extends Composite {
     PasswordTextBox passwordTb;
     @UiField
     Button loginB;
+    @UiField
+    Image forgotPasswordIcon;
 
     @UiHandler("loginB")
     void handleLogin(ClickEvent e) {
@@ -89,6 +90,11 @@ public class LoginPage extends Composite {
             // Do something when Enter is pressed.
             loginClicked();
         }
+    }
+
+    @UiHandler("forgotPasswordIcon")
+    void forgotPasswordLinkClicked(ClickEvent event) {
+       forgotPassword();
     }
 
     interface LoginPageUiBinder extends UiBinder<Widget, LoginPage> {
@@ -147,6 +153,10 @@ public class LoginPage extends Composite {
                 }
             }
         });
+    }
+    
+    protected void forgotPassword(){
+        Window.alert("dddd");
     }
 
     protected void setAutoLogout() {
