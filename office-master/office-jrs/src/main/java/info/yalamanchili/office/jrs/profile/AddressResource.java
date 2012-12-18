@@ -43,8 +43,9 @@ public class AddressResource extends CRUDResource<Address> {
     }
 
     @PUT
+    @Path("/employee")
      @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public Address save(Address address) {
+    public Address saveemployeeaddress(Address address) {
         Employee emp = securityService.getCurrentUser();
         if (address.getId() == null) {
             return save(address);
@@ -53,6 +54,12 @@ public class AddressResource extends CRUDResource<Address> {
             profileNotificationservice.sendEmployeeAddressUpdatedNotification(emp);
             return savedAddress;
         }
+    }
+    
+     @PUT
+     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public Address save(Address address) {
+     return super.save(address);
     }
 
     @PUT
