@@ -34,28 +34,15 @@ public class UpdateTimesheetPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
 
-        assignEntityValueFromField("paidRate", entity);
-        assignEntityValueFromField("billedRate", entity);
-        assignEntityValueFromField("mondayPaidHours", entity);
-        assignEntityValueFromField("mondayBilledHours", entity);
-        assignEntityValueFromField("tuesdayPaidHours", entity);
-        assignEntityValueFromField("tuesdayBilledHours", entity);
-        assignEntityValueFromField("wednesdayPaidHours", entity);
-        assignEntityValueFromField("wednesdayBilledHours", entity);
-        assignEntityValueFromField("thursdayPaidHours", entity);
-        assignEntityValueFromField("thursdayBilledHours", entity);
-        assignEntityValueFromField("fridayPaidHours", entity);
-        assignEntityValueFromField("fridayBilledHours", entity);
-        assignEntityValueFromField("saturdayPaidHours", entity);
-        assignEntityValueFromField("saturdayBilledHours", entity);
-        assignEntityValueFromField("sundayPaidHours", entity);
-        assignEntityValueFromField("sundayBilledHours", entity);
-        assignEntityValueFromField("notes", entity);
-        entity.put("timeSheetStatus", new JSONString("Approved"));
-        entity.put("timeSheetCategory", new JSONString("Regular"));
-        assignEntityValueFromField("statementOfWork", entity);
+        assignEntityValueFromField("adpRate", entity);
+        assignEntityValueFromField("quickBooksRate", entity);
+        assignEntityValueFromField("adpHours", entity);
+        assignEntityValueFromField("quickBooksHours", entity);
         assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("timeSheetPeriod", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("notes", entity);
         return entity;
 
     }
@@ -78,26 +65,15 @@ public class UpdateTimesheetPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("paidRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("billedRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("mondayPaidHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("mondayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("tuesdayPaidHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("tuesdayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("wednesdayPaidHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("wednesdayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("thursdayPaidHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("thursdayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("fridayPaidHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("fridayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("saturdayPaidHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("saturdayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("sundayPaidHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("sundayBilledHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("statementOfWork", entity, null);
+        assignFieldValueFromEntity("adpRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("quickBooksRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("adpHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("quickBooksHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("employee", entity, null);
         assignFieldValueFromEntity("timeSheetPeriod", entity, null);
-        assignFieldValueFromEntity("notes", entity, null);
+        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("notes", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -117,26 +93,15 @@ public class UpdateTimesheetPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("paidRate", false, true, DataType.CURRENCY_FIELD);
-        addField("billedRate", false, true, DataType.CURRENCY_FIELD);
-        addField("mondayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("mondayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("tuesdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("tuesdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("wednesdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("wednesdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("thursdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("thursdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("fridayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("fridayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("saturdayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("saturdayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("sundayPaidHours", false, true, DataType.FLOAT_FIELD);
-        addField("sundayBilledHours", false, true, DataType.FLOAT_FIELD);
-        addField("notes", false, true, DataType.STRING_FIELD);
-        addDropDown("statementOfWork", new SelectSOWWidget(false, false));
-        addDropDown("employee", new SelectEmployeeWidget(false, false));
-        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, false));
+        addDropDown("employee", new SelectEmployeeWidget(false, true));
+         addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, true));
+         addField("startDate", false, true, DataType.DATE_FIELD);
+         addField("endDate", false, true, DataType.DATE_FIELD);
+         addField("adpHours", false, true, DataType.FLOAT_FIELD);
+         addField("adpRate", false, true, DataType.CURRENCY_FIELD);
+         addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
+         addField("quickBooksRate", false, true, DataType.CURRENCY_FIELD);
+         addField("notes", false, true, DataType.STRING_FIELD);
     }
 
     @Override
