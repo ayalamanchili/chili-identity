@@ -14,6 +14,7 @@ import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.TreeClientPanel;
 
 /**
  *
@@ -71,7 +72,7 @@ public class UpdateClientLocationPanel extends UpdateComposite {
         TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
         TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ClientLocationOptionsPanel());
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientLocationsPanel());
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
     }
 
     @Override
@@ -90,7 +91,7 @@ public class UpdateClientLocationPanel extends UpdateComposite {
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("state", false, true, CreateAddressPanel.getStates().toArray(new String[0]));
         addEnumField("country", false, true, CreateAddressPanel.getCountries().toArray(new String[0]));
-
+         addField("zip", false, false, DataType.LONG_FIELD);
     }
 
     @Override
@@ -99,6 +100,6 @@ public class UpdateClientLocationPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "clientlocation";
+        return OfficeWelcome.constants.root_url() + "address";
     }
 }
