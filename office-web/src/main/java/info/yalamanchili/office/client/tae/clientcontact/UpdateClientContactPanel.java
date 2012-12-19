@@ -21,9 +21,10 @@ import info.yalamanchili.office.client.tae.client.TreeClientPanel;
  */
 public class UpdateClientContactPanel extends UpdateComposite {
 
-      public UpdateClientContactPanel(JSONObject entity) {
-        initUpdateComposite(entity, "Clientcontact", OfficeWelcome.constants);
+    public UpdateClientContactPanel(JSONObject entity) {
+        initUpdateComposite(entity, "ClientContact", OfficeWelcome.constants);
     }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
@@ -39,7 +40,7 @@ public class UpdateClientContactPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
@@ -59,11 +60,11 @@ public class UpdateClientContactPanel extends UpdateComposite {
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("email",entity,DataType.STRING_FIELD);
-        assignFieldValueFromEntity("countryCode",entity,DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phoneNumber",entity,DataType.STRING_FIELD);
-        assignFieldValueFromEntity("extension",entity,DataType.STRING_FIELD);
-                 
+        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
+
     }
 
     @Override
@@ -71,18 +72,16 @@ public class UpdateClientContactPanel extends UpdateComposite {
         new ResponseStatusWidget().show("successfully updated clientcontact");
 //        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
 //        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear(); 
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
         TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientContactPanel(TreeClientPanel.instance().getEntityId()));
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -100,12 +99,10 @@ public class UpdateClientContactPanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "contact";
     }
-    
 }
