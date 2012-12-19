@@ -44,7 +44,7 @@ public class AddressResource extends CRUDResource<Address> {
 
     @PUT
     @Path("/employee")
-     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public Address saveemployeeaddress(Address address) {
         Employee emp = securityService.getCurrentUser();
         if (address.getId() == null) {
@@ -55,21 +55,19 @@ public class AddressResource extends CRUDResource<Address> {
             return savedAddress;
         }
     }
-    
-     @PUT
-     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+
+    @PUT
     public Address save(Address address) {
-     return super.save(address);
+        return super.save(address);
     }
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class AddressTable {
