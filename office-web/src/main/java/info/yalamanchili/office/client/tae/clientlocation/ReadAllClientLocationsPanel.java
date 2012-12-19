@@ -109,7 +109,7 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "client/clientlocation/" + entityId;
+         return OfficeWelcome.instance().constants.root_url() + "address/delete/" + entityId;
     }
 
     @Override
