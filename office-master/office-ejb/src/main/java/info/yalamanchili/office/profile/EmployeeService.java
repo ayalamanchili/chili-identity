@@ -48,6 +48,17 @@ public class EmployeeService {
         em.merge(user1);
 
     }
+    
+     public String generatepassword()
+    {
+    final int PASSWORD_LENGTH = 6;  
+    StringBuilder sb = new StringBuilder();  
+    for (int x = 0; x < PASSWORD_LENGTH; x++)  
+    {  
+      sb.append((char)((int)(Math.random()*26)+97));  
+    }  
+     return sb.toString();
+    }
 
     private Employee getEmployee(Long empId) {
         Employee employee = em.find(Employee.class, empId);
