@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -94,7 +95,7 @@ public class LoginPage extends Composite {
 
     @UiHandler("forgotPasswordIcon")
     void forgotPasswordLinkClicked(ClickEvent event) {
-       forgotPassword();
+        forgotPassword();
     }
 
     interface LoginPageUiBinder extends UiBinder<Widget, LoginPage> {
@@ -134,28 +135,29 @@ public class LoginPage extends Composite {
 
     protected void loginClicked() {
         storeUsername();
-        JSONObject user = new JSONObject();
-        HttpService.HttpServiceAsync.instance().login(usernameTb.getText(), passwordTb.getText(), new AsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().login(usernameTb.getText(), passwordTb.getText(), new ALAsyncCallback<String>() {
+            String failureMessage="Login failed, Please check your username and password";
             @Override
-            public void onFailure(Throwable arg0) {
-                new ResponseStatusWidget().show("Login failed, Please check your username and password");
-            }
-
-            @Override
-            public void onSuccess(String userString) {
+            public void onResponse(String userString) {
                 if (userString != null && userString.trim().length() > 0) {
                     JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
                     OfficeWelcome.instance().onMainModuleLoad(user);
                 } else {
 
-                    new ResponseStatusWidget().show("Login failed, Please check your username and password");
+                    new ResponseStatusWidget().show(getFailureMessage());
 
                 }
             }
+
+            @Override
+            public String getFailureMessage() {
+                return failureMessage;
+            }
         });
+
     }
-    
-    protected void forgotPassword(){
+
+    protected void forgotPassword() {
         Window.alert("dddd");
     }
 
