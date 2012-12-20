@@ -4,8 +4,14 @@
  */
 package info.yalamanchili.office.jrs.time;
 
+import info.yalamanchili.office.Time.TimeService;
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.TimeSheetDao;
+import info.yalamanchili.office.Time.TimeService;
+import info.yalamanchili.office.dto.time.TimeSummary;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -30,10 +36,26 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @Autowired
     public TimeSheetDao timeSheetDao;
+    
+     @Autowired
+    public TimeService timeService;
 
     @Override
     public CRUDDao getDao() {
         return timeSheetDao;
+    }
+    
+     @GET
+    @Path("/{empId}")
+    public TimeSummary GetempTimeSummary(@PathParam("empId") Long empId) {
+         Employee emp = EmployeeDao.instance().findById(empId);
+        return timeService.GetTimeSummary(emp);
+    }
+     
+     @GET
+    public TimeSummary GetcurrentuserTimeSummary() {
+        Employee emp = SecurityService.instance().getCurrentUser();
+        return timeService.GetTimeSummary(emp);
     }
 
     @GET
