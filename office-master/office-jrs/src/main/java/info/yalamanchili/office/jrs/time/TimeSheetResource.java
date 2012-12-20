@@ -36,28 +36,27 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @Autowired
     public TimeSheetDao timeSheetDao;
-    
-     @Autowired
+    @Autowired
     public TimeService timeService;
 
     @Override
     public CRUDDao getDao() {
         return timeSheetDao;
     }
-//    
-//     @GET
-//    @Path("/{empId}")
-//    public TimeSummary GetempTimeSummary(@PathParam("empId") Long empId) {
-//         Employee emp = EmployeeDao.instance().findById(empId);
-//        return timeService.GetTimeSummary(emp);
-//    }
-     
-//     @GET
-//      @Path("/currentuser")
-//    public TimeSummary GetcurrentuserTimeSummary() {
-//        Employee emp = SecurityService.instance().getCurrentUser();
-//        return timeService.GetTimeSummary(emp);
-//    }
+
+    @GET
+    @Path("/summary/{empId}")
+    public TimeSummary GetempTimeSummary(@PathParam("empId") Long empId) {
+        Employee emp = EmployeeDao.instance().findById(empId);
+        return timeService.GetTimeSummary(emp);
+    }
+
+    @GET
+    @Path("/summary/currentuser")
+    public TimeSummary GetcurrentuserTimeSummary() {
+        Employee emp = SecurityService.instance().getCurrentUser();
+        return timeService.GetTimeSummary(emp);
+    }
 
     @GET
     @Path("/{start}/{limit}")
