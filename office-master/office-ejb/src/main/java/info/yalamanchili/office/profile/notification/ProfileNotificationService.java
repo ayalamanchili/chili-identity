@@ -104,6 +104,18 @@ public class ProfileNotificationService {
         String messageText = "Emergency Contact For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
+    }
 
+    @Async
+    public void sendForgotPasswordNotification(Employee emp, String tempPassword) {
+        Email email = new Email();
+        Set<String> tos = new HashSet<String>();
+        if (emp.getPrimaryEmail() == null) {
+            throw new RuntimeException("no primary email for employee");
+        }
+        tos.add(emp.getPrimaryEmail().getEmail());
+        email.setTos(tos);
+        email.setBody("you temp password is:" + tempPassword);
+        messagingService.sendEmail(email);
     }
 }
