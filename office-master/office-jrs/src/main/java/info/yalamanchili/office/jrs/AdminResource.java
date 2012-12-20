@@ -91,6 +91,9 @@ public class AdminResource {
         //Create a User object with the temp password.
         //call the above resetPassword the password.
         //send email with new password.
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        employeeService.generatepassword();
+
     }
 
     @Path("/deactivateuser/{empId}")
