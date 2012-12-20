@@ -38,6 +38,7 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite {
         initTable("ClientLocation", OfficeWelcome.constants);
     }
 
+   
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getClientLocURL(start, OfficeWelcome.constants.tableSize()),
