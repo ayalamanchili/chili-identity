@@ -197,13 +197,13 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && field.getValue().trim().length() > 0) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
         if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
             info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && field.getValue().trim().length() > 0) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
@@ -215,13 +215,13 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         }
         if (fields.get(fieldKey) instanceof LongField) {
             LongField field = (LongField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && field.getValue().trim().length() > 0) {
                 entity.put(fieldKey, new JSONString(String.valueOf(field.getValue())));
             }
         }
         if (fields.get(fieldKey) instanceof EnumField) {
             EnumField field = (EnumField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && field.getValue().trim().length() > 0) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }

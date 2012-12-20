@@ -13,6 +13,7 @@ import info.chili.commons.DataType;
 import info.chili.commons.ReflectionUtils;
 import info.chili.commons.SearchUtils;
 import info.chili.spring.SpringContext;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -85,6 +86,9 @@ public abstract class CRUDDao<T> {
     }
 
     public List<T> search(String searchText, int start, int limit, boolean useSQLSearch) {
+        if (searchText.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
         if (useSQLSearch) {
             return sqlSearch(searchText, start, limit);
         } else {
