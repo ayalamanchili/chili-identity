@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -136,7 +137,8 @@ public class LoginPage extends Composite {
     protected void loginClicked() {
         storeUsername();
         HttpService.HttpServiceAsync.instance().login(usernameTb.getText(), passwordTb.getText(), new ALAsyncCallback<String>() {
-            String failureMessage="Login failed, Please check your username and password";
+            String failureMessage = "Login failed, Please check your username and password";
+
             @Override
             public void onResponse(String userString) {
                 if (userString != null && userString.trim().length() > 0) {
@@ -158,7 +160,7 @@ public class LoginPage extends Composite {
     }
 
     protected void forgotPassword() {
-        Window.alert("dddd");
+        new GenericPopup(new ForgotPasswordPopup()).show();
     }
 
     protected void setAutoLogout() {
