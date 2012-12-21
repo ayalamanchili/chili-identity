@@ -66,7 +66,7 @@ public class ReplyPostWidget extends ALComposite implements ClickHandler, KeyUpH
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("reply posted");
+                        new ResponseStatusWidget().show("Reply Posted");
                         TabPanel.instance().socialPanel.entityPanel.clear();
                         if (SocialMenu.isEmployeedFeedSelected()) {
                             TabPanel.instance().socialPanel.entityPanel.add(new EmployeeFeedHome());
