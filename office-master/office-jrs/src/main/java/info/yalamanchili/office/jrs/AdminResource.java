@@ -93,7 +93,9 @@ public class AdminResource {
         //send email with new password.
 
         Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId.toString());
-
+        if (emp == null) {
+            throw new RuntimeException("no employee id exists with this name");
+        }
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         String tempPassword = employeeService.generatepassword();
 
