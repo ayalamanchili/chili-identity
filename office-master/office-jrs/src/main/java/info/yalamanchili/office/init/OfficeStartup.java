@@ -132,7 +132,7 @@ public class OfficeStartup {
         userEmp.addAddress(userAddress);
         userEmp.addEmail(userPrimaryEmail);
         userEmp.addEmail(userSecondaryEmail);
-        userEmp.addClientInformation(userClientInfo());
+//        userEmp.addClientInformation(userClientInfo());
         userEmp.addEmergencyContact(userEmergencyContact());
         userEmp.setUser(userUser);
         userEmp = em.merge(userEmp);
@@ -423,31 +423,6 @@ public class OfficeStartup {
             employeetype.setDescription("SSTECH Consultant Employee");
             return em.merge(employeetype);
         }
-    }
-
-    public ClientInformation userClientInfo() {
-        Phone userClientInfoContactPhone = new Phone();
-        userClientInfoContactPhone.setPhoneNumber("1313131313");
-        userClientInfoContactPhone = em.merge(userClientInfoContactPhone);
-
-        Email userReportsToEmail = new Email();
-        userReportsToEmail.setEmail("userreportsto@email.com");
-        userReportsToEmail.setPrimaryEmail(true);
-
-        Contact userClientInfoContact = new Contact();
-        userClientInfoContact.setFirstName("user reports to");
-        userClientInfoContact.setLastName("user reports to last name");
-        userClientInfoContact.setSex(Sex.MALE);
-        userClientInfoContact.addPhone(userClientInfoContactPhone);
-        userClientInfoContact.addEmail(userReportsToEmail);
-        userClientInfoContact = em.merge(userClientInfoContact);
-
-        ClientInformation clientInfo = new ClientInformation();
-        clientInfo.setContact(userClientInfoContact);
-        clientInfo.setRtPrimary(true);
-        clientInfo.setReportsToRole("Manager");
-        clientInfo.setConsultantJobTitle("QA Qngineer");
-        return em.merge(clientInfo);
     }
 
     public EmergencyContact userEmergencyContact() {

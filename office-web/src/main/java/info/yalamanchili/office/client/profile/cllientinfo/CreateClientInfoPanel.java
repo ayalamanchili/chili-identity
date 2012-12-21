@@ -6,12 +6,15 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.yalamanchili.office.client.tae.client.SelectClientWidget;
 
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.tae.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.tae.clientlocation.SelectClientLocationWidget;
 
 public class CreateClientInfoPanel extends CreateComposite {
 
@@ -26,15 +29,11 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject clientInfo = new JSONObject();
         assignEntityValueFromField("consultantJobTitle", clientInfo);
-        assignEntityValueFromField("reportsToRole", clientInfo);
-        assignEntityValueFromField("rtPrimary", clientInfo);
-        assignEntityValueFromField("firstName", clientInfo);
-        assignEntityValueFromField("middleInitial", clientInfo);
-        assignEntityValueFromField("lastName", clientInfo);
-        assignEntityValueFromField("phoneNumber", clientInfo);
-        assignEntityValueFromField("email", clientInfo);
-        assignEntityValueFromField("extension", clientInfo);
-        assignEntityValueFromField("countryCode", clientInfo);
+        assignEntityValueFromField("client", clientInfo);
+        assignEntityValueFromField("clientContact", clientInfo);
+        assignEntityValueFromField("clientLocation", clientInfo);
+        assignEntityValueFromField("startDate", clientInfo);
+        assignEntityValueFromField("endDate", clientInfo);
         return clientInfo;
     }
 
@@ -63,7 +62,7 @@ public class CreateClientInfoPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully added Reports To");
+        new ResponseStatusWidget().show("Successfully added Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
@@ -81,19 +80,12 @@ public class CreateClientInfoPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
-        addField("reportsToRole", false, true, DataType.STRING_FIELD);
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs);
-        addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD);
-        addField("email", false, true, DataType.STRING_FIELD);
-        addField("extension", false, true, DataType.LONG_FIELD);
-        addField("countryCode", false,true, DataType.LONG_FIELD);
+        addDropDown("client", new SelectClientWidget(false, true));
+        addDropDown("clientContact", new SelectClientContactWidget(false, true));
+        addDropDown("clientLocation", new SelectClientLocationWidget(false, true));
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
     }
 
     @Override

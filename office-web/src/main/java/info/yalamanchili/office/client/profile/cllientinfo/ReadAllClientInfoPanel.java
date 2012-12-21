@@ -44,15 +44,12 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Primary"));
-        table.setText(0, 2, getKeyValue("Reports To Role"));
-        table.setText(0, 3, getKeyValue("First Name"));
-        table.setText(0, 4, getKeyValue("Last Name"));
-        table.setText(0, 5, getKeyValue("Phone Number"));
-        table.setText(0, 6, getKeyValue("Email"));
-        table.setText(0, 7, getKeyValue("Consultant Job Title"));
-//        table.setText(0, 8, getKeyValue("Extension"));
-//        table.setText(0, 9, getKeyValue("CountryCode"));
-
+        table.setText(0, 2, getKeyValue("Job Title"));
+        table.setText(0, 3, getKeyValue("Client Name"));
+        table.setText(0, 4, getKeyValue("Client Contact First Name"));
+        table.setText(0, 5, getKeyValue("Client Location Street"));
+        table.setText(0, 6, getKeyValue("Start Date"));
+        table.setText(0, 7, getKeyValue("End Date"));
     }
 
     @Override
@@ -61,15 +58,22 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
-            table.setText(i, 1, JSONUtils.toString(entity, "rtPrimary"));
-            table.setText(i, 2, JSONUtils.toString(entity, "reportsToRole"));
-            table.setText(i, 3, JSONUtils.toString(entity, "firstName"));
-            table.setText(i, 4, JSONUtils.toString(entity, "lastName"));
-            table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "email"));
-            table.setText(i, 7, JSONUtils.toString(entity, "consultantJobTitle"));
-//            table.setText(i, 8, JSONUtils.toString(entity, "extension"));
-//            table.setText(i, 9, JSONUtils.toString(entity, "countryCode"));
+            table.setText(i, 1, JSONUtils.toString(entity, "ciPrimary"));
+            table.setText(i, 2, JSONUtils.toString(entity, "consultantJobTitle"));
+            if (entity.get("client") != null) {
+                JSONObject client = entity.get("client").isObject();
+                table.setText(i, 3, JSONUtils.toString(client, "name"));
+            }
+            if (entity.get("clientContact") != null) {
+                JSONObject clientContact = entity.get("clientContact").isObject();
+                table.setText(i, 4, JSONUtils.toString(clientContact, "firstName"));
+            }
+            if (entity.get("clientLocation") != null) {
+                JSONObject clientLocation = entity.get("clientLocation").isObject();
+                table.setText(i, 5, JSONUtils.toString(clientLocation, "street1"));
+            }
+            table.setText(i, 6, JSONUtils.toString(entity, "startDate"));
+            table.setText(i, 7, JSONUtils.toString(entity, "endDate"));
         }
     }
 

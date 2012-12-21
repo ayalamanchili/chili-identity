@@ -2,8 +2,8 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.profile.ClientInformationService;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class ClientInformationResource extends CRUDResource<ClientInformationDto> {
+public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @Autowired
     protected ClientInformationDao clientInformationDao;
@@ -35,15 +35,15 @@ public class ClientInformationResource extends CRUDResource<ClientInformationDto
     }
 
     @PUT
-    public ClientInformationDto save(ClientInformationDto entity) {
+    public ClientInformation save(ClientInformation entity) {
         return clientInformationService.update(entity);
     }
 
     @GET
     @Override
     @Path("/{id}")
-    public ClientInformationDto read(@PathParam("id") Long id) {
-        return clientInformationService.read(id);
+    public ClientInformation read(@PathParam("id") Long id) {
+        return (ClientInformation) getDao().findById(id);
     }
 
     @XmlRootElement
@@ -51,7 +51,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformationDto
     public static class ClientInformationTable {
 
         protected Long size;
-        protected List<ClientInformationDto> entities;
+        protected List<ClientInformation> entities;
 
         public Long getSize() {
             return size;
@@ -62,11 +62,11 @@ public class ClientInformationResource extends CRUDResource<ClientInformationDto
         }
 
         @XmlElement
-        public List<ClientInformationDto> getEntities() {
+        public List<ClientInformation> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<ClientInformationDto> entities) {
+        public void setEntities(List<ClientInformation> entities) {
             this.entities = entities;
         }
     }

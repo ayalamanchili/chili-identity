@@ -4,15 +4,12 @@
  */
 package info.yalamanchili.office.client.tae.client;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.SelectComposite;
+import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
+import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -20,13 +17,20 @@ import java.util.Map;
  */
 public class SelectClientWidget extends SelectComposite {
 
+    private static SelectClientWidget instance;
+
+    public static SelectClientWidget instance() {
+        return instance;
+    }
+
     public SelectClientWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "Client", readOnly, isRequired);
+        instance = this;
     }
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "name"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 500, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {

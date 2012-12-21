@@ -32,7 +32,7 @@ public class ContactDao extends CRUDDao<Contact> {
         return em;
     }
 
-    public static AddressDao instance() {
+    public static ContactDao instance() {
         return SpringContext.getBean(ContactDao.class);
     }
 }

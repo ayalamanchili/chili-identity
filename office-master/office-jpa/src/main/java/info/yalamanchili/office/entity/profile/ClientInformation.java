@@ -4,13 +4,15 @@
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.client.Client;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
-import javax.validation.Valid;
-import javax.xml.bind.annotation.XmlElement;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -31,30 +33,56 @@ public class ClientInformation extends AbstractEntity {
 
     @Transient
     private static final long serialVersionUID = 11L;
-    @Field
-    protected String reportsToRole;
+    /**
+     * Consultant Job Title at client
+     */
     @Field
     protected String consultantJobTitle;
+    /**
+     * flag to indicate if this is the primary client
+     */
     @Field(index = Index.UN_TOKENIZED)
-    protected Boolean rtPrimary;
+    protected Boolean ciPrimary;
+    /**
+     * Client
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Client_ClientInformations")
+    protected Client client;
+    /**
+     * Client Contact
+     */
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_ClientContact_ClientInformations")
+    protected Contact clientContact;
+    /**
+     * Client Location
+     */
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_ClientLocation_ClientInformations")
+    protected Address clientLocation;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{startDate.not.empty.msg}")
+    protected Date startDate;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{startDate.not.empty.msg}")
+    protected Date endDate;
+    /**
+     * /**
+     * Employee
+     */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_ClientInformations")
     protected Employee employee;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @ForeignKey(name = "FK_Contact_ClientInformations")
-    @Valid
-    protected Contact contact;
 
     public ClientInformation() {
         super();
-    }
-
-    public String getReportsToRole() {
-        return reportsToRole;
-    }
-
-    public void setReportsToRole(String reportsToRole) {
-        this.reportsToRole = reportsToRole;
     }
 
     public String getConsultantJobTitle() {
@@ -65,34 +93,66 @@ public class ClientInformation extends AbstractEntity {
         this.consultantJobTitle = consultantJobTitle;
     }
 
-    public Boolean getRtPrimary() {
-        return rtPrimary;
+    public Boolean getCiPrimary() {
+        return ciPrimary;
     }
 
-    public void setRtPrimary(Boolean rtPrimary) {
-        this.rtPrimary = rtPrimary;
+    public void setCiPrimary(Boolean ciPrimary) {
+        this.ciPrimary = ciPrimary;
     }
 
-    @XmlElement
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    
+
+    public Contact getClientContact() {
+        return clientContact;
+    }
+
+    public void setClientContact(Contact clientContact) {
+        this.clientContact = clientContact;
+    }
+
+    public Address getClientLocation() {
+        return clientLocation;
+    }
+
+    public void setClientLocation(Address clientLocation) {
+        this.clientLocation = clientLocation;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public Employee getEmployee() {
-        return this.employee;
+        return employee;
     }
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
-    @XmlElement
-    public Contact getContact() {
-        return this.contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
     @Override
     public String toString() {
-        return "ClientInformation{" + "reportsToRole=" + reportsToRole + ", consultantJobTitle=" + consultantJobTitle + ", rtPrimary=" + rtPrimary + '}';
+        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", primary=" + ciPrimary + ", cleint=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", startDate=" + startDate + ", endDate=" + endDate + '}';
     }
 }

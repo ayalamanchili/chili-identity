@@ -25,13 +25,7 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
 	}
 
 	public ClientInformation save(ClientInformation entity) {
-		if (entity.getId() != null) {
-			ClientInformation updateClientInfo = null;
-			updateClientInfo = super.save(entity);
-			Contact contact = em.find(Contact.class, entity.getContact().getId());
-			updateClientInfo.setContact((Contact) BeanMapper.merge(entity.getContact(), contact));
-			return em.merge(updateClientInfo);
-		}
+		//TODO fix me
 		return super.save(entity);
 	}
 

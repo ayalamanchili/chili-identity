@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dao.client;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.Client;
 import javax.persistence.EntityManager;
@@ -18,16 +19,20 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ClientDao extends CRUDDao<Client> {
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-
+    
     public ClientDao() {
         super(Client.class);
+    }
+
+    public static ClientDao instance() {
+        return SpringContext.getBean(ClientDao.class);
     }
 }

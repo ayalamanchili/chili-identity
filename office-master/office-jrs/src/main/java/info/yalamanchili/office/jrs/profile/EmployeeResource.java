@@ -191,25 +191,38 @@ public class EmployeeResource extends CRUDResource<Employee> {
         emp.addPhone(phone);
     }
 
-    /* ResportsTo */
+    /**
+     * Get Client Information
+     *
+     * @param id
+     * @param start
+     * @param limit
+     * @return
+     */
     @GET
     @Path("/clientinformation/{id}/{start}/{limit}")
     public ClientInformationTable getClientInformations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ClientInformationTable tableObj = new ClientInformationTable();
         Employee emp = (Employee) getDao().findById(id);
-        List<info.yalamanchili.office.dto.profile.ClientInformationDto> clientInfoDtos = new ArrayList<info.yalamanchili.office.dto.profile.ClientInformationDto>();
+        List<ClientInformation> clientInfoDtos = new ArrayList<ClientInformation>();
         for (ClientInformation entity : emp.getClientInformations()) {
-            clientInfoDtos.add(info.yalamanchili.office.dto.profile.ClientInformationDto.map(mapper, entity));
+            clientInfoDtos.add(entity);
         }
         tableObj.setEntities(clientInfoDtos);
         tableObj.setSize((long) emp.getClientInformations().size());
         return tableObj;
     }
 
+    /**
+     * Add Client Information
+     *
+     * @param empId
+     * @param clientInformation
+     */
     @PUT
     @Path("/clientinformation/{empId}")
-    public void addClientInformation(@PathParam("empId") Long empId, info.yalamanchili.office.dto.profile.ClientInformationDto clientInformation) {
+    public void addClientInformation(@PathParam("empId") Long empId, ClientInformation clientInformation) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
         clientInformationService.addClientInformation(empId, clientInformation);
     }

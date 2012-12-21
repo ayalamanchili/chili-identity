@@ -4,7 +4,6 @@
  */
 package info.yalamanchili.office.client.tae.sow;
 
-import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -13,20 +12,14 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.emailtype.CreateEmailTypePanel;
-import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.project.SelectProjectWidget;
-import info.yalamanchili.office.client.tae.sow.SOWSidePanel;
-import info.yalamanchili.office.client.tae.sow.ReadAllSOWPanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Yogi
  */
-
-
 public class CreateSOWPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.sow.CreateSOWPanel.class.getName());
@@ -44,7 +37,7 @@ public class CreateSOWPanel extends CreateComposite {
         assignEntityValueFromField("startDate", sow);
         assignEntityValueFromField("endDate", sow);
         assignEntityValueFromField("billRate", sow);
-         assignEntityValueFromField("project", sow);
+        assignEntityValueFromField("project", sow);
         logger.info(sow.toString());
         return sow;
     }
@@ -91,9 +84,9 @@ public class CreateSOWPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
-        addField("startDate",false,true,DataType.DATE_FIELD);
-        addField("endDate",false,true,DataType.DATE_FIELD);
-        addField("billRate",false,false,DataType.CURRENCY_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("billRate", false, false, DataType.CURRENCY_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
     }
 
@@ -103,11 +96,11 @@ public class CreateSOWPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-         String projectId= null;
-       
+        String projectId = null;
+
         SelectProjectWidget projectT = (SelectProjectWidget) fields.get("project");
-         projectId= JSONUtils.toString(projectT.getSelectedObject(), "id"); 
-       
-        return OfficeWelcome.constants.root_url() + "project/sow/" + projectId ;
+        projectId = JSONUtils.toString(projectT.getSelectedObject(), "id");
+
+        return OfficeWelcome.constants.root_url() + "project/sow/" + projectId;
     }
-}    
+}

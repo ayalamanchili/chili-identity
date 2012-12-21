@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.tae.clientcontact;
+package info.yalamanchili.office.client.tae.clientlocation;
 
-import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.GenericListener;
@@ -14,12 +13,12 @@ import info.yalamanchili.office.client.tae.client.SelectClientWidget;
 
 /**
  *
- * @author raghu
+ * @author ayalamanchili
  */
-public class SelectClientContactWidget extends SelectComposite implements GenericListener {
+public class SelectClientLocationWidget extends SelectComposite implements GenericListener {
 
-    public SelectClientContactWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "ClientContact", readOnly, isRequired);
+    public SelectClientLocationWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "ClientLocation", readOnly, isRequired);
         SelectClientWidget.instance().addListner(this);
     }
 
@@ -45,6 +44,6 @@ public class SelectClientContactWidget extends SelectComposite implements Generi
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "client/contacts/dropdown/" + SelectClientWidget.instance().getSelectedObjectId(), start, limit, columns);
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "client/locations/dropdown/" + SelectClientWidget.instance().getSelectedObjectId(), start, limit, columns);
     }
 }

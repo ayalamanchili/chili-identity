@@ -11,13 +11,16 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.utils.JSONUtils;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 public abstract class SelectComposite extends BaseField implements ClickHandler, ChangeHandler {
 
     private static Logger logger = Logger.getLogger(SelectComposite.class.getName());
+    protected List<GenericListener> listeners = new ArrayList<GenericListener>();
     protected ListBox listBox = new ListBox();
     protected Map<Integer, String> values;
     protected Map<Integer, JSONObject> entityMap = new HashMap<Integer, JSONObject>();
@@ -33,6 +36,7 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     @Override
     protected void configureAddMainWidget() {
         listBox.insertItem("SELECT", 0);
+        listBox.addChangeHandler(this);
         listBox.ensureDebugId(className + "_" + attributeName + "_LB");
         fieldPanel.insert(listBox, 0);
     }
@@ -74,6 +78,10 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
         this.selectedObject = entity;
     }
 
+    public void addListner(GenericListener listner) {
+        this.listeners.add(listner);
+    }
+
     public void populateSelectedValue() {
         for (int i = 0; i < listBox.getItemCount(); i++) {
             //TODO make primary key static
@@ -96,6 +104,9 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
 
     @Override
     public void onChange(ChangeEvent arg0) {
+        for (GenericListener listner : listeners) {
+            listner.onChange();
+        }
     }
 
     @Override
@@ -114,6 +125,10 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
         } else {
             return null;
         }
+    }
+
+    public String getSelectedObjectId() {
+        return JSONUtils.toString(getSelectedObject(), "id");
     }
 
     protected abstract String getDropDownURL(Integer start, Integer limit, String... columns);

@@ -85,11 +85,12 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize((long) elient.getProjects().size());
         return tableObj;
     }
-    
-   
 
-    /*
-     * Client Contacts
+    /**
+     * Add Client Contact
+     *
+     * @param clientId
+     * @param dto
      */
     @PUT
     @Path("/clientcontact/{clientId}")
@@ -99,6 +100,14 @@ public class ClientResource extends CRUDResource<Client> {
         clnt.addContact(ContactMapper.map(dto, null));
     }
 
+    /**
+     * Get Client Contacts
+     *
+     * @param id
+     * @param start
+     * @param limit
+     * @return
+     */
     @GET
     @Path("/clientcontact/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
@@ -114,22 +123,37 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize((long) client.getContacts().size());
         return tableObj;
     }
-    
-      @GET
-    @Path("/clientcontact/dropdown/{start}/{limit}")
-    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+
+    /**
+     * Get Client Contacts DropDown
+     *
+     * @param id
+     * @param start
+     * @param limit
+     * @param columns
+     * @return
+     */
+    @GET
+    @Path("/contacts/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getClientContactDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
+        Client client = ClientDao.instance().findById(id);
         List<Entry> result = new ArrayList<Entry>();
-        Map<String, String> values = getDao().getEntityStringMapByParams(start, limit, columns.toArray(new String[columns.size()]));
-        for (String key : values.keySet()) {
-            result.add(new Entry(key, values.get(key)));
+        for (Contact contact : client.getContacts()) {
+            Entry entry = new Entry();
+            entry.setId(contact.getId().toString());
+            entry.setValue(contact.getFirstName() + " " + contact.getLastName());
+            result.add(entry);
         }
         return result;
     }
-    /*
-     * Client Locations
-     */
 
+    /**
+     * Add Client Location
+     *
+     * @param clientId
+     * @param address
+     */
     @PUT
     @Path("/clientlocation/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
@@ -138,6 +162,14 @@ public class ClientResource extends CRUDResource<Client> {
         clnt.addLocations(address);
     }
 
+    /**
+     * Get Client Locations
+     *
+     * @param id
+     * @param start
+     * @param limit
+     * @return
+     */
     @GET
     @Path("/clientlocation/{id}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
@@ -148,6 +180,30 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setEntities(elient.getLocations());
         tableObj.setSize((long) elient.getLocations().size());
         return tableObj;
+    }
+
+    /**
+     * Get Client Contacts DropDown
+     *
+     * @param id
+     * @param start
+     * @param limit
+     * @param columns
+     * @return
+     */
+    @GET
+    @Path("/locations/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getClientLocationsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        Client client = ClientDao.instance().findById(id);
+        List<Entry> result = new ArrayList<Entry>();
+        for (Address address : client.getLocations()) {
+            Entry entry = new Entry();
+            entry.setId(address.getId().toString());
+            entry.setValue(address.getStreet1() + " " + address.getCity());
+            result.add(entry);
+        }
+        return result;
     }
 
     @XmlRootElement
