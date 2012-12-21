@@ -28,6 +28,8 @@ class ForgotPasswordPopup extends Composite implements ClickHandler {
     
     public ForgotPasswordPopup() {
         initWidget(panel);
+        panel.add(empIdTb);
+        panel.add(forgotPasswordB);
     }
     
     @Override
@@ -40,7 +42,7 @@ class ForgotPasswordPopup extends Composite implements ClickHandler {
                         
                         @Override
                         public void onFailure(Throwable arg0) {
-                            Window.alert("Unsupported file extension");
+                            Window.alert("Provide correct employee Id");
                             
                         }
                         
@@ -56,11 +58,11 @@ class ForgotPasswordPopup extends Composite implements ClickHandler {
         }
     }
     
-    protected String getUrl(String empId) {
-        return null;
-    }
+	protected void addListeners() {
+		forgotPasswordB.addClickHandler(this);
+	}
     
     private String getURI() {
-        return OfficeWelcome.constants.root_url() + "admin/resetpassword";
+        return OfficeWelcome.constants.root_url() + "admin/forgotpassword/" + empIdTb.getText();
     }
 }
