@@ -41,6 +41,9 @@ public class Vendor extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
     
+    @ManyToMany(cascade = CascadeType.MERGE)
+    protected List<Vendor> vendors;
+    
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
     
