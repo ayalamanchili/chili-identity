@@ -130,6 +130,12 @@ public class LoginPage extends Composite {
             StorageMap officeMap = new StorageMap(officeLclStorage);
             if (officeMap.containsKey("office-username") != true) {
                 officeMap.put("office-username", usernameTb.getText());
+            } else {
+                if (officeMap.get("office-username").equals(usernameTb.getText())) {
+                    //the entered username and stored username are not equal
+                    officeMap.remove("office-username");
+                    officeMap.put("office-username", usernameTb.getText());
+                }
             }
         }
     }
