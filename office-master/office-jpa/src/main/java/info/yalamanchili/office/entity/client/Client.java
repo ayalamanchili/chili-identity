@@ -44,6 +44,17 @@ public class Client extends AbstractEntity {
     protected List<Address> locations;
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
+    
+    @ManyToMany(cascade = CascadeType.MERGE)
+    protected List<Vendor> vendors;
+
+    public void setVendors(List<Vendor> vendors) {
+        this.vendors = vendors;
+    }
+
+    public List<Vendor> getVendors() {
+        return vendors;
+    }
 
     public String getName() {
         return name;
