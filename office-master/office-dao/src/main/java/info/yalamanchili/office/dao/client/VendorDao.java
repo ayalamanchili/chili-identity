@@ -8,11 +8,15 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.Vendor;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Prashanthi
  */
+@Component
+@Scope("request")
 public class VendorDao extends CRUDDao<Vendor> {
 
     @PersistenceContext
