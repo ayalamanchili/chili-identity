@@ -76,6 +76,8 @@ public class ReadAllVendorsPanel extends ReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TreeVendorsPanel(entityId));
     }
 
     @Override
