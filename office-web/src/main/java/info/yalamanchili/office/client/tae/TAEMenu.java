@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
+import info.yalamanchili.office.client.tae.vendor.ReadAllVendorsPanel;
 
 /**
  *
@@ -36,17 +37,18 @@ public class TAEMenu extends Composite {
     protected void configureTAEMenu() {
         MenuBar menu = new MenuBar(true);
 //        tAEMenuBar.addItem("Menu", menu);
-       
-        
-        
+
+
+
         if (Auth.isAdmin() || Auth.isHR()) {
             tAEMenuBar.addItem("Clients", clientsMaintainenceCmd);
             tAEMenuBar.addItem("Projects", projectsMaintainenceCmd);
             tAEMenuBar.addItem("Statement Of Work's", sowMaintainenceCmd);
             tAEMenuBar.addItem("Pay Periods", payperiodsMaintainenceCmd);
             tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
+            tAEMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
         }
-         tAEMenuBar.addStyleName("entityMenuBar");
+        tAEMenuBar.addStyleName("entityMenuBar");
     }
     Command clientsMaintainenceCmd = new Command() {
         public void execute() {
@@ -86,6 +88,13 @@ public class TAEMenu extends Composite {
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel());
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetSidePanel());
+        }
+    };
+    Command vendorsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllVendorsPanel());
         }
     };
 }
