@@ -11,7 +11,9 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -36,6 +38,15 @@ public class VendorResource extends CRUDResource<Vendor> {
     @Override
     public CRUDDao getDao() {
         return vendorDao;
+    }
+    
+    @GET
+    @Path("/{start}/{limit}")
+    public VendorTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        VendorTable tableObj = new VendorTable();
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
     }
 
     @XmlRootElement
