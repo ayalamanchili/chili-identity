@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Prashanthi
  */
-@Path("project")
+@Path("secured/project")
 @Component
 @Scope("request")
 public class ProjectResource extends CRUDResource<Project> {

@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author anuyalamanchili
  */
-@Path("notification")
+@Path("secured/notification")
 @Component
 @Transactional
 @Scope("request")

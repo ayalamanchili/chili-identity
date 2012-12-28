@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-@Path("address")
+@Path("secured/address")
 @Component
 @Scope("request")
 public class AddressResource extends CRUDResource<Address> {

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author bala
  */
 
-@Path("employeetype")
+@Path("secured/employeetype")
 @Component
 @Transactional
 @Scope("request")

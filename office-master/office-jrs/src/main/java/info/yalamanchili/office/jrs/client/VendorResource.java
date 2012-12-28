@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Prashanthi
  */
-@Path("vendor")
+@Path("secured/vendor")
 @Component
 @Scope("request")
 public class VendorResource extends CRUDResource<Vendor> {

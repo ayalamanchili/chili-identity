@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  *
  * @author bala
  */
-@Path("todo")
+@Path("secured/todo")
 @Component
 @Scope("request")
 public class TodoResource extends CRUDResource<Todo> {

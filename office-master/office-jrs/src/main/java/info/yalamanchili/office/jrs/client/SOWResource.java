@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author bala
  */
-@Path("statementofwork")
+@Path("secured/statementofwork")
 @Component
 @Transactional
 @Scope("request")

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author anuyalamanchili
  */
-@Path("acl")
+@Path("secured/acl")
 @Component
 @Transactional
 @Scope("request")

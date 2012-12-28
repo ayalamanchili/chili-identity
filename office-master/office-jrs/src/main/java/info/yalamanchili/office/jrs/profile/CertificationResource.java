@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Prashanthi
  */
-@Path("certification")
+@Path("secured/certification")
 @Component
 @Transactional
 @Scope("request")

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/**/httpService")
 public class HttpServiceImpl extends BaseRemoteService implements HttpService {
 
-    
     private static final long serialVersionUID = 1L;
     private final static Logger logger = Logger.getLogger(HttpServiceImpl.class.getName());
     private String username;
@@ -32,7 +31,7 @@ public class HttpServiceImpl extends BaseRemoteService implements HttpService {
         JSONObject user = new JSONObject();
         user.put("username", username);
         user.put("passwordHash", password);
-        return doPut("office/resources/admin/login", user.toString(), addHeaders(), true);
+        return doPut("office/resources/secured/admin/login", user.toString(), addHeaders(), true);
     }
 
     @Override
@@ -68,11 +67,11 @@ public class HttpServiceImpl extends BaseRemoteService implements HttpService {
     }
 
     protected Map<String, String> addHeaders() {
-        if (username == null || password == null) {
-            throw new RuntimeException("username and/or password null may not be in session");
-        }
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
+        if (username == null || password == null) {
+            return headers;
+        }
         headers.put("Authorization",
                 "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
         return headers;

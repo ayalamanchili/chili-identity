@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Path("phone")
+@Path("secured/phone")
 @Component
 @Transactional
 @Scope("request")

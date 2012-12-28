@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Path("file")
+@Path("secured/file")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
 @Component
 @Transactional

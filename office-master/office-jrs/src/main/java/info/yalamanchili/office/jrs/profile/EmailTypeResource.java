@@ -19,7 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Path("emailtype")
+@Path("secured/emailtype")
 @Component
 @Transactional
 @Scope("request")

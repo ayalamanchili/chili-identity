@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  *
  * @author yphanikumar
  */
-@Path("preferences")
+@Path("secured/preferences")
 @Component
 @Scope("request")
 public class PreferencesResource extends CRUDResource<Preferences> {

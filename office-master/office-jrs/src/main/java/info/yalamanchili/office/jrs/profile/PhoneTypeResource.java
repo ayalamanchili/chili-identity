@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-@Path("phonetype")
+@Path("secured/phonetype")
 @Component
 @Scope("request")
 public class PhoneTypeResource extends CRUDResource<PhoneType> {

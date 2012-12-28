@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * 
  * @author ayalamanchili
  */
-@Path("company")
+@Path("secured/company")
 @Component
 @Scope("request")
 public class CompanyResource extends CRUDResource<Company> {

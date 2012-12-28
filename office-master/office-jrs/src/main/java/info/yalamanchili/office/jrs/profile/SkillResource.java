@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author prani
  */
-@Path("skill")
+@Path("secured/skill")
 @Component
 @Transactional
 @Scope("request")

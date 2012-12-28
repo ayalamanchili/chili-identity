@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author ayalamanchili
  */
-@Path("employee")
+@Path("secured/employee")
 @Component
 @Transactional
 @Scope("request")

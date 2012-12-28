@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author yphanikumar
  */
-@Path("drive")
+@Path("secured/drive")
 @Component
 @Transactional
 @Scope("request")

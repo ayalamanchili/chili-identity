@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Prashanthi
  */
-@Path("timesheet")
+@Path("secured/timesheet")
 @Component
 @Scope("request")
 public class TimeSheetResource extends CRUDResource<TimeSheet> {

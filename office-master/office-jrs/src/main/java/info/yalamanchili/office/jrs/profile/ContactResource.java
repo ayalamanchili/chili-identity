@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  *
  * @author anuyalamanchili
  */
-@Path("contact")
+@Path("secured/contact")
 @Component
 @Scope("request")
 public class ContactResource extends CRUDResource<ContactDto> {

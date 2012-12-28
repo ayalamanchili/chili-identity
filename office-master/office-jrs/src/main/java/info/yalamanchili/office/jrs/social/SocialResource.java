@@ -27,7 +27,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  *
  * @author ayalamanchili
  */
-@Path("social")
+@Path("secured/social")
 @Component
 @Transactional
 @Produces("application/json")

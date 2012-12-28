@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author raghu
  */
-@Path("skillset")
+@Path("secured/skillset")
 @Component
 @Transactional
 @Produces("application/json")

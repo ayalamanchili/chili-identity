@@ -10,7 +10,7 @@
     
     <!-- Security url configuration -->
     <http auto-config="true" create-session="stateless" use-expressions="true">
-        <intercept-url pattern="/**" access="hasRole('ROLE_USER') and hasIpAddress('127.0.0.1')" />
+        <intercept-url pattern="/**/secured/**" access="hasRole('ROLE_USER') and hasIpAddress('127.0.0.1')" />
     </http>
      
     <authentication-manager>

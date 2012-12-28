@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.profile.notification;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -117,5 +118,9 @@ public class ProfileNotificationService {
         email.setTos(tos);
         email.setBody("you temp password is:" + tempPassword);
         messagingService.sendEmail(email);
+    }
+    
+    public static ProfileNotificationService instance(){
+        return SpringContext.getBean(ProfileNotificationService.class);
     }
 }

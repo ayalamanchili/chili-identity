@@ -34,7 +34,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Path("admin")
+@Path("secured/admin")
 @Produces("application/json")
 @Consumes("application/json")
 @Component

@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
  *
  * @author raghu
  */
-@Path("client")
+@Path("secured/client")
 @Component
 @Scope("request")
 public class ClientResource extends CRUDResource<Client> {

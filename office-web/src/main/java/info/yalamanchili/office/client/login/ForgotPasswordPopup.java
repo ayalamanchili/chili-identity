@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -21,48 +22,32 @@ import info.yalamanchili.office.client.rpc.HttpService;
  * @author Prashanthi
  */
 class ForgotPasswordPopup extends Composite implements ClickHandler {
-    
+
     FlowPanel panel = new FlowPanel();
     TextBox empIdTb = new TextBox();
     Button forgotPasswordB = new Button("Send Password");
-    
+
     public ForgotPasswordPopup() {
         initWidget(panel);
         panel.add(empIdTb);
         panel.add(forgotPasswordB);
+        forgotPasswordB.addClickHandler(this);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(forgotPasswordB)) {
-            //call service here with empid in url (empIdTb.getText())
-            HttpService.HttpServiceAsync.instance().doPut(getURI(), empIdTb.getText(), OfficeWelcome.instance().getHeaders(), true,
-                    new AsyncCallback<String>() {
-                        String SuccessMessage = "reset password of the employee";
-                        
+            HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
                         @Override
-                        public void onFailure(Throwable arg0) {
-                            Window.alert("Provide correct employee Id");
-                            
-                        }
-                        
-                        @Override
-                        public void onSuccess(String arg0) {
-                            new ResponseStatusWidget().show(getSuccessMessage());
-                        }
-                        
-                        private String getSuccessMessage() {
-                            return SuccessMessage;
+                        public void onResponse(String arg0) {
+                            new ResponseStatusWidget().show("please check your email");
                         }
                     });
         }
     }
-    
-	protected void addListeners() {
-		forgotPasswordB.addClickHandler(this);
-	}
-    
+
     private String getURI() {
-        return OfficeWelcome.constants.root_url() + "admin/forgotpassword/" + empIdTb.getText();
+        return OfficeWelcome.constants.public_url() + "admin/forgotpassword/" + empIdTb.getText();
     }
 }

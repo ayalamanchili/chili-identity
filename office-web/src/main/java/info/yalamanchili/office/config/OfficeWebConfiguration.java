@@ -3,7 +3,7 @@ package info.yalamanchili.office.config;
 public class OfficeWebConfiguration {
 
     protected String officeServicesRootURL = "http://localhost:9080/";
-    protected String officeServicesContextRootBase = "office/resources/";
+    protected String officeServicesContextRootBase = "office/resources/secured";
 
     public String getOfficeServicesRootURL() {
         return officeServicesRootURL;

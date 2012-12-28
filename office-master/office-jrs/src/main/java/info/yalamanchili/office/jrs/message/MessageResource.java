@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author raghu
  */
-@Path("message")
+@Path("secured/message")
 @Component
 @Transactional
 @Scope("request")

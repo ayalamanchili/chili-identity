@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  * @author bala
  */
 
-@Path("timesheetperiod")
+@Path("secured/timesheetperiod")
 @Component
 @Scope("request")
 public class TimeSheetPeriodResource extends CRUDResource<TimeSheetPeriod> {
