@@ -51,7 +51,7 @@ public class Client extends AbstractEntity {
     public void setVendors(List<Vendor> vendors) {
         this.vendors = vendors;
     }
-
+    @XmlTransient
     public List<Vendor> getVendors() {
         return vendors;
     }
