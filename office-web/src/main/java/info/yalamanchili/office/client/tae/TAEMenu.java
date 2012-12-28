@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
 import info.yalamanchili.office.client.tae.vendor.ReadAllVendorsPanel;
+import info.yalamanchili.office.client.tae.vendor.VendorsSidePanel;
 
 /**
  *
@@ -95,6 +96,7 @@ public class TAEMenu extends Composite {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllVendorsPanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new VendorsSidePanel());
         }
     };
 }
