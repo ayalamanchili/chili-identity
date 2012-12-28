@@ -104,5 +104,7 @@ public class ReadAllVendorsPanel extends ReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateVendorsPanel(getEntity(entityId)));
     }
 }
