@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -48,6 +49,7 @@ public class Vendor extends AbstractEntity {
         this.clients = clients;
     }
 
+    @XmlTransient
     public List<Client> getClients() {
         return clients;
     }
@@ -78,11 +80,11 @@ public class Vendor extends AbstractEntity {
     public String getDescription() {
         return description;
     }
-
+    @XmlTransient
     public List<Address> getLocations() {
         return locations;
     }
-
+    @XmlTransient
     public List<Contact> getContacts() {
         return contacts;
     }
