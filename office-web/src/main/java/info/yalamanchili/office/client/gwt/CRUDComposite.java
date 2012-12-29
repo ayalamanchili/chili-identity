@@ -176,17 +176,16 @@ public abstract class CRUDComposite extends Composite {
         entityDisplayWidget.add(widget);
     }
 
-    // TODO convert to use getValue()
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
         if (fields.get(fieldKey) instanceof PasswordField) {
             PasswordField field = (PasswordField) fields.get(fieldKey);
-            if (field.getPassword() != null) {
+            if (field.getPassword() != null && !field.getPassword().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getPassword()));
             }
         }
@@ -198,13 +197,13 @@ public abstract class CRUDComposite extends Composite {
         }
         if (fields.get(fieldKey) instanceof LongField) {
             LongField field = (LongField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(String.valueOf(field.getValue())));
             }
         }
         if (fields.get(fieldKey) instanceof EnumField) {
             EnumField field = (EnumField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
@@ -223,20 +222,20 @@ public abstract class CRUDComposite extends Composite {
         //Currency Field
         if (fields.get(fieldKey) instanceof CurrencyField) {
             CurrencyField field = (CurrencyField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
         //Float Field
         if (fields.get(fieldKey) instanceof FloatField) {
             FloatField field = (FloatField) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
         if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
             info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
-            if (field.getValue() != null) {
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }

@@ -4,15 +4,11 @@
  */
 package info.yalamanchili.office.dto.profile;
 
-import info.chili.spring.SpringContext;
 import java.io.Serializable;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Email;
-import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.util.Date;
 import javax.persistence.EnumType;
@@ -20,7 +16,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import org.dozer.Mapper;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**

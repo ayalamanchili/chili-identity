@@ -30,7 +30,7 @@ public class ContactMapper {
             mapper.map(dto, entity);
         }
         //Email
-        if (dto.getEmail() == null) {
+        if (dto.getEmail() == null || dto.getEmail().trim().isEmpty()) {
             if (entity.getEmails().size() > 0) {
                 entity.getEmails().remove(0);
             }
@@ -47,7 +47,7 @@ public class ContactMapper {
 
         }
         //Phone
-        if (dto.getPhoneNumber() == null) {
+        if (dto.getPhoneNumber() == null || dto.getPhoneNumber().trim().isEmpty()) {
             if (entity.getPhones().size() > 0) {
                 entity.getPhones().remove(0);
             }
