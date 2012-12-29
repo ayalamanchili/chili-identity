@@ -28,6 +28,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -251,11 +252,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @GET
-    @Path("/searchEmployee/{searchText}/{start}/{limit}")
-    public List<info.yalamanchili.office.dto.profile.Employee> searchEmployee(@PathParam("searchText") String searchText, @PathParam("start") int start,
-            @PathParam("limit") int limit) {
+    @Path("/searchEmployee/{start}/{limit}")
+    public List<info.yalamanchili.office.dto.profile.Employee> searchEmployee(@PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("text") String text) {
         List<info.yalamanchili.office.dto.profile.Employee> employees = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
-        for (Object empObj : getDao().search(searchText, start, limit, true)) {
+        for (Object empObj : getDao().search(text, start, limit, true)) {
             employees.add(info.yalamanchili.office.dto.profile.Employee.map(mapper, (Employee) empObj));
         }
         return employees;

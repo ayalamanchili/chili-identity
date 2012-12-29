@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -23,28 +24,28 @@ import java.util.logging.Logger;
  * @author yalamanchili
  */
 public class SearchEmployeePanel extends SearchComposite {
-    
+
     private static Logger logger = Logger.getLogger(SearchEmployeePanel.class.getName());
-    
+
     public SearchEmployeePanel() {
         init("Employees Search", "Employee", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("firstName", DataType.STRING_FIELD);
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
@@ -54,7 +55,7 @@ public class SearchEmployeePanel extends SearchComposite {
         logger.info(entity.toString());
         return entity;
     }
-    
+
     @Override
     protected void search(String searchText) {
         if (getSearchText() != null) {
@@ -68,7 +69,7 @@ public class SearchEmployeePanel extends SearchComposite {
             });
         }
     }
-    
+
     @Override
     protected void search(JSONObject entity) {
         logger.info("fffff" + entity.toString());
@@ -80,25 +81,25 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-    
+
     @Override
     protected void postSearchSuccess(JSONArray results) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
     }
-    
+
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + searchText + "/" + start.toString() + "/"
-                + limit.toString();
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
+                + limit.toString() + "/?text=" + searchText);
     }
-    
+
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
         return OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
                 + limit.toString();
     }
-    
+
     @Override
     protected void populateSearchSuggestBox() {
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -109,7 +110,7 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-    
+
     @Override
     protected void populateAdvancedSuggestBoxes() {
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -129,12 +130,12 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-    
+
     protected String getFirstNameDropDownUrl() {
         //TODO think anout the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=firstName";
     }
-    
+
     protected String getLastNameDropDownUrl() {
         //TODO think anout the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=lastName";
