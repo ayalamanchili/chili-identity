@@ -46,14 +46,14 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/summary/{empId}")
-    public TimeSummary GetempTimeSummary(@PathParam("empId") Long empId) {
+    public TimeSummary getEmployeeTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
         return timeService.GetTimeSummary(emp);
     }
 
     @GET
     @Path("/summary/currentuser")
-    public TimeSummary GetcurrentuserTimeSummary() {
+    public TimeSummary getCurrentEmployeeTimeSummary() {
         Employee emp = SecurityService.instance().getCurrentUser();
         return timeService.GetTimeSummary(emp);
     }

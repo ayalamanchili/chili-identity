@@ -71,7 +71,6 @@ public class ClientInformation extends AbstractEntity {
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date endDate;
     /**
      * /**

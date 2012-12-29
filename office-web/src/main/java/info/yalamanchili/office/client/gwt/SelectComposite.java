@@ -48,18 +48,20 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     protected abstract void fetchDropDownData();
 
     protected void processData(String listString) {
-        JSONObject listObject = (JSONObject) JSONParser.parseLenient(listString);
-        if (listObject.get("entry") != null) {
-            JSONArray entities = JSONUtils.toJSONArray(listObject.get("entry"));
-            values = populateValues(entities);
-            for (int i = 1; i <= entities.size(); i++) {
-                JSONObject entity = (JSONObject) entities.get(i - 1);
-                Integer key = Integer.valueOf(JSONUtils.toString(entity, "id"));
-                entityMap.put(key, entity);
+        JSONObject listObject = JSONParser.parseLenient(listString).isObject();
+        if (listObject != null) {
+            if (listObject.get("entry") != null) {
+                JSONArray entities = JSONUtils.toJSONArray(listObject.get("entry"));
+                values = populateValues(entities);
+                for (int i = 1; i <= entities.size(); i++) {
+                    JSONObject entity = (JSONObject) entities.get(i - 1);
+                    Integer key = Integer.valueOf(JSONUtils.toString(entity, "id"));
+                    entityMap.put(key, entity);
+                }
+                // TODO see option to populate the drop down here by taking in the
+                // attr names
+                populateDropDown(values);
             }
-            // TODO see option to populate the drop down here by taking in the
-            // attr names
-            populateDropDown(values);
         }
     }
 

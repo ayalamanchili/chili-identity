@@ -38,7 +38,7 @@ public class TimeSheet extends AbstractEntity {
      * quickBooks Hours
      */
     @NotNull(message = "{quickBooksHours.not.empty.msg}")
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
+    @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal quickBooksHours;
     /**
      * Adp Rate
@@ -48,21 +48,19 @@ public class TimeSheet extends AbstractEntity {
      * ADP Hours
      */
     @NotNull(message = "{adpHours.not.empty.msg}")
-    @Digits(integer = 2, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
+    @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal adpHours;
     /**
      * start date Only populated if the dates differ from time sheet period
      * start and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     /**
      * end date Only populated if the dates differ from time sheet period start
      * and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{endDate.not.empty.msg}")
     protected Date endDate;
     /**
      * notes

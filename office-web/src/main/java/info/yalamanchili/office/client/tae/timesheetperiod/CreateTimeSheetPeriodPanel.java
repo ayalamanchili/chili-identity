@@ -36,7 +36,6 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
         assignEntityValueFromField("name", clnt);
         assignEntityValueFromField("startDate", clnt);
         assignEntityValueFromField("endDate", clnt);
-        logger.info(clnt.toString());
         return clnt;
     }
 

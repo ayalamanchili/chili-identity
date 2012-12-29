@@ -21,7 +21,7 @@ public class SelectTimesheetPeriodWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "name"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 100, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
