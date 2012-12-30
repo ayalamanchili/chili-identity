@@ -7,8 +7,6 @@ package info.yalamanchili.office.client.tae.client;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.SelectComposite;
-import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
-import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 /**

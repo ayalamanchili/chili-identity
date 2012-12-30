@@ -10,6 +10,9 @@ import info.yalamanchili.office.client.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.office.client.tae.client.SelectClientWidget;
+import info.yalamanchili.office.client.tae.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.tae.clientlocation.SelectClientLocationWidget;
 
 public class UpdateClientInfoPanel extends UpdateComposite {
 
@@ -19,17 +22,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("firstName", entity);
-        assignEntityValueFromField("middleInitial", entity);
-        assignEntityValueFromField("lastName", entity);
-        assignEntityValueFromField("sex", entity);
-        assignEntityValueFromField("reportsToRole", entity);
-        assignEntityValueFromField("rtPrimary", entity);
         assignEntityValueFromField("consultantJobTitle", entity);
-        assignEntityValueFromField("email", entity);
-        assignEntityValueFromField("phoneNumber", entity);
-        assignEntityValueFromField("extension", entity);
-        assignEntityValueFromField("countryCode", entity);
+        assignEntityValueFromField("client", entity);
+        assignEntityValueFromField("clientContact", entity);
+        assignEntityValueFromField("clientLocation", entity);
+        assignEntityValueFromField("ciPrimary", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
         return entity;
     }
 
@@ -61,17 +60,12 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("reportsToRole", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("rtPrimary", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
-
+        assignFieldValueFromEntity("client", entity, null);
+        assignFieldValueFromEntity("clientContact", entity, null);
+        assignFieldValueFromEntity("clientLocation", entity, null);
+        assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -86,23 +80,17 @@ public class UpdateClientInfoPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        // TODO Auto-generated method stub
+        addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
+        addDropDown("client", new SelectClientWidget(false, true));
+        addDropDown("clientContact", new SelectClientContactWidget(false, true));
+        addDropDown("clientLocation", new SelectClientLocationWidget(false, true));
+        addField("ciPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, false, DataType.DATE_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs);
-        addField("reportsToRole", false, true, DataType.STRING_FIELD);
-        addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD);
-        addField("email", false, true, DataType.STRING_FIELD);
-        addField("extension", false, true, DataType.LONG_FIELD);
-        addField("countryCode", false, true, DataType.LONG_FIELD);
     }
 
     @Override

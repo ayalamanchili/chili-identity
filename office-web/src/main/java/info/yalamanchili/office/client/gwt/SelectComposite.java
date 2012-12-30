@@ -94,6 +94,8 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     }
 
     protected void populateDropDown(Map<Integer, String> values) {
+        listBox.clear();
+        listBox.insertItem("SELECT", 0);
         int i = 1;
         for (Integer key : values.keySet()) {
             listBox.insertItem(values.get(key), key.toString(), i);
@@ -101,6 +103,8 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
         }
         if (selectedObject != null) {
             populateSelectedValue();
+            //To support update panel drop downs
+            onChange(null);
         }
     }
 
