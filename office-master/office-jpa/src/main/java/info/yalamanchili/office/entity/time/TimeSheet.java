@@ -71,12 +71,14 @@ public class TimeSheet extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_TimeSheetPeriod_TimeSheets")
+    @NotNull(message = "{timeSheetPeriod.not.empty.msg}")
     protected TimeSheetPeriod timeSheetPeriod;
     /**
      *
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_TimeSheets")
+    @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
     /**
      *
