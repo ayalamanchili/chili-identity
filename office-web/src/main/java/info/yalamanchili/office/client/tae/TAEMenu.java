@@ -44,10 +44,11 @@ public class TAEMenu extends Composite {
         if (Auth.isAdmin() || Auth.isHR()) {
             tAEMenuBar.addItem("Clients", clientsMaintainenceCmd);
             tAEMenuBar.addItem("Projects", projectsMaintainenceCmd);
-            tAEMenuBar.addItem("Statement Of Work's", sowMaintainenceCmd);
-            tAEMenuBar.addItem("Pay Periods", payperiodsMaintainenceCmd);
-            tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
             tAEMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
+            tAEMenuBar.addItem("SOW's", sowMaintainenceCmd);
+            tAEMenuBar.addItem("TimeSheet Periods", timeSheetPeriodsMaintainenceCmd);
+            tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
+
         }
         tAEMenuBar.addStyleName("entityMenuBar");
     }
@@ -75,7 +76,7 @@ public class TAEMenu extends Composite {
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new SOWSidePanel());
         }
     };
-    Command payperiodsMaintainenceCmd = new Command() {
+    Command timeSheetPeriodsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
