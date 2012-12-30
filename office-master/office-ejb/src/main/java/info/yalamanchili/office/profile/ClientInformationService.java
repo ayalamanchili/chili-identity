@@ -60,23 +60,27 @@ public class ClientInformationService {
     public ClientInformation update(ClientInformation ci) {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
-        ciEntity = (ClientInformation) BeanMapper.merge(ci, ciEntity);
-        //Contact
-//        ciEntity.getContact().setFirstName(ci.getFirstName());
-//        ciEntity.getContact().setLastName(ci.getLastName());
-//        ciEntity.getContact().setMiddleInitial(ci.getMiddleInitial());
-//        ciEntity.getContact().setSex(ci.getSex());
-        //Email
-//        if (ciEntity.getContact().getEmails().size() > 0) {
-//            ciEntity.getContact().getEmails().get(0).setEmail(ci.getEmail());
-//        }
-//        //Phone
-//        if (ciEntity.getContact().getPhones().size() > 0) {
-//            ciEntity.getContact().getPhones().get(0).setPhoneNumber(ci.getPhoneNumber());
-//            ciEntity.getContact().getPhones().get(0).setCountryCode(ci.getCountryCode());
-//            ciEntity.getContact().getPhones().get(0).setExtension(ci.getExtension());
-//        }
-        em.merge(ciEntity);
+        if (ci.getClient() == null) {
+            ciEntity.setClient(null);
+        } else {
+            Client client = ClientDao.instance().findById(ci.getClient().getId());
+            ciEntity.setClient(client);
+            //Client Contact
+            if (ci.getClientContact() == null) {
+                ciEntity.setClientContact(null);
+            } else {
+                Contact contact = ContactDao.instance().findById(ci.getClientContact().getId());
+                ciEntity.setClientContact(contact);
+            }
+            //Client Location
+            if (ci.getClientLocation() == null) {
+                ciEntity.setClientLocation(null);
+            } else {
+                Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
+                ciEntity.setClientLocation(address);
+            }
+        }
+        ciEntity = clientInformationDao.save(ciEntity);
         ProfileNotificationService.sendClientInformationUpdatedNotification(ciEntity.getEmployee());
         return ci;
     }

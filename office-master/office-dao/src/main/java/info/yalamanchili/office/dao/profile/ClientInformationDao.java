@@ -25,7 +25,6 @@ public class ClientInformationDao extends CRUDDao<ClientInformation> {
 	}
 
 	public ClientInformation save(ClientInformation entity) {
-		//TODO fix me
 		return super.save(entity);
 	}
 
