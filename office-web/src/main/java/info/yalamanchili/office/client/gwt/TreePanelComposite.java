@@ -64,6 +64,10 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 
     }
 
+    public void setExpanded(boolean expanded) {
+        rootItem.setState(expanded);
+    }
+
     public TreeItem getRoot() {
         return rootItem;
     }
