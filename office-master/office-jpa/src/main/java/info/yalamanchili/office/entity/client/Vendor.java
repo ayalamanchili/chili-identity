@@ -8,6 +8,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -48,7 +49,10 @@ public class Vendor extends AbstractEntity {
 
     @XmlTransient
     public List<Client> getClients() {
-        return clients;
+         if (this.clients == null) {
+            this.clients = new ArrayList<Client>();
+        }
+        return this.clients;
     }
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
@@ -64,9 +68,24 @@ public class Vendor extends AbstractEntity {
     public void setLocations(List<Address> locations) {
         this.locations = locations;
     }
+    
+     public void addLocations(Address entity) {
+        if (entity == null) {
+            return;
+        }
+        getLocations().add(entity);
+    }
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
+    }
+    
+    public void addContact(Contact contact) {
+        if (contact == null) {
+            return;
+        }
+        getContacts().add(contact);
+//      contact.setClient(this);
     }
 
     public String getName() {
@@ -79,7 +98,10 @@ public class Vendor extends AbstractEntity {
 
     @XmlTransient
     public List<Address> getLocations() {
-        return locations;
+        if (this.locations == null) {
+            this.locations = new ArrayList<Address>();
+        }
+        return this.locations;
     }
 
     public void addLocations(Address address) {
@@ -92,7 +114,10 @@ public class Vendor extends AbstractEntity {
 
     @XmlTransient
     public List<Contact> getContacts() {
-        return contacts;
+         if (this.contacts == null) {
+            this.contacts = new ArrayList<Contact>();
+        }
+        return this.contacts;
     }
 
     public void addContact(Contact contact) {
