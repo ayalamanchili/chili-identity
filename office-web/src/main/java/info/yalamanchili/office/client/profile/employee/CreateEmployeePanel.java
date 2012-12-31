@@ -68,7 +68,7 @@ public class CreateEmployeePanel extends CreateComposite {
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("passwordHash", false, true, DataType.PASSWORD_FIELD);
-        addField("jobTitle", false, true, DataType.STRING_FIELD);
+        addField("jobTitle", false, false, DataType.STRING_FIELD);
         entityDisplayWidget.add(empImageUploadPanel);
     }
 
