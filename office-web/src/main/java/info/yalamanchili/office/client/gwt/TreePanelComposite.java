@@ -61,11 +61,11 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
         addListeners();
         configure();
         addWidgets();
-
+        rootItem.setState(expandTree());
     }
 
-    public void setExpanded(boolean expanded) {
-        rootItem.setState(expanded);
+    public boolean expandTree() {
+        return false;
     }
 
     public TreeItem getRoot() {
