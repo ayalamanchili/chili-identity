@@ -53,7 +53,18 @@ public class Client extends AbstractEntity {
     }
     @XmlTransient
     public List<Vendor> getVendors() {
-        return vendors;
+         if (this.vendors == null) {
+            this.vendors = new ArrayList<Vendor>();
+        }
+        return this.vendors;
+    }
+    
+      public void addVendor(Vendor entity) {
+        if (entity == null) {
+            return;
+        }
+        getVendors().add(entity);
+//        entity.set(this);
     }
 
     public String getName() {
@@ -100,11 +111,16 @@ public class Client extends AbstractEntity {
 
     @XmlTransient
     public List<Address> getLocations() {
-        return locations;
+          if (this.locations == null) {
+            this.locations = new ArrayList<Address>();
+        }
+        return this.locations;
     }
 
     public void setLocations(List<Address> locations) {
         this.locations = locations;
+        
+        
     }
 
     public void addLocations(Address entity) {
@@ -112,12 +128,14 @@ public class Client extends AbstractEntity {
             return;
         }
         getLocations().add(entity);
-//        entity.setClient(this);
     }
 
     @XmlTransient
     public List<Contact> getContacts() {
-        return contacts;
+          if (this.contacts == null) {
+            this.contacts = new ArrayList<Contact>();
+        }
+        return this.contacts;
     }
 
     public void setContacts(List<Contact> contacts) {
