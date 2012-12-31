@@ -33,15 +33,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Vendor.class, fields = {"name"}, message = "{vendor.name.not.unique.msg}")
 public class Vendor extends AbstractEntity {
-    
+
     @NotEmpty(message = "{vendor.not.empty.msg}")
     protected String name;
-
     protected String description;
-    
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
-    
     @ManyToMany(cascade = CascadeType.MERGE)
     protected List<Client> clients;
 
@@ -53,11 +50,10 @@ public class Vendor extends AbstractEntity {
     public List<Client> getClients() {
         return clients;
     }
-    
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
-    
-     public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -80,15 +76,33 @@ public class Vendor extends AbstractEntity {
     public String getDescription() {
         return description;
     }
+
     @XmlTransient
     public List<Address> getLocations() {
         return locations;
     }
+
+    public void addLocations(Address address) {
+        if (address == null) {
+            return;
+        }
+        getLocations().add(address);
+//        entity.setClient(this);
+    }
+
     @XmlTransient
     public List<Contact> getContacts() {
         return contacts;
     }
-    
+
+    public void addContact(Contact contact) {
+        if (contact == null) {
+            return;
+        }
+        getContacts().add(contact);
+//      contact.setClient(this);
+    }
+
     @Override
     public String toString() {
         return "Vendor{" + "name=" + name + ", description=" + description + '}';
