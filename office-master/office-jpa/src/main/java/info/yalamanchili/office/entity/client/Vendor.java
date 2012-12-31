@@ -104,28 +104,12 @@ public class Vendor extends AbstractEntity {
         return this.locations;
     }
 
-    public void addLocations(Address address) {
-        if (address == null) {
-            return;
-        }
-        getLocations().add(address);
-//        entity.setClient(this);
-    }
-
     @XmlTransient
     public List<Contact> getContacts() {
          if (this.contacts == null) {
             this.contacts = new ArrayList<Contact>();
         }
         return this.contacts;
-    }
-
-    public void addContact(Contact contact) {
-        if (contact == null) {
-            return;
-        }
-        getContacts().add(contact);
-//      contact.setClient(this);
     }
 
     @Override
