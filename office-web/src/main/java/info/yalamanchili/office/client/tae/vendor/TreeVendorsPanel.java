@@ -7,6 +7,8 @@ package info.yalamanchili.office.client.tae.vendor;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
+import info.yalamanchili.office.client.tae.vendorcontact.ReadAllVendorContactPanel;
+import info.yalamanchili.office.client.tae.vendorcontact.VendorContactOptionsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -48,11 +50,12 @@ public class TreeVendorsPanel extends TreePanelComposite {
     public void treeNodeSelected(String entityNodeKey) {
         if (VENDORLOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-//            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorsLocationsPanel(entityId));           
+//            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorLocationsPanel(entityId));           
         }
         if (VENDORCONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-//            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorsContactPanel(entityId));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorContactPanel(entityId));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new VendorContactOptionsPanel());
         }
     }
 
