@@ -82,7 +82,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Preferences", PREFERENCES_NODE);
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
-
+        this.rootItem.setState(true);
     }
 
     @Override
