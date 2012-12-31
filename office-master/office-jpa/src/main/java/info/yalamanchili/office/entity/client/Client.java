@@ -84,6 +84,7 @@ public class Client extends AbstractEntity {
     }
 
     /**
+     * 
      * @generated
      */
     @XmlTransient
