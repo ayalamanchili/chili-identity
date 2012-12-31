@@ -60,6 +60,7 @@ public class ClientInformationService {
     public ClientInformation update(ClientInformation ci) {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
+        BeanMapper.merge(ci, ciEntity);
         if (ci.getClient() == null) {
             ciEntity.setClient(null);
         } else {
