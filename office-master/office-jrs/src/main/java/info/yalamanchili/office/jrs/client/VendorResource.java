@@ -66,9 +66,9 @@ public class VendorResource extends CRUDResource<Vendor> {
      *
      */
     @PUT
-    @Path("/vendorcontact/{clientId}")
+    @Path("/vendorcontact/{vendorId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public void addvendorContact(@PathParam("vId") Long vendorId, ContactDto dto) {
+    public void addvendorContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
         vendor.addContact(ContactMapper.map(dto, null));
     }
@@ -106,7 +106,7 @@ public class VendorResource extends CRUDResource<Vendor> {
      *
      */
     @PUT
-    @Path("/vendorlocation/{clientId}")
+    @Path("/vendorlocation/{vendorId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addvendorlocation(@PathParam("vendorId") Long vendorId, Address address) {
         Vendor vend = (Vendor) getDao().findById(vendorId);
