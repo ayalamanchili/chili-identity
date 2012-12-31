@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
 /**
  *
@@ -43,7 +44,7 @@ public class VendorContactOptionsPanel extends ALComposite implements ClickHandl
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addVendorContactLink)) {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-//            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateVendorContactPanel(CreateCompositeType.ADD));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateVendorContactPanel(CreateCompositeType.ADD));
         }
     }
 }
