@@ -68,6 +68,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
     }
 
     @Override
+    public boolean expandTree() {
+        return true;
+    }
+
+    @Override
     protected void addWidgets() {
         addFirstChildLink("Addresses", ADDRESS_NODE);
         addFirstChildLink("Emails", EMAIL_NODE);
