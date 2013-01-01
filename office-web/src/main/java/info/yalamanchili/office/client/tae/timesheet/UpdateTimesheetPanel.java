@@ -25,10 +25,11 @@ import java.util.logging.Logger;
 public class UpdateTimesheetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateTimesheetPanel.class.getName());
+    protected String payPeriodId;
 
-    public UpdateTimesheetPanel(JSONObject entity) {
+    public UpdateTimesheetPanel(String payPeriodId, JSONObject entity) {
+        this.payPeriodId = payPeriodId;
         initUpdateComposite(entity, "Timesheet", OfficeWelcome.constants);
-        logger.info("0000" + entity.toString());
     }
 
     @Override
@@ -80,7 +81,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee Time Sheet Information");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel(payPeriodId));
     }
 
     @Override
@@ -94,14 +95,14 @@ public class UpdateTimesheetPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", new SelectEmployeeWidget(false, true));
-         addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, true));
-         addField("startDate", false, true, DataType.DATE_FIELD);
-         addField("endDate", false, true, DataType.DATE_FIELD);
-         addField("adpHours", false, true, DataType.FLOAT_FIELD);
-         addField("adpRate", false, true, DataType.CURRENCY_FIELD);
-         addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
-         addField("quickBooksRate", false, true, DataType.CURRENCY_FIELD);
-         addField("notes", false, true, DataType.STRING_FIELD);
+        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, true));
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("adpHours", false, true, DataType.FLOAT_FIELD);
+        addField("adpRate", false, true, DataType.CURRENCY_FIELD);
+        addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
+        addField("quickBooksRate", false, true, DataType.CURRENCY_FIELD);
+        addField("notes", false, true, DataType.STRING_FIELD);
     }
 
     @Override

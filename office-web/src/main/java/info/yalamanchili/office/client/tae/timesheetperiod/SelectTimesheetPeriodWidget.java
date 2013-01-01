@@ -4,10 +4,14 @@
  */
 package info.yalamanchili.office.client.tae.timesheetperiod;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 
 /**
  *
@@ -21,7 +25,7 @@ public class SelectTimesheetPeriodWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 100, "id", "name"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 500, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {

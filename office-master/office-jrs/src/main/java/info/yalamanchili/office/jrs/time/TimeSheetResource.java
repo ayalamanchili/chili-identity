@@ -10,9 +10,11 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.TimeSheetDao;
 import info.yalamanchili.office.Time.TimeService;
+import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
 import info.yalamanchili.office.dto.time.TimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -23,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
@@ -46,6 +49,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/summary/{empId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME')")
     public TimeSummary getEmployeeTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
         return timeService.GetTimeSummary(emp);
@@ -59,7 +63,19 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
     }
 
     @GET
+    @Path("/{payperiodid}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME')")
+    public TimeSheetResource.TimeSheetTable getTimeSheetsForPayPeriod(@PathParam("payperiodid") Long payperiodid, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
+        TimeSheetPeriod period = TimeSheetPeriodDao.instance().findById(payperiodid);
+        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsForPeriod(period, start, limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
+
+    @GET
     @Path("/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME')")
     public TimeSheetResource.TimeSheetTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         tableObj.setEntities(getDao().query(start, limit));

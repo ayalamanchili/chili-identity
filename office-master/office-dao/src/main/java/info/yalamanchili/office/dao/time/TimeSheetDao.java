@@ -5,13 +5,16 @@
 package info.yalamanchili.office.dao.time;
 
 import info.chili.beans.BeanMapper;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +28,14 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
 
     @PersistenceContext
     protected EntityManager em;
+
+    public List<TimeSheet> getTimeSheetsForPeriod(TimeSheetPeriod period, int start, int limit) {
+        Query query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam");
+        query.setParameter("timePeriodParam", period);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
 
     @Override
     public TimeSheet save(TimeSheet entity) {
@@ -54,5 +65,9 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
 
     public TimeSheetDao() {
         super(TimeSheet.class);
+    }
+
+    public static TimeSheetDao instance() {
+        return SpringContext.getBean(TimeSheetDao.class);
     }
 }

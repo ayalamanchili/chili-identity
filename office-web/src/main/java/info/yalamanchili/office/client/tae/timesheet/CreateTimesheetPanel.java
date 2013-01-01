@@ -68,7 +68,7 @@ public class CreateTimesheetPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Timesheet Successfully created");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
+//        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
     }
 
     @Override

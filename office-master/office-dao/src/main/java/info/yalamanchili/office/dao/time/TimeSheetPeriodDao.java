@@ -6,14 +6,12 @@ package info.yalamanchili.office.dao.time;
 
 import info.chili.beans.BeanMapper;
 import info.chili.jpa.AbstractEntity;
-import info.chili.service.jrs.ServiceMessages;
-import info.chili.service.jrs.exception.ServiceException;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
-import java.util.Calendar;
 import org.springframework.context.annotation.Scope;
 
 /**
@@ -57,5 +55,9 @@ public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
             }
         }
         return getEntityManager().merge(entity);
+    }
+
+    public static TimeSheetPeriodDao instance() {
+        return SpringContext.getBean(TimeSheetPeriodDao.class);
     }
 }
