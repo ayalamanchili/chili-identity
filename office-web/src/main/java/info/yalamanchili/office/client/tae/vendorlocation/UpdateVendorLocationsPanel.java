@@ -22,7 +22,7 @@ import info.yalamanchili.office.client.tae.vendor.TreeVendorsPanel;
 public class UpdateVendorLocationsPanel extends UpdateComposite {
 
     public UpdateVendorLocationsPanel(JSONObject entity) {
-        initUpdateComposite(entity, "VendorContact", OfficeWelcome.constants);
+        initUpdateComposite(entity, "VendorLocation", OfficeWelcome.constants);
     }
 
     @Override
