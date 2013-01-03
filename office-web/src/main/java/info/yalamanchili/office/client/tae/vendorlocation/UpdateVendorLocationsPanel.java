@@ -11,6 +11,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
+import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.vendor.TreeVendorsPanel;
 
@@ -26,14 +27,13 @@ public class UpdateVendorLocationsPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("firstName", entity);
-        assignEntityValueFromField("middleInitial", entity);
-        assignEntityValueFromField("lastName", entity);
-        assignEntityValueFromField("sex", entity);
-        assignEntityValueFromField("email", entity);
-        assignEntityValueFromField("countryCode", entity);
-        assignEntityValueFromField("phoneNumber", entity);
-        assignEntityValueFromField("extension", entity);
+        assignEntityValueFromField("street1", entity);
+        assignEntityValueFromField("street2", entity);
+        assignEntityValueFromField("city", entity);
+        assignEntityValueFromField("state", entity);
+        assignEntityValueFromField("country", entity);
+        assignEntityValueFromField("zip", entity);
+
         return entity;
     }
 
@@ -55,14 +55,12 @@ public class UpdateVendorLocationsPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("street1", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("street2", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("city", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
     }
 
     @Override
@@ -74,35 +72,29 @@ public class UpdateVendorLocationsPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected void configure() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected void addWidgets() {
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, false, strs);
-        addField("email", false, false, DataType.STRING_FIELD);
-        addField("countryCode", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
-        addField("extension", false, true, DataType.STRING_FIELD);
-        throw new UnsupportedOperationException("Not supported yet.");
+        addField("street1", false, true, DataType.STRING_FIELD);
+        addField("street2", false, false, DataType.STRING_FIELD);
+        addField("city", false, true, DataType.STRING_FIELD);
+        addField("state", false, true, DataType.ENUM_FIELD);
+        addEnumField("state", false, true, CreateAddressPanel.getStates().toArray(new String[0]));
+        addEnumField("country", false, true, CreateAddressPanel.getCountries().toArray(new String[0]));
+        addField("zip", false, false, DataType.LONG_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "location";
+        return OfficeWelcome.constants.root_url() + "address";
     }
 }
