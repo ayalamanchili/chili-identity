@@ -10,6 +10,7 @@ import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.tae.vendorcontact.ReadAllVendorContactPanel;
 import info.yalamanchili.office.client.tae.vendorcontact.VendorContactOptionsPanel;
 import info.yalamanchili.office.client.tae.vendorlocation.ReadAllVendorLocationPanel;
+import info.yalamanchili.office.client.tae.vendorlocation.VendorLocationOptionsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -52,6 +53,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
         if (VENDORLOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
             TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorLocationPanel(entityId));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new VendorLocationOptionsPanel());
         }
         if (VENDORCONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
