@@ -91,7 +91,7 @@ public class UpdateClientLocationPanel extends UpdateComposite {
         addField("state", false, true, DataType.ENUM_FIELD);
         addEnumField("state", false, true, CreateAddressPanel.getStates().toArray(new String[0]));
         addEnumField("country", false, true, CreateAddressPanel.getCountries().toArray(new String[0]));
-         addField("zip", false, false, DataType.LONG_FIELD);
+        addField("zip", false, false, DataType.LONG_FIELD);
     }
 
     @Override
