@@ -63,6 +63,6 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "client/clientlocation/" + TreeVendorsPanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "vendor/vendorlocation/" + TreeVendorsPanel.instance().getEntityId();
     }
 }
