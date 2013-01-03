@@ -4,10 +4,47 @@
  */
 package info.yalamanchili.office.client.tae.vendorlocation;
 
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.GenericListener;
+import info.yalamanchili.office.client.gwt.SelectComposite;
+import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.SelectClientWidget;
+import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
+
 /**
  *
  * @author Prashanthi
  */
-public class SelectVendorLocationsWidget {
-    
+public class SelectVendorLocationsWidget extends SelectComposite implements GenericListener {
+
+    public SelectVendorLocationsWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "VendorLocation", readOnly, isRequired);
+        SelectClientWidget.instance().addListner(this);
+    }
+
+    @Override
+    protected void fetchDropDownData() {
+    }
+
+    @Override
+    protected String getDropDownURL(Integer start, Integer limit, String... columns) {
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "vendor/locations/dropdown/" + SelectVendorWidget.instance().getSelectedObjectId(), start, limit, columns);
+    }
+
+    @Override
+    protected void validate() {
+        clearMessage();
+    }
+
+    @Override
+    public void onChange() {
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "firstName", "lastName"),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                processData(entityString);
+            }
+        });
+    }
 }
