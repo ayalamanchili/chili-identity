@@ -45,8 +45,6 @@ public class VendorLocationOptionsPanel extends ALComposite implements ClickHand
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addvendorLocLink)) {
-//            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-//            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateClientLocationPanel(CreateComposite.CreateCompositeType.ADD));
         }
     }
 }
