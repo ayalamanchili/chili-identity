@@ -7,10 +7,10 @@ package info.yalamanchili.office.client.tae.vendorlocation;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TabPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.gwt.CreateComposite;
 
 /**
  *
@@ -45,6 +45,8 @@ public class VendorLocationOptionsPanel extends ALComposite implements ClickHand
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addvendorLocLink)) {
+            info.yalamanchili.office.client.TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+            info.yalamanchili.office.client.TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateVendorLocationsPanel(CreateComposite.CreateCompositeType.ADD));
         }
     }
 }
