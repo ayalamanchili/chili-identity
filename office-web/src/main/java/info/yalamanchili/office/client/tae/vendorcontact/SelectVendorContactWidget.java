@@ -18,7 +18,7 @@ import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
 public class SelectVendorContactWidget extends SelectComposite implements GenericListener {
 
     public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "ClientContact", readOnly, isRequired);
+        super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired);
         SelectVendorWidget.instance().addListner(this);
     }
 
