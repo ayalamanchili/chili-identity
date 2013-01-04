@@ -18,11 +18,11 @@ import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.tae.client.TreeClientPanel;
 import java.util.logging.Logger;
+
 /**
  *
  * @author bala
  */
-
 public class ReadAllTimeSheetPeriodsPanel extends ReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllTimeSheetPeriodsPanel.class.getName());
@@ -55,7 +55,6 @@ public class ReadAllTimeSheetPeriodsPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        //table.setText(0, 2, getKeyValue("Description"));
         table.setText(0, 2, getKeyValue("StartDate"));
         table.setText(0, 3, getKeyValue("EndDate"));
     }
@@ -66,57 +65,34 @@ public class ReadAllTimeSheetPeriodsPanel extends ReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            //table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-
-            //table.setText(i, 5, JSONUtils.toString(entity, "client"));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
     public void viewClicked(String entityId) {
     }
 
-    @Override
-    public void deleteClicked(String entityId) {
-        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+    public String getReadAllTimeSheetPeriodsPanelURL(Integer start, String limit) {
+        return OfficeWelcome.constants.root_url() + "timesheetperiod/" + start.toString() + "/" + limit.toString();
     }
 
-    protected String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "timesheetperiod/delete/" + entityId;
+    @Override
+    public void deleteClicked(String entityId) {
     }
 
     @Override
     public void postDeleteSuccess() {
-
-        new ResponseStatusWidget().show("Successfully deleted TimeSheet Period Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        //TabPanel.instance().TimeandExpensePanel.sidePanelTop.clear();
-        //TabPanel.instance().TimeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateTimeSheetPeriodPanel(getEntity(entityId)));
-    }
-
-    public String getReadAllTimeSheetPeriodsPanelURL(Integer start, String limit) {
-            return OfficeWelcome.constants.root_url() + "timesheetperiod/" + start.toString() + "/" + limit.toString();
     }
 }

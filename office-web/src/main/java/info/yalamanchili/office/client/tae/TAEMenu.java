@@ -40,8 +40,8 @@ public class TAEMenu extends Composite {
             tAEMenuBar.addItem("Clients", clientsMaintainenceCmd);
             tAEMenuBar.addItem("Projects", projectsMaintainenceCmd);
             tAEMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
-            tAEMenuBar.addItem("SOW's", sowMaintainenceCmd);
-            tAEMenuBar.addItem("TimeSheet Periods", timeSheetPeriodsMaintainenceCmd);
+//            tAEMenuBar.addItem("SOW's", sowMaintainenceCmd);
+            tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
             tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
 
         }

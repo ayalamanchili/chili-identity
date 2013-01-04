@@ -25,6 +25,7 @@ import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.Time.TimeService;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
@@ -75,8 +76,7 @@ public class OfficeStartup {
         if (config.getInitTestData()) {
             initTestData();
         }
-        TimeService ts= new TimeService();
-        ts.syncTimeSheetPeriods(em);
+        TimeJobService.instance().syncTimeSheetPeriods();
     }
 
     protected void initRoles() {
