@@ -5,6 +5,8 @@
 package info.yalamanchili.office.client.tae.clientlocation;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -20,13 +22,14 @@ import java.util.logging.Logger;
  */
 public class CreateClientLocationPanel extends CreateAddressPanel {
 
-     private static Logger logger = Logger.getLogger(CreateClientLocationPanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreateClientLocationPanel.class.getName());
+
     public CreateClientLocationPanel(CreateComposite.CreateCompositeType type) {
         super(type);
 //         initCreateComposite("ClientLocation", OfficeWelcome.constants);
     }
 
-      @Override
+    @Override
     protected JSONObject populateEntityFromFields() {
         //TODO is thid needed
         JSONObject entity = new JSONObject();
@@ -40,7 +43,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel {
         logger.info(entity.toString());
         return entity;
     }
-      
+
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully added Client Locatrion");
@@ -50,17 +53,18 @@ public class CreateClientLocationPanel extends CreateAddressPanel {
 
     }
 
-      @Override
+    @Override
     protected void addWidgets() {
         addField("street1", false, true, DataType.STRING_FIELD);
         addField("street2", false, false, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
         addField("state", false, true, DataType.ENUM_FIELD);
-        addEnumField("state", false, true, getStates().toArray(new String[0]));
-        addEnumField("country", false, true, getCountries().toArray(new String[0]));
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
+        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addField("zip", false, false, DataType.LONG_FIELD);
 //        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
     }
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "client/clientlocation/" + TreeClientPanel.instance().getEntityId();

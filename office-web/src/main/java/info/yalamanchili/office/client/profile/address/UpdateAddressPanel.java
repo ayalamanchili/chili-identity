@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.USAStatesFactory;
 
 public class UpdateAddressPanel extends UpdateComposite {
 
@@ -92,8 +94,8 @@ public class UpdateAddressPanel extends UpdateComposite {
         addField("street1", false, true, DataType.STRING_FIELD);
         addField("street2", false, false, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
-        addEnumField("state", false, true, CreateAddressPanel.getStates().toArray(new String[0]));
-        addEnumField("country", false, true, CreateAddressPanel.getCountries().toArray(new String[0]));
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
+        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addField("zip", false, false, DataType.LONG_FIELD);
         addDropDown("addressType", new SelectAddressTypeWidget(false, false));
     }

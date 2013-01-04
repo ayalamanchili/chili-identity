@@ -5,6 +5,8 @@
 package info.yalamanchili.office.client.tae.vendorlocation;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -56,8 +58,8 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel {
         addField("street2", false, false, DataType.STRING_FIELD);
         addField("city", false, true, DataType.STRING_FIELD);
         addField("state", false, true, DataType.ENUM_FIELD);
-        addEnumField("state", false, true, getStates().toArray(new String[0]));
-        addEnumField("country", false, true, getCountries().toArray(new String[0]));
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
+        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
         addField("zip", false, false, DataType.LONG_FIELD);
     }
 
