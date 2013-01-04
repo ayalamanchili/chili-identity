@@ -6,10 +6,12 @@ package info.yalamanchili.office.profile;
 
 import info.chili.beans.BeanMapper;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -53,10 +55,23 @@ public class ClientInformationService {
             Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
             ci.setClientLocation(address);
         }
+        if (ci.getVendor() != null) {
+            Vendor vendor = VendorDao.instance().findById(ci.getVendor().getId());
+            ci.setVendor(vendor);
+        }
+        if (ci.getVendorContact() != null) {
+            Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
+            ci.setVendorContact(contact);
+        }
+        if (ci.getVendorLocation() != null) {
+            Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
+            ci.setVendorLocation(address);
+        }
         emp.addClientInformation(ci);
         ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
     }
 
+//merge save and addci methods
     public ClientInformation update(ClientInformation ci) {
         //TODO implement mapping for contact,phone and email
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
@@ -79,6 +94,26 @@ public class ClientInformationService {
             } else {
                 Address address = AddressDao.instance().findById(ci.getClientLocation().getId());
                 ciEntity.setClientLocation(address);
+            }
+        }
+        if (ci.getVendor() == null) {
+            ciEntity.setVendor(null);
+        } else {
+            Vendor vendor = VendorDao.instance().findById(ci.getVendor().getId());
+            ciEntity.setVendor(vendor);
+            //Client Contact
+            if (ci.getVendorContact() == null) {
+                ciEntity.setVendorContact(null);
+            } else {
+                Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
+                ciEntity.setVendorContact(contact);
+            }
+            //Client Location
+            if (ci.getVendorLocation() == null) {
+                ciEntity.setVendorLocation(null);
+            } else {
+                Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
+                ciEntity.setVendorLocation(address);
             }
         }
         ciEntity = clientInformationDao.save(ciEntity);

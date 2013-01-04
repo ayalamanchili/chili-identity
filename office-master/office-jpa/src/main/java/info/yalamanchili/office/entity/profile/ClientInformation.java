@@ -5,6 +5,7 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.Vendor;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -44,6 +45,17 @@ public class ClientInformation extends AbstractEntity {
     @Field(index = Index.UN_TOKENIZED)
     protected Boolean ciPrimary;
     /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{startDate.not.empty.msg}")
+    protected Date startDate;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date endDate;
+    /**
      * Client
      */
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -62,18 +74,24 @@ public class ClientInformation extends AbstractEntity {
     @ForeignKey(name = "FK_ClientLocation_ClientInformations")
     protected Address clientLocation;
     /**
-     *
+     * Vendor
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{startDate.not.empty.msg}")
-    protected Date startDate;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Vendor_ClientInformations")
+    protected Vendor vendor;
     /**
-     *
+     * Vendor Contact
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date endDate;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_VendorContact_ClientInformations")
+    protected Contact vendorContact;
     /**
-     * /**
+     * Vendor Location
+     */
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_VendorLocation_ClientInformations")
+    protected Address vendorLocation;
+    /**
      * Employee
      */
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -100,6 +118,22 @@ public class ClientInformation extends AbstractEntity {
         this.ciPrimary = ciPrimary;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public Client getClient() {
         return client;
     }
@@ -107,8 +141,6 @@ public class ClientInformation extends AbstractEntity {
     public void setClient(Client client) {
         this.client = client;
     }
-
-    
 
     public Contact getClientContact() {
         return clientContact;
@@ -126,28 +158,36 @@ public class ClientInformation extends AbstractEntity {
         this.clientLocation = clientLocation;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
     public Employee getEmployee() {
         return employee;
     }
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public Contact getVendorContact() {
+        return vendorContact;
+    }
+
+    public void setVendorContact(Contact vendorContact) {
+        this.vendorContact = vendorContact;
+    }
+
+    public Address getVendorLocation() {
+        return vendorLocation;
+    }
+
+    public void setVendorLocation(Address vendorLocation) {
+        this.vendorLocation = vendorLocation;
     }
 
     @Override
