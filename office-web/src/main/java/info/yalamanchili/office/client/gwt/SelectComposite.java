@@ -35,7 +35,7 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
 
     @Override
     protected void configureAddMainWidget() {
-        listBox.insertItem("SELECT", 0);
+        initListBox();
         listBox.addChangeHandler(this);
         listBox.ensureDebugId(className + "_" + attributeName + "_LB");
         fieldPanel.insert(listBox, 0);
@@ -48,19 +48,22 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     protected abstract void fetchDropDownData();
 
     protected void processData(String listString) {
-        JSONObject listObject = JSONParser.parseLenient(listString).isObject();
-        if (listObject != null) {
-            if (listObject.get("entry") != null) {
-                JSONArray entities = JSONUtils.toJSONArray(listObject.get("entry"));
-                values = populateValues(entities);
-                for (int i = 1; i <= entities.size(); i++) {
-                    JSONObject entity = (JSONObject) entities.get(i - 1);
-                    Integer key = Integer.valueOf(JSONUtils.toString(entity, "id"));
-                    entityMap.put(key, entity);
+        initListBox();
+        if (listString != null && !listString.isEmpty()) {
+            JSONObject listObject = JSONParser.parseLenient(listString).isObject();
+            if (listObject != null) {
+                if (listObject.get("entry") != null) {
+                    JSONArray entities = JSONUtils.toJSONArray(listObject.get("entry"));
+                    values = populateValues(entities);
+                    for (int i = 1; i <= entities.size(); i++) {
+                        JSONObject entity = (JSONObject) entities.get(i - 1);
+                        Integer key = Integer.valueOf(JSONUtils.toString(entity, "id"));
+                        entityMap.put(key, entity);
+                    }
+                    // TODO see option to populate the drop down here by taking in the
+                    // attr names
+                    populateDropDown(values);
                 }
-                // TODO see option to populate the drop down here by taking in the
-                // attr names
-                populateDropDown(values);
             }
         }
     }
@@ -94,8 +97,6 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     }
 
     protected void populateDropDown(Map<Integer, String> values) {
-        listBox.clear();
-        listBox.insertItem("SELECT", 0);
         int i = 1;
         for (Integer key : values.keySet()) {
             listBox.insertItem(values.get(key), key.toString(), i);
@@ -106,6 +107,11 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
             //To support update panel drop downs
             onChange(null);
         }
+    }
+
+    protected void initListBox() {
+        listBox.clear();
+        listBox.insertItem("SELECT", 0);
     }
 
     @Override

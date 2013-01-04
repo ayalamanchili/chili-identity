@@ -34,6 +34,10 @@ public class SelectClientContactWidget extends SelectComposite implements Generi
 
     @Override
     public void onChange() {
+        if (SelectClientWidget.instance().getSelectedObjectId() == null || SelectClientWidget.instance().getSelectedObjectId().isEmpty()) {
+            processData(null);
+            return;
+        }
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "firstName", "lastName"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override

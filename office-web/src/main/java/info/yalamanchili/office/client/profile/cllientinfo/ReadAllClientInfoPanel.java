@@ -45,11 +45,14 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Primary"));
         table.setText(0, 2, getKeyValue("Job Title"));
-        table.setText(0, 3, getKeyValue("Client Name"));
-        table.setText(0, 4, getKeyValue("Client Contact First Name"));
-        table.setText(0, 5, getKeyValue("Client Location Street"));
-        table.setText(0, 6, getKeyValue("Start Date"));
-        table.setText(0, 7, getKeyValue("End Date"));
+        table.setText(0, 3, getKeyValue("Client"));
+        table.setText(0, 4, getKeyValue("Client Contact"));
+        table.setText(0, 5, getKeyValue("Client Location"));
+        table.setText(0, 6, getKeyValue("Vendor"));
+        table.setText(0, 7, getKeyValue("Vendor Contact"));
+        table.setText(0, 8, getKeyValue("Vendor Location"));
+        table.setText(0, 9, getKeyValue("Start Date"));
+        table.setText(0, 10, getKeyValue("End Date"));
     }
 
     @Override
@@ -72,8 +75,20 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
                 JSONObject clientLocation = entity.get("clientLocation").isObject();
                 table.setText(i, 5, JSONUtils.toString(clientLocation, "street1"));
             }
-            table.setText(i, 6, JSONUtils.toString(entity, "startDate"));
-            table.setText(i, 7, JSONUtils.toString(entity, "endDate"));
+            if (entity.get("vendor") != null) {
+                JSONObject vendor = entity.get("vendor").isObject();
+                table.setText(i, 6, JSONUtils.toString(vendor, "name"));
+            }
+            if (entity.get("vendorContact") != null) {
+                JSONObject vendorContact = entity.get("vendorContact").isObject();
+                table.setText(i, 7, JSONUtils.toString(vendorContact, "firstName"));
+            }
+            if (entity.get("vendorLocation") != null) {
+                JSONObject vendorLocation = entity.get("vendorLocation").isObject();
+                table.setText(i, 8, JSONUtils.toString(vendorLocation, "street1"));
+            }
+            table.setText(i, 9, JSONUtils.toString(entity, "startDate"));
+            table.setText(i, 10, JSONUtils.toString(entity, "endDate"));
         }
     }
 

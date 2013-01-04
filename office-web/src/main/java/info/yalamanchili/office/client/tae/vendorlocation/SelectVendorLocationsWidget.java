@@ -9,6 +9,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.GenericListener;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.client.SelectClientWidget;
 import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
 
 /**
@@ -38,6 +39,9 @@ public class SelectVendorLocationsWidget extends SelectComposite implements Gene
 
     @Override
     public void onChange() {
+        if (SelectVendorWidget.instance().getSelectedObjectId() == null || SelectVendorWidget.instance().getSelectedObjectId().isEmpty()) {
+            processData(null);
+        }
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "firstName", "lastName"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
