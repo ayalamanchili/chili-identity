@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dao.client;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.Vendor;
 import javax.persistence.EntityManager;
@@ -29,5 +30,9 @@ public class VendorDao extends CRUDDao<Vendor> {
 
     public VendorDao() {
         super(Vendor.class);
+    }
+
+    public static VendorDao instance() {
+        return SpringContext.getBean(VendorDao.class);
     }
 }

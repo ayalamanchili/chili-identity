@@ -4,10 +4,13 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
+import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -22,6 +25,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -98,6 +102,21 @@ public class VendorResource extends CRUDResource<Vendor> {
         return tableObj;
     }
 
+    @GET
+    @Path("/contacts/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getVendorContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        Vendor vendor = VendorDao.instance().findById(id);
+        List<Entry> result = new ArrayList<Entry>();
+        for (Contact contact : vendor.getContacts()) {
+            Entry entry = new Entry();
+            entry.setId(contact.getId().toString());
+            entry.setValue(contact.getFirstName() + " " + contact.getLastName());
+            result.add(entry);
+        }
+        return result;
+    }
+
     /**
      * Add Vendor locations
      *
@@ -132,6 +151,21 @@ public class VendorResource extends CRUDResource<Vendor> {
         tableObj.setEntities(evendor.getLocations());
         tableObj.setSize((long) evendor.getLocations().size());
         return tableObj;
+    }
+
+    @GET
+    @Path("/locations/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getVendorLocationsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        Vendor vendor = VendorDao.instance().findById(id);
+        List<Entry> result = new ArrayList<Entry>();
+        for (Address address : vendor.getLocations()) {
+            Entry entry = new Entry();
+            entry.setId(address.getId().toString());
+            entry.setValue(address.getStreet1() + " " + address.getCity());
+            result.add(entry);
+        }
+        return result;
     }
 
     @XmlRootElement

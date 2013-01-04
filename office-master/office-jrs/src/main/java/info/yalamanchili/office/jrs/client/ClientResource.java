@@ -135,7 +135,7 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @GET
     @Path("/contacts/dropdown/{id}/{start}/{limit}")
-    public List<Entry> getClientContactDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+    public List<Entry> getClientContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         Client client = ClientDao.instance().findById(id);
         List<Entry> result = new ArrayList<Entry>();

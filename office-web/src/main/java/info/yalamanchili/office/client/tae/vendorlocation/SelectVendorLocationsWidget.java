@@ -9,7 +9,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.GenericListener;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.tae.client.SelectClientWidget;
 import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
 
 /**
@@ -20,7 +19,7 @@ public class SelectVendorLocationsWidget extends SelectComposite implements Gene
 
     public SelectVendorLocationsWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "VendorLocation", readOnly, isRequired);
-        SelectClientWidget.instance().addListner(this);
+        SelectVendorWidget.instance().addListner(this);
     }
 
     @Override
