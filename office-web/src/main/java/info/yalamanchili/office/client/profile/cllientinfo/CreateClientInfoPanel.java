@@ -15,6 +15,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.tae.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.tae.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
+import info.yalamanchili.office.client.tae.vendorcontact.SelectVendorContactWidget;
+import info.yalamanchili.office.client.tae.vendorlocation.SelectVendorLocationsWidget;
 
 public class CreateClientInfoPanel extends CreateComposite {
 
@@ -32,6 +35,9 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("client", clientInfo);
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
+        assignEntityValueFromField("vendor", clientInfo);
+        assignEntityValueFromField("vendorContact", clientInfo);
+        assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("ciPrimary", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
@@ -85,6 +91,9 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("client", new SelectClientWidget(false, true));
         addDropDown("clientContact", new SelectClientContactWidget(false, true));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true));
+        addDropDown("vendor", new SelectVendorWidget(false, true));
+        addDropDown("vendorContact", new SelectVendorContactWidget(false, true));
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true));
         addField("ciPrimary", false, true, DataType.BOOLEAN_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
