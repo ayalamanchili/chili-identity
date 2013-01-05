@@ -83,13 +83,13 @@ public class CreateTimesheetPanel extends CreateComposite {
     protected void addWidgets() {
         addDropDown("employee", new SelectEmployeeWidget(false, true));
         addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, true));
+        addField("adpHours", false, true, DataType.FLOAT_FIELD);
+        addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
+        addField("adpRate", false, false, DataType.CURRENCY_FIELD);
+        addField("quickBooksRate", false, false, DataType.CURRENCY_FIELD);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-        addField("adpHours", false, true, DataType.FLOAT_FIELD);
-        addField("adpRate", false, false, DataType.CURRENCY_FIELD);
-        addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
-        addField("quickBooksRate", false, false, DataType.CURRENCY_FIELD);
-        addField("notes", false, true, DataType.STRING_FIELD);
+        addField("notes", false, false, DataType.STRING_FIELD);
     }
 
     @Override

@@ -52,12 +52,12 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("StartDate"));
-        table.setText(0, 3, getKeyValue("EndDate"));
+        table.setText(0, 2, getKeyValue("QBHours"));
+        table.setText(0, 3, getKeyValue("ADPHours"));
         table.setText(0, 4, getKeyValue("QBRate"));
-        table.setText(0, 5, getKeyValue("QBHours"));
-        table.setText(0, 6, getKeyValue("ADPRate"));
-        table.setText(0, 7, getKeyValue("ADPHours"));
+        table.setText(0, 5, getKeyValue("ADPRate"));
+        table.setText(0, 6, getKeyValue("StartDate"));
+        table.setText(0, 7, getKeyValue("EndDate"));
         table.setText(0, 8, getKeyValue("Notes"));
         table.setText(0, 9, getKeyValue("PayPeriod"));
     }
@@ -68,12 +68,12 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("employee"), "firstName"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 4, JSONUtils.toString(entity, "quickBooksRate"));
-            table.setText(i, 5, JSONUtils.toString(entity, "quickBooksHours"));
-            table.setText(i, 6, JSONUtils.toString(entity, "adpRate"));
-            table.setText(i, 7, JSONUtils.toString(entity, "adpHours"));
+            table.setText(i, 2, JSONUtils.toString(entity, "adpHours"));
+            table.setText(i, 3, JSONUtils.toString(entity, "quickBooksHours"));
+            table.setText(i, 4, JSONUtils.toString(entity, "adpRate"));
+            table.setText(i, 5, JSONUtils.toString(entity, "quickBooksRate"));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 8, JSONUtils.toString(entity, "notes"));
             table.setText(i, 9, JSONUtils.toString(entity.get("timeSheetPeriod"), "name"));
         }
