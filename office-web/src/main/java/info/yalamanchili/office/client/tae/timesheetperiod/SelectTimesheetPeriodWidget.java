@@ -4,14 +4,10 @@
  */
 package info.yalamanchili.office.client.tae.timesheetperiod;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 
 /**
  *
@@ -19,8 +15,15 @@ import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
  */
 public class SelectTimesheetPeriodWidget extends SelectComposite {
 
+    private static SelectTimesheetPeriodWidget instance;
+
+    public static SelectTimesheetPeriodWidget instance() {
+        return instance;
+    }
+
     public SelectTimesheetPeriodWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "TimeSheetPeriod", readOnly, isRequired);
+        instance = this;
     }
 
     @Override

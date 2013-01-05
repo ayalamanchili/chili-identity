@@ -32,8 +32,8 @@
 .loginCenterPanel{
 
 
-/*   margin-left: 105px;*/
-  
+    /*   margin-left: 105px;*/
+
 }
 /* TabLayout Panel */
 @sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
@@ -66,6 +66,10 @@
     background-color: white;
 
 }
+.createMonthlyTimeSheetDP{
+    border: 1px;
+    border-color: black;
+}
 @sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
     margin-left: 0px;
     margin-right: 0px;
@@ -74,7 +78,7 @@
     color: #064c78;
     gwt-image:"tabButtonClick";
     height:auto;
-/*    text-shadow: 0px 1px 2px #4d4d4d;*/
+    /*    text-shadow: 0px 1px 2px #4d4d4d;*/
 }
 
 /* an element nested in each tab (useful for styling)*/
@@ -182,28 +186,28 @@ legend {
     width: 100%;
     color:#595959;
     align:center;
-    
+
 }
 
 
 .treeItemLabel{
-    
+
     padding: 5px;
 }
 
 .treeItemLabel:hover{
-    
-   background-color: blue_mid;
+
+    background-color: blue_mid;
     -webkit-transition-property: background-color;  
     -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;
 }
 
 .gwt-TreeItem:hover{
-   
-   
+
+
     background-color: blue_mid;
-    
+
     -webkit-transition-property: background-color;  
     -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;  
@@ -212,9 +216,9 @@ legend {
 .gwt-Tree .gwt-TreeItem-selected {
     font-weight: bold;
     color: orange_dark;
-    
-    
-   
+
+
+
 }
 @sprite .entityMenuBar {
     width: 100%;
@@ -228,36 +232,36 @@ legend {
     cursor: pointer;
     padding: 3px;
     color: #666666;
-/*    border-right: 1px;
-    border-right-color: blue_mid;
-    border-right-width: 1px;*/
+    /*    border-right: 1px;
+        border-right-color: blue_mid;
+        border-right-width: 1px;*/
     width: 140px;
     text-align: center;
-    
+
 }
 
 /*    .gwt-MenuBar-horizontal .gwt-MenuItem {
         background-color: none;
         color: #666666;
     }*/
-    
+
 .gwt-MenuItem-selected:hover{
     background-color: blue_mid;
     font-color:#666666;
     -webkit-transition-property: background-color;  
     -webkit-transition-duration: 0.1s;  
     -webkit-transition-timing-function: linear, ease-in;  
-    }    
-    
-.gwt-MenuItem-selected {
-/*    background-color: #dae6fe;*/
-    font-color:white;
-    
-    }    
+}    
 
-    .y-gwt-CreateBasePanel{
-        vertical-align: middle;
-    }
+.gwt-MenuItem-selected {
+    /*    background-color: #dae6fe;*/
+    font-color:white;
+
+}    
+
+.y-gwt-CreateBasePanel{
+    vertical-align: middle;
+}
 
 .genericPopup{
     background-color: #ededed;
@@ -335,7 +339,7 @@ legend {
     font-family: Arial;
     font-size: 11pt;
     font-weight: 100;
-    
+
 }
 
 .y-gwt-treePanelComposite-RootNode
@@ -424,11 +428,11 @@ body{
     border-top: 0;
     background-color: #E8E8E8;
     width: 149px;
-    
+
 }
 
 .gwt-SuggestBoxPopup .item {
-/*    border: 1px dotted #aaa;*/
+    /*    border: 1px dotted #aaa;*/
     text-decoration-style:dotted;
 }
 
@@ -611,18 +615,18 @@ body{
 /* Drive Styling Start */
 
 .folderLabel{
-/*    border-style: solid;
-    border-width: 1px;
-    border-color: #000000;*/
+    /*    border-style: solid;
+        border-width: 1px;
+        border-color: #000000;*/
     width: 100%;
     padding:5px;
-    
-/*   background-color: blue_mid;  */
+
+    /*   background-color: blue_mid;  */
 }
 
 .folderLabel:hover{
-    
-  text-spacing: 2px;
+
+    text-spacing: 2px;
     background-color: blue_mid;
     font-color:#666666;
     -webkit-transition-property: background-color;  
@@ -641,26 +645,26 @@ body{
 }*/
 
 .popupContent{
-    
+
     background-color: grey_light;
     margin:2px;
-/*    padding:10px;*/
+    /*    padding:10px;*/
     border-style: solid;
     border-width: 1px;
     border-color: #E7E7E7;
-    
- }
+
+}
 .folderMenuLabel{
     padding:5px;
     width: 130px;
     text-align: left;
-/*    margin-left: 10px;*/
-/*    background-color: #000000;*/
-    
+    /*    margin-left: 10px;*/
+    /*    background-color: #000000;*/
+
 }
 
 .folderMenuLabel:hover{
-     text-spacing: 2px;
+    text-spacing: 2px;
     background-color: blue_mid;
     font-color:#666666;
     -webkit-transition-property: background-color;  
