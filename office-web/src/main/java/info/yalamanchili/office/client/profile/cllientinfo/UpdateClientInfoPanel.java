@@ -13,6 +13,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.office.client.tae.client.SelectClientWidget;
 import info.yalamanchili.office.client.tae.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.tae.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
+import info.yalamanchili.office.client.tae.vendorcontact.SelectVendorContactWidget;
+import info.yalamanchili.office.client.tae.vendorlocation.SelectVendorLocationsWidget;
 
 public class UpdateClientInfoPanel extends UpdateComposite {
 
@@ -23,10 +26,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("consultantJobTitle", entity);
+        assignEntityValueFromField("ciPrimary", entity);
         assignEntityValueFromField("client", entity);
         assignEntityValueFromField("clientContact", entity);
         assignEntityValueFromField("clientLocation", entity);
-        assignEntityValueFromField("ciPrimary", entity);
+        assignEntityValueFromField("vendor", entity);
+        assignEntityValueFromField("vendorContact", entity);
+        assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         return entity;
@@ -63,6 +69,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
         assignFieldValueFromEntity("clientLocation", entity, null);
+        assignFieldValueFromEntity("vendor", entity, null);
+        assignFieldValueFromEntity("vendorContact", entity, null);
+        assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -81,10 +90,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
+        addField("ciPrimary", false, true, DataType.BOOLEAN_FIELD);
         addDropDown("client", new SelectClientWidget(false, true));
         addDropDown("clientContact", new SelectClientContactWidget(false, true));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true));
-        addField("ciPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addDropDown("vendor", new SelectVendorWidget(false, true));
+        addDropDown("vendorContact", new SelectVendorContactWidget(false, true));
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
     }

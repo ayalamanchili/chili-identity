@@ -46,13 +46,9 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
         table.setText(0, 1, getKeyValue("Primary"));
         table.setText(0, 2, getKeyValue("Job Title"));
         table.setText(0, 3, getKeyValue("Client"));
-        table.setText(0, 4, getKeyValue("Client Contact"));
-        table.setText(0, 5, getKeyValue("Client Location"));
-        table.setText(0, 6, getKeyValue("Vendor"));
-        table.setText(0, 7, getKeyValue("Vendor Contact"));
-        table.setText(0, 8, getKeyValue("Vendor Location"));
-        table.setText(0, 9, getKeyValue("Start Date"));
-        table.setText(0, 10, getKeyValue("End Date"));
+        table.setText(0, 4, getKeyValue("Vendor"));
+        table.setText(0, 5, getKeyValue("Start Date"));
+        table.setText(0, 6, getKeyValue("End Date"));
     }
 
     @Override
@@ -67,28 +63,12 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
                 JSONObject client = entity.get("client").isObject();
                 table.setText(i, 3, JSONUtils.toString(client, "name"));
             }
-            if (entity.get("clientContact") != null) {
-                JSONObject clientContact = entity.get("clientContact").isObject();
-                table.setText(i, 4, JSONUtils.toString(clientContact, "firstName"));
-            }
-            if (entity.get("clientLocation") != null) {
-                JSONObject clientLocation = entity.get("clientLocation").isObject();
-                table.setText(i, 5, JSONUtils.toString(clientLocation, "street1"));
-            }
             if (entity.get("vendor") != null) {
                 JSONObject vendor = entity.get("vendor").isObject();
-                table.setText(i, 6, JSONUtils.toString(vendor, "name"));
+                table.setText(i, 4, JSONUtils.toString(vendor, "name"));
             }
-            if (entity.get("vendorContact") != null) {
-                JSONObject vendorContact = entity.get("vendorContact").isObject();
-                table.setText(i, 7, JSONUtils.toString(vendorContact, "firstName"));
-            }
-            if (entity.get("vendorLocation") != null) {
-                JSONObject vendorLocation = entity.get("vendorLocation").isObject();
-                table.setText(i, 8, JSONUtils.toString(vendorLocation, "street1"));
-            }
-            table.setText(i, 9, JSONUtils.toString(entity, "startDate"));
-            table.setText(i, 10, JSONUtils.toString(entity, "endDate"));
+            table.setText(i, 5, JSONUtils.toString(entity, "startDate"));
+            table.setText(i, 6, JSONUtils.toString(entity, "endDate"));
         }
     }
 

@@ -41,6 +41,7 @@ public class SelectVendorLocationsWidget extends SelectComposite implements Gene
     public void onChange() {
         if (SelectVendorWidget.instance().getSelectedObjectId() == null || SelectVendorWidget.instance().getSelectedObjectId().isEmpty()) {
             processData(null);
+            return;
         }
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "firstName", "lastName"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {

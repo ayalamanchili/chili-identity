@@ -9,7 +9,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.GenericListener;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.tae.client.SelectClientWidget;
 import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
 
 /**
@@ -42,6 +41,7 @@ public class SelectVendorContactWidget extends SelectComposite implements Generi
     public void onChange() {
         if (SelectVendorWidget.instance().getSelectedObjectId() == null || SelectVendorWidget.instance().getSelectedObjectId().isEmpty()) {
             processData(null);
+            return;
         }
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "firstName", "lastName"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
