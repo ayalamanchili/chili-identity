@@ -20,11 +20,11 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class CreateTimesheetPanel extends CreateComposite {
+public class CreateTimeSheetPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.timesheet.CreateTimesheetPanel.class.getName());
+    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.timesheet.CreateTimeSheetPanel.class.getName());
 
-    public CreateTimesheetPanel(CreateComposite.CreateCompositeType type) {
+    public CreateTimeSheetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Timesheet", OfficeWelcome.constants);
     }
