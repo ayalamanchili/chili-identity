@@ -70,8 +70,7 @@ public class SocialResource {
     public void delete(@PathParam("id") Long id) {
         socialDao.delete(id);
     }
-     
-     
+
     @PUT
     @Path("/addreply/{parentPostId}")
     public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply) {
@@ -86,17 +85,15 @@ public class SocialResource {
 
     @PUT
     @Path("/createCompanyPost")
-     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public Post createCompanyPost(Post companypost) {
-        /*List<String> Emails=null;*/
-        socialnotificationservice.sendNewCompanyPostNotification(companypost.getPostContent());
-        return socialDao.createCompanyPost(companypost);
-
+        companypost = socialDao.createCompanyPost(companypost);
+        socialnotificationservice.sendNewCompanyPostNotification(companypost);
+        return companypost;
     }
 
     @PUT
     @Path("/liked/{postId}")
-   
     public void liked(@PathParam("postId") Long postId) {
         socialDao.liked(postId);
     }

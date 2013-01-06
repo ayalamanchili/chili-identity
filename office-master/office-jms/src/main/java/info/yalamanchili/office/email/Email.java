@@ -5,6 +5,7 @@
 package info.yalamanchili.office.email;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -19,12 +20,16 @@ public class Email implements Serializable {
     protected String subject;
     protected String body;
     protected boolean isHtml = false;
+    protected Set<String> attachments;
     protected String templateName = "default_email_template.html";
 
     public Email() {
     }
 
     public Set<String> getTos() {
+        if (this.tos == null) {
+            this.tos = new HashSet<String>();
+        }
         return tos;
     }
 
@@ -32,12 +37,23 @@ public class Email implements Serializable {
         this.tos = tos;
     }
 
+    public void addTo(String to) {
+        getTos().add(to);
+    }
+
     public Set<String> getCcs() {
+        if (this.ccs == null) {
+            this.ccs = new HashSet<String>();
+        }
         return ccs;
     }
 
     public void setCcs(Set<String> ccs) {
         this.ccs = ccs;
+    }
+
+    public void addCc(String cc) {
+        getCcs().add(cc);
     }
 
     public Set<String> getBccs() {
@@ -72,6 +88,26 @@ public class Email implements Serializable {
         this.isHtml = isHtml;
     }
 
+    public Set<String> getAttachments() {
+        if (this.attachments == null) {
+            this.attachments = new HashSet<String>();
+        }
+        return attachments;
+    }
+
+    public void setAttachments(Set<String> attachments) {
+        this.attachments = attachments;
+    }
+
+    /**
+     * Takes the path of the attachment relative to the content-root base
+     *
+     * @param attachmentPath
+     */
+    public void addAttachment(String attachmentPath) {
+        getAttachments().add(attachmentPath);
+    }
+
     public String getTemplateName() {
         return templateName;
     }
@@ -82,6 +118,6 @@ public class Email implements Serializable {
 
     @Override
     public String toString() {
-        return "Email{" + "tos=" + tos + ", ccs=" + ccs + ", bccs=" + bccs + ", subject=" + subject + ", body=" + body + '}';
+        return "Email{" + "tos=" + tos + ", ccs=" + ccs + ", bccs=" + bccs + ", subject=" + subject + ", body=" + body + ", isHtml=" + isHtml + ", attachments=" + attachments + ", templateName=" + templateName + '}';
     }
 }

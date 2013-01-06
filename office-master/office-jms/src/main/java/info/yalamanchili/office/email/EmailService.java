@@ -5,7 +5,9 @@
 package info.yalamanchili.office.email;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.io.File;
 import java.util.logging.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import javax.mail.Address;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -22,6 +25,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -38,29 +42,41 @@ public class EmailService {
 
     private static Logger logger = Logger.getLogger(EmailService.class.getName());
     protected JavaMailSender mailSender;
+    @Autowired
+    protected OfficeServiceConfiguration officeServiceConfiguration;
 
     @Async
     public void sendEmail(final Email email) {
         final SpringTemplateEngine templateEngine = (SpringTemplateEngine) SpringContext.getBean("templateEngine");
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+                MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
                 Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
                 mimeMessage.setRecipients(Message.RecipientType.BCC, tos);
                 mimeMessage.setSubject(email.getSubject());
-
                 final Context ctx = new Context();
                 ctx.setVariable("email", email);
 
                 String htmlContent = templateEngine.process(email.getTemplateName(), ctx);
                 message.setText(htmlContent, true);
+                processAttchments(message, email);
             }
         };
         try {
             logger.info("sending email:" + email);
+
             mailSender.send(preparator);
         } catch (MailException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    protected void processAttchments(MimeMessageHelper message, Email email) throws MessagingException {
+        for (String attachmentPath : email.getAttachments()) {
+            File attachment = new File(officeServiceConfiguration.getContentManagementLocationRoot() + attachmentPath);
+            if (attachment.exists()) {
+                message.addAttachment(attachment.getName(), attachment);
+            }
         }
     }
 

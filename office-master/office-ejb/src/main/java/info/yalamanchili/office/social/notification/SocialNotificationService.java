@@ -10,6 +10,7 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
+import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostFile;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Arrays;
@@ -35,13 +36,19 @@ public class SocialNotificationService {
     public EmployeeDao employeeDao;
 
     @Async
-    public void sendNewCompanyPostNotification(String PostContent) {
+    public void sendNewCompanyPostNotification(Post post) {
         String[] roles = {OfficeRoles.ROLE_USER, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_ADMIN};
         Email email = new Email();
         email.setIsHtml(true);
         email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("New Post in company feed");
-        email.setBody(PostContent);
+        email.setBody(post.getPostContent());
+        if (post.getPostFiles().size() > 0) {
+            for (PostFile file : post.getPostFiles()) {
+                String path=file.getFileURL().replace("entityId", file.getId().toString());
+                email.addAttachment(path);
+            }
+        }
         messagingService.sendEmail(email);
 
     }
