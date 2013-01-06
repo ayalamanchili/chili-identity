@@ -11,6 +11,8 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
@@ -26,10 +28,16 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllTimesheetPanel.class.getName());
     public static ReadAllTimesheetPanel instance;
+    protected String timeSheetPeriodId = null;
 
-    public ReadAllTimesheetPanel(String parentId) {
+    public ReadAllTimesheetPanel(String timeSheetPeriodId) {
         instance = this;
-        this.parentId = parentId;
+        this.timeSheetPeriodId = timeSheetPeriodId;
+        initTable("Timesheet", OfficeWelcome.constants);
+    }
+
+    public ReadAllTimesheetPanel() {
+        instance = this;
         initTable("Timesheet", OfficeWelcome.constants);
     }
 
@@ -45,7 +53,11 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
     }
 
     public String getReadAllTimesheetPanelURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "timesheet/" + parentId + "/" + start.toString() + "/" + limit.toString();
+        if (timeSheetPeriodId != null) {
+            return OfficeWelcome.constants.root_url() + "timesheet/payperiod/" + timeSheetPeriodId + "/" + start.toString() + "/" + limit.toString();
+        } else {
+            return OfficeWelcome.constants.root_url() + "timesheet/currentuser/" + start.toString() + "/" + limit.toString();
+        }
     }
 
     @Override
@@ -81,7 +93,11 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME)) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        }
     }
 
     @Override
@@ -107,12 +123,12 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Time Sheet Information");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel(parentId));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel(timeSheetPeriodId));
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateTimesheetPanel(parentId, getEntity(entityId)));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateTimesheetPanel(timeSheetPeriodId, getEntity(entityId)));
     }
 }

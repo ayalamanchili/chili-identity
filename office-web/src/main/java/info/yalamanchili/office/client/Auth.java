@@ -47,4 +47,12 @@ public class Auth {
             return false;
         }
     }
+
+    public static boolean hasOnlyUserRole() {
+        if (OfficeWelcome.instance().roles.size() == 1 && OfficeWelcome.instance().roles.contains(ROLE.ROLE_USER.name())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

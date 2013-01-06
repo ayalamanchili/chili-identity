@@ -30,6 +30,7 @@ import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.TAEMenu;
 import info.yalamanchili.office.client.tae.client.ClientSidePanel;
 import info.yalamanchili.office.client.tae.client.ReadAllClientsPanel;
+import info.yalamanchili.office.client.tae.timesheet.EmpTimeSummaryPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
@@ -51,9 +52,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME)) {
-            tabPanel.add(timeandExpensePanel, "Time", false);
-        }
+        tabPanel.add(timeandExpensePanel, "Time", false);
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(profilePanel, "Profile", false);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_EXPENSE)) {
@@ -193,8 +192,12 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         timeandExpensePanel.entityPanel.clear();
         timeandExpensePanel.sidePanelTop.clear();
         timeandExpensePanel.entityTitlePanel.add(new TAEMenu());
-        timeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
-        timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
+        if (Auth.hasOnlyUserRole()) {
+            timeandExpensePanel.entityPanel.add(new EmpTimeSummaryPanel());
+        } else {
+            timeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
+            timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
+        }
 
 
     }

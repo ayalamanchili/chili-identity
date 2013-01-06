@@ -30,8 +30,8 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     FlowPanel timesheetsPanel = new FlowPanel();
     //TimeSheet Period Dropdown
     SelectTimesheetPeriodWidget timePeriodWidget = new SelectTimesheetPeriodWidget(false, false);
-    Button showTimeSheetsB = new Button("view");
-    Button createMonthlyTimeSheetsB = new Button("create");
+    Button showTimeSheetsB = new Button("View");
+    Button createMonthlyTimeSheetsB = new Button("Create");
 
     public TimeSheetSidePanel() {
         init(timeSheetsidepanel);

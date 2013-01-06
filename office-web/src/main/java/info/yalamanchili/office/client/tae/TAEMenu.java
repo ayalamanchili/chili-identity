@@ -15,7 +15,7 @@ import info.yalamanchili.office.client.tae.project.ProjectSidePanel;
 import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.tae.sow.SOWSidePanel;
 import info.yalamanchili.office.client.tae.sow.ReadAllSOWPanel;
-import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
+import info.yalamanchili.office.client.tae.timesheet.EmpTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
@@ -42,9 +42,8 @@ public class TAEMenu extends Composite {
             tAEMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
 //            tAEMenuBar.addItem("SOW's", sowMaintainenceCmd);
             tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
-            tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
-
         }
+        tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
         tAEMenuBar.addStyleName("entityMenuBar");
     }
     Command clientsMaintainenceCmd = new Command() {
@@ -75,8 +74,12 @@ public class TAEMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetPeriodSidePanel());
+            if (Auth.hasOnlyUserRole()) {
+                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new EmpTimeSummaryPanel());
+            } else {
+                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
+                TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetPeriodSidePanel());
+            }
         }
     };
     Command timeSheetsMaintainenceCmd = new Command() {
