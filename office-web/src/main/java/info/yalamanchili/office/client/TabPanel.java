@@ -161,7 +161,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             });
         }
     }
-
+//TODO update selects to call the menu commands.
+    
     public void selectHomeTab() {
         homePanel.entityPanel.clear();
         homePanel.sidePanelTop.clear();
