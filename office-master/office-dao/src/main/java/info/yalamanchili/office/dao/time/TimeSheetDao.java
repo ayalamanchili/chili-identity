@@ -37,6 +37,14 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
         return query.getResultList();
     }
 
+    public List<TimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit) {
+        Query query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+        query.setParameter("employeeParam", employee);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
     @Override
     public TimeSheet save(TimeSheet entity) {
         if (entity.getId() != null) {

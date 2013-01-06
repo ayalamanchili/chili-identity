@@ -37,7 +37,7 @@ public class TimeService {
     @PersistenceContext
     protected EntityManager em;
 
-    public TimeSummary GetTimeSummary(Employee emp) {
+    public TimeSummary getTimeSummary(Employee emp) {
         String qlString = "SELECT SUM(quickBooksHours), SUM(adpHours) FROM TimeSheet WHERE employee=:employeeparam ";
         Query q = em.createQuery(qlString);
         q.setParameter("employeeparam", emp);
