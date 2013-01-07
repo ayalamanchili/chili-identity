@@ -36,7 +36,8 @@ public class ReadAllSOWPanel extends ReadAllComposite {
         instance = this;
         initTable("StatementOfWork", array, OfficeWelcome.constants);
     }
-     public ReadAllSOWPanel(String parentId) {
+
+    public ReadAllSOWPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("StatementOfWork", OfficeWelcome.constants);
@@ -113,13 +114,13 @@ public class ReadAllSOWPanel extends ReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted StatementOfWork Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSOWPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateSOWPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateSOWPanel(getEntity(entityId)));
     }
 }
