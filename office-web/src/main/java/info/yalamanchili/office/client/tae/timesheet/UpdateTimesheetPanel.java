@@ -14,7 +14,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.tae.sow.SelectSOWWidget;
+import info.yalamanchili.office.client.admin.sow.SelectSOWWidget;
 import info.yalamanchili.office.client.tae.timesheetperiod.SelectTimesheetPeriodWidget;
 import java.util.logging.Logger;
 
