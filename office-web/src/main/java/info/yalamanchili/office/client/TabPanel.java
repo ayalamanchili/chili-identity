@@ -28,8 +28,8 @@ import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificati
 import info.yalamanchili.office.client.social.SocialMenu;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.TAEMenu;
-import info.yalamanchili.office.client.tae.client.ClientSidePanel;
-import info.yalamanchili.office.client.tae.client.ReadAllClientsPanel;
+import info.yalamanchili.office.client.admin.client.ClientSidePanel;
+import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.tae.timesheet.EmpTimeSummaryPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
