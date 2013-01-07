@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class CreateTodoPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.client.CreateClientPanel.class.getName());
+    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.client.CreateClientPanel.class.getName());
 
     public CreateTodoPanel(CreateComposite.CreateCompositeType type) {
         super(type);
