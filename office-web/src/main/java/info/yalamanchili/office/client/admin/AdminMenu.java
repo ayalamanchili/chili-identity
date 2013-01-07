@@ -11,6 +11,14 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroupSidePanel;
 import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
+import info.yalamanchili.office.client.admin.client.ClientSidePanel;
+import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
+import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
+import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
+import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
+import info.yalamanchili.office.client.admin.sow.SOWSidePanel;
+import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
+import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
 
 /**
  *
@@ -29,6 +37,10 @@ public class AdminMenu extends Composite {
         MenuBar menu = new MenuBar(true);
 
         if (Auth.isAdmin() || Auth.isHR()) {
+            adminMenuBar.addItem("Clients", clientsMaintainenceCmd);
+            adminMenuBar.addItem("Projects", projectsMaintainenceCmd);
+            adminMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
+            adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
             adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
 
         }
@@ -40,6 +52,38 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new NotificationGroupSidePanel());
+        }
+    };
+    Command clientsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllClientsPanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new ClientSidePanel());
+        }
+    };
+    Command projectsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllProjectsPanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new ProjectSidePanel());
+        }
+    };
+    Command sowMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllSOWPanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new SOWSidePanel());
+        }
+    };
+    Command vendorsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllVendorsPanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new VendorsSidePanel());
         }
     };
 }
