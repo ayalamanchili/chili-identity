@@ -17,16 +17,15 @@ import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
  *
  * @author raghu
  */
-public class SOWOptionsPanel extends ALComposite implements ClickHandler{
+public class SOWOptionsPanel extends ALComposite implements ClickHandler {
 
-     protected HorizontalPanel panel = new HorizontalPanel();
-
+    protected HorizontalPanel panel = new HorizontalPanel();
     protected ClickableLink addSOWLink = new ClickableLink("Add SOW");
-    
-     public SOWOptionsPanel() {
-		init(panel);
-	}
-     
+
+    public SOWOptionsPanel() {
+        init(panel);
+    }
+
     @Override
     protected void addListeners() {
         addSOWLink.addClickHandler(this);
@@ -39,17 +38,16 @@ public class SOWOptionsPanel extends ALComposite implements ClickHandler{
 
     @Override
     protected void addWidgets() {
-         if (Auth.isAdmin() || Auth.isHR()) {
-			panel.add(addSOWLink);
-		}
+        if (Auth.isAdmin() || Auth.isHR()) {
+            panel.add(addSOWLink);
+        }
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addSOWLink)) {
-			TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-			TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateSOWPanel(CreateCompositeType.ADD));
-		}
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateSOWPanel(CreateCompositeType.ADD));
+        }
     }
-    
 }
