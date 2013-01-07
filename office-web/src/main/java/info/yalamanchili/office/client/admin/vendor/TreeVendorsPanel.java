@@ -51,14 +51,14 @@ public class TreeVendorsPanel extends TreePanelComposite {
     @Override
     public void treeNodeSelected(String entityNodeKey) {
         if (VENDORLOCATION_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorLocationPanel(entityId));
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new VendorLocationOptionsPanel());
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(entityId));
+            TabPanel.instance().adminPanel.entityPanel.add(new VendorLocationOptionsPanel());
         }
         if (VENDORCONTACTS_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorContactPanel(entityId));
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new VendorContactOptionsPanel());
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(entityId));
+            TabPanel.instance().adminPanel.entityPanel.add(new VendorContactOptionsPanel());
         }
     }
 
