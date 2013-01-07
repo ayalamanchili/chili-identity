@@ -4,7 +4,6 @@
  */
 package info.yalamanchili.office.client.admin.client;
 
-import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -12,8 +11,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.emailtype.CreateEmailTypePanel;
-import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -64,10 +61,10 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully Client created");
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel());
     }
 
     @Override
@@ -90,6 +87,6 @@ public class CreateClientPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "client" ;
+        return OfficeWelcome.constants.root_url() + "client";
     }
 }
