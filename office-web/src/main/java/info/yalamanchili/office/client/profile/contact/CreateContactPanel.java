@@ -79,9 +79,9 @@ public abstract class CreateContactPanel extends CreateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, false, strs);
         addField("email", false, false, DataType.STRING_FIELD);
-        addField("countryCode", false, false, DataType.STRING_FIELD);
+        addField("countryCode", false, false, DataType.LONG_FIELD);
         addField("phoneNumber", false, false, DataType.LONG_FIELD);
-        addField("extension", false, false, DataType.STRING_FIELD);
+        addField("extension", false, false, DataType.LONG_FIELD);
     }
 
     @Override
