@@ -8,8 +8,11 @@ import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.FileType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -25,6 +28,7 @@ import org.hibernate.envers.Audited;
 public class PostFile extends AbstractEntity {
 
     protected String fileURL;
+    @Enumerated(EnumType.STRING)
     protected FileType fileType;
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Post_PostFiles")
@@ -47,6 +51,15 @@ public class PostFile extends AbstractEntity {
 
     public void setFileType(FileType fileType) {
         this.fileType = fileType;
+    }
+
+    @XmlTransient
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     @Override

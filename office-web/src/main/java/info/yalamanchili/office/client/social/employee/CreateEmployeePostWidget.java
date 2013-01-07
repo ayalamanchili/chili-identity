@@ -40,7 +40,7 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     RichTextArea createPostTextArea = new RichTextArea();
     Button createPostB = new Button("Share");
-    FileuploadField imageUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL",false) {
+    FileuploadField imageUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL", false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
@@ -81,21 +81,21 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
         JSONObject post = new JSONObject();
         post.put("postContent", new JSONString(createPostTextArea.getHTML()));
         if (imageUploadPanel.getFileUpload().getFilename() != null && !"".equals(imageUploadPanel.getFileUpload().getFilename().trim())) {
-            JSONArray postImages = new JSONArray();
-            JSONObject postImage1 = new JSONObject();
-            postImage1.put("fileURL", imageUploadPanel.getFileName());
-            postImage1.put("fileType", new JSONString("IMAGE"));
+            JSONArray postAttachments = new JSONArray();
+            JSONObject postAttachment = new JSONObject();
+            postAttachment.put("fileURL", imageUploadPanel.getFileName());
+            postAttachment.put("fileType", new JSONString("IMAGE"));
             if (FileUtils.isImage(imageUploadPanel.getFileName().stringValue())) {
-                postImage1.put("fileType", new JSONString("IMAGE"));
+                postAttachment.put("fileType", new JSONString("IMAGE"));
             } else if (FileUtils.isDocument(imageUploadPanel.getFileName().stringValue())) {
-                postImage1.put("fileType", new JSONString("FILE"));
+                postAttachment.put("fileType", new JSONString("FILE"));
             } else {
                 Window.alert("Unsupported file extension");
                 throw new RuntimeException("unsupported file type");
             }
-            logger.info(postImage1.toString());
-            postImages.set(0, postImage1);
-            post.put("postFiles", postImages);
+            postAttachments.set(0, postAttachment);
+            post.put("postFiles", postAttachments);
+            logger.info(post.toString());
         }
         return post;
     }

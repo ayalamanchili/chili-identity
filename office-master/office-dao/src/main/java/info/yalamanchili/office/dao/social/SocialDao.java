@@ -6,6 +6,7 @@ import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostLike;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.social.PostFile;
 import java.util.Date;
 
 
@@ -58,6 +59,9 @@ public class SocialDao {
 
     public Post createPost(Post newPost) {
         newPost.setPostTimeStamp(new Date());
+        for (PostFile file : newPost.getPostFiles()) {
+            file.setPost(newPost);
+        }
         newPost.setEmployee(securityService.getCurrentUser());
         return em.merge(newPost);
     }
@@ -70,6 +74,9 @@ public class SocialDao {
         }
         newcompanypost.setCompany(company);
         newcompanypost.setPostTimeStamp(new Date());
+        for (PostFile file : newcompanypost.getPostFiles()) {
+            file.setPost(newcompanypost);
+        }
         return em.merge(newcompanypost);
     }
 
@@ -79,10 +86,11 @@ public class SocialDao {
         like.setPost(em.find(Post.class, postId));
         em.merge(like);
     }
-      public void delete(Long id) {
+
+    public void delete(Long id) {
         try {
-           em.remove(em.find(Post.class, id));
-           em.flush();
+            em.remove(em.find(Post.class, id));
+            em.flush();
         } catch (javax.persistence.PersistenceException e) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "SQLError", "cannot delete due to associated data");
         }
