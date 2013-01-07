@@ -20,12 +20,12 @@ import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 public class ProjectOptionsPanel extends ALComposite implements ClickHandler {
 
     protected HorizontalPanel panel = new HorizontalPanel();
-
     protected ClickableLink addProjectLink = new ClickableLink("Add Project");
-    
+
     public ProjectOptionsPanel() {
-		init(panel);
-	}
+        init(panel);
+    }
+
     @Override
     protected void addListeners() {
         addProjectLink.addClickHandler(this);
@@ -38,17 +38,16 @@ public class ProjectOptionsPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-       if (Auth.isAdmin() || Auth.isHR()) {
-			panel.add(addProjectLink);
-		}
+        if (Auth.isAdmin() || Auth.isHR()) {
+            panel.add(addProjectLink);
+        }
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addProjectLink)) {
-			TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-			TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateProjectPanel(CreateCompositeType.ADD,false));
-		}
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateProjectPanel(CreateCompositeType.ADD, false));
+        }
     }
-    
 }
