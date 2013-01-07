@@ -28,10 +28,10 @@ public class TAEMenu extends Composite {
     }
 
     protected void configureTAEMenu() {
+        tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
         if (Auth.isAdmin() || Auth.isHR()) {
             tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
         }
-        tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
         tAEMenuBar.addStyleName("entityMenuBar");
     }
     Command timeSheetPeriodsMaintainenceCmd = new Command() {
