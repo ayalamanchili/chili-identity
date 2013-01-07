@@ -72,11 +72,11 @@ public class CreateProjectPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Project successfully created");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.clear();
         if (!showClient) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(clntId));
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(clntId));
         } else {
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
         }
     }
 
