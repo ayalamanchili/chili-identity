@@ -17,8 +17,8 @@ import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
 import info.yalamanchili.office.client.admin.sow.SOWSidePanel;
-import info.yalamanchili.office.client.tae.vendor.ReadAllVendorsPanel;
-import info.yalamanchili.office.client.tae.vendor.VendorsSidePanel;
+import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
+import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
 
 /**
  *
