@@ -12,21 +12,22 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.admin.project.CreateProjectPanel;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Yogi
  */
 public class ProjectSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger=Logger.getLogger(info.yalamanchili.office.client.admin.project.ProjectSidePanel.class.getName());
-    public FlowPanel projectsidepanel=new FlowPanel();
-    ClickableLink createprojectlink= new ClickableLink("Create Project");
-    
-     public ProjectSidePanel(){
+    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.project.ProjectSidePanel.class.getName());
+    public FlowPanel projectsidepanel = new FlowPanel();
+    ClickableLink createprojectlink = new ClickableLink("Create Project");
+
+    public ProjectSidePanel() {
         init(projectsidepanel);
     }
+
     @Override
     protected void addListeners() {
         createprojectlink.addClickHandler(this);
@@ -34,12 +35,11 @@ public class ProjectSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
     protected void addWidgets() {
-         if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isHR()) {
             projectsidepanel.add(createprojectlink);
         }
     }
@@ -47,9 +47,8 @@ public class ProjectSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createprojectlink)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE,true));
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateProjectPanel(CreateComposite.CreateCompositeType.CREATE, true));
         }
     }
-    
 }
