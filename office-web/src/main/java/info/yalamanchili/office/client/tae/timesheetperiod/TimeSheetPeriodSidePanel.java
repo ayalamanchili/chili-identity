@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public class TimeSheetPeriodSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger=Logger.getLogger(info.yalamanchili.office.client.tae.client.ClientSidePanel.class.getName());
+    private static Logger logger=Logger.getLogger(info.yalamanchili.office.client.admin.client.ClientSidePanel.class.getName());
     public FlowPanel timesheetperiodsidepanel=new FlowPanel();
     ClickableLink createtimesheetperiodlink= new ClickableLink("Create Time Sheet Period");
     
