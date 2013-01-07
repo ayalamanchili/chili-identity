@@ -16,7 +16,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.tae.client.TreeClientPanel;
+import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 import java.util.logging.Logger;
 
 /**
