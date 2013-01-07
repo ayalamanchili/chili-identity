@@ -76,10 +76,10 @@ public class ReadAllVendorsPanel extends ReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TreeVendorsPanel(entityId));
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadVendorsPanel(entityId));
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(entityId));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadVendorsPanel(entityId));
     }
 
     @Override
@@ -100,15 +100,15 @@ public class ReadAllVendorsPanel extends ReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Vendor Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorsPanel());
-        TabPanel.instance().timeandExpensePanel.sidePanel.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanel.add(new VendorsSidePanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorsPanel());
+        TabPanel.instance().adminPanel.sidePanel.clear();
+        TabPanel.instance().adminPanel.sidePanel.add(new VendorsSidePanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateVendorsPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorsPanel(getEntity(entityId)));
     }
 }
