@@ -6,18 +6,18 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
-import info.yalamanchili.office.client.tae.client.SelectClientWidget;
+import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.tae.clientcontact.SelectClientContactWidget;
-import info.yalamanchili.office.client.tae.clientlocation.SelectClientLocationWidget;
-import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
-import info.yalamanchili.office.client.tae.vendorcontact.SelectVendorContactWidget;
-import info.yalamanchili.office.client.tae.vendorlocation.SelectVendorLocationsWidget;
+import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
+import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 
 public class CreateClientInfoPanel extends CreateComposite {
 
