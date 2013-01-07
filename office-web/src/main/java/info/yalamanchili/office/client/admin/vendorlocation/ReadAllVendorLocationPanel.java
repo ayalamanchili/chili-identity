@@ -113,13 +113,13 @@ public class ReadAllVendorLocationPanel extends ReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Vendor location Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllVendorLocationPanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateVendorLocationsPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorLocationsPanel(getEntity(entityId)));
     }
 }
