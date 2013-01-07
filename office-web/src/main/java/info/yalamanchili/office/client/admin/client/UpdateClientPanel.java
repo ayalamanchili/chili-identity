@@ -20,9 +20,10 @@ import info.yalamanchili.office.client.rpc.HttpService;
  */
 public class UpdateClientPanel extends UpdateComposite {
 
-     public UpdateClientPanel(JSONObject entity) {
+    public UpdateClientPanel(JSONObject entity) {
         initUpdateComposite(entity, "Client", OfficeWelcome.constants);
     }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
@@ -32,7 +33,7 @@ public class UpdateClientPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
@@ -55,20 +56,18 @@ public class UpdateClientPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated client");
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear(); 
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel());
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-       
     }
 
     @Override
@@ -79,12 +78,10 @@ public class UpdateClientPanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-       
     }
 
     @Override
     protected String getURI() {
-         return OfficeWelcome.constants.root_url() + "client";
+        return OfficeWelcome.constants.root_url() + "client";
     }
-    
 }
