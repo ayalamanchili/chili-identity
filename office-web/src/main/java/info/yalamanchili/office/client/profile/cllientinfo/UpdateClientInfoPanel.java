@@ -10,12 +10,12 @@ import info.yalamanchili.office.client.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.yalamanchili.office.client.tae.client.SelectClientWidget;
-import info.yalamanchili.office.client.tae.clientcontact.SelectClientContactWidget;
-import info.yalamanchili.office.client.tae.clientlocation.SelectClientLocationWidget;
-import info.yalamanchili.office.client.tae.vendor.SelectVendorWidget;
-import info.yalamanchili.office.client.tae.vendorcontact.SelectVendorContactWidget;
-import info.yalamanchili.office.client.tae.vendorlocation.SelectVendorLocationsWidget;
+import info.yalamanchili.office.client.admin.client.SelectClientWidget;
+import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
+import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 
 public class UpdateClientInfoPanel extends UpdateComposite {
 
