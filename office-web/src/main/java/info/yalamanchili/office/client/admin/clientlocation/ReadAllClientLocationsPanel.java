@@ -15,7 +15,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 import java.util.logging.Logger;
 
 /**
@@ -38,7 +37,6 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite {
         initTable("ClientLocation", OfficeWelcome.constants);
     }
 
-   
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getClientLocURL(start, OfficeWelcome.constants.tableSize()),
@@ -110,21 +108,19 @@ public class ReadAllClientLocationsPanel extends ReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-         return OfficeWelcome.instance().constants.root_url() + "address/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "address/delete/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Client location Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientLocationsPanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-//        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-//        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateClientLocationPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateClientLocationPanel(getEntity(entityId)));
     }
 }
