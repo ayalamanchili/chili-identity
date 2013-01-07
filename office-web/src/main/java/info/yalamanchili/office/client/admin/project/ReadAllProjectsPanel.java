@@ -105,22 +105,20 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
     public void postDeleteSuccess() {
 
         new ResponseStatusWidget().show("Successfully deleted Projects Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-          if (parentId != null) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(TreeClientPanel.instance().getEntityId()));
-          }
-          else
-          {
-           TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel());
-          }
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        if (parentId != null) {
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(TreeClientPanel.instance().getEntityId()));
+        } else {
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
+        }
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TreeClientPanel(entityId));
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateProjectPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(entityId));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateProjectPanel(getEntity(entityId)));
     }
 
     public String getReadAllProjectsPanelURL(Integer start, String limit) {
