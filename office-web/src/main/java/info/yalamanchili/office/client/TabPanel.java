@@ -23,14 +23,14 @@ import info.yalamanchili.office.client.drive.DriveTreePanel;
 import info.yalamanchili.office.client.help.HelpHome;
 import info.yalamanchili.office.client.home.HomeStackPanel;
 import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
-import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroupSidePanel;
-import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.social.SocialMenu;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.TAEMenu;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.tae.timesheet.EmpTimeSummaryPanel;
+import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
+import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
@@ -196,8 +196,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (Auth.hasOnlyUserRole()) {
             timeandExpensePanel.entityPanel.add(new EmpTimeSummaryPanel());
         } else {
-            timeandExpensePanel.entityPanel.add(new ReadAllClientsPanel());
-            timeandExpensePanel.sidePanelTop.add(new ClientSidePanel());
+            timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
+            timeandExpensePanel.sidePanelTop.add(new TimeSheetSidePanel());
         }
 
 
