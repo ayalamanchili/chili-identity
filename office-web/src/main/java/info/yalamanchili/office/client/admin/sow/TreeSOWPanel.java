@@ -4,14 +4,11 @@
  */
 package info.yalamanchili.office.client.admin.sow;
 
-import com.google.gwt.json.client.JSONObject;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.admin.project.ProjectOptionsPanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
-import info.yalamanchili.office.client.admin.sow.SOWOptionsPanel;
-import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
 import java.util.logging.Logger;
 
 /**
@@ -50,21 +47,19 @@ public class TreeSOWPanel extends TreePanelComposite {
     @Override
     public void treeNodeSelected(String entityNodeKey) {
         if (TIMESHEET_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ProjectOptionsPanel());
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new SOWOptionsPanel());
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
+            TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
+            TabPanel.instance().adminPanel.entityPanel.add(new SOWOptionsPanel());
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSOWPanel());
         }
     }
 
     @Override
     public void loadEntity() {
-       
     }
 
     @Override
     public void showEntity() {
-       
     }
 }
