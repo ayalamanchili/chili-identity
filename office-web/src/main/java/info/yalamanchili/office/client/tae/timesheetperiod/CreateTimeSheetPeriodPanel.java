@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.client.tae.timesheetperiod;
 
-import info.yalamanchili.office.client.tae.project.ReadAllProjectsPanel;
+import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 public class CreateTimeSheetPeriodPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.tae.client.CreateClientPanel.class.getName());
+    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.client.CreateClientPanel.class.getName());
 
     public CreateTimeSheetPeriodPanel(CreateComposite.CreateCompositeType type) {
         super(type);
