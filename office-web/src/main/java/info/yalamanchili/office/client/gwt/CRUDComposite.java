@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.TextAreaField;
 
 public abstract class CRUDComposite extends Composite {
 
@@ -144,6 +145,12 @@ public abstract class CRUDComposite extends Composite {
             };
             entityDisplayWidget.add(fileUploadPanel);
         }
+        if (DataType.TEXT_AREA_FIELD.equals(type)) {
+            TextAreaField textAreaField = new TextAreaField(constants, attributeName, entityName, readOnly, isRequired);
+            textAreaField.addStyleName("y-gwt-TextAreaField");
+            fields.put(attributeName, textAreaField);
+            entityDisplayWidget.add(textAreaField);
+        }
         if (DataType.RICH_TEXT_AREA.equals(type)) {
             RichTextField richTextField = new RichTextField(constants, attributeName, entityName, readOnly, isRequired);
             richTextField.addStyleName("y-gwt-RichTextField");
@@ -179,6 +186,12 @@ public abstract class CRUDComposite extends Composite {
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
+                entity.put(fieldKey, new JSONString(field.getValue()));
+            }
+        }
+        if (fields.get(fieldKey) instanceof TextAreaField) {
+            TextAreaField field = (TextAreaField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
@@ -247,6 +260,10 @@ public abstract class CRUDComposite extends Composite {
         }
         if (DataType.STRING_FIELD.equals(type)) {
             StringField field = (StringField) fields.get(fieldKey);
+            field.setValue(JSONUtils.toString(entity, fieldKey));
+        }
+        if (DataType.TEXT_AREA_FIELD.equals(type)) {
+            TextAreaField field = (TextAreaField) fields.get(fieldKey);
             field.setValue(JSONUtils.toString(entity, fieldKey));
         }
         if (DataType.DATE_FIELD.equals(type)) {
