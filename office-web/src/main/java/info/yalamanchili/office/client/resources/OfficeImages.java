@@ -58,6 +58,9 @@ public interface OfficeImages extends ClientBundle {
     @ImageOptions(repeatStyle = RepeatStyle.Horizontal)
     ImageResource pagingBar();
 
+    @Source("images/file_attachment_icon.png")
+    ImageResource fileAttachmentIcon();
+
     @Source("images/search_bg.png")
     ImageResource searchBG();
 

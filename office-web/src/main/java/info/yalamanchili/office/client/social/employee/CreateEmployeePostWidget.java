@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
@@ -29,6 +30,9 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
@@ -40,7 +44,8 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     HorizontalPanel buttonsPanel = new HorizontalPanel();
     RichTextArea createPostTextArea = new RichTextArea();
     Button createPostB = new Button("Share");
-    FileuploadField imageUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL", false) {
+    Image fileUploadIcon = new Image(OfficeImages.INSTANCE.fileAttachmentIcon());
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "", "PostFile/fileURL", false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
@@ -57,13 +62,15 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
         createPostTextArea.addStyleName("createPostTextArea");
         createPostTextArea.setHeight("3em");
         createPostB.setEnabled(false);
+        fileUploadPanel.setVisible(false);
     }
 
     @Override
     protected void addWidgets() {
         captionPanel.setCaptionHTML("Employee Feed...");
         buttonsPanel.add(createPostB);
-        buttonsPanel.add(imageUploadPanel);
+        buttonsPanel.add(fileUploadIcon);
+        buttonsPanel.add(fileUploadPanel);
         mainPanel.add(createPostTextArea);
         mainPanel.add(buttonsPanel);
         captionPanel.setContentWidget(mainPanel);
@@ -75,19 +82,20 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
         createPostTextArea.addKeyUpHandler(this);
         createPostTextArea.addFocusHandler(this);
         createPostTextArea.addBlurHandler(this);
+        fileUploadIcon.addClickHandler(this);
     }
 
     protected JSONObject populatePostEntity() {
         JSONObject post = new JSONObject();
         post.put("postContent", new JSONString(createPostTextArea.getHTML()));
-        if (imageUploadPanel.getFileUpload().getFilename() != null && !"".equals(imageUploadPanel.getFileUpload().getFilename().trim())) {
+        if (fileUploadPanel.getFileUpload().getFilename() != null && !"".equals(fileUploadPanel.getFileUpload().getFilename().trim())) {
             JSONArray postAttachments = new JSONArray();
             JSONObject postAttachment = new JSONObject();
-            postAttachment.put("fileURL", imageUploadPanel.getFileName());
+            postAttachment.put("fileURL", fileUploadPanel.getFileName());
             postAttachment.put("fileType", new JSONString("IMAGE"));
-            if (FileUtils.isImage(imageUploadPanel.getFileName().stringValue())) {
+            if (FileUtils.isImage(fileUploadPanel.getFileName().stringValue())) {
                 postAttachment.put("fileType", new JSONString("IMAGE"));
-            } else if (FileUtils.isDocument(imageUploadPanel.getFileName().stringValue())) {
+            } else if (FileUtils.isDocument(fileUploadPanel.getFileName().stringValue())) {
                 postAttachment.put("fileType", new JSONString("FILE"));
             } else {
                 Window.alert("Unsupported file extension");
@@ -114,13 +122,14 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     protected void uploadImage(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
-        logger.info(imageUploadPanel.toString());
-        imageUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
+        logger.info(fileUploadPanel.toString());
+        fileUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
     }
 
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Shared");
-        EmployeeFeedHome.instance().refresh();
+        TabPanel.instance().getSocialPanel().entityPanel.clear();
+        TabPanel.instance().getSocialPanel().entityPanel.add(new EmployeeFeedHome());
     }
 
     protected String getURI() {
@@ -131,6 +140,13 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createPostB)) {
             createPostClicked(populatePostEntity());
+        }
+        if (event.getSource().equals(fileUploadIcon)) {
+            if (fileUploadPanel.isVisible()) {
+                fileUploadPanel.setVisible(false);
+            } else {
+                fileUploadPanel.setVisible(true);
+            }
         }
     }
 

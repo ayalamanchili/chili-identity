@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
@@ -30,6 +31,7 @@ import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -46,7 +48,8 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     final RichTextArea textArea = new RichTextArea();
     final RichTextToolBar toolBar = new RichTextToolBar(textArea);
     Button createPostB = new Button("Share");
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "fileUrl", "PostFile/fileURL", false) {
+    Image fileUploadIcon = new Image(OfficeImages.INSTANCE.fileAttachmentIcon());
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "", "PostFile/fileURL", false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
@@ -61,6 +64,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     protected void addWidgets() {
         captionPanel.setCaptionHTML("System Soft Feed...");
         buttonsPanel.add(createPostB);
+        buttonsPanel.add(fileUploadIcon);
         buttonsPanel.add(fileUploadPanel);
         mainPanel.add(toolBar);
         mainPanel.add(textArea);
@@ -73,6 +77,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
         createPostB.addClickHandler(this);
         textArea.addKeyUpHandler(this);
         textArea.addFocusHandler(this);
+        fileUploadIcon.addClickHandler(this);
     }
 
     @Override
@@ -81,6 +86,7 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
         textArea.setWidth("100%");
         textArea.setHeight("80%");
         createPostB.setEnabled(false);
+        fileUploadPanel.setVisible(false);
     }
 
     protected JSONObject populatePostEntity() {
@@ -135,6 +141,13 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createPostB)) {
             createCompanyPostClicked(populatePostEntity());
+        }
+        if (event.getSource().equals(fileUploadIcon)) {
+            if (fileUploadPanel.isVisible()) {
+                fileUploadPanel.setVisible(false);
+            } else {
+                fileUploadPanel.setVisible(true);
+            }
         }
     }
 
