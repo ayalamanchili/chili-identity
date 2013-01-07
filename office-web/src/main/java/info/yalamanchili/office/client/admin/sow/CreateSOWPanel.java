@@ -66,10 +66,10 @@ public class CreateSOWPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully SOW created");
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new SOWSidePanel());
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new SOWSidePanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSOWPanel());
     }
 
     @Override
