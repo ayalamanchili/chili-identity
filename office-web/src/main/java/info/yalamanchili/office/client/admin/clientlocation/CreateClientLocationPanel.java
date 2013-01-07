@@ -47,9 +47,9 @@ public class CreateClientLocationPanel extends CreateAddressPanel {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("successfully added Client Locatrion");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ClientLocationOptionsPanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
+        TabPanel.instance().adminPanel.entityPanel.add(new ClientLocationOptionsPanel());
 
     }
 
