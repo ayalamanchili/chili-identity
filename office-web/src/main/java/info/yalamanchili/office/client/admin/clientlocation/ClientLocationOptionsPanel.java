@@ -12,7 +12,6 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.contact.CreateContactPanel;
 
 /**
  *
@@ -21,16 +20,15 @@ import info.yalamanchili.office.client.profile.contact.CreateContactPanel;
 public class ClientLocationOptionsPanel extends ALComposite implements ClickHandler {
 
     protected HorizontalPanel panel = new HorizontalPanel();
-
     protected ClickableLink addClientLocLink = new ClickableLink("Add Client Location");
-    
-     public ClientLocationOptionsPanel() {
-		init(panel);
-	}
-     
+
+    public ClientLocationOptionsPanel() {
+        init(panel);
+    }
+
     @Override
     protected void addListeners() {
-         addClientLocLink.addClickHandler(this);
+        addClientLocLink.addClickHandler(this);
     }
 
     @Override
@@ -41,16 +39,15 @@ public class ClientLocationOptionsPanel extends ALComposite implements ClickHand
     @Override
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.isHR()) {
-			panel.add(addClientLocLink);
-		}
+            panel.add(addClientLocLink);
+        }
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientLocLink)) {
-			TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-			TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateClientLocationPanel(CreateComposite.CreateCompositeType.ADD));
-		}
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateClientLocationPanel(CreateComposite.CreateCompositeType.ADD));
+        }
     }
-    
 }
