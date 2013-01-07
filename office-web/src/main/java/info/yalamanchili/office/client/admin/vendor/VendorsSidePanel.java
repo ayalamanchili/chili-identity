@@ -47,8 +47,8 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createvendorslink)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateVendorPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateVendorPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
