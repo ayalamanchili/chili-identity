@@ -11,7 +11,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
-import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 
@@ -71,8 +70,8 @@ public class UpdateSOWPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("successfully updated Employee Statement Of Work Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllSOWPanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSOWPanel());
     }
 
     @Override
