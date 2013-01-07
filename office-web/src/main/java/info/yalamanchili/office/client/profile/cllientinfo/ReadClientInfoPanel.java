@@ -11,6 +11,12 @@ import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ReadComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.admin.client.SelectClientWidget;
+import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
+import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import java.util.logging.Logger;
 
 /**
@@ -51,16 +57,16 @@ public class ReadClientInfoPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("reportsToRole", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("rtPrimary", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("phoneNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("client", entity, null);
+        assignFieldValueFromEntity("clientContact", entity, null);
+        assignFieldValueFromEntity("clientLocation", entity, null);
+        assignFieldValueFromEntity("vendor", entity, null);
+        assignFieldValueFromEntity("vendorContact", entity, null);
+        assignFieldValueFromEntity("vendorLocation", entity, null);
+        assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        
     }
 
     @Override
@@ -74,17 +80,15 @@ public class ReadClientInfoPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
-        addField("reportsToRole", false, true, DataType.STRING_FIELD);
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs);
-        addField("rtPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
-        addField("email", false, true, DataType.STRING_FIELD);
-        addField("extension", false, true, DataType.STRING_FIELD);
-        addField("countryCode", false, true, DataType.STRING_FIELD);
+        addDropDown("client", new SelectClientWidget(false, true));
+        addDropDown("clientContact", new SelectClientContactWidget(false, true));
+        addDropDown("clientLocation", new SelectClientLocationWidget(false, true));
+        addDropDown("vendor", new SelectVendorWidget(false, true));
+        addDropDown("vendorContact", new SelectVendorContactWidget(false, true));
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true));
+        addField("ciPrimary", false, true, DataType.BOOLEAN_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, false, DataType.DATE_FIELD);
     }
 
     @Override
