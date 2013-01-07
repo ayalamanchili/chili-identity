@@ -26,11 +26,11 @@ public abstract class UpdateContactPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("middleInitial", entity);
-        assignEntityValueFromField("middleInitial", entity);
+        assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("countryCode", entity);
-        assignEntityValueFromField("countryCode", entity);
+        assignEntityValueFromField("phoneNumber", entity);
         assignEntityValueFromField("extension", entity);
         logger.info(entity.toString());
         return entity;
@@ -45,12 +45,12 @@ public abstract class UpdateContactPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("sec", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("email", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("countryCode", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("countryCode", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("extension", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("phoneNumber", entity, DataType.LONG_FIELD);
+        assignFieldValueFromEntity("extension", entity, DataType.LONG_FIELD);
     }
 
     @Override
@@ -72,9 +72,9 @@ public abstract class UpdateContactPanel extends UpdateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, false, strs);
         addField("email", false, false, DataType.STRING_FIELD);
-        addField("countryCode", false, false, DataType.STRING_FIELD);
+        addField("countryCode", false, false, DataType.LONG_FIELD);
         addField("phoneNumber", false, false, DataType.LONG_FIELD);
-        addField("extension", false, false, DataType.STRING_FIELD);
+        addField("extension", false, false, DataType.LONG_FIELD);
     }
 
     @Override
