@@ -17,8 +17,8 @@ import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
 import info.yalamanchili.office.client.admin.sow.SOWSidePanel;
-import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
-import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
+import info.yalamanchili.office.client.tae.vendor.ReadAllVendorsPanel;
+import info.yalamanchili.office.client.tae.vendor.VendorsSidePanel;
 
 /**
  *
@@ -34,7 +34,7 @@ public class AdminMenu extends Composite {
     }
 
     protected void configureAdminMenu() {
-        MenuBar menu = new MenuBar(true);
+//        MenuBar menu = new MenuBar(true);
 
         if (Auth.isAdmin() || Auth.isHR()) {
             adminMenuBar.addItem("Clients", clientsMaintainenceCmd);
@@ -56,34 +56,34 @@ public class AdminMenu extends Composite {
     };
     Command clientsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllClientsPanel());
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new ClientSidePanel());
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllClientsPanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new ClientSidePanel());
         }
     };
     Command projectsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllProjectsPanel());
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new ProjectSidePanel());
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllProjectsPanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new ProjectSidePanel());
         }
     };
     Command sowMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllSOWPanel());
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new SOWSidePanel());
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllSOWPanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new SOWSidePanel());
         }
     };
     Command vendorsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllVendorsPanel());
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new VendorsSidePanel());
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllVendorsPanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new VendorsSidePanel());
         }
     };
 }
