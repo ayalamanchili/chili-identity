@@ -4,7 +4,6 @@
  */
 package info.yalamanchili.office.client.admin.clientcontact;
 
-import info.yalamanchili.office.client.profile.contact.CreateContactPanel;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -44,8 +43,8 @@ public class ClientContactOptionsPanel extends ALComposite implements ClickHandl
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientContactLink)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateClientContactPanel(CreateCompositeType.ADD));
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateClientContactPanel(CreateCompositeType.ADD));
         }
     }
 }
