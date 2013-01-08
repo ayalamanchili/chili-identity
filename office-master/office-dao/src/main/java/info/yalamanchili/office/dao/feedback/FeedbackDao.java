@@ -5,9 +5,11 @@
 package info.yalamanchili.office.dao.feedback;
 
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +21,21 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class FeedbackDao extends CRUDDao<Feedback> {
 
-     @PersistenceContext
+    @PersistenceContext
     protected EntityManager em;
+    
+    @Autowired
+    protected SecurityService securityService;
 
       public FeedbackDao() {
         super(Feedback.class);
+    }
+    
+    @Override
+    public Feedback save(Feedback entity)
+    {
+       entity.setSubmittedby(securityService.getCurrentUser().getEmployeeId());
+       return super.save(entity);
     }
       
     @Override
