@@ -459,6 +459,17 @@ public class OfficeStartup {
         Client techSysClient = new Client();
         techSysClient.setName("Tech Systems");
 
+        Address clientLocation = new Address();
+        clientLocation.setStreet1("test");
+        clientLocation.setState("test");
+        clientLocation.setCity("tst");
+        clientLocation.setCountry("USA");
+        techSysClient.addLocations(clientLocation);
+
+        Contact clientContact = new Contact();
+        clientContact.setFirstName("test");
+        clientContact.setLastName("test");
+
         Project techSysProj1 = new Project();
         techSysProj1.setName("ecomm project");
         techSysProj1.setStartDate(DateUtils.getNextMonth(new Date(), -6));
@@ -477,7 +488,19 @@ public class OfficeStartup {
 
     public Vendor techSysVendor() {
         Vendor techSysVendor = new Vendor();
-        techSysVendor.setName("Ssstech");
+        techSysVendor.setName("Sstech");
+
+        Address vendorLocation = new Address();
+        vendorLocation.setStreet1("test");
+        vendorLocation.setState("test");
+        vendorLocation.setCity("tst");
+        vendorLocation.setCountry("USA");
+        techSysVendor.addLocations(vendorLocation);
+
+        Contact vendorContact = new Contact();
+        vendorContact.setFirstName("test");
+        vendorContact.setLastName("test");
+
         return em.merge(techSysVendor);
     }
 
