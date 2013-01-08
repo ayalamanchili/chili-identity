@@ -9,7 +9,6 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.EmployeeType;
-import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
@@ -26,10 +25,10 @@ import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.Time.TimeJobService;
-import info.yalamanchili.office.Time.TimeService;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
+import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -254,6 +253,8 @@ public class OfficeStartup {
         //Skills
         getJavaSkill();
         getDOTNETSkill();
+        //vendor
+        techSysVendor();
         //Certifications
         getJAVACertification();
         getDOTNETCertification();
@@ -472,6 +473,12 @@ public class OfficeStartup {
         techSysProj1.addSOW(techSysSow1);
 
         return em.merge(techSysClient);
+    }
+
+    public Vendor techSysVendor() {
+        Vendor techSysVendor = new Vendor();
+        techSysVendor.setName("Ssstech");
+        return em.merge(techSysVendor);
     }
 
     public void userRole() {
