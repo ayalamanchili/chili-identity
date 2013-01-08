@@ -60,6 +60,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Client_ClientInformations")
+    @NotNull
     protected Client client;
     /**
      * Client Contact
@@ -78,6 +79,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Vendor_ClientInformations")
+    @NotNull
     protected Vendor vendor;
     /**
      * Vendor Contact
