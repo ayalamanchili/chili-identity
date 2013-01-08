@@ -40,7 +40,7 @@ public class Vendor extends AbstractEntity {
     protected String description;
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "vendors", cascade = CascadeType.MERGE)
     protected List<Client> clients;
 
     public void setClients(List<Client> clients) {
@@ -49,7 +49,7 @@ public class Vendor extends AbstractEntity {
 
     @XmlTransient
     public List<Client> getClients() {
-         if (this.clients == null) {
+        if (this.clients == null) {
             this.clients = new ArrayList<Client>();
         }
         return this.clients;
@@ -68,8 +68,8 @@ public class Vendor extends AbstractEntity {
     public void setLocations(List<Address> locations) {
         this.locations = locations;
     }
-    
-     public void addLocations(Address entity) {
+
+    public void addLocations(Address entity) {
         if (entity == null) {
             return;
         }
@@ -79,7 +79,7 @@ public class Vendor extends AbstractEntity {
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
     }
-    
+
     public void addContact(Contact contact) {
         if (contact == null) {
             return;
@@ -106,7 +106,7 @@ public class Vendor extends AbstractEntity {
 
     @XmlTransient
     public List<Contact> getContacts() {
-         if (this.contacts == null) {
+        if (this.contacts == null) {
             this.contacts = new ArrayList<Contact>();
         }
         return this.contacts;
