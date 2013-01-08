@@ -22,6 +22,7 @@ public class Feedback extends AbstractEntity {
     protected String feedbackmsg;
 
     @Field
+    @NotEmpty
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date submitteddate;
     
