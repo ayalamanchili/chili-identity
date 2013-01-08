@@ -74,7 +74,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("timeSheetPeriod", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("notes", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
