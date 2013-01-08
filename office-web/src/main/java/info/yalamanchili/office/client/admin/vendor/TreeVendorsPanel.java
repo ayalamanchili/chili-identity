@@ -43,6 +43,11 @@ public class TreeVendorsPanel extends TreePanelComposite {
     }
 
     @Override
+    public boolean expandTree() {
+        return true;
+    }
+
+    @Override
     protected void addWidgets() {
         addFirstChildLink("Locations", VENDORLOCATION_NODE);
         addFirstChildLink("Contacts", VENDORCONTACTS_NODE);

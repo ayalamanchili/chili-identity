@@ -47,6 +47,11 @@ public class TreeClientPanel extends TreePanelComposite {
     }
 
     @Override
+    public boolean expandTree() {
+        return true;
+    }
+
+    @Override
     protected void addWidgets() {
         addFirstChildLink("Project", PROJECT_NODE);
         addFirstChildLink("Locations", CLIENTLOCATION_NODE);
