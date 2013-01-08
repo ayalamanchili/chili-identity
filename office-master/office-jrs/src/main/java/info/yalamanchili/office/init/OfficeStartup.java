@@ -469,6 +469,7 @@ public class OfficeStartup {
         Contact clientContact = new Contact();
         clientContact.setFirstName("test");
         clientContact.setLastName("test");
+        techSysClient.addContact(clientContact);
 
         Project techSysProj1 = new Project();
         techSysProj1.setName("ecomm project");
@@ -500,6 +501,7 @@ public class OfficeStartup {
         Contact vendorContact = new Contact();
         vendorContact.setFirstName("test");
         vendorContact.setLastName("test");
+        techSysVendor.addContact(vendorContact);
 
         return em.merge(techSysVendor);
     }
