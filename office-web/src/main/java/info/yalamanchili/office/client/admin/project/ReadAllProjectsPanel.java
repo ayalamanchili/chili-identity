@@ -69,10 +69,8 @@ public class ReadAllProjectsPanel extends ReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-
-            //table.setText(i, 5, JSONUtils.toString(entity, "client"));
+            table.setText(i, 3, JSONUtils.toString(entity, "startDate"));
+            table.setText(i, 4, JSONUtils.toString(entity, "endDate"));
         }
     }
 
