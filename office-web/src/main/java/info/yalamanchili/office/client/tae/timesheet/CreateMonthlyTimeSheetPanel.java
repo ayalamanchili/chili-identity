@@ -56,6 +56,6 @@ public class CreateMonthlyTimeSheetPanel extends CreateTimeSheetPanel {
         addField("quickBooksRate", false, false, DataType.CURRENCY_FIELD);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-        addField("notes", false, false, DataType.STRING_FIELD);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
 }
