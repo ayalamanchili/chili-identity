@@ -7,6 +7,7 @@ package info.yalamanchili.office.dao.feedback;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.Feedback.Feedback;
+import java.sql.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class FeedbackDao extends CRUDDao<Feedback> {
     public Feedback save(Feedback entity)
     {
        entity.setSubmittedby(securityService.getCurrentUser().getEmployeeId());
+       entity.setSubmitteddate(new java.util.Date());
        return super.save(entity);
     }
       
