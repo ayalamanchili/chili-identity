@@ -39,6 +39,7 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
         listBox.addChangeHandler(this);
         listBox.ensureDebugId(className + "_" + attributeName + "_LB");
         fieldPanel.insert(listBox, 0);
+        listBox.addBlurHandler(this);
     }
 
     public void setReadOnly(Boolean readOnly) {
