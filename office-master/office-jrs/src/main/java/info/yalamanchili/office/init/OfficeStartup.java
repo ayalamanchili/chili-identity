@@ -460,15 +460,15 @@ public class OfficeStartup {
         techSysClient.setName("Tech Systems");
 
         Address clientLocation = new Address();
-        clientLocation.setStreet1("test");
-        clientLocation.setState("test");
-        clientLocation.setCity("tst");
+        clientLocation.setStreet1("2110 wilkes ct");
+        clientLocation.setState("apt 123");
+        clientLocation.setCity("Herndon");
         clientLocation.setCountry("USA");
         techSysClient.addLocations(clientLocation);
 
         Contact clientContact = new Contact();
-        clientContact.setFirstName("test");
-        clientContact.setLastName("test");
+        clientContact.setFirstName("Client Contact");
+        clientContact.setLastName("Client Contact");
         techSysClient.addContact(clientContact);
 
         Project techSysProj1 = new Project();
@@ -492,15 +492,15 @@ public class OfficeStartup {
         techSysVendor.setName("Sstech");
 
         Address vendorLocation = new Address();
-        vendorLocation.setStreet1("test");
-        vendorLocation.setState("test");
-        vendorLocation.setCity("tst");
+        vendorLocation.setStreet1("2110 wilkes ct");
+        vendorLocation.setState("Herndon");
+        vendorLocation.setCity("AL");
         vendorLocation.setCountry("USA");
         techSysVendor.addLocations(vendorLocation);
 
         Contact vendorContact = new Contact();
-        vendorContact.setFirstName("test");
-        vendorContact.setLastName("test");
+        vendorContact.setFirstName("Vendor Contact");
+        vendorContact.setLastName("Vendor Contact");
         techSysVendor.addContact(vendorContact);
 
         return em.merge(techSysVendor);
