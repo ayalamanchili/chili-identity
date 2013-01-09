@@ -15,6 +15,7 @@
         <g:south size='1.5'>
             <g:FlowPanel ui:field='footerPanel' styleName="{officeImages.officeCss.footerPanel}">
                 <g:Label styleName="{officeImages.officeCss.footerLabel}">COPYRIGHT &copy; 2012 sstech.us - All Rights Reserved</g:Label>
+                <g:Anchor ui:field='feedbacklnk' styleName = "{officeImages.officeCss.footerLabel}">Feedback</g:Anchor>
             </g:FlowPanel>
         </g:south>
     </g:DockLayoutPanel>
