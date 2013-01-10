@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -39,6 +40,7 @@ public class Message extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date messageTs;
     @ManyToMany
+//    @NotNull(message = "{tos.not.empty.msg}")
     protected List<Employee> tos;
     @OneToMany
     protected List<Message> replies;
