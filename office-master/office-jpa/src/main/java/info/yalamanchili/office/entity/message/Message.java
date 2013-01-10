@@ -40,7 +40,7 @@ public class Message extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date messageTs;
     @ManyToMany
-//    @NotNull(message = "{tos.not.empty.msg}")
+    //@NotNull(message="{tos.not.empty.msg}")
     protected List<Employee> tos;
     @OneToMany
     protected List<Message> replies;
@@ -75,6 +75,7 @@ public class Message extends AbstractEntity {
     public void setMessageTs(Date messageTs) {
         this.messageTs = messageTs;
     }
+
     @XmlElement
     public List<Employee> getTos() {
         if (this.tos == null) {
@@ -90,6 +91,7 @@ public class Message extends AbstractEntity {
     public void addTo(Employee fromEmp) {
         this.getTos().add(fromEmp);
     }
+
     @XmlElement
     public List<Message> getReplies() {
         return replies;
@@ -98,7 +100,8 @@ public class Message extends AbstractEntity {
     public void setReplies(List<Message> replies) {
         this.replies = replies;
     }
-   @XmlElement
+
+    @XmlElement
     public Employee getFrom() {
         return from;
     }
