@@ -62,18 +62,6 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     }
 
-    public CUser getUser(Long id) {
-        Query getUserQ = getEntityManager().createQuery("from " + CUser.class.getCanonicalName() + " user where user.employee.id=:empIdParam");
-        getUserQ.setParameter("empIdParam", id);
-        try {
-            return (CUser) getUserQ.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        } catch (NonUniqueResultException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Employee getEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
