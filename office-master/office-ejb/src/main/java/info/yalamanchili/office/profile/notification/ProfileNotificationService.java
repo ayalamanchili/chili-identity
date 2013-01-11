@@ -9,6 +9,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
@@ -117,6 +118,17 @@ public class ProfileNotificationService {
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
         email.setBody("you temp password is:" + tempPassword);
+        messagingService.sendEmail(email);
+    }
+    
+     @Async
+    public void feedBackNotification(Feedback fb) {
+        String[] roles = {OfficeRoles.ROLE_ADMIN};
+        Email email = new Email();
+        email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setSubject("Employee Feedback");
+//        String messageText = fbmsg;
+        email.setBody(fb.getFeedbackmsg());
         messagingService.sendEmail(email);
     }
     
