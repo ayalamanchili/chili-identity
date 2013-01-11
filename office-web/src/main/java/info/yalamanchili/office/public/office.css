@@ -31,11 +31,27 @@
 }
 .copyRightLabel{
     font-size:8pt;
-    text-align: center;
+    text-align: right;
+    width: 500px;
+}
+
+.GI3B043CII{
+    
+    width: 1301px;
+}
+
+.GI3B043CJI{
+    
+    width: 500px;
 }
 .feedbackAnchor{
-    text-decoration-color: blue;
-}
+      font-size:8pt;
+      color: #0000ff;
+      }
+      
+.feedbackAnchor:hover{
+      pointer:hand;
+      }      
 .loginCenterPanel{
 }
 
@@ -377,6 +393,7 @@ body{
 /*//TODO move back to chili-gwt*/
 /*chili-gwt start*/
 .y-gwt-ClickableLink {
+    padding-bottom: 5px;
     color: blue_font;
     cursor: pointer;
     cursor: hand;
