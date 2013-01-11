@@ -196,7 +196,7 @@ public class AdminResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
-        CUser user = (CUser) em.find(CUser.class, empDao.getUser(empId).getUserId());
+        CUser user =  empDao.findById(empId).getUser();
         CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (Long roleId : ids) {
             CRole role = cRoleDao.findById(roleId);
