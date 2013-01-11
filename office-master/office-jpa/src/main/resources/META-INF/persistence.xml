@@ -36,6 +36,8 @@
         <class>info.yalamanchili.office.entity.client.Project</class>
         <class>info.yalamanchili.office.entity.client.StatementOfWork</class>
         <class>info.chili.hibernate.envers.AuditRevisionEntity</class>
+        <!--Feedback-->
+        <class>info.yalamanchili.office.entity.Feedback.Feedback</class>
         <!--Security-->
         <class>info.yalamanchili.office.entity.security.CRole</class>
         <class>info.yalamanchili.office.entity.security.CUser</class>
