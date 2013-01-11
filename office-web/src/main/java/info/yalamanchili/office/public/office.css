@@ -23,12 +23,19 @@
     border-top-style: solid;
     border-top-color: #c8c8cb;
     border-top-width: 1px;
+    width:100%;
 }
 .footerLabel{
     font-size:8pt;
     text-align: center;
 }
-
+.copyRightLabel{
+    font-size:8pt;
+    text-align: center;
+}
+.feedbackAnchor{
+    text-decoration-color: blue;
+}
 .loginCenterPanel{
 
 
@@ -376,7 +383,7 @@ body{
     font-family: helvetica, arial sans-serif;
     font-size: 11pt;
     font-style: bold;
-/*    text-shadow: 0px 1px 1px #4d4d4d;*/
+    /*    text-shadow: 0px 1px 1px #4d4d4d;*/
 
 }
 .y-gwt-ClickableLink:hover {

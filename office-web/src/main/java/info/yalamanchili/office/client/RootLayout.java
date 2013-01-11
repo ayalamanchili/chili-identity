@@ -27,9 +27,6 @@ public class RootLayout extends Composite {
 	@UiField
 	public FlowPanel entityPanel;
         
-        @UiField
-        public FlowPanel footerPanel;
-        
          @UiField
          public Anchor feedbacklnk;
 
