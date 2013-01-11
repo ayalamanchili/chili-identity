@@ -84,10 +84,10 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "quickBooksHours"));
             table.setText(i, 4, JSONUtils.toString(entity, "adpRate"));
             table.setText(i, 5, JSONUtils.toString(entity, "quickBooksRate"));
-            table.setText(i, 5, JSONUtils.toString(entity, "startDate"));
-            table.setText(i, 6, JSONUtils.toString(entity, "endDate"));
-            table.setText(i, 7, JSONUtils.toString(entity, "notes"));
-            table.setText(i, 8, JSONUtils.toString(entity.get("timeSheetPeriod"), "name"));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 8, JSONUtils.toString(entity, "notes"));
+            table.setText(i, 9, JSONUtils.toString(entity.get("timeSheetPeriod"), "name"));
         }
     }
 
