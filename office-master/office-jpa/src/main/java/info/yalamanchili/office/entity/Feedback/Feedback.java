@@ -7,14 +7,21 @@ package info.yalamanchili.office.entity.Feedback;
 import info.chili.jpa.AbstractEntity;
 import java.util.Date;
 import javax.persistence.Lob;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
  * @author raghu
  */
+@XmlRootElement
 public class Feedback extends AbstractEntity {
     
     @Field
@@ -22,12 +29,10 @@ public class Feedback extends AbstractEntity {
     protected String feedbackmsg;
 
     @Field
-    @NotEmpty
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date submitteddate;
     
     @Field
-    @NotEmpty
     protected String submittedby;
     
     public void setFeedbackmsg(String feedbackmsg) {
@@ -52,5 +57,13 @@ public class Feedback extends AbstractEntity {
 
     public String getSubmittedby() {
         return submittedby;
+    }
+    
+    @PrePersist
+    @PreUpdate
+    protected void populateAuditData() {
+        this.setSubmitteddate(new Date());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        this.setSubmittedby(auth.getName());
     }
 }
