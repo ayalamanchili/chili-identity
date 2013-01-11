@@ -32,13 +32,13 @@ public class FeedbackDao extends CRUDDao<Feedback> {
         super(Feedback.class);
     }
     
-    @Override
-    public Feedback save(Feedback entity)
-    {
-       entity.setSubmittedby(securityService.getCurrentUser().getEmployeeId());
-       entity.setSubmitteddate(new java.util.Date());
-       return super.save(entity);
-    }
+//    @Override
+//    public Feedback save(Feedback entity)
+//    {
+//       entity.setSubmittedby(securityService.getCurrentUser().getEmployeeId());
+////       entity.setSubmitteddate(new java.util.Date());
+//       return super.save(entity);
+//    }
       
     @Override
     public EntityManager getEntityManager() {
