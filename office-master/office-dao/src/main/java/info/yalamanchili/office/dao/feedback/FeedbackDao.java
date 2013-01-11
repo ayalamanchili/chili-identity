@@ -25,20 +25,17 @@ public class FeedbackDao extends CRUDDao<Feedback> {
     @PersistenceContext
     protected EntityManager em;
     
-    @Autowired
-    protected SecurityService securityService;
-
       public FeedbackDao() {
         super(Feedback.class);
     }
     
-//    @Override
-//    public Feedback save(Feedback entity)
-//    {
+    @Override
+    public Feedback save(Feedback entity)
+    {
 //       entity.setSubmittedby(securityService.getCurrentUser().getEmployeeId());
-////       entity.setSubmitteddate(new java.util.Date());
-//       return super.save(entity);
-//    }
+//       entity.setSubmitteddate(new java.util.Date());
+       return super.save(entity);
+    }
       
     @Override
     public EntityManager getEntityManager() {
