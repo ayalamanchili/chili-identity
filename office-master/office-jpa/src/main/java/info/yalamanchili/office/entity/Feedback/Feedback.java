@@ -6,6 +6,7 @@ package info.yalamanchili.office.entity.Feedback;
 
 import info.chili.jpa.AbstractEntity;
 import java.util.Date;
+import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -21,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author raghu
  */
+@Entity
 @XmlRootElement
 public class Feedback extends AbstractEntity {
     
