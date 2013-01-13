@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>office-master</artifactId>
+        <groupId>info.yalamanchili.office</groupId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>office-bpm</artifactId>
+    <name>office-bpm</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>org.activiti</groupId> 					
+            <artifactId>activiti-engine</artifactId> 				
+            <version>${activiti-version}</version> 				
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring</artifactId>
+            <version>${activiti-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.2.132</version>
+        </dependency>
+    </dependencies>
+    <scm>
+        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-bpm</connection>
+        <url>http://yalamanchili.info:8080/projects/office/trunk/office-bpm</url>
+    </scm> 
+    <properties>
+        <activiti-version>5.9</activiti-version>
+    </properties>
+</project>

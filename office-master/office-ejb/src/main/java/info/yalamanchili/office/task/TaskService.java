@@ -6,7 +6,6 @@ package info.yalamanchili.office.task;
 
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -16,8 +15,6 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

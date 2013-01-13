@@ -101,6 +101,12 @@
             <artifactId>spring-jpa</artifactId>
             <version>2.0.8</version>
         </dependency>
+        <!--Activiti-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <!-- aspectj -->
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -194,6 +200,7 @@
         <module>office-jrs</module>
         <!-- web -->
         <!--<module>../office-web</module> -->
+        <module>office-bpm</module>
     </modules>
     <build>
         <plugins>
