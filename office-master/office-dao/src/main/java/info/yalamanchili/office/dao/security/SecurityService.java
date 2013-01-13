@@ -55,6 +55,14 @@ public class SecurityService {
         }
     }
 
+    public String getCurrentUserId() {
+        if (getCurrentUser() != null) {
+            return getCurrentUser().getEmployeeId();
+        } else {
+            return null;
+        }
+    }
+
     //TODO move to seperate class
     public Set<String> getEmailsAddressesForRoles(List<String> roles) {
         Set<String> emails = new HashSet<String>();

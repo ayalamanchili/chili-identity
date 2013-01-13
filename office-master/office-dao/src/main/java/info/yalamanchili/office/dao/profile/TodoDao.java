@@ -28,7 +28,6 @@ public class TodoDao extends CRUDDao {
     }
 
     public TodoDao() {
-
         super(Todo.class);
     }
 }

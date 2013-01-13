@@ -8,8 +8,10 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.TodoDao;
 import info.yalamanchili.office.entity.profile.Todo;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.TODOService;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -29,11 +31,13 @@ import org.springframework.stereotype.Component;
 public class TodoResource extends CRUDResource<Todo> {
 
     @Autowired
-    public TodoDao todoDao;
+    protected TODOService todoService;
+    @Autowired
+    protected TodoDao todoDao;
 
-    @Override
-    public CRUDDao getDao() {
-        return todoDao;
+    @PUT
+    public Todo save(Todo entity) {
+        return todoService.save(entity);
     }
 
     @GET
@@ -43,6 +47,11 @@ public class TodoResource extends CRUDResource<Todo> {
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @Override
+    public CRUDDao getDao() {
+        return todoDao;
     }
 
     @XmlRootElement

@@ -35,9 +35,10 @@
         <property name="processEngineConfiguration" ref="processEngineConfiguration" />
     </bean>
   
-    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
-    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
-    <bean id="ataskService" factory-bean="processEngine" factory-method="getTaskService" />
-    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
-    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+    <bean id="bpmRepositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+    <bean id="bpmRuntimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+    <bean id="bpmTaskService" factory-bean="processEngine" factory-method="getTaskService" />
+    <bean id="bpmHistoryService" factory-bean="processEngine" factory-method="getHistoryService" />
+    <bean id="bpmManagementService" factory-bean="processEngine" factory-method="getManagementService" />
+    <bean id="bpmIdentityService" factory-bean="processEngine" factory-method="getIdentityService" />
 </beans>
