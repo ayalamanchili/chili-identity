@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class TODOService {
 
-    private final static Logger logger = Logger.getLogger(EmployeeService.class.getName());
+    private final static Logger logger = Logger.getLogger(TODOService.class.getName());
     @Autowired
     protected TodoDao todoDao;
 
