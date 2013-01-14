@@ -27,8 +27,6 @@ public class TODOService {
     protected TodoDao todoDao;
 
     public Todo save(Todo entity) {
-        OfficeBPMIdentityService.instance().createUser(SecurityService.instance().getCurrentUserId());
-        OfficeBPMTaskService.instance().createTask("asdfaasdf");
         return (Todo) todoDao.save(entity);
     }
 }

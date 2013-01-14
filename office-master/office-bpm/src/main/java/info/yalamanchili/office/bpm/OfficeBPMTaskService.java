@@ -5,8 +5,10 @@
 package info.yalamanchili.office.bpm;
 
 import info.chili.spring.SpringContext;
+import java.util.List;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,12 @@ public class OfficeBPMTaskService {
         bpmTaskService.saveTask(task);
     }
 
+    public List<Task> getAllTasks() {
+        TaskQuery query = bpmTaskService.createTaskQuery().taskUnnassigned();
+        return query.listPage(0, 10);
+    }
+
     public static OfficeBPMTaskService instance() {
-        return  SpringContext.getBean(OfficeBPMTaskService.class);
+        return SpringContext.getBean(OfficeBPMTaskService.class);
     }
 }
