@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import javax.ws.rs.POST;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**

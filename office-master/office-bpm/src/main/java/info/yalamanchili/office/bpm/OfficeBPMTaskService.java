@@ -28,9 +28,14 @@ public class OfficeBPMTaskService {
         bpmTaskService.saveTask(task);
     }
 
-    public List<Task> getAllTasks() {
+    public List<Task> getAllUnasigneed(int start, int limit) {
         TaskQuery query = bpmTaskService.createTaskQuery().taskUnnassigned();
-        return query.listPage(0, 10);
+        return query.listPage(start, limit);
+    }
+
+    public List<Task> getTasksForAsignee(String assignee, int start, int limit) {
+        TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee);
+        return query.listPage(start, limit);
     }
 
     public static OfficeBPMTaskService instance() {
