@@ -86,7 +86,7 @@ public class FeedbackPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-         addField("feedbackmsg", false, true, DataType.STRING_FIELD);
+         addField("feedbackmsg", false, true, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
