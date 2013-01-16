@@ -21,6 +21,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @todo add comment for javadoc
@@ -38,6 +39,7 @@ public class ClientInformation extends AbstractEntity {
      * Consultant Job Title at client
      */
     @Field
+    @NotEmpty(message = "{consultantJobTitle.not.empty.msg}")
     protected String consultantJobTitle;
     /**
      * flag to indicate if this is the primary client
@@ -79,7 +81,6 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Vendor_ClientInformations")
-    @NotNull
     protected Vendor vendor;
     /**
      * Vendor Contact
