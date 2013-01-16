@@ -6,8 +6,6 @@ package info.yalamanchili.office.client.login;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -15,6 +13,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 /**
@@ -42,6 +41,7 @@ class ForgotPasswordPopup extends Composite implements ClickHandler {
                         @Override
                         public void onResponse(String arg0) {
                             new ResponseStatusWidget().show("please check your email");
+                            GenericPopup.instance().hide();
                         }
                     });
         }
