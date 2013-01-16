@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,6 +40,7 @@ public class Phone extends AbstractEntity {
      * @generated
      */
     @Size(min = 10, max = 10, message = "{phone.phoneNumber.length.invalid.msg}")
+    @Pattern(regexp="(^$|[0-9]{10})",message="{invalid.phone.Number.Format}")
     @NotEmpty(message = "{phone.phoneNumber.not.empty.msg}")
     @Field
     protected String phoneNumber;
