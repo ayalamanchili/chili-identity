@@ -40,7 +40,7 @@ public class Message extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date messageTs;
     @ManyToMany
-    //@NotNull(message="{tos.not.empty.msg}")
+//    @NotEmpty(message = "{tos.not.empty.msg}")
     protected List<Employee> tos;
     @OneToMany
     protected List<Message> replies;
