@@ -38,8 +38,8 @@ public class ReadAllMessagePanel extends ReadAllComposite {
         instance = this;
         initTable("Message", OfficeWelcome.constants);
     }
-    
-      public ReadAllMessagePanel(JSONArray array) {
+
+    public ReadAllMessagePanel(JSONArray array) {
         instance = this;
         initTable("Message", array, OfficeWelcome.constants);
     }
@@ -58,11 +58,11 @@ public class ReadAllMessagePanel extends ReadAllComposite {
     @Override
     public void createTableHeader() {
 
-        table.setText(0, 0, getKeyValue("Table_Action"));   
+        table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Subject"));
         table.setText(0, 2, getKeyValue("Message"));
         table.setText(0, 3, getKeyValue("MessageTs"));
-       
+
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ReadAllMessagePanel extends ReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "subject"));
             table.setHTML(i, 2, JSONUtils.toString(entity, "message"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "messageTs"), DateTimeFormat.PredefinedFormat.DATE_TIME_FULL));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "messageTs"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 4, JSONUtils.toString(entity, "from"));
         }
     }
@@ -99,14 +99,14 @@ public class ReadAllMessagePanel extends ReadAllComposite {
                 });
     }
 
-     protected String getDeleteURL(String entityId) {
+    protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "message/delete/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully deleted Message Information");
-       TabPanel.instance().homePanel.entityPanel.clear(); 
+        TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
     }
 
