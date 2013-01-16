@@ -11,7 +11,6 @@ import javax.persistence.Lob;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -25,18 +24,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Entity
 @XmlRootElement
 public class Feedback extends AbstractEntity {
-    
+
     @Field
+    @NotEmpty(message="{feedbackmsg.not.empty.msg}")
     @Lob
     protected String feedbackmsg;
-
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date submitteddate;
-    
     @Field
     protected String submittedby;
-    
+
     public void setFeedbackmsg(String feedbackmsg) {
         this.feedbackmsg = feedbackmsg;
     }
@@ -60,7 +58,7 @@ public class Feedback extends AbstractEntity {
     public String getSubmittedby() {
         return submittedby;
     }
-    
+
     @PrePersist
     @PreUpdate
     protected void populateAuditData() {
