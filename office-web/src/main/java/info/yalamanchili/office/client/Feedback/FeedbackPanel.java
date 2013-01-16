@@ -10,6 +10,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -17,7 +18,6 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-
 public class FeedbackPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(FeedbackPanel.class.getName());
@@ -26,7 +26,7 @@ public class FeedbackPanel extends CreateComposite {
         super(type);
         initCreateComposite("Feedback", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject feedbck = new JSONObject();
@@ -37,7 +37,7 @@ public class FeedbackPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -54,7 +54,7 @@ public class FeedbackPanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -71,32 +71,29 @@ public class FeedbackPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-       new ResponseStatusWidget().show("Feedback has been sent"); 
+        new ResponseStatusWidget().show("Feedback has been sent");
+        GenericPopup.instance().hide();
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
     protected void addWidgets() {
-         addField("feedbackmsg", false, true, DataType.TEXT_AREA_FIELD);
+        addField("feedbackmsg", false, true, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
-       return OfficeWelcome.constants.root_url() + "feedback";
+        return OfficeWelcome.constants.root_url() + "feedback";
     }
-    
 }
