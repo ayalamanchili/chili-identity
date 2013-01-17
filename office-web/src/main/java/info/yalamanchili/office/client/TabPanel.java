@@ -1,7 +1,6 @@
 package info.yalamanchili.office.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.RunAsyncCallback;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.ProfileMenu;
 import info.yalamanchili.office.client.profile.ProfileSidePanel;
@@ -16,6 +15,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import info.chili.gwt.callback.RunAsyncCallback;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.AdminMenu;
 import info.yalamanchili.office.client.drive.DriveEntityPanel;
@@ -69,12 +69,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(homePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
+                public void onResponse() {
                     selectHomeTab();
                 }
             });
@@ -82,12 +77,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(socialPanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
+                public void onResponse() {
                     selectSocialTab();
                 }
             });
@@ -98,12 +88,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(timeandExpensePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
+                public void onResponse() {
                     selectTimeandExpenseTab();
                 }
             });
@@ -111,12 +96,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(drivePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
+                public void onResponse() {
                     selectDriveTab();
                 }
             });
@@ -124,12 +104,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(profilePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
+                public void onResponse() {
                     selectProfileTab();
                 }
             });
@@ -137,12 +112,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(adminPanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
+                public void onResponse() {
                     selectAdminTab();
                 }
             });
@@ -150,12 +120,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(helpPanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("Code download failed");
-                }
-
-                @Override
-                public void onSuccess() {
+                public void onResponse() {
                     selectHelpTab();
                 }
             });

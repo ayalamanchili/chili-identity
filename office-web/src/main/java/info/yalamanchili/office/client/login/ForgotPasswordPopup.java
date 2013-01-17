@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.GenericPopup;
@@ -23,7 +24,7 @@ import info.yalamanchili.office.client.rpc.HttpService;
 class ForgotPasswordPopup extends Composite implements ClickHandler {
 
     FlowPanel panel = new FlowPanel();
-    TextBox empIdTb = new TextBox();
+    StringField empIdTb = new StringField(OfficeWelcome.constants, "employeeId", "ForgotPassword", false, true);
     Button forgotPasswordB = new Button("Send Password");
 
     public ForgotPasswordPopup() {
@@ -48,6 +49,6 @@ class ForgotPasswordPopup extends Composite implements ClickHandler {
     }
 
     private String getURI() {
-        return OfficeWelcome.constants.public_url() + "admin/forgotpassword/" + empIdTb.getText();
+        return OfficeWelcome.constants.public_url() + "admin/forgotpassword/" + empIdTb.getValue();
     }
 }
