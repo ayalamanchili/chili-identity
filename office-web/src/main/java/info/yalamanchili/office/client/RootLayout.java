@@ -15,37 +15,32 @@ import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 
 public class RootLayout extends Composite {
-	private static RootLayout instance;
 
-	public static RootLayout instance() {
-		return instance;
-	}
+    private static RootLayout instance;
 
-	@UiField
-	public FlowPanel statusPanel;
+    public static RootLayout instance() {
+        return instance;
+    }
+    @UiField
+    public FlowPanel statusPanel;
+    @UiField
+    public FlowPanel entityPanel;
+    @UiField
+    public Anchor feedbacklnk;
+    private static RootLayoutUiBinder uiBinder = GWT
+            .create(RootLayoutUiBinder.class);
 
-	@UiField
-	public FlowPanel entityPanel;
-        
-         @UiField
-         public Anchor feedbacklnk;
-
-	private static RootLayoutUiBinder uiBinder = GWT
-			.create(RootLayoutUiBinder.class);
-
-	interface RootLayoutUiBinder extends UiBinder<Widget, RootLayout> {
-	}
-
-	public RootLayout() {
-		initWidget(uiBinder.createAndBindUi(this));
-		instance = this;
-		entityPanel.add(new TabPanel());
-	}
-        
-        @UiHandler("feedbacklnk")
-    void feedbacklnkclicked(ClickEvent e) {
-//        Window.alert("Feedback Clicked");
-             new GenericPopup(new FeedbackPanel(CreateComposite.CreateCompositeType.ADD)).show();
+    interface RootLayoutUiBinder extends UiBinder<Widget, RootLayout> {
     }
 
+    public RootLayout() {
+        initWidget(uiBinder.createAndBindUi(this));
+        instance = this;
+        entityPanel.add(new TabPanel());
+    }
+
+    @UiHandler("feedbacklnk")
+    void feedbacklnkclicked(ClickEvent e) {
+        new GenericPopup(new FeedbackPanel(CreateComposite.CreateCompositeType.CREATE)).show();
+    }
 }

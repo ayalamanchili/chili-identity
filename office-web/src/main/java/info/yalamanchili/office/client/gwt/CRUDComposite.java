@@ -246,6 +246,12 @@ public abstract class CRUDComposite extends Composite {
                 entity.put(fieldKey, new JSONString(field.getValue()));
             }
         }
+        if (fields.get(fieldKey) instanceof RichTextField) {
+            RichTextField field = (RichTextField) fields.get(fieldKey);
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
+                entity.put(fieldKey, new JSONString(field.getValue()));
+            }
+        }
         if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
             info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {

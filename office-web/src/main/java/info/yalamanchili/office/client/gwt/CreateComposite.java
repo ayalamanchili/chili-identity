@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Button;
+import info.chili.gwt.utils.Utils;
 
 public abstract class CreateComposite extends CRUDComposite implements ClickHandler {
 
@@ -60,6 +61,11 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
                 addButtonClicked();
             }
         }
+    }
+
+    protected void setButtonText(String key) {
+        create.setText(Utils.getKeyValue(key, constants));
+        add.setText(Utils.getKeyValue(key, constants));
     }
 
     /**
