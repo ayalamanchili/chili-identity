@@ -83,7 +83,7 @@ public class DriveResource {
         return driveService.getFiles(id, start, limit);
     }
     
-//       @GET
+//    @GET
 //    @Path("/searchdrive/{start}/{limit}")
 //    public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
 //            @PathParam("limit") int limit, @QueryParam("text") String text) {
@@ -97,7 +97,7 @@ public class DriveResource {
 //    @PUT
 //    @Path("/searchdrive/{start}/{limit}")
 //    public List<info.yalamanchili.office.dto.profile.Employee> searchFile(File entity, @PathParam("start") int start, @PathParam("limit") int limit) {
-//        List<info.yalamanchili.office.dto.profile.Employee> files = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
+//        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
 //        for (Object fileObj :FileDao.instance().search(entity, start, limit)) {
 //            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
 //        }
