@@ -23,6 +23,16 @@ public class OfficeServiceConfiguration {
     @Value("#{officeProperties['enableLoginInterceptor']}")
     protected Boolean enableLoginInterceptor = false;
     protected Boolean isSendMail = true;
+    protected String adminEmail;
+
+    public void setAdminEmail(String adminEmail) {
+        this.adminEmail = adminEmail;
+    }
+    
+    @ManagedAttribute
+    public String getAdminEmail() {
+        return adminEmail;
+    }
 
     @ManagedAttribute
     public String getContentManagementLocationRoot() {
