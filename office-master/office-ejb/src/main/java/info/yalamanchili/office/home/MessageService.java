@@ -14,6 +14,7 @@ import info.yalamanchili.office.dto.message.MessageDto;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,6 +38,8 @@ public class MessageService {
     protected Mapper mapper;
     @Autowired
     protected MessageDao messageDao;
+    @Autowired
+    protected ProfileNotificationService profileNotificationService;
 
     @Async
     public MessageDto save(MessageDto messageDto) {
@@ -56,6 +59,7 @@ public class MessageService {
                 }
             }
         }
+        profileNotificationService.sendNewMessageNotification(newMessage);
         messageDao.save(newMessage);
         return null;
     }
