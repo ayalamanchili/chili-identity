@@ -39,6 +39,7 @@
             <actionName>CUSTOM-tomcat6:run-war</actionName>
             <displayName>tomcat6:run-war</displayName>
             <goals>
+                <goal>clean</goal>
                 <goal>tomcat6:run-war</goal>
             </goals>
             <properties>
