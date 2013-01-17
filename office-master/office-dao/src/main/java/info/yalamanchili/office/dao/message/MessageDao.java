@@ -42,6 +42,14 @@ public class MessageDao extends CRUDDao<Message> {
         return findAllQuery.getResultList();
     }
 
+    @Override
+    public Long size() {
+        Employee currentEmployee = SecurityService.instance().getCurrentUser();
+        Query sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where from  =:currentEmp",entityCls);
+        sizeQuery.setParameter("currentEmp", currentEmployee);
+        return (Long) sizeQuery.getSingleResult();
+    }
+
     public MessageDao() {
         super(Message.class);
     }
