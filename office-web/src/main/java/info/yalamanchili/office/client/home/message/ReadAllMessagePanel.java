@@ -62,6 +62,7 @@ public class ReadAllMessagePanel extends ReadAllComposite {
         table.setText(0, 1, getKeyValue("Subject"));
         table.setText(0, 2, getKeyValue("Message"));
         table.setText(0, 3, getKeyValue("MessageTs"));
+        table.setText(0, 4, getKeyValue("From"));
 
     }
 
