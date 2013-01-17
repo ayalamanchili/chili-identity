@@ -123,11 +123,12 @@ public class ProfileNotificationService {
     
      @Async
     public void feedBackNotification(Feedback fb) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN};
         Email email = new Email();
-        email.setTos(securityService.getEmailsAddressesForRoles(Arrays.asList(roles)));
-        email.setSubject("Employee Feedback");
-//        String messageText = fbmsg;
+        Set<String> tos = new HashSet<String>();
+        tos.add(info.yalamanchili.office.config.OfficeServiceConfiguration.instance().getAdminEmail());
+        email.setTos(tos);
+        String UserName = securityService.getCurrentUser().getFirstName() + securityService.getCurrentUser().getLastName();
+        email.setSubject("Employee Feedback from "+ UserName);
         email.setBody(fb.getFeedbackmsg());
         messagingService.sendEmail(email);
     }
