@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dao.message;
 
+import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.message.NotificationGroup;
@@ -26,6 +27,10 @@ public class NotificationGroupDao extends CRUDDao<NotificationGroup> {
     @Override
     public EntityManager getEntityManager() {
         return em;
+    }
+
+    public NotificationGroup findByName(String name) {
+        return QueryUtils.findEntity(getEntityManager(), NotificationGroup.class, "name", name);
     }
 
     public NotificationGroupDao() {

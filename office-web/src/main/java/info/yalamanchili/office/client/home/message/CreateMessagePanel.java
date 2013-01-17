@@ -56,7 +56,7 @@ public class CreateMessagePanel extends CreateComposite {
         for (String toStr : splitString(tos)) {
             if (!toStr.isEmpty()) {
                 JSONObject to = new JSONObject();
-                to.put("id", new JSONString(toStr));
+                to.put("id", new JSONString(toStr.trim()));
                 array.set(i, to);
             }
             i++;
@@ -65,7 +65,7 @@ public class CreateMessagePanel extends CreateComposite {
     }
 
     public static Iterable<String> splitString(String str) {
-        return Splitter.on(" ").split(str);
+        return Splitter.on(",").split(str);
     }
 
     @Override
