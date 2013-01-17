@@ -64,10 +64,10 @@ public class ReadAllTimesheetPanel extends ReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("QBHours"));
-        table.setText(0, 3, getKeyValue("ADPHours"));
-        table.setText(0, 4, getKeyValue("QBRate"));
-        table.setText(0, 5, getKeyValue("ADPRate"));
+        table.setText(0, 2, getKeyValue("ADPHours"));
+        table.setText(0, 3, getKeyValue("QBHours"));
+        table.setText(0, 4, getKeyValue("ADPRate"));
+        table.setText(0, 5, getKeyValue("QBRate"));
         table.setText(0, 6, getKeyValue("StartDate"));
         table.setText(0, 7, getKeyValue("EndDate"));
         table.setText(0, 8, getKeyValue("Notes"));
