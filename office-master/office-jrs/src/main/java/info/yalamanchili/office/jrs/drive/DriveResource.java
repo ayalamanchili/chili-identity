@@ -12,12 +12,15 @@ import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.drive.FolderDao;
 import info.yalamanchili.office.entity.drive.File;
 import info.yalamanchili.office.jrs.FileResource;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -79,4 +82,25 @@ public class DriveResource {
     public FileTable getFiles(@PathParam("folderId") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         return driveService.getFiles(id, start, limit);
     }
+    
+//       @GET
+//    @Path("/searchdrive/{start}/{limit}")
+//    public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
+//            @PathParam("limit") int limit, @QueryParam("text") String text) {
+//        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
+//        for (Object fileObj : FileDao.instance().search(text, start, limit, true)) {
+//            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
+//        }
+//        return files;
+//    }
+//
+//    @PUT
+//    @Path("/searchdrive/{start}/{limit}")
+//    public List<info.yalamanchili.office.dto.profile.Employee> searchFile(File entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+//        List<info.yalamanchili.office.dto.profile.Employee> files = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
+//        for (Object fileObj :FileDao.instance().search(entity, start, limit)) {
+//            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
+//        }
+//        return files;
+//    }
 }
