@@ -90,11 +90,12 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     }
 
     protected void displayPostStatus(JSONObject post) {
+         logger.info(post.get("postLikes").toString());
         String postTimeStamp = JSONUtils.toString(post, "postTimeStamp");
         JSONArray postlikeno = JSONUtils.toJSONArray(post.get("postLikes"));
         String poststatus = "";
         if (postlikeno.size() > 0) {
-            poststatus = "  " + postlikeno.size() + " likes for this ; ";
+            poststatus = "  " + (postlikeno.size() / 2 )  + " likes for this ; ";
         }
         if (DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM) != null) {
             postStatusPanel.setText(poststatus + " Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
