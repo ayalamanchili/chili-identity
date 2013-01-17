@@ -62,7 +62,6 @@ public class NotificationGroup extends AbstractEntity {
 
     @Override
     public String toString() {
-
         return "NotificationGroup{" + "name=" + name + ", employees=" + employees + '}';
     }
 }

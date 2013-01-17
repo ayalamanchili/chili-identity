@@ -41,7 +41,6 @@ public class MessageService {
         Message newMessage = new Message();
         newMessage.setSubject(messageDto.getSubject());
         newMessage.setMessage(messageDto.getMessage());
-//        newMessage.setMessageTs(messageDto.getMessageTs());
         newMessage.setMessageTs(new Date());
         newMessage.setFrom(SecurityService.instance().getCurrentUser());
         for (Entry emp : messageDto.getTos()) {

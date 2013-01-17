@@ -5,15 +5,12 @@
 package info.yalamanchili.office.jrs.message;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.MultiSelectObj;
-import info.yalamanchili.office.jrs.profile.EmployeeTypeResource;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;

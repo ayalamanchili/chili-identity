@@ -7,7 +7,6 @@ package info.yalamanchili.office.client.home.message;
 import com.google.common.base.Splitter;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RichTextArea;
@@ -20,7 +19,6 @@ import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -53,7 +51,6 @@ public class CreateMessagePanel extends CreateComposite {
 
     protected JSONArray populateTos() {
         JSONArray array = new JSONArray();
-
         String tos = tosSuggestBox.getValue();
         int i = 0;
         for (String toStr : splitString(tos)) {
@@ -90,19 +87,13 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
-        createButtonClicked();
     }
 
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Message Sent");
-
-
         TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
-//        ReadAllMessagePanel.instance.refresh();
-//        GenericPopup.instance().hide();
-
     }
 
     @Override
@@ -121,7 +112,6 @@ public class CreateMessagePanel extends CreateComposite {
         addField("subject", false, true, DataType.STRING_FIELD);
         entityDisplayWidget.add(toolBar);
         entityDisplayWidget.add(textArea);
-//        addField("messageTs", false, true, DataType.DATE_FIELD);
     }
 
     @Override
@@ -142,10 +132,21 @@ public class CreateMessagePanel extends CreateComposite {
                 tosSuggestBox.loadData(values.values());
             }
         });
+        HttpService.HttpServiceAsync.instance().doGet(getNotoficationGroupDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                tosSuggestBox.loadData(values.values());
+            }
+        });
     }
 
     protected String getEmployeeIdsDropDownUrl() {
-        //TODO think anout the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=employeeId";
+    }
+
+    protected String getNotoficationGroupDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "notification/dropdown/0/500?column=id&column=name";
     }
 }
