@@ -172,6 +172,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectDriveTab() {
         drivePanel.entityPanel.clear();
         drivePanel.sidePanelTop.clear();
+        drivePanel.sidePanelBottom.clear();
         drivePanel.entityPanel.add(new DriveEntityPanel());
         drivePanel.sidePanelTop.add(new DriveTreePanel());
         drivePanel.sidePanelBottom.add(new SearchDrivePanel());
