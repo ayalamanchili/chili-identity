@@ -29,6 +29,7 @@ public class MessageDto implements Serializable {
     protected String subject;
     protected String message;
     protected Date messageTs;
+    @NotEmpty(message = "{tos.not.empty.msg}")
     protected List<Entry> tos;
     protected Entry from;
 
