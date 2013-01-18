@@ -246,7 +246,9 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
             new ResponseStatusWidget().show("no results");
         } else {
-            JSONArray results = JSONUtils.toJSONArray(JSONParser.parseLenient(result).isObject().get(entityName.toLowerCase()));
+            JSONObject resObj = JSONParser.parseLenient(result).isObject();
+            String key = (String) resObj.keySet().toArray()[0];
+            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
             postSearchSuccess(results);
         }
     }

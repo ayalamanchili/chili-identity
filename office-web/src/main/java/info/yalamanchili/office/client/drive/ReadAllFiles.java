@@ -29,14 +29,14 @@ public class ReadAllFiles extends ReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllFiles.class.getName());
     public static ReadAllFiles instance;
 
+    public ReadAllFiles(JSONArray array) {
+        instance = this;
+        initTable("File", array, OfficeWelcome.constants);
+    }
+
     public ReadAllFiles(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Files", OfficeWelcome.constants);
-    }
-
-    private ReadAllFiles() {
-        instance = this;
         initTable("Files", OfficeWelcome.constants);
     }
 

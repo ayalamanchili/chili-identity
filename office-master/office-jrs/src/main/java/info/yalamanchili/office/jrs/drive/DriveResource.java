@@ -86,24 +86,24 @@ public class DriveResource {
         return driveService.getFiles(id, start, limit);
     }
     
-//    @GET
-//    @Path("/searchdrive/{start}/{limit}")
-//    public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
-//            @PathParam("limit") int limit, @QueryParam("text") String text) {
-//        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
-//        for (Object fileObj : FileDao.instance().search(text, start, limit, true)) {
-//            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
-//        }
-//        return files;
-//    }
+    @GET
+    @Path("/searchdrive/{start}/{limit}")
+    public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("text") String text) {
+        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
+        for (Object fileObj : FileDao.instance().search(text, start, limit, true)) {
+            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
+        }
+        return files;
+    }
 
-//    @PUT
-//    @Path("/searchdrive/{start}/{limit}")
-//    public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(File entity, @PathParam("start") int start, @PathParam("limit") int limit) {
-//        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
-//        for (Object fileObj :FileDao.instance().search(entity, start, limit)) {
-//            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
-//        }
-//        return files;
-//    }
+    @PUT
+    @Path("/searchdrive/{start}/{limit}")
+    public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(File entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
+        for (Object fileObj : FileDao.instance().search(entity, start, limit)) {
+            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
+        }
+        return files;
+    }
 }

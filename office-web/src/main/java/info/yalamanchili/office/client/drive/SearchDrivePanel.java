@@ -9,54 +9,48 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  *
  * @author raghu
  */
-public class SearchDrivePanel extends SearchComposite{
+public class SearchDrivePanel extends SearchComposite {
 
-     private static Logger logger = Logger.getLogger(SearchDrivePanel.class.getName());
+    private static Logger logger = Logger.getLogger(SearchDrivePanel.class.getName());
 
     public SearchDrivePanel() {
-        init("Drive Search", "Drive", OfficeWelcome.constants);
+        init("Drive Search", "File", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected void populateSearchSuggestBox() {
-        
     }
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
     protected void addWidgets() {
-          addField("name", DataType.STRING_FIELD);
+        addField("name", DataType.STRING_FIELD);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-         JSONObject entity = new JSONObject();
+        JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         logger.info(entity.toString());
         return entity;
@@ -69,8 +63,8 @@ public class SearchDrivePanel extends SearchComposite{
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String result) {
+                    logger.info(result);
                     processSearchResult(result);
-//                searchTB.setText("");
                 }
             });
         }
@@ -78,25 +72,24 @@ public class SearchDrivePanel extends SearchComposite{
 
     @Override
     protected void search(JSONObject entity) {
-        
     }
 
     @Override
     protected void postSearchSuccess(JSONArray result) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllFiles());
+        logger.info("ddddd" + result);
+        TabPanel.instance().drivePanel.entityPanel.clear();
+        TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(result));
     }
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-         return URL.encode(OfficeWelcome.constants.root_url() + "drive/searchdrive/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "drive/searchdrive/" + start.toString() + "/"
                 + limit.toString() + "/?text=" + searchText);
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-         return OfficeWelcome.constants.root_url() + "drive/searchdrive/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "drive/searchdrive/" + start.toString() + "/"
                 + limit.toString();
     }
-    
 }
