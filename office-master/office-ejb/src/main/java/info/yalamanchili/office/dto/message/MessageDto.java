@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
@@ -28,6 +29,7 @@ public class MessageDto implements Serializable {
     protected String subject;
     protected String message;
     protected Date messageTs;
+    @Valid
     @NotEmpty(message = "{tos.not.empty.msg}")
     protected List<Entry> tos;
     protected Entry from;
