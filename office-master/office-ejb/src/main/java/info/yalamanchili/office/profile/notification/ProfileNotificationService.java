@@ -139,10 +139,11 @@ public class ProfileNotificationService {
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
         for (Employee emp : msg.getTos()) {
-            email.addCc(emp.getPrimaryEmail().getEmail());
+            tos.add(emp.getPrimaryEmail().getEmail());
         }
         email.setTos(tos);
-        email.setBody("New Message Is:" + msg);
+        email.setSubject("new message");
+        email.setBody("New Message From The Employee:" + msg.getMessage());
         messagingService.sendEmail(email);
     }
     
