@@ -21,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,6 +42,8 @@ public class DriveResource {
 
     @Autowired
     protected DriveService driveService;
+    @Autowired
+    private Mapper mapper;
 
     @Path("/tree")
     @GET
@@ -93,10 +96,10 @@ public class DriveResource {
 //        }
 //        return files;
 //    }
-//
+
 //    @PUT
 //    @Path("/searchdrive/{start}/{limit}")
-//    public List<info.yalamanchili.office.dto.profile.Employee> searchFile(File entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+//    public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(File entity, @PathParam("start") int start, @PathParam("limit") int limit) {
 //        List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
 //        for (Object fileObj :FileDao.instance().search(entity, start, limit)) {
 //            files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
