@@ -84,15 +84,15 @@ public class AdminResource {
      *
      * @param empId
      */
-    @Path("/resetpassword/{empId}")
+    @Path("/forgotpassword/{empId}")
     @GET
-    public void forgotPasswordReset(@PathParam("empId") Long empId) {
+    public void forgotPasswordReset(@PathParam("empId") String empId) {
         //call password generator to get temp password.
         //Create a User object with the temp password.
         //call the above resetPassword the password.
         //send email with new password.
 
-        Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId.toString());
+        Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
         if (emp == null) {
             throw new RuntimeException("no employee id exists with this name");
         }
@@ -100,7 +100,7 @@ public class AdminResource {
         String tempPassword = employeeService.generatepassword();
 
         User user = new User();
-        user.setUserName(empId.toString());
+        user.setUserName(empId);
         user.setUserName(tempPassword);
 
         changePassword(emp.getId(), user);
