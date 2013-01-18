@@ -31,9 +31,16 @@ public class EmployeeService {
     public CUser changePassword(Long empId, User user) {
         //TODO check existing password
         CUser user1 = getEmployee(empId).getUser();
+      String oldpswd=  SecurityUtils.encodePassword(user.getOldPassword(), null);
+        if(oldpswd.equals(user1.getPasswordHash())) {
         user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
-        return em.merge(user1);
-
+         return em.merge(user1);
+        }
+        else
+        {
+           throw new RuntimeException("Old Password doesn't match");
+        }
+       
     }
 
     public CUser resetPassword(Long empId, User user) {
