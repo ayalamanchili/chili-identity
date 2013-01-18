@@ -13,6 +13,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -45,9 +46,9 @@ public class MessageDao extends CRUDDao<Message> {
     @Override
     public Long size() {
         Employee currentEmployee = SecurityService.instance().getCurrentUser();
-        Query sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where from  =:currentEmp",entityCls);
+        TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where fromEmp=:currentEmp", Long.class);
         sizeQuery.setParameter("currentEmp", currentEmployee);
-        return (Long) sizeQuery.getSingleResult();
+        return sizeQuery.getSingleResult();
     }
 
     public MessageDao() {

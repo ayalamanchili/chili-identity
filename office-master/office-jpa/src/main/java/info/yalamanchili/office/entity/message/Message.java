@@ -14,8 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -46,7 +46,7 @@ public class Message extends AbstractEntity {
     protected List<Message> replies;
     @ManyToOne
     @ForeignKey(name = "FK_Employee_Messages")
-    protected Employee from;
+    protected Employee fromEmp;
 
     public Message() {
         super();
@@ -92,7 +92,7 @@ public class Message extends AbstractEntity {
         this.getTos().add(fromEmp);
     }
 
-    @XmlElement
+    @XmlTransient
     public List<Message> getReplies() {
         return replies;
     }
@@ -102,16 +102,16 @@ public class Message extends AbstractEntity {
     }
 
     @XmlElement
-    public Employee getFrom() {
-        return from;
+    public Employee getFromEmp() {
+        return fromEmp;
     }
 
-    public void setFrom(Employee from) {
-        this.from = from;
+    public void setFromEmp(Employee fromEmp) {
+        this.fromEmp = fromEmp;
     }
 
     @Override
     public String toString() {
-        return "Message{" + "subject=" + subject + ", message=" + message + ", messageTs=" + messageTs + ", tos=" + tos + ", replies=" + replies + ", from=" + from + '}';
+        return "Message{" + "subject=" + subject + ", message=" + message + ", messageTs=" + messageTs + ", tos=" + tos + ", replies=" + replies + ", from=" + fromEmp + '}';
     }
 }

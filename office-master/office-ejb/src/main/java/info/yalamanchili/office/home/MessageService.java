@@ -40,14 +40,14 @@ public class MessageService {
     protected MessageDao messageDao;
     @Autowired
     protected ProfileNotificationService profileNotificationService;
+//TODO make this async or efficient
 
-    @Async
     public MessageDto save(MessageDto messageDto) {
         Message newMessage = new Message();
         newMessage.setSubject(messageDto.getSubject());
         newMessage.setMessage(messageDto.getMessage());
         newMessage.setMessageTs(new Date());
-        newMessage.setFrom(SecurityService.instance().getCurrentUser());
+        newMessage.setFromEmp(SecurityService.instance().getCurrentUser());
         for (Entry emp : messageDto.getTos()) {
             Employee toEmployee = EmployeeDao.instance().getEmployeWithEmpId(emp.getId());
             if (toEmployee != null) {

@@ -8,7 +8,6 @@ import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -98,8 +97,8 @@ public class MessageDto implements Serializable {
 
 
         Entry from = new Entry();
-        from.setId(entity.getFrom().getEmployeeId());
-        from.setValue(entity.getFrom().getFirstName());
+        from.setId(entity.getFromEmp().getEmployeeId());
+        from.setValue(entity.getFromEmp().getFirstName());
 
 
         messageDto.setFrom(from);
