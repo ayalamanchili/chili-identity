@@ -30,9 +30,7 @@ import java.util.logging.Logger;
 public class CreateMessagePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateMessagePanel.class.getName());
-    protected SuggestBox tosSuggestBox = new SuggestBox(constants, "To", "Message", false, true);
-    final RichTextArea textArea = new RichTextArea();
-    final RichTextToolBar toolBar = new RichTextToolBar(textArea);
+    SuggestBox tosSB = null;
 
     public CreateMessagePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -43,7 +41,7 @@ public class CreateMessagePanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject msg = new JSONObject();
         assignEntityValueFromField("subject", msg);
-        msg.put("message", new JSONString(textArea.getHTML()));
+        assignEntityValueFromField("message", msg);
         JSONArray tos = populateTos();
         if (tos.size() > 0) {
             msg.put("tos", populateTos());
@@ -54,7 +52,7 @@ public class CreateMessagePanel extends CreateComposite {
 
     protected JSONArray populateTos() {
         JSONArray array = new JSONArray();
-        String tos = tosSuggestBox.getValue();
+        String tos = tosSB.getValue();
         int i = 0;
         for (String toStr : splitString(tos)) {
             if (!toStr.trim().isEmpty()) {
@@ -110,11 +108,10 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        entityDisplayWidget.add(toolBar);
-        entityDisplayWidget.add(tosSuggestBox);
+        addField("tos", false, false, DataType.SUGGEST_FIELD);
         addField("subject", false, true, DataType.STRING_FIELD);
-        entityDisplayWidget.add(toolBar);
-        entityDisplayWidget.add(textArea);
+        addField("message", false, false, DataType.RICH_TEXT_AREA);
+        tosSB = (SuggestBox) fields.get("tos");
     }
 
     @Override
@@ -133,7 +130,7 @@ public class CreateMessagePanel extends CreateComposite {
                 logger.info(entityString);
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
                 if (values != null) {
-                    tosSuggestBox.loadData(values.values());
+                    tosSB.loadData(values.values());
                 }
             }
         });
@@ -143,7 +140,7 @@ public class CreateMessagePanel extends CreateComposite {
                 logger.info(entityString);
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
                 if (values != null) {
-                    tosSuggestBox.loadData(values.values());
+                    tosSB.loadData(values.values());
                 }
             }
         });
