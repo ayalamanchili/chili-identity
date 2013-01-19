@@ -1,5 +1,6 @@
 package info.yalamanchili.office.client.gwt;
 
+import info.chili.gwt.listeners.GenericListener;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -118,7 +119,7 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     @Override
     public void onChange(ChangeEvent arg0) {
         for (GenericListener listner : listeners) {
-            listner.onChange();
+            listner.fireEvent();
         }
     }
 

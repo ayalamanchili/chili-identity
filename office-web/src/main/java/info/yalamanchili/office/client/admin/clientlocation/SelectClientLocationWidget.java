@@ -6,7 +6,7 @@ package info.yalamanchili.office.client.admin.clientlocation;
 
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.GenericListener;
+import info.chili.gwt.listeners.GenericListener;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
@@ -32,7 +32,7 @@ public class SelectClientLocationWidget extends SelectComposite implements Gener
     }
 
     @Override
-    public void onChange() {
+    public void fireEvent() {
         if (SelectClientWidget.instance().getSelectedObjectId() == null || SelectClientWidget.instance().getSelectedObjectId().isEmpty()) {
             processData(null);
             return;

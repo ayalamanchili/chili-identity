@@ -7,7 +7,7 @@ package info.yalamanchili.office.client.admin.clientcontact;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.GenericListener;
+import info.chili.gwt.listeners.GenericListener;
 import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
@@ -33,7 +33,7 @@ public class SelectClientContactWidget extends SelectComposite implements Generi
     }
 
     @Override
-    public void onChange() {
+    public void fireEvent() {
         if (SelectClientWidget.instance().getSelectedObjectId() == null || SelectClientWidget.instance().getSelectedObjectId().isEmpty()) {
             processData(null);
             return;

@@ -6,7 +6,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.utils.Utils;
 
 public abstract class CreateComposite extends CRUDComposite implements ClickHandler {
@@ -54,13 +56,18 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
         if (processClientSideValidations(entity)) {
-            if (event.getSource() == create) {
+            if (create.isAttached()) {
                 createButtonClicked();
             }
-            if (event.getSource() == add) {
+            if (add.isAttached()) {
                 addButtonClicked();
             }
         }
+    }
+
+    @Override
+    protected void enterKeyPressed() {
+        onClick(null);
     }
 
     protected void setButtonText(String key) {
