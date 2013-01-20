@@ -12,7 +12,6 @@ import info.chili.gwt.utils.Utils;
 public abstract class CreateComposite extends CRUDComposite implements ClickHandler {
 
     private Logger logger = Logger.getLogger(CreateComposite.class.getName());
-    protected boolean submitted = false;
 
     public enum CreateCompositeType {
 
@@ -54,25 +53,13 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
     @Override
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
-        if (processClientSideValidations(entity) && !submitted) {
-            submitted();
+        if (processClientSideValidations(entity)) {
             if (create.isAttached()) {
                 createButtonClicked();
             }
             if (add.isAttached()) {
                 addButtonClicked();
             }
-        }
-    }
-
-    protected void submitted() {
-        this.submitted = true;
-        //TODO need to enable these back after validations
-        if (create.isAttached()) {
-//            create.setEnabled(false);
-        }
-        if (add.isAttached()) {
-//            add.setEnabled(false);
         }
     }
 
