@@ -6,14 +6,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.utils.Utils;
 
 public abstract class CreateComposite extends CRUDComposite implements ClickHandler {
 
     private Logger logger = Logger.getLogger(CreateComposite.class.getName());
+    protected boolean submitted = false;
 
     public enum CreateCompositeType {
 
@@ -55,7 +54,8 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
     @Override
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
-        if (processClientSideValidations(entity)) {
+        if (processClientSideValidations(entity) && !submitted) {
+            submitted();
             if (create.isAttached()) {
                 createButtonClicked();
             }
@@ -65,14 +65,29 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
         }
     }
 
+    protected void submitted() {
+        this.submitted = true;
+        //TODO need to enable these back after validations
+        if (create.isAttached()) {
+//            create.setEnabled(false);
+        }
+        if (add.isAttached()) {
+//            add.setEnabled(false);
+        }
+    }
+
     @Override
     protected void enterKeyPressed() {
         onClick(null);
     }
 
     protected void setButtonText(String key) {
-        create.setText(Utils.getKeyValue(key, constants));
-        add.setText(Utils.getKeyValue(key, constants));
+        if (create.isAttached()) {
+            create.setText(Utils.getKeyValue(key, constants));
+        }
+        if (add.isAttached()) {
+            add.setText(Utils.getKeyValue(key, constants));
+        }
     }
 
     /**

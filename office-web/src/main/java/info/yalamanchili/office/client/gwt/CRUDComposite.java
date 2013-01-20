@@ -1,5 +1,7 @@
 package info.yalamanchili.office.client.gwt;
 
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.BooleanField;
@@ -30,10 +32,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.TextAreaField;
-import info.chili.gwt.listeners.GenericListener;
+import info.chili.gwt.listeners.KeyPressListener;
 
-public abstract class CRUDComposite extends Composite implements GenericListener {
-    
+public abstract class CRUDComposite extends Composite implements KeyPressListener {
+
     private Logger logger = Logger.getLogger(CRUDComposite.class.getName());
     /*
      * Panels
@@ -49,11 +51,11 @@ public abstract class CRUDComposite extends Composite implements GenericListener
     protected ConstantsWithLookup constants;
     protected String entityName;
     protected Map<String, BaseField> fields = new HashMap<String, BaseField>();
-    
+
     public JSONObject getEntity() {
         return entity;
     }
-    
+
     public String getEntityId() {
         if (entityId == null && entity != null) {
             if (JSONUtils.toString(entity, "id") != null) {
@@ -63,7 +65,7 @@ public abstract class CRUDComposite extends Composite implements GenericListener
         return entityId;
     }
     protected Boolean readOnly;
-    
+
     protected void init(String entityName, final Boolean readOnly, ConstantsWithLookup constants) {
         initWidget(basePanel);
         this.readOnly = readOnly;
@@ -77,13 +79,13 @@ public abstract class CRUDComposite extends Composite implements GenericListener
         configure();
         addWidgets();
     }
-    
+
     protected abstract void addListeners();
-    
+
     protected abstract void configure();
-    
+
     protected abstract void addWidgets();
-    
+
     protected abstract void addWidgetsBeforeCaptionPanel();
 
     /*
@@ -175,20 +177,20 @@ public abstract class CRUDComposite extends Composite implements GenericListener
             entityDisplayWidget.add(suggestBox);
         }
     }
-    
+
     protected void addEnumField(String key, Boolean readOnly, Boolean isRequired, String[] values) {
         EnumField enumField = new EnumField(constants, key, entityName,
                 readOnly, isRequired, values);
         fields.put(key, enumField);
         entityDisplayWidget.add(enumField);
     }
-    
+
     protected void addDropDown(String key, SelectComposite widget) {
         fields.put(key, widget);
         widget.getListBox().setEnabled(!readOnly);
         entityDisplayWidget.add(widget);
     }
-    
+
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
@@ -265,7 +267,7 @@ public abstract class CRUDComposite extends Composite implements GenericListener
             }
         }
     }
-    
+
     protected void assignFieldValueFromEntity(String fieldKey, JSONObject entity, DataType type) {
         if (fields.get(fieldKey) == null) {
             throw new RuntimeException("there is no field present with key please check the key:" + fieldKey);
@@ -318,16 +320,19 @@ public abstract class CRUDComposite extends Composite implements GenericListener
             selectComposite.setSelectedValue(entity.get(fieldKey).isObject());
         }
     }
-    
-    public void fireEvent() {
-        enterKeyPressed();
+
+    @Override
+    public void keyPressed(KeyPressEvent event) {
+        if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+            enterKeyPressed();
+        }
     }
-    
+
     protected void enterKeyPressed() {
     }
-    
+
     protected abstract String getURI();
-    
+
     protected void clearMessages() {
         for (String fieldKey : fields.keySet()) {
             if (fields.get(fieldKey) instanceof BaseField) {
@@ -336,7 +341,7 @@ public abstract class CRUDComposite extends Composite implements GenericListener
             }
         }
     }
-    
+
     protected void handleErrorResponse(Throwable err) {
         //TODO enhance to show generic error messages
         logger.info(err.getMessage());
@@ -351,7 +356,7 @@ public abstract class CRUDComposite extends Composite implements GenericListener
             new ResponseStatusWidget().show("Call Failed");
         }
     }
-    
+
     protected void processValidationErrors(JSONValue errorsObj) {
         clearMessages();
         JSONArray errorsArray = JSONUtils.toJSONArray(errorsObj.isObject().get("Error"));
@@ -375,7 +380,7 @@ public abstract class CRUDComposite extends Composite implements GenericListener
             new ResponseStatusWidget().show(genericErrorMessage);
         }
     }
-    
+
     protected String getErrorProperty(String str) {
         if (str.contains(".")) {
             return str.substring(str.indexOf(".") + 1);
