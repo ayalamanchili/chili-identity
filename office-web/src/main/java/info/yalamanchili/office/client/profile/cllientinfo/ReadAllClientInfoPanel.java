@@ -92,7 +92,7 @@ public class ReadAllClientInfoPanel extends ReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(entityId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(getEntity(entityId)));
     }
 
     public String getDeleteURL(String entityId) {

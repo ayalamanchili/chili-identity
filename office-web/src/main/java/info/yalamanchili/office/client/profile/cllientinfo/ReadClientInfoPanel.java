@@ -28,30 +28,9 @@ public class ReadClientInfoPanel extends ReadComposite {
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
 
-    public static ReadClientInfoPanel instance() {
-        return instance;
-    }
-
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "ClientInfo", OfficeWelcome.constants);
-    }
-
-    public ReadClientInfoPanel(String id) {
-        initReadComposite(id, "ClientInfo", OfficeWelcome.constants);
-    }
-
-    @Override
-    public void loadEntity(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("read ec6 response" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
     }
 
     @Override
@@ -66,7 +45,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        
+
     }
 
     @Override
@@ -98,5 +77,9 @@ public class ReadClientInfoPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "clientinformation/" + entityId;
+    }
+
+    @Override
+    public void loadEntity(String entityId) {
     }
 }
