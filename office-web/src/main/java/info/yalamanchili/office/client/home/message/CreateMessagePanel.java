@@ -108,7 +108,7 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("tos", false, false, DataType.SUGGEST_FIELD);
+        addField("tos", false, true, DataType.SUGGEST_FIELD);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("message", false, false, DataType.RICH_TEXT_AREA);
         tosSB = (SuggestBox) fields.get("tos");
