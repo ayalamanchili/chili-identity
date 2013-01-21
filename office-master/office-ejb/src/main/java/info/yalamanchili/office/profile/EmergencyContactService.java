@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.profile;
 
-import info.chili.beans.BeanMapper;
+import info.chili.commons.BeanMapper;
 import info.yalamanchili.office.dao.profile.EmergencyContactDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.profile.Contact;

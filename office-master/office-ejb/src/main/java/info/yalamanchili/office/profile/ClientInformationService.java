@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.profile;
 
-import info.chili.beans.BeanMapper;
+import info.chili.commons.BeanMapper;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;

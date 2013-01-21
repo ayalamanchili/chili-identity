@@ -8,7 +8,7 @@ import info.chili.jpa.QueryUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.jpa.AbstractEntity;
 import java.util.Arrays;
-import info.chili.beans.BeanMapper;
+import info.chili.commons.BeanMapper;
 import info.chili.commons.DataType;
 import info.chili.commons.ReflectionUtils;
 import info.chili.commons.SearchUtils;

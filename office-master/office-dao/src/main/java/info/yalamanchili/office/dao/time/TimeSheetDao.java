@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dao.time;
 
-import info.chili.beans.BeanMapper;
+import info.chili.commons.BeanMapper;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.StatementOfWork;
