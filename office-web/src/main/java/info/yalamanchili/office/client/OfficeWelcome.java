@@ -43,14 +43,9 @@ public class OfficeWelcome implements EntryPoint {
         this.employee = employee;
         this.employeeId = employee.get("id").isString().stringValue();
         initUserRoles(employee);
-        GWT.runAsync(new RunAsyncCallback() {
+        GWT.runAsync(new info.chili.gwt.callback.RunAsyncCallback() {
             @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Code download failed");
-            }
-
-            @Override
-            public void onSuccess() {
+            public void onResponse() {
                 logger.info(roles.toString());
                 RootLayoutPanel.get().clear();
                 RootLayout rootLayout = new RootLayout();
