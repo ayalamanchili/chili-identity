@@ -15,6 +15,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +48,7 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
 
     @Override
     public TimeSheet save(TimeSheet entity) {
+        validatetimesheet(entity);
         if (entity.getId() != null) {
             entity = (TimeSheet) BeanMapper.merge(entity, getEntityManager().find(TimeSheet.class, entity.getId()));
         }
@@ -64,6 +66,22 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
         Employee emp = getEntityManager().find(Employee.class, entity.getEmployee().getId());
         entity.setEmployee(emp);
         return getEntityManager().merge(entity);
+    }
+    
+    protected void validatetimesheet(TimeSheet ts)
+    {
+        TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:currentEmpid and timeSheetPeriod.id=:payperiodid", Long.class);
+        sizeQuery.setParameter("currentEmpid", ts.getEmployee().getEmployeeId());
+        sizeQuery.setParameter("payperiodid",ts.getTimeSheetPeriod().getId());
+        
+       if (sizeQuery.getSingleResult() > 0) 
+       {
+           throw new RuntimeException("Enter Timesheet Start date and End date");
+//         if ((ts.getStartDate() == null) && (ts.getEndDate() == null))
+//         {
+//            throw new RuntimeException("Enter Timesheet Start date and End date");
+//         }
+       }
     }
 
     @Override
