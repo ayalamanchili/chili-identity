@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
@@ -196,48 +197,64 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
             StringField field = (StringField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof TextAreaField) {
             TextAreaField field = (TextAreaField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof PasswordField) {
             PasswordField field = (PasswordField) fields.get(fieldKey);
             if (field.getPassword() != null && !field.getPassword().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getPassword()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof DateField) {
             DateField field = (DateField) fields.get(fieldKey);
             if (field.getDate() != null) {
                 entity.put(fieldKey, new JSONString(DateUtils.toDateString(field.getDate())));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof LongField) {
             LongField field = (LongField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(String.valueOf(field.getValue())));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof EnumField) {
             EnumField field = (EnumField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof BooleanField) {
             BooleanField field = (BooleanField) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(fieldKey, new JSONString(field.getValue().toString()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof SelectComposite) {
             SelectComposite field = (SelectComposite) fields.get(fieldKey);
             if (field.getSelectedObject() != null) {
                 entity.put(fieldKey, field.getSelectedObject());
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         //Currency Field
@@ -245,6 +262,8 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
             CurrencyField field = (CurrencyField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         //Float Field
@@ -252,18 +271,24 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
             FloatField field = (FloatField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof RichTextField) {
             RichTextField field = (RichTextField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
         if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
             info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
                 entity.put(fieldKey, new JSONString(field.getValue()));
+            } else {
+                entity.put(fieldKey, null);
             }
         }
     }
