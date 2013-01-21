@@ -245,8 +245,8 @@ public class ProfileHome extends ALComposite implements ClickHandler {
                                 if (response != null && !response.isEmpty()) {
                                     JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
                                     skillSetPanel.add(new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
-                                    skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id")));
-                                    skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id")));
+                                    skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id"), false, false));
+                                    skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id"), false, false));
                                 } else {
                                     TabPanel.instance().myOfficePanel.entityPanel.clear();
                                     skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));

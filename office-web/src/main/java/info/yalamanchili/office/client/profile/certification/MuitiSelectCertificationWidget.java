@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class MuitiSelectCertificationWidget extends MultiSelectComposite {
 
-    public MuitiSelectCertificationWidget(String name, String parentId) {
-        super(name, parentId);
+    public MuitiSelectCertificationWidget(String name, String parentId, boolean readOnly, boolean required) {
+        super(OfficeWelcome.constants, name, parentId, readOnly, required);
     }
 
     @Override

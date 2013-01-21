@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
@@ -13,6 +14,7 @@ import java.util.List;
  *
  * @author ayalamanchili
  */
+//TODO extend base field
 public abstract class MultiSelectComposite extends Composite {
 
     protected String parentId;
@@ -29,12 +31,15 @@ public abstract class MultiSelectComposite extends Composite {
             MultiSelectComposite.this.itemsUnselected(selectedIds);
         }
     };
+//TODO extend base field
 
-    public MultiSelectComposite(String name, String parentId) {
+    public MultiSelectComposite(ConstantsWithLookup constants, String name, String parentId, Boolean readOnly, Boolean isRequired) {
         this.name = name;
         this.parentId = parentId;
         initWidget(panel);
         panel.add(multiSelectBox);
+        multiSelectBox.setReadOnly(readOnly);
+        multiSelectBox.setConstants(constants);
         loadData();
     }
 
@@ -45,8 +50,8 @@ public abstract class MultiSelectComposite extends Composite {
     protected abstract void loadData();
 
     protected abstract String getMultiSelectUrl();
-    
-    public MultiSelectBox getMultiSelectBox(){
+
+    public MultiSelectBox getMultiSelectBox() {
         return multiSelectBox;
     }
 }

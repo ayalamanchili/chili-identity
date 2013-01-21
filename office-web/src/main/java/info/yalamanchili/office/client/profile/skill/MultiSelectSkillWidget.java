@@ -20,8 +20,8 @@ public class MultiSelectSkillWidget extends MultiSelectComposite {
 
     private static Logger logger = Logger.getLogger(MultiSelectSkillWidget.class.getName());
 
-    public MultiSelectSkillWidget(String name, String parentId) {
-        super(name, parentId);
+    public MultiSelectSkillWidget(String name, String parentId, boolean readOnly, boolean required) {
+        super(OfficeWelcome.constants, name, parentId, readOnly, required);
     }
 
     @Override

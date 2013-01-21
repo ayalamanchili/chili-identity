@@ -22,7 +22,7 @@ public class MultiSelectRoleWidget extends MultiSelectComposite {
     private static Logger logger = Logger.getLogger(MultiSelectSkillWidget.class.getName());
 
     public MultiSelectRoleWidget(String name, String parentId) {
-        super(name, parentId);
+        super(OfficeWelcome.constants, name, parentId, false, false);
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
@@ -43,15 +44,23 @@ public class TreeSkillSetPanel extends TreePanelComposite {
     public void treeNodeSelected(String entityNodeKey) {
         if (SKILLS_NODE.equals(entityNodeKey) && ReadSkillSetPanel.instance().getEntityId() != null) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectSkillWidget("Skills", ReadSkillSetPanel.instance().getEntityId()));
+            if (Auth.hasOnlyUserRole()) {
+                TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectSkillWidget("Skills", ReadSkillSetPanel.instance().getEntityId(), true, false));
+            } else {
+                TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectSkillWidget("Skills", ReadSkillSetPanel.instance().getEntityId(), false, false));
+            }
 
         }
         if (CERTIFICATIONS_NODE.equals(entityNodeKey) && ReadSkillSetPanel.instance().getEntityId() != null) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new MuitiSelectCertificationWidget("Certifications", ReadSkillSetPanel.instance().getEntityId()));
+            if (Auth.hasOnlyUserRole()) {
+                TabPanel.instance().myOfficePanel.entityPanel.add(new MuitiSelectCertificationWidget("Certifications", ReadSkillSetPanel.instance().getEntityId(), true, false));
+            } else {
+                TabPanel.instance().myOfficePanel.entityPanel.add(new MuitiSelectCertificationWidget("Certifications", ReadSkillSetPanel.instance().getEntityId(), false, false));
+            }
         }
     }
-    
+
     @Override
     public void loadEntity() {
     }

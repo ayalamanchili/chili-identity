@@ -22,7 +22,7 @@ public class MultiSelectEmployeeWidget extends MultiSelectComposite {
     private static Logger logger = Logger.getLogger(MultiSelectEmployeeWidget.class.getName());
 
     public MultiSelectEmployeeWidget(String name, String groupId) {
-        super(name, groupId);
+        super(OfficeWelcome.constants, name, groupId, false, false);
     }
 
     @Override

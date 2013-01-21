@@ -13,21 +13,22 @@ import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.utils.JSONUtils;
-
+//TODO extend base field
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
 
     private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
+    protected ConstantsWithLookup constants;
     CaptionPanel captionPanel = new CaptionPanel();
     FlowPanel panel = new FlowPanel();
     Label avaliableL = new Label("Available");
@@ -68,7 +69,6 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         panel.add(unselectButton);
         panel.add(selectedL);
         panel.add(selectedListBox);
-
         captionPanel.setContentWidget(panel);
     }
 
@@ -142,6 +142,21 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
                 listBox.removeItem(i);
             }
         }
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        availableListBox.setEnabled(!readOnly);
+        selectedListBox.setEnabled(!readOnly);
+        selectButton.setEnabled(!readOnly);
+        unselectButton.setEnabled(!readOnly);
+    }
+
+    public ConstantsWithLookup getConstants() {
+        return constants;
+    }
+
+    public void setConstants(ConstantsWithLookup constants) {
+        this.constants = constants;
     }
 
     public static MultiSelectObj getMultiSelectBox(String response) {
