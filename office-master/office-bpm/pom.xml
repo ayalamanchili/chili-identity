@@ -12,6 +12,11 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
+            <groupId>info.yalamanchili.office</groupId>
+            <artifactId>office-dao</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.activiti</groupId> 					
             <artifactId>activiti-engine</artifactId> 				
             <version>${activiti-version}</version> 				

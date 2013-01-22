@@ -1,6 +1,7 @@
 package info.yalamanchili.office.config;
 
 import info.chili.spring.SpringContext;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeServiceConfiguration {
 
+    private final static Logger logger = Logger.getLogger(OfficeServiceConfiguration.class.getName());
     @PersistenceContext
     protected EntityManager em;
     protected String contentManagementLocationRoot = "C://content-management//office/";
@@ -28,7 +30,7 @@ public class OfficeServiceConfiguration {
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
     }
-    
+
     @ManagedAttribute
     public String getAdminEmail() {
         return adminEmail;
@@ -81,7 +83,7 @@ public class OfficeServiceConfiguration {
 
     @ManagedOperation
     public void indexHibernateSearch() {
-        System.out.println("--------------started hiberante search indexing-------------");
+        logger.info("--------------started hiberante search indexing-------------");
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
         try {
             fullTextEntityManager.createIndexer().startAndWait();

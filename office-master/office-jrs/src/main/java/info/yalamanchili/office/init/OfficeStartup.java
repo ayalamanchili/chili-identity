@@ -25,6 +25,7 @@ import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
@@ -75,7 +76,9 @@ public class OfficeStartup {
         if (config.getInitTestData()) {
             initTestData();
         }
+        //Run sync tasks
         TimeJobService.instance().syncTimeSheetPeriods();
+        OfficeBPMIdentityService.instance().syncUsers();
     }
 
     protected void initRoles() {
@@ -102,7 +105,7 @@ public class OfficeStartup {
         userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
         userEmp.setSex(Sex.MALE);
         userEmp.setStartDate(new Date());
-        userEmp.setEmployeeType(getInternalEmployeeType());
+        userEmp.setEmployeeType(getConsultantEmployeeType());
 
         Preferences userPrefs = new Preferences();
         userPrefs.setEnableEmailNotifications(Boolean.TRUE);
@@ -147,7 +150,7 @@ public class OfficeStartup {
         adminEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -3));
         adminEmp.setSex(Sex.FEMALE);
         adminEmp.setStartDate(new Date());
-        adminEmp.setEmployeeType(getConsultantEmployeeType());
+        adminEmp.setEmployeeType(getInternalEmployeeType());
 
         Preferences adminPrefs = new Preferences();
         adminPrefs.setEnableEmailNotifications(Boolean.TRUE);
