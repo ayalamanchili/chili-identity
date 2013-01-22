@@ -6,10 +6,10 @@ package info.yalamanchili.office.client.home;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.home.message.MessageStackPanelWidget;
+import info.yalamanchili.office.client.home.tasks.TasksStackPanelWidget;
 import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
 
 /**
@@ -19,8 +19,9 @@ import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
 public class HomeStackPanel extends ALComposite implements ClickHandler {
 
     protected StackPanel panel = new StackPanel();
-    TODOStackPanelWidget todoStackPanel = new TODOStackPanelWidget();
+    TasksStackPanelWidget taskStackPanel = new TasksStackPanelWidget();
     MessageStackPanelWidget msgStackPanel = new MessageStackPanelWidget();
+    TODOStackPanelWidget todoStackPanel = new TODOStackPanelWidget();
 
     public HomeStackPanel() {
         init(panel);
@@ -36,8 +37,9 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        panel.add(todoStackPanel, "TODO's");
+        panel.add(taskStackPanel, "Tasks");
         panel.add(msgStackPanel, "Messages");
+        panel.add(todoStackPanel, "TODO's");
     }
 
     @Override

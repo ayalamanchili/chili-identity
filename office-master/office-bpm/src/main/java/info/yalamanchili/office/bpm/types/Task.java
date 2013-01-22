@@ -6,7 +6,6 @@ package info.yalamanchili.office.bpm.types;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 
 /**
  *
@@ -14,10 +13,24 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
  */
 @XmlRootElement
 @XmlType
-public class Task extends TaskEntity {
+public class Task {
 
-    public Task(org.activiti.engine.task.Task entity) {
-        this.setName(entity.getName());
-        //TODO map remaining fields
+    protected String name;
+    protected String assignee;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
     }
 }

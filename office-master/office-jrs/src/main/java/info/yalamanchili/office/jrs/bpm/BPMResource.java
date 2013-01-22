@@ -9,6 +9,7 @@ import info.yalamanchili.office.bpm.types.Task;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -30,12 +31,17 @@ public class BPMResource {
 
     @GET
     @Path("/tasks/{start}/{limit}")
-    public List<Task> getTasksForAssignee(@QueryParam("assignee") String assignee, @PathParam("start") int start, @PathParam("limit") int limit) {
-        List<Task> tasks = new ArrayList<Task>();
-        for (org.activiti.engine.task.Task taskEntity : officeBPMTaskService.getTasksForAsignee(assignee, start, limit)) {
-            Task task = new Task(taskEntity);
-            tasks.add(task);
+    public List<Task> getTasks(@QueryParam("assignee") String assignee, @PathParam("start") int start, @PathParam("limit") int limit) {
+        if (assignee == null || assignee.trim().isEmpty()) {
+            return officeBPMTaskService.getAllUnasigneed(start, limit);
+        } else {
+            return officeBPMTaskService.getTasksForAsignee(assignee, start, limit);
         }
-        return tasks;
+    }
+
+    @PUT
+    @Path("task")
+    public void createTask(Task task) {
+        officeBPMTaskService.createTask(task);
     }
 }

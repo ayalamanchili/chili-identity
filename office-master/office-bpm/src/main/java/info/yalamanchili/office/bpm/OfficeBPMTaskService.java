@@ -5,10 +5,12 @@
 package info.yalamanchili.office.bpm;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.types.Task;
+import java.util.ArrayList;
 import java.util.List;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,21 +23,31 @@ public class OfficeBPMTaskService {
 
     @Autowired
     protected TaskService bpmTaskService;
+    @Autowired
+    protected Mapper mapper;
 
-    public void createTask(String taskName) {
-        Task task = bpmTaskService.newTask();
-        task.setName(taskName);
-        bpmTaskService.saveTask(task);
+    public void createTask(Task task) {
+        org.activiti.engine.task.Task bpmTask = bpmTaskService.newTask();
+        mapper.map(task, bpmTask);
+        bpmTaskService.saveTask(bpmTask);
     }
 
     public List<Task> getAllUnasigneed(int start, int limit) {
+        List<Task> result = new ArrayList<Task>();
         TaskQuery query = bpmTaskService.createTaskQuery().taskUnnassigned();
-        return query.listPage(start, limit);
+        for (org.activiti.engine.task.Task bpmTask : query.listPage(limit, limit)) {
+            result.add(mapper.map(bpmTask, Task.class));
+        }
+        return result;
     }
 
     public List<Task> getTasksForAsignee(String assignee, int start, int limit) {
+        List<Task> result = new ArrayList<Task>();
         TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee);
-        return query.listPage(start, limit);
+        for (org.activiti.engine.task.Task bpmTask : query.listPage(limit, limit)) {
+            result.add(mapper.map(bpmTask, Task.class));
+        }
+        return result;
     }
 
     public static OfficeBPMTaskService instance() {
