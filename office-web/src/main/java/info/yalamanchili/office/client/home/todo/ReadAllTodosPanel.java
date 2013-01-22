@@ -37,14 +37,13 @@ public class ReadAllTodosPanel extends ReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllTodosPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllTodosPanelURL(start, "5"), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
                         postFetchTable(result);
                     }
                 });
-
     }
 
     @Override
