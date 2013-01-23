@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<definitions id="definitions"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             targetNamespace="http://www.activiti.org/bpmn2.0">
+ 
+    <process id="address_update_process">
+ 
+        <startEvent id="updateAddressStart" />
+        <sequenceFlow id="flow1" sourceRef="updateAddressStart" targetRef="updateAddressHRTask" />
+        <userTask id="updateAddressHRTask" 
+                  name="updateAddressHRTask" 
+                  activiti:assignee="fozzie" />
+        <sequenceFlow id="flow2" sourceRef="updateAddressHRTask" targetRef="updateAddressEnd" />
+        <endEvent id="updateAddressEnd" />
+ 
+    </process>
+ 
+</definitions>
