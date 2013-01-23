@@ -78,7 +78,7 @@ public class OfficeStartup {
         }
         //Run sync tasks
         TimeJobService.instance().syncTimeSheetPeriods();
-        OfficeBPMIdentityService.instance().syncUsers();
+        OfficeBPMIdentityService.instance().syncUsersAndRoles();
     }
 
     protected void initRoles() {

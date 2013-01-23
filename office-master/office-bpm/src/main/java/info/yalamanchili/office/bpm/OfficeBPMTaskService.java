@@ -30,7 +30,9 @@ public class OfficeBPMTaskService {
     public void createTask(Task task) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.newTask();
         mapper.map(task, bpmTask);
+        bpmTask.setAssignee(null);
         bpmTaskService.saveTask(bpmTask);
+        bpmTaskService.setAssignee(bpmTask.getId(), bpmTask.getAssignee());
     }
     
     public TaskTable getAllUnasigneed(int start, int limit) {

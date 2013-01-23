@@ -84,6 +84,6 @@ public class ReadAllTasks extends ReadAllComposite {
     }
 
     public String getReadAllTasksUrl(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser" + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser/" + start.toString() + "/" + limit.toString();
     }
 }
