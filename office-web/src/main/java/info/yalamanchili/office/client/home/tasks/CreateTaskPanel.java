@@ -32,7 +32,7 @@ public class CreateTaskPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
-        assignEntityValueFromField("assignee", entity);
+//        assignEntityValueFromField("assignee", entity);
         return entity;
     }
 
@@ -76,7 +76,7 @@ public class CreateTaskPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
-        addField("assignee", false, true, DataType.STRING_FIELD);
+//        addField("assignee", false, true, DataType.STRING_FIELD);
     }
 
     @Override

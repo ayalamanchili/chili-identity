@@ -40,6 +40,7 @@ public class ReadAllTasks extends ReadAllComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        logger.info("dddd" + result);
                         postFetchTable(result);
                     }
                 });
@@ -47,6 +48,9 @@ public class ReadAllTasks extends ReadAllComposite {
 
     @Override
     public void createTableHeader() {
+        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 2, getKeyValue("Assignee"));
     }
 
     @Override
@@ -80,6 +84,6 @@ public class ReadAllTasks extends ReadAllComposite {
     }
 
     public String getReadAllTasksUrl(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "bpm/tasks/" + start.toString() + "/" + limit.toString() + "?assignee=adminadmin";
+        return OfficeWelcome.constants.root_url() + "bpm/tasks/" + start.toString() + "/" + limit.toString();
     }
 }

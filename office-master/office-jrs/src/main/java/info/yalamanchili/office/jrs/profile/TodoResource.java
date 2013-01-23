@@ -36,6 +36,7 @@ public class TodoResource extends CRUDResource<Todo> {
     protected TodoDao todoDao;
 
     @PUT
+    @Override
     public Todo save(Todo entity) {
         return todoService.save(entity);
     }

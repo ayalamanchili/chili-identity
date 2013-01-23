@@ -4,6 +4,9 @@
  */
 package info.yalamanchili.office.bpm.types;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -32,5 +35,33 @@ public class Task {
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class TaskTable {
+
+        protected Long size;
+        protected List<Task> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<Task> getEntities() {
+            if (this.entities == null) {
+                this.entities = new ArrayList<Task>();
+            }
+            return entities;
+        }
+
+        public void setEntities(List<Task> entities) {
+            this.entities = entities;
+        }
     }
 }
