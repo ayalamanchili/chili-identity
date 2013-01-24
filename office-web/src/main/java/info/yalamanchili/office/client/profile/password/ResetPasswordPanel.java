@@ -56,7 +56,7 @@ public class ResetPasswordPanel extends CreateComposite {
                         @Override
                         public void onSuccess(String userString) {
                             if (userString != null && userString.trim().length() > 0) {
-                                new ResponseStatusWidget().show("Reset Password successfu1");
+                                new ResponseStatusWidget().show("Reset Password successful");
                             } else {
                                 new ResponseStatusWidget().show("Reset Password failed");
                             }
