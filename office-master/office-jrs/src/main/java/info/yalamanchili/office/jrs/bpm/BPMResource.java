@@ -48,7 +48,7 @@ public class BPMResource {
     @GET
     @Path("/tasks/currentuser/{start}/{limit}")
     public TaskTable getMyTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
-        return officeBPMTaskService.getTasksForAsignee(SecurityService.instance().getCurrentUserId(), start, limit);
+        return officeBPMTaskService.getTasksForAssigneeAndRoles(SecurityService.instance().getCurrentUser(), start, limit);
     }
 
     @PUT

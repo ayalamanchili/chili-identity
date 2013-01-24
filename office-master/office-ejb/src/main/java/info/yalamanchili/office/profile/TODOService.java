@@ -4,7 +4,6 @@
  */
 package info.yalamanchili.office.profile;
 
-import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.profile.TodoDao;
 import info.yalamanchili.office.entity.profile.Todo;
 import java.util.logging.Logger;
@@ -25,8 +24,6 @@ public class TODOService {
     protected TodoDao todoDao;
 
     public Todo save(Todo entity) {
-        OfficeBPMService.instance().deployProcess("info/yalamanchili/office/hello-world.bpmn20.xml");
-        OfficeBPMService.instance().startProcess("helloWorld");
         return (Todo) todoDao.save(entity);
     }
 }

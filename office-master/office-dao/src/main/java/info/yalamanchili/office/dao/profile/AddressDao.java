@@ -16,21 +16,23 @@ import org.springframework.stereotype.Component;
 
 /**
  * @todo add comment for javadoc
- * 
- * @author ayalamanchili @generated
+ *
+ * @author ayalamanchili
+ * @generated
  */
 @Component
 @Scope("request")
 public class AddressDao extends CRUDDao<Address> {
 
-	@PersistenceContext
-	protected EntityManager em;
+    @PersistenceContext
+    protected EntityManager em;
 
-	public AddressDao() {
-		super(Address.class);
-	}
-        @Override
-        public Address save(Address entity) {
+    public AddressDao() {
+        super(Address.class);
+    }
+
+    @Override
+    public Address save(Address entity) {
         if (entity.getId() != null) {
             Address updatedAddress = null;
             updatedAddress = super.save(entity);
@@ -42,13 +44,14 @@ public class AddressDao extends CRUDDao<Address> {
             return em.merge(updatedAddress);
         }
         return super.save(entity);
-        }
-	@Override
-	public EntityManager getEntityManager() {
-		return em;
-	}
-        
-      public static AddressDao instance() {
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
+    public static AddressDao instance() {
         return SpringContext.getBean(AddressDao.class);
     }
 }

@@ -1,5 +1,6 @@
 package info.yalamanchili.office.jrs.profile;
 
+import info.yalamanchili.office.bpm.BPMProfileService;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -51,7 +52,7 @@ public class AddressResource extends CRUDResource<Address> {
             return save(address);
         } else {
             Address savedAddress = (Address) getDao().save(address);
-            profileNotificationservice.sendEmployeeAddressUpdatedNotification(emp);
+            BPMProfileService.instance().startAddressUpdatedProcess();
             return savedAddress;
         }
     }

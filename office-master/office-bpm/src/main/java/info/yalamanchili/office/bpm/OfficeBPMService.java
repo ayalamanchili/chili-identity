@@ -5,10 +5,15 @@
 package info.yalamanchili.office.bpm;
 
 import info.chili.spring.SpringContext;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.repository.DeploymentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeBPMService {
 
+    private final static Logger logger = Logger.getLogger(OfficeBPMService.class.getName());
     @Autowired
     protected RepositoryService bpmRepositoryService;
     @Autowired
@@ -27,13 +33,24 @@ public class OfficeBPMService {
     protected IdentityService bpmIdentityService;
     @Autowired
     protected RuntimeService bpmRuntimeService;
+    protected HashMap<String, String> processMap = new HashMap<String, String>();
 
-    public void deployProcess(String processFilePath) {
-        bpmRepositoryService.createDeployment().addClasspathResource(processFilePath).deploy();
+    public void deployProcess(String processId) {
+        DeploymentQuery deploymentQuery = bpmRepositoryService.createDeploymentQuery().deploymentId(processId);
+        if (deploymentQuery.singleResult() == null && processMap.get(processId) != null) {
+            logger.log(Level.INFO, "deploying bpm process: withId{0} and Path:{1}", new Object[]{processId, processMap.get(processId)});
+            bpmRepositoryService.createDeployment().addClasspathResource(processMap.get(processId)).deploy();
+        }
     }
 
-    public void startProcess(String key) {
-        bpmRuntimeService.startProcessInstanceByKey(key);
+    public void startProcess(String processId, Map<String, Object> variables) {
+        deployProcess(processId);
+        bpmRuntimeService.startProcessInstanceByKey(processId, variables);
+    }
+
+    public void registerProcess(String processId, String path) {
+        logger.log(Level.INFO, "registering process: {0} with path {1}", new Object[]{processId, path});
+        processMap.put(processId, path);
     }
 
     public static OfficeBPMService instance() {
