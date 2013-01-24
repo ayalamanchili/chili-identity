@@ -86,7 +86,7 @@ public class OfficeBPMIdentityService {
             return userQuery.singleResult();
         } catch (ActivitiException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage());
-            return null;
+            throw new RuntimeException("error finding activiti user:" + userId, e);
         }
     }
 
@@ -96,7 +96,7 @@ public class OfficeBPMIdentityService {
             return grpQuery.singleResult();
         } catch (ActivitiException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage());
-            return null;
+            throw new RuntimeException("error finding activiti group:" + groupId, e);
         }
     }
 
