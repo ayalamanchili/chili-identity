@@ -71,16 +71,15 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
     protected void validatetimesheet(TimeSheet ts)
     {
         TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:currentEmpid and timeSheetPeriod.id=:payperiodid", Long.class);
-        sizeQuery.setParameter("currentEmpid", ts.getEmployee().getEmployeeId());
+        sizeQuery.setParameter("currentEmpid", ts.getEmployee().getId());
         sizeQuery.setParameter("payperiodid",ts.getTimeSheetPeriod().getId());
         
        if (sizeQuery.getSingleResult() > 0) 
        {
-           throw new RuntimeException("Enter Timesheet Start date and End date");
-//         if ((ts.getStartDate() == null) && (ts.getEndDate() == null))
-//         {
-//            throw new RuntimeException("Enter Timesheet Start date and End date");
-//         }
+         if ((ts.getStartDate() == null) && (ts.getEndDate() == null))
+         {
+            throw new RuntimeException("Enter Timesheet Start date and End date");
+         }
        }
     }
 
