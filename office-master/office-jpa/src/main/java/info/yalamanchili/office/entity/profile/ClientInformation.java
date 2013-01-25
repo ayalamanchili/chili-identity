@@ -67,13 +67,13 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Client Contact
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClientContact_ClientInformations")
     protected Contact clientContact;
     /**
      * Client Location
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClientLocation_ClientInformations")
     protected Address clientLocation;
     /**
@@ -85,13 +85,13 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Vendor Contact
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_VendorContact_ClientInformations")
     protected Contact vendorContact;
     /**
      * Vendor Location
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_VendorLocation_ClientInformations")
     protected Address vendorLocation;
     /**
