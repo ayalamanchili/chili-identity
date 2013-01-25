@@ -82,21 +82,27 @@ public class OfficeBPMIdentityService {
 
     public User findUser(String userId) {
         UserQuery userQuery = bpmIdentityService.createUserQuery().userId(userId);
-        try {
-            return userQuery.singleResult();
-        } catch (ActivitiException e) {
-            logger.log(Level.SEVERE, e.getLocalizedMessage());
-            throw new RuntimeException("error finding activiti user:" + userId, e);
+        if (userQuery.count() == 1) {
+            try {
+                return userQuery.singleResult();
+            } catch (ActivitiException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            return null;
         }
     }
 
     public Group findGroup(String groupId) {
-        GroupQuery grpQuery = bpmIdentityService.createGroupQuery().groupName(groupId);
-        try {
-            return grpQuery.singleResult();
-        } catch (ActivitiException e) {
-            logger.log(Level.SEVERE, e.getLocalizedMessage());
-            throw new RuntimeException("error finding activiti group:" + groupId, e);
+        GroupQuery grpQuery = bpmIdentityService.createGroupQuery().groupId(groupId);
+        if (grpQuery.count() == 1) {
+            try {
+                return grpQuery.singleResult();
+            } catch (ActivitiException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            return null;
         }
     }
 

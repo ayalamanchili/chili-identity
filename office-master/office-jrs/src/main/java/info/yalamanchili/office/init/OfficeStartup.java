@@ -88,7 +88,6 @@ public class OfficeStartup {
         hrRole();
         recruiterRole();
         expenseRole();
-        payrollRole();
         driveRole();
         timeRole();
     }
@@ -564,14 +563,6 @@ public class OfficeStartup {
             CRole role = new CRole();
             role.setRolename(OfficeRoles.ROLE_EXPENSE);
             accountantRole = em.merge(role);
-        }
-    }
-
-    public void payrollRole() {
-        if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_TIME) == null) {
-            CRole role = new CRole();
-            role.setRolename(OfficeRoles.ROLE_TIME);
-            payrollRole = em.merge(role);
         }
     }
 
