@@ -52,7 +52,7 @@ public class AddressResource extends CRUDResource<Address> {
             return save(address);
         } else {
             Address savedAddress = (Address) getDao().save(address);
-            BPMProfileService.instance().startAddressUpdatedProcess();
+            BPMProfileService.instance().startAddressUpdatedProcess(emp);
             return savedAddress;
         }
     }

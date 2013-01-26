@@ -8,7 +8,13 @@
     <process id="address_update_process">
  
         <startEvent id="updateAddressStart" />
-        <sequenceFlow id="flow1" sourceRef="updateAddressStart" targetRef="updateAddressHRTask" />
+        
+        <sequenceFlow id="flow1" sourceRef="updateAddressStart" targetRef="addressUpdatedEmail" />
+        <!-- Send Email notification -->
+        <serviceTask id="addressUpdatedEmail" name="Employee Address Updated" activiti:expression="${profileNotificationService.sendEmployeeAddressUpdatedNotification(employee)}"></serviceTask>
+        
+        <sequenceFlow id="createHRTaskFlow" sourceRef="addressUpdatedEmail" targetRef="updateAddressHRTask" />
+        <!--Create EmployeeAddressUpdatedTask for HR Role-->
         <userTask id="updateAddressHRTask" 
                   name="updateAddressHRTask" 
                   activiti:candidateGroups="ROLE_HR" />
