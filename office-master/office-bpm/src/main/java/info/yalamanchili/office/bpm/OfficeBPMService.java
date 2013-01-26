@@ -44,7 +44,6 @@ public class OfficeBPMService {
     }
 
     public void startProcess(String processId, Map<String, Object> variables) {
-        deployProcess(processId);
         bpmRuntimeService.startProcessInstanceByKey(processId, variables);
     }
 
