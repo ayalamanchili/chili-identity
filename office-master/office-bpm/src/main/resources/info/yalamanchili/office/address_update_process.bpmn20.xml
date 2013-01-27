@@ -10,14 +10,22 @@
         <startEvent id="updateAddressStart" />
         
         <sequenceFlow id="flow1" sourceRef="updateAddressStart" targetRef="addressUpdatedEmail" />
-        <!-- Send Email notification -->
-        <serviceTask id="addressUpdatedEmail" name="Employee Address Updated" activiti:expression="${profileNotificationService.sendEmployeeAddressUpdatedNotification(employee)}"></serviceTask>
+        <!-- Send Address Updated Email notification -->
+        <serviceTask
+            id="addressUpdatedEmail"
+            name="Employee Address Updated"
+            activiti:expression="${profileNotificationService.sendEmployeeAddressUpdatedNotification(employee)}">
+        </serviceTask>
         
         <sequenceFlow id="createHRTaskFlow" sourceRef="addressUpdatedEmail" targetRef="updateAddressHRTask" />
         <!--Create EmployeeAddressUpdatedTask for HR Role-->
         <userTask id="updateAddressHRTask" 
-                  name="updateAddressHRTask" 
-                  activiti:candidateGroups="ROLE_HR" />
+                  name="Employee ${employee.firstName} ${employee.lastName} Address Updated" 
+                  activiti:candidateGroups="ROLE_HR">
+            <documentation>
+                Employee Address is updated in portal and task if created for HR group for handling immigration and related changes
+            </documentation>
+        </userTask>
         <sequenceFlow id="flow2" sourceRef="updateAddressHRTask" targetRef="updateAddressEnd" />
         <endEvent id="updateAddressEnd" />
  

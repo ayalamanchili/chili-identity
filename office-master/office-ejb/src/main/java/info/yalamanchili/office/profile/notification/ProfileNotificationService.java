@@ -83,7 +83,6 @@ public class ProfileNotificationService {
         String messageText = "Employee Address For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
-        
     }
     
     @Async

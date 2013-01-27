@@ -5,11 +5,7 @@
 package info.yalamanchili.office.bpm;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
