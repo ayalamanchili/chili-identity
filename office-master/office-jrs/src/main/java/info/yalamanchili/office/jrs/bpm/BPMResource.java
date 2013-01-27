@@ -36,6 +36,25 @@ public class BPMResource {
     protected OfficeBPMTaskService officeBPMTaskService;
 
     @GET
+    @Path("/claimtask/{taskId}")
+    public void claimTask(@PathParam("taskId") String taskId) {
+        officeBPMTaskService.claimTask(taskId, SecurityService.instance().getCurrentUserId());
+    }
+
+    @GET
+    @Path("/resolvetask/{taskId}")
+    public void resolveTask(@PathParam("taskId") String taskId) {
+        officeBPMTaskService.resolveTask(taskId);
+    }
+
+    @GET
+    @Path("/completetask/{taskId}")
+    public void completeTask(@PathParam("taskId") String taskId) {
+        //TODO add task variables
+        officeBPMTaskService.completeTask(taskId, null);
+    }
+
+    @GET
     @Path("/tasks/{start}/{limit}")
     public TaskTable getTasks(@QueryParam("assignee") String assignee, @PathParam("start") int start, @PathParam("limit") int limit) {
         if (assignee == null || assignee.trim().isEmpty()) {

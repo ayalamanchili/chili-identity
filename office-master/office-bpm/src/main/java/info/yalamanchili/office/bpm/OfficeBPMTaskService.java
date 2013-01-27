@@ -10,6 +10,7 @@ import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
+import java.util.Map;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.TaskQuery;
 import org.dozer.Mapper;
@@ -22,12 +23,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class OfficeBPMTaskService {
-    
+
     @Autowired
     protected TaskService bpmTaskService;
     @Autowired
     protected Mapper mapper;
-    
+
     public void createTask(Task task) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.newTask();
         mapper.map(task, bpmTask);
@@ -35,7 +36,19 @@ public class OfficeBPMTaskService {
         bpmTaskService.saveTask(bpmTask);
         bpmTaskService.setAssignee(bpmTask.getId(), bpmTask.getAssignee());
     }
-    
+
+    public void claimTask(String taskId, String userId) {
+        bpmTaskService.claim(taskId, userId);
+    }
+
+    public void resolveTask(String taskId) {
+        bpmTaskService.resolveTask(taskId);
+    }
+
+    public void completeTask(String taskId, Map<String, Object> variables) {
+        bpmTaskService.complete(taskId, variables);
+    }
+
     public TaskTable getAllUnasigneed(int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskUnnassigned();
@@ -45,20 +58,20 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getTasksForAssigneeAndRoles(Employee emp, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskTable taskForAssignee = getTasksForAsignee(emp.getEmployeeId(), start, limit);
-        
+
         List<String> roles = SecurityService.instance().getUserRoles(emp);
         TaskTable taskForRoles = getTasksForRoles(roles, start, limit);
-        
+
         result.getEntities().addAll(taskForAssignee.getEntities());
         result.getEntities().addAll(taskForRoles.getEntities());
         result.setSize(taskForAssignee.getSize() + taskForRoles.getSize());
         return result;
     }
-    
+
     public TaskTable getTasksForAsignee(String assignee, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee);
@@ -68,7 +81,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getTasksForRoles(List<String> roles, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles);
@@ -78,7 +91,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public static OfficeBPMTaskService instance() {
         return SpringContext.getBean(OfficeBPMTaskService.class);
     }
