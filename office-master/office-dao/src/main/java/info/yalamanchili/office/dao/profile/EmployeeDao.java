@@ -27,14 +27,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class EmployeeDao extends CRUDDao<Employee> {
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     public EmployeeDao() {
         super(Employee.class);
     }
-
+    
     public Employee save(Employee entity) {
         if (entity.getId() != null) {
             Employee updatedEmployee = null;
@@ -44,11 +44,16 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return super.save(entity);
     }
-
+    
     public Email updatePrimaryEmail(Contact emp, Email newEmail) {
         if (emp.getPrimaryEmail() == null) {
             newEmail.setPrimaryEmail(Boolean.TRUE);
         } else {
+            //existing primary and newEmail that is update is same
+            if (emp.getPrimaryEmail().equals(newEmail.getId())) {
+                newEmail.setPrimaryEmail(Boolean.TRUE);
+                return newEmail;
+            }
             Email existingEmail = emp.getPrimaryEmail();
             if (newEmail.getPrimaryEmail()) {
                 existingEmail.setPrimaryEmail(Boolean.FALSE);
@@ -58,7 +63,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return newEmail;
     }
-
+    
     public Employee getEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
@@ -70,12 +75,12 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(e);
         }
     }
-
+    
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-
+    
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }
