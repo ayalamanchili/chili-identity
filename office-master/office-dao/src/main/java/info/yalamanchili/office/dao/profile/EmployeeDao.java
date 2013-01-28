@@ -45,17 +45,18 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return super.save(entity);
     }
 
-    public Email updatePrimaryEmail(Contact emp, Email Newemail) {
+    public Email updatePrimaryEmail(Contact emp, Email newEmail) {
         if (emp.getPrimaryEmail() == null) {
-            Newemail.setPrimaryEmail(Boolean.TRUE);
+            newEmail.setPrimaryEmail(Boolean.TRUE);
         } else {
-            if (Newemail.getPrimaryEmail()) {
-                Email chkEmail = emp.getPrimaryEmail();
-                chkEmail.setPrimaryEmail(Boolean.FALSE);
+            Email existingEmail = emp.getPrimaryEmail();
+            if (newEmail.getPrimaryEmail()) {
+                existingEmail.setPrimaryEmail(Boolean.FALSE);
+            } else {
+                existingEmail.setPrimaryEmail(Boolean.TRUE);
             }
         }
-        return Newemail;
-
+        return newEmail;
     }
 
     public Employee getEmployeWithEmpId(String empId) {

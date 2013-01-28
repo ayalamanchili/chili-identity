@@ -1,6 +1,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
 
@@ -35,9 +36,11 @@ public class EmailDao extends CRUDDao<Email> {
         }
     }
 
+    @Override
     public Email save(Email entity) {
         if (entity.getId() != null) {
-            employeeDao.updatePrimaryEmail(entity.getContact(), entity);
+            Contact cnt = ContactDao.instance().findById(entity.getContact().getId());
+            entity = employeeDao.updatePrimaryEmail(cnt, entity);
             Email updatedEmail = null;
             updatedEmail = super.save(entity);
             if (entity.getEmailType() == null) {
