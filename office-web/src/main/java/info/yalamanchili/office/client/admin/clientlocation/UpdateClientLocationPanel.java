@@ -72,6 +72,7 @@ public class UpdateClientLocationPanel extends UpdateComposite {
         new ResponseStatusWidget().show("successfully updated clientlocation");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
+        TabPanel.instance().adminPanel.entityPanel.add(new ClientLocationOptionsPanel());
     }
 
     @Override
