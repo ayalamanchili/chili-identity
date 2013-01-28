@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class CompanyDao extends CRUDDao<Company> {
 
     @PersistenceContext

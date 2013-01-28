@@ -2,9 +2,7 @@ package info.yalamanchili.office.dao.profile;
 
 
 
-import info.chili.commons.BeanMapper;
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 
 import javax.persistence.EntityManager;
@@ -14,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ClientInformationDao extends CRUDDao<ClientInformation> {
 
 	@PersistenceContext

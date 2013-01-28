@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @author raghu
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class SkillDao extends CRUDDao<Skill> {
     
     public SkillDao()

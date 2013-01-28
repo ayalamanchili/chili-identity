@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("request")
+@Scope("prototype")
 public class EmergencyContactDao extends CRUDDao<EmergencyContact> {
 	@PersistenceContext
 	protected EntityManager em;

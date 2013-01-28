@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @author Prashanthi
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class VendorDao extends CRUDDao<Vendor> {
 
     @PersistenceContext

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class CuserDao extends CRUDDao<CUser> {
 
     @PersistenceContext

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author bala
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class CertificationDao extends CRUDDao<Certification> {
 
     public CertificationDao() {

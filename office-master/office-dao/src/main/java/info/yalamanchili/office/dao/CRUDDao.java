@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Scope;
  *
  * @author ayalamanchili
  */
-@Scope("request")
+@Scope("prototype")
 public abstract class CRUDDao<T> {
 
     private static final Log log = LogFactory.getLog(CRUDDao.class);

@@ -17,7 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("request")
+@Scope("prototype")
 public class SecurityService {
 
     private final static Logger logger = Logger.getLogger(SecurityService.class.getName());

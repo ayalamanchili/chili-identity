@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @author anuyalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ACLDao {
 
     @PersistenceContext

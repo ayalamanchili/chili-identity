@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author anuyalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class NotificationGroupDao extends CRUDDao<NotificationGroup> {
 
     @PersistenceContext

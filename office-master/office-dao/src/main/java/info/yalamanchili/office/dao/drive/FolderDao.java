@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author yphanikumar
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class FolderDao extends CRUDDao<Folder> {
 
     @PersistenceContext

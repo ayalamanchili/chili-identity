@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
  * @author Prashanthi
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class TimeSheetDao extends CRUDDao<TimeSheet> {
 
     @PersistenceContext

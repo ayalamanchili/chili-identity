@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @author bala
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class SOWDao extends CRUDDao<StatementOfWork> {
 
     public SOWDao() {

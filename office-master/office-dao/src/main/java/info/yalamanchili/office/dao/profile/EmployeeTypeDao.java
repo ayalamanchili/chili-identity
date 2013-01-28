@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@Scope("request")
+@Scope("prototype")
 public class EmployeeTypeDao extends CRUDDao<EmployeeType> {
     
     public EmployeeTypeDao()

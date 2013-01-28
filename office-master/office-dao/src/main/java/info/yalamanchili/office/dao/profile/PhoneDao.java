@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("request")
+@Scope("prototype")
 public class PhoneDao extends CRUDDao<Phone> {
 
 	@PersistenceContext

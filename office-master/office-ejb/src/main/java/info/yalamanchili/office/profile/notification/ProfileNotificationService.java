@@ -29,9 +29,9 @@ import org.springframework.stereotype.Component;
  * @author yalamanchili
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class ProfileNotificationService {
-    
+
     @Autowired
     protected SecurityService securityService;
     @Autowired
@@ -40,7 +40,7 @@ public class ProfileNotificationService {
     public EmployeeDao employeeDao;
     @PersistenceContext
     public EntityManager em;
-    
+
     @Async
     public void skillSetUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_RECRUITER};
@@ -51,7 +51,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendNewUserCreatedNotification(Employee employee) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
@@ -73,7 +73,7 @@ public class ProfileNotificationService {
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
-    
+
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME};
@@ -84,7 +84,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendClientInformationUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
@@ -94,9 +94,9 @@ public class ProfileNotificationService {
         String messageText = "Client Information For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Added/Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
-        
+
     }
-    
+
     @Async
     public void sendEmergencyContactUpdateNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
@@ -107,7 +107,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendForgotPasswordNotification(Employee emp, String tempPassword) {
         Email email = new Email();
@@ -120,7 +120,7 @@ public class ProfileNotificationService {
         email.setBody("you temp password is:" + tempPassword);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void feedBackNotification(Feedback fb) {
         Email email = new Email();
@@ -132,7 +132,7 @@ public class ProfileNotificationService {
         email.setBody(fb.getFeedbackmsg());
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendNewMessageNotification(Message msg) {
         Email email = new Email();
@@ -145,7 +145,7 @@ public class ProfileNotificationService {
         email.setBody("New Message From The Employee:" + msg.getMessage());
         messagingService.sendEmail(email);
     }
-    
+
     public static ProfileNotificationService instance() {
         return SpringContext.getBean(ProfileNotificationService.class);
     }
