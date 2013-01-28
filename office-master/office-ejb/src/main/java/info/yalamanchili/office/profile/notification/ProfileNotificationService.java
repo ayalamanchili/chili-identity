@@ -141,7 +141,7 @@ public class ProfileNotificationService {
             tos.add(emp.getPrimaryEmail().getEmail());
         }
         email.setTos(tos);
-        email.setSubject("new message");
+        email.setSubject("New Message");
         email.setBody("New Message From The Employee:" + msg.getMessage());
         messagingService.sendEmail(email);
     }
