@@ -69,6 +69,7 @@ public class UpdateVendorLocationsPanel extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully Updated Vendor location");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(TreeVendorsPanel.instance().getEntityId()));
+        TabPanel.instance().adminPanel.entityPanel.add(new VendorLocationOptionsPanel());
     }
 
     @Override
