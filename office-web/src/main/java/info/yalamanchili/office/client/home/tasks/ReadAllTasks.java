@@ -9,8 +9,6 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
-import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -18,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class ReadAllTasks extends CRUDReadAllComposite {
+public class ReadAllTasks extends ReadAllTasksComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllTasks.class.getName());
     public static ReadAllTasks instance;
@@ -63,24 +61,20 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     }
 
     @Override
-    public void viewClicked(String entityId) {
-    }
-
-    @Override
-    public void deleteClicked(String entityId) {
-    }
-
-    @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TaskTableRowOptionsWidget.OptionsType.CLAIM_RESOLVE_COMPLETE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
-    public void postDeleteSuccess() {
+    public void claimClicked(String entityId) {
     }
 
     @Override
-    public void updateClicked(String entityId) {
+    public void resolveClicked(String entityId) {
+    }
+
+    @Override
+    public void completedClicked(String entityId) {
     }
 
     public String getReadAllTasksUrl(Integer start, String limit) {

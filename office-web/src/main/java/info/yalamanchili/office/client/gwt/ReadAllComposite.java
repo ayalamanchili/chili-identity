@@ -213,7 +213,7 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
 
     public abstract void createTableHeader();
 
-    protected abstract void createOptionsWidget(TableRowOptionsWidget.OptionsType type, int row, String id);
+    protected abstract void createOptionsWidget(T rowOptionsWidget, int row, String id);
 
     protected String getEntityId(int row) {
         return table.getWidget(row, 0).getTitle();

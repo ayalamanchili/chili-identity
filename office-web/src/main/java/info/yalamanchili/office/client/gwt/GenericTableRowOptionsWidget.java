@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  */
 public abstract class GenericTableRowOptionsWidget extends Composite {
 
-    HorizontalPanel panel = new HorizontalPanel();
+    protected HorizontalPanel panel = new HorizontalPanel();
     protected String entityId;
 
     public GenericTableRowOptionsWidget(String entityId) {

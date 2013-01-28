@@ -4,12 +4,17 @@ import com.google.gwt.event.dom.client.ClickEvent;
 
 public abstract class CRUDReadAllComposite extends ReadAllComposite<TableRowOptionsWidget> {
 
-    @Override
+//temp method need to update all implementing sub classes
     protected void createOptionsWidget(TableRowOptionsWidget.OptionsType type, int row, String id) {
-        TableRowOptionsWidget link = new TableRowOptionsWidget(type, id);
-        link.initListeners(this);
-        table.setWidget(row, 0, link);
-        optionsWidgetMap.put(String.valueOf(row), link);
+        TableRowOptionsWidget rowOptionsWidget = new TableRowOptionsWidget(type, id);
+        createOptionsWidget(rowOptionsWidget, row, id);
+    }
+
+    @Override
+    protected void createOptionsWidget(TableRowOptionsWidget rowOptionsWidget, int row, String id) {
+        rowOptionsWidget.initListeners(this);
+        table.setWidget(row, 0, rowOptionsWidget);
+        optionsWidgetMap.put(String.valueOf(row), rowOptionsWidget);
     }
 
     @Override
