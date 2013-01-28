@@ -1,15 +1,8 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package info.yalamanchili.office.client.gwt;
-
-import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.fields.ListBoxField;
-import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.Utils;
-import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -20,12 +13,29 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.ListBoxField;
+import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
-public abstract class ReadAllComposite extends ALComposite implements ClickHandler, ChangeHandler {
+/**
+ *
+ * @author anuyalamanchili
+ */
+public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> extends ALComposite implements ClickHandler, ChangeHandler {
 
-    private static Logger logger = Logger.getLogger(ReadAllComposite.class.getName());
+    private static Logger logger = Logger.getLogger(CRUDReadAllComposite.class.getName());
     /*
      * Parent entityId if any
      */
@@ -84,7 +94,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
     /*
      * Set of entityId and widgets respectively
      */
-    protected Map<String, TableRowOptionsWidget> optionsWidgetMap = new HashMap<String, TableRowOptionsWidget>();
+    protected Map<String, T> optionsWidgetMap = new HashMap<String, T>();
 
     protected void initTable(String className, ConstantsWithLookup constants) {
         this.classCanonicalName = className;
@@ -203,12 +213,7 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
 
     public abstract void createTableHeader();
 
-    protected void createOptionsWidget(OptionsType type, int row, String id) {
-        TableRowOptionsWidget link = new TableRowOptionsWidget(type, id);
-        link.initListeners(this);
-        table.setWidget(row, 0, link);
-        optionsWidgetMap.put(String.valueOf(row), link);
-    }
+    protected abstract void createOptionsWidget(TableRowOptionsWidget.OptionsType type, int row, String id);
 
     protected String getEntityId(int row) {
         return table.getWidget(row, 0).getTitle();
@@ -232,46 +237,22 @@ public abstract class ReadAllComposite extends ALComposite implements ClickHandl
      */
     protected abstract void addOptionsWidget(int row, JSONObject entity);
 
-    public abstract void viewClicked(String entityId);
-
-    /*
-     * add logic to support deleting the record with the input entityId
-     */
-    public abstract void deleteClicked(String entityId);
-
-    /*
-     * add logic (eg:navigation) on what to happen after succesfuull deleting
-     * the row
-     */
-    public abstract void postDeleteSuccess();
-
-    /**
-     * override this to add logic to perform on update row clicked
-     */
-    public abstract void updateClicked(String entityId);
-
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createButton)) {
             createButtonClicked();
         }
-        Cell src = table.getCellForEvent(event);
+        HTMLTable.Cell src = table.getCellForEvent(event);
         if (src != null) {
             Integer rowIndex = src.getRowIndex();
             if (rowIndex != null) {
-                TableRowOptionsWidget rowWidget = optionsWidgetMap.get(String.valueOf(rowIndex));
-                if (event.getSource().equals(rowWidget.getReadLink())) {
-                    viewClicked(rowWidget.entityId);
-                }
-                if (event.getSource().equals(rowWidget.getUpdateLink())) {
-                    updateClicked(rowWidget.entityId);
-                }
-                if (event.getSource().equals(rowWidget.getDeleteLink())) {
-                    deleteClicked(rowWidget.entityId);
-                }
+                T rowWidget = optionsWidgetMap.get(String.valueOf(rowIndex));
+                onOptionsSelected(event, rowWidget);
             }
         }
     }
+
+    public abstract void onOptionsSelected(ClickEvent event, T t);
 
     /**
      * override this to make the create button visible and update its name etc

@@ -1,0 +1,32 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.gwt;
+
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+
+/**
+ *
+ * @author anuyalamanchili
+ */
+public abstract class GenericTableRowOptionsWidget extends Composite {
+
+    HorizontalPanel panel = new HorizontalPanel();
+    protected String entityId;
+
+    public GenericTableRowOptionsWidget(String entityId) {
+        this.entityId = entityId;
+        panel.setSpacing(10);
+        initWidget(panel);
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+}

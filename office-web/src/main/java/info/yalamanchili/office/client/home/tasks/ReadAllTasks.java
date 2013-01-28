@@ -9,7 +9,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class ReadAllTasks extends ReadAllComposite {
+public class ReadAllTasks extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllTasks.class.getName());
     public static ReadAllTasks instance;

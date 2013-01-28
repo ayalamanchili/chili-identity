@@ -15,7 +15,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.FileField;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class ReadAllFiles extends ReadAllComposite {
+public class ReadAllFiles extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllFiles.class.getName());
     public static ReadAllFiles instance;

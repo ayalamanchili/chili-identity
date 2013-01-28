@@ -6,7 +6,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 
@@ -16,7 +16,7 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
-public class ReadAllClientInfoPanel extends ReadAllComposite {
+public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
 
     private static ReadAllClientInfoPanel instance;
 

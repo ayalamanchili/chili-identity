@@ -5,7 +5,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
@@ -16,7 +16,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 
-public class ReadAllPhonesPanel extends ReadAllComposite {
+public class ReadAllPhonesPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllPhonesPanel.class.getName());
     public static ReadAllPhonesPanel instance;

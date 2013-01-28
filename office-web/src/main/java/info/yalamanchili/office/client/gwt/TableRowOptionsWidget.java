@@ -1,18 +1,13 @@
 package info.yalamanchili.office.client.gwt;
 
-import info.chili.gwt.composite.ALComposite;
-
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
-public class TableRowOptionsWidget extends ALComposite implements MouseOverHandler {
+public class TableRowOptionsWidget extends GenericTableRowOptionsWidget implements MouseOverHandler {
 
-    HorizontalPanel panel = new HorizontalPanel();
-    protected String entityId;
     ClickableImage readLink = new ClickableImage("view", OfficeImages.INSTANCE.viewIcon_16_16());
     ClickableImage updateLink = new ClickableImage("update", OfficeImages.INSTANCE.updateIcon_16_16());
     ClickableImage deleteLink = new ClickableImage("delete", OfficeImages.INSTANCE.deleteIcon_16_16());
@@ -24,12 +19,13 @@ public class TableRowOptionsWidget extends ALComposite implements MouseOverHandl
     protected OptionsType type;
 
     public TableRowOptionsWidget(OptionsType type, String id) {
+        super(id);
         this.type = type;
-        init(panel);
-        this.entityId = id;
+        addWidgets();
+        configure();
+        addListeners();
     }
 
-    @Override
     protected void addListeners() {
         readLink.addMouseOverHandler(this);
         updateLink.addMouseOverHandler(this);
@@ -43,15 +39,13 @@ public class TableRowOptionsWidget extends ALComposite implements MouseOverHandl
 
     }
 
-    @Override
     protected void configure() {
         readLink.addStyleName("readL");
         updateLink.addStyleName("updateLink");
         deleteLink.addStyleName("deleteLink");
-        panel.setSpacing(10);
+
     }
 
-    @Override
     protected void addWidgets() {
         if (OptionsType.READ.equals(type)) {
             panel.add(readLink);

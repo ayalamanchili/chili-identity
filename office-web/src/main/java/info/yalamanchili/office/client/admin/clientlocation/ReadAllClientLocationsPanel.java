@@ -12,7 +12,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class ReadAllClientLocationsPanel extends ReadAllComposite {
+public class ReadAllClientLocationsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllClientLocationsPanel.class.getName());
     public static ReadAllClientLocationsPanel instance;

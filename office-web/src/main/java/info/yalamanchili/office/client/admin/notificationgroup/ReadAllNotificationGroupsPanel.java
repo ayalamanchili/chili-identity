@@ -10,7 +10,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author anuyalamanchili
  */
-public class ReadAllNotificationGroupsPanel extends ReadAllComposite {
+public class ReadAllNotificationGroupsPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllNotificationGroupsPanel.class.getName());
     public static ReadAllNotificationGroupsPanel instance;

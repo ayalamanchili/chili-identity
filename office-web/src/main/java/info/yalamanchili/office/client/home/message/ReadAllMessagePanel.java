@@ -13,7 +13,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
-public class ReadAllMessagePanel extends ReadAllComposite {
+public class ReadAllMessagePanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllMessagePanel.class.getName());
     public static ReadAllMessagePanel instance;

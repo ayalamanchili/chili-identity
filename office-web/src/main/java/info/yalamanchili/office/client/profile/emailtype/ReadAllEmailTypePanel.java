@@ -11,7 +11,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.addresstype.UpdateAddressTypePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class ReadAllEmailTypePanel extends ReadAllComposite{
+public class ReadAllEmailTypePanel extends CRUDReadAllComposite{
 
      private static Logger logger = Logger.getLogger(ReadAllEmailTypePanel.class.getName());
     public static ReadAllEmailTypePanel instance;
