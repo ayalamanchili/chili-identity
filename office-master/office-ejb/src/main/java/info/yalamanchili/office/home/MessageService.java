@@ -58,7 +58,7 @@ public class MessageService {
                 }
             }
         }
-        profileNotificationService.instance().sendNewMessageNotification(newMessage);
+        ProfileNotificationService.instance().sendNewMessageNotification(newMessage);
         messageDao.save(newMessage);
         return null;
     }
