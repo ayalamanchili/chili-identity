@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 
 @Path("secured/admin")
 @Produces("application/json")
@@ -45,6 +46,8 @@ public class AdminResource {
     //TODO make these be created on demand rather than at per request.
     @Autowired
     protected SecurityService securityService;
+    @Autowired
+    protected OfficeBPMIdentityService officeBPMIdentityService;
     @Autowired
     protected Mapper mapper;
     @Autowired
@@ -140,6 +143,14 @@ public class AdminResource {
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
+        
+        if(emp.getEmployeeType().getName().equalsIgnoreCase("Internal"))
+        {
+          officeBPMIdentityService.createUser(employeeId);
+           for(CRole role:emp.getUser().getRoles()){
+             officeBPMIdentityService.addUserToGroup(employeeId,role.getRolename() );
+           }
+        }
         Email email = new Email();
         email.setEmail(employee.getEmail());
         email.setPrimaryEmail(true);
