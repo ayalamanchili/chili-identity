@@ -42,7 +42,6 @@ public class UpdateNotificationGroupPanel extends UpdateComposite {
             i++;
         }
         entity.put("employees", employees);
-        logger.info("update ng...." + entity.toString());
         return entity;
     }
 
