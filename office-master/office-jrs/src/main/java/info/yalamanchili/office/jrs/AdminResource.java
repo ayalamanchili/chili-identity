@@ -147,9 +147,7 @@ public class AdminResource {
         if(emp.getEmployeeType().getName().equalsIgnoreCase("Internal"))
         {
           officeBPMIdentityService.createUser(employeeId);
-           for(CRole role:emp.getUser().getRoles()){
-             officeBPMIdentityService.addUserToGroup(employeeId,role.getRolename() );
-           }
+          
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());
