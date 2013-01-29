@@ -91,6 +91,12 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
         return obj;
     }
 
+    @Path("/group/delete/{id}")
+    @PUT
+    public void deleteNotificationGroup(@PathParam("id") Long id) {
+        notificationGroupDao.delete(id);
+    }
+
     @Override
     public NotificationGroupDao getDao() {
         return notificationGroupDao;
