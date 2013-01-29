@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Scope;
  * @author bala
  */
 @Component
-@Scope("request")
+@Scope("prototype")
 public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
 
     @PersistenceContext
