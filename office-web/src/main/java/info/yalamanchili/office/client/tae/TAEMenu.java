@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.tae.bonuspayment.BonusPaymentsSidePanel;
 import info.yalamanchili.office.client.tae.timesheet.EmpTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
@@ -67,7 +68,7 @@ public class TAEMenu extends Composite {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
 //            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllBonusPaymentsPanel());
-//            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new BonusPaymentsSidePanel());
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new BonusPaymentsSidePanel());
         }
     };
 }
