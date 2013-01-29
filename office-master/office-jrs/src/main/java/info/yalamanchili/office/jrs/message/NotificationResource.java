@@ -45,12 +45,20 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
         emps.addAll(group.getEmployees());
         if (group.getId() != null) {
             group = (NotificationGroup) getDao().findById(group.getId());
+            //TODO currently removing all existing and adding new ones figure out a better approach
+            List<Employee> existingEmps = new ArrayList<Employee>();
+            existingEmps.addAll(group.getEmployees());
+            for (Employee emp : existingEmps) {
+                group.getEmployees().remove(emp);
+            }
         } else {
             group.setEmployees(null);
         }
         for (Employee employee : emps) {
-            Employee emp = EmployeeDao.instance().findById(employee.getId());
-            group.getEmployees().add(emp);
+            if (employee.getId() != null) {
+                Employee emp = EmployeeDao.instance().findById(employee.getId());
+                group.getEmployees().add(emp);
+            }
         }
         notificationGroupDao.save(group);
     }

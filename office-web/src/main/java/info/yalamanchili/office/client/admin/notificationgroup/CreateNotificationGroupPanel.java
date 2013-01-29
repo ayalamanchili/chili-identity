@@ -45,7 +45,7 @@ public class CreateNotificationGroupPanel extends CreateComposite {
             i++;
         }
         entity.put("employees", employees);
-        logger.info(entity.toString());
+        logger.info("create ng...." + entity.toString());
         return entity;
     }
 

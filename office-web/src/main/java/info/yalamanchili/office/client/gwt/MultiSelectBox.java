@@ -94,6 +94,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
                 .addStyleName("y-gwt-multipleSelectWidget-unselectButton");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(selectButton)) {
             tempSelectedItems = new ArrayList<String>();
@@ -132,7 +133,11 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
      * Returns the all the selected ids in the selected box
      */
     public List<String> getAllSelectedIds() {
-        return new ArrayList<String>(getSelectedIds(selectedListBox));
+        List<String> ids = new ArrayList<String>();
+        for (int i = 0; i < selectedListBox.getItemCount(); i++) {
+            ids.add(selectedListBox.getValue(i));
+        }
+        return ids;
     }
 
     private Set<String> getSelectedIds(ListBox listBox) {

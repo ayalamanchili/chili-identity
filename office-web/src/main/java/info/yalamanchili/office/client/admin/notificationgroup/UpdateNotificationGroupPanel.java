@@ -35,14 +35,14 @@ public class UpdateNotificationGroupPanel extends UpdateComposite {
         assignEntityValueFromField("name", entity);
         JSONArray employees = new JSONArray();
         int i = 0;
-        for (String empId : employeeSelectWidget.getMultiSelectBox().getSelectedIds()) {
+        for (String empId : employeeSelectWidget.getMultiSelectBox().getAllSelectedIds()) {
             JSONObject emp = new JSONObject();
             emp.put("id", new JSONString(empId));
             employees.set(i, emp);
             i++;
         }
         entity.put("employees", employees);
-        logger.info(entity.toString());
+        logger.info("update ng...." + entity.toString());
         return entity;
     }
 
