@@ -38,7 +38,7 @@ public class CreateNotificationGroupPanel extends CreateComposite {
         assignEntityValueFromField("name", entity);
         JSONArray employees = new JSONArray();
         int i = 0;
-        for (String empId : employeeSelectWidget.getMultiSelectBox().getSelectedIds()) {
+        for (String empId : employeeSelectWidget.getMultiSelectBox().getAllSelectedIds()) {
             JSONObject emp = new JSONObject();
             emp.put("id", new JSONString(empId));
             employees.set(i, emp);

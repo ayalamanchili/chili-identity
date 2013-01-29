@@ -121,9 +121,18 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
 
     public abstract void itemsUnselected(List<String> selectedIds);
 
-    /* returns the selected ids */
+    /*
+     * Returns only the temp selected items that are moved. (only the ones moved from available to selected boxF)
+     */
     public List<String> getSelectedIds() {
         return tempSelectedItems;
+    }
+
+    /*
+     * Returns the all the selected ids in the selected box
+     */
+    public List<String> getAllSelectedIds() {
+        return new ArrayList<String>(getSelectedIds(selectedListBox));
     }
 
     private Set<String> getSelectedIds(ListBox listBox) {
