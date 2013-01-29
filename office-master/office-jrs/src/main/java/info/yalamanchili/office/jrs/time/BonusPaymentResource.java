@@ -8,6 +8,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.time.BonusPaymentDao;
 import info.yalamanchili.office.entity.time.BonusPayment;
 import info.yalamanchili.office.jrs.CRUDResource;
+import javax.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  *
  * @author raghu
  */
+@Path("secured/bonuspayment")
 @Component
 @Scope("request")
 public class BonusPaymentResource extends CRUDResource<BonusPayment> {
