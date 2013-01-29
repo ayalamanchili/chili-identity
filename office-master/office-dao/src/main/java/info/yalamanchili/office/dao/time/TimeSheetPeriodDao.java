@@ -9,6 +9,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
+import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
@@ -36,18 +37,16 @@ public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
 
     @Override
     public TimeSheetPeriod save(TimeSheetPeriod entity) {
-//        Calendar c1 = Calendar.getInstance();
-//        Calendar c2 = Calendar.getInstance();
-//        c1.setTime(entity.getStartDate());
-//        c2.setTime(entity.getEndDate());
-//        //TODO try to process all the errors collect them and throw a service exception at the end
-//        if (c1.get(Calendar.DAY_OF_WEEK) != 2) {
-//            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "StartDate", "StartDate", "Start Date must be monday");
-//        }
-//        if (c2.get(Calendar.DAY_OF_WEEK) != 1) {
-//            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "EndDate", "EndDate", "End Date Must be Sunday");
-//        }
-//        
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.setTime(entity.getStartDate());
+        c2.setTime(entity.getEndDate());
+        //TODO try to process all the errors collect them and throw a service exception at the end
+        if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
+            throw new RuntimeException("Start date and End date should be in same month");
+        }
+        
+        
         //TODO check if the startDate and endDate belong to same week
         if (entity instanceof AbstractEntity) {
             if (((AbstractEntity) entity).getId() != null) {
