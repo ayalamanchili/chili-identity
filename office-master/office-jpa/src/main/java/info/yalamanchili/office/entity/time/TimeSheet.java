@@ -56,12 +56,14 @@ public class TimeSheet extends AbstractEntity {
      * start and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
     protected Date startDate;
     /**
      * end date Only populated if the dates differ from time sheet period start
      * and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
     protected Date endDate;
     /**
      * notes
