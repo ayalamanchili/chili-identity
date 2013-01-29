@@ -29,9 +29,12 @@ public class TAEMenu extends Composite {
     }
 
     protected void configureTAEMenu() {
-        tAEMenuBar.addItem("TimeSheets", timeSheetsMaintainenceCmd);
+        tAEMenuBar.addItem("Time Sheets", timeSheetsMaintainenceCmd);
         if (Auth.isAdmin() || Auth.isHR()) {
             tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
+        }
+        if (Auth.isAdmin() || Auth.isAccountant() || Auth.isPayroll()) {
+            tAEMenuBar.addItem("Bonus Payments", bonusPaymentsMaintainenceCmd);
         }
         tAEMenuBar.addStyleName("entityMenuBar");
     }
@@ -51,12 +54,20 @@ public class TAEMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-             if (Auth.hasOnlyUserRole()) {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new EmpTimeSummaryPanel());
-        } else {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel());
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetSidePanel());
+            if (Auth.hasOnlyUserRole()) {
+                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new EmpTimeSummaryPanel());
+            } else {
+                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel());
+                TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetSidePanel());
+            }
         }
+    };
+    Command bonusPaymentsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+//            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllBonusPaymentsPanel());
+//            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new BonusPaymentsSidePanel());
         }
     };
 }
