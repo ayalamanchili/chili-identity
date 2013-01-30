@@ -102,7 +102,7 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
 
-        new ResponseStatusWidget().show("Successfully deleted Projects Information");
+        new ResponseStatusWidget().show("Successfully Deleted Projects Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         if (parentId != null) {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(TreeClientPanel.instance().getEntityId()));

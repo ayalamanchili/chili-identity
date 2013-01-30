@@ -71,7 +71,7 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Project successfully created");
+        new ResponseStatusWidget().show("Project Successfully Created");
         TabPanel.instance().adminPanel.entityPanel.clear();
         if (!showClient) {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(clntId));
