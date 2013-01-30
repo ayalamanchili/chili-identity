@@ -38,7 +38,7 @@ public class Client extends AbstractEntity {
     @NotEmpty(message = "{client.not.empty.msg}")
     protected String name;
     protected String description;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.MERGE)
     protected List<Project> projects;
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
