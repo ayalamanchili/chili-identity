@@ -112,7 +112,7 @@ public class ReadAllVendorContactPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted vendor contact information");
+        new ResponseStatusWidget().show("Successfully Deleted Vendor Contact Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel());
     }
