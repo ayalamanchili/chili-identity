@@ -45,7 +45,7 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully added Vendor Locatrion");
+        new ResponseStatusWidget().show("Successfully Added Vendor Locatrion");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(TreeVendorsPanel.instance().getEntityId()));
         TabPanel.instance().adminPanel.entityPanel.add(new VendorLocationOptionsPanel());

@@ -112,7 +112,7 @@ public class ReadAllVendorLocationPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Vendor location Information");
+        new ResponseStatusWidget().show("Successfully Deleted Vendor Location Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel());
     }
