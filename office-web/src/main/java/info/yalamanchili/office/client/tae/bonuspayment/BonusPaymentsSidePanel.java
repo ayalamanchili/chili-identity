@@ -48,7 +48,7 @@ public class BonusPaymentsSidePanel extends ALComposite implements ClickHandler 
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createbonuspaymentslink)) {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-//            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateTimeSheetPeriodPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateBonusPaymentsPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
