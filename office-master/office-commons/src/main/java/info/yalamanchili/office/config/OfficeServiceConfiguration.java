@@ -17,7 +17,7 @@ public class OfficeServiceConfiguration {
     private final static Logger logger = Logger.getLogger(OfficeServiceConfiguration.class.getName());
     @PersistenceContext
     protected EntityManager em;
-    protected String contentManagementLocationRoot = "C://content-management//office/";
+    protected String contentManagementLocationRoot = "/Users/anuyalamanchili/content-management/office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData = false;
     @Value("#{officeProperties['initTestData']}")
