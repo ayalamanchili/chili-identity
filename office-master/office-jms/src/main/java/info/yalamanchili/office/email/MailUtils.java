@@ -49,17 +49,4 @@ public class MailUtils {
         logger.info("emails:" + emails);
         return emails;
     }
-
-    public Employee getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
-        getUserQuery.setParameter("employeeIdParam", auth.getName());
-        try {
-            return getUserQuery.getSingleResult();
-        } catch (NonUniqueResultException e) {
-            throw new RuntimeException(e);
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
 }

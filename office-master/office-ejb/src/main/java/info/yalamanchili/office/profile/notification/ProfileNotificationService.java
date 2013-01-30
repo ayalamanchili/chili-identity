@@ -120,13 +120,12 @@ public class ProfileNotificationService {
     }
 
     @Async
-    public void feedBackNotification(Feedback fb) {
+    public void feedBackNotification(Feedback fb,String username) {
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
         tos.add(info.yalamanchili.office.config.OfficeServiceConfiguration.instance().getAdminEmail());
         email.setTos(tos);
-        String UserName = mailUtils.getCurrentUser().getFirstName() + mailUtils.getCurrentUser().getLastName();
-        email.setSubject("Employee Feedback from " + UserName);
+        email.setSubject("Employee Feedback from " + username);
         email.setBody(fb.getFeedbackmsg());
         messagingService.sendEmail(email);
     }
