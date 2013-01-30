@@ -113,7 +113,7 @@ public class ReadAllClientLocationsPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Client location Information");
+        new ResponseStatusWidget().show("Successfully Deleted Client Location Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel());
     }
