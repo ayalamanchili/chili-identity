@@ -6,9 +6,7 @@ import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 import javax.persistence.*;
 import org.springframework.context.annotation.Scope;
@@ -66,27 +64,10 @@ public class SecurityService {
 
     public List<String> getUserRoles(Employee employee) {
         List<String> roles = new ArrayList<String>();
-        for(CRole role:employee.getUser().getRoles()){
+        for (CRole role : employee.getUser().getRoles()) {
             roles.add(role.getRolename());
         }
         return roles;
-    }
-    //TODO move to seperate class
-
-    public Set<String> getEmailsAddressesForRoles(List<String> roles) {
-        Set<String> emails = new HashSet<String>();
-        Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
-        getUsersInRoleQuery.setParameter("roles", roles);
-        List<CUser> users = getUsersInRoleQuery.getResultList();
-        //TODO improve the query into a single query
-        for (CUser user : users) {
-            TypedQuery<Employee> getEmployeeQuery = em.createQuery("from Employee where user=:userParam", Employee.class);
-            getEmployeeQuery.setParameter("userParam", user);
-            Employee emp = getEmployeeQuery.getSingleResult();
-            emails.add(emp.getPrimaryEmail().getEmail());
-        }
-        logger.info("emails:" + emails);
-        return emails;
     }
 
     public static SecurityService instance() {

@@ -1,7 +1,8 @@
 package info.yalamanchili.office.logging;
 
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import java.lang.annotation.Annotation;
+import javax.persistence.Entity;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,10 +31,19 @@ public class LoggingInterceptor {
             if (log.isInfoEnabled()) {
                 log.info("-------------- invoking ---------------- :" + joinPoint.getSignature());
                 for (Object input : joinPoint.getArgs()) {
-                    log.info("with input:" + ReflectionToStringBuilder.toString(input));
+                    // if entity dont use Reflection to print tostring as it causes hibernate session closing exception with async methods
+                    if (isEntity(input)) {
+                        input.toString();
+                    } else {
+                        log.info("with input:" + ReflectionToStringBuilder.toString(input));
+                    }
                 }
             }
         }
+    }
+
+    protected boolean isEntity(Object obj) {
+        return obj.getClass().getAnnotation(Entity.class) == null ? false : true;
     }
 
     @AfterReturning(pointcut = "execution(* info.yalamanchili.office..*.*(..))", returning = "result")
