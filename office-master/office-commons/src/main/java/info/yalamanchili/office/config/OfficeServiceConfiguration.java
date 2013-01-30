@@ -25,7 +25,7 @@ public class OfficeServiceConfiguration {
     @Value("#{officeProperties['enableLoginInterceptor']}")
     protected Boolean enableLoginInterceptor = false;
     protected Boolean isSendMail = true;
-    protected String adminEmail;
+    protected String adminEmail="yphanikumar@gmail.com";
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
