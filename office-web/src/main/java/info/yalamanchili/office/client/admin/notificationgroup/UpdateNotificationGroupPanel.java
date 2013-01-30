@@ -69,7 +69,7 @@ public class UpdateNotificationGroupPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Notification Group");
+        new ResponseStatusWidget().show("Successfully Updated Notification Group");
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
     }

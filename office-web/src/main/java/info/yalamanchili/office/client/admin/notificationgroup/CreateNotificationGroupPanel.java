@@ -71,7 +71,7 @@ public class CreateNotificationGroupPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully created Notification Group");
+        new ResponseStatusWidget().show("Successfully Created Notification Group");
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
     }
