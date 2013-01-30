@@ -60,7 +60,7 @@ public class CreateVendorPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully Vendor created");
+        new ResponseStatusWidget().show("Successfully Vendor Created");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new VendorsSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();

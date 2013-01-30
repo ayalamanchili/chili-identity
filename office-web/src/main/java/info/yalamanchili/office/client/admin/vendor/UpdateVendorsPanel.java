@@ -54,7 +54,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated vemdor information");
+        new ResponseStatusWidget().show("Successfully Updated Vemdor Information");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new VendorsSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
