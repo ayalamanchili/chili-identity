@@ -59,7 +59,7 @@ public class FeedbackPanel extends CreateComposite {
     
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Feedback has been sent");
+        new ResponseStatusWidget().show("Feedback Has Been Sent");
         GenericPopup.instance().hide();
     }
     
