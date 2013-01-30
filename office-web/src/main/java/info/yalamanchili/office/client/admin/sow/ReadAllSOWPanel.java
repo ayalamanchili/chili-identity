@@ -111,7 +111,7 @@ public class ReadAllSOWPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted StatementOfWork Information");
+        new ResponseStatusWidget().show("Successfully Deleted StatementOfWork Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSOWPanel());
     }

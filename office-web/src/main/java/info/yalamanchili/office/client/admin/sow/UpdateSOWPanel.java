@@ -69,7 +69,7 @@ public class UpdateSOWPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Employee Statement Of Work Information");
+        new ResponseStatusWidget().show("Successfully Updated Employee Statement Of Work Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllSOWPanel());
     }
