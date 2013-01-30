@@ -6,7 +6,9 @@ package info.yalamanchili.office.jrs.Feedback;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.feedback.FeedbackDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.Feedback.Feedback;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import javax.ws.rs.PUT;
@@ -26,17 +28,18 @@ public class FeedbackResource extends CRUDResource<Feedback> {
 
     @Autowired
     public FeedbackDao feedbackDao;
-    
+
     @Override
     public CRUDDao getDao() {
         return feedbackDao;
     }
-    
+
     @PUT
+    @Override
     public Feedback save(Feedback entity) {
-       Feedback fb=  (Feedback) getDao().save(entity);
-       ProfileNotificationService.instance().feedBackNotification(entity);
-       return fb;
+        Feedback fb = (Feedback) getDao().save(entity);
+        Employee emp = SecurityService.instance().getCurrentUser();
+        ProfileNotificationService.instance().feedBackNotification(entity, emp.getFirstName() + " " + emp.getLastName());
+        return fb;
     }
-    
 }
