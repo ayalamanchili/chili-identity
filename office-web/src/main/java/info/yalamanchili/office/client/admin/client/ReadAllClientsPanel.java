@@ -107,7 +107,7 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Client Information");
+        new ResponseStatusWidget().show("Successfully Deleted Client Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel());
     }
