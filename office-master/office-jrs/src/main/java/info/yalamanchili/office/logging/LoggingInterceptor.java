@@ -31,11 +31,13 @@ public class LoggingInterceptor {
             if (log.isInfoEnabled()) {
                 log.info("-------------- invoking ---------------- :" + joinPoint.getSignature());
                 for (Object input : joinPoint.getArgs()) {
-                    // if entity dont use Reflection to print tostring as it causes hibernate session closing exception with async methods
-                    if (isEntity(input)) {
-                        input.toString();
-                    } else {
-                        log.info("with input:" + ReflectionToStringBuilder.toString(input));
+                    if (input != null) {
+                        // if entity dont use Reflection to print tostring as it causes hibernate session closing exception with async methods
+                        if (isEntity(input)) {
+                            input.toString();
+                        } else {
+                            log.info("with input:" + ReflectionToStringBuilder.toString(input));
+                        }
                     }
                 }
             }

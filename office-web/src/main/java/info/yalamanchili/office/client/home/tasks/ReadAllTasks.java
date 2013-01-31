@@ -8,7 +8,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -38,7 +40,6 @@ public class ReadAllTasks extends ReadAllTasksComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info("dddd" + result);
                         postFetchTable(result);
                     }
                 });
@@ -57,6 +58,7 @@ public class ReadAllTasks extends ReadAllTasksComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            table.setText(i, 2, JSONUtils.toString(entity, "assignee"));
         }
     }
 
@@ -67,14 +69,53 @@ public class ReadAllTasks extends ReadAllTasksComposite {
 
     @Override
     public void claimClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getClaimTaskURL(entityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Claimed");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
     }
 
     @Override
     public void resolveClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getResolveTaskURL(entityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Resolved");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
     }
 
     @Override
     public void completedClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getCompleteTaskURL(entityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Completed");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
+    }
+
+    protected String getClaimTaskURL(String taskId) {
+        return OfficeWelcome.constants.root_url() + "bpm/claimtask/" + taskId;
+    }
+
+    protected String getResolveTaskURL(String taskId) {
+        return OfficeWelcome.constants.root_url() + "bpm/resolvetask/" + taskId;
+    }
+
+    protected String getCompleteTaskURL(String taskId) {
+        return OfficeWelcome.constants.root_url() + "bpm/completetask/" + taskId;
     }
 
     public String getReadAllTasksUrl(Integer start, String limit) {

@@ -33,7 +33,7 @@ public abstract class ReadAllTasksComposite extends ReadAllComposite<TaskTableRo
         if (event.getSource().equals(rowOptionsWidget.getResolveLink())) {
             resolveClicked(rowOptionsWidget.getEntityId());
         }
-        if (event.getSource().equals(rowOptionsWidget.getResolveLink())) {
+        if (event.getSource().equals(rowOptionsWidget.getCompleteLink())) {
             completedClicked(rowOptionsWidget.getEntityId());
         }
     }
