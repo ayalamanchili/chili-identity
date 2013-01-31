@@ -57,7 +57,7 @@ public class UpdatePreferencesPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated employee preferences");
+        new ResponseStatusWidget().show("Successfully Updated Employee Preferences");
     }
 
     @Override
