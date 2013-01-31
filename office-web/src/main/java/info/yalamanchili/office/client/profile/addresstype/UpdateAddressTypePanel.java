@@ -52,7 +52,7 @@ public class UpdateAddressTypePanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated AddressType Information");
+        new ResponseStatusWidget().show("Successfully Updated AddressType Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressTypePanel());
     }

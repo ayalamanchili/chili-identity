@@ -61,7 +61,7 @@ public class CreateAddressTypePanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("AddressType creation successful");
+        new ResponseStatusWidget().show("AddressType Creation Successful");
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new AddressTypeSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();

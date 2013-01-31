@@ -94,7 +94,7 @@ public class ReadAllAddressTypePanel extends CRUDReadAllComposite{
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Addresstype Information");
+        new ResponseStatusWidget().show("Successfully Deleted Addresstype Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear(); 
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressTypePanel());
     }
