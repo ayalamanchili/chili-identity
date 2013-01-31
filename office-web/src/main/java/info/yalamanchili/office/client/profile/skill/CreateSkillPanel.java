@@ -62,7 +62,7 @@ public class CreateSkillPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully skill created");
+        new ResponseStatusWidget().show("Successfully Skill Created");
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new SkillSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();
