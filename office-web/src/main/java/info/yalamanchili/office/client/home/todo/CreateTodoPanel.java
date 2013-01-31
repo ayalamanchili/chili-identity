@@ -57,7 +57,7 @@ public class CreateTodoPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Todo created");
+        new ResponseStatusWidget().show("Successfully Todo Created");
         ReadAllTodosPanel.instance.refresh();
         GenericPopup.instance().hide();
     }

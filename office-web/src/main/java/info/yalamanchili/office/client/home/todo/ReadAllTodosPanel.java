@@ -85,7 +85,7 @@ public class ReadAllTodosPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Todo Information");
+        new ResponseStatusWidget().show("Successfully Deleted Todo Information");
         refresh();
     }
 
