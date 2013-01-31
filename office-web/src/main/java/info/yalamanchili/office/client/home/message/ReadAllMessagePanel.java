@@ -106,7 +106,7 @@ public class ReadAllMessagePanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Message Information");
+        new ResponseStatusWidget().show("Successfully Deleted Message Information");
         TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
     }
