@@ -69,7 +69,7 @@ public class ReadAllBonusPaymentsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-//        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateBonusPaymentsPanel(bonusPaymentsId, getEntity(entityId)));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateBonusPaymentPanel(bonusPaymentsId, getEntity(entityId)));
     }
 
     @Override
