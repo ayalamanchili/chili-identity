@@ -45,7 +45,7 @@ public class AddressResource extends CRUDResource<Address> {
 
     @PUT
     @Path("/employee")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public Address saveemployeeaddress(Address address) {
         Employee emp = securityService.getCurrentUser();
         if (address.getId() == null) {
