@@ -85,7 +85,7 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully created skllset");
+        new ResponseStatusWidget().show("Successfully Created Skllset");
     }
 
     @Override
@@ -100,7 +100,7 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        if(resumeUploadPanel.isEmpty()){
+        if (resumeUploadPanel.isEmpty()) {
             resumeUploadPanel.setMessage("Please select a file");
             return false;
         }

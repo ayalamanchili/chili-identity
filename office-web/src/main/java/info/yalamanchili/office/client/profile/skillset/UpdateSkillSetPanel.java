@@ -84,7 +84,7 @@ public class UpdateSkillSetPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated employee Skill Information");
+        new ResponseStatusWidget().show("Successfully Updated Employee Skill Information");
 //        TabPanel.instance().myOfficePanel.clear();
 //        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(result));
     }

@@ -82,7 +82,7 @@ public class ReadSkillSetPanel extends ReadComposite {
             if (Auth.isAdmin() || Auth.isHR()) {
                 TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillSetPanel(empId));
             } else {
-                TabPanel.instance().myOfficePanel.entityPanel.add(new HTML("no SkillSet information"));
+                TabPanel.instance().myOfficePanel.entityPanel.add(new HTML("No SkillSet Information"));
             }
         }
     }

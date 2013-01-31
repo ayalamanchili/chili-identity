@@ -21,7 +21,7 @@ public class CreateSkillSetPopupPanel extends CreateSkillSetPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully created skllset");
+        new ResponseStatusWidget().show("Successfully Created Skllset");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshSkillSetPanel();
     }

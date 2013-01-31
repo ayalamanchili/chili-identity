@@ -20,7 +20,7 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated employee Skill Information");
+        new ResponseStatusWidget().show("Successfully Updated Employee Skill Information");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshSkillSetPanel();
     }
