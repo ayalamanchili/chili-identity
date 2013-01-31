@@ -24,7 +24,7 @@ import info.yalamanchili.office.client.social.employee.ReadEmployeePostPanel;
  */
 public class ReadRepliesWidget extends ALComposite implements OpenHandler {
 
-    DisclosurePanel repliesDisclosurePanel = new DisclosurePanel("view replies");
+    DisclosurePanel repliesDisclosurePanel = new DisclosurePanel("View Replies");
     FlowPanel panel = new FlowPanel();
     String parentPostId;
     Long numberOfRepiles;
