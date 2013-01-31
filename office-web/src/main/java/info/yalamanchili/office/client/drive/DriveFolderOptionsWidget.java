@@ -27,9 +27,9 @@ import info.yalamanchili.office.client.rpc.HttpService;
 public class DriveFolderOptionsWidget extends ALComposite implements ClickHandler {
 
     protected FlowPanel panel = new FlowPanel();
-    FolderMenuLabel createFolderL = new FolderMenuLabel("add sub folder");
-    FolderMenuLabel createFileL = new FolderMenuLabel("add file");
-    FolderMenuLabel deleteFolderL = new FolderMenuLabel("delete Sub Folder");
+    FolderMenuLabel createFolderL = new FolderMenuLabel("Add Sub Folder");
+    FolderMenuLabel createFileL = new FolderMenuLabel("Add File");
+    FolderMenuLabel deleteFolderL = new FolderMenuLabel("Dlete Sub Folder");
 
     public DriveFolderOptionsWidget() {
         init(panel);
@@ -79,7 +79,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
                     new ALAsyncCallback<String>() {
                        @Override
                         public void onResponse(String arg0) {
-                            new ResponseStatusWidget().show("Successfully deleted folder"); 
+                            new ResponseStatusWidget().show("Successfully Deleted Folder"); 
                              DriveTreePanel.instance().refresh();
                         }
                     });

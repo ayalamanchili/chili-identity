@@ -105,7 +105,7 @@ public class ReadAllFiles extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Files Information");
+        new ResponseStatusWidget().show("Successfully Deleted Files Information");
         TabPanel.instance().drivePanel.entityPanel.clear();
         TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(DriveTreePanel.instance().getSelectedNode().getEntityId()));
     }

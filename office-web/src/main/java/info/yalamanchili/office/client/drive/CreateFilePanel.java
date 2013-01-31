@@ -85,7 +85,7 @@ public class CreateFilePanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully created file");
+        new ResponseStatusWidget().show("Successfully Created File");
         GenericPopup.instance().hide();
         TabPanel.instance().drivePanel.entityPanel.clear();
         TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(DriveTreePanel.instance().getSelectedNode().getEntityId()));

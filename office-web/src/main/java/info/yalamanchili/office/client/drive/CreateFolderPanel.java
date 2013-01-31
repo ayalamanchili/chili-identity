@@ -58,7 +58,7 @@ public class CreateFolderPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully drive created");
+        new ResponseStatusWidget().show("Successfully Drive Created");
         GenericPopup.instance().hide();
         DriveTreePanel.instance().refresh();
     }
