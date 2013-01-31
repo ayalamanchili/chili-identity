@@ -50,15 +50,15 @@ public class ResetPasswordPanel extends CreateComposite {
                     new AsyncCallback<String>() {
                         @Override
                         public void onFailure(Throwable arg0) {
-                            new ResponseStatusWidget().show("Reset Password failed");
+                            new ResponseStatusWidget().show("Reset Password Failed");
                         }
 
                         @Override
                         public void onSuccess(String userString) {
                             if (userString != null && userString.trim().length() > 0) {
-                                new ResponseStatusWidget().show("Reset Password successful");
+                                new ResponseStatusWidget().show("Reset Password Successful");
                             } else {
-                                new ResponseStatusWidget().show("Reset Password failed");
+                                new ResponseStatusWidget().show("Reset Password Failed");
                             }
 
                         }
