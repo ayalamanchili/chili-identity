@@ -89,7 +89,7 @@ public class ReadAllEmailTypePanel extends CRUDReadAllComposite{
     }
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Emailtype Information");
+        new ResponseStatusWidget().show("Successfully Deleted Emailtype Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear(); 
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailTypePanel());
     }

@@ -61,7 +61,7 @@ private static Logger logger = Logger.getLogger(CreateEmailTypePanel.class.getNa
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully EmailType created");
+        new ResponseStatusWidget().show("Successfully EmailType Created");
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new EmailTypeSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();
