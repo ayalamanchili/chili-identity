@@ -49,7 +49,7 @@ public class CreateMonthlyTimeSheetPanel extends CreateTimeSheetPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Timesheet Successfully created");
+        new ResponseStatusWidget().show("Timesheet Successfully Created");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
         TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel(SelectTimesheetPeriodWidget.instance().getSelectedObjectId()));
     }

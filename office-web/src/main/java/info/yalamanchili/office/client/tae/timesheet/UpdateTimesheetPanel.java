@@ -79,7 +79,7 @@ public class UpdateTimesheetPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Employee Time Sheet Information");
+        new ResponseStatusWidget().show("Successfully Updated Employee Time Sheet Information");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
         TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel(payPeriodId));
     }
