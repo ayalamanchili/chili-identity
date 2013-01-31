@@ -16,7 +16,7 @@ public class CreateEmailPopupPanel extends CreateEmailPanel {
 	    }
 	 @Override
 	    protected void postCreateSuccess(String result) {
-             new ResponseStatusWidget().show("successfully added employee Email");
+             new ResponseStatusWidget().show("Successfully Added Employee Email");
              GenericPopup.instance().hide();
              ProfileHome.instance().refreshEmails();
 	    }

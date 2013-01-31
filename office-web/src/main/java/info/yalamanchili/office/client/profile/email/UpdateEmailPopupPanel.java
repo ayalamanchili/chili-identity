@@ -13,7 +13,7 @@ public class UpdateEmailPopupPanel extends UpdateEmailPanel {
 
 	    @Override
 	    protected void postUpdateSuccess(String result) {
-                new ResponseStatusWidget().show("successfully updated Email information");
+                new ResponseStatusWidget().show("Successfully Updated Email Information");
 	        GenericPopup.instance().hide();
 	        ProfileHome.instance().refreshEmails();
 	    }

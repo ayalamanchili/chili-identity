@@ -30,7 +30,7 @@ public class ReadAllEmailsPopupPanel extends ReadAllEmailsPanel {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully deleted Emails information");
+        new ResponseStatusWidget().show("Successfully Deleted Emails Information");
         ProfileHome.instance();
         ProfileHome.instance().refreshEmails();
     }
