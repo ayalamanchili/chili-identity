@@ -35,7 +35,7 @@ public class ReadAllEmergencyContactsPopupPanel extends ReadAllEmergencyContacts
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully deleted Emergency Contact information");
+        new ResponseStatusWidget().show("Successfully Deleted Emergency Contact Information");
         ProfileHome.instance().refreshEmergencyContactsPanel();
     }
 

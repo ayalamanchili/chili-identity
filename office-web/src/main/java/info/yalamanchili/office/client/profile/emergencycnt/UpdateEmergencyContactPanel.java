@@ -53,7 +53,7 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Emergency Contact information");
+        new ResponseStatusWidget().show("Successfully Updated Emergency Contact Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
                 TreeEmployeePanel.instance().getEntityId()));

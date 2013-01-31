@@ -64,7 +64,7 @@ public class CreateEmergencyContactPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully added Emergency Contact");
+        new ResponseStatusWidget().show("Successfully Added Emergency Contact");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(
                 TreeEmployeePanel.instance().getEntityId()));

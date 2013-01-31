@@ -21,7 +21,7 @@ public class UpdateEmergencyContactPopupPanel extends UpdateEmergencyContactPane
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Emergency Contact information");
+        new ResponseStatusWidget().show("Successfully Updated Emergency Contact Information");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshEmergencyContactsPanel();
     }
