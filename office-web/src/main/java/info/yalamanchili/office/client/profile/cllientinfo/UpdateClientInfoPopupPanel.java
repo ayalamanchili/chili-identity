@@ -21,7 +21,7 @@ public class UpdateClientInfoPopupPanel extends UpdateClientInfoPanel {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Reports To information");
+        new ResponseStatusWidget().show("Successfully Updated Reports To Information");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshClientInformation();
     }

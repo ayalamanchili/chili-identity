@@ -36,7 +36,7 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully deleted Reports To information");
+        new ResponseStatusWidget().show("Successfully Deleted Reports To Information");
         ProfileHome.instance().refreshClientInformation();
     }
 

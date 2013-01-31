@@ -27,7 +27,7 @@ public class CreateClientInfoPopupPanel extends CreateClientInfoPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully added Reports To");
+        new ResponseStatusWidget().show("Successfully Added Reports To");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshClientInformation();
     }
