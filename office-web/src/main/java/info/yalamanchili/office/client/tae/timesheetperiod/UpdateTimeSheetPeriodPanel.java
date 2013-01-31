@@ -12,16 +12,17 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+
 /**
  *
  * @author bala
  */
-
 public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
 
-     public UpdateTimeSheetPeriodPanel(JSONObject entity) {
+    public UpdateTimeSheetPeriodPanel(JSONObject entity) {
         initUpdateComposite(entity, "TimeSheetPeriod", OfficeWelcome.constants);
     }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
@@ -32,7 +33,7 @@ public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
@@ -58,18 +59,16 @@ public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully Updated Time Sheet Period");
         TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
         TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TimeSheetPeriodSidePanel());
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear(); 
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
         TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-       
     }
 
     @Override
@@ -81,12 +80,10 @@ public class UpdateTimeSheetPeriodPanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-       
     }
 
     @Override
     protected String getURI() {
-         return OfficeWelcome.constants.root_url() + "timesheetperiod";
+        return OfficeWelcome.constants.root_url() + "timesheetperiod";
     }
-    
 }
