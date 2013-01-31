@@ -64,7 +64,7 @@ public class CreatePhoneTypePanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully PhoneType created");
+        new ResponseStatusWidget().show("Successfully PhoneType Created");
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new PhoneTypeSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();

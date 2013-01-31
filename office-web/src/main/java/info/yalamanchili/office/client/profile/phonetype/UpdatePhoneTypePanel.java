@@ -56,7 +56,7 @@ public class UpdatePhoneTypePanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Phone Type Information");
+        new ResponseStatusWidget().show("Successfully Updated Phone Type Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhoneTypePanel());
     }

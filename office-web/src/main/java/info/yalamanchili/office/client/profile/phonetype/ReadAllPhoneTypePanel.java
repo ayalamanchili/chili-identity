@@ -99,7 +99,7 @@ public class ReadAllPhoneTypePanel extends CRUDReadAllComposite {
     }
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Phonetype Information");
+        new ResponseStatusWidget().show("Successfully Deleted Phonetype Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear(); 
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhoneTypePanel());
     }
