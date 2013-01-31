@@ -104,7 +104,7 @@ public class ReadAllCertificationsPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully deleted Certification Information");
+        new ResponseStatusWidget().show("Successfully Deleted Certification Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCertificationsPanel());
     }

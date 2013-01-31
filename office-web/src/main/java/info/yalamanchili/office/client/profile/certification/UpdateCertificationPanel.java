@@ -56,7 +56,7 @@ public class UpdateCertificationPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Employee Certification Information");
+        new ResponseStatusWidget().show("Successfully Updated Employee Certification Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCertificationsPanel());
     }

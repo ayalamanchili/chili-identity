@@ -61,7 +61,7 @@ public class CreateCertificationPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully certification created");
+        new ResponseStatusWidget().show("Successfully Certification Created");
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new CertificationSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();
