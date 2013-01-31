@@ -83,7 +83,7 @@ public class CreateBonusPaymentsPanel extends CreateComposite {
         addField("paidRate", false, true, DataType.CURRENCY_FIELD);
         addField("paidHours", false, true, DataType.FLOAT_FIELD);
         addField("paidDate", false, true, DataType.DATE_FIELD);
-        addField("paymentInfo", false, false, DataType.STRING_FIELD);
+        addField("paymentInfo", false, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
