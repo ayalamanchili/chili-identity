@@ -57,10 +57,10 @@ public class ChangePasswordPanel extends CreateComposite {
 
                                 GenericPopup.instance().hide();
                                 JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
-                                new ResponseStatusWidget().show("Change Password successful");
+                                new ResponseStatusWidget().show("Change Password Successful");
                                 Window.Location.reload();
                             } else {
-                                new ResponseStatusWidget().show("Change Password failed");
+                                new ResponseStatusWidget().show("Change Password Failed");
                             }
 
                         }

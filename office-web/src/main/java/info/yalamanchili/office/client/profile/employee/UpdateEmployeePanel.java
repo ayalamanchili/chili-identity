@@ -125,7 +125,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Employee information");
+        new ResponseStatusWidget().show("Successfully Updated Employee Information");
 
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());

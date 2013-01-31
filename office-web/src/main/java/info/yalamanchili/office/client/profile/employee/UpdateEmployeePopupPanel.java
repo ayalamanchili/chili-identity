@@ -21,7 +21,7 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully updated Employee information");
+        new ResponseStatusWidget().show("Successfully Updated Employee Information");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshEmployeePanel();
     }

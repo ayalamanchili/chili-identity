@@ -100,7 +100,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully created employee");
+        new ResponseStatusWidget().show("Successfully Created Employee");
         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
         TabPanel.instance().myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();
