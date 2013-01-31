@@ -21,7 +21,7 @@ public class UpdatePhonePopupPanel extends UpdatePhonePanel {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully update Phones information");
+        new ResponseStatusWidget().show("Successfully Update Phones Information");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshPhones();
     }

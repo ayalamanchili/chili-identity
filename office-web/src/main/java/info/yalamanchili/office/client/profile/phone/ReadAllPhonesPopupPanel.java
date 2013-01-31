@@ -36,7 +36,7 @@ public class ReadAllPhonesPopupPanel extends ReadAllPhonesPanel {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully delete phone contact information");
+        new ResponseStatusWidget().show("Successfully Delete Phone Contact Information");
         ProfileHome.instance();
         ProfileHome.instance().refreshPhones();
     }

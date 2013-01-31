@@ -28,7 +28,7 @@ public class CreatePhonePopupPanel extends CreatePhonePanel {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully Added Employee Phone information");
+        new ResponseStatusWidget().show("Successfully Added Employee Phone Information");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshPhones();
     }
