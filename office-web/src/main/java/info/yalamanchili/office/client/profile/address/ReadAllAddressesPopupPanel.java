@@ -35,7 +35,7 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully deleted Address information");
+        new ResponseStatusWidget().show("Successfully Deleted Address Information");
         ProfileHome.instance();
         ProfileHome.instance().refreshAddresses();
     }

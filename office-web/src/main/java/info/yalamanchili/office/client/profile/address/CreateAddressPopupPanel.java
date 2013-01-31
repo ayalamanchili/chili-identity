@@ -27,7 +27,7 @@ public class CreateAddressPopupPanel extends CreateAddressPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully added employee address");
+        new ResponseStatusWidget().show("Successfully Added Employee Address");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshAddresses();
     }
