@@ -62,7 +62,7 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("successfully Time Sheet Period created");
+        new ResponseStatusWidget().show("Successfully Time Sheet Period Created");
         TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
         TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new TimeSheetPeriodSidePanel());
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
