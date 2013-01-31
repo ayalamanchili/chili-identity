@@ -38,7 +38,7 @@ public abstract class UpdateContactPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not Supported Yet.");
     }
 
     @Override
