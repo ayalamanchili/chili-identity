@@ -99,7 +99,7 @@ public class ReadAllEmployeeTypesPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("successfully deleted EmployeeType Information");
+        new ResponseStatusWidget().show("Successfully Deleted EmployeeType Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeeTypesPanel());
     }
