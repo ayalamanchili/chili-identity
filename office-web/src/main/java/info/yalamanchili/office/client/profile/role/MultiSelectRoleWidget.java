@@ -42,7 +42,7 @@ public class MultiSelectRoleWidget extends MultiSelectComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("saved");
+                        new ResponseStatusWidget().show("Saved");
                     }
                 });
     }
@@ -53,7 +53,7 @@ public class MultiSelectRoleWidget extends MultiSelectComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("saved");
+                        new ResponseStatusWidget().show("Saved");
                     }
                 });
     }
