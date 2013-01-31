@@ -104,9 +104,9 @@ public class AdminResource {
 
         User user = new User();
         user.setUserName(empId);
-        user.setUserName(tempPassword);
+        user.setNewPassword(tempPassword);
 
-        changePassword(emp.getId(), user);
+        employeeService.resetPassword(emp.getId(), user);
 
         profileNotificationService.sendForgotPasswordNotification(emp, tempPassword);
     }
