@@ -110,5 +110,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorsPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(entityId));
     }
 }
