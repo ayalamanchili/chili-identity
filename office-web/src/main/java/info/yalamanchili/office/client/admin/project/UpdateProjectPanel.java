@@ -10,6 +10,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 
@@ -79,6 +80,7 @@ public class UpdateProjectPanel extends UpdateComposite {
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
+        addDropDown("client", new SelectClientWidget(false, true));
     }
 
     @Override
