@@ -50,7 +50,7 @@ public class PublicAdminResource {
 
         Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
         if (emp == null) {
-            throw new RuntimeException("Please contact SStech HR dept");
+            throw new RuntimeException("Please Contact SStech HR dept");
         }
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         String tempPassword = employeeService.generatepassword();
