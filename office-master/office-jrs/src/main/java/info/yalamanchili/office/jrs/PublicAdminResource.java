@@ -57,7 +57,7 @@ public class PublicAdminResource {
         User user = new User();
         user.setUserName(empId.toString());
         user.setUserName(tempPassword);
-        employeeService.changePassword(emp.getId(), user);
+        employeeService.resetPassword(emp.getId(), user);
         
         ProfileNotificationService.instance().sendForgotPasswordNotification(emp, tempPassword);
     }
