@@ -94,7 +94,7 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         JSONArray postlikeno = JSONUtils.toJSONArray(post.get("postLikes"));
         String poststatus = "";
         if (postlikeno.size() > 0) {
-            poststatus = "  " + (postlikeno.size() / 2 )  + " likes for this ; ";
+            poststatus = "  " + (postlikeno.size() / 2) + " likes for this ; ";
         }
         if (DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM) != null) {
             postStatusPanel.setText(poststatus + " Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
@@ -135,9 +135,8 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         postMainPanel.add(postStatusPanel);
         optionsPanel.add(likeB);
         optionsPanel.add(viewIcon);
-        if(Auth.isAdmin())
-        {
-        optionsPanel.add(deleteLink);
+        if (Auth.isAdmin()) {
+            optionsPanel.add(deleteLink);
         }
         postMainPanel.add(optionsPanel);
     }
@@ -179,27 +178,29 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
     private void postCreateSuccess(String arg0) {
 
         new ResponseStatusWidget().show("Successfully Liked");
-
+        if (SocialMenu.isEmployeedFeedSelected()) {
+            EmployeeFeedHome.instance().refresh();
+        } else {
+            CompanyFeedHome.instance().refresh();
+        }
     }
-    
+
     private void postDeleteSuccess(String arg0) {
 
         new ResponseStatusWidget().show("Successfully Deleted");
-       if(SocialMenu.isEmployeedFeedSelected())  
-       {
-        EmployeeFeedHome.instance().refresh();
-       }
-       else
-       {
-         CompanyFeedHome.instance().refresh();
-       }
+        if (SocialMenu.isEmployeedFeedSelected()) {
+            EmployeeFeedHome.instance().refresh();
+        } else {
+            CompanyFeedHome.instance().refresh();
+        }
 
     }
 
     public String getlikeURL() {
         return OfficeWelcome.constants.root_url() + "social/liked/" + String.valueOf(postId);
     }
-     public String getdeleteURL() {
+
+    public String getdeleteURL() {
         return OfficeWelcome.constants.root_url() + "social/delete/" + String.valueOf(postId);
     }
 }
