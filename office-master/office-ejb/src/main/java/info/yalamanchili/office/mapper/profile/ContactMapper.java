@@ -77,6 +77,7 @@ public class ContactMapper {
         if (entity.getPhones().size() > 0) {
             mapper.map(entity.getPhones().get(0), dto);
         }
+        dto.setId(entity.getId());
         return dto;
     }
 }

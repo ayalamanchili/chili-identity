@@ -108,14 +108,14 @@ public class ReadAllClientLocationsPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "address/delete/" + entityId;
+        return OfficeWelcome.constants.root_url() + "client/location/remove/" + parentId + "/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Client Location Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel());
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(parentId));
     }
 
     @Override

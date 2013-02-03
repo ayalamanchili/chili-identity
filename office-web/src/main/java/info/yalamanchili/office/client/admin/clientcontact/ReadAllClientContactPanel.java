@@ -71,7 +71,7 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
-        for (int i = 1; i <= entities.size(); i++) {
+         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
@@ -108,14 +108,14 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "employee/delete/" + entityId;
+        return OfficeWelcome.constants.root_url() + "client/contact/remove/" + parentId + "/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Client Contact Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientContactPanel());
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientContactPanel(parentId));
     }
 
     @Override

@@ -4,9 +4,12 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
@@ -99,6 +102,21 @@ public class ClientResource extends CRUDResource<Client> {
         clnt.addContact(ContactMapper.map(dto, null));
     }
 
+    @PUT
+    @Path("/contact/remove/{clientId}/{contactId}")
+    public void removeContact(@PathParam("clientId") Long clientId, @PathParam("contactId") Long contactId) {
+        Client client = (Client) getDao().findById(clientId);
+        if (client == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "clientIdInvalid", "client not found");
+        }
+        Contact contact = ContactDao.instance().findById(contactId);
+        if (contact == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "contactIdInvalid", "contact not found");
+        }
+        client.getContacts().remove(contact);
+        ContactDao.instance().delete(contact.getId());
+    }
+
     /**
      * Get Client Contacts
      *
@@ -159,6 +177,21 @@ public class ClientResource extends CRUDResource<Client> {
     public void addclientlocation(@PathParam("clientId") Long clientId, Address address) {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addLocations(address);
+    }
+
+    @PUT
+    @Path("/location/remove/{clientId}/{locationId}")
+    public void removeLocation(@PathParam("clientId") Long clientId, @PathParam("locationId") Long locationId) {
+        Client client = (Client) getDao().findById(clientId);
+        if (client == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "clientIdInvalid", "client not found");
+        }
+        Address location = AddressDao.instance().findById(locationId);
+        if (location == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "LocationIdInvalid", "location not found");
+        }
+        client.getLocations().remove(location);
+        AddressDao.instance().delete(location.getId());
     }
 
     /**
