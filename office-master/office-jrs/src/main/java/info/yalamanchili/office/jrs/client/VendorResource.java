@@ -4,10 +4,13 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Client;
@@ -77,6 +80,21 @@ public class VendorResource extends CRUDResource<Vendor> {
         vendor.addContact(ContactMapper.map(dto, null));
     }
 
+    @PUT
+    @Path("/contact/remove/{vendorId}/{contactId}")
+    public void removeContact(@PathParam("vendorId") Long vendorId, @PathParam("contactId") Long contactId) {
+        Vendor vendor = (Vendor) getDao().findById(vendorId);
+        if (vendor == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "vendorIdInvalid", "vendor not found");
+        }
+        Contact contact = ContactDao.instance().findById(contactId);
+        if (contact == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "contactIdInvalid", "contact not found");
+        }
+        vendor.getContacts().remove(contact);
+        ContactDao.instance().delete(contact.getId());
+    }
+
     /**
      * Get Vendor Contact
      *
@@ -130,6 +148,21 @@ public class VendorResource extends CRUDResource<Vendor> {
     public void addvendorlocation(@PathParam("vendorId") Long vendorId, Address address) {
         Vendor vend = (Vendor) getDao().findById(vendorId);
         vend.addLocations(address);
+    }
+
+    @PUT
+    @Path("/location/remove/{vendorId}/{locationId}")
+    public void removeLocation(@PathParam("vendorId") Long vendorId, @PathParam("locationId") Long locationId) {
+        Vendor vendor = (Vendor) getDao().findById(vendorId);
+        if (vendor == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "vendorIdInvalid", "vendor not found");
+        }
+        Address location = AddressDao.instance().findById(locationId);
+        if (location == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "LocationIdInvalid", "location not found");
+        }
+        vendor.getLocations().remove(location);
+        AddressDao.instance().delete(location.getId());
     }
 
     /**

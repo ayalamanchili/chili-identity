@@ -107,14 +107,14 @@ public class ReadAllVendorContactPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "employee/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "vendor/contact/remove/" + parentId + "/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Vendor Contact Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel());
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(parentId));
     }
 
     @Override
