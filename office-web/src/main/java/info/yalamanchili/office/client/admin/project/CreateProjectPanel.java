@@ -53,7 +53,6 @@ public class CreateProjectPanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
-        logger.info("url-------------" + getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
