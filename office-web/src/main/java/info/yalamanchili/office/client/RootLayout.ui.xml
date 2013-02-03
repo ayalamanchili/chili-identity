@@ -13,10 +13,16 @@
             </g:FlowPanel>
         </g:center>
         <g:south size='1.5'>
-            <g:HorizontalPanel styleName="{officeImages.officeCss.footerPanel}">
-                <g:Label styleName="{officeImages.officeCss.copyRightLabel}">COPYRIGHT &copy; 2012 sstech.us - All Rights Reserved</g:Label>
-                <g:Anchor ui:field='feedbacklnk' styleName = "{officeImages.officeCss.feedbackAnchor}">Feedback</g:Anchor>
-            </g:HorizontalPanel>
+            <g:Grid styleName="{officeImages.officeCss.footerPanel}">
+                <g:row>
+                    <g:customCell styleName="{officeImages.officeCss.copyRightLabel}">
+                        <g:Label >COPYRIGHT &copy; 2012 sstech.us - All Rights Reserved</g:Label>
+                    </g:customCell>
+                    <g:customCell styleName = "{officeImages.officeCss.feedbackAnchor}">
+                        <g:Anchor ui:field='feedbacklnk'>Submit Feedback</g:Anchor>
+                    </g:customCell>
+                </g:row>
+            </g:Grid>
         </g:south>
     </g:DockLayoutPanel>
     <ui:style>
