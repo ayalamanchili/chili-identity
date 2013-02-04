@@ -113,8 +113,8 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(entityId));
+//        TabPanel.instance().adminPanel.sidePanelTop.clear();
+//        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(entityId));
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateProjectPanel(getEntity(entityId)));
     }
