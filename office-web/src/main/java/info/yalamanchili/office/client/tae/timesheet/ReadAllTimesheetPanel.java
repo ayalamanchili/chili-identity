@@ -100,6 +100,8 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadTimeSheetPanel(entityId));
     }
 
     @Override
