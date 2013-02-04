@@ -70,8 +70,7 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("QBRate"));
         table.setText(0, 6, getKeyValue("StartDate"));
         table.setText(0, 7, getKeyValue("EndDate"));
-        table.setText(0, 8, getKeyValue("Notes"));
-        table.setText(0, 9, getKeyValue("PayPeriod"));
+        table.setText(0, 8, getKeyValue("PayPeriod"));
     }
 
     @Override
@@ -86,8 +85,7 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "quickBooksRate"));
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 8, JSONUtils.toString(entity, "notes"));
-            table.setText(i, 9, JSONUtils.toString(entity.get("timeSheetPeriod"), "name"));
+            table.setText(i, 8, JSONUtils.toString(entity.get("timeSheetPeriod"), "name"));
         }
     }
 
