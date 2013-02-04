@@ -11,6 +11,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
+import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 
@@ -61,9 +62,10 @@ public class UpdateProjectPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Project");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new ProjectSidePanel());
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(entityId));
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
+        TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
     }
 
     @Override
