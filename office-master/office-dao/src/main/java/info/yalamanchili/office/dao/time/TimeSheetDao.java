@@ -11,6 +11,8 @@ import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -68,19 +70,69 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
         return getEntityManager().merge(entity);
     }
     
-    protected void validatetimesheet(TimeSheet ts)
+    protected void validatetimesheet(TimeSheet newTS)
     {
-        TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:currentEmpid and timeSheetPeriod.id=:payperiodid", Long.class);
-        sizeQuery.setParameter("currentEmpid", ts.getEmployee().getId());
-        sizeQuery.setParameter("payperiodid",ts.getTimeSheetPeriod().getId());
+        //TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:currentEmpid and timeSheetPeriod.id=:payperiodid", Long.class);
+        //TypedQuery<TimeSheet> sizeQuery = getEntityManager().createQuery("select oldts from timesheet oldts  where oldts.employee.id=:currentEmpid and oldts.timeSheetPeriod.id=:payperiodid", TimeSheet.class);
+       // Query sizeQuery = getEntityManager().createQuery("select startDate,endDate from " + entityCls.getCanonicalName() + " where employee.id=:currentEmpid and timeSheetPeriod.id=:payperiodid");
         
-       if (sizeQuery.getSingleResult() > 0) 
-       {
-         if ((ts.getStartDate() == null) && (ts.getEndDate() == null))
-         {
-            throw new RuntimeException("Enter Timesheet Start date and End date");
-         }
-       }
+      //  sizeQuery.setParameter("currentEmpid", ts.getEmployee().getId());
+      //  sizeQuery.setParameter("payperiodid",ts.getTimeSheetPeriod().getId());
+        
+        //List lstresults = sizeQuery.getResultList();
+        
+       //if (lstresults.size() > 0) 
+     //  {
+       //  if ((ts.getStartDate() == null) && (ts.getEndDate() == null))
+       //  {
+       //     throw new RuntimeException("Enter Timesheet Start date and End date");
+       //  }
+       //  else if(lstresults.get(0)!= null)
+       //  {
+         //   Date dtstart = (Date)lstresults.get(0)   ;
+         //   if(dtstart.compareTo(ts.getEndDate()) < 0)
+         //   {
+         //   throw new RuntimeException("New Timesheet Start Date should be greater than old Timesheet end date");
+        //    }
+            
+        // }
+         
+      // }
+        
+         //validate if new timesheet belongs to existing period
+        //TODO
+        //validate new timesheet start date less than end date
+        if (!newTS.getStartDate().before(newTS.getEndDate())) {
+            throw new RuntimeException("start date must be less than end date");
+        }
+        
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+       // Calendar c3 = Calendar.getInstance();
+        
+        c1.setTime(newTS.getStartDate());
+        c2.setTime(newTS.getEndDate());
+        //c3.setTime(newTS.getTimeSheetPeriod().getStartDate());
+        
+        //TODO try to process all the errors collect them and throw a service exception at the end
+        if ((c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)))
+        {
+        //validate if there is a existing timesheet and compare the start date of newTS is greater than end date of existingTS
+        TypedQuery<TimeSheet> sizeQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:currentEmpid and timeSheetPeriod.id=:payperiodid", TimeSheet.class);
+        sizeQuery.setParameter("currentEmpid", newTS.getEmployee().getId());
+        sizeQuery.setParameter("payperiodid", newTS.getTimeSheetPeriod().getId());
+
+        if (sizeQuery.getResultList().size() > 0) {
+            TimeSheet existingTS = sizeQuery.getResultList().get(0);
+            if (newTS.getStartDate().before(existingTS.getEndDate())) {
+                throw new RuntimeException("New Timesheet Start date should be after Old Timesheet Enddate");
+            }
+        }
+        }
+        else
+        {
+          throw new RuntimeException("Start date, End date,Timesheet Period should be in same month");
+        }
     }
 
     @Override
