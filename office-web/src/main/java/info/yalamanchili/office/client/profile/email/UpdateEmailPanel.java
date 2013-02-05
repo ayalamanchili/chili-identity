@@ -56,7 +56,7 @@ public class UpdateEmailPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Sccessfully Updated Email Information");
+        new ResponseStatusWidget().show("Successfully  Updated Email Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmailsPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new EmailOptionsPanel());
