@@ -465,7 +465,7 @@ public class OfficeStartup {
 
         Address clientLocation = new Address();
         clientLocation.setStreet1("2110 wilkes ct");
-        clientLocation.setState("apt 123");
+        clientLocation.setState("AL");
         clientLocation.setCity("Herndon");
         clientLocation.setCountry("USA");
         techSysClient.addLocations(clientLocation);
@@ -497,8 +497,8 @@ public class OfficeStartup {
 
         Address vendorLocation = new Address();
         vendorLocation.setStreet1("2110 wilkes ct");
-        vendorLocation.setState("Herndon");
-        vendorLocation.setCity("AL");
+        vendorLocation.setState("AL");
+        vendorLocation.setCity("Herndon");
         vendorLocation.setCountry("USA");
         techSysVendor.addLocations(vendorLocation);
 
