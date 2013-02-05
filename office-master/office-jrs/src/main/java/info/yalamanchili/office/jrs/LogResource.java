@@ -37,9 +37,9 @@ public class LogResource {
         try {
             String tomcatPath = System.getProperty("catalina.base");
             file = new File(tomcatPath + "logs/office.log");
+            log.info("downloading---------:" + file.getPath());
+             System.out.println("dddd"+file.getPath());
             if (file.exists()) {
-                System.out.println("dddd"+file.getPath());
-                log.info("downloading---------:" + file.getPath());
                 response = Response.ok((Object) file);
                 response.header("Content-Disposition", "filename=" + file.getName());
                 response.header("Content-Type", "application/text");
