@@ -87,11 +87,11 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
         newTSEndDateCalender.setTime(newTS.getEndDate());
 
         if (newTSStartDateCalnder.get(Calendar.MONTH) != timesheetPeriodCalender.get(Calendar.MONTH)) {
-            throw new RuntimeException("start date does not belog to currnt payperiod");
+            throw new RuntimeException("start date does not belong to current payperiod");
         }
 
         if (newTSEndDateCalender.get(Calendar.MONTH) != timesheetPeriodCalender.get(Calendar.MONTH)) {
-            throw new RuntimeException("end date does not belog to currnt payperiod");
+            throw new RuntimeException("end date does not belong to current payperiod");
         }
         //Validate is new and existing date do not overlap
 
