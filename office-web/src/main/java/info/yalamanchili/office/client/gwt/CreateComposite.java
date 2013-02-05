@@ -61,11 +61,32 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
                 addButtonClicked();
             }
         }
+        disableSubmitButtons();
     }
 
     @Override
     protected void enterKeyPressed() {
         onClick(null);
+    }
+
+    @Override
+    protected void enableSubmitButtons() {
+        if (create.isAttached()) {
+            create.setEnabled(true);
+        }
+        if (add.isAttached()) {
+            add.setEnabled(true);
+        }
+    }
+
+    @Override
+    protected void disableSubmitButtons() {
+        if (create.isAttached()) {
+            create.setEnabled(false);
+        }
+        if (add.isAttached()) {
+            add.setEnabled(false);
+        }
     }
 
     protected void setButtonText(String key) {

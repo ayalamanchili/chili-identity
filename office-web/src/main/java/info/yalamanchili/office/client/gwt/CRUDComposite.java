@@ -367,6 +367,12 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         }
     }
 
+    protected void enableSubmitButtons() {
+    }
+
+    protected void disableSubmitButtons() {
+    }
+
     protected void handleErrorResponse(Throwable err) {
         //TODO enhance to show generic error messages
         logger.info(err.getMessage());
@@ -380,6 +386,7 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         } else {
             new ResponseStatusWidget().show("Call Failed");
         }
+        enableSubmitButtons();
     }
 
     protected void processValidationErrors(JSONValue errorsObj) {

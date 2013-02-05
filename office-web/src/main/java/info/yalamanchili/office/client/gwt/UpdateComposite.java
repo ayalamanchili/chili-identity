@@ -10,11 +10,11 @@ import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.utils.Utils;
 
 public abstract class UpdateComposite extends CRUDComposite implements ClickHandler {
-
+    
     Logger logger = Logger.getLogger(UpdateComposite.class.getName());
     protected boolean submited = false;
     protected Button update = new Button("update");
-
+    
     public void initUpdateComposite(JSONObject entity, String className, final ConstantsWithLookup constants) {
         this.entity = entity;
         init(className, false, constants);
@@ -25,7 +25,7 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
         update.addClickHandler(this);
         populateFieldsFromEntity(entity);
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
@@ -36,26 +36,36 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
             }
         }
     }
-
+    
     protected void submitted() {
         this.submited = true;
         //TODO need to enable these back after validations
 //        update.setEnabled(false);
     }
-
+    
     @Override
     protected void enterKeyPressed() {
         onClick(null);
     }
-
+    
+    @Override
+    protected void enableSubmitButtons() {
+        update.setEnabled(true);
+    }
+    
+    @Override
+    protected void disableSubmitButtons() {
+        update.setEnabled(false);
+    }
+    
     protected void setButtonText(String key) {
         update.setText(Utils.getKeyValue(key, constants));
     }
-
+    
     protected abstract JSONObject populateEntityFromFields();
-
+    
     protected abstract void updateButtonClicked();
-
+    
     public abstract void populateFieldsFromEntity(JSONObject entity);
 
     /**
@@ -65,6 +75,6 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
     protected boolean processClientSideValidations(JSONObject entity) {
         return true;
     }
-
+    
     protected abstract void postUpdateSuccess(String result);
 }
