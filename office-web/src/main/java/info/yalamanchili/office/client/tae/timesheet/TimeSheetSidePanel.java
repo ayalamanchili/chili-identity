@@ -14,6 +14,7 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.tae.timesheetperiod.SelectTimesheetPeriodWidget;
 import java.util.logging.Logger;
 
@@ -31,8 +32,15 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     FlowPanel timesheetsForPeriodPanel = new FlowPanel();
     //TimeSheet Period Dropdown
     SelectTimesheetPeriodWidget timePeriodWidget = new SelectTimesheetPeriodWidget(false, false);
-    Button showTimeSheetsB = new Button("View");
+    Button showTimeSheetsForPeriodB = new Button("View");
     Button createMonthlyTimeSheetsB = new Button("Create");
+    //View and Create Time sheets For Employee
+    CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
+    FlowPanel timesheetsForEmpPanel = new FlowPanel();
+    //TimeSheet Period Dropdown
+    SelectEmployeeWidget empWidget = new SelectEmployeeWidget(false, false);
+    Button showTimeSheetsForEmpB = new Button("View");
+    Button createEmpTimeSheetsB = new Button("Create");
 
     public TimeSheetSidePanel() {
         init(timeSheetsidepanel);
@@ -42,7 +50,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     protected void addListeners() {
         createtimeSheetlink.addClickHandler(this);
         createMonthlyTimeSheetsB.addClickHandler(this);
-        showTimeSheetsB.addClickHandler(this);
+        showTimeSheetsForPeriodB.addClickHandler(this);
     }
 
     @Override
@@ -54,13 +62,18 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.isHR()) {
             timeSheetsidepanel.add(createtimeSheetlink);
-            //View time sheets
+            //payperiod
             timesheetsForPeriodPanel.add(timePeriodWidget);
-            timesheetsForPeriodPanel.add(showTimeSheetsB);
+            timesheetsForPeriodPanel.add(showTimeSheetsForPeriodB);
             timesheetsForPeriodPanel.add(createMonthlyTimeSheetsB);
             timesheetsForPeriodCaptionPanel.setContentWidget(timesheetsForPeriodPanel);
             timeSheetsidepanel.add(timesheetsForPeriodCaptionPanel);
-
+            //employee
+            timesheetsForEmpPanel.add(empWidget);
+            timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
+            timesheetsForEmpPanel.add(createEmpTimeSheetsB);
+            timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForPeriodPanel);
+            timeSheetsidepanel.add(timesheetsForEmpCaptionPanel);
         }
     }
 
@@ -74,7 +87,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
             TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateMonthlyTimeSheetPanel());
         }
-        if (event.getSource().equals(showTimeSheetsB)) {
+        if (event.getSource().equals(showTimeSheetsForPeriodB)) {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             if (timePeriodWidget.getSelectedObjectId() != null && !timePeriodWidget.getSelectedObjectId().isEmpty()) {
                 TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel(timePeriodWidget.getSelectedObjectId()));
