@@ -26,8 +26,9 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(TimeSheetSidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
     ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
-    CaptionPanel timesheetCaptionPanel = new CaptionPanel();
-    FlowPanel timesheetsPanel = new FlowPanel();
+    //View and Create Time sheets For Payperiod
+    CaptionPanel timesheetsForPeriodCaptionPanel = new CaptionPanel();
+    FlowPanel timesheetsForPeriodPanel = new FlowPanel();
     //TimeSheet Period Dropdown
     SelectTimesheetPeriodWidget timePeriodWidget = new SelectTimesheetPeriodWidget(false, false);
     Button showTimeSheetsB = new Button("View");
@@ -46,7 +47,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-        timesheetCaptionPanel.setCaptionHTML("TimeSheets");
+        timesheetsForPeriodCaptionPanel.setCaptionHTML("TimeSheets");
     }
 
     @Override
@@ -54,11 +55,11 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
         if (Auth.isAdmin() || Auth.isHR()) {
             timeSheetsidepanel.add(createtimeSheetlink);
             //View time sheets
-            timesheetsPanel.add(timePeriodWidget);
-            timesheetsPanel.add(showTimeSheetsB);
-            timesheetsPanel.add(createMonthlyTimeSheetsB);
-            timesheetCaptionPanel.setContentWidget(timesheetsPanel);
-            timeSheetsidepanel.add(timesheetCaptionPanel);
+            timesheetsForPeriodPanel.add(timePeriodWidget);
+            timesheetsForPeriodPanel.add(showTimeSheetsB);
+            timesheetsForPeriodPanel.add(createMonthlyTimeSheetsB);
+            timesheetsForPeriodCaptionPanel.setContentWidget(timesheetsForPeriodPanel);
+            timeSheetsidepanel.add(timesheetsForPeriodCaptionPanel);
 
         }
     }
