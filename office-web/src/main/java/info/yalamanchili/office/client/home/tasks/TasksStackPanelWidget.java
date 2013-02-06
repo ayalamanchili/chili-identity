@@ -23,7 +23,7 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-    protected ClickableLink newTaskL = new ClickableLink("New Task");
+//    protected ClickableLink newTaskL = new ClickableLink("New Task");
     protected ClickableLink myTasksL = new ClickableLink("My Tasks");
 
     public TasksStackPanelWidget() {
@@ -32,7 +32,7 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        newTaskL.addClickHandler(this);
+//        newTaskL.addClickHandler(this);
         myTasksL.addClickHandler(this);
     }
 
@@ -42,7 +42,7 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        mainPanel.add(newTaskL);
+//        mainPanel.add(newTaskL);
         mainPanel.add(myTasksL);
         panel.add(mainPanel);
     }
@@ -53,8 +53,8 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
         }
-        if (event.getSource().equals(newTaskL)) {
-            new GenericPopup(new CreateTaskPanel(CreateComposite.CreateCompositeType.CREATE), newTaskL.getAbsoluteLeft(), newTaskL.getAbsoluteTop()).show();
-        }
+//        if (event.getSource().equals(newTaskL)) {
+//            new GenericPopup(new CreateTaskPanel(CreateComposite.CreateCompositeType.CREATE), newTaskL.getAbsoluteLeft(), newTaskL.getAbsoluteTop()).show();
+//        }
     }
 }
