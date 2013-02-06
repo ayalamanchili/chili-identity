@@ -28,11 +28,11 @@ public class ReadTimeSheetPanel extends ReadComposite {
 
     public ReadTimeSheetPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "TimeSheet", OfficeWelcome.constants);
+        initReadComposite(entity, "Timesheet", OfficeWelcome.constants);
     }
 
     public ReadTimeSheetPanel(String id) {
-        initReadComposite(id, "TimeSheet", OfficeWelcome.constants);
+        initReadComposite(id, "Timesheet", OfficeWelcome.constants);
     }
 
     @Override
