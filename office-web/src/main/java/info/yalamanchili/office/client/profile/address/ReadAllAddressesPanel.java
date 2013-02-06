@@ -31,7 +31,6 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getEmployeeAddressesURL(parentId, start, OfficeWelcome.constants.tableSize()),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-
             @Override
             public void onResponse(String result) {
                 logger.info(result);
@@ -86,13 +85,14 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         // TODO Auto-generated method stub
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAddressPanel((entityId)));
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String arg0) {
                         postDeleteSuccess();
