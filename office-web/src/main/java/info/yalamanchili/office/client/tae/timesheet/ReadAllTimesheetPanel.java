@@ -40,7 +40,7 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
         instance = this;
         initTable("Timesheet", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllTimesheetPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,

@@ -30,14 +30,12 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     //View and Create Time sheets For Payperiod
     CaptionPanel timesheetsForPeriodCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForPeriodPanel = new FlowPanel();
-    //TimeSheet Period Dropdown
     SelectTimesheetPeriodWidget timePeriodWidget = new SelectTimesheetPeriodWidget(false, false);
     Button showTimeSheetsForPeriodB = new Button("View");
     Button createMonthlyTimeSheetsB = new Button("Create");
     //View and Create Time sheets For Employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
-    //TimeSheet Period Dropdown
     SelectEmployeeWidget empWidget = new SelectEmployeeWidget(false, false);
     Button showTimeSheetsForEmpB = new Button("View");
     Button createEmpTimeSheetsB = new Button("Create");
@@ -51,11 +49,14 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
         createtimeSheetlink.addClickHandler(this);
         createMonthlyTimeSheetsB.addClickHandler(this);
         showTimeSheetsForPeriodB.addClickHandler(this);
+        showTimeSheetsForEmpB.addClickHandler(this);
+        createEmpTimeSheetsB.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         timesheetsForPeriodCaptionPanel.setCaptionHTML("TimeSheets");
+        timesheetsForEmpCaptionPanel.setCaptionHTML("TimeSheets");
     }
 
     @Override
@@ -72,7 +73,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
             timesheetsForEmpPanel.add(empWidget);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
             timesheetsForEmpPanel.add(createEmpTimeSheetsB);
-            timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForPeriodPanel);
+            timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
             timeSheetsidepanel.add(timesheetsForEmpCaptionPanel);
         }
     }
@@ -92,6 +93,13 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
             if (timePeriodWidget.getSelectedObjectId() != null && !timePeriodWidget.getSelectedObjectId().isEmpty()) {
                 TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel(timePeriodWidget.getSelectedObjectId()));
             }
+        }
+        if (event.getSource().equals(showTimeSheetsForEmpB)) {
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllEmployeeTimeSheets(empWidget.getSelectedObjectId()));
+        }
+        if (event.getSource().equals(createEmpTimeSheetsB)) {
+            //create employee time sheet
         }
     }
 }

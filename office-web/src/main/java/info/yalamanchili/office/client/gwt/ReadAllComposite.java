@@ -100,6 +100,10 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
         this.classCanonicalName = className;
         this.constants = constants;
         init(basePanel);
+        preFetchData();
+    }
+
+    protected void preFetchData() {
         preFetchTable(0);
     }
 
