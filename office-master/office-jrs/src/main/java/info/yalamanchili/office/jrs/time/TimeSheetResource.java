@@ -70,7 +70,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
         TimeSheetPeriod period = TimeSheetPeriodDao.instance().findById(payperiodid);
         tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsForPeriod(period, start, limit));
         //TODO fix size
-        tableObj.setSize(getDao().size());
+        tableObj.setSize(TimeSheetDao.instance().getTimeSheetsSizeForPeriod(period));
         return tableObj;
     }
 
