@@ -83,6 +83,9 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
 
     public void setSelectedValue(JSONObject entity) {
         this.selectedObject = entity;
+        if (getSelectedObject() == null) {
+            populateSelectedValue();
+        }
     }
 
     public void addListner(GenericListener listner) {
