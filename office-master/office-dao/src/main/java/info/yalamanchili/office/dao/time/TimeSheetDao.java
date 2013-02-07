@@ -12,7 +12,6 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,6 +37,12 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
+    }
+
+    public Long getTimeSheetsSizeForPeriod(TimeSheetPeriod period) {
+        Query query = getEntityManager().createQuery("select count(*) from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam");
+        query.setParameter("timePeriodParam", period);
+        return (Long) query.getSingleResult();
     }
 
     public List<TimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit) {
