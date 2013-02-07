@@ -70,15 +70,15 @@ public class ReadTimeSheetPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(false, false));
-        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, false));
-        addField("adpHours", false, false, DataType.FLOAT_FIELD);
-        addField("quickBooksHours", false, false, DataType.FLOAT_FIELD);
-        addField("adpRate", false, false, DataType.CURRENCY_FIELD);
-        addField("quickBooksRate", false, false, DataType.CURRENCY_FIELD);
-        addField("startDate", false, false, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+        addDropDown("employee", new SelectEmployeeWidget(true, false));
+        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(true, false));
+        addField("adpHours", true, false, DataType.FLOAT_FIELD);
+        addField("quickBooksHours", true, false, DataType.FLOAT_FIELD);
+        addField("adpRate", true, false, DataType.CURRENCY_FIELD);
+        addField("quickBooksRate", true, false, DataType.CURRENCY_FIELD);
+        addField("startDate", true, false, DataType.DATE_FIELD);
+        addField("endDate", true, false, DataType.DATE_FIELD);
+        addField("notes", true, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
