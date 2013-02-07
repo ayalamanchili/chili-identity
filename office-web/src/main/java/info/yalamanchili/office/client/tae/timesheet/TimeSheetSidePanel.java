@@ -72,7 +72,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
             //employee
             timesheetsForEmpPanel.add(empWidget);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
-            timesheetsForEmpPanel.add(createEmpTimeSheetsB);
+//            timesheetsForEmpPanel.add(createEmpTimeSheetsB);
             timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
             timeSheetsidepanel.add(timesheetsForEmpCaptionPanel);
         }
