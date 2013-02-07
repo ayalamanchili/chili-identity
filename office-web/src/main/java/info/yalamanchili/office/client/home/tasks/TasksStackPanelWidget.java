@@ -11,9 +11,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.GenericPopup;
-import info.yalamanchili.office.client.home.todo.CreateTodoPanel;
 
 /**
  *
@@ -23,7 +20,6 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-//    protected ClickableLink newTaskL = new ClickableLink("New Task");
     protected ClickableLink myTasksL = new ClickableLink("My Tasks");
 
     public TasksStackPanelWidget() {
@@ -32,7 +28,6 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-//        newTaskL.addClickHandler(this);
         myTasksL.addClickHandler(this);
     }
 
@@ -42,7 +37,6 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-//        mainPanel.add(newTaskL);
         mainPanel.add(myTasksL);
         panel.add(mainPanel);
     }
@@ -53,8 +47,5 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
         }
-//        if (event.getSource().equals(newTaskL)) {
-//            new GenericPopup(new CreateTaskPanel(CreateComposite.CreateCompositeType.CREATE), newTaskL.getAbsoluteLeft(), newTaskL.getAbsoluteTop()).show();
-//        }
     }
 }
