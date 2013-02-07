@@ -9,9 +9,7 @@ import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
-
 import java.util.logging.Logger;
-
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -31,7 +29,6 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getEmployeeEmailsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-
             @Override
             public void onResponse(String result) {
                 logger.info(result);
@@ -77,13 +74,14 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         // TODO Auto-generated method stub
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmailPanel(getEntity(entityId)));
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
                     @Override
                     public void onResponse(String arg0) {
                         postDeleteSuccess();
