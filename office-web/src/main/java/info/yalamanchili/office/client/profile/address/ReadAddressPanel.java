@@ -72,13 +72,13 @@ public class ReadAddressPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("street1", false, false, DataType.STRING_FIELD);
-        addField("street2", false, false, DataType.STRING_FIELD);
-        addField("city", false, false, DataType.STRING_FIELD);
-        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
-        addEnumField("country", false, false, CountryFactory.getCountries().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
-        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
+        addField("street1", true, false, DataType.STRING_FIELD);
+        addField("street2", true, false, DataType.STRING_FIELD);
+        addField("city", true, false, DataType.STRING_FIELD);
+        addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]));
+        addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]));
+        addField("zip", true, false, DataType.LONG_FIELD);
+        addDropDown("addressType", new SelectAddressTypeWidget(true, false));
     }
 
     @Override
@@ -87,6 +87,6 @@ public class ReadAddressPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "address/"+ entityId;
+        return OfficeWelcome.constants.root_url() + "address/" + entityId;
     }
 }
