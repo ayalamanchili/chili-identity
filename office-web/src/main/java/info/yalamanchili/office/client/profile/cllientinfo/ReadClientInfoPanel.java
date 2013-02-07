@@ -58,16 +58,16 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("consultantJobTitle", false, false, DataType.STRING_FIELD);
-        addDropDown("client", new SelectClientWidget(false, false));
-        addDropDown("clientContact", new SelectClientContactWidget(false, false));
-        addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
-        addDropDown("vendor", new SelectVendorWidget(false, false));
-        addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
-        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
-        addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);
-        addField("startDate", false, false, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
+        addDropDown("client", new SelectClientWidget(true, false));
+        addDropDown("clientContact", new SelectClientContactWidget(true, false));
+        addDropDown("clientLocation", new SelectClientLocationWidget(true, false));
+        addDropDown("vendor", new SelectVendorWidget(true, false));
+        addDropDown("vendorContact", new SelectVendorContactWidget(true, false));
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false));
+        addField("ciPrimary", true, false, DataType.BOOLEAN_FIELD);
+        addField("startDate", true, false, DataType.DATE_FIELD);
+        addField("endDate", true, false, DataType.DATE_FIELD);
     }
 
     @Override
