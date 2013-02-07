@@ -10,11 +10,13 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
+import java.util.logging.Logger;
 
 public class ReadEmployeePanel extends ReadComposite {
 
+    private static Logger logger = Logger.getLogger(ReadEmployeePanel.class.getName());
     private static ReadEmployeePanel instance;
-protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
+    protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
 
     public static ReadEmployeePanel instance() {
         return instance;
@@ -35,6 +37,7 @@ protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeType
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
+                        logger.info("this is the response from the server" + response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
                     }
@@ -55,7 +58,7 @@ protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeType
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
-         assignFieldValueFromEntity("employeeType", entity, null);
+        assignFieldValueFromEntity("employeeType", entity, null);
     }
 
     @Override
@@ -81,7 +84,7 @@ protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeType
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", true, false, strs);
         addField("startDate", true, false, DataType.DATE_FIELD);
-         addField("jobTitle", true, false, DataType.STRING_FIELD);
+        addField("jobTitle", true, false, DataType.STRING_FIELD);
     }
 
     @Override
