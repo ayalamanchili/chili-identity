@@ -4,17 +4,8 @@
  */
 package info.yalamanchili.office.client.tae.timesheet;
 
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**
@@ -41,7 +32,7 @@ public class CurrentEmployeeTimeSummaryPanel extends ALComposite {
 
     @Override
     protected void addWidgets() {
-        panel.add(new EmployeeTimeSummaryPanel(OfficeWelcome.instance().employeeId));
+        panel.add(new EmployeeTimeSummaryPanel());
         panel.add(readAllTimeSheetsPanel);
     }
 }

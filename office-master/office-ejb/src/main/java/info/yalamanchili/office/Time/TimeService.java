@@ -45,7 +45,9 @@ public class TimeService {
         TimeSummary ts = new TimeSummary();
         ts.setQuickBooksHours((BigDecimal) row[0]);
         ts.setAdpHours((BigDecimal) row[1]);
-        ts.setBalanceHours(ts.getQuickBooksHours().subtract(ts.getAdpHours()));
+        if (ts.getQuickBooksHours() != null && ts.getAdpHours() != null) {
+            ts.setBalanceHours(ts.getQuickBooksHours().subtract(ts.getAdpHours()));
+        }
         return ts;
     }
 

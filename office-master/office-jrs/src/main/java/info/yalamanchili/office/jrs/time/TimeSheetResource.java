@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.jrs.time;
 
+import info.yalamanchili.office.Time.TimeService;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -75,9 +76,21 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME')")
     public TimeSheetResource.TimeSheetTable getTimeSheetsForEmployee(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         Employee emp = EmployeeDao.instance().findById(empId);
+        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit));
+        //TODO fix size
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
+
+    @GET
+    @Path("/currentuser/{start}/{limit}")
+    public TimeSheetResource.TimeSheetTable getTimeSheetsForCurrentEmployee(@PathParam("payperiodid") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
+        Employee emp = SecurityService.instance().getCurrentUser();
         tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit));
         //TODO fix size
         tableObj.setSize(getDao().size());
