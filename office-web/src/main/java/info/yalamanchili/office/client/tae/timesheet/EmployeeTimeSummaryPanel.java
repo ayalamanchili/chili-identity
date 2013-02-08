@@ -6,14 +6,11 @@ package info.yalamanchili.office.client.tae.timesheet;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.ReadComposite;
+import info.yalamanchili.office.client.profile.email.ReadEmailPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -22,57 +19,43 @@ import java.util.logging.Logger;
  * @author anuyalamanchili
  */
 //TODO convert to extends readcomposite
-public class EmployeeTimeSummaryPanel extends ALComposite {
+public class EmployeeTimeSummaryPanel extends ReadComposite {
 
-    private static Logger logger = Logger.getLogger(EmployeeTimeSummaryPanel.class.getName());
     protected String employeeId;
-    protected CaptionPanel summaryCP = new CaptionPanel("Time Summary");
-    protected FlowPanel summaryPanel = new FlowPanel();
-    protected Label adpHoursL = new Label("ADP Hours");
-    protected TextBox adpHoursTB = new TextBox();
-    protected Label qbHoursL = new Label("QuickBooks Hours");
-    protected TextBox qbHoursTB = new TextBox();
-    protected Label adjustmentHoursL = new Label("Adjustment Hours");
-    protected TextBox adjustmentHoursTB = new TextBox();
-    protected Label balanceHoursL = new Label("Balance Hours");
-    protected TextBox balanceHoursTB = new TextBox();
+    private static ReadEmailPanel instance;
+    private static Logger logger = Logger.getLogger(EmployeeTimeSummaryPanel.class.getName());
+
+    public static ReadEmailPanel instance() {
+        return instance;
+    }
 
     public EmployeeTimeSummaryPanel() {
-        init(summaryCP);
-        fetchData();
+        initReadComposite("TimeSummary", OfficeWelcome.constants);
     }
 
     public EmployeeTimeSummaryPanel(String employeeId) {
         this.employeeId = employeeId;
-        init(summaryCP);
-        fetchData();
+        initReadComposite("TimeSummary", OfficeWelcome.constants);
     }
 
-    public void fetchData() {
-        HttpService.HttpServiceAsync.instance().doGet(getURL(), OfficeWelcome.instance().getHeaders(), true,
+    @Override
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
-                    public void onResponse(String result) {
-                        if (result != null && !result.isEmpty()) {
-                            populateData(JSONParser.parseLenient(result).isObject());
-                        }
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
                     }
                 });
     }
 
-    protected void populateData(JSONObject summary) {
-        adpHoursTB.setText(JSONUtils.toString(summary, "adpHours"));
-        qbHoursTB.setText(JSONUtils.toString(summary, "quickBooksHours"));
-        adjustmentHoursTB.setText(JSONUtils.toString(summary, "adjustmentHours"));
-        balanceHoursTB.setText(JSONUtils.toString(summary, "balanceHours"));
-    }
-
-    protected String getURL() {
-        if (employeeId != null) {
-            return OfficeWelcome.constants.root_url() + "timesheet/summary/" + employeeId;
-        } else {
-            return OfficeWelcome.constants.root_url() + "timesheet/summary/currentuser";
-        }
+    @Override
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("quickBooksHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("adpHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("adjustmentHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("balanceHours", entity, DataType.FLOAT_FIELD);
     }
 
     @Override
@@ -85,14 +68,22 @@ public class EmployeeTimeSummaryPanel extends ALComposite {
 
     @Override
     protected void addWidgets() {
-        summaryPanel.add(adpHoursL);
-        summaryPanel.add(adpHoursTB);
-        summaryPanel.add(qbHoursL);
-        summaryPanel.add(qbHoursTB);
-        summaryPanel.add(adjustmentHoursL);
-        summaryPanel.add(adjustmentHoursTB);
-        summaryPanel.add(balanceHoursL);
-        summaryPanel.add(balanceHoursTB);
-        summaryCP.setContentWidget(summaryPanel);
+        addField("quickBooksHours", true, false, DataType.FLOAT_FIELD);
+        addField("adpHours", true, false, DataType.FLOAT_FIELD);
+        addField("adjustmentHours", true, false, DataType.FLOAT_FIELD);
+        addField("balanceHours", true, false, DataType.FLOAT_FIELD);
+    }
+
+    @Override
+    protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected String getURI() {
+        if (employeeId != null) {
+            return OfficeWelcome.constants.root_url() + "timesheet/summary/" + employeeId;
+        } else {
+            return OfficeWelcome.constants.root_url() + "timesheet/summary/currentuser";
+        }
     }
 }
