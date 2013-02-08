@@ -19,13 +19,13 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
-public class CreateBonusPaymentsPanel extends CreateComposite {
+public class CreateAdjustmentHoursPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(CreateBonusPaymentsPanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreateAdjustmentHoursPanel.class.getName());
 
-    public CreateBonusPaymentsPanel(CreateComposite.CreateCompositeType type) {
+    public CreateAdjustmentHoursPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("BonusPayments", OfficeWelcome.constants);
+        initCreateComposite("AdjustmentHours", OfficeWelcome.constants);
     }
 
     @Override
@@ -62,11 +62,11 @@ public class CreateBonusPaymentsPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Bonus Payments Created");
+        new ResponseStatusWidget().show("Successfully Adjustment Hours Created");
         TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new BonusPaymentsSidePanel());
+        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new AdjustmentHoursSidePanel());
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllBonusPaymentsPanel());
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel());
     }
 
     @Override

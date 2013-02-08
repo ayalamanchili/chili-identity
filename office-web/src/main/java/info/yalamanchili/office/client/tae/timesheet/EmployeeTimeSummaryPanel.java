@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  *
  * @author anuyalamanchili
  */
+//TODO convert to extends readcomposite
 public class EmployeeTimeSummaryPanel extends ALComposite {
 
     private static Logger logger = Logger.getLogger(EmployeeTimeSummaryPanel.class.getName());
@@ -31,6 +32,10 @@ public class EmployeeTimeSummaryPanel extends ALComposite {
     protected TextBox adpHoursTB = new TextBox();
     protected Label qbHoursL = new Label("QuickBooks Hours");
     protected TextBox qbHoursTB = new TextBox();
+    protected Label adjustmentHoursL = new Label("Adjustment Hours");
+    protected TextBox adjustmentHoursTB = new TextBox();
+    protected Label balanceHoursL = new Label("Balance Hours");
+    protected TextBox balanceHoursTB = new TextBox();
 
     public EmployeeTimeSummaryPanel() {
         init(summaryCP);
@@ -49,12 +54,17 @@ public class EmployeeTimeSummaryPanel extends ALComposite {
                     @Override
                     public void onResponse(String result) {
                         if (result != null && !result.isEmpty()) {
-                            JSONObject summary = JSONParser.parseLenient(result).isObject();
-                            adpHoursTB.setText(JSONUtils.toString(summary, "adpHours"));
-                            qbHoursTB.setText(JSONUtils.toString(summary, "quickBooksHours"));
+                            populateData(JSONParser.parseLenient(result).isObject());
                         }
                     }
                 });
+    }
+
+    protected void populateData(JSONObject summary) {
+        adpHoursTB.setText(JSONUtils.toString(summary, "adpHours"));
+        qbHoursTB.setText(JSONUtils.toString(summary, "quickBooksHours"));
+        adjustmentHoursTB.setText(JSONUtils.toString(summary, "adjustmentHours"));
+        balanceHoursTB.setText(JSONUtils.toString(summary, "balanceHours"));
     }
 
     protected String getURL() {
@@ -79,6 +89,10 @@ public class EmployeeTimeSummaryPanel extends ALComposite {
         summaryPanel.add(adpHoursTB);
         summaryPanel.add(qbHoursL);
         summaryPanel.add(qbHoursTB);
+        summaryPanel.add(adjustmentHoursL);
+        summaryPanel.add(adjustmentHoursTB);
+        summaryPanel.add(balanceHoursL);
+        summaryPanel.add(balanceHoursTB);
         summaryCP.setContentWidget(summaryPanel);
     }
 }

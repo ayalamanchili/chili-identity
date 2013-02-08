@@ -18,13 +18,13 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
-public class BonusPaymentsSidePanel extends ALComposite implements ClickHandler {
+public class AdjustmentHoursSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger = Logger.getLogger(BonusPaymentsSidePanel.class.getName());
+    private static Logger logger = Logger.getLogger(AdjustmentHoursSidePanel.class.getName());
     public FlowPanel bonuspaymentsidepanel = new FlowPanel();
-    ClickableLink createbonuspaymentslink = new ClickableLink("Create Bonus Payments");
+    ClickableLink createbonuspaymentslink = new ClickableLink("Create Adjustment Hours");
 
-    public BonusPaymentsSidePanel() {
+    public AdjustmentHoursSidePanel() {
         init(bonuspaymentsidepanel);
     }
 
@@ -48,7 +48,7 @@ public class BonusPaymentsSidePanel extends ALComposite implements ClickHandler 
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createbonuspaymentslink)) {
             TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateBonusPaymentsPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateAdjustmentHoursPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

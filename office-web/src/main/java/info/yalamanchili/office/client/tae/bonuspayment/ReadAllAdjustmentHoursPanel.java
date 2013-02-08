@@ -23,21 +23,21 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
-public class ReadAllBonusPaymentsPanel extends CRUDReadAllComposite {
+public class ReadAllAdjustmentHoursPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllBonusPaymentsPanel.class.getName());
-    public static ReadAllBonusPaymentsPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllAdjustmentHoursPanel.class.getName());
+    public static ReadAllAdjustmentHoursPanel instance;
     protected String bonusPaymentsId = null;
 
-    public ReadAllBonusPaymentsPanel(String bonusPaymentsId) {
+    public ReadAllAdjustmentHoursPanel(String bonusPaymentsId) {
         instance = this;
         this.bonusPaymentsId = bonusPaymentsId;
-        initTable("BonusPayments", OfficeWelcome.constants);
+        initTable("AdjustmentHours", OfficeWelcome.constants);
     }
 
-    public ReadAllBonusPaymentsPanel() {
+    public ReadAllAdjustmentHoursPanel() {
         instance = this;
-        initTable("BonusPayments", OfficeWelcome.constants);
+        initTable("AdjustmentHours", OfficeWelcome.constants);
     }
 
     @Override
@@ -63,13 +63,13 @@ public class ReadAllBonusPaymentsPanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Bonus Payments Information");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllBonusPaymentsPanel(bonusPaymentsId));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel(bonusPaymentsId));
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateBonusPaymentPanel(bonusPaymentsId, getEntity(entityId)));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateAdjustmentHourPanel(bonusPaymentsId, getEntity(entityId)));
     }
 
     @Override

@@ -7,22 +7,11 @@ package info.yalamanchili.office.Time;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dto.time.TimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.time.TimeSheetPeriod;
+import info.yalamanchili.office.entity.time.AdjustmentHours;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -38,15 +27,23 @@ public class TimeService {
     protected EntityManager em;
 
     public TimeSummary getTimeSummary(Employee emp) {
-        String qlString = "SELECT SUM(quickBooksHours), SUM(adpHours) FROM TimeSheet WHERE employee=:employeeparam ";
-        Query q = em.createQuery(qlString);
-        q.setParameter("employeeparam", emp);
-        Object[] row = (Object[]) q.getSingleResult();
         TimeSummary ts = new TimeSummary();
+        //Get sum of quick books and adp hours.
+        String adpAndQBHoursQueryString = "SELECT SUM(quickBooksHours), SUM(adpHours) FROM TimeSheet WHERE employee=:employeeparam ";
+        Query adpAbdQBHoursQuery = em.createQuery(adpAndQBHoursQueryString);
+        adpAbdQBHoursQuery.setParameter("employeeparam", emp);
+        Object[] row = (Object[]) adpAbdQBHoursQuery.getSingleResult();
         ts.setQuickBooksHours((BigDecimal) row[0]);
         ts.setAdpHours((BigDecimal) row[1]);
-        if (ts.getQuickBooksHours() != null && ts.getAdpHours() != null) {
-            ts.setBalanceHours(ts.getQuickBooksHours().subtract(ts.getAdpHours()));
+        //get sum of adjustment hours
+        String sumBonusHoursQueryString = "SELECT SUM(paidHours) FROM " + AdjustmentHours.class.getCanonicalName() + " WHERE employee=:employeeparam ";
+        Query bonusHoursQuery = em.createQuery(sumBonusHoursQueryString);
+        bonusHoursQuery.setParameter("employeeparam", emp);
+        BigDecimal sumAdjustmentHours = (BigDecimal) bonusHoursQuery.getSingleResult();
+        ts.setAdjustmentHours(sumAdjustmentHours);
+        //Calcluate balance
+        if (ts.getQuickBooksHours() != null && ts.getAdpHours() != null && ts.getAdjustmentHours() != null) {
+            ts.setBalanceHours((ts.getQuickBooksHours().subtract(ts.getAdpHours()).subtract(ts.getAdjustmentHours())));
         }
         return ts;
     }

@@ -6,8 +6,8 @@ package info.yalamanchili.office.jrs.time;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.time.BonusPaymentDao;
-import info.yalamanchili.office.entity.time.BonusPayment;
+import info.yalamanchili.office.dao.time.AdjustmentHoursDao;
+import info.yalamanchili.office.entity.time.AdjustmentHours;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -29,22 +29,22 @@ import org.springframework.stereotype.Component;
 @Path("secured/bonuspayment")
 @Component
 @Scope("request")
-public class BonusPaymentResource extends CRUDResource<BonusPayment> {
+public class BonusPaymentResource extends CRUDResource<AdjustmentHours> {
 
     @Autowired
-    public BonusPaymentDao bonusPaymentDao;
+    public AdjustmentHoursDao adjustmentHoursDao;
 
     @Override
     public CRUDDao getDao() {
-        return bonusPaymentDao;
+        return adjustmentHoursDao;
     }
 
     @PUT
     @Override
-    public BonusPayment save(BonusPayment entity) {
+    public AdjustmentHours save(AdjustmentHours entity) {
         info.yalamanchili.office.entity.profile.Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
         entity.setEmployee(emp);
-        return (BonusPayment) getDao().save(entity);
+        return (AdjustmentHours) getDao().save(entity);
     }
 
     @GET
@@ -62,7 +62,7 @@ public class BonusPaymentResource extends CRUDResource<BonusPayment> {
     public static class BopnusPaymentTable {
 
         protected Long size;
-        protected List<BonusPayment> entities;
+        protected List<AdjustmentHours> entities;
 
         public Long getSize() {
             return size;
@@ -73,11 +73,11 @@ public class BonusPaymentResource extends CRUDResource<BonusPayment> {
         }
 
         @XmlElement
-        public List<BonusPayment> getEntities() {
+        public List<AdjustmentHours> getEntities() {
             return entities;
         }
 
-        public void setEntities(List<BonusPayment> entities) {
+        public void setEntities(List<AdjustmentHours> entities) {
             this.entities = entities;
         }
     }

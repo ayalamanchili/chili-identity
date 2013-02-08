@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -27,24 +29,30 @@ import org.hibernate.envers.Audited;
 @XmlRootElement
 @XmlType
 @Audited
-public class BonusPayment extends AbstractEntity{
-    
-    protected BigDecimal paidRate;
+public class AdjustmentHours extends AbstractEntity {
 
+    @Enumerated(EnumType.STRING)
+    protected AdjustmentType adjustmentType;
+    protected BigDecimal paidRate;
     @NotNull(message = "{paidHours.not.empty.msg}")
-    @Digits(integer = 3, fraction = 2, message = "{bonuspayment.hours.format.invalid.msg}")
+    @Digits(integer = 3, fraction = 2, message = "{adjustment.hours.format.invalid.msg}")
     protected BigDecimal paidHours;
-    
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date paidDate;
-    
     @Lob
     protected String paymentInfo;
-    
     @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
-    
+
+    public AdjustmentType getPaymentType() {
+        return adjustmentType;
+    }
+
+    public void setPaymentType(AdjustmentType paymentType) {
+        this.adjustmentType = paymentType;
+    }
+
     public void setPaidRate(BigDecimal paidRate) {
         this.paidRate = paidRate;
     }

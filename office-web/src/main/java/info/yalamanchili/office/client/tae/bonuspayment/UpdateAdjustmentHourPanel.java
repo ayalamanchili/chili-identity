@@ -19,14 +19,14 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
-public class UpdateBonusPaymentPanel extends UpdateComposite {
+public class UpdateAdjustmentHourPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(UpdateBonusPaymentPanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateAdjustmentHourPanel.class.getName());
     protected String bonuspaymentsId;
 
-    public UpdateBonusPaymentPanel(String bonuspaymentId, JSONObject entity) {
+    public UpdateAdjustmentHourPanel(String bonuspaymentId, JSONObject entity) {
         this.bonuspaymentsId = bonuspaymentId;
-        initUpdateComposite(entity, "BonusPayments", OfficeWelcome.constants);
+        initUpdateComposite(entity, "AdjustmentHours", OfficeWelcome.constants);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UpdateBonusPaymentPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Bonus Payments Information");
         TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllBonusPaymentsPanel(bonuspaymentsId));
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel(bonuspaymentsId));
     }
 
     @Override

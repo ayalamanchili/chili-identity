@@ -5,7 +5,7 @@
 package info.yalamanchili.office.dao.time;
 
 import info.yalamanchili.office.dao.CRUDDao;
-import info.yalamanchili.office.entity.time.BonusPayment;
+import info.yalamanchili.office.entity.time.AdjustmentHours;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-public class BonusPaymentDao extends CRUDDao<BonusPayment> {
+public class AdjustmentHoursDao extends CRUDDao<AdjustmentHours> {
 
     @PersistenceContext
     protected EntityManager em;
@@ -27,8 +27,8 @@ public class BonusPaymentDao extends CRUDDao<BonusPayment> {
         return em;
     }
     
-       public BonusPaymentDao() {
-        super(BonusPayment.class);
+       public AdjustmentHoursDao() {
+        super(AdjustmentHours.class);
     }
 
 }

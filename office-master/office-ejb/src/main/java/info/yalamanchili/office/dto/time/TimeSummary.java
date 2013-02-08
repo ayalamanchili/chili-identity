@@ -18,6 +18,7 @@ public class TimeSummary {
 
     protected BigDecimal quickBooksHours;
     protected BigDecimal adpHours;
+    protected BigDecimal adjustmentHours;
     protected BigDecimal balanceHours;
 
     public BigDecimal getQuickBooksHours() {
@@ -34,6 +35,14 @@ public class TimeSummary {
 
     public void setAdpHours(BigDecimal adpHours) {
         this.adpHours = adpHours;
+    }
+
+    public BigDecimal getAdjustmentHours() {
+        return adjustmentHours;
+    }
+
+    public void setAdjustmentHours(BigDecimal adjustmentHours) {
+        this.adjustmentHours = adjustmentHours;
     }
 
     public BigDecimal getBalanceHours() {
