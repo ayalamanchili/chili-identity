@@ -56,7 +56,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     @Override
     protected void configure() {
         timesheetsForPeriodCaptionPanel.setCaptionHTML("TimeSheets");
-        timesheetsForEmpCaptionPanel.setCaptionHTML("TimeSheets");
+        timesheetsForEmpCaptionPanel.setCaptionHTML("Time Summary");
     }
 
     @Override
@@ -96,6 +96,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
         }
         if (event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new EmployeeTimeSummaryPanel(empWidget.getSelectedObjectId()));
             TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllEmployeeTimeSheets(empWidget.getSelectedObjectId()));
         }
         if (event.getSource().equals(createEmpTimeSheetsB)) {

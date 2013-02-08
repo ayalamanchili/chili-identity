@@ -11,7 +11,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.tae.bonuspayment.BonusPaymentsSidePanel;
 import info.yalamanchili.office.client.tae.bonuspayment.ReadAllBonusPaymentsPanel;
-import info.yalamanchili.office.client.tae.timesheet.EmpTimeSummaryPanel;
+import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
@@ -45,7 +45,7 @@ public class TAEMenu extends Composite {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
             if (Auth.hasOnlyUserRole()) {
-                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new EmpTimeSummaryPanel());
+                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
             } else {
                 TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
                 TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetPeriodSidePanel());
@@ -57,7 +57,7 @@ public class TAEMenu extends Composite {
             TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
             TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
             if (Auth.hasOnlyUserRole()) {
-                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new EmpTimeSummaryPanel());
+                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
             } else {
                 TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel());
                 TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetSidePanel());

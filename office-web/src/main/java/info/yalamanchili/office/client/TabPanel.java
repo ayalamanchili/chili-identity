@@ -29,7 +29,7 @@ import info.yalamanchili.office.client.tae.TAEMenu;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
-import info.yalamanchili.office.client.tae.timesheet.EmpTimeSummaryPanel;
+import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
 
@@ -160,7 +160,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         timeandExpensePanel.sidePanelTop.clear();
         timeandExpensePanel.entityTitlePanel.add(new TAEMenu());
         if (Auth.hasOnlyUserRole()) {
-            timeandExpensePanel.entityPanel.add(new EmpTimeSummaryPanel());
+            timeandExpensePanel.entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
         } else {
             timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
             timeandExpensePanel.sidePanelTop.add(new TimeSheetSidePanel());

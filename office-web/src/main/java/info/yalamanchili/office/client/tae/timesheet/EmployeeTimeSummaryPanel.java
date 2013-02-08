@@ -21,12 +21,10 @@ import java.util.logging.Logger;
  *
  * @author anuyalamanchili
  */
-public class EmpTimeSummaryPanel extends ALComposite {
+public class EmployeeTimeSummaryPanel extends ALComposite {
 
-    private static Logger logger = Logger.getLogger(EmpTimeSummaryPanel.class.getName());
-    protected FlowPanel panel = new FlowPanel();
-    protected ReadAllTimesheetPanel readAllTimeSheetsPanel = new ReadAllTimesheetPanel();
-    //Time Summary Panel
+    private static Logger logger = Logger.getLogger(EmployeeTimeSummaryPanel.class.getName());
+    protected String employeeId;
     protected CaptionPanel summaryCP = new CaptionPanel("Time Summary");
     protected FlowPanel summaryPanel = new FlowPanel();
     protected Label adpHoursL = new Label("ADP Hours");
@@ -34,25 +32,22 @@ public class EmpTimeSummaryPanel extends ALComposite {
     protected Label qbHoursL = new Label("QuickBooks Hours");
     protected TextBox qbHoursTB = new TextBox();
 
-    public EmpTimeSummaryPanel() {
-        init(panel);
-        getTimeSummary();
+    public EmployeeTimeSummaryPanel() {
+        init(summaryCP);
+        fetchData();
     }
 
-    protected void configureSummaryPanel() {
-        summaryPanel.add(adpHoursL);
-        summaryPanel.add(adpHoursTB);
-        summaryPanel.add(qbHoursL);
-        summaryPanel.add(qbHoursTB);
-        summaryCP.setContentWidget(summaryPanel);
+    public EmployeeTimeSummaryPanel(String employeeId) {
+        this.employeeId = employeeId;
+        init(summaryCP);
+        fetchData();
     }
 
-    protected void getTimeSummary() {
-        HttpService.HttpServiceAsync.instance().doGet(getTimeSummaryURL(), OfficeWelcome.instance().getHeaders(), true,
+    public void fetchData() {
+        HttpService.HttpServiceAsync.instance().doGet(getURL(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info(result);
                         if (result != null && !result.isEmpty()) {
                             JSONObject summary = JSONParser.parseLenient(result).isObject();
                             adpHoursTB.setText(JSONUtils.toString(summary, "adpHours"));
@@ -62,8 +57,12 @@ public class EmpTimeSummaryPanel extends ALComposite {
                 });
     }
 
-    public String getTimeSummaryURL() {
-        return OfficeWelcome.constants.root_url() + "timesheet/summary/currentuser";
+    protected String getURL() {
+        if (employeeId != null) {
+            return OfficeWelcome.constants.root_url() + "timesheet/summary/" + employeeId;
+        } else {
+            return OfficeWelcome.constants.root_url() + "timesheet/summary/currentuser";
+        }
     }
 
     @Override
@@ -76,8 +75,10 @@ public class EmpTimeSummaryPanel extends ALComposite {
 
     @Override
     protected void addWidgets() {
-        panel.add(summaryCP);
-        panel.add(readAllTimeSheetsPanel);
-        configureSummaryPanel();
+        summaryPanel.add(adpHoursL);
+        summaryPanel.add(adpHoursTB);
+        summaryPanel.add(qbHoursL);
+        summaryPanel.add(qbHoursTB);
+        summaryCP.setContentWidget(summaryPanel);
     }
 }
