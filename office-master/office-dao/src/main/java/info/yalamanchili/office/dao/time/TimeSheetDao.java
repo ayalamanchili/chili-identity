@@ -106,8 +106,8 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
 
         if (sizeQuery.getResultList().size() > 0) {
             TimeSheet existingTS = sizeQuery.getResultList().get(0);
-            if (newTS.getStartDate().before(existingTS.getEndDate())) {
-                throw new RuntimeException("New Timesheet Start date should be after Old Timesheet Enddate");
+            if (newTS.getId() != null && newTS.getId() != existingTS.getId()) {
+                return;
             }
         }
     }
