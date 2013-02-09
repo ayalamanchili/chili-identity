@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="overtime_hours_adjustment_process">
+ 
+        <startEvent id="theStart">
+            <extensionElements>
+                <activiti:formProperty id="name" 
+                                       name="Name"
+                                       required="true"
+                                       type="string" />
+                <activiti:formProperty id="hours" 
+                                       name="Hours"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>
+        </startEvent>
+        
+        <sequenceFlow id="flow2" sourceRef="theStart" targetRef="theEnd" />
+
+        <endEvent id="theEnd" />
+ 
+    </process>
+ 
+</definitions>

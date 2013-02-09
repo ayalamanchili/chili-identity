@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 @Path("secured/bonuspayment")
 @Component
 @Scope("request")
-public class BonusPaymentResource extends CRUDResource<AdjustmentHours> {
+public class AdjustmentHoursResource extends CRUDResource<AdjustmentHours> {
 
     @Autowired
     public AdjustmentHoursDao adjustmentHoursDao;
@@ -50,8 +50,8 @@ public class BonusPaymentResource extends CRUDResource<AdjustmentHours> {
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public BonusPaymentResource.BopnusPaymentTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-        BonusPaymentResource.BopnusPaymentTable tableObj = new BonusPaymentResource.BopnusPaymentTable();
+    public AdjustmentHoursResource.BopnusPaymentTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        AdjustmentHoursResource.BopnusPaymentTable tableObj = new AdjustmentHoursResource.BopnusPaymentTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;

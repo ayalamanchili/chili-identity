@@ -1,6 +1,6 @@
 package info.yalamanchili.office.jrs.profile;
 
-import info.yalamanchili.office.bpm.BPMProfileService;
+import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;

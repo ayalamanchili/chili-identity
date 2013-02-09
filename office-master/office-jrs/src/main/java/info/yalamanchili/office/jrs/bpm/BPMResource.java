@@ -4,10 +4,13 @@
  */
 package info.yalamanchili.office.jrs.bpm;
 
+import info.yalamanchili.office.bpm.OfficeBPMFormService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -34,6 +37,8 @@ public class BPMResource {
 
     @Autowired
     protected OfficeBPMTaskService officeBPMTaskService;
+    @Autowired
+    protected OfficeBPMFormService officeBPMFormService;
 
     @GET
     @Path("/claimtask/{taskId}")
@@ -74,5 +79,18 @@ public class BPMResource {
     @Path("task")
     public void createTask(Task task) {
         officeBPMTaskService.createTask(task);
+    }
+    //Form Properties
+
+    @GET
+    @Path("/startform_properties/{processId}")
+    public List<FormProperty> getStartFormProperties(@PathParam("processId") String processId) {
+        return officeBPMFormService.getStartFormProperties(processId);
+    }
+
+    @GET
+    @Path("/task_properties/{taskId}")
+    public List<FormProperty> getTaskFormProperties(@PathParam("taskId") String taskId) {
+        return officeBPMFormService.getTaskFormProperties(taskId);
     }
 }

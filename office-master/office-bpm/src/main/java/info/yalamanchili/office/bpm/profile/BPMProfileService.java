@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.bpm;
+package info.yalamanchili.office.bpm.profile;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +32,11 @@ public class BPMProfileService {
         vars.put("employee", emp);
         officeBPMService.startProcess("address_update_process", vars);
     }
-
-    @PostConstruct
-    public void registerProcesses() {
-        OfficeBPMService.instance().registerProcess("address_update_process", "info/yalamanchili/office/address_update_process.bpmn20.xml");
-    }
+//TODO remove
+//    @PostConstruct
+//    public void registerProcesses() {
+//        OfficeBPMService.instance().registerProcess("address_update_process", "info/yalamanchili/office/address_update_process.bpmn20.xml");
+//    }
 
     public static BPMProfileService instance() {
         return (BPMProfileService) SpringContext.getBean("bpmProfileService");

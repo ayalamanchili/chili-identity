@@ -11,6 +11,7 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import java.util.Map;
+import org.activiti.engine.FormService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.TaskQuery;
 import org.dozer.Mapper;
@@ -26,6 +27,8 @@ public class OfficeBPMTaskService {
 
     @Autowired
     protected TaskService bpmTaskService;
+    @Autowired
+    protected FormService bpmFormService;
     @Autowired
     protected Mapper mapper;
 
