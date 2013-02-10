@@ -6,10 +6,20 @@ package info.yalamanchili.office.client.home.tasks;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FloatField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import java.util.logging.Logger;
 
 /**
@@ -19,22 +29,55 @@ import java.util.logging.Logger;
 public class GenericTaskFormPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(GenericTaskFormPanel.class.getName());
+    protected String taskId;
     protected JSONArray formProperties;
 
-    public GenericTaskFormPanel(JSONArray array) {
+    public GenericTaskFormPanel(String taskId,JSONArray array) {
         super(CreateComposite.CreateCompositeType.CREATE);
-        logger.info("rrrr" + array);
+        this.taskId=taskId;
         this.formProperties = array;
         initCreateComposite("Task", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        return null;
+        JSONObject entity = new JSONObject();
+        JSONArray vars = new JSONArray();
+        int i = 0;
+        for (String key : fields.keySet()) {
+            JSONObject value = new JSONObject();
+            value.put("id", new JSONString(key));
+            //TODO currently support string and enum fields
+            if (fields.get(key) instanceof StringField) {
+                StringField stringField = (StringField) fields.get(key);
+                value.put("value", new JSONString(stringField.getValue()));
+            }
+            if (fields.get(key) instanceof EnumField) {
+                EnumField enumField = (EnumField) fields.get(key);
+                value.put("value", new JSONString(enumField.getValue()));
+            }
+            vars.set(i, value);
+            i++;
+        }
+        entity.put("entries", vars);
+        logger.info("ddddw" + entity);
+        return entity;
     }
 
     @Override
     protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -43,6 +86,9 @@ public class GenericTaskFormPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Task Completed");
+        TabPanel.instance().getHomePanel().entityPanel.clear();
+        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
     }
 
     @Override
@@ -56,6 +102,7 @@ public class GenericTaskFormPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        //TODO support more field types
         for (int i = 0; i < formProperties.size(); i++) {
             JSONObject formProperty = formProperties.get(i).isObject();
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("string")) {
@@ -81,6 +128,6 @@ public class GenericTaskFormPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return null;
+        return OfficeWelcome.constants.root_url() + "bpm/completetask/"+taskId;
     }
 }

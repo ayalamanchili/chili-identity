@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.jrs.bpm;
 
+import info.chili.service.jrs.types.Entries;
 import info.yalamanchili.office.bpm.OfficeBPMFormService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -53,11 +54,14 @@ public class BPMResource {
         officeBPMTaskService.resolveTask(taskId);
     }
 
-    @GET
+    @PUT
     @Path("/completetask/{taskId}")
-    public void completeTask(@PathParam("taskId") String taskId) {
-        //TODO add task variables
-        officeBPMTaskService.completeTask(taskId, null);
+    public void completeTask(@PathParam("taskId") String taskId, Entries vars) {
+        if (vars != null) {
+            officeBPMTaskService.completeTask(taskId, vars.getEntries());
+        } else {
+            officeBPMTaskService.completeTask(taskId, null);
+        }
     }
 
     @GET

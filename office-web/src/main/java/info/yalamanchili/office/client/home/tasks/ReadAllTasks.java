@@ -105,7 +105,7 @@ public class ReadAllTasks extends ReadAllTasksComposite {
                     @Override
                     public void onResponse(String result) {
                         if (result != null && !result.isEmpty()) {
-                            renderForm(result);
+                            renderForm(entityId, result);
                         } else {
                             completeTask(entityId);
                         }
@@ -113,9 +113,9 @@ public class ReadAllTasks extends ReadAllTasksComposite {
                 });
     }
 
-    protected void renderForm(String formProperties) {
+    protected void renderForm(String taskId, String formProperties) {
         TabPanel.instance().getHomePanel().entityPanel.clear();
-        TabPanel.instance().getHomePanel().entityPanel.add(new GenericTaskFormPanel(JSONUtils.convertFormProperties(formProperties)));
+        TabPanel.instance().getHomePanel().entityPanel.add(new GenericTaskFormPanel(taskId, JSONUtils.convertFormProperties(formProperties)));
     }
 
     protected void completeTask(String entityId) {

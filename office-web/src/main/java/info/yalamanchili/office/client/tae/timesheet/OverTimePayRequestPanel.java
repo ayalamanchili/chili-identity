@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 public class OverTimePayRequestPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(OverTimePayRequestPanel.class.getName());
-    JSONArray vars = new JSONArray();
 
     public OverTimePayRequestPanel() {
         super(CreateComposite.CreateCompositeType.CREATE);

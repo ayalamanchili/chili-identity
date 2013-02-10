@@ -4,11 +4,13 @@
  */
 package info.yalamanchili.office.bpm;
 
+import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.activiti.engine.FormService;
@@ -48,8 +50,12 @@ public class OfficeBPMTaskService {
         bpmTaskService.resolveTask(taskId);
     }
 
-    public void completeTask(String taskId, Map<String, Object> variables) {
-        bpmTaskService.complete(taskId, variables);
+    public void completeTask(String taskId, List<Entry> request) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        for (Entry entry : request) {
+            vars.put(entry.getId(), entry.getValue());
+        }
+        bpmTaskService.complete(taskId, vars);
     }
 
     public TaskTable getAllUnasigneed(int start, int limit) {
