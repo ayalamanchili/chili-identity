@@ -32,11 +32,6 @@ public class BPMProfileService {
         vars.put("employee", emp);
         officeBPMService.startProcess("address_update_process", vars);
     }
-//TODO remove
-//    @PostConstruct
-//    public void registerProcesses() {
-//        OfficeBPMService.instance().registerProcess("address_update_process", "info/yalamanchili/office/address_update_process.bpmn20.xml");
-//    }
 
     public static BPMProfileService instance() {
         return (BPMProfileService) SpringContext.getBean("bpmProfileService");

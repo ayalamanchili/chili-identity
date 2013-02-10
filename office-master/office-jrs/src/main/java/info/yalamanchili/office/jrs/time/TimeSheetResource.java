@@ -4,12 +4,14 @@
  */
 package info.yalamanchili.office.jrs.time;
 
-import info.yalamanchili.office.Time.TimeService;
+import info.chili.service.jrs.types.Entries;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.TimeSheetDao;
 import info.yalamanchili.office.Time.TimeService;
+import info.yalamanchili.office.bpm.time.BPMTimeService;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
 import info.yalamanchili.office.dto.time.TimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -18,6 +20,7 @@ import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -60,6 +63,17 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
     public TimeSummary getCurrentEmployeeTimeSummary() {
         Employee emp = SecurityService.instance().getCurrentUser();
         return timeService.getTimeSummary(emp);
+    }
+
+    @PUT
+    @Path("/overtime_pay_request")
+    public void submitOvertimeHoursPayRequest(Entries vars) {
+        Entry currentUser = new Entry();
+        currentUser.setId("employee");
+        Employee emp = SecurityService.instance().getCurrentUser();
+        currentUser.setValue(emp.getFirstName() + " " + emp.getLastName());
+        vars.getEntries().add(currentUser);
+        BPMTimeService.instance().submitOverTimePayRequest(vars.getEntries());
     }
 
     @GET

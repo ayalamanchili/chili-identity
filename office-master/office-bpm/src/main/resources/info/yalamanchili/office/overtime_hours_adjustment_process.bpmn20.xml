@@ -6,23 +6,32 @@
  
     <process id="overtime_hours_adjustment_process">
  
-        <startEvent id="theStart">
+        <startEvent id="overTimeHoursAdjustmentHoursStart"/>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow1" sourceRef="overTimeHoursAdjustmentHoursStart" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
+        <!--TODO send email-->
+        <userTask id="overTimeHoursAdjustmentHoursApprovalTask" 
+                  name="Overtime Pay Rquest for ${employee}" 
+                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+            <documentation>
+                Overtime Hours Pay request by Employee
+            </documentation>
             <extensionElements>
-                <activiti:formProperty id="name" 
-                                       name="Name"
-                                       required="true"
-                                       type="string" />
-                <activiti:formProperty id="hours" 
-                                       name="Hours"
+                <activiti:formProperty id="status" 
+                                 name="Approved?"
+                                 required="true"
+                                 type="enum">
+                    <activiti:value id="true" name="Yes"/>
+                    <activiti:value id="false" name="No"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
                                        required="true" 
                                        type="string" />
-            </extensionElements>
-        </startEvent>
-        
-        <sequenceFlow id="flow2" sourceRef="theStart" targetRef="theEnd" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overTimeHoursAdjustmentHoursApprovalTask" targetRef="overTimeHoursAdjustmentHoursEnd" />
+        <endEvent id="overTimeHoursAdjustmentHoursEnd" />
 
-        <endEvent id="theEnd" />
- 
     </process>
  
 </definitions>

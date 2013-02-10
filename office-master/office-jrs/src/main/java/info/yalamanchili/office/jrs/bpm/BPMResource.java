@@ -5,6 +5,7 @@
 package info.yalamanchili.office.jrs.bpm;
 
 import info.yalamanchili.office.bpm.OfficeBPMFormService;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.Task;
@@ -89,8 +90,23 @@ public class BPMResource {
     }
 
     @GET
-    @Path("/task_properties/{taskId}")
+    @Path("/taskoform_properties/{taskId}")
     public List<FormProperty> getTaskFormProperties(@PathParam("taskId") String taskId) {
         return officeBPMFormService.getTaskFormProperties(taskId);
+    }
+    /*
+     * process management
+     */
+
+    @GET
+    @Path("/startprocess/{processId}")
+    public void startProcess(@PathParam("processId") String processId) {
+        OfficeBPMService.instance().startProcess(processId, null);
+    }
+
+    @GET
+    @Path("/deployprocess/{processId}")
+    public void deployProcess(@PathParam("processId") String processId) {
+        OfficeBPMService.instance().deployProcess(processId);
     }
 }
