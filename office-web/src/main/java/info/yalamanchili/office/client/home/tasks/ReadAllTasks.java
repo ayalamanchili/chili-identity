@@ -95,6 +95,26 @@ public class ReadAllTasks extends ReadAllTasksComposite {
 
     @Override
     public void completedClicked(String entityId) {
+        getFormProperties(entityId);
+
+    }
+
+    protected void getFormProperties(final String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getTaskFormPropertiesURL(entityId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info("ddd"+result);
+                        if (result != null && !result.isEmpty()) {
+                            //TODO render form
+                        } else {
+                            completeTask(entityId);
+                        }
+                    }
+                });
+    }
+
+    protected void completeTask(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getCompleteTaskURL(entityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -116,6 +136,10 @@ public class ReadAllTasks extends ReadAllTasksComposite {
 
     protected String getCompleteTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/completetask/" + taskId;
+    }
+
+    protected String getTaskFormPropertiesURL(String taskId) {
+        return OfficeWelcome.constants.root_url() + "bpm/task_form_properties/" + taskId;
     }
 
     public String getReadAllTasksUrl(Integer start, String limit) {

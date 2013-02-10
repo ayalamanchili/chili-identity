@@ -90,7 +90,7 @@ public class BPMResource {
     }
 
     @GET
-    @Path("/taskoform_properties/{taskId}")
+    @Path("/task_form_properties/{taskId}")
     public List<FormProperty> getTaskFormProperties(@PathParam("taskId") String taskId) {
         return officeBPMFormService.getTaskFormProperties(taskId);
     }
