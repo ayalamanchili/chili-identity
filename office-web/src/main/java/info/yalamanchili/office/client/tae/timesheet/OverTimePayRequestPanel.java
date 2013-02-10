@@ -11,7 +11,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -71,6 +73,9 @@ public class OverTimePayRequestPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Request Submited you will be notified via email");
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
     }
 
     @Override

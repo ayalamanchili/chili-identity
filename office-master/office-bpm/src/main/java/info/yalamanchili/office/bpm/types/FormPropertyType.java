@@ -1,0 +1,34 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.bpm.types;
+
+import info.chili.service.jrs.types.Entry;
+import java.util.List;
+
+/**
+ *
+ * @author ayalamanchili
+ */
+public class FormPropertyType {
+
+    protected String name;
+    protected List<Entry> values;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Entry> getValues() {
+        return values;
+    }
+
+    public void setValues(List<Entry> values) {
+        this.values = values;
+    }
+}

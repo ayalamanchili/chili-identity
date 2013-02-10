@@ -104,14 +104,18 @@ public class ReadAllTasks extends ReadAllTasksComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        logger.info("ddd"+result);
                         if (result != null && !result.isEmpty()) {
-                            //TODO render form
+                            renderForm(result);
                         } else {
                             completeTask(entityId);
                         }
                     }
                 });
+    }
+
+    protected void renderForm(String formProperties) {
+        TabPanel.instance().getHomePanel().entityPanel.clear();
+        TabPanel.instance().getHomePanel().entityPanel.add(new GenericTaskFormPanel(JSONUtils.convertFormProperties(formProperties)));
     }
 
     protected void completeTask(String entityId) {

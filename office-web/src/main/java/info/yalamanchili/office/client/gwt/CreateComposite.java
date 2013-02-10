@@ -90,12 +90,8 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
     }
 
     protected void setButtonText(String key) {
-        if (create.isAttached()) {
-            create.setText(Utils.getKeyValue(key, constants));
-        }
-        if (add.isAttached()) {
-            add.setText(Utils.getKeyValue(key, constants));
-        }
+        create.setText(Utils.getKeyValue(key, constants));
+        add.setText(Utils.getKeyValue(key, constants));
     }
 
     /**
