@@ -44,8 +44,10 @@ public class EmployeeTimeSummaryPanel extends ReadComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
+                        if (response != null && !response.isEmpty()) {
+                            entity = (JSONObject) JSONParser.parseLenient(response);
+                            populateFieldsFromEntity(entity);
+                        }
                     }
                 });
     }
