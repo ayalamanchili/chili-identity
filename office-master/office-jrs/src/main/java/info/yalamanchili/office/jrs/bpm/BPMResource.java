@@ -84,7 +84,7 @@ public class BPMResource {
     //Form Properties
 
     @GET
-    @Path("/startform_properties/{processId}")
+    @Path("/start_form_properties/{processId}")
     public List<FormProperty> getStartFormProperties(@PathParam("processId") String processId) {
         return officeBPMFormService.getStartFormProperties(processId);
     }
