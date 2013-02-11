@@ -2,6 +2,7 @@
 <definitions
     xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
     targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
  
     <process id="overtime_hours_adjustment_process">
@@ -17,11 +18,11 @@
             </documentation>
             <extensionElements>
                 <activiti:formProperty id="status" 
-                                 name="Approved?"
-                                 required="true"
-                                 type="enum">
-                    <activiti:value id="true" name="Yes"/>
-                    <activiti:value id="false" name="No"/>
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
                 <activiti:formProperty id="notes" 
                                        name="Notes"
@@ -29,9 +30,37 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overTimeHoursAdjustmentHoursApprovalTask" targetRef="overTimeHoursAdjustmentHoursEnd" />
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overTimeHoursAdjustmentHoursApprovalTask" targetRef="approvalGateway" />
+        <!--desision-->
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="BonusHoursCreateTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="requestDeniedTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="BonusHoursCreateTask" 
+                  name="Create Bonus Adjustment hours for ${employee}  hours= ${requestHours}" 
+                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+            <documentation>
+                Create Bonus Adjustment hours for
+            </documentation>
+        </userTask>
+        <userTask id="requestDeniedTask" 
+                  name="Overtime Pay request denied for ${employee} hours= ${requestHours}" 
+                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+            <documentation>
+                Overtime Pay request denied for
+            </documentation>
+        </userTask>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow3" sourceRef="approvalGateway" targetRef="overTimeHoursAdjustmentHoursEnd" />
         <endEvent id="overTimeHoursAdjustmentHoursEnd" />
 
     </process>
- 
 </definitions>

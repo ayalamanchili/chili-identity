@@ -35,9 +35,9 @@ public class OverTimePayRequestPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         JSONArray vars = new JSONArray();
-        FloatField hoursF = (FloatField) fields.get("hours");
+        FloatField hoursF = (FloatField) fields.get("requestHours");
         JSONObject hours = new JSONObject();
-        hours.put("id", new JSONString("hours"));
+        hours.put("id", new JSONString("requestHours"));
         hours.put("value", new JSONString(hoursF.getValue()));
         vars.set(0, hours);
 
@@ -87,7 +87,7 @@ public class OverTimePayRequestPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("hours", false, true, DataType.FLOAT_FIELD);
+        addField("requestHours", false, true, DataType.FLOAT_FIELD);
         addField("requestReason", false, true, DataType.STRING_FIELD);
     }
 

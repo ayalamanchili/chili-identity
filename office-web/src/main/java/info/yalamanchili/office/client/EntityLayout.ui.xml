@@ -46,11 +46,11 @@
         }
 		
         .sidePanelTop {
-        height: 40%;
+        height: 60%;
         }
 		
         .sidePanelBottom {
-        height: 60%;
+        height: 40%;
         }
     </ui:style>
 </ui:UiBinder> 

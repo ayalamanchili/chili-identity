@@ -57,11 +57,13 @@ public class BPMResource {
     @PUT
     @Path("/completetask/{taskId}")
     public void completeTask(@PathParam("taskId") String taskId, Entries vars) {
-        if (vars != null) {
-            officeBPMTaskService.completeTask(taskId, vars.getEntries());
-        } else {
-            officeBPMTaskService.completeTask(taskId, null);
-        }
+        officeBPMTaskService.completeTask(taskId, vars.getEntries());
+    }
+
+    @GET
+    @Path("/completetask/{taskId}")
+    public void completeTask(@PathParam("taskId") String taskId) {
+        officeBPMTaskService.completeTask(taskId, null);
     }
 
     @GET

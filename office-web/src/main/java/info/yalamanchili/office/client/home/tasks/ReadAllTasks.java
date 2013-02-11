@@ -104,7 +104,8 @@ public class ReadAllTasks extends ReadAllTasksComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        if (result != null && !result.isEmpty()) {
+                        //TODO weird return check
+                        if (result != null && !result.trim().toString().equals("null")) {
                             renderForm(entityId, result);
                         } else {
                             completeTask(entityId);

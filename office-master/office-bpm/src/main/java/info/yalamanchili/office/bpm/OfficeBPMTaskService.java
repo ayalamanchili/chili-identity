@@ -52,8 +52,10 @@ public class OfficeBPMTaskService {
 
     public void completeTask(String taskId, List<Entry> request) {
         Map<String, Object> vars = new HashMap<String, Object>();
-        for (Entry entry : request) {
-            vars.put(entry.getId(), entry.getValue());
+        if (request != null) {
+            for (Entry entry : request) {
+                vars.put(entry.getId(), entry.getValue());
+            }
         }
         bpmTaskService.complete(taskId, vars);
     }
