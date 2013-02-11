@@ -42,6 +42,8 @@ public class ReadAllAdjustmentHoursPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
+        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAdjustmentHoursPanel(entityId));
     }
 
     @Override
