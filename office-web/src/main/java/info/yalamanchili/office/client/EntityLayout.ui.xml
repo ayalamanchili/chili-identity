@@ -8,16 +8,14 @@
         </g:north>
         <g:west size='15'>
             <g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
-                <g:FlowPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
-                </g:FlowPanel>
-                <g:FlowPanel styleName="{style.sidePanelBottom}"
-                                             ui:field='sidePanelBottom'>
-                </g:FlowPanel>
+                <g:ScrollPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
+                </g:ScrollPanel>
+                <g:ScrollPanel styleName="{style.sidePanelBottom}" ui:field='sidePanelBottom'>
+                </g:ScrollPanel>
             </g:FlowPanel>
         </g:west>
         <g:center>
-            <g:ScrollPanel addStyleNames='entityPanelHolder'
-                                       ui:field='entityPanelHolder'>
+            <g:ScrollPanel addStyleNames='entityPanelHolder' ui:field='entityPanelHolder'>
                 <g:FlowPanel ui:field='entityPanel' styleName="{style.entityPanel}">
                 </g:FlowPanel>
             </g:ScrollPanel>

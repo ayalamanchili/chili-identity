@@ -5,6 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class EntityLayout extends Composite {
@@ -19,9 +20,9 @@ public class EntityLayout extends Composite {
     @UiField
     public FlowPanel sidePanel;
     @UiField
-    public FlowPanel sidePanelTop;
+    public ScrollPanel sidePanelTop;
     @UiField
-    public FlowPanel sidePanelBottom;
+    public ScrollPanel sidePanelBottom;
     @UiField
     public FlowPanel entityPanel;
     private static EntityLayoutUiBinder uiBinder = GWT
