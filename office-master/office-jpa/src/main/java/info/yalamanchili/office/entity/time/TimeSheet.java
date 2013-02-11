@@ -56,14 +56,14 @@ public class TimeSheet extends AbstractEntity {
      * start and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     /**
      * end date Only populated if the dates differ from time sheet period start
      * and end dates
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{endDate.not.empty.msg}")
     protected Date endDate;
     /**
      * notes
