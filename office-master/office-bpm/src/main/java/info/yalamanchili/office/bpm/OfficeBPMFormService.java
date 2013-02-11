@@ -32,9 +32,9 @@ public class OfficeBPMFormService {
         return res;
     }
 
-    public List<FormProperty> getTaskFormProperties(String processId) {
+    public List<FormProperty> getTaskFormProperties(String taskId) {
         List<FormProperty> res = new ArrayList<FormProperty>();
-        for (org.activiti.engine.form.FormProperty p : bpmFormService.getTaskFormData(processId).getFormProperties()) {
+        for (org.activiti.engine.form.FormProperty p : bpmFormService.getTaskFormData(taskId).getFormProperties()) {
             res.add(FormProperty.map(mapper, p));
         }
         return res;
