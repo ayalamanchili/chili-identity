@@ -52,7 +52,7 @@ public class ReadMessagePanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("tos", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("subject", entity, DataType.STRING_FIELD);
-        bodyTextArea.setHTML(JSONUtils.toString(entity, "message"));
+        assignFieldValueFromEntity("message", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ReadMessagePanel extends ReadComposite {
     protected void addWidgets() {
         addField("tos", true, false, DataType.STRING_FIELD);
         addField("subject", true, false, DataType.STRING_FIELD);
-        entityDisplayWidget.add(bodyTextArea);
+        addField("message", true, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
