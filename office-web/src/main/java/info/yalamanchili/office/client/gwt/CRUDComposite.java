@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
@@ -303,6 +302,10 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         }
         if (DataType.TEXT_AREA_FIELD.equals(type)) {
             TextAreaField field = (TextAreaField) fields.get(fieldKey);
+            field.setValue(JSONUtils.toString(entity, fieldKey));
+        }
+        if (DataType.RICH_TEXT_AREA.equals(type)) {
+            RichTextField field = (RichTextField) fields.get(fieldKey);
             field.setValue(JSONUtils.toString(entity, fieldKey));
         }
         if (DataType.DATE_FIELD.equals(type)) {
