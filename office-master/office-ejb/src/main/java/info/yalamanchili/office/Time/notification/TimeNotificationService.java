@@ -36,6 +36,16 @@ public class TimeNotificationService {
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public EntityManager em;
 
+    public void sendAdjustmenthoursNotification(Employee emp) {
+        Email email = new Email();
+        Map<String, String> tos = new HashMap<String, String>();
+//        tos.add(info.yalamanchili.office.config.OfficeServiceConfiguration.instance().getAdminEmail());
+//        email.setTos(tos);
+        email.setSubject("Employee adjustment hours from ");
+        email.setBody(emp.getUsername());
+        messagingService.sendEmail(email);
+    }
+
     public static TimeNotificationService instance() {
         return SpringContext.getBean(TimeNotificationService.class);
     }
