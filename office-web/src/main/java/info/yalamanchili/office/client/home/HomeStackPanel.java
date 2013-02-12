@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.StackPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.home.message.MessageStackPanelWidget;
 import info.yalamanchili.office.client.home.tasks.TasksStackPanelWidget;
 import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
@@ -37,7 +38,9 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        panel.add(taskStackPanel, "Tasks");
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER)) {
+            panel.add(taskStackPanel, "Tasks");
+        }
         panel.add(msgStackPanel, "Messages");
         panel.add(todoStackPanel, "TODO's");
     }
