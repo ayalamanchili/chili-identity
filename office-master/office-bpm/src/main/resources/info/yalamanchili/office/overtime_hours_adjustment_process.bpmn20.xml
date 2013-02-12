@@ -20,10 +20,18 @@
                                        type="string" />
             </extensionElements>
         </startEvent>
-        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow1" sourceRef="overTimeHoursAdjustmentHoursStart" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow1" sourceRef="overTimeHoursAdjustmentHoursStart" targetRef="overtimePayRequestEmailNotification" />
+        
         <!--TODO send email-->
+        <serviceTask
+            id="overtimePayRequestEmailNotification"
+            name="Overtime Pay request submited notification"
+            activiti:expression="${timeNotificationService.sendOvertimeRequestSubmitedNotification(currentEmployee)}">
+        </serviceTask>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overtimePayRequestEmailNotification" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
+        
         <userTask id="overTimeHoursAdjustmentHoursApprovalTask" 
-                  name="Overtime Pay Rquest by: ${employeeName} for: ${requestHours} hours" 
+                  name="Overtime Pay Rquest by: ${currentEmployee.firstName} ${currentEmployee.lastName} for: ${requestHours} hours" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
             <documentation>
                 Overtime Hours Pay request by Employee
@@ -36,42 +44,45 @@
                     <activiti:value id="approved" name="approved"/>
                     <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
+                <activiti:formProperty id="reason" 
+                                       name="Reason"
+                                       required="true" 
+                                       type="string" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="true" 
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overTimeHoursAdjustmentHoursApprovalTask" targetRef="approvalGateway" />
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow3" sourceRef="overTimeHoursAdjustmentHoursApprovalTask" targetRef="approvalGateway" />
         <!--desision-->
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="BonusHoursCreateTask">
+                      targetRef="overtimePayRequestApprovedNotification">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="requestDeniedTask">
+                      targetRef="overtimePayRequestDeniedNotification">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <userTask id="BonusHoursCreateTask" 
-                  name="Create Bonus Adjustment hours for ${employeeName}  hours= ${requestHours}" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
-            <documentation>
-                Create Bonus Adjustment hours Task
-            </documentation>
-        </userTask>
-        <userTask id="requestDeniedTask" 
-                  name="Overtime Pay request denied for ${employeeName} hours= ${requestHours}" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
-            <documentation>
-                Overtime Pay request denied Task
-            </documentation>
-        </userTask>
-        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow3" sourceRef="approvalGateway" targetRef="overTimeHoursAdjustmentHoursEnd" />
+        <!-- request approved email-->
+        <serviceTask
+            id="overtimePayRequestApprovedNotification"
+            name="Overtime Pay request Approved notification"
+            activiti:expression="${timeNotificationService.sendOvertimeRequestApprovedNotification(currentEmployee,reason)}">
+        </serviceTask>
+        <!-- request denied email-->
+        <serviceTask
+            id="overtimePayRequestDeniedNotification"
+            name="Overtime Pay request Denied notification"
+            activiti:expression="${timeNotificationService.sendOvertimeRequestDeniedNotification(currentEmployee,reason)}">
+        </serviceTask>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow4" sourceRef="approvalGateway" targetRef="overTimeHoursAdjustmentHoursEnd" />
+        <!-- end-->
         <endEvent id="overTimeHoursAdjustmentHoursEnd" />
 
     </process>

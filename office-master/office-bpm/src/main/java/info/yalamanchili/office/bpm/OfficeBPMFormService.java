@@ -6,11 +6,13 @@ package info.yalamanchili.office.bpm;
 
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.types.FormProperty;
+import info.yalamanchili.office.dao.security.SecurityService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.activiti.engine.FormService;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,18 +58,19 @@ public class OfficeBPMFormService {
         }
         bpmFormService.submitTaskFormData(taskId, vars);
     }
+//TODO do we really need this can we just use start process
 
     public void submitStartForm(String processId, List<Entry> request) {
-        Map<String, String> vars = new HashMap<String, String>();
+        Map<String, Object> vars = new HashMap<String, Object>();
         if (request != null) {
             for (Entry entry : request) {
                 vars.put(entry.getId(), entry.getValue());
             }
         }
-        processId = OfficeBPMService.instance().getProcessId(processId);
+        vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
         if (processId == null) {
             throw new RuntimeException("invalid process id");
         }
-        bpmFormService.submitStartFormData(processId, vars);
+        OfficeBPMService.instance().startProcess(processId, vars);
     }
 }

@@ -14,7 +14,7 @@
         <serviceTask
             id="addressUpdatedEmail"
             name="Employee Address Updated"
-            activiti:expression="${profileNotificationService.sendEmployeeAddressUpdatedNotification(employee)}">
+            activiti:expression="${profileNotificationService.sendEmployeeAddressUpdatedNotification(currentEmployee)}">
         </serviceTask>
         
         <sequenceFlow id="createHRTaskFlow" sourceRef="addressUpdatedEmail" targetRef="updateAddressHRTask" />

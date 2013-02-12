@@ -5,12 +5,9 @@
 package info.yalamanchili.office.Time.notification;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dto.profile.Employee;
-import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.HashMap;
-import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
