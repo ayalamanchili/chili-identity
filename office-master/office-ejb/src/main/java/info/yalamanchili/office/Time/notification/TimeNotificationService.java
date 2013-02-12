@@ -28,14 +28,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class TimeNotificationService {
-    
+
     @Autowired
     protected MailUtils mailUtils;
     @Autowired
     protected MessagingService messagingService;
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public EntityManager em;
-    
+
     public static TimeNotificationService instance() {
         return SpringContext.getBean(TimeNotificationService.class);
     }
