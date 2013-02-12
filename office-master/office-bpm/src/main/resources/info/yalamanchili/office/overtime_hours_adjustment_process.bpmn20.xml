@@ -7,7 +7,19 @@
  
     <process id="overtime_hours_adjustment_process">
  
-        <startEvent id="overTimeHoursAdjustmentHoursStart"/>
+        <startEvent id="overTimeHoursAdjustmentHoursStart">
+            <extensionElements>
+                <activiti:formProperty id="requestHours" 
+                                       name="Hours"
+                                       required="true"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="requestReason" 
+                                       name="Reason"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements>
+        </startEvent>
         <sequenceFlow id="overTimeHoursAdjustmentHoursFlow1" sourceRef="overTimeHoursAdjustmentHoursStart" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
         <!--TODO send email-->
         <userTask id="overTimeHoursAdjustmentHoursApprovalTask" 

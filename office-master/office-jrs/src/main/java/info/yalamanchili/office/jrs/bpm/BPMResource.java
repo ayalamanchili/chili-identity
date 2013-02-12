@@ -60,6 +60,12 @@ public class BPMResource {
         officeBPMTaskService.completeTask(taskId, vars.getEntries());
     }
 
+    @PUT
+    @Path("/submittask/{taskId}")
+    public void submitTask(@PathParam("taskId") String taskId, Entries vars) {
+        officeBPMFormService.submitTask(taskId, vars.getEntries());
+    }
+
     @GET
     @Path("/completetask/{taskId}")
     public void completeTask(@PathParam("taskId") String taskId) {
@@ -87,7 +93,7 @@ public class BPMResource {
     public void createTask(Task task) {
         officeBPMTaskService.createTask(task);
     }
-    //Form Properties
+    //Form management
 
     @GET
     @Path("/start_form_properties/{processId}")
@@ -99,6 +105,12 @@ public class BPMResource {
     @Path("/task_form_properties/{taskId}")
     public List<FormProperty> getTaskFormProperties(@PathParam("taskId") String taskId) {
         return officeBPMFormService.getTaskFormProperties(taskId);
+    }
+
+    @PUT
+    @Path("/submit_start_form/{processId}")
+    public void submitStartForm(@PathParam("processId") String processId, Entries vars) {
+        officeBPMFormService.submitStartForm(processId, vars.getEntries());
     }
     /*
      * process management

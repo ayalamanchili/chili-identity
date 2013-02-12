@@ -14,6 +14,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.DeploymentQuery;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,19 @@ public class OfficeBPMService {
             logger.log(Level.INFO, "deploying bpm process: withId{0} and Path:{1}", new Object[]{processId, processMap.get(processId)});
             bpmRepositoryService.createDeployment().addClasspathResource(processMap.get(processId)).deploy();
         }
+    }
+    /*
+     * this is reqired since the process ids are appended with some auto generated numbers.
+     * eg:overtime_hours_adjustment_process:1:6
+     */
+
+    public String getProcessId(String processId) {
+        for (ProcessDefinition process : bpmRepositoryService.createProcessDefinitionQuery().list()) {
+            if (process.getId().contains(processId)) {
+                return process.getId();
+            }
+        }
+        return null;
     }
 
     public void startProcess(String processId, Map<String, Object> variables) {
