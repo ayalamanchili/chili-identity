@@ -13,6 +13,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ReadComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import info.yalamanchili.office.client.tae.bonuspayment.ReadAdjustmentHoursPanel;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +23,7 @@ import info.yalamanchili.office.client.rpc.HttpService;
 public class ReadMessagePanel extends ReadComposite {
 
     private static ReadMessagePanel instance;
+    private static Logger logger = Logger.getLogger(ReadAdjustmentHoursPanel.class.getName());
     final RichTextArea bodyTextArea = new RichTextArea();
 
     public static ReadMessagePanel instance() {
@@ -43,6 +46,7 @@ public class ReadMessagePanel extends ReadComposite {
                     @Override
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
+                        logger.info("response from server" + response);
                         populateFieldsFromEntity(entity);
                     }
                 });
