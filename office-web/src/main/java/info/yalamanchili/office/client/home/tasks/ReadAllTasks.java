@@ -116,7 +116,7 @@ public class ReadAllTasks extends ReadAllTasksComposite {
 
     protected void renderForm(String taskId, String formProperties) {
         TabPanel.instance().getHomePanel().entityPanel.clear();
-        TabPanel.instance().getHomePanel().entityPanel.add(new GenericTaskFormPanel(taskId, JSONUtils.convertFormProperties(formProperties)));
+        TabPanel.instance().getHomePanel().entityPanel.add(new GenericBPMTaskFormPanel("Task", taskId, JSONUtils.convertFormProperties(formProperties)));
     }
 
     protected void completeTask(String entityId) {

@@ -8,10 +8,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -19,24 +17,19 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
-public class GenericTaskFormPanel extends CreateComposite {
+public abstract class GenericBPMFormPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(GenericTaskFormPanel.class.getName());
-    protected String taskId;
+    private static Logger logger = Logger.getLogger(GenericBPMTaskFormPanel.class.getName());
     protected JSONArray formProperties;
 
-    public GenericTaskFormPanel(String taskId,JSONArray array) {
+    public GenericBPMFormPanel() {
         super(CreateComposite.CreateCompositeType.CREATE);
-        this.taskId=taskId;
-        this.formProperties = array;
-        initCreateComposite("Task", OfficeWelcome.constants);
     }
 
     @Override
@@ -60,7 +53,6 @@ public class GenericTaskFormPanel extends CreateComposite {
             i++;
         }
         entity.put("entries", vars);
-        logger.info("ddddw" + entity);
         return entity;
     }
 
@@ -84,12 +76,7 @@ public class GenericTaskFormPanel extends CreateComposite {
     protected void addButtonClicked() {
     }
 
-    @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Task Completed");
-        TabPanel.instance().getHomePanel().entityPanel.clear();
-        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-    }
+    protected abstract void postCreateSuccess(String result);
 
     @Override
     protected void addListeners() {
@@ -97,12 +84,14 @@ public class GenericTaskFormPanel extends CreateComposite {
 
     @Override
     protected void configure() {
-        setButtonText("Complete Task");
+        setButtonText("Submit");
     }
 
     @Override
     protected void addWidgets() {
-        //TODO support more field types
+        if (formProperties == null) {
+            return;
+        }
         for (int i = 0; i < formProperties.size(); i++) {
             JSONObject formProperty = formProperties.get(i).isObject();
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("string")) {
@@ -126,8 +115,5 @@ public class GenericTaskFormPanel extends CreateComposite {
         //TODO add task name and description;
     }
 
-    @Override
-    protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "bpm/completetask/"+taskId;
-    }
+    protected abstract String getURI();
 }

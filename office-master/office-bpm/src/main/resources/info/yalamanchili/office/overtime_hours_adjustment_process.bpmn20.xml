@@ -23,7 +23,7 @@
         <sequenceFlow id="overTimeHoursAdjustmentHoursFlow1" sourceRef="overTimeHoursAdjustmentHoursStart" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
         <!--TODO send email-->
         <userTask id="overTimeHoursAdjustmentHoursApprovalTask" 
-                  name="Overtime Pay Rquest for ${employee}" 
+                  name="Overtime Pay Rquest by: ${employeeName} for: ${requestHours} hours" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
             <documentation>
                 Overtime Hours Pay request by Employee
@@ -58,17 +58,17 @@
             </conditionExpression>
         </sequenceFlow>
         <userTask id="BonusHoursCreateTask" 
-                  name="Create Bonus Adjustment hours for ${employee}  hours= ${requestHours}" 
+                  name="Create Bonus Adjustment hours for ${employeeName}  hours= ${requestHours}" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
             <documentation>
-                Create Bonus Adjustment hours for
+                Create Bonus Adjustment hours Task
             </documentation>
         </userTask>
         <userTask id="requestDeniedTask" 
-                  name="Overtime Pay request denied for ${employee} hours= ${requestHours}" 
+                  name="Overtime Pay request denied for ${employeeName} hours= ${requestHours}" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
             <documentation>
-                Overtime Pay request denied for
+                Overtime Pay request denied Task
             </documentation>
         </userTask>
         <sequenceFlow id="overTimeHoursAdjustmentHoursFlow3" sourceRef="approvalGateway" targetRef="overTimeHoursAdjustmentHoursEnd" />

@@ -5,6 +5,7 @@
 package info.yalamanchili.office.jrs.bpm;
 
 import info.chili.service.jrs.types.Entries;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.OfficeBPMFormService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -12,6 +13,7 @@ import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -57,12 +59,14 @@ public class BPMResource {
     @PUT
     @Path("/completetask/{taskId}")
     public void completeTask(@PathParam("taskId") String taskId, Entries vars) {
+        addCurrentUserInfo(vars);
         officeBPMTaskService.completeTask(taskId, vars.getEntries());
     }
 
     @PUT
     @Path("/submittask/{taskId}")
     public void submitTask(@PathParam("taskId") String taskId, Entries vars) {
+        addCurrentUserInfo(vars);
         officeBPMFormService.submitTask(taskId, vars.getEntries());
     }
 
@@ -110,6 +114,7 @@ public class BPMResource {
     @PUT
     @Path("/submit_start_form/{processId}")
     public void submitStartForm(@PathParam("processId") String processId, Entries vars) {
+        addCurrentUserInfo(vars);
         officeBPMFormService.submitStartForm(processId, vars.getEntries());
     }
     /*
@@ -126,5 +131,19 @@ public class BPMResource {
     @Path("/deployprocess/{processId}")
     public void deployProcess(@PathParam("processId") String processId) {
         OfficeBPMService.instance().deployProcess(processId);
+    }
+
+    protected void addCurrentUserInfo(Entries entries) {
+        Employee emp = SecurityService.instance().getCurrentUser();
+
+        Entry empId = new Entry();
+        empId.setId("employeeId");
+        empId.setValue(emp.getEmployeeId());
+        entries.getEntries().add(empId);
+
+        Entry employeeName = new Entry();
+        employeeName.setId("employeeName");
+        employeeName.setValue(emp.getFirstName() + " " + emp.getLastName());
+        entries.getEntries().add(employeeName);
     }
 }
