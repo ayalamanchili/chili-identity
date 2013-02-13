@@ -89,7 +89,7 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
 // (orginal table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
 //            table.setText(i, 8, JSONUtils.toString(entity, "startDate"));
             table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
-            table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "employeeType"));
+            table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "name"));
         }
     }
 
