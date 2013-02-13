@@ -62,13 +62,14 @@ public class ReadAllSOWPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Description"));
-        table.setText(0, 3, getKeyValue("SowUrl"));
-        table.setText(0, 4, getKeyValue("StartDate"));
-        table.setText(0, 5, getKeyValue("EndDate"));
-        table.setText(0, 6, getKeyValue("BillRate"));
-//        table.setText(0, 7, getKeyValue("Project"));
+        table.setText(0, 1, getKeyValue("Project"));
+        table.setText(0, 2, getKeyValue("Name"));
+        table.setText(0, 3, getKeyValue("Description"));
+        table.setText(0, 4, getKeyValue("SowUrl"));
+        table.setText(0, 5, getKeyValue("StartDate"));
+        table.setText(0, 6, getKeyValue("EndDate"));
+        table.setText(0, 7, getKeyValue("BillRate"));
+        table.setText(0, 8, getKeyValue("Project"));
     }
 
     @Override
@@ -76,12 +77,13 @@ public class ReadAllSOWPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, JSONUtils.toString(entity, "sowUrl"));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 6, JSONUtils.toString(entity, "billRate"));
+            table.setText(i, 1, JSONUtils.toString(entity.get("project"), "name"));
+            table.setText(i, 2, JSONUtils.toString(entity, "name"));
+            table.setText(i, 3, JSONUtils.toString(entity, "description"));
+            table.setText(i, 4, JSONUtils.toString(entity, "sowUrl"));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 7, JSONUtils.toString(entity, "billRate"));
         }
     }
 
