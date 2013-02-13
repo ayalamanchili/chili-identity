@@ -69,7 +69,6 @@ public class ReadAllSOWPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("StartDate"));
         table.setText(0, 6, getKeyValue("EndDate"));
         table.setText(0, 7, getKeyValue("BillRate"));
-        table.setText(0, 8, getKeyValue("Project"));
     }
 
     @Override
