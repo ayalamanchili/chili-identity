@@ -29,6 +29,7 @@ import info.yalamanchili.office.client.tae.TAEMenu;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
@@ -134,7 +135,13 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         homePanel.sidePanelTop.clear();
         homePanel.sidePanelBottom.clear();
         homePanel.sidePanelBottom.add(new HomeStackPanel());
+        if (Auth.hasOnlyUserRole()) {
         homePanel.entityPanel.add(new ReadAllMessagePanel());
+        }
+        else
+        {
+            homePanel.entityPanel.add(new ReadAllTasks());
+        }
     }
 
     public void selectSocialTab() {
