@@ -60,7 +60,7 @@ public class TimeNotificationService {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
         Set<String> tos = new HashSet<String>();
-        tos.add(info.yalamanchili.office.config.OfficeServiceConfiguration.instance().getAdminEmail());
+        tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
         email.setSubject("Overtime Pay request was approved " + emp.getFirstName() + "," + emp.getLastName());
         email.setBody("reason is:" + reason);
@@ -76,7 +76,7 @@ public class TimeNotificationService {
         //reason is: reason
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
-        tos.add(info.yalamanchili.office.config.OfficeServiceConfiguration.instance().getAdminEmail());
+        tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
         email.setSubject("Your Overtime Pay request was denied" + emp.getFirstName() + "," + emp.getLastName());
         email.setBody("overtime Pay request submited was denied:" + reason);
