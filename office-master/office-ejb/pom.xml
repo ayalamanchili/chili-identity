@@ -25,6 +25,12 @@
             <artifactId>office-bpm</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- apache POI-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
     </dependencies>
     <scm>
         <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-ejb</connection>
