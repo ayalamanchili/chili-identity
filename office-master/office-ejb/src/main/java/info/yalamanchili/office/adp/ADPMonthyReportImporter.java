@@ -9,7 +9,7 @@ package info.yalamanchili.office.adp;
  *
  * @author ayalamanchili
  */
-public class ADPMonthyReportExporter {
+public class ADPMonthyReportImporter {
 
     String path = "";
 
