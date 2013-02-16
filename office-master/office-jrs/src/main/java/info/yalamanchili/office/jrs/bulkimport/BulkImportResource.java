@@ -4,6 +4,8 @@
  */
 package info.yalamanchili.office.jrs.bulkimport;
 
+import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.bulkimport.BulkImportService;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
@@ -34,6 +36,8 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
 
     @Autowired
     protected BulkImportDao bulkImportDao;
+    @Autowired
+    protected BulkImportService bulkImportService;
 
     @Override
     public CRUDDao getDao() {
@@ -46,6 +50,12 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
     public String saveBulkUpload(BulkImport entity) {
         BulkImport bi = (BulkImport) getDao().save(entity);
         return bi.getId().toString();
+    }
+
+    @GET
+    @Path("/adapters")
+    public List<Entry> getBulkImportAdapters() {
+        return bulkImportService.getBulkImportAdapters();
     }
 
     @GET
