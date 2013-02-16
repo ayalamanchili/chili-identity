@@ -36,6 +36,9 @@
         <class>info.yalamanchili.office.entity.client.Project</class>
         <class>info.yalamanchili.office.entity.client.StatementOfWork</class>
         <class>info.chili.hibernate.envers.AuditRevisionEntity</class>
+        <!--BulkImport-->
+        <class>info.yalamanchili.office.entity.bulkimport.BulkImport</class>
+        <class>info.yalamanchili.office.entity.bulkimport.BulkUploadMessage</class>
         <!--Feedback-->
         <class>info.yalamanchili.office.entity.Feedback.Feedback</class>
         <!--Security-->

@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.bulkimport.BulkImportSidePanel;
+import info.yalamanchili.office.client.admin.bulkimport.ReadAllBulkImportsPanel;
 import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroupSidePanel;
 import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
@@ -42,7 +44,9 @@ public class AdminMenu extends Composite {
             adminMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
             adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
             adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
-
+            if (Auth.isAdmin() || Auth.isAccountant() || Auth.isPayroll()) {
+                adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
+            }
         }
         adminMenuBar.addStyleName("entityMenuBar");
     }
@@ -84,6 +88,14 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllVendorsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new VendorsSidePanel());
+        }
+    };
+    Command bulkImportMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllBulkImportsPanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new BulkImportSidePanel());
         }
     };
 }

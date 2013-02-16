@@ -42,7 +42,7 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("startDate", employee);
         assignEntityValueFromField("employeeType", employee);
         assignEntityValueFromField("jobTitle", employee);
-        employee.put("imageURL", empImageUploadPanel.getFileName());
+        employee.put("fileUrl", empImageUploadPanel.getFileName());
         return employee;
     }
 
