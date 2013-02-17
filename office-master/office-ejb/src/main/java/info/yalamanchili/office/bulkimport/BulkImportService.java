@@ -26,11 +26,13 @@ public class BulkImportService {
 
     public List<Entry> getBulkImportAdapters() {
         List<Entry> res = new ArrayList<Entry>();
+        Integer i = 0;
         for (String name : SpringContext.getApplicationContext().getBeanNamesForType(BulkImportAdapter.class)) {
             Entry e = new Entry();
-            e.setId(name);
+            e.setId(i.toString());
             e.setValue(name);
             res.add(e);
+            i++;
         }
         return res;
     }

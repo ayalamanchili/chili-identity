@@ -34,9 +34,9 @@ public class BulkImport extends AbstractEntity {
     protected String description;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date importTimeStamp;
-//    @NotEmpty
+    @NotEmpty
     protected String fileUrl;
-//    @NotEmpty
+    @NotEmpty
     protected String adapter;
     @Enumerated(EnumType.STRING)
     protected BulkImportStatus status;

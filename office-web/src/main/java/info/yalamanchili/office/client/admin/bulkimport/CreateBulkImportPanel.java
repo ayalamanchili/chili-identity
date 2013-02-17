@@ -5,13 +5,16 @@
 package info.yalamanchili.office.client.admin.bulkimport;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.FileuploadField;
+import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -39,8 +42,13 @@ public class CreateBulkImportPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
-        logger.info("dddd"+bulkImportUploadPanel.getFileName());
+        SelectComposite adapterSC = (SelectComposite) fields.get("adapter");
+        if (adapterSC.getSelectedObject() != null) {
+            JSONString adapter = adapterSC.getSelectedObject().get("value").isString();
+            entity.put("adapter", adapter);
+        }
         entity.put("fileUrl", bulkImportUploadPanel.getFileName());
+        logger.info("ddd" + entity);
         return entity;
     }
 
@@ -87,6 +95,7 @@ public class CreateBulkImportPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("adapter", new SelectImportAdapterComposite(false, true));
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         entityDisplayWidget.add(bulkImportUploadPanel);

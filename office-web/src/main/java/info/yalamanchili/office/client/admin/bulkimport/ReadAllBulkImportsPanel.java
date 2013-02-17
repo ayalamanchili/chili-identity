@@ -51,9 +51,10 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Description"));
-        table.setText(0, 3, getKeyValue("File"));
+        table.setText(0, 1, getKeyValue("Adapter"));
+        table.setText(0, 2, getKeyValue("Name"));
+        table.setText(0, 3, getKeyValue("Description"));
+        table.setText(0, 5, getKeyValue("File"));
     }
 
     @Override
@@ -61,9 +62,10 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, JSONUtils.toString(entity, "fileUrl"));
+            table.setText(i, 1, JSONUtils.toString(entity, "adapter"));
+            table.setText(i, 2, JSONUtils.toString(entity, "name"));
+            table.setText(i, 3, JSONUtils.toString(entity, "description"));
+            table.setText(i, 4, JSONUtils.toString(entity, "fileUrl"));
         }
     }
 
