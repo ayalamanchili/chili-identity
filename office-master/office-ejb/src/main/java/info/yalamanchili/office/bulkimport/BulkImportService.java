@@ -6,7 +6,9 @@ package info.yalamanchili.office.bulkimport;
 
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.time.BPMTimeService;
 import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
+import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,12 @@ public class BulkImportService {
 
     @Autowired
     protected BulkImportDao bulkImportDao;
+    
+    public String saveBulkUpload(BulkImport entity) {
+        BulkImport bi = (BulkImport) bulkImportDao.save(entity);
+        BPMTimeService.instance().startBulkImportProcess(bi);
+        return bi.getId().toString();
+    }
 
     public List<Entry> getBulkImportAdapters() {
         List<Entry> res = new ArrayList<Entry>();

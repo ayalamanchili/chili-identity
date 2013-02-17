@@ -48,8 +48,7 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
     @Path("/save")
     @Produces("application/text")
     public String saveBulkUpload(BulkImport entity) {
-        BulkImport bi = (BulkImport) getDao().save(entity);
-        return bi.getId().toString();
+        return bulkImportService.saveBulkUpload(entity);
     }
 
     @GET

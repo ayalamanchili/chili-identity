@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.qb;
+package info.yalamanchili.office.bulkimport;
 
-import info.yalamanchili.office.bulkimport.BulkImportAdapter;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import org.springframework.stereotype.Component;
 
@@ -13,29 +13,22 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
-public class QuickBooksBulkImportAdapter implements BulkImportAdapter {
+public class BulkImportProcessServcie {
 
-    @Override
     public BulkImport submit(BulkImport bulkImport) {
-        System.out.println("ddddddddddddddddd in submit");
-        return null;
+        BulkImportAdapter adapter = (BulkImportAdapter) SpringContext.getBean(bulkImport.getAdapter());
+        return adapter.submit(bulkImport);
     }
 
-    @Override
     public BulkImport resubmit(BulkImport bulkImport) {
-        System.out.println("dddddddddddddddd in resubmit");
         return null;
     }
 
-    @Override
     public BulkImport commit(BulkImport bulkImport) {
-        System.out.println("ddddddddddddddd in commit");
         return null;
     }
 
-    @Override
     public BulkImport revert(BulkImport bulkImport) {
-        System.out.println("ddddddddddd in revert");
         return null;
     }
 }

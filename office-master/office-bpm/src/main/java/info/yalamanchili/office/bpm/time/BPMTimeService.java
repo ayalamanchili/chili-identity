@@ -8,6 +8,7 @@ import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,13 @@ public class BPMTimeService {
         }
         vars.put("requestedDate", new Date());
         officeBPMService.startProcess("overtime_hours_adjustment_process", vars);
+    }
+
+    @Async
+    public void startBulkImportProcess(BulkImport bulkImport) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("bulkImport", bulkImport);
+        officeBPMService.startProcess("bulkimport_process", vars);
     }
 
     public static BPMTimeService instance() {

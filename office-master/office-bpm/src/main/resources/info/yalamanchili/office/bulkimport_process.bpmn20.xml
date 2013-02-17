@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="bulkimport_process">
+        <startEvent id="bulkImportStart"/>
+        <sequenceFlow id="bulkImport1" sourceRef="bulkImportStart" targetRef="bulkImportSubmitTask" />
+        <!--submit task-->
+        <userTask id="bulkImportSubmitTask" 
+                  name="Submit ${bulkImport.name} ${bulkImport.adapter}" 
+                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+            <documentation>
+                BulkImport Submit
+            </documentation>
+        </userTask>
+        <sequenceFlow id="bulkImport2" sourceRef="bulkImportSubmitTask" targetRef="bulkImportSubmit" />
+        <!--BulkImport Submit-->
+        <serviceTask
+            id="bulkImportSubmit"
+            name="BulkImport Process Submit"
+            activiti:expression="${bulkImportProcessServcie.submit(bulkImport)}"
+            activiti:resultVariableName="bulkImport">
+        </serviceTask>
+        
+        <sequenceFlow id="bulkImport3" sourceRef="bulkImportSubmit" targetRef="bulkImportEnd"/>
+        <!-- end-->
+        <endEvent id="bulkImportEnd" />
+
+    </process>
+</definitions>
