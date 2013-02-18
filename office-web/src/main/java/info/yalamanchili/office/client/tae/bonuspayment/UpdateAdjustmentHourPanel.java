@@ -82,9 +82,9 @@ public class UpdateAdjustmentHourPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", new SelectEmployeeWidget(false, true));
-        addField("paidRate", false, true, DataType.CURRENCY_FIELD);
+        addField("paidRate", false, false, DataType.CURRENCY_FIELD);
         addField("paidHours", false, true, DataType.FLOAT_FIELD);
-        addField("paidDate", false, true, DataType.DATE_FIELD);
+        addField("paidDate", false, false, DataType.DATE_FIELD);
         addField("paymentInfo", false, false, DataType.RICH_TEXT_AREA);
     }
 
