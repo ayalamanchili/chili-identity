@@ -29,14 +29,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class BulkImport extends AbstractEntity {
 
-    @NotEmpty
+    @NotEmpty(message = "{name.not.empty.msg}")
     protected String name;
     protected String description;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date importTimeStamp;
-    @NotEmpty
+    @NotEmpty(message = "{fileUrl.not.empty.msg}")
     protected String fileUrl;
-    @NotEmpty
+    @NotEmpty(message = "{adapter.not.empty.msg}")
     protected String adapter;
     @Enumerated(EnumType.STRING)
     protected BulkImportStatus status;
