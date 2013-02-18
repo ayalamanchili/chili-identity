@@ -99,10 +99,10 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("adpHours", false, true, DataType.FLOAT_FIELD);
-        addField("adpRate", false, true, DataType.CURRENCY_FIELD);
+        addField("adpRate", false, false, DataType.CURRENCY_FIELD);
         addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
-        addField("quickBooksRate", false, true, DataType.CURRENCY_FIELD);
-        addField("notes", false, true, DataType.TEXT_AREA_FIELD);
+        addField("quickBooksRate", false, false, DataType.CURRENCY_FIELD);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
