@@ -61,8 +61,8 @@ public class CreateMonthlyTimeSheetPanel extends CreateTimeSheetPanel {
         addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
         addField("adpRate", false, false, DataType.CURRENCY_FIELD);
         addField("quickBooksRate", false, false, DataType.CURRENCY_FIELD);
-        addField("startDate", false, false, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
         //prepopulate start and end dates
         HttpService.HttpServiceAsync.instance().doGet(getTimeSheetPeriodUrl(), OfficeWelcome.instance().getHeaders(), true,
