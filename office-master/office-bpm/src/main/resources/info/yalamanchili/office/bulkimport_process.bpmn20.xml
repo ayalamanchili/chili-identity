@@ -7,8 +7,8 @@
  
     <process id="bulkimport_process">
         <startEvent id="bulkImportStart"/>
-        <sequenceFlow id="bulkImport1" sourceRef="bulkImportStart" targetRef="bulkImportSubmitTask" />
-        <!--submit task-->
+        <sequenceFlow id="bulkImportStartToSubmit" sourceRef="bulkImportStart" targetRef="bulkImportSubmitTask" />
+        <!--submit User task-->
         <userTask id="bulkImportSubmitTask" 
                   name="Submit ${bulkImport.name} ${bulkImport.adapter}" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
@@ -16,18 +16,67 @@
                 BulkImport Submit
             </documentation>
         </userTask>
-        <sequenceFlow id="bulkImport2" sourceRef="bulkImportSubmitTask" targetRef="bulkImportSubmit" />
-        <!--BulkImport Submit-->
+        <sequenceFlow id="bulkImportSubmitUserTaskToSubmitServiceTask" sourceRef="bulkImportSubmitTask" targetRef="bulkImportSubmit" />
+        <!--BulkImport Submit Service Task-->
         <serviceTask
             id="bulkImportSubmit"
             name="BulkImport Process Submit"
-            activiti:expression="${bulkImportProcessServcie.submit(bulkImport)}"
-            activiti:resultVariableName="bulkImport">
+            activiti:class="info.yalamanchili.office.bulkimport.BulkImportSubmit">
         </serviceTask>
-        
-        <sequenceFlow id="bulkImport3" sourceRef="bulkImportSubmit" targetRef="bulkImportEnd"/>
+        <!-- TODO status updates-->
+        <sequenceFlow id="bulkImportSubmitServiceTaskToReviewUserTask" sourceRef="bulkImportSubmit" targetRef="bulkImportReviewTask" />
+        <userTask id="bulkImportReviewTask" 
+                  name="Review BulkImport ${bulkImport.name} for: ${bulkImport.adapter}" 
+                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+            <documentation>
+                Review Bulk Import 
+            </documentation>
+            <extensionElements>
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="reason" 
+                                       name="Reason"
+                                       required="true" 
+                                       type="string" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="bulkImportReviewToApprovalGateway" sourceRef="bulkImportReviewTask" targetRef="approvalGateway"/>
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="bulkImportCommit">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="bulkImportRevert">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow> 
+        <!--BulkImport Commit Service Task-->
+        <serviceTask
+            id="bulkImportCommit"
+            name="BulkImport Process Commit"
+            activiti:class="info.yalamanchili.office.bulkimport.BulkImportCommit">
+        </serviceTask>
+        <!--BulkImport Revert Service Task-->
+        <serviceTask
+            id="bulkImportRevert"
+            name="BulkImport Process Revert"
+            activiti:class="info.yalamanchili.office.bulkimport.BulkImportRevert">
+        </serviceTask>
+        <sequenceFlow id="bulkImportApprovalGatewayToEnd" sourceRef="approvalGateway" targetRef="bulkImportEnd"/> 
         <!-- end-->
         <endEvent id="bulkImportEnd" />
-
     </process>
 </definitions>

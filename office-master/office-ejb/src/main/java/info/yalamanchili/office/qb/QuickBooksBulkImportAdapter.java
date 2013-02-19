@@ -18,24 +18,24 @@ public class QuickBooksBulkImportAdapter implements BulkImportAdapter {
     @Override
     public BulkImport submit(BulkImport bulkImport) {
         System.out.println("ddddddddddddddddd in submit");
-        return null;
+        return bulkImport;
     }
 
     @Override
     public BulkImport resubmit(BulkImport bulkImport) {
         System.out.println("dddddddddddddddd in resubmit");
-        return null;
+        return bulkImport;
     }
 
     @Override
     public BulkImport commit(BulkImport bulkImport) {
         System.out.println("ddddddddddddddd in commit");
-        return null;
+        return bulkImport;
     }
 
     @Override
     public BulkImport revert(BulkImport bulkImport) {
         System.out.println("ddddddddddd in revert");
-        return null;
+        return bulkImport;
     }
 }

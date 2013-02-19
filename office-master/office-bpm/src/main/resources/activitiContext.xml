@@ -16,18 +16,12 @@
         <property name="username" value="${db.username}" />
         <property name="password" value="${db.password}" />
     </bean>
-  
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="bpmDataSource" />
-    </bean>
- 
 
     <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
         <property name="dataSource" ref="bpmDataSource" />
-        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionManager" ref="txManager" />
         <property name="databaseSchemaUpdate" value="true" />
         <property name="jobExecutorActivate" value="false" />
-        <!--  TODO does not seem to be working-->
         <property name="deploymentResources" value="classpath*:/info/yalamanchili/office/**/*.bpmn20.xml" />
     </bean>
   
