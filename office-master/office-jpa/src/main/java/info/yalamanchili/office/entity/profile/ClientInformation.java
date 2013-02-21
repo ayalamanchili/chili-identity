@@ -62,7 +62,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Client_ClientInformations")
-    @NotNull
+    @NotNull(message = "{client.not.empty.msg}")
     protected Client client;
     /**
      * Client Contact
