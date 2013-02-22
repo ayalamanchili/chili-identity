@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.qb;
 
-import info.yalamanchili.office.bulkimport.BulkImportAdapter;
+import info.yalamanchili.office.bulkimport.BulkImportProcess;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
-public class QuickBooksBulkImportAdapter implements BulkImportAdapter {
+public class QuickBooksBulkImportProcessBean implements BulkImportProcess {
 
     @Override
     public BulkImport submit(BulkImport bulkImport) {

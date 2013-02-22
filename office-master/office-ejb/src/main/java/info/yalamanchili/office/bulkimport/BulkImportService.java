@@ -35,7 +35,7 @@ public class BulkImportService {
     public List<Entry> getBulkImportAdapters() {
         List<Entry> res = new ArrayList<Entry>();
         Integer i = 0;
-        for (String name : SpringContext.getApplicationContext().getBeanNamesForType(BulkImportAdapter.class)) {
+        for (String name : SpringContext.getApplicationContext().getBeanNamesForType(BulkImportProcess.class)) {
             Entry e = new Entry();
             e.setId(i.toString());
             e.setValue(name);

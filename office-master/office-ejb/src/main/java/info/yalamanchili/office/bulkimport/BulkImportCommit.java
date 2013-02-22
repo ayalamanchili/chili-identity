@@ -19,7 +19,7 @@ public class BulkImportCommit implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         BulkImport bulkImport = (BulkImport) execution.getVariable("bulkImport");
-        BulkImportAdapter adapter = (BulkImportAdapter) SpringContext.getBean(bulkImport.getAdapter());
+        BulkImportProcess adapter = (BulkImportProcess) SpringContext.getBean(bulkImport.getAdapter());
         bulkImport.setStatus(BulkImportStatus.APPROVED);
         adapter.commit(bulkImport);
     }

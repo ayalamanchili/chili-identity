@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  *
  * @author Prashanthi
  */
-public class AdpHoursRecords {
+public class AdpHoursRecord {
 
     protected String employeeId;
     protected BigDecimal hours;

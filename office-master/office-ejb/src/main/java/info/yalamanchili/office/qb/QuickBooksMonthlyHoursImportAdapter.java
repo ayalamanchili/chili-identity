@@ -18,7 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
  *
  * @author ayalamanchili
  */
-public class QuickBooksMonthlyReportImporter {
+public class QuickBooksMonthlyHoursImportAdapter {
 //sample http://viralpatel.net/blogs/java-read-write-excel-file-apache-poi/
 
     public static void main(String... str) throws Exception {

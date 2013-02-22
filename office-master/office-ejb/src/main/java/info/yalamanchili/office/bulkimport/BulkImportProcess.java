@@ -10,7 +10,7 @@ import info.yalamanchili.office.entity.bulkimport.BulkImport;
  *
  * @author ayalamanchili
  */
-public interface BulkImportAdapter {
+public interface BulkImportProcess {
 
     public BulkImport submit(BulkImport bulkImport);
 

@@ -54,6 +54,16 @@ public class SecurityService {
         }
     }
 
+    public boolean isValidEmployeeId(String employeeId) {
+        TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
+        getUserQuery.setParameter("employeeIdParam", employeeId);
+        if (getUserQuery.getResultList().size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String getCurrentUserId() {
         if (getCurrentUser() != null) {
             return getCurrentUser().getEmployeeId();
