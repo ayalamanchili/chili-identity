@@ -22,12 +22,12 @@ import org.hibernate.envers.Audited;
 @Entity
 @XmlRootElement
 @Audited
-public class BulkUploadMessage extends AbstractEntity {
+public class BulkImportMessage extends AbstractEntity {
 
     protected String code;
     protected String description;
     @Enumerated(EnumType.STRING)
-    protected BulkUploadMessageType messageType;
+    protected BulkImportMessageType messageType;
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_BulkImport_Messages")
     protected BulkImport bulkImport;
@@ -48,11 +48,11 @@ public class BulkUploadMessage extends AbstractEntity {
         this.description = description;
     }
 
-    public BulkUploadMessageType getMessageType() {
+    public BulkImportMessageType getMessageType() {
         return messageType;
     }
 
-    public void setMessageType(BulkUploadMessageType messageType) {
+    public void setMessageType(BulkImportMessageType messageType) {
         this.messageType = messageType;
     }
 

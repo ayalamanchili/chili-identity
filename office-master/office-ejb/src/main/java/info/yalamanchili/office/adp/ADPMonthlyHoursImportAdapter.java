@@ -4,76 +4,88 @@
  */
 package info.yalamanchili.office.adp;
 
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
+import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
+import info.yalamanchili.office.profile.EmployeeFinder;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author ayalamanchili
  */
+@Component("adpMonthlyHoursImportAdapter")
 public class ADPMonthlyHoursImportAdapter {
 
-    public static void main(String... str) throws Exception {
-        ADPMonthlyHoursImportAdapter adapter = new ADPMonthlyHoursImportAdapter();
-        System.out.println(adapter.mapADPHoursRecords());
-    }
+    private final static Logger logger = Logger.getLogger(ADPMonthlyHoursImportAdapter.class.getName());
 
-    public List<AdpHoursRecord> mapADPHoursRecords() throws Exception {
-        List<AdpHoursRecord> records = new ArrayList<AdpHoursRecord>();
-        InputStream inp = new FileInputStream(getFilePath());
-        HSSFWorkbook workbook = new HSSFWorkbook(inp);
+    public List<AdpRecord> mapADPHoursRecords(BulkImport bulkImport) {
+        List<AdpRecord> records = new ArrayList<AdpRecord>();
+        InputStream inp;
+        HSSFWorkbook workbook;
+        try {
+            inp = new FileInputStream(getFilePath(bulkImport));
+            workbook = new HSSFWorkbook(inp);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
         HSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
             Row record = rowIterator.next();
             if (record.getCell(0) != null && !record.getCell(0).toString().trim().isEmpty()) {
-                AdpHoursRecord adpRecord = new AdpHoursRecord();
+                AdpRecord adpRecord = new AdpRecord();
                 String lastName = record.getCell(0).toString();
                 String firstName = record.getCell(1).toString();
-                Double hoursValue = null;
-                Cell hoursCell = record.getCell(2);
-                if (hoursCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                    hoursValue = record.getCell(2).getNumericCellValue();
-                    if (hoursValue != null) {
-                        adpRecord.setHours(new BigDecimal(hoursValue));
+                if (EmployeeFinder.instance().find(firstName, lastName) != null) {
+                    adpRecord.setEmployee(EmployeeFinder.instance().find(firstName, lastName));
+                    Double hoursValue = null;
+                    Cell hoursCell = record.getCell(2);
+                    if (hoursCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                        hoursValue = record.getCell(2).getNumericCellValue();
+                        if (hoursValue != null) {
+                            adpRecord.setHours(new BigDecimal(hoursValue));
+                        }
+                    }
+                    records.add(adpRecord);
+                } else {
+                    if (!firstName.isEmpty() && !lastName.isEmpty()) {
+                        BulkImportMessage msg = new BulkImportMessage();
+                        msg.setCode("emp.not.found");
+                        msg.setDescription("Employee not found for " + firstName + ":lastname:" + lastName);
+                        msg.setMessageType(BulkImportMessageType.WARN);
+                        bulkImport.addMessage(msg);
+                        logger.log(Level.INFO, "adp--- employee not found last:{0} first:{1}", new Object[]{lastName, firstName});
                     }
                 }
-                adpRecord.setEmployeeId(findEmployeeId(firstName, lastName));
-
-                records.add(adpRecord);
             }
         }
         return records;
     }
-//TODO  implement this method to validate if the empid from the import exists and matches else return null
 
-    protected String findEmployeeId(String firstName, String lastName) {
-        String empId = null;
-        if (firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
-            return empId;
-        }
-        StringBuilder empIdBuilder = new StringBuilder();
-        empIdBuilder.append(firstName.substring(0, 1));
-        empIdBuilder.append(lastName);
-        if (SecurityService.instance().isValidEmployeeId(empIdBuilder.toString())) {
-            empId = empIdBuilder.toString();
-        } else {
-            //TODO do some advanced look up to find the employee
-        }
-        return empId;
+    protected Date getImportMonth() {
+        //TODO get the date from the file name (eg: ADP_01_2013.xls) implies jan 2013
+        return null;
     }
 
-    protected String getFilePath() {
-        return "c://ADP_01_2013.xls";
+    protected String getFilePath(BulkImport bulkImport) {
+        String fileUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + bulkImport.getFileUrl();
+        return fileUrl.replace("entityId", bulkImport.getId().toString());
+//        return "c://ADP_01_2013.xls";
     }
 }

@@ -8,7 +8,7 @@ package info.yalamanchili.office.entity.bulkimport;
  *
  * @author ayalamanchili
  */
-public enum BulkUploadMessageType {
+public enum BulkImportMessageType {
 
     INFO, WARN, ERROR
 }

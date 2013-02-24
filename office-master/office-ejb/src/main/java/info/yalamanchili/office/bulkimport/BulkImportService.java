@@ -11,6 +11,8 @@ import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -25,7 +27,9 @@ public class BulkImportService {
 
     @Autowired
     protected BulkImportDao bulkImportDao;
-    
+    @PersistenceContext
+    protected EntityManager em;
+
     public String saveBulkUpload(BulkImport entity) {
         BulkImport bi = (BulkImport) bulkImportDao.save(entity);
         BPMTimeService.instance().startBulkImportProcess(bi);

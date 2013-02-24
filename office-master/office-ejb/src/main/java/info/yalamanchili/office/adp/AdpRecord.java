@@ -4,23 +4,24 @@
  */
 package info.yalamanchili.office.adp;
 
+import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 
 /**
  *
  * @author Prashanthi
  */
-public class AdpHoursRecord {
+public class AdpRecord {
 
-    protected String employeeId;
+    protected Employee employee;
     protected BigDecimal hours;
 
-    public String getEmployeeId() {
-        return employeeId;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public BigDecimal getHours() {
@@ -33,6 +34,6 @@ public class AdpHoursRecord {
 
     @Override
     public String toString() {
-        return "AdpHoursRecords{" + "employeeId=" + employeeId + ", hours=" + hours + '}';
+        return "AdpHoursRecords{" + "employee=" + employee + ", hours=" + hours + '}';
     }
 }

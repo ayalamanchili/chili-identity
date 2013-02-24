@@ -5,6 +5,7 @@
 package info.yalamanchili.office.entity.bulkimport;
 
 import info.chili.jpa.AbstractEntity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -41,7 +42,7 @@ public class BulkImport extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected BulkImportStatus status;
     @OneToMany(mappedBy = "bulkImport", cascade = CascadeType.ALL)
-    protected List<BulkUploadMessage> messages;
+    protected List<BulkImportMessage> messages;
 
     public String getName() {
         return name;
@@ -92,12 +93,19 @@ public class BulkImport extends AbstractEntity {
     }
 
     @XmlElement
-    public List<BulkUploadMessage> getMessages() {
+    public List<BulkImportMessage> getMessages() {
+        if (this.messages == null) {
+            this.messages = new ArrayList<BulkImportMessage>();
+        }
         return messages;
     }
 
-    public void setMessages(List<BulkUploadMessage> messages) {
+    public void setMessages(List<BulkImportMessage> messages) {
         this.messages = messages;
+    }
+
+    public void addMessage(BulkImportMessage message) {
+        getMessages().add(message);
     }
 
     @PrePersist

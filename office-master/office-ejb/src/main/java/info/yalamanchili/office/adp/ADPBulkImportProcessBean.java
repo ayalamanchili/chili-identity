@@ -5,7 +5,14 @@
 package info.yalamanchili.office.adp;
 
 import info.yalamanchili.office.bulkimport.BulkImportProcess;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.TimeSheet;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,24 +22,39 @@ import org.springframework.stereotype.Component;
 @Component
 public class ADPBulkImportProcessBean implements BulkImportProcess {
 
+    private final static Logger logger = Logger.getLogger(ADPBulkImportProcessBean.class.getName());
+    @PersistenceContext
+    protected EntityManager em;
+    @Autowired
+    ADPMonthlyHoursImportAdapter adpMonthlyHoursImportAdapter;
+
     @Override
     public BulkImport submit(BulkImport bulkImport) {
-       return null;
+        for (AdpRecord record : adpMonthlyHoursImportAdapter.mapADPHoursRecords(bulkImport)) {
+            if (record.getEmployee() != null) {
+                TimeSheet timesheet = new TimeSheet();
+                timesheet.setAdpHours(record.getHours());
+                timesheet.setEmployee(record.getEmployee());
+                //TODO create timesheetperiod and populate startdate and end date from get month of the file
+                em.merge(timesheet);
+            }
+
+        }
+        return em.merge(bulkImport);
     }
 
     @Override
     public BulkImport resubmit(BulkImport bulkImport) {
-        return null;
+        return bulkImport;
     }
 
     @Override
     public BulkImport commit(BulkImport bulkImport) {
-        return null;
+        return bulkImport;
     }
 
     @Override
     public BulkImport revert(BulkImport bulkImport) {
-        return null;
+        return bulkImport;
     }
-    
 }
