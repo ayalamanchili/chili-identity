@@ -64,6 +64,16 @@ public class SecurityService {
         }
     }
 
+    public Employee findEmployee(String employeeId) {
+        TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
+        getUserQuery.setParameter("employeeIdParam", employeeId);
+        if (getUserQuery.getResultList().size() > 0) {
+            return getUserQuery.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
     public String getCurrentUserId() {
         if (getCurrentUser() != null) {
             return getCurrentUser().getEmployeeId();
