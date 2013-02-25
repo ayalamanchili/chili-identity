@@ -78,7 +78,7 @@ public class CreateBulkImportPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Client Created");
+        new ResponseStatusWidget().show("Successfully BilkImports Created");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new BulkImportSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
