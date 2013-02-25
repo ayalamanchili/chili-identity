@@ -10,8 +10,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.client.ClientSidePanel;
-import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 
@@ -58,9 +56,9 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated BulkImport");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
+        TabPanel.instance().adminPanel.sidePanelTop.add(new BulkImportSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel());
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportsPanel());
     }
 
     @Override
