@@ -20,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -35,6 +37,8 @@ import org.springframework.stereotype.Component;
 public class ADPMonthlyHoursImportAdapter {
 
     private final static Logger logger = Logger.getLogger(ADPMonthlyHoursImportAdapter.class.getName());
+    @PersistenceContext
+    protected EntityManager em;
 
     public List<AdpRecord> mapADPHoursRecords(BulkImport bulkImport) {
         List<AdpRecord> records = new ArrayList<AdpRecord>();
@@ -86,13 +90,12 @@ public class ADPMonthlyHoursImportAdapter {
         String[] result = url.split("-");
         int Month = 0;
         int Year = 0;
-        if (result.length == 3)
-        {
+        if (result.length == 3) {
             Month = Integer.parseInt(result[1]);
             Month = Month - 1; // for java api
             Year = Integer.parseInt(result[2]);
         }
-        return TimeJobService.instance().getTimePeriod(Month , Year);
+        return TimeJobService.instance().getTimePeriod(Month, Year);
     }
 
     protected String getFilePath(BulkImport bulkImport) {

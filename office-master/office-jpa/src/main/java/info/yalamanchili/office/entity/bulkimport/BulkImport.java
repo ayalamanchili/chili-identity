@@ -108,6 +108,7 @@ public class BulkImport extends AbstractEntity {
     }
 
     public void addMessage(BulkImportMessage message) {
+        message.setBulkImport(this);
         getMessages().add(message);
     }
 
@@ -124,6 +125,7 @@ public class BulkImport extends AbstractEntity {
     }
 
     public void addEntity(BulkImportEntity entity) {
+        entity.setBulkImport(this);
         getEntities().add(entity);
     }
 

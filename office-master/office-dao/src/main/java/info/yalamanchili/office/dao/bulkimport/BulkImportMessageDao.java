@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +30,17 @@ public class BulkImportMessageDao extends CRUDDao<BulkImportMessage> {
     }
 
     public List<BulkImportMessage> getMessages(Long bulkImportId, int start, int limit) {
-        Query query = em.createQuery("from" + BulkImportMessage.class.getCanonicalName() + " bim where bim.bulkImport.id=:bulkImportIdParam");
+        Query query = em.createQuery("from " + BulkImportMessage.class.getCanonicalName() + " bim where bim.bulkImport.id=:bulkImportIdParam");
         query.setParameter("bulkImportIdParam", bulkImportId);
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
+    }
+
+    public Long getMessagesSize(Long bulkImportId) {
+        TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + BulkImportMessage.class.getCanonicalName() + " bim where bim.bulkImport.id=:bulkImportIdParam", Long.class);
+        sizeQuery.setParameter("bulkImportIdParam", bulkImportId);
+        return sizeQuery.getSingleResult();
     }
 
     @Override

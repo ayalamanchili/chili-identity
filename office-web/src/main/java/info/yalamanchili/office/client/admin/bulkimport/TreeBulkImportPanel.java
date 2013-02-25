@@ -6,13 +6,6 @@ package info.yalamanchili.office.client.admin.bulkimport;
 
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.client.TreeClientPanel;
-import info.yalamanchili.office.client.admin.clientcontact.ClientContactOptionsPanel;
-import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientContactPanel;
-import info.yalamanchili.office.client.admin.clientlocation.ClientLocationOptionsPanel;
-import info.yalamanchili.office.client.admin.clientlocation.ReadAllClientLocationsPanel;
-import info.yalamanchili.office.client.admin.project.ProjectOptionsPanel;
-import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import java.util.logging.Logger;
 
@@ -58,9 +51,7 @@ public class TreeBulkImportPanel extends TreePanelComposite {
     public void treeNodeSelected(String entityNodeKey) {
         if (MESSAGES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
-            //TODO readall bulkimport messages
-//            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(entityId));
-//            TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportMessagesPanel(entityId));
         }
     }
 

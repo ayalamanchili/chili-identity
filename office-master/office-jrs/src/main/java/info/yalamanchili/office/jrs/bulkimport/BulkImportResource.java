@@ -35,32 +35,32 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 @Transactional
 public class BulkImportResource extends CRUDResource<BulkImport> {
-    
+
     @Autowired
     protected BulkImportDao bulkImportDao;
     @Autowired
     protected BulkImportService bulkImportService;
     @Autowired
     BulkImportMessageDao bulkImportMessageDao;
-    
+
     @Override
     public CRUDDao getDao() {
         return bulkImportDao;
     }
-    
+
     @PUT
     @Path("/save")
     @Produces("application/text")
     public String saveBulkUpload(BulkImport entity) {
         return bulkImportService.saveBulkUpload(entity);
     }
-    
+
     @GET
     @Path("/adapters")
     public List<Entry> getBulkImportAdapters() {
         return bulkImportService.getBulkImportAdapters();
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     public BulkImportTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -69,58 +69,61 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
+
     @GET
     @Path("/messages/{bulkImportId}/{start}/{limit}")
     public BulkImportMessageTable getMessages(@PathParam("bulkImportId") Long bulkImportId, @PathParam("start") int start, @PathParam("limit") int limit) {
-        return (BulkImportMessageTable) bulkImportMessageDao.getMessages(bulkImportId, start, limit);
+        BulkImportMessageTable tableObj = new BulkImportMessageTable();
+        tableObj.setEntities(bulkImportMessageDao.getMessages(bulkImportId, start, limit));
+        tableObj.setSize(bulkImportMessageDao.getMessagesSize(bulkImportId));
+        return tableObj;
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class BulkImportTable {
-        
+
         protected Long size;
         protected List<BulkImport> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<BulkImport> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<BulkImport> entities) {
             this.entities = entities;
         }
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class BulkImportMessageTable {
-        
+
         protected Long size;
         protected List<BulkImportMessage> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<BulkImportMessage> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<BulkImportMessage> entities) {
             this.entities = entities;
         }
