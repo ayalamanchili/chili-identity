@@ -45,7 +45,7 @@ public class TimeJobService {
             startDate.set(year, month, 1);
 
             Calendar endDate = Calendar.getInstance();
-            endDate.set(year, month, getLastDayOfMonth(month));
+            endDate.set(year, month, getLastDayOfMonth(month, year));
 
             tp.setStartDate(startDate.getTime());
             tp.setEndDate(endDate.getTime());
@@ -61,7 +61,7 @@ public class TimeJobService {
         startDate.set(year, month, 1);
 
         Calendar endDate = Calendar.getInstance();
-        endDate.set(year, month, getLastDayOfMonth(month));
+        endDate.set(year, month, getLastDayOfMonth(month, year));
 
         TypedQuery<TimeSheetPeriod> qry = em.createQuery("from " + TimeSheetPeriod.class.getCanonicalName() + " where startDate=:startDateParam and endDate=:endDateParam", TimeSheetPeriod.class);
         qry.setParameter("startDateParam", startDate.getTime(), TemporalType.DATE);
@@ -73,9 +73,10 @@ public class TimeJobService {
         }
     }
 
-    protected int getLastDayOfMonth(int month) {
+    protected int getLastDayOfMonth(int month, int year) {
         Calendar date = Calendar.getInstance();
         date.set(Calendar.MONTH, month);
+        date.set(Calendar.YEAR, year);
         return date.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
