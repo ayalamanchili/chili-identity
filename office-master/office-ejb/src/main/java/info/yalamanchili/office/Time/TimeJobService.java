@@ -56,7 +56,7 @@ public class TimeJobService {
         }
     }
 
-    protected TimeSheetPeriod getTimePeriod(int year, int month) {
+    public TimeSheetPeriod getTimePeriod(int year, int month) {
         Calendar startDate = Calendar.getInstance();
         startDate.set(year, month, 1);
 
