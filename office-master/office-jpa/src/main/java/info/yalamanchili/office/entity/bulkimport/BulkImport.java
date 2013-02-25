@@ -18,6 +18,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -43,6 +44,8 @@ public class BulkImport extends AbstractEntity {
     protected BulkImportStatus status;
     @OneToMany(mappedBy = "bulkImport", cascade = CascadeType.ALL)
     protected List<BulkImportMessage> messages;
+    @OneToMany(mappedBy = "bulkImport", cascade = CascadeType.ALL)
+    protected List<BulkImportEntity> entities;
 
     public String getName() {
         return name;
@@ -92,7 +95,7 @@ public class BulkImport extends AbstractEntity {
         this.status = status;
     }
 
-    @XmlElement
+    @XmlTransient
     public List<BulkImportMessage> getMessages() {
         if (this.messages == null) {
             this.messages = new ArrayList<BulkImportMessage>();
@@ -106,6 +109,22 @@ public class BulkImport extends AbstractEntity {
 
     public void addMessage(BulkImportMessage message) {
         getMessages().add(message);
+    }
+
+    @XmlTransient
+    public List<BulkImportEntity> getEntities() {
+        if (this.entities == null) {
+            this.entities = new ArrayList<BulkImportEntity>();
+        }
+        return entities;
+    }
+
+    public void setEntities(List<BulkImportEntity> entities) {
+        this.entities = entities;
+    }
+
+    public void addEntity(BulkImportEntity entity) {
+        getEntities().add(entity);
     }
 
     @PrePersist
