@@ -4,10 +4,12 @@
  */
 package info.yalamanchili.office.adp;
 
+import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
+import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import info.yalamanchili.office.profile.EmployeeFinder;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -78,9 +80,19 @@ public class ADPMonthlyHoursImportAdapter {
         return records;
     }
 
-    protected Date getImportMonth() {
+    protected TimeSheetPeriod getImportMonth(BulkImport bulkImport) {
         //TODO get the date from the file name (eg: ADP_01_2013.xls) implies jan 2013
-        return null;
+        String url = bulkImport.getFileUrl();
+        String[] result = url.split("-");
+        int Month = 0;
+        int Year = 0;
+        if (result.length == 3)
+        {
+            Month = Integer.parseInt(result[1]);
+            Month = Month - 1; // for java api
+            Year = Integer.parseInt(result[2]);
+        }
+        return TimeJobService.instance().getTimePeriod(Month , Year);
     }
 
     protected String getFilePath(BulkImport bulkImport) {
