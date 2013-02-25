@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class TimeJobService {
             startDate.set(year, month, 1);
 
             Calendar endDate = Calendar.getInstance();
-            endDate.set(year, month, getLastDayOfMonth(month, year));
+            endDate.set(year, month, DateUtils.getLastDayOfMonth(month, year));
 
             tp.setStartDate(startDate.getTime());
             tp.setEndDate(endDate.getTime());
@@ -61,7 +62,7 @@ public class TimeJobService {
         startDate.set(year, month, 1);
 
         Calendar endDate = Calendar.getInstance();
-        endDate.set(year, month, getLastDayOfMonth(month, year));
+        endDate.set(year, month, DateUtils.getLastDayOfMonth(month, year));
 
         TypedQuery<TimeSheetPeriod> qry = em.createQuery("from " + TimeSheetPeriod.class.getCanonicalName() + " where startDate=:startDateParam and endDate=:endDateParam", TimeSheetPeriod.class);
         qry.setParameter("startDateParam", startDate.getTime(), TemporalType.DATE);
@@ -71,13 +72,6 @@ public class TimeJobService {
         } else {
             return null;
         }
-    }
-
-    protected int getLastDayOfMonth(int month, int year) {
-        Calendar date = Calendar.getInstance();
-        date.set(Calendar.MONTH, month);
-        date.set(Calendar.YEAR, year);
-        return date.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
     public static TimeJobService instance() {
