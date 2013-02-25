@@ -23,6 +23,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -79,22 +80,22 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
     @GET
     @Path("/payperiod/{payperiodid}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME')")
-    public TimeSheetResource.TimeSheetTable getTimeSheetsForPayPeriod(@PathParam("payperiodid") Long payperiodid, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public TimeSheetResource.TimeSheetTable getTimeSheetsForPayPeriod(@PathParam("payperiodid") Long payperiodid, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         TimeSheetPeriod period = TimeSheetPeriodDao.instance().findById(payperiodid);
-        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsForPeriod(period, start, limit));
+        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsForPeriod(period, start, limit, includeInactive));
         //TODO fix size
-        tableObj.setSize(TimeSheetDao.instance().getTimeSheetsSizeForPeriod(period));
+        tableObj.setSize(TimeSheetDao.instance().getTimeSheetsSizeForPeriod(period, includeInactive));
         return tableObj;
     }
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME')")
-    public TimeSheetResource.TimeSheetTable getTimeSheetsForEmployee(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public TimeSheetResource.TimeSheetTable getTimeSheetsForEmployee(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         Employee emp = EmployeeDao.instance().findById(empId);
-        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit));
+        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit, includeInactive));
         //TODO fix size
         tableObj.setSize(getDao().size());
         return tableObj;
@@ -102,10 +103,10 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/currentuser/{start}/{limit}")
-    public TimeSheetResource.TimeSheetTable getTimeSheetsForCurrentEmployee(@PathParam("payperiodid") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public TimeSheetResource.TimeSheetTable getTimeSheetsForCurrentEmployee(@PathParam("payperiodid") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         Employee emp = SecurityService.instance().getCurrentUser();
-        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit));
+        tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit, includeInactive));
         //TODO fix size
         tableObj.setSize(getDao().size());
         return tableObj;

@@ -31,22 +31,38 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
     @PersistenceContext
     protected EntityManager em;
 
-    public List<TimeSheet> getTimeSheetsForPeriod(TimeSheetPeriod period, int start, int limit) {
-        Query query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam");
+    public List<TimeSheet> getTimeSheetsForPeriod(TimeSheetPeriod period, int start, int limit, boolean includeInactive) {
+        Query query;
+        if (includeInactive) {
+            query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam");
+        } else {
+            query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam and versionStatus='ACTIVE'");
+        }
         query.setParameter("timePeriodParam", period);
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
+
     }
 
-    public Long getTimeSheetsSizeForPeriod(TimeSheetPeriod period) {
-        Query query = getEntityManager().createQuery("select count(*) from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam");
+    public Long getTimeSheetsSizeForPeriod(TimeSheetPeriod period, boolean includeInactive) {
+        Query query;
+        if (includeInactive) {
+            query = getEntityManager().createQuery("select count(*) from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam");
+        } else {
+            query = getEntityManager().createQuery("select count(*) from " + TimeSheet.class.getCanonicalName() + " where timeSheetPeriod=:timePeriodParam and versionStatus='ACTIVE'");
+        }
         query.setParameter("timePeriodParam", period);
         return (Long) query.getSingleResult();
     }
 
-    public List<TimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit) {
-        Query query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+    public List<TimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit, boolean includeInactive) {
+        Query query;
+        if (includeInactive) {
+            query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+        } else {
+            query = getEntityManager().createQuery("from " + TimeSheet.class.getCanonicalName() + " where employee=:employeeParam and versionStatus='ACTIVE'");
+        }
         query.setParameter("employeeParam", employee);
         query.setFirstResult(start);
         query.setMaxResults(limit);
@@ -75,6 +91,7 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
         return getEntityManager().merge(entity);
     }
 
+    //TODO move this to a validator (spring or hibernate based
     protected void validatetimesheet(TimeSheet newTS) {
         //validate new timesheet start date less than end date
         if (!newTS.getStartDate().before(newTS.getEndDate())) {

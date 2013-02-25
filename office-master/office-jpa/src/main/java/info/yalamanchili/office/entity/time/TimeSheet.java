@@ -5,14 +5,19 @@
 package info.yalamanchili.office.entity.time;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -20,6 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -90,6 +98,12 @@ public class TimeSheet extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_StatementOfWork_TimeSheets")
     protected StatementOfWork statementOfWork;
+    /**
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    protected VersionStatus versionStatus;
 
     public BigDecimal getQuickBooksRate() {
         return quickBooksRate;
@@ -169,6 +183,23 @@ public class TimeSheet extends AbstractEntity {
 
     public void setStatementOfWork(StatementOfWork statementOfWork) {
         this.statementOfWork = statementOfWork;
+    }
+
+    public VersionStatus getVersionStatus() {
+        return versionStatus;
+    }
+
+    public void setVersionStatus(VersionStatus versionStatus) {
+        this.versionStatus = versionStatus;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void preSave() {
+        //TODO invoke validator also
+        if (this.versionStatus == null) {
+            this.versionStatus = VersionStatus.ACTIVE;
+        }
     }
 
     @Override
