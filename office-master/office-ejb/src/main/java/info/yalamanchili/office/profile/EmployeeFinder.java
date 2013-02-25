@@ -37,7 +37,7 @@ public class EmployeeFinder {
         empIdBuilder.append(lastName.trim().replace(" ", "_"));
         //TODO handle space in last name
         if (SecurityService.instance().findEmployee(empIdBuilder.toString()) != null) {
-            return SecurityService.instance().findEmployee(empIdBuilder.toString());
+            return SecurityService.instance().findEmployee(empIdBuilder.toString().toLowerCase());
         } else {
             //TODO do advanced queries and search to find perfect employee match
         }

@@ -6,6 +6,8 @@ package info.yalamanchili.office.entity.bulkimport;
 
 import info.chili.jpa.AbstractEntity;
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.envers.Audited;
 
 /**
@@ -15,6 +17,7 @@ import org.hibernate.envers.Audited;
  */
 @Entity
 @Audited
+@XmlRootElement
 public class BulkImportEntity extends AbstractEntity {
 
     protected String entityType;
@@ -40,6 +43,7 @@ public class BulkImportEntity extends AbstractEntity {
         this.entityId = entityId;
     }
 
+    @XmlTransient
     public BulkImport getBulkImport() {
         return bulkImport;
     }

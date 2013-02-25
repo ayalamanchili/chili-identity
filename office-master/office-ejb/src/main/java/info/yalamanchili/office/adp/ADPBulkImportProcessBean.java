@@ -51,11 +51,13 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
 
     @Override
     public BulkImport commit(BulkImport bulkImport) {
+        
         return bulkImport;
     }
 
     @Override
     public BulkImport revert(BulkImport bulkImport) {
+        
         return bulkImport;
     }
 
