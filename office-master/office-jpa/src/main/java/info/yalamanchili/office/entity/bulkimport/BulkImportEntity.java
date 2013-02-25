@@ -5,9 +5,12 @@
 package info.yalamanchili.office.entity.bulkimport;
 
 import info.chili.jpa.AbstractEntity;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 
 /**
@@ -22,6 +25,8 @@ public class BulkImportEntity extends AbstractEntity {
 
     protected String entityType;
     protected Long entityId;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_BulkImport_Entities")
     protected BulkImport bulkImport;
 
     public BulkImportEntity() {
