@@ -9,6 +9,7 @@ import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
 import info.yalamanchili.office.entity.time.TimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,6 +38,8 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
                 timesheet.setEmployee(record.getEmployee());
 //                timesheet.setVersionStatus(VersionStatus.INACTIVE);
                 //TODO create timesheetperiod and populate startdate and end date from get month of the file
+                 TimeSheetPeriod tsp = adpMonthlyHoursImportAdapter.getImportMonth(bulkImport);
+                timesheet.setTimeSheetPeriod(tsp);
                 timesheet = em.merge(timesheet);
                 addBulkImportEntity(bulkImport, timesheet);
             }
