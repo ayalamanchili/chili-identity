@@ -11,8 +11,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.client.TreeClientPanel;
-import info.yalamanchili.office.client.admin.client.UpdateClientPanel;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -100,8 +98,8 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeClientPanel(entityId));
+        TabPanel.instance().adminPanel.sidePanelTop.add(new BulkImportSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new UpdateClientPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateBulkImportPanel(getEntity(entityId)));
     }
 }
