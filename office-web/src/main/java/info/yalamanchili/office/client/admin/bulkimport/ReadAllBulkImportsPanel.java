@@ -52,7 +52,7 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Adapter"));
         table.setText(0, 2, getKeyValue("Name"));
         table.setText(0, 3, getKeyValue("Description"));
-        table.setText(0, 5, getKeyValue("File"));
+        table.setText(0, 4, getKeyValue("File"));
     }
 
     @Override
