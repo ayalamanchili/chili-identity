@@ -87,15 +87,11 @@ public class ADPMonthlyHoursImportAdapter {
     protected TimeSheetPeriod getImportMonth(BulkImport bulkImport) {
         //TODO get the date from the file name (eg: ADP_01_2013.xls) implies jan 2013
         String url = bulkImport.getFileUrl();
-        String[] result = url.split("-");
-        int Month = 0;
-        int Year = 0;
-        if (result.length == 3) {
-            Month = Integer.parseInt(result[1]);
-            Month = Month - 1; // for java api
-            Year = Integer.parseInt(result[2]);
-        }
-        return TimeJobService.instance().getTimePeriod(Month, Year);
+        int monthStart = url.indexOf("ADP_") + 4;
+        int yearStart = monthStart + 3;
+        Integer month = new Integer(url.substring(monthStart, monthStart + 2));
+        Integer year = new Integer(url.substring(yearStart, yearStart + 4));
+        return TimeJobService.instance().getTimePeriod(year, month - 1);
     }
 
     protected String getFilePath(BulkImport bulkImport) {

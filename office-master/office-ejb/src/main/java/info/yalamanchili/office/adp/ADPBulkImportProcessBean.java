@@ -31,14 +31,13 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
 
     @Override
     public BulkImport submit(BulkImport bulkImport) {
+        TimeSheetPeriod tsp = adpMonthlyHoursImportAdapter.getImportMonth(bulkImport);
         for (AdpRecord record : adpMonthlyHoursImportAdapter.mapADPHoursRecords(bulkImport)) {
             if (record.getEmployee() != null) {
                 TimeSheet timesheet = new TimeSheet();
                 timesheet.setAdpHours(record.getHours());
                 timesheet.setEmployee(record.getEmployee());
 //                timesheet.setVersionStatus(VersionStatus.INACTIVE);
-                //TODO create timesheetperiod and populate startdate and end date from get month of the file
-                 TimeSheetPeriod tsp = adpMonthlyHoursImportAdapter.getImportMonth(bulkImport);
                 timesheet.setTimeSheetPeriod(tsp);
                 timesheet = em.merge(timesheet);
                 addBulkImportEntity(bulkImport, timesheet);
@@ -54,13 +53,13 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
 
     @Override
     public BulkImport commit(BulkImport bulkImport) {
-        
+
         return bulkImport;
     }
 
     @Override
     public BulkImport revert(BulkImport bulkImport) {
-        
+
         return bulkImport;
     }
 
