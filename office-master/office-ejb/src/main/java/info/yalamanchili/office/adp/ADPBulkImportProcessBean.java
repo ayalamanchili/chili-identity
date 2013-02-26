@@ -10,6 +10,7 @@ import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
+import java.math.BigDecimal;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,47 +23,52 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ADPBulkImportProcessBean implements BulkImportProcess {
-
+    
     private final static Logger logger = Logger.getLogger(ADPBulkImportProcessBean.class.getName());
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     ADPMonthlyHoursImportAdapter adpMonthlyHoursImportAdapter;
-
+    
     @Override
     public BulkImport submit(BulkImport bulkImport) {
         TimeSheetPeriod tsp = adpMonthlyHoursImportAdapter.getImportMonth(bulkImport);
-        for (AdpRecord record : adpMonthlyHoursImportAdapter.mapADPHoursRecords(bulkImport)) {
-            if (record.getEmployee() != null) {
-                TimeSheet timesheet = new TimeSheet();
-                timesheet.setAdpHours(record.getHours());
-                timesheet.setEmployee(record.getEmployee());
+        if (tsp != null) {
+            for (AdpRecord record : adpMonthlyHoursImportAdapter.mapADPHoursRecords(bulkImport)) {
+                if (record.getEmployee() != null) {
+                    TimeSheet timesheet = new TimeSheet();
+                    timesheet.setAdpHours(record.getHours());
+                    timesheet.setQuickBooksHours(BigDecimal.ZERO);
+                    timesheet.setEmployee(record.getEmployee());
 //                timesheet.setVersionStatus(VersionStatus.INACTIVE);
-                timesheet.setTimeSheetPeriod(tsp);
-                timesheet = em.merge(timesheet);
-                addBulkImportEntity(bulkImport, timesheet);
+                    timesheet.setTimeSheetPeriod(tsp);
+                    timesheet.setStartDate(tsp.getStartDate());
+                    timesheet.setEndDate(tsp.getEndDate());
+                    timesheet = em.merge(timesheet);
+                    addBulkImportEntity(bulkImport, timesheet);
+                }
             }
         }
         return em.merge(bulkImport);
     }
-
+    
     @Override
     public BulkImport resubmit(BulkImport bulkImport) {
         return bulkImport;
     }
-
+    
     @Override
     public BulkImport commit(BulkImport bulkImport) {
-
+        
         return bulkImport;
     }
-
+    
     @Override
     public BulkImport revert(BulkImport bulkImport) {
-
+        
         return bulkImport;
     }
-
+    
     protected void addBulkImportEntity(BulkImport bulkImport, TimeSheet timesheet) {
         BulkImportEntity biEntity = new BulkImportEntity();
         biEntity.setEntityType(TimeSheet.class.getCanonicalName());

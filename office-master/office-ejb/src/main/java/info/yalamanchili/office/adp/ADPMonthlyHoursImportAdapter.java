@@ -85,13 +85,20 @@ public class ADPMonthlyHoursImportAdapter {
     }
 
     protected TimeSheetPeriod getImportMonth(BulkImport bulkImport) {
-        //TODO get the date from the file name (eg: ADP_01_2013.xls) implies jan 2013
-        String url = bulkImport.getFileUrl();
-        int monthStart = url.indexOf("ADP_") + 4;
-        int yearStart = monthStart + 3;
-        Integer month = new Integer(url.substring(monthStart, monthStart + 2));
-        Integer year = new Integer(url.substring(yearStart, yearStart + 4));
-        return TimeJobService.instance().getTimePeriod(year, month - 1);
+        try {
+            String url = bulkImport.getFileUrl();
+            int monthStart = url.indexOf("ADP_") + 4;
+            int yearStart = monthStart + 3;
+            Integer month = new Integer(url.substring(monthStart, monthStart + 2));
+            Integer year = new Integer(url.substring(yearStart, yearStart + 4));
+            return TimeJobService.instance().getTimePeriod(year, month - 1);
+        } catch (Exception e) {
+            BulkImportMessage msg = new BulkImportMessage();
+            msg.setCode("invalid.timeperiod");
+            msg.setDescription("Invalid Date format for the uploaded file eg:ADP_01_2013.xls for jan 2013");
+            bulkImport.addMessage(msg);
+            return null;
+        }
     }
 
     protected String getFilePath(BulkImport bulkImport) {
