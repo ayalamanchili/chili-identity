@@ -48,6 +48,9 @@ public class OfficeStartup {
     @PersistenceContext
     protected EntityManager em;
     protected CUser userUser;
+    protected CUser rohanUser;
+    protected CUser pavanUser;
+    protected CUser shristiUser;
     protected CUser adminUser;
     protected CRole userRole;
     protected CRole hrRole;
@@ -59,6 +62,9 @@ public class OfficeStartup {
     protected CRole timeRole;
     protected Employee userEmp;
     protected Employee adminEmp;
+    protected Employee rohanEmp;
+    protected Employee pavanEmp;
+    protected Employee shristiEmp;
     protected Company sstechCmp;
     protected Folder driveFolder;
 
@@ -220,18 +226,18 @@ public class OfficeStartup {
         userPost2.setCompany(sstechCmp);
         userPost2 = em.merge(userPost2);
 
-        userEmp = new Employee();
-        userEmp.setEmployeeId("racharya");
-        userEmp.setFirstName("Rohan");
-        userEmp.setLastName("Acharya");
-        userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
-        userEmp.setSex(Sex.MALE);
-        userEmp.setStartDate(new Date());
-        userEmp.setEmployeeType(getConsultantEmployeeType());
+        rohanEmp = new Employee();
+        rohanEmp.setEmployeeId("racharya");
+        rohanEmp.setFirstName("Rohan");
+        rohanEmp.setLastName("Acharya");
+        rohanEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
+        rohanEmp.setSex(Sex.MALE);
+        rohanEmp.setStartDate(new Date());
+        rohanEmp.setEmployeeType(getConsultantEmployeeType());
 
         Preferences userPref = new Preferences();
         userPref.setEnableEmailNotifications(Boolean.TRUE);
-        userEmp.setPreferences(userPref);
+        rohanEmp.setPreferences(userPref);
 
         Address userAddres = new Address();
         userAddres.setAddressType(getHomeAddressType());
@@ -255,26 +261,26 @@ public class OfficeStartup {
         userCellPhones.setPhoneNumber("4564564562");
         userCellPhones.setPhoneType(getCellPhoneType());
 
-        userEmp.addPhone(userCellPhones);
-        userEmp.addAddress(userAddress);
-        userEmp.addEmail(userPrimaryEmail);
-        userEmp.addEmail(userSecondaryEmail);
-        userEmp.addEmergencyContact(userEmergencyContact());
-        userEmp.setUser(userUser);
-        userEmp = em.merge(userEmp);
+        rohanEmp.addPhone(userCellPhones);
+        rohanEmp.addAddress(userAddress);
+        rohanEmp.addEmail(userPrimaryEmail);
+        rohanEmp.addEmail(userSecondaryEmail);
+        rohanEmp.addEmergencyContact(userEmergencyContact());
+        rohanEmp.setUser(rohanUser);
+        rohanEmp = em.merge(rohanEmp);
 
-        userEmp = new Employee();
-        userEmp.setEmployeeId("padapala");
-        userEmp.setFirstName("Pavan Kumar");
-        userEmp.setLastName("Adapala");
-        userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
-        userEmp.setSex(Sex.MALE);
-        userEmp.setStartDate(new Date());
-        userEmp.setEmployeeType(getConsultantEmployeeType());
+        pavanEmp = new Employee();
+        pavanEmp.setEmployeeId("padapala");
+        pavanEmp.setFirstName("Pavan Kumar");
+        pavanEmp.setLastName("Adapala");
+        pavanEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
+        pavanEmp.setSex(Sex.MALE);
+        pavanEmp.setStartDate(new Date());
+        pavanEmp.setEmployeeType(getConsultantEmployeeType());
 
         Preferences userPrefes = new Preferences();
         userPrefes.setEnableEmailNotifications(Boolean.TRUE);
-        userEmp.setPreferences(userPrefes);
+        pavanEmp.setPreferences(userPrefes);
 
         Address userAddreess = new Address();
         userAddreess.setAddressType(getHomeAddressType());
@@ -298,26 +304,26 @@ public class OfficeStartup {
         userCellPhoness.setPhoneNumber("8122290672");
         userCellPhoness.setPhoneType(getCellPhoneType());
 
-        userEmp.addPhone(userCellPhones);
-        userEmp.addAddress(userAddress);
-        userEmp.addEmail(userPrimaryEmail);
-        userEmp.addEmail(userSecondaryEmail);
-        userEmp.addEmergencyContact(userEmergencyContact());
-        userEmp.setUser(userUser);
-        userEmp = em.merge(userEmp);
+        pavanEmp.addPhone(userCellPhones);
+        pavanEmp.addAddress(userAddress);
+        pavanEmp.addEmail(userPrimaryEmail);
+        pavanEmp.addEmail(userSecondaryEmail);
+        pavanEmp.addEmergencyContact(userEmergencyContact());
+        pavanEmp.setUser(pavanUser);
+        pavanEmp = em.merge(pavanEmp);
 
-        userEmp = new Employee();
-        userEmp.setEmployeeId("sadhikari");
-        userEmp.setFirstName("Shristi");
-        userEmp.setLastName("Adhikari");
-        userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
-        userEmp.setSex(Sex.MALE);
-        userEmp.setStartDate(new Date());
-        userEmp.setEmployeeType(getConsultantEmployeeType());
+        shristiEmp = new Employee();
+        shristiEmp.setEmployeeId("sadhikari");
+        shristiEmp.setFirstName("Shristi");
+        shristiEmp.setLastName("Adhikari");
+        shristiEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
+        shristiEmp.setSex(Sex.MALE);
+        shristiEmp.setStartDate(new Date());
+        shristiEmp.setEmployeeType(getConsultantEmployeeType());
 
         Preferences userPre = new Preferences();
         userPre.setEnableEmailNotifications(Boolean.TRUE);
-        userEmp.setPreferences(userPre);
+        shristiEmp.setPreferences(userPre);
 
         Address useraddress = new Address();
         useraddress.setAddressType(getHomeAddressType());
@@ -341,13 +347,13 @@ public class OfficeStartup {
         userCellphones.setPhoneNumber("4195811199");
         userCellphones.setPhoneType(getCellPhoneType());
 
-        userEmp.addPhone(userCellPhones);
-        userEmp.addAddress(userAddress);
-        userEmp.addEmail(userPrimaryEmail);
-        userEmp.addEmail(userSecondaryEmail);
-        userEmp.addEmergencyContact(userEmergencyContact());
-        userEmp.setUser(userUser);
-        userEmp = em.merge(userEmp);
+        shristiEmp.addPhone(userCellPhones);
+        shristiEmp.addAddress(userAddress);
+        shristiEmp.addEmail(userPrimaryEmail);
+        shristiEmp.addEmail(userSecondaryEmail);
+        shristiEmp.addEmergencyContact(userEmergencyContact());
+        shristiEmp.setUser(shristiUser);
+        shristiEmp = em.merge(shristiEmp);
     }
 
     /**
