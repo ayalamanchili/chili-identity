@@ -220,6 +220,134 @@ public class OfficeStartup {
         userPost2.setCompany(sstechCmp);
         userPost2 = em.merge(userPost2);
 
+        userEmp = new Employee();
+        userEmp.setEmployeeId("racharya");
+        userEmp.setFirstName("Rohan");
+        userEmp.setLastName("Acharya");
+        userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
+        userEmp.setSex(Sex.MALE);
+        userEmp.setStartDate(new Date());
+        userEmp.setEmployeeType(getConsultantEmployeeType());
+
+        Preferences userPref = new Preferences();
+        userPref.setEnableEmailNotifications(Boolean.TRUE);
+        userEmp.setPreferences(userPref);
+
+        Address userAddres = new Address();
+        userAddres.setAddressType(getHomeAddressType());
+        userAddres.setStreet1("2110 wilkes ct");
+        userAddres.setStreet2("apt 123");
+        userAddres.setCity("Herndon");
+        userAddres.setState("VA");
+        userAddres.setCountry("USA");
+
+        Email userPrimaryEmails = new Email();
+        userPrimaryEmails.setEmailType(getWorkEmailType());
+        userPrimaryEmails.setPrimaryEmail(true);
+        userPrimaryEmails.setEmail("rohanacharya01@gmail.com");
+
+        Email userSecondaryEmails = new Email();
+        userSecondaryEmails.setPrimaryEmail(false);
+        userSecondaryEmails.setEmailType(getPersonalEmailType());
+        userSecondaryEmails.setEmail("user_secondary@gmail.com");
+
+        Phone userCellPhones = new Phone();
+        userCellPhones.setPhoneNumber("4564564562");
+        userCellPhones.setPhoneType(getCellPhoneType());
+
+        userEmp.addPhone(userCellPhones);
+        userEmp.addAddress(userAddress);
+        userEmp.addEmail(userPrimaryEmail);
+        userEmp.addEmail(userSecondaryEmail);
+        userEmp.addEmergencyContact(userEmergencyContact());
+        userEmp.setUser(userUser);
+        userEmp = em.merge(userEmp);
+
+        userEmp = new Employee();
+        userEmp.setEmployeeId("padapala");
+        userEmp.setFirstName("Pavan Kumar");
+        userEmp.setLastName("Adapala");
+        userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
+        userEmp.setSex(Sex.MALE);
+        userEmp.setStartDate(new Date());
+        userEmp.setEmployeeType(getConsultantEmployeeType());
+
+        Preferences userPrefes = new Preferences();
+        userPrefes.setEnableEmailNotifications(Boolean.TRUE);
+        userEmp.setPreferences(userPrefes);
+
+        Address userAddreess = new Address();
+        userAddreess.setAddressType(getHomeAddressType());
+        userAddreess.setStreet1("2110 wilkes ct");
+        userAddreess.setStreet2("apt 123");
+        userAddreess.setCity("Herndon");
+        userAddreess.setState("VA");
+        userAddreess.setCountry("USA");
+
+        Email userPraimaryEmails = new Email();
+        userPraimaryEmails.setEmailType(getWorkEmailType());
+        userPraimaryEmails.setPrimaryEmail(true);
+        userPraimaryEmails.setEmail("adapalapavank@gmail.com");
+
+        Email userSecondaryEmailes = new Email();
+        userSecondaryEmailes.setPrimaryEmail(false);
+        userSecondaryEmailes.setEmailType(getPersonalEmailType());
+        userSecondaryEmailes.setEmail("user_secondary@gmail.com");
+
+        Phone userCellPhoness = new Phone();
+        userCellPhoness.setPhoneNumber("8122290672");
+        userCellPhoness.setPhoneType(getCellPhoneType());
+
+        userEmp.addPhone(userCellPhones);
+        userEmp.addAddress(userAddress);
+        userEmp.addEmail(userPrimaryEmail);
+        userEmp.addEmail(userSecondaryEmail);
+        userEmp.addEmergencyContact(userEmergencyContact());
+        userEmp.setUser(userUser);
+        userEmp = em.merge(userEmp);
+
+        userEmp = new Employee();
+        userEmp.setEmployeeId("sadhikari");
+        userEmp.setFirstName("Shristi");
+        userEmp.setLastName("Adhikari");
+        userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
+        userEmp.setSex(Sex.MALE);
+        userEmp.setStartDate(new Date());
+        userEmp.setEmployeeType(getConsultantEmployeeType());
+
+        Preferences userPre = new Preferences();
+        userPre.setEnableEmailNotifications(Boolean.TRUE);
+        userEmp.setPreferences(userPre);
+
+        Address useraddress = new Address();
+        useraddress.setAddressType(getHomeAddressType());
+        useraddress.setStreet1("2110 wilkes ct");
+        useraddress.setStreet2("apt 123");
+        useraddress.setCity("Herndon");
+        useraddress.setState("VA");
+        useraddress.setCountry("USA");
+
+        Email userPrimaryemails = new Email();
+        userPrimaryemails.setEmailType(getWorkEmailType());
+        userPrimaryemails.setPrimaryEmail(true);
+        userPrimaryemails.setEmail("shristi_17@hotmail.com");
+
+        Email userSecondaryemails = new Email();
+        userSecondaryemails.setPrimaryEmail(false);
+        userSecondaryemails.setEmailType(getPersonalEmailType());
+        userSecondaryemails.setEmail("user_secondary@gmail.com");
+
+        Phone userCellphones = new Phone();
+        userCellphones.setPhoneNumber("4195811199");
+        userCellphones.setPhoneType(getCellPhoneType());
+
+        userEmp.addPhone(userCellPhones);
+        userEmp.addAddress(userAddress);
+        userEmp.addEmail(userPrimaryEmail);
+        userEmp.addEmail(userSecondaryEmail);
+        userEmp.addEmergencyContact(userEmergencyContact());
+        userEmp.setUser(userUser);
+        userEmp = em.merge(userEmp);
     }
 
     /**
