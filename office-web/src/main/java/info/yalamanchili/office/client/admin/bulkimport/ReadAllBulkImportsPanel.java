@@ -12,6 +12,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
+import info.yalamanchili.office.client.gwt.FileField;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -63,7 +64,9 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "adapter"));
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
             table.setText(i, 3, JSONUtils.toString(entity, "description"));
-            table.setText(i, 4, JSONUtils.toString(entity, "fileUrl"));
+            String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            FileField fileField = new FileField(fileURL);
+            table.setWidget(i, 4, fileField);
         }
     }
 
