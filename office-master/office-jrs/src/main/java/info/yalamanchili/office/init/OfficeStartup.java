@@ -262,9 +262,9 @@ public class OfficeStartup {
         userCellPhones.setPhoneType(getCellPhoneType());
 
         rohanEmp.addPhone(userCellPhones);
-        rohanEmp.addAddress(userAddress);
-        rohanEmp.addEmail(userPrimaryEmail);
-        rohanEmp.addEmail(userSecondaryEmail);
+        rohanEmp.addAddress(userAddres);
+        rohanEmp.addEmail(userPrimaryEmails);
+        rohanEmp.addEmail(userSecondaryEmails);
         rohanEmp.addEmergencyContact(userEmergencyContact());
         rohanEmp.setUser(rohanUser);
         rohanEmp = em.merge(rohanEmp);
@@ -304,10 +304,10 @@ public class OfficeStartup {
         userCellPhoness.setPhoneNumber("8122290672");
         userCellPhoness.setPhoneType(getCellPhoneType());
 
-        pavanEmp.addPhone(userCellPhones);
-        pavanEmp.addAddress(userAddress);
-        pavanEmp.addEmail(userPrimaryEmail);
-        pavanEmp.addEmail(userSecondaryEmail);
+        pavanEmp.addPhone(userCellPhoness);
+        pavanEmp.addAddress(userAddreess);
+        pavanEmp.addEmail(userPraimaryEmails);
+        pavanEmp.addEmail(userSecondaryEmailes);
         pavanEmp.addEmergencyContact(userEmergencyContact());
         pavanEmp.setUser(pavanUser);
         pavanEmp = em.merge(pavanEmp);
@@ -347,10 +347,10 @@ public class OfficeStartup {
         userCellphones.setPhoneNumber("4195811199");
         userCellphones.setPhoneType(getCellPhoneType());
 
-        shristiEmp.addPhone(userCellPhones);
-        shristiEmp.addAddress(userAddress);
-        shristiEmp.addEmail(userPrimaryEmail);
-        shristiEmp.addEmail(userSecondaryEmail);
+        shristiEmp.addPhone(userCellphones);
+        shristiEmp.addAddress(useraddress);
+        shristiEmp.addEmail(userPrimaryemails);
+        shristiEmp.addEmail(userSecondaryemails);
         shristiEmp.addEmergencyContact(userEmergencyContact());
         shristiEmp.setUser(shristiUser);
         shristiEmp = em.merge(shristiEmp);
