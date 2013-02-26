@@ -109,4 +109,13 @@ public class CreateBulkImportPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "bulkimport/save";
     }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (bulkImportUploadPanel.isEmpty()) {
+            bulkImportUploadPanel.setMessage("Please select a file");
+            return false;
+        }
+        return true;
+    }
 }
