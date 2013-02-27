@@ -62,18 +62,29 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
     public BulkImport commit(BulkImport bulkImport) {
         for (BulkImportEntity entity : bulkImport.getEntities()) {
             Query q = em.createQuery("from " + entity.getEntityType() + " where id=:idParam");
-            q.setParameter("idParam", bulkImport.getId());
+            q.setParameter("idParam", entity.getEntityId());
             if (q.getResultList().size() > 0) {
                 TimeSheet ts = (TimeSheet) q.getResultList().get(0);
                 ts.setVersionStatus(VersionStatus.ACTIVE);
                 em.merge(ts);
-            }
+            } 
         }
        return em.merge(bulkImport);
     }
 
     @Override
     public BulkImport revert(BulkImport bulkImport) {
+
+         for (BulkImportEntity entity : bulkImport.getEntities()) {
+            Query q = em.createQuery("from " + entity.getEntityType() + " where id=:idParam");
+            q.setParameter("idParam", entity.getEntityId());
+            if (q.getResultList().size() > 0) {
+                TimeSheet ts = (TimeSheet) q.getResultList().get(0);
+                //TODO set the timesheet status as active and save the timesheet
+                em.remove(ts);
+                
+            }
+         }
 
         return bulkImport;
     }
