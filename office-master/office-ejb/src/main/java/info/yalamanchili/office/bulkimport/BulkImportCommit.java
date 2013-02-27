@@ -7,13 +7,17 @@ package info.yalamanchili.office.bulkimport;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportStatus;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author ayalamanchili
  */
+@Component
 public class BulkImportCommit implements JavaDelegate {
 
     @Override
@@ -21,6 +25,7 @@ public class BulkImportCommit implements JavaDelegate {
         BulkImport bulkImport = (BulkImport) execution.getVariable("bulkImport");
         BulkImportProcess adapter = (BulkImportProcess) SpringContext.getBean(bulkImport.getAdapter());
         bulkImport.setStatus(BulkImportStatus.APPROVED);
-        adapter.commit(bulkImport);
+        bulkImport = adapter.commit(bulkImport);
+        execution.setVariable("bulkImport", bulkImport);
     }
 }

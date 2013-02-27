@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +24,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ADPBulkImportProcessBean implements BulkImportProcess {
-    
+
     private final static Logger logger = Logger.getLogger(ADPBulkImportProcessBean.class.getName());
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     ADPMonthlyHoursImportAdapter adpMonthlyHoursImportAdapter;
-    
+
     @Override
     public BulkImport submit(BulkImport bulkImport) {
         TimeSheetPeriod tsp = adpMonthlyHoursImportAdapter.getImportMonth(bulkImport);
@@ -40,7 +41,7 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
                     timesheet.setAdpHours(record.getHours());
                     timesheet.setQuickBooksHours(BigDecimal.ZERO);
                     timesheet.setEmployee(record.getEmployee());
-//                timesheet.setVersionStatus(VersionStatus.INACTIVE);
+                    timesheet.setVersionStatus(VersionStatus.INACTIVE);
                     timesheet.setTimeSheetPeriod(tsp);
                     timesheet.setStartDate(tsp.getStartDate());
                     timesheet.setEndDate(tsp.getEndDate());
@@ -51,28 +52,37 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
         }
         return em.merge(bulkImport);
     }
-    
+
     @Override
     public BulkImport resubmit(BulkImport bulkImport) {
         return bulkImport;
     }
-    
+
     @Override
     public BulkImport commit(BulkImport bulkImport) {
-        
+        for (BulkImportEntity entity : bulkImport.getEntities()) {
+            Query q = em.createQuery("from " + entity.getEntityType() + " where id=:idParam");
+            q.setParameter("idParam", bulkImport.getId());
+            if (q.getResultList().size() > 0) {
+                TimeSheet ts = (TimeSheet) q.getResultList().get(0);
+                ts.setVersionStatus(VersionStatus.ACTIVE);
+                em.merge(ts);
+            }
+        }
         return bulkImport;
     }
-    
+
     @Override
     public BulkImport revert(BulkImport bulkImport) {
-        
+
         return bulkImport;
     }
-    
+
     protected void addBulkImportEntity(BulkImport bulkImport, TimeSheet timesheet) {
         BulkImportEntity biEntity = new BulkImportEntity();
         biEntity.setEntityType(TimeSheet.class.getCanonicalName());
         biEntity.setId(timesheet.getId());
+        biEntity = em.merge(biEntity);
         bulkImport.addEntity(biEntity);
     }
 }

@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -25,6 +26,7 @@ public class BulkImportSubmit implements JavaDelegate {
         BulkImport bulkImport = (BulkImport) execution.getVariable("bulkImport");
         BulkImportProcess adapter = (BulkImportProcess) SpringContext.getBean(bulkImport.getAdapter());
         bulkImport.setStatus(BulkImportStatus.SUBMITTED);
-        adapter.submit(bulkImport);
+        bulkImport = adapter.submit(bulkImport);
+        execution.setVariable("bulkImport", bulkImport);
     }
 }
