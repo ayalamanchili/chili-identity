@@ -60,6 +60,7 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
 
     @Override
     public BulkImport commit(BulkImport bulkImport) {
+        bulkImport = em.find(BulkImport.class, bulkImport.getId());
         for (BulkImportEntity entity : bulkImport.getEntities()) {
             Query q = em.createQuery("from " + entity.getEntityType() + " where id=:idParam");
             q.setParameter("idParam", entity.getEntityId());
@@ -68,25 +69,23 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
                 //TODO set the timesheet status as active and save the timesheet
                 ts.setVersionStatus(VersionStatus.ACTIVE);
                 em.merge(ts);
-            } 
+            }
         }
-       return em.merge(bulkImport);
+        return em.merge(bulkImport);
     }
 
     @Override
     public BulkImport revert(BulkImport bulkImport) {
-
-         for (BulkImportEntity entity : bulkImport.getEntities()) {
+        bulkImport = em.find(BulkImport.class, bulkImport.getId());
+        for (BulkImportEntity entity : bulkImport.getEntities()) {
             Query q = em.createQuery("from " + entity.getEntityType() + " where id=:idParam");
             q.setParameter("idParam", entity.getEntityId());
             if (q.getResultList().size() > 0) {
                 TimeSheet ts = (TimeSheet) q.getResultList().get(0);
                 em.remove(ts);
-                
             }
-         }
-
-        return bulkImport;
+        }
+        return em.merge(bulkImport);
     }
 
     protected void addBulkImportEntity(BulkImport bulkImport, TimeSheet timesheet) {
