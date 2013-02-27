@@ -65,6 +65,7 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
             q.setParameter("idParam", entity.getEntityId());
             if (q.getResultList().size() > 0) {
                 TimeSheet ts = (TimeSheet) q.getResultList().get(0);
+                //TODO set the timesheet status as active and save the timesheet
                 ts.setVersionStatus(VersionStatus.ACTIVE);
                 em.merge(ts);
             } 
@@ -80,7 +81,6 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
             q.setParameter("idParam", entity.getEntityId());
             if (q.getResultList().size() > 0) {
                 TimeSheet ts = (TimeSheet) q.getResultList().get(0);
-                //TODO set the timesheet status as active and save the timesheet
                 em.remove(ts);
                 
             }
