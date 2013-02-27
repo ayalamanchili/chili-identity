@@ -101,6 +101,9 @@ public class OfficeStartup {
     protected void initUsers() {
         userUser();
         userAdmin();
+        userRohan();
+        userPavan();
+        userShristi();
     }
 
     protected void initSampleEmployees() {
@@ -725,6 +728,39 @@ public class OfficeStartup {
             user.addRole(hrRole);
             user.addRole(timeRole);
             adminUser = em.merge(user);
+        }
+    }
+
+    protected void userRohan() {
+        if (EntityQueryUtils.findEntity(em, CUser.class, "username", "racharya") == null) {
+            CUser user = new CUser();
+            user.setUsername("racharya");
+            user.setPasswordHash(SecurityUtils.encodePassword("racharya", null));
+            user.addRole(userRole);
+            user.setEnabled(true);
+            rohanUser = em.merge(user);
+        }
+    }
+
+    protected void userPavan() {
+        if (EntityQueryUtils.findEntity(em, CUser.class, "username", "padapala") == null) {
+            CUser user = new CUser();
+            user.setUsername("padapala");
+            user.setPasswordHash(SecurityUtils.encodePassword("padapala", null));
+            user.addRole(userRole);
+            user.setEnabled(true);
+            pavanUser = em.merge(user);
+        }
+    }
+
+    protected void userShristi() {
+        if (EntityQueryUtils.findEntity(em, CUser.class, "username", "sadhikari") == null) {
+            CUser user = new CUser();
+            user.setUsername("sadhikari");
+            user.setPasswordHash(SecurityUtils.encodePassword("sadhikari", null));
+            user.addRole(userRole);
+            user.setEnabled(true);
+            shristiUser = em.merge(user);
         }
     }
 }
