@@ -12,7 +12,6 @@ import info.chili.gwt.utils.Utils;
 public abstract class UpdateComposite extends CRUDComposite implements ClickHandler {
     
     Logger logger = Logger.getLogger(UpdateComposite.class.getName());
-    protected boolean submited = false;
     protected Button update = new Button("update");
     
     public void initUpdateComposite(JSONObject entity, String className, final ConstantsWithLookup constants) {
@@ -30,17 +29,11 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
         if (processClientSideValidations(entity)) {
-            submitted();
             if (event.getSource() == update) {
                 updateButtonClicked();
             }
+            disableSubmitButtons();
         }
-    }
-    
-    protected void submitted() {
-        this.submited = true;
-        //TODO need to enable these back after validations
-//        update.setEnabled(false);
     }
     
     @Override

@@ -60,8 +60,8 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
             if (add.isAttached()) {
                 addButtonClicked();
             }
+            disableSubmitButtons();
         }
-        disableSubmitButtons();
     }
 
     @Override
