@@ -69,7 +69,7 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
                 em.merge(ts);
             }
         }
-        return bulkImport;
+       return em.merge(bulkImport);
     }
 
     @Override
