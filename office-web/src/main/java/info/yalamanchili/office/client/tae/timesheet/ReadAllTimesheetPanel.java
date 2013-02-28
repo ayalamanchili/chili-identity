@@ -88,7 +88,8 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 8, JSONUtils.toString(entity.get("timeSheetPeriod"), "name"));
-            table.setText(i, 9, JSONUtils.toString(entity, "status"));
+            table.setText(i, 9, JSONUtils.toString(entity, "versionStatus"));
+
         }
     }
 
