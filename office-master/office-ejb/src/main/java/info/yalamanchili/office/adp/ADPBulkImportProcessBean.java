@@ -91,7 +91,7 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
     protected void addBulkImportEntity(BulkImport bulkImport, TimeSheet timesheet) {
         BulkImportEntity biEntity = new BulkImportEntity();
         biEntity.setEntityType(TimeSheet.class.getCanonicalName());
-        biEntity.setId(timesheet.getId());
+        biEntity.setEntityId(timesheet.getId());
         biEntity = em.merge(biEntity);
         bulkImport.addEntity(biEntity);
     }
