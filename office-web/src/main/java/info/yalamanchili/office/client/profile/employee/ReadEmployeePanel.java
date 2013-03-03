@@ -16,7 +16,7 @@ public class ReadEmployeePanel extends ReadComposite {
 
     private static Logger logger = Logger.getLogger(ReadEmployeePanel.class.getName());
     private static ReadEmployeePanel instance;
-    protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
+    protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(true, false);
 
     public static ReadEmployeePanel instance() {
         return instance;
