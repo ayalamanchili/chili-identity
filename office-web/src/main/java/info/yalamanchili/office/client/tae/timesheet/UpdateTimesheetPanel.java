@@ -5,7 +5,6 @@
 package info.yalamanchili.office.client.tae.timesheet;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -14,7 +13,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.rpc.HttpService;
-import info.yalamanchili.office.client.admin.sow.SelectSOWWidget;
 import info.yalamanchili.office.client.tae.timesheetperiod.SelectTimesheetPeriodWidget;
 import java.util.logging.Logger;
 
@@ -34,18 +32,15 @@ public class UpdateTimesheetPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-
         assignEntityValueFromField("adpRate", entity);
         assignEntityValueFromField("quickBooksRate", entity);
         assignEntityValueFromField("adpHours", entity);
         assignEntityValueFromField("quickBooksHours", entity);
-        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("timeSheetPeriod", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("notes", entity);
         return entity;
-
     }
 
     @Override
@@ -94,8 +89,8 @@ public class UpdateTimesheetPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(false, true));
-        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(false, true));
+        addDropDown("employee", new SelectEmployeeWidget(true, true));
+        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(true, true));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("adpHours", false, true, DataType.FLOAT_FIELD);
