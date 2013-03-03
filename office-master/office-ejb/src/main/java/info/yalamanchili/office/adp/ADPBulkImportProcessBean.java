@@ -36,18 +36,16 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
         TimeSheetPeriod tsp = adpMonthlyHoursImportAdapter.getImportMonth(bulkImport);
         if (tsp != null) {
             for (AdpRecord record : adpMonthlyHoursImportAdapter.mapADPHoursRecords(bulkImport)) {
-                if (record.getEmployee() != null && record.getHours() != null) {
-                    TimeSheet timesheet = new TimeSheet();
-                    timesheet.setAdpHours(record.getHours());
-                    timesheet.setQuickBooksHours(BigDecimal.ZERO);
-                    timesheet.setEmployee(record.getEmployee());
-                    timesheet.setVersionStatus(VersionStatus.INACTIVE);
-                    timesheet.setTimeSheetPeriod(tsp);
-                    timesheet.setStartDate(tsp.getStartDate());
-                    timesheet.setEndDate(tsp.getEndDate());
-                    timesheet = em.merge(timesheet);
-                    addBulkImportEntity(bulkImport, timesheet);
-                }
+                TimeSheet timesheet = new TimeSheet();
+                timesheet.setAdpHours(record.getHours());
+                timesheet.setQuickBooksHours(BigDecimal.ZERO);
+                timesheet.setEmployee(record.getEmployee());
+                timesheet.setVersionStatus(VersionStatus.INACTIVE);
+                timesheet.setTimeSheetPeriod(tsp);
+                timesheet.setStartDate(tsp.getStartDate());
+                timesheet.setEndDate(tsp.getEndDate());
+                timesheet = em.merge(timesheet);
+                addBulkImportEntity(bulkImport, timesheet);
             }
         }
         return em.merge(bulkImport);

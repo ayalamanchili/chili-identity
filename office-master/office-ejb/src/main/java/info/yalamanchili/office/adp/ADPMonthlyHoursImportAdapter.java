@@ -66,22 +66,29 @@ public class ADPMonthlyHoursImportAdapter {
                         hoursValue = record.getCell(2).getNumericCellValue();
                         if (hoursValue != null) {
                             adpRecord.setHours(new BigDecimal(hoursValue));
+                            records.add(adpRecord);
+                            //TODO create bulkImportMessage  for each success record with code="employee.timesheet.record.found" description="employeee names with timessheet details" type= BulkImportMessageType.INFO
+
                         }
                     }
-                    records.add(adpRecord);
                 } else {
                     if (!firstName.isEmpty() && !lastName.isEmpty()) {
-                        BulkImportMessage msg = new BulkImportMessage();
-                        msg.setCode("emp.not.found");
-                        msg.setDescription("Employee not found for " + firstName + ":lastname:" + lastName);
-                        msg.setMessageType(BulkImportMessageType.WARN);
-                        bulkImport.addMessage(msg);
+                        String description = "Employee not found for " + firstName + ":lastname:" + lastName;
+                        createBulkImportMessage(bulkImport, "emp.not.found", description, BulkImportMessageType.WARN);
                         logger.log(Level.INFO, "adp--- employee not found last:{0} first:{1}", new Object[]{lastName, firstName});
                     }
                 }
             }
         }
         return records;
+    }
+
+    protected void createBulkImportMessage(BulkImport bulkImport, String code, String description, BulkImportMessageType type) {
+        BulkImportMessage msg = new BulkImportMessage();
+        msg.setCode(code);
+        msg.setDescription(description);
+        msg.setMessageType(type);
+        bulkImport.addMessage(msg);
     }
 
     protected TimeSheetPeriod getImportMonth(BulkImport bulkImport) {
