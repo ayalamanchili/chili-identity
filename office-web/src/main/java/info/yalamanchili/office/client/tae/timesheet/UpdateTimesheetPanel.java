@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 public class UpdateTimesheetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateTimesheetPanel.class.getName());
+    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget(true, false);
+    SelectTimesheetPeriodWidget selectTimesheetPeriodWidget = new SelectTimesheetPeriodWidget(true, false);
     protected String payPeriodId;
 
     public UpdateTimesheetPanel(String payPeriodId, JSONObject entity) {
@@ -36,7 +38,6 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignEntityValueFromField("quickBooksRate", entity);
         assignEntityValueFromField("adpHours", entity);
         assignEntityValueFromField("quickBooksHours", entity);
-        assignEntityValueFromField("timeSheetPeriod", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("notes", entity);
@@ -70,6 +71,9 @@ public class UpdateTimesheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
+        //TODO has some issue with read only not being correctly set need to call it again
+        selectEmployeeWidget.setReadOnly(true);
+        selectTimesheetPeriodWidget.setReadOnly(true);
     }
 
     @Override
@@ -89,8 +93,8 @@ public class UpdateTimesheetPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(true, true));
-        addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(true, true));
+        addDropDown("employee", selectEmployeeWidget);
+        addDropDown("timeSheetPeriod", selectTimesheetPeriodWidget);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("adpHours", false, true, DataType.FLOAT_FIELD);
