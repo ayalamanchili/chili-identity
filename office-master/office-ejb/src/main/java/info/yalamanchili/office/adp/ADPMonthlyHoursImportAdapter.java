@@ -39,6 +39,7 @@ public class ADPMonthlyHoursImportAdapter {
     private final static Logger logger = Logger.getLogger(ADPMonthlyHoursImportAdapter.class.getName());
     @PersistenceContext
     protected EntityManager em;
+    private String description;
 
     public List<AdpRecord> mapADPHoursRecords(BulkImport bulkImport) {
         List<AdpRecord> records = new ArrayList<AdpRecord>();
@@ -68,6 +69,7 @@ public class ADPMonthlyHoursImportAdapter {
                             adpRecord.setHours(new BigDecimal(hoursValue));
                             records.add(adpRecord);
                             //TODO create bulkImportMessage  for each success record with code="employee.timesheet.record.found" description="employeee names with timessheet details" type= BulkImportMessageType.INFO
+                            createBulkImportMessage(bulkImport, "employee.timesheet.record.found", description, BulkImportMessageType.WARN);
 
                         }
                     }
