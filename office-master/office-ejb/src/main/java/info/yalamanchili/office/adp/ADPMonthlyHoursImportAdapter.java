@@ -69,7 +69,8 @@ public class ADPMonthlyHoursImportAdapter {
                             adpRecord.setHours(new BigDecimal(hoursValue));
                             records.add(adpRecord);
                             //TODO create bulkImportMessage  for each success record with code="employee.timesheet.record.found" description="employeee names with timessheet details" type= BulkImportMessageType.INFO
-                            createBulkImportMessage(bulkImport, "employee.timesheet.record.found", description, BulkImportMessageType.WARN);
+                            String description = "employeee names with timessheet details";
+                            createBulkImportMessage(bulkImport, "employee.timesheet.record.found", description, BulkImportMessageType.INFO);
 
                         }
                     }
