@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -43,11 +44,34 @@ public class QuickBooksMonthlyHoursImportAdapter {
             FileInputStream fstream = new FileInputStream(getFilePath(bulkImport));
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strLine;
+            String timesheetline;
             //Read File Line By Line
-            while ((strLine = br.readLine()) != null) {
-                System.out.println(strLine);
-                if (strLine.contains("Total")) {
+            while ((timesheetline = br.readLine()) != null) {
+                if (timesheetline.contains("Total")) {
+                    String lastName = null;
+                    String firstName = null;
+                    BigDecimal hours = null;
+                    //LastName
+                    int lastNameStartIndex = timesheetline.indexOf("-") + 1;
+                    int lastNameEndIndex = timesheetline.indexOf(" ", lastNameStartIndex);
+                    if (lastNameStartIndex < timesheetline.length() && lastNameEndIndex < timesheetline.length()) {
+                        lastName = timesheetline.substring(lastNameStartIndex, lastNameEndIndex);
+                    }
+                    //first name
+                    int firstNameStartIndex = lastNameEndIndex + 1;
+                    int firstNameEndIndex = timesheetline.indexOf(",", firstNameStartIndex) - 1;
+                    if (firstNameStartIndex < timesheetline.length() && firstNameEndIndex < timesheetline.length()) {
+                        firstName = timesheetline.substring(firstNameStartIndex, firstNameEndIndex);
+                    }
+                    //hours
+                    int hoursStartIndex = timesheetline.lastIndexOf(",") + 2;
+                    if (hoursStartIndex < timesheetline.length()) {
+                        String hoursString = timesheetline.substring(hoursStartIndex, timesheetline.length() - 1);
+                        hours = new BigDecimal(hoursString.replace(":", "."));
+                    }
+                    System.out.println("lastname:" + lastName);
+                    System.out.println("firstname:" + firstName);
+                    System.out.println("hours:" + hours);
                 }
                 //TODO add logic similar to ADP mapper
             }
