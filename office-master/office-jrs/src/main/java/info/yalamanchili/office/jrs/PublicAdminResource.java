@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.security.User;
@@ -50,7 +51,7 @@ public class PublicAdminResource {
 
         Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
         if (emp == null) {
-            throw new RuntimeException("Please Contact SStech HR dept");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "Please Contact SStech HR dept");
         }
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         String tempPassword = employeeService.generatepassword();
@@ -58,7 +59,7 @@ public class PublicAdminResource {
         user.setUserName(empId.toString());
         user.setNewPassword(tempPassword);
         employeeService.resetPassword(emp.getId(), user);
-        
+
         ProfileNotificationService.instance().sendForgotPasswordNotification(emp, tempPassword);
     }
 }

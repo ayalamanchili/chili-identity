@@ -9,13 +9,13 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import info.yalamanchili.office.profile.EmployeeFinder;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,7 +39,6 @@ public class ADPMonthlyHoursImportAdapter {
     private final static Logger logger = Logger.getLogger(ADPMonthlyHoursImportAdapter.class.getName());
     @PersistenceContext
     protected EntityManager em;
-    private String description;
 
     public List<AdpRecord> mapADPHoursRecords(BulkImport bulkImport) {
         List<AdpRecord> records = new ArrayList<AdpRecord>();
@@ -59,8 +58,9 @@ public class ADPMonthlyHoursImportAdapter {
                 AdpRecord adpRecord = new AdpRecord();
                 String lastName = record.getCell(0).toString();
                 String firstName = record.getCell(1).toString();
-                if (EmployeeFinder.instance().find(firstName, lastName) != null) {
-                    adpRecord.setEmployee(EmployeeFinder.instance().find(firstName, lastName));
+                Employee emp = EmployeeFinder.instance().find(firstName, lastName);
+                if (emp != null) {
+                    adpRecord.setEmployee(emp);
                     Double hoursValue = null;
                     Cell hoursCell = record.getCell(2);
                     if (hoursCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
@@ -68,8 +68,7 @@ public class ADPMonthlyHoursImportAdapter {
                         if (hoursValue != null) {
                             adpRecord.setHours(new BigDecimal(hoursValue));
                             records.add(adpRecord);
-                            //TODO create bulkImportMessage  for each success record with code="employee.timesheet.record.found" description="employeee names with timessheet details" type= BulkImportMessageType.INFO
-                            String description = "employeee names with timessheet details";
+                            String description = "employee:" + emp.getEmployeeId() + ":hours:" + "" + adpRecord.getHours();
                             createBulkImportMessage(bulkImport, "employee.timesheet.record.found", description, BulkImportMessageType.INFO);
 
                         }
@@ -114,6 +113,5 @@ public class ADPMonthlyHoursImportAdapter {
     protected String getFilePath(BulkImport bulkImport) {
         String fileUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + bulkImport.getFileUrl();
         return fileUrl.replace("entityId", bulkImport.getId().toString());
-//        return "c://ADP_01_2013.xls";
     }
 }

@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.profile;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
@@ -31,16 +32,14 @@ public class EmployeeService {
     public CUser changePassword(Long empId, User user) {
         //TODO check existing password
         CUser user1 = getEmployee(empId).getUser();
-      String oldpswd=  SecurityUtils.encodePassword(user.getOldPassword(), null);
-        if(oldpswd.equals(user1.getPasswordHash())) {
-        user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
-         return em.merge(user1);
+        String oldpswd = SecurityUtils.encodePassword(user.getOldPassword(), null);
+        if (oldpswd.equals(user1.getPasswordHash())) {
+            user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
+            return em.merge(user1);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.password", "Old Password Doesn't Match");
         }
-        else
-        {
-           throw new RuntimeException("Old Password Doesn't Match");
-        }
-       
+
     }
 
     public CUser resetPassword(Long empId, User user) {

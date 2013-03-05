@@ -6,6 +6,7 @@ package info.yalamanchili.office.dao.time;
 
 import info.chili.commons.BeanMapper;
 import info.chili.jpa.AbstractEntity;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
@@ -43,7 +44,7 @@ public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
         c2.setTime(entity.getEndDate());
         //TODO try to process all the errors collect them and throw a service exception at the end
         if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
-            throw new RuntimeException("Start date and End date should be in same month");
+             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.timesheetperiod", "Start date and End date should be in same month");
         }
         
         

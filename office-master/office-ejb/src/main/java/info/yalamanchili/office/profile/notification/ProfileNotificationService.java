@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.profile.notification;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -111,7 +112,7 @@ public class ProfileNotificationService {
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
         if (emp.getPrimaryEmail() == null) {
-            throw new RuntimeException("no primary email for employee");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.email", "no primary email for employee");
         }
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);

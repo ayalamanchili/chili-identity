@@ -1,6 +1,7 @@
 package info.yalamanchili.office.jrs;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -97,7 +98,7 @@ public class AdminResource {
 
         Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
         if (emp == null) {
-            throw new RuntimeException("no employee id exists with this name");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "no employee id exists with this name");
         }
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         String tempPassword = employeeService.generatepassword();
