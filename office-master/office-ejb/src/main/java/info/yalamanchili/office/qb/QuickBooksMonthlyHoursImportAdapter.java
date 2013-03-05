@@ -4,49 +4,87 @@
  */
 package info.yalamanchili.office.qb;
 
+import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
+import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
+import info.yalamanchili.office.entity.time.TimeSheetPeriod;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.math.BigDecimal;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author ayalamanchili
  */
 public class QuickBooksMonthlyHoursImportAdapter {
-//sample http://viralpatel.net/blogs/java-read-write-excel-file-apache-poi/
 
-    public static void main(String... str) throws Exception {
-        importEmployeeHoursData();
+    private final static Logger logger = Logger.getLogger(QuickBooksMonthlyHoursImportAdapter.class.getName());
+    @PersistenceContext
+    protected EntityManager em;
+    private String description;
+
+    public static void main(String... strs) {
+        QuickBooksMonthlyHoursImportAdapter ser = new QuickBooksMonthlyHoursImportAdapter();
+        ser.mapADPHoursRecords(new BulkImport());
     }
 
-    protected static List<QuickBooksRecord> importEmployeeHoursData() throws Exception {
+    public List<QuickBooksRecord> mapADPHoursRecords(BulkImport bulkImport) {
         List<QuickBooksRecord> records = new ArrayList<QuickBooksRecord>();
-        InputStream inp = new FileInputStream(getFilePath());
-        HSSFWorkbook workbook = new HSSFWorkbook(inp);
-        HSSFSheet sheet = workbook.getSheetAt(0);
-        Iterator<Row> rowIterator = sheet.iterator();
-        while (rowIterator.hasNext()) {
-            Row record = rowIterator.next();
-            if (record.getCell(1) != null && record.getCell(1).toString().contains("Total")) {
-                QuickBooksRecord qbRecord = new QuickBooksRecord();
-                qbRecord.setEmployeeId(record.getCell(1).getStringCellValue());
-                System.out.println("name----" + record.getCell(1).getStringCellValue());
-                qbRecord.setHours(new BigDecimal(record.getCell(3).getNumericCellValue()));
-                System.out.println("hours----" + record.getCell(3).getNumericCellValue());
-                records.add(qbRecord);
+        try {
+            FileInputStream fstream = new FileInputStream(getFilePath(bulkImport));
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String strLine;
+            //Read File Line By Line
+            while ((strLine = br.readLine()) != null) {
+                System.out.println(strLine);
+                if (strLine.contains("Total")) {
+                }
+                //TODO add logic similar to ADP mapper
             }
-
+            in.close();
+        } catch (Exception e) {//Catch exception if any
+            throw new RuntimeException(e);
         }
         return records;
     }
 
-    protected static String getFilePath() {
-        return "c://QB_01_2013.xls";
+    protected void createBulkImportMessage(BulkImport bulkImport, String code, String description, BulkImportMessageType type) {
+        BulkImportMessage msg = new BulkImportMessage();
+        msg.setCode(code);
+        msg.setDescription(description);
+        msg.setMessageType(type);
+        bulkImport.addMessage(msg);
+    }
+
+    protected TimeSheetPeriod getImportMonth(BulkImport bulkImport) {
+        try {
+            String url = bulkImport.getFileUrl();
+            int monthStart = url.indexOf("QB_") + 4;
+            int yearStart = monthStart + 3;
+            Integer month = new Integer(url.substring(monthStart, monthStart + 2));
+            Integer year = new Integer(url.substring(yearStart, yearStart + 4));
+            return TimeJobService.instance().getTimePeriod(year, month - 1);
+        } catch (Exception e) {
+            BulkImportMessage msg = new BulkImportMessage();
+            msg.setCode("invalid.timeperiod");
+            msg.setDescription("Invalid Date format for the uploaded file eg:QB_01_2013.xls for jan 2013");
+            bulkImport.addMessage(msg);
+            return null;
+        }
+    }
+
+    protected String getFilePath(BulkImport bulkImport) {
+//        String fileUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + bulkImport.getFileUrl();
+//        return fileUrl.replace("entityId", bulkImport.getId().toString());
+        return "c://QB_01_2013.csv";
     }
 }

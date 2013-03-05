@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.qb;
 
+import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 
 /**
@@ -12,15 +13,15 @@ import java.math.BigDecimal;
  */
 public class QuickBooksRecord {
 
-    protected String employeeId;
+    protected Employee employee;
     protected BigDecimal hours;
 
-    public String getEmployeeId() {
-        return employeeId;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public BigDecimal getHours() {
@@ -33,6 +34,6 @@ public class QuickBooksRecord {
 
     @Override
     public String toString() {
-        return "QuickBooksRecord{" + "employeeId=" + employeeId + ", hours=" + hours + '}';
+        return "QBHoursRecords{" + "employee=" + employee + ", hours=" + hours + '}';
     }
 }
