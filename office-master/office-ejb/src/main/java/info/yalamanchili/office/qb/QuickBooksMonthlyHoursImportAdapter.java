@@ -5,7 +5,6 @@
 package info.yalamanchili.office.qb;
 
 import info.yalamanchili.office.Time.TimeJobService;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
@@ -19,11 +18,13 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author ayalamanchili
  */
+@Component
 public class QuickBooksMonthlyHoursImportAdapter {
 
     private final static Logger logger = Logger.getLogger(QuickBooksMonthlyHoursImportAdapter.class.getName());
