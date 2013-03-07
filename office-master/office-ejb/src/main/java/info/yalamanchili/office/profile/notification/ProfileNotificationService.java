@@ -7,7 +7,7 @@ package info.yalamanchili.office.profile.notification;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.bpm.types.AccountReset;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
@@ -129,6 +129,22 @@ public class ProfileNotificationService {
         email.setSubject("Employee Feedback from " + username);
         email.setBody(fb.getFeedbackmsg());
         messagingService.sendEmail(email);
+    }
+
+    @Async
+    public void sendAccountResetRequestNotification(AccountReset account) {
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setSubject("Account Reset Request received");
+        String messageText = "Account Reset Request received for : " + account.getFirstName() + "," + account.getLastName();
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
+    }
+
+    @Async
+    public void sendAccountResetApprovedNotification(String username, String password) {
+        //TODO implement this
     }
 
     @Async

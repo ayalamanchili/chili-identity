@@ -17,6 +17,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
@@ -26,7 +27,10 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Feedback.AccountResetPanel;
+import info.yalamanchili.office.client.Feedback.FeedbackPanel;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
@@ -62,6 +66,8 @@ public class LoginPage extends Composite {
     Button loginB;
     @UiField
     Image forgotPasswordIcon;
+    @UiField
+    public Anchor accountResetL;
 
     @UiHandler("loginB")
     void handleLogin(ClickEvent e) {
@@ -97,6 +103,11 @@ public class LoginPage extends Composite {
     @UiHandler("forgotPasswordIcon")
     void forgotPasswordLinkClicked(ClickEvent event) {
         forgotPassword();
+    }
+
+    @UiHandler("accountResetL")
+    void accountResetLinkClicked(ClickEvent e) {
+        new GenericPopup(new AccountResetPanel(CreateComposite.CreateCompositeType.CREATE)).show();
     }
 
     interface LoginPageUiBinder extends UiBinder<Widget, LoginPage> {

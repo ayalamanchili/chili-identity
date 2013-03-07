@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="account_reset_process">
+        <startEvent id="accountResetStart">
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="accountResetStart" targetRef="accountResetRequestEmailNotification" />
+        <!--overtime request submit eamil notification-->
+        <serviceTask
+            id="accountResetRequestEmailNotification"
+            name="Overtime Pay request submited notification"
+            activiti:expression="${profileNotificationService.sendAccountResetRequestNotification(account)}">
+        </serviceTask>
+        <sequenceFlow id="flow2" sourceRef="accountResetRequestEmailNotification" targetRef="accountResetApprovalTask" />
+        <userTask id="accountResetApprovalTask" 
+                  name="Account reset Task for ${account.firstName} ${account.lastName} Email:${account.email} Phone:{account.phoneNumber}" 
+                  activiti:candidateGroups="ROLE_HR,ROLE_ADMIN">
+            <documentation>
+                Account Reset for Employee
+            </documentation>
+            <extensionElements>
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="username" 
+                                       name="Username"
+                                       required="false" 
+                                       type="string" />
+                <activiti:formProperty id="password" 
+                                       name="Password"
+                                       required="false" 
+                                       type="string" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="flow3" sourceRef="accountResetApprovalTask" targetRef="approvalGateway" />
+        <!--desision-->
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="accountResetApprovedNotification">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="accountResetEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <!-- request approved email-->
+        <serviceTask
+            id="accountResetApprovedNotification"
+            name="Account Reset request Approved notification"
+            activiti:expression="${profileNotificationService.sendAccountResetApprovedNotification(username,password)}">
+        </serviceTask>
+        <sequenceFlow id="flow4" sourceRef="approvalGateway" targetRef="accountResetEnd" />
+        <!-- end-->
+        <endEvent id="accountResetEnd" />
+    </process>
+</definitions>

@@ -41,9 +41,16 @@
             <!--</g:Gridcen>-->
         </g:center>
         <g:south size='1.5'>
-            <g:FlowPanel ui:field='footerPanel' styleName="{officeImages.officeCss.footerPanel}">
-                <g:Label styleName="{officeImages.officeCss.footerLabel}">COPYRIGHT &copy; 2012 sstech.us - All Rights Reserved</g:Label>
-            </g:FlowPanel>
+            <g:Grid styleName="{officeImages.officeCss.footerPanel}">
+                <g:row>
+                    <g:customCell styleName="{officeImages.officeCss.copyRightLabel}">
+                        <g:Label >COPYRIGHT &copy; 2012 sstech.us - All Rights Reserved</g:Label>
+                    </g:customCell>
+                    <g:customCell styleName = "{officeImages.officeCss.feedbackAnchor}">
+                        <g:Anchor ui:field='accountResetL'>Account Reset</g:Anchor>
+                    </g:customCell>
+                </g:row>
+            </g:Grid>
         </g:south>
     </g:DockLayoutPanel>
     <ui:style>

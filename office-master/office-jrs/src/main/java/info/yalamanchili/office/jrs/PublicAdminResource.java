@@ -6,13 +6,16 @@ package info.yalamanchili.office.jrs;
 
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.bpm.types.AccountReset;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -61,5 +64,12 @@ public class PublicAdminResource {
         employeeService.resetPassword(emp.getId(), user);
 
         ProfileNotificationService.instance().sendForgotPasswordNotification(emp, tempPassword);
+    }
+
+    @Path("/account_reset")
+    @PUT
+    @PreAuthorize("permitAll")
+    public void accountReset(AccountReset account) {
+        BPMProfileService.instance().startAccountResetProcess(account);
     }
 }

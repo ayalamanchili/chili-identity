@@ -6,11 +6,11 @@ package info.yalamanchili.office.bpm.profile;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.bpm.types.AccountReset;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,13 @@ public class BPMProfileService {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("employee", emp);
         officeBPMService.startProcess("address_update_process", vars);
+    }
+
+    @Async
+    public void startAccountResetProcess(AccountReset account) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("account", account);
+        officeBPMService.startProcess("account_reset_process", vars);
     }
 
     public static BPMProfileService instance() {
