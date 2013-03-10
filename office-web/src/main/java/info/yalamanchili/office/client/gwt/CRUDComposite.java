@@ -232,6 +232,14 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
                 entity.put(fieldKey, null);
             }
         }
+        if (fields.get(fieldKey) instanceof IntegerField) {
+            IntegerField field = (IntegerField) fields.get(fieldKey);
+            if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
+                entity.put(fieldKey, new JSONString(String.valueOf(field.getValue())));
+            } else {
+                entity.put(fieldKey, null);
+            }
+        }
         if (fields.get(fieldKey) instanceof EnumField) {
             EnumField field = (EnumField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {

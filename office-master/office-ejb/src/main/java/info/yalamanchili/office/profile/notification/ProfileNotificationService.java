@@ -8,6 +8,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.types.AccountReset;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
@@ -138,13 +139,26 @@ public class ProfileNotificationService {
         email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
         email.setSubject("Account Reset Request received");
         String messageText = "Account Reset Request received for : " + account.getFirstName() + "," + account.getLastName();
+        messageText = messageText.concat("Email:" + account.getEmail() + ": PhoneNumber:" + account.getPhoneNumber());
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
 
     @Async
     public void sendAccountResetApprovedNotification(String username, String password) {
-        //TODO implement this
+        Employee emp = mailUtils.findEmployee(username);
+        if (emp != null) {
+            Email email = new Email();
+            Set<String> tos = new HashSet<String>();
+            tos.add(emp.getPrimaryEmail().getEmail());
+            email.setTos(tos);
+            email.setSubject("Account Reset Complete");
+            String messageText = "New account information username:" + username + ": password:" + password;
+            email.setBody(messageText);
+            messagingService.sendEmail(email);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.username", "employee not found with username. pleaes re complete the task with correct username");
+        }
     }
 
     @Async
