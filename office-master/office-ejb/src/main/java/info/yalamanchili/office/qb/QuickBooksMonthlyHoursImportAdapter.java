@@ -5,6 +5,7 @@
 package info.yalamanchili.office.qb;
 
 import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
@@ -32,11 +33,6 @@ public class QuickBooksMonthlyHoursImportAdapter {
     @PersistenceContext
     protected EntityManager em;
     private String description;
-
-    public static void main(String... strs) {
-        QuickBooksMonthlyHoursImportAdapter ser = new QuickBooksMonthlyHoursImportAdapter();
-        ser.mapADPHoursRecords(new BulkImport());
-    }
 
     public List<QuickBooksRecord> mapADPHoursRecords(BulkImport bulkImport) {
         List<QuickBooksRecord> records = new ArrayList<QuickBooksRecord>();
@@ -108,8 +104,7 @@ public class QuickBooksMonthlyHoursImportAdapter {
     }
 
     protected String getFilePath(BulkImport bulkImport) {
-//        String fileUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + bulkImport.getFileUrl();
-//        return fileUrl.replace("entityId", bulkImport.getId().toString());
-        return "c://QB_01_2013.csv";
+        String fileUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + bulkImport.getFileUrl();
+        return fileUrl.replace("entityId", bulkImport.getId().toString());
     }
 }
