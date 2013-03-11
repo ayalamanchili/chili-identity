@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServiceExceptionMapper implements ExceptionMapper<ServiceException> {
 
+    @Override
     public Response toResponse(ServiceException exception) {
         ResponseBuilder builder = Response.status(exception.getStatusCode());
 

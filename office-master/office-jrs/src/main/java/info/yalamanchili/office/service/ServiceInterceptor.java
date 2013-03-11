@@ -2,18 +2,19 @@ package info.yalamanchili.office.service;
 
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
-import info.chili.service.jrs.exception.ServiceException.ReasonCode;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
-import info.yalamanchili.office.logging.LoggingInterceptor;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import org.activiti.engine.ActivitiException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.JoinPoint;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,11 @@ import org.springframework.stereotype.Component;
 //have to specify the order so that this is run before the transaction advice runs to handle all possible exceptions
 @Order(100)
 public class ServiceInterceptor {
-    
+
     private static final Log log = LogFactory.getLog(ServiceInterceptor.class);
     @Autowired
     protected ServiceMessages serviceMessages;
-    
+
     @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..))")
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
@@ -67,10 +68,25 @@ public class ServiceInterceptor {
         return result;
     }
 
-//    @AfterThrowing(pointcut = "execution(* info.yalamanchili.office.jrs..*.*(..))", throwing = "exception")
-//    public void catchException(JoinPoint joinPoint, Throwable exception) {
-//        System.out.print("ddddddd");
-//    }
+    /* 
+     * This is for handling exception from non jrs methods like notification package classes which are invoked by bpm.    */
+    @AfterThrowing(pointcut = "execution(* info.yalamanchili.office..*.*(..))", throwing = "exception")
+    public void catchException(JoinPoint joinPoint, Throwable exception) {
+        if (log.isErrorEnabled()) {
+            exception.printStackTrace();
+            log.error(exception);
+        }
+        if (exception instanceof ServiceException) {
+            ServiceException se = (ServiceException) exception;
+            throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
+        } else if (exception instanceof ActivitiException && exception.getCause().getCause() instanceof ServiceException) {
+            ServiceException se = (ServiceException) exception.getCause().getCause();
+            throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
+        } else {
+            throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
+        }
+    }
+
     protected void validate(Object entity) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -79,7 +95,7 @@ public class ServiceInterceptor {
                     .toString(), "INVALID_INPUT", violation.getMessage()));
         }
     }
-    
+
     protected void checkForErrors() {
         if (serviceMessages.isNotEmpty()) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, serviceMessages.getErrors());

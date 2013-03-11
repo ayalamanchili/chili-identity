@@ -143,8 +143,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-
-    @Async
+    
     public void sendAccountResetApprovedNotification(String username, String password) {
         Employee emp = mailUtils.findEmployee(username);
         if (emp != null) {
