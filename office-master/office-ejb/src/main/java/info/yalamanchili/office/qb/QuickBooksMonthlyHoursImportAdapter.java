@@ -106,7 +106,7 @@ public class QuickBooksMonthlyHoursImportAdapter {
     protected TimeSheetPeriod getImportMonth(BulkImport bulkImport) {
         try {
             String url = bulkImport.getFileUrl();
-            int monthStart = url.indexOf("QB_") + 4;
+            int monthStart = url.indexOf("QB_") + 3;
             int yearStart = monthStart + 3;
             Integer month = new Integer(url.substring(monthStart, monthStart + 2));
             Integer year = new Integer(url.substring(yearStart, yearStart + 4));
@@ -114,7 +114,7 @@ public class QuickBooksMonthlyHoursImportAdapter {
         } catch (Exception e) {
             BulkImportMessage msg = new BulkImportMessage();
             msg.setCode("invalid.timeperiod");
-            msg.setDescription("Invalid Date format for the uploaded file eg:QB_01_2013.xls for jan 2013");
+            msg.setDescription("Invalid Date format for the uploaded file eg:QB_01_2013.csv for jan 2013");
             bulkImport.addMessage(msg);
             return null;
         }
