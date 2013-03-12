@@ -5,7 +5,6 @@
 package info.yalamanchili.office.qb;
 
 import info.yalamanchili.office.Time.TimeJobService;
-import info.yalamanchili.office.adp.AdpRecord;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
@@ -19,17 +18,11 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,14 +35,11 @@ public class QuickBooksMonthlyHoursImportAdapter {
     private final static Logger logger = Logger.getLogger(QuickBooksMonthlyHoursImportAdapter.class.getName());
     @PersistenceContext
     protected EntityManager em;
-    private String description;
 
     public List<QuickBooksRecord> mapADPHoursRecords(BulkImport bulkImport) {
         List<QuickBooksRecord> records = new ArrayList<QuickBooksRecord>();
-        HSSFWorkbook workbook;
         try {
             FileInputStream fstream = new FileInputStream(getFilePath(bulkImport));
-            workbook = new HSSFWorkbook(fstream);
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String timesheetline;
@@ -80,40 +70,23 @@ public class QuickBooksMonthlyHoursImportAdapter {
                     System.out.println("lastname:" + lastName);
                     System.out.println("firstname:" + firstName);
                     System.out.println("hours:" + hours);
-                }
-            }
-            //TODO add logic similar to ADP mapper     
-            HSSFSheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            while (rowIterator.hasNext()) {
-                Row record = rowIterator.next();
-                if (record.getCell(0) != null && !record.getCell(0).toString().trim().isEmpty()) {
-                    QuickBooksRecord adpRecord = new QuickBooksRecord();
-                    String lastName = record.getCell(0).toString();
-                    String firstName = record.getCell(1).toString();
                     Employee emp = EmployeeFinder.instance().find(firstName, lastName);
-                    if (emp != null) {
-                        adpRecord.setEmployee(emp);
-                        Double hoursValue = null;
-                        Cell hoursCell = record.getCell(2);
-                        if (hoursCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                            hoursValue = record.getCell(2).getNumericCellValue();
-                            if (hoursValue != null) {
-                                adpRecord.setHours(new BigDecimal(hoursValue));
-                                records.add(adpRecord);
-                                String description = "employee:" + emp.getEmployeeId() + ":hours:" + "" + adpRecord.getHours();
-                                createBulkImportMessage(bulkImport, "employee.timesheet.record.found", description, BulkImportMessageType.INFO);
-
-                            }
-                        }
+                    if (emp != null && hours != null) {
+                        QuickBooksRecord record = new QuickBooksRecord();
+                        record.setEmployee(emp);
+                        record.setHours(hours);
+                        String description = "employee:" + emp.getEmployeeId() + ":hours:" + "" + record.getHours();
+                        createBulkImportMessage(bulkImport, "employee.timesheet.record.found", description, BulkImportMessageType.INFO);
+                        records.add(record);
                     } else {
                         if (!firstName.isEmpty() && !lastName.isEmpty()) {
                             String description = "Employee not found for " + firstName + ":lastname:" + lastName;
                             createBulkImportMessage(bulkImport, "emp.not.found", description, BulkImportMessageType.WARN);
-                            logger.log(Level.INFO, "adp--- employee not found last:{0} first:{1}", new Object[]{lastName, firstName});
+                            logger.log(Level.INFO, "Quick Books--- employee not found last:{0} first:{1}", new Object[]{lastName, firstName});
                         }
                     }
                 }
+                //TODO add logic similar to ADP mapper
             }
             in.close();
         } catch (Exception e) {//Catch exception if any
@@ -133,7 +106,7 @@ public class QuickBooksMonthlyHoursImportAdapter {
     protected TimeSheetPeriod getImportMonth(BulkImport bulkImport) {
         try {
             String url = bulkImport.getFileUrl();
-            int monthStart = url.indexOf("QB_") + 3;
+            int monthStart = url.indexOf("QB_") + 4;
             int yearStart = monthStart + 3;
             Integer month = new Integer(url.substring(monthStart, monthStart + 2));
             Integer year = new Integer(url.substring(yearStart, yearStart + 4));
