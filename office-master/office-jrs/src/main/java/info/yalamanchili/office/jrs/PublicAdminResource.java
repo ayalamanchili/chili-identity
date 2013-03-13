@@ -47,10 +47,6 @@ public class PublicAdminResource {
     @GET
     @PreAuthorize("permitAll")
     public void forgotPasswordReset(@PathParam("empId") String empId) {
-        //call password generator to get temp password.
-        //Create a User object with the temp password.
-        //call the above resetPassword the password.
-        //send email with new password.
 
         Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
         if (emp == null) {

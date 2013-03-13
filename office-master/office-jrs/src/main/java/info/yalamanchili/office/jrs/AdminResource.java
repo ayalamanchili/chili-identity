@@ -81,32 +81,6 @@ public class AdminResource {
         return employeeService.resetPassword(empId, user);
     }
 
-    /**
-     * this method will be invoked to reset password when "forgot password" is
-     * clicked. a temp password is generated and saved. finally a email is sent
-     * to to employee primary email with password
-     *
-     * @param empId
-     */
-    @Path("/forgotpassword/{empId}")
-    @GET
-    public void forgotPasswordReset(@PathParam("empId") String empId) {
-        Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
-        if (emp == null) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "no employee id exists with this name");
-        }
-        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        String tempPassword = employeeService.generatepassword();
-
-        User user = new User();
-        user.setUserName(empId);
-        user.setNewPassword(tempPassword);
-
-        employeeService.resetPassword(emp.getId(), user);
-
-        profileNotificationService.sendForgotPasswordNotification(emp, tempPassword);
-    }
-
     @Path("/deactivateuser/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
