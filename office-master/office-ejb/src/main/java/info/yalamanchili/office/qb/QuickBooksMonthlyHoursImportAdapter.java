@@ -51,7 +51,7 @@ public class QuickBooksMonthlyHoursImportAdapter {
                     BigDecimal hours = null;
                     //LastName
                     int lastNameStartIndex = timesheetline.indexOf("-") + 1;
-                    int lastNameEndIndex = timesheetline.indexOf(" ", lastNameStartIndex);
+                    int lastNameEndIndex = timesheetline.indexOf(" ", lastNameStartIndex + 2);
                     if (lastNameStartIndex < timesheetline.length() && lastNameEndIndex < timesheetline.length()) {
                         lastName = timesheetline.substring(lastNameStartIndex, lastNameEndIndex);
                     }
