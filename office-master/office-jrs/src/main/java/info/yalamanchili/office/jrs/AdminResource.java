@@ -91,11 +91,6 @@ public class AdminResource {
     @Path("/forgotpassword/{empId}")
     @GET
     public void forgotPasswordReset(@PathParam("empId") String empId) {
-        //call password generator to get temp password.
-        //Create a User object with the temp password.
-        //call the above resetPassword the password.
-        //send email with new password.
-
         Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
         if (emp == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "no employee id exists with this name");
@@ -144,11 +139,10 @@ public class AdminResource {
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
-        
-        if(emp.getEmployeeType().getName().equalsIgnoreCase("Internal"))
-        {
-          officeBPMIdentityService.createUser(employeeId);
-          
+
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Internal")) {
+            officeBPMIdentityService.createUser(employeeId);
+
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());
@@ -206,7 +200,7 @@ public class AdminResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
-        CUser user =  empDao.findById(empId).getUser();
+        CUser user = empDao.findById(empId).getUser();
         CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (Long roleId : ids) {
             CRole role = cRoleDao.findById(roleId);
