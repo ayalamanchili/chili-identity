@@ -38,18 +38,19 @@ public class ReadAllTasks extends ReadAllTasksComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllTasksUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Assignee"));
+        table.setText(0, 2, getKeyValue("Description"));
+        table.setText(0, 3, getKeyValue("Assignee"));
     }
 
     @Override
@@ -58,7 +59,8 @@ public class ReadAllTasks extends ReadAllTasksComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "assignee"));
+            table.setText(i, 2, JSONUtils.toString(entity, "description"));
+            table.setText(i, 3, JSONUtils.toString(entity, "assignee"));
         }
     }
 
@@ -71,26 +73,26 @@ public class ReadAllTasks extends ReadAllTasksComposite {
     public void claimClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getClaimTaskURL(entityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Task Claimed");
-                        TabPanel.instance().getHomePanel().entityPanel.clear();
-                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Task Claimed");
+                TabPanel.instance().getHomePanel().entityPanel.clear();
+                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+            }
+        });
     }
 
     @Override
     public void resolveClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getResolveTaskURL(entityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Task Resolved");
-                        TabPanel.instance().getHomePanel().entityPanel.clear();
-                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Task Resolved");
+                TabPanel.instance().getHomePanel().entityPanel.clear();
+                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+            }
+        });
     }
 
     @Override
@@ -102,16 +104,16 @@ public class ReadAllTasks extends ReadAllTasksComposite {
     protected void getFormProperties(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getTaskFormPropertiesURL(entityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        //TODO weird return check
-                        if (result != null && !result.trim().toString().equals("null")) {
-                            renderForm(entityId, result);
-                        } else {
-                            completeTask(entityId);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                //TODO weird return check
+                if (result != null && !result.trim().toString().equals("null")) {
+                    renderForm(entityId, result);
+                } else {
+                    completeTask(entityId);
+                }
+            }
+        });
     }
 
     protected void renderForm(String taskId, String formProperties) {
@@ -122,13 +124,13 @@ public class ReadAllTasks extends ReadAllTasksComposite {
     protected void completeTask(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getCompleteTaskURL(entityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Task Completed");
-                        TabPanel.instance().getHomePanel().entityPanel.clear();
-                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Task Completed");
+                TabPanel.instance().getHomePanel().entityPanel.clear();
+                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+            }
+        });
     }
 
     protected String getClaimTaskURL(String taskId) {

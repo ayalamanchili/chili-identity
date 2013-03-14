@@ -62,7 +62,7 @@ public class OfficeBPMTaskService {
 
     public TaskTable getAllUnasigneed(int start, int limit) {
         TaskTable result = new TaskTable();
-        TaskQuery query = bpmTaskService.createTaskQuery().taskUnnassigned();
+        TaskQuery query = bpmTaskService.createTaskQuery().taskUnassigned();
         for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {
             result.getEntities().add(mapper.map(bpmTask, Task.class));
         }
