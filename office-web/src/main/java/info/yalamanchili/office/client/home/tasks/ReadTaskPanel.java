@@ -60,14 +60,17 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
-                //TODO weird return check
-                if (result != null && !result.trim().toString().equals("null")) {
-                    panel.add(new GenericBPMTaskFormPanel("Task", taskId, JSONUtils.convertFormProperties(result)));
-                } else {
-                    //TODO add complete buttons
-                }
+                renderTaskFormPanel(result);
             }
         });
+    }
+
+    protected void renderTaskFormPanel(String result) {
+        if (result != null && !result.trim().toString().equals("null")) {
+            panel.add(new GenericBPMTaskFormPanel("Task", taskId, JSONUtils.convertFormProperties(result)));
+            completeB.setVisible(false);
+            resolveB.setVisible(false);
+        }
     }
 
     @Override
