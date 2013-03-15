@@ -1,6 +1,10 @@
 package info.yalamanchili.office.client.gwt;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.Window;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.rpc.HttpService;
 
 public abstract class CRUDReadAllComposite extends ReadAllComposite<TableRowOptionsWidget> {
 
@@ -26,11 +30,17 @@ public abstract class CRUDReadAllComposite extends ReadAllComposite<TableRowOpti
             updateClicked(rowOptionsWidget.getEntityId());
         }
         if (event.getSource().equals(rowOptionsWidget.getDeleteLink())) {
-            deleteClicked(rowOptionsWidget.getEntityId());
+            preDelete(rowOptionsWidget.getEntityId());
         }
     }
 
     public abstract void viewClicked(String entityId);
+
+    public void preDelete(String entityId) {
+        if (Window.confirm("Are you sure? you want to Delete")) {
+            deleteClicked(entityId);
+        }
+    }
 
     /*
      * add logic to support deleting the record with the input entityId
