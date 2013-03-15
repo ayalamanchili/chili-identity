@@ -6,6 +6,7 @@ package info.yalamanchili.office.entity.social;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,7 +29,7 @@ public class PostLike extends AbstractEntity {
     @ManyToOne
     @ForeignKey(name = "FK_Employee_PostLikes")
     protected Employee employee;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Post_PostLikes")
     protected Post post;
 
