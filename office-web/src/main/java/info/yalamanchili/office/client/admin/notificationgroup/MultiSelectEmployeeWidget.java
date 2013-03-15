@@ -21,19 +21,19 @@ public class MultiSelectEmployeeWidget extends MultiSelectComposite {
 
     private static Logger logger = Logger.getLogger(MultiSelectEmployeeWidget.class.getName());
 
-    public MultiSelectEmployeeWidget(String name, String groupId) {
-        super(OfficeWelcome.constants, name, groupId, false, false);
+    public MultiSelectEmployeeWidget(String name, String groupId, Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, name, groupId, readOnly, isRequired);
     }
 
     @Override
     protected void loadData() {
         HttpService.HttpServiceAsync.instance().doGet(getMultiSelectUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        multiSelectBox.popuplateWidget("Employees", multiSelectBox.getMultiSelectBox(arg0));
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                multiSelectBox.popuplateWidget("Employees", multiSelectBox.getMultiSelectBox(arg0));
+            }
+        });
     }
 
     @Override
