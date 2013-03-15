@@ -14,7 +14,7 @@ import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWi
 import info.yalamanchili.office.client.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
-
+    
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
@@ -22,15 +22,15 @@ public class UpdateEmployeePanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
-
+    
     public static Object instance() {
         return null;
     }
-
+    
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
@@ -49,7 +49,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         entity.put("employeeType", employeeType);
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -58,17 +58,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
             }
-
+            
             @Override
             public void onSuccess(String arg0) {
-
+                
                 uploadImage(JSONUtils.toString(entity, "id"));
-
+                
             }
         });
-
+        
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
@@ -81,17 +81,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         //TODO add image panel for employee image
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
         // same here update them
@@ -104,30 +104,31 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("jobTitle", false, true, DataType.STRING_FIELD);
-
+        
         entityDisplayWidget.add(empImageUploadPanel);
-
+        
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee";
     }
-
+    
     protected void uploadImage(String entityId) {
         empImageUploadPanel.upload(entityId.trim());
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
-         TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+        TabPanel.instance().myOfficePanel.sidePanelTop.add(new TreeEmployeePanel(result));
     }
 }
