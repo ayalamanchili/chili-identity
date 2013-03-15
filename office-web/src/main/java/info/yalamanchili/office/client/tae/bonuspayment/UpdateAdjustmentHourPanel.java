@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class UpdateAdjustmentHourPanel extends UpdateComposite {
 
+    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget(true, false);
     private static Logger logger = Logger.getLogger(UpdateAdjustmentHourPanel.class.getName());
     protected String bonuspaymentsId;
 
@@ -62,6 +63,7 @@ public class UpdateAdjustmentHourPanel extends UpdateComposite {
         assignFieldValueFromEntity("paidHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("paidDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("paymentInfo", entity, DataType.RICH_TEXT_AREA);
+        selectEmployeeWidget.setReadOnly(true);
     }
 
     @Override
@@ -81,7 +83,7 @@ public class UpdateAdjustmentHourPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(false, true));
+        addDropDown("employee", selectEmployeeWidget);
         addField("paidRate", false, false, DataType.CURRENCY_FIELD);
         addField("paidHours", false, true, DataType.FLOAT_FIELD);
         addField("paidDate", false, false, DataType.DATE_FIELD);
