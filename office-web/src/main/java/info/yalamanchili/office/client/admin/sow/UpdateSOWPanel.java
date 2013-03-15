@@ -20,6 +20,8 @@ import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
  */
 public class UpdateSOWPanel extends UpdateComposite {
 
+    SelectProjectWidget selectProjectWidget = new SelectProjectWidget(true, true);
+
     public UpdateSOWPanel(JSONObject entity) {
         initUpdateComposite(entity, "StatementOfWork", OfficeWelcome.constants);
     }
@@ -33,7 +35,6 @@ public class UpdateSOWPanel extends UpdateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("billRate", entity);
         assignEntityValueFromField("project", entity);
-//        assignEntityValueFromField("timeSheets", entity);
         return entity;
     }
 
@@ -64,7 +65,7 @@ public class UpdateSOWPanel extends UpdateComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("billRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("project", entity, null);
-//        assignFieldValueFromEntity("timeSheets", entity, DataType.STRING_FIELD);
+        selectProjectWidget.setReadOnly(true);
     }
 
     @Override
@@ -90,8 +91,7 @@ public class UpdateSOWPanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("billRate", false, false, DataType.CURRENCY_FIELD);
-        addDropDown("project", new SelectProjectWidget(false, true));
-//        addField("timeSheets", false, false, DataType.STRING_FIELD);
+        addDropDown("project", selectProjectWidget);
     }
 
     @Override
