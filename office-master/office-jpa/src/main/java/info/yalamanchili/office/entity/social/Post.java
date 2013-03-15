@@ -57,7 +57,7 @@ public class Post extends AbstractEntity {
     protected List<Post> replies;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     protected List<PostFile> postFiles;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     protected List<PostLike> postLikes;
 
     public Date getPostTimeStamp() {
