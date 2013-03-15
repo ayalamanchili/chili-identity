@@ -58,6 +58,12 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
     }
 
+    public TreeEmployeePanel(String result) {
+        super(result);
+        instance = this;
+        init("Employee", OfficeWelcome.constants);
+    }
+
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
