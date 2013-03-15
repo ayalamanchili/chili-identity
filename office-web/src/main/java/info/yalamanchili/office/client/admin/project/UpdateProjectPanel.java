@@ -21,6 +21,8 @@ import info.yalamanchili.office.client.rpc.HttpService;
  */
 public class UpdateProjectPanel extends UpdateComposite {
 
+    SelectClientWidget selectClientWidget = new SelectClientWidget(true, false);
+
     public UpdateProjectPanel(JSONObject entity) {
         initUpdateComposite(entity, "Project", OfficeWelcome.constants);
     }
@@ -31,6 +33,7 @@ public class UpdateProjectPanel extends UpdateComposite {
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("client", entity);
         return entity;
     }
 
@@ -56,6 +59,8 @@ public class UpdateProjectPanel extends UpdateComposite {
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("client", entity, null);
+        selectClientWidget.setReadOnly(true);
     }
 
     @Override
@@ -82,7 +87,7 @@ public class UpdateProjectPanel extends UpdateComposite {
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addDropDown("client", new SelectClientWidget(false, true));
+        addDropDown("client", selectClientWidget);
     }
 
     @Override
