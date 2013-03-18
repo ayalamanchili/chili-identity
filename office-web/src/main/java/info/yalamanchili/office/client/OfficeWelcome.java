@@ -17,6 +17,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
@@ -33,6 +34,10 @@ public class OfficeWelcome implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
+        String browser = Window.Navigator.getUserAgent();
+        if (browser.contains(".NET")) {
+            new ResponseStatusWidget().show("Portal is not 100% compatible with Internet Explorer. Please use Crome or Firefox");
+        }
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
         RootLayoutPanel.get().add(new LoginPage());
