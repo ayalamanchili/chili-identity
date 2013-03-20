@@ -32,7 +32,7 @@
                        cancelActivity="false" 
                        attachedToRef="updateAddressHRTask">
             <timerEventDefinition> 
-                <timeDuration>PT7D</timeDuration> 
+                <timeDuration>PT168H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="emailEscalationTimer" 
