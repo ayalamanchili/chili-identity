@@ -21,12 +21,28 @@
         <!--Create EmployeeAddressUpdatedTask for HR Role-->
         <userTask id="updateAddressHRTask" 
                   name="Employee ${employee.firstName} ${employee.lastName} Address Updated" 
-                  activiti:candidateGroups="ROLE_HR,ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+                   activiti:candidateGroups="ROLE_HR,ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
             <documentation>
-                Employee Address is updated in portal and task if created for HR group for handling immigration and related changes
+                Employee Address is updated in portal and task is created for HR group for handling immigration and related changes
             </documentation>
         </userTask>
-        <sequenceFlow id="flow2" sourceRef="updateAddressHRTask" targetRef="updateAddressEnd" />
+        <sequenceFlow sourceRef="updateAddressHRTask" targetRef="updateAddressEnd" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="updateAddressHRTask">
+            <timerEventDefinition> 
+                <timeDuration>PT7D</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- process end-->
         <endEvent id="updateAddressEnd" />
  
     </process>
