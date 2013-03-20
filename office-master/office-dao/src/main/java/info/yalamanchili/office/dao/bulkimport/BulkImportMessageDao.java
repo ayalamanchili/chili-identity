@@ -6,6 +6,7 @@ package info.yalamanchili.office.dao.bulkimport;
 
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
+import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,9 +30,16 @@ public class BulkImportMessageDao extends CRUDDao<BulkImportMessage> {
         super(BulkImportMessage.class);
     }
 
-    public List<BulkImportMessage> getMessages(Long bulkImportId, int start, int limit) {
-        Query query = em.createQuery("from " + BulkImportMessage.class.getCanonicalName() + " bim where bim.bulkImport.id=:bulkImportIdParam");
+    public List<BulkImportMessage> getMessages(Long bulkImportId, BulkImportMessageType messageType, int start, int limit) {
+        String queryString = "from " + BulkImportMessage.class.getCanonicalName() + " bim where bim.bulkImport.id=:bulkImportIdParam";
+        if (messageType != null) {
+            queryString = queryString + " and bim.messageType=:messageTypeParam";
+        }
+        Query query = em.createQuery(queryString);
         query.setParameter("bulkImportIdParam", bulkImportId);
+        if (messageType != null) {
+            query.setParameter("messageTypeParam", messageType);
+        }
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();

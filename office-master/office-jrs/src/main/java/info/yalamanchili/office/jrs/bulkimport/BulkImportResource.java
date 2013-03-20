@@ -11,6 +11,7 @@ import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
 import info.yalamanchili.office.dao.bulkimport.BulkImportMessageDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
+import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -18,6 +19,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -72,9 +74,13 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
 
     @GET
     @Path("/messages/{bulkImportId}/{start}/{limit}")
-    public BulkImportMessageTable getMessages(@PathParam("bulkImportId") Long bulkImportId, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public BulkImportMessageTable getMessages(@PathParam("bulkImportId") Long bulkImportId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("messageType") String messageType) {
         BulkImportMessageTable tableObj = new BulkImportMessageTable();
-        tableObj.setEntities(bulkImportMessageDao.getMessages(bulkImportId, start, limit));
+        if (messageType != null) {
+            tableObj.setEntities(bulkImportMessageDao.getMessages(bulkImportId, BulkImportMessageType.valueOf(messageType), start, limit));
+        } else {
+            tableObj.setEntities(bulkImportMessageDao.getMessages(bulkImportId, null, start, limit));
+        }
         tableObj.setSize(bulkImportMessageDao.getMessagesSize(bulkImportId));
         return tableObj;
     }
