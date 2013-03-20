@@ -55,6 +55,21 @@
             </extensionElements> 
         </userTask>
         <sequenceFlow id="overTimeHoursAdjustmentHoursFlow3" sourceRef="overTimeHoursAdjustmentHoursApprovalTask" targetRef="approvalGateway" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="overTimeHoursAdjustmentHoursApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT7D</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
         <!--desision-->
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 

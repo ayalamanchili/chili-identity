@@ -47,6 +47,21 @@
             </extensionElements> 
         </userTask>
         <sequenceFlow id="flow3" sourceRef="accountResetApprovalTask" targetRef="approvalGateway" />
+               <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="accountResetApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT7D</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
         <!--desision-->
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
