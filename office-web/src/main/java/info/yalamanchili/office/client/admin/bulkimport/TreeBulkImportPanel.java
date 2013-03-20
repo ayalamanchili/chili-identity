@@ -21,7 +21,9 @@ public class TreeBulkImportPanel extends TreePanelComposite {
         return instance;
     }
     private static Logger logger = Logger.getLogger(TreeBulkImportPanel.class.getName());
-    protected static final String MESSAGES_NODE = "messages";
+    protected static final String INFO_MESSAGES_NODE = "INFO_Messages";
+    protected static final String WARN_MESSAGES_NODE = "WARN_Messages";
+    protected static final String ERROR_MESSAGES_NODE = "ERROR_Messages";
 
     public TreeBulkImportPanel(String entityId) {
         super(entityId);
@@ -44,14 +46,24 @@ public class TreeBulkImportPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        addFirstChildLink("Messages", MESSAGES_NODE);
+        addFirstChildLink("INFO Messages", INFO_MESSAGES_NODE);
+        addFirstChildLink("WARN Messages", WARN_MESSAGES_NODE);
+        addFirstChildLink("ERROR Messages", ERROR_MESSAGES_NODE);
     }
 
     @Override
     public void treeNodeSelected(String entityNodeKey) {
-        if (MESSAGES_NODE.equals(entityNodeKey)) {
+        if (INFO_MESSAGES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportMessagesPanel(entityId));
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportMessagesPanel(entityId, "INFO"));
+        }
+        if (WARN_MESSAGES_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportMessagesPanel(entityId, "WARN"));
+        }
+        if (ERROR_MESSAGES_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportMessagesPanel(entityId, "ERROR"));
         }
     }
 

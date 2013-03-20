@@ -25,10 +25,12 @@ public class ReadAllBulkImportMessagesPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllBulkImportMessagesPanel.class.getName());
     public static ReadAllBulkImportMessagesPanel instance;
+    protected String messageType;
 
-    public ReadAllBulkImportMessagesPanel(String bulkImportId) {
+    public ReadAllBulkImportMessagesPanel(String bulkImportId, String messageType) {
         instance = this;
         this.parentId = bulkImportId;
+        this.messageType = messageType;
         initTable("BulkImportMessage", OfficeWelcome.constants);
     }
 
@@ -45,7 +47,7 @@ public class ReadAllBulkImportMessagesPanel extends CRUDReadAllComposite {
 
     public String getMessagesURL(String employeeId, Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "bulkimport/messages/" + parentId + "/" + start.toString() + "/"
-                + limit.toString();
+                + limit.toString() + "?messageType=" + messageType;
     }
 
     @Override
