@@ -81,7 +81,7 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
         } else {
             tableObj.setEntities(bulkImportMessageDao.getMessages(bulkImportId, null, start, limit));
         }
-        tableObj.setSize(bulkImportMessageDao.getMessagesSize(bulkImportId));
+        tableObj.setSize(bulkImportMessageDao.getMessagesSize(bulkImportId, BulkImportMessageType.valueOf(messageType)));
         return tableObj;
     }
 

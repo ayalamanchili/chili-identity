@@ -45,9 +45,16 @@ public class BulkImportMessageDao extends CRUDDao<BulkImportMessage> {
         return query.getResultList();
     }
 
-    public Long getMessagesSize(Long bulkImportId) {
-        TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + BulkImportMessage.class.getCanonicalName() + " bim where bim.bulkImport.id=:bulkImportIdParam", Long.class);
+    public Long getMessagesSize(Long bulkImportId, BulkImportMessageType messageType) {
+        String queryString = "select count(*) from " + BulkImportMessage.class.getCanonicalName() + " bim where bim.bulkImport.id=:bulkImportIdParam";
+        if (messageType != null) {
+            queryString = queryString + " and bim.messageType=:messageTypeParam";
+        }
+        TypedQuery<Long> sizeQuery = getEntityManager().createQuery(queryString, Long.class);
         sizeQuery.setParameter("bulkImportIdParam", bulkImportId);
+        if (messageType != null) {
+            sizeQuery.setParameter("messageTypeParam", messageType);
+        }
         return sizeQuery.getSingleResult();
     }
 
