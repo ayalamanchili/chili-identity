@@ -79,9 +79,9 @@ public class CreatePhonePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("countryCode", false, true, DataType.LONG_FIELD);
+        addField("countryCode", false, false, DataType.LONG_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
-        addField("extension", false, true, DataType.LONG_FIELD);
+        addField("extension", false, false, DataType.LONG_FIELD);
         entityDisplayWidget.add(phoneTypeF);
     }
 
