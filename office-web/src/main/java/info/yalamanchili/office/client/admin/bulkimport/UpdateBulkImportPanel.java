@@ -10,6 +10,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
 
@@ -19,6 +20,13 @@ import info.yalamanchili.office.client.rpc.HttpService;
  */
 public class UpdateBulkImportPanel extends UpdateComposite {
 
+    FileuploadField bulkImportUploadPanel = new FileuploadField(OfficeWelcome.constants, "BulkImport", "fileUrl", "BulkImport/fileUrl", false) {
+        @Override
+        public void onUploadComplete() {
+            postUpdateSuccess(null);
+        }
+    };
+
     public UpdateBulkImportPanel(JSONObject entity) {
         initUpdateComposite(entity, "Client", OfficeWelcome.constants);
     }
@@ -27,6 +35,9 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
+        if (!bulkImportUploadPanel.isEmpty()) {
+            entity.put("fileUrl", bulkImportUploadPanel.getFileName());
+        }
         return entity;
     }
 
@@ -73,6 +84,7 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
+        entityDisplayWidget.add(bulkImportUploadPanel);
         //just show name description and fileuplaod fields
     }
 
