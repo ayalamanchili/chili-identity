@@ -92,9 +92,9 @@ public class CreateEmergencyContactPanel extends CreateComposite {
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("email", false, false, DataType.STRING_FIELD);
-        addField("countryCode", false, true, DataType.STRING_FIELD);
+        addField("countryCode", false, false, DataType.STRING_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
-        addField("extension", false, true, DataType.STRING_FIELD);
+        addField("extension", false, false, DataType.STRING_FIELD);
     }
 
     @Override
