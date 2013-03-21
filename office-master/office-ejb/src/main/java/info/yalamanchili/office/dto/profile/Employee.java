@@ -28,6 +28,7 @@ public class Employee implements Serializable {
     protected Long id;
     protected String username;
     @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
+    @NotEmpty(message = "{user.passwordHash.not.empty.msg}")
     protected String passwordHash;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
@@ -42,7 +43,7 @@ public class Employee implements Serializable {
     protected Sex sex;
     protected String imageURL;
     protected Date startDate;
-    @Email(message="Enter a valid email address ")
+    @Email(message = "Enter a valid email address ")
     @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
     protected String phoneNumber;
@@ -165,17 +166,17 @@ public class Employee implements Serializable {
         this.employeeType = employeeType;
     }
 
-     public void setJobTitle(String jobTitle) {
+    public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
 
     public String getJobTitle() {
         return jobTitle;
     }
-    
+
     @Override
     public String toString() {
-        return "Employee{" + "id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber +  '}';
+        return "Employee{" + "id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
 
     public static Employee map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
