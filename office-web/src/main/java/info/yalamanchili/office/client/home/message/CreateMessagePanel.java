@@ -11,9 +11,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextBox;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -31,9 +31,9 @@ import java.util.logging.Logger;
 public class CreateMessagePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateMessagePanel.class.getName());
-    SuggestBox tosSB = null;
+    SuggestBox suggestionsBox = null;
     Button addTo = new Button("Add");
-    TextBox tosTB = new TextBox();
+    TextAreaField tosTB;
 
     public CreateMessagePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -63,7 +63,7 @@ public class CreateMessagePanel extends CreateComposite {
                 to.put("id", new JSONString(toStr.trim()));
                 to.put("value", new JSONString(toStr.trim()));
                 array.set(i, to);
-                  i++;
+                i++;
             }
         }
         return array;
@@ -108,17 +108,19 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void configure() {
+        setButtonText("Send Message");
         initTosSuggesBox();
     }
 
     @Override
     protected void addWidgets() {
-        addField("tos", false, true, DataType.SUGGEST_FIELD);
+        addField("search", false, true, DataType.SUGGEST_FIELD);
         entityDisplayWidget.add(addTo);
-        entityDisplayWidget.add(tosTB);
+        addField("to", false, true, DataType.TEXT_AREA_FIELD);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("message", false, false, DataType.RICH_TEXT_AREA);
-        tosSB = (SuggestBox) fields.get("tos");
+        suggestionsBox = (SuggestBox) fields.get("search");
+        tosTB = (TextAreaField) fields.get("to");
     }
 
     @Override
@@ -137,7 +139,7 @@ public class CreateMessagePanel extends CreateComposite {
                 logger.info(entityString);
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
                 if (values != null) {
-                    tosSB.loadData(values.values());
+                    suggestionsBox.loadData(values.values());
                 }
             }
         });
@@ -147,7 +149,7 @@ public class CreateMessagePanel extends CreateComposite {
                 logger.info(entityString);
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
                 if (values != null) {
-                    tosSB.loadData(values.values());
+                    suggestionsBox.loadData(values.values());
                 }
             }
         });
@@ -156,9 +158,9 @@ public class CreateMessagePanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addTo)) {
-            if (tosSB.getValue() != null && !tosSB.getValue().trim().isEmpty()) {
-                tosTB.setText(tosTB.getText() + " " + tosSB.getValue());
-                tosSB.setValue("");
+            if (suggestionsBox.getValue() != null && !suggestionsBox.getValue().trim().isEmpty()) {
+                tosTB.setValue(tosTB.getValue() + " " + suggestionsBox.getValue());
+                suggestionsBox.setValue("");
             }
         } else {
             super.onClick(event);
