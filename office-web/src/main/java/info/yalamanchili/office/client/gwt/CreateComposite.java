@@ -52,15 +52,17 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
 
     @Override
     public void onClick(ClickEvent event) {
-        entity = populateEntityFromFields();
-        if (processClientSideValidations(entity)) {
-            if (create.isAttached()) {
-                createButtonClicked();
+        if (event.getSource().equals(create) || event.getSource().equals(add)) {
+            entity = populateEntityFromFields();
+            if (processClientSideValidations(entity)) {
+                if (create.isAttached()) {
+                    createButtonClicked();
+                }
+                if (add.isAttached()) {
+                    addButtonClicked();
+                }
+                disableSubmitButtons();
             }
-            if (add.isAttached()) {
-                addButtonClicked();
-            }
-            disableSubmitButtons();
         }
     }
 

@@ -5,16 +5,17 @@
 package info.yalamanchili.office.client.home.message;
 
 import com.google.common.base.Splitter;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.TextBox;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.chili.gwt.widgets.RichTextToolBar;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -31,6 +32,8 @@ public class CreateMessagePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateMessagePanel.class.getName());
     SuggestBox tosSB = null;
+    Button addTo = new Button("Add");
+    TextBox tosTB = new TextBox();
 
     public CreateMessagePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -52,38 +55,39 @@ public class CreateMessagePanel extends CreateComposite {
 
     protected JSONArray populateTos() {
         JSONArray array = new JSONArray();
-        String tos = tosSB.getValue();
+        String tos = tosTB.getValue();
         int i = 0;
         for (String toStr : splitString(tos)) {
             if (!toStr.trim().isEmpty()) {
                 JSONObject to = new JSONObject();
                 to.put("id", new JSONString(toStr.trim()));
+                to.put("value", new JSONString(toStr.trim()));
                 array.set(i, to);
+                  i++;
             }
-            i++;
         }
         return array;
     }
 
     public static Iterable<String> splitString(String str) {
-        return Splitter.on(",").split(str);
+        return Splitter.on(" ").split(str);
     }
 
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -99,6 +103,7 @@ public class CreateMessagePanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
+        addTo.addClickHandler(this);
     }
 
     @Override
@@ -109,6 +114,8 @@ public class CreateMessagePanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("tos", false, true, DataType.SUGGEST_FIELD);
+        entityDisplayWidget.add(addTo);
+        entityDisplayWidget.add(tosTB);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("message", false, false, DataType.RICH_TEXT_AREA);
         tosSB = (SuggestBox) fields.get("tos");
@@ -144,6 +151,18 @@ public class CreateMessagePanel extends CreateComposite {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(addTo)) {
+            if (tosSB.getValue() != null && !tosSB.getValue().trim().isEmpty()) {
+                tosTB.setText(tosTB.getText() + " " + tosSB.getValue());
+                tosSB.setValue("");
+            }
+        } else {
+            super.onClick(event);
+        }
     }
 
     protected String getEmployeeIdsDropDownUrl() {

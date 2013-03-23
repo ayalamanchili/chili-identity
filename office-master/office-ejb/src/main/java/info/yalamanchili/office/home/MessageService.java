@@ -53,8 +53,10 @@ public class MessageService {
                 newMessage.addTo(EmployeeDao.instance().getEmployeWithEmpId(emp.getId()));
             } else {
                 NotificationGroup group = NotificationGroupDao.instance().findByName(emp.getId());
-                for (Employee grpEmp : group.getEmployees()) {
-                    newMessage.addTo(grpEmp);
+                if (group != null) {
+                    for (Employee grpEmp : group.getEmployees()) {
+                        newMessage.addTo(grpEmp);
+                    }
                 }
             }
         }
