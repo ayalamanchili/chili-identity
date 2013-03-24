@@ -10,8 +10,6 @@ import java.util.logging.Logger;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import info.chili.gwt.utils.FileUtils;
-import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
 //TODO add File/ImageUploadPanel support for this (merge)
@@ -27,7 +25,8 @@ public class ImageField extends ALComposite {
         label.setVisible(showLabel);
         setPixelSize(width, height);
         image.addStyleName("imageField-Image");
-        if (url == null || url.trim().length() < 1) {
+        logger.info("ddd" + url);
+        if (!validUrl(url)) {
             setDefaultImage(width, height);
         } else {
             image.setUrl(OfficeWelcome.config.getFileDownloadUrl() + url + "&entityId=" + entityId);
@@ -38,6 +37,17 @@ public class ImageField extends ALComposite {
             }
         });
         init(panel);
+    }
+
+    protected boolean validUrl(String url) {
+        if (url == null || url.trim().length() < 1) {
+            return false;
+        }
+        int startIndex = url.indexOf("entityId_");
+        if (startIndex > 0 && url.trim().length() > (startIndex + "entityId_".length())) {
+            return true;
+        }
+        return false;
     }
 
     protected void setDefaultImage(int width, int height) {
