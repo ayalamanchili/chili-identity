@@ -1,7 +1,6 @@
 package info.yalamanchili.office.jrs;
 
 import info.chili.commons.EntityQueryUtils;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -113,10 +112,9 @@ public class AdminResource {
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
-
+        //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Internal")) {
-            officeBPMIdentityService.createUser(employeeId);
-
+            officeBPMIdentityService.syncUserAndRoles(employeeId);
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());
@@ -166,6 +164,7 @@ public class AdminResource {
         for (Long roleId : ids) {
             CRole role = cRoleDao.findById(roleId);
             emp.getUser().addRole(role);
+            OfficeBPMIdentityService.instance().addUserToGroup(emp.getUser().getUsername(), role.getRolename());
         }
     }
 
@@ -180,6 +179,7 @@ public class AdminResource {
             CRole role = cRoleDao.findById(roleId);
             if (ids.contains(roleId)) {
                 user.getRoles().remove(role);
+                OfficeBPMIdentityService.instance().removeUserFromGroup(user.getUsername(), role.getRolename());
             }
         }
     }

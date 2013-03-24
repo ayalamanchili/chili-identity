@@ -5,8 +5,10 @@
 package info.yalamanchili.office.bpm;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CRole;
+import info.yalamanchili.office.entity.security.CUser;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -35,10 +37,16 @@ public class OfficeBPMIdentityService {
     @Autowired
     protected IdentityService bpmIdentityService;
 
-    public void createUser(String userId) {
+    public void syncUserAndRoles(String userId) {
         if (findUser(userId) == null) {
             User user = bpmIdentityService.newUser(userId);
             bpmIdentityService.saveUser(user);
+            //groups
+            CUser cuser = SecurityService.instance().findEmployee(userId).getUser();
+            for (CRole role : cuser.getRoles()) {
+                createGroup(role.getRolename());
+                addUserToGroup(cuser.getUsername(), role.getRolename());
+            }
         }
     }
 
@@ -56,6 +64,13 @@ public class OfficeBPMIdentityService {
         }
     }
 
+    public void removeUserFromGroup(String userId, String groupId) {
+        UserQuery userQuery = bpmIdentityService.createUserQuery().userId(userId).memberOfGroup(groupId);
+        if (userQuery.count() > 0) {
+            bpmIdentityService.deleteMembership(userId, groupId);
+        }
+    }
+
     /**
      * sync Portal internal users with Activiti BPM users
      */
@@ -64,12 +79,7 @@ public class OfficeBPMIdentityService {
         TypedQuery<Employee> empQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:empTypeParam", Employee.class);
         empQuery.setParameter("empTypeParam", "INTERNAL");
         for (Employee emp : empQuery.getResultList()) {
-            logger.log(Level.INFO, "creating activiti user:{0}", emp.getEmployeeId());
-            createUser(emp.getEmployeeId());
-            for (CRole role : emp.getUser().getRoles()) {
-                createGroup(role.getRolename());
-                addUserToGroup(emp.getEmployeeId(), role.getRolename());
-            }
+            syncUserAndRoles(emp.getUser().getUsername());
         }
     }
 
