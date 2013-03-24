@@ -46,8 +46,8 @@ public class MessageDao extends CRUDDao<Message> {
     @Override
     public Long size() {
         Employee currentEmployee = SecurityService.instance().getCurrentUser();
-        TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where fromEmp=:currentEmp", Long.class);
-        sizeQuery.setParameter("currentEmp", currentEmployee);
+        TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " msg JOIN msg.tos emp where emp =:empParam", Long.class);
+        sizeQuery.setParameter("empParam", currentEmployee);
         return sizeQuery.getSingleResult();
     }
 
