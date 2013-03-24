@@ -1,5 +1,6 @@
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -12,6 +13,8 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
@@ -22,6 +25,7 @@ import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocation
 public class CreateClientInfoPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
+    protected Anchor addClientL = new Anchor("Client not present? request for new adding new Client");
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -53,17 +57,17 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+               new ResponseStatusWidget().show("Request submitted. Please wait for a email confirmation and then continue");
+            }
+        });
 
     }
 
@@ -77,7 +81,7 @@ public class CreateClientInfoPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        // TODO Auto-generated method stub
+        addClientL.addClickHandler(this);
     }
 
     @Override
@@ -89,6 +93,7 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
         addDropDown("client", new SelectClientWidget(false, true));
+        entityDisplayWidget.add(addClientL);
         addDropDown("clientContact", new SelectClientContactWidget(false, false));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
         addDropDown("vendor", new SelectVendorWidget(false, false));
@@ -102,6 +107,24 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(addClientL)) {
+            HttpServiceAsync.instance().doGet(getAddClientRequestUrl(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String arg0) {
+                    postCreateSuccess(arg0);
+                }
+            });
+        }
+        super.onClick(event);
+    }
+
+    protected String getAddClientRequestUrl() {
+        return OfficeWelcome.constants.root_url() + "bpm/startprocess/add_new_client_request";
     }
 
     @Override
