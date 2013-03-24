@@ -114,7 +114,7 @@ public class AdminResource {
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Internal")) {
-            officeBPMIdentityService.syncUserAndRoles(employeeId);
+            officeBPMIdentityService.createUser(employeeId);
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());
