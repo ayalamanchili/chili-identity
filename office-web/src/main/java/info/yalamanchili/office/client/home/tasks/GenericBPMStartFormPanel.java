@@ -4,17 +4,18 @@
  */
 package info.yalamanchili.office.client.home.tasks;
 
-import com.google.gwt.json.client.JSONArray;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.rpc.HttpService;
 
 /**
  *
  * @author ayalamanchili
  */
-public abstract class GenericBPMStartFormPanel extends GenericBPMFormPanel {
+public class GenericBPMStartFormPanel extends GenericBPMFormPanel {
 
     protected String processId;
 
@@ -22,16 +23,16 @@ public abstract class GenericBPMStartFormPanel extends GenericBPMFormPanel {
         initCreateComposite(processName, OfficeWelcome.constants);
         HttpService.HttpServiceAsync.instance().doGet(getStartFormPropertiesURL(processId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        //TODO weird return check
-                        if (result != null && !result.trim().toString().equals("null")) {
-                            GenericBPMStartFormPanel.this.processId = processId;
-                            GenericBPMStartFormPanel.this.formProperties = JSONUtils.convertFormProperties(result);
-                            addWidgets();
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                //TODO weird return check
+                if (result != null && !result.trim().toString().equals("null")) {
+                    GenericBPMStartFormPanel.this.processId = processId;
+                    GenericBPMStartFormPanel.this.formProperties = JSONUtils.convertFormProperties(result);
+                    addWidgets();
+                }
+            }
+        });
     }
 
     protected String getStartFormPropertiesURL(String processId) {
@@ -39,7 +40,18 @@ public abstract class GenericBPMStartFormPanel extends GenericBPMFormPanel {
     }
 
     @Override
+    protected void configure() {
+        setButtonText("Submit");
+    }
+
+    @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "bpm/submit_start_form/" + processId;
+    }
+
+    @Override
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully submitted");
+        GenericPopup.instance().hide();
     }
 }

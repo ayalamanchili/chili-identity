@@ -7,15 +7,27 @@
  
     <process id="add_new_client_request">
         <startEvent id="addNewClientStart">
+            <extensionElements>
+                <activiti:formProperty id="clientName" 
+                                       name="Client Name"
+                                       required="true"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="description" 
+                                       name="Description"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements>
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="addNewClientStart" targetRef="addNewClientTask" />
         <userTask id="addNewClientTask" 
-                  name="Please add a new Client" 
+                  name="Add new Client request" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_ADMIN">
             <documentation>
-                Please add new client
+                Add Client Information:Client Name: ${clientName} Desctiption: ${description}
             </documentation>
             <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreationEmail" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"
@@ -29,13 +41,7 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="flow2" sourceRef="addNewClientTask" targetRef="genericTaskCreationEmail" />
-        <serviceTask
-            id="genericTaskCreationEmail"
-            name="Task Creation Email"
-            activiti:class="info.yalamanchili.office.bpm.email.GenericTaskCreationEmail">
-        </serviceTask>
-        <sequenceFlow id="flow3" sourceRef="genericTaskCreationEmail" targetRef="approvalGateway" />
+        <sequenceFlow id="flow3" sourceRef="addNewClientTask" targetRef="approvalGateway" />
         <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 

@@ -14,13 +14,14 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
+import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 
 public class CreateClientInfoPanel extends CreateComposite {
 
@@ -65,7 +66,7 @@ public class CreateClientInfoPanel extends CreateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-               new ResponseStatusWidget().show("Request submitted. Please wait for a email confirmation and then continue");
+                new ResponseStatusWidget().show("Request submitted. Please wait for a email confirmation and then continue");
             }
         });
 
@@ -112,13 +113,7 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
-            HttpServiceAsync.instance().doGet(getAddClientRequestUrl(), OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postCreateSuccess(arg0);
-                }
-            });
+            new GenericPopup(new GenericBPMStartFormPanel("add_new_client_request", "add_new_client_request")).show();
         }
         super.onClick(event);
     }

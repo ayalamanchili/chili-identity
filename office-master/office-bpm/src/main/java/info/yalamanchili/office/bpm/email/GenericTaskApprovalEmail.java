@@ -8,6 +8,7 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 
 /**
+ * Use this for notifying the current for approval of any submitted requests.
  *
  * @author ayalamanchili
  */

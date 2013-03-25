@@ -74,6 +74,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
     protected void addButtonClicked() {
     }
 
+    @Override
     protected abstract void postCreateSuccess(String result);
 
     @Override
