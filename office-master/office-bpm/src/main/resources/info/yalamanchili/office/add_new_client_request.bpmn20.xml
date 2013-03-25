@@ -27,7 +27,8 @@
                 Add Client Information:Client Name: ${clientName} Desctiption: ${description}
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreationEmail" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"
@@ -60,7 +61,7 @@
         <!--desision-->
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="genericTaskApprovalEmail">
+                      targetRef="addClientEnd">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
@@ -71,13 +72,6 @@
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <!-- request approved email-->
-        <serviceTask
-            id="genericTaskApprovalEmail"
-            name="Task Approval Email"
-            activiti:class="info.yalamanchili.office.bpm.email.GenericTaskApprovalEmail">
-        </serviceTask>
-        <sequenceFlow id="flow4" sourceRef="approvalGateway" targetRef="addClientEnd" />
         <!-- end-->
         <endEvent id="addClientEnd" />
     </process>
