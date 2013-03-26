@@ -57,6 +57,7 @@ public class OfficeBPMIdentityService {
     }
 
     public void addUserToGroup(String userId, String groupId) {
+        createUser(userId);
         UserQuery userQuery = bpmIdentityService.createUserQuery().userId(userId).memberOfGroup(groupId);
         if (userQuery.count() < 1) {
             bpmIdentityService.createMembership(userId, groupId);
@@ -68,6 +69,7 @@ public class OfficeBPMIdentityService {
      */
     @Async
     public void syncUsersAndRoles() {
+        syncRoles();
         TypedQuery<Employee> empQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:empTypeParam", Employee.class);
         empQuery.setParameter("empTypeParam", "INTERNAL");
         for (Employee emp : empQuery.getResultList()) {

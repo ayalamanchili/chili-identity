@@ -173,13 +173,13 @@ public class AdminResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
-        CUser user = empDao.findById(empId).getUser();
+        Employee emp = empDao.findById(empId);
         CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (Long roleId : ids) {
             CRole role = cRoleDao.findById(roleId);
             if (ids.contains(roleId)) {
-                user.getRoles().remove(role);
-                OfficeBPMIdentityService.instance().removeUserFromGroup(user.getUsername(), role.getRolename());
+                emp.getUser().getRoles().remove(role);
+                OfficeBPMIdentityService.instance().removeUserFromGroup(emp.getUser().getUsername(), role.getRolename());
             }
         }
     }
