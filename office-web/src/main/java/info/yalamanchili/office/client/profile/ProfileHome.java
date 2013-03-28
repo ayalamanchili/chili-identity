@@ -62,7 +62,9 @@ public class ProfileHome extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        updateProfile.addClickHandler(this);
+        if (Auth.hasOnlyUserRole()) {
+            updateProfile.addClickHandler(this);
+        }
         changePassword.addClickHandler(this);
     }
 
