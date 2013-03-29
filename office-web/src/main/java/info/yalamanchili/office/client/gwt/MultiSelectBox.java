@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import info.chili.gwt.widgets.CHorizontalPanel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

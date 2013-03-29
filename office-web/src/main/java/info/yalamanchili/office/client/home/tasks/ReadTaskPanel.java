@@ -12,8 +12,11 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -26,7 +29,7 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class ReadTaskPanel extends ALComposite implements ClickHandler {
-
+    
     private static Logger logger = Logger.getLogger(ReadTaskPanel.class.getName());
     protected JSONObject task;
     protected String taskId;
@@ -34,27 +37,33 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     protected CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     Label nameL = new Label("Name");
-    TextArea nameF = new TextArea();
+    TextBox nameF = new TextBox();
     Label descriptionL = new Label("Description");
     TextArea descriptionF = new TextArea();
+    StringField assigneeField = new StringField(OfficeWelcome.constants, "assignee", "Task", true, false);
+    DateField createTimeField = new DateField(OfficeWelcome.constants, "createdDate", "Task", true, false);
+    DateField dueDateField = new DateField(OfficeWelcome.constants, "dueDate", "Task", true, false);
     //Actions
     Button claimB = new Button("Claim");
     Button resolveB = new Button("Resolve");
     Button completeB = new Button("Complete");
-
+    
     public ReadTaskPanel(JSONObject task) {
+        logger.info("ddddd" + task);
         this.task = task;
         this.taskId = JSONUtils.toString(task, "id");
         init(captionPanel);
         populateValues();
         populateTaskForm();
     }
-
+    
     private void populateValues() {
         nameF.setValue(JSONUtils.toString(task, "name"));
         descriptionF.setValue(JSONUtils.toString(task, "description"));
+        assigneeField.setValue(JSONUtils.toString(task, "assignee"));
+        createTimeField.setValue(JSONUtils.toString(task, "createTime"));
     }
-
+    
     private void populateTaskForm() {
         HttpService.HttpServiceAsync.instance().doGet(getTaskFormPropertiesURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -64,7 +73,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected void renderTaskFormPanel(String result) {
         if (result != null && !result.trim().toString().equals("null")) {
             panel.add(new GenericBPMTaskFormPanel("Task", taskId, JSONUtils.convertFormProperties(result)));
@@ -72,14 +81,14 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             resolveB.setVisible(false);
         }
     }
-
+    
     @Override
     protected void addListeners() {
         claimB.addClickHandler(this);
         resolveB.addClickHandler(this);
         completeB.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         nameF.setEnabled(false);
@@ -87,7 +96,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         nameF.setWidth("100%");
         descriptionF.setWidth("100%");
     }
-
+    
     @Override
     protected void addWidgets() {
         captionPanel.setCaptionHTML("Task");
@@ -96,11 +105,14 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         panel.add(nameF);
         panel.add(descriptionL);
         panel.add(descriptionF);
+        panel.add(assigneeField);
+        panel.add(createTimeField);
+        panel.add(dueDateField);
         panel.add(claimB);
         panel.add(resolveB);
         panel.add(completeB);
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(claimB)) {
@@ -113,7 +125,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             completeClicked();
         }
     }
-
+    
     protected void claimClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getClaimTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -125,7 +137,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected void resolveClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getResolveTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -137,7 +149,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected void completeClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getCompleteTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -149,19 +161,19 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected String getClaimTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/claimtask/" + taskId;
     }
-
+    
     protected String getResolveTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/resolvetask/" + taskId;
     }
-
+    
     protected String getCompleteTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/completetask/" + taskId;
     }
-
+    
     protected String getTaskFormPropertiesURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/task_form_properties/" + taskId;
     }

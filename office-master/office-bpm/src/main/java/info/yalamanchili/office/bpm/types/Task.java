@@ -4,12 +4,14 @@
  */
 package info.yalamanchili.office.bpm.types;
 
+import info.chili.spring.SpringContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 
 /**
  *
@@ -24,8 +26,9 @@ public class Task {
     protected String description;
     protected String owner;
     protected String assignee;
-    protected Date createdDate;
+    protected Date createTime;
     protected Date dueDate;
+    protected int priority;
 
     public Task() {
     }
@@ -70,14 +73,6 @@ public class Task {
         this.assignee = assignee;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public Date getDueDate() {
         return dueDate;
     }
@@ -86,9 +81,32 @@ public class Task {
         this.dueDate = dueDate;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "Task{" + "id=" + id + ", name=" + name + ", assignee=" + assignee + '}';
+    }
+
+    public static Task map(org.activiti.engine.task.Task bpmTask) {
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        Task task = mapper.map(bpmTask, Task.class);
+        task.setCreateTime(bpmTask.getCreateTime());
+        return task;
     }
 
     @XmlRootElement
