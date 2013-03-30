@@ -12,6 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <root.url>http://localhost:9090/office-web/office.html</root.url>
+           <chili.version>1.2-SNAPSHOT</chili.version>
     </properties>
 
     <dependencies>
@@ -38,13 +39,13 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>2.17.0</version>
+            <version>2.31.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>info.yalamanchili.commons</groupId>
-            <artifactId>yalamanchili-commons</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <groupId>info.chili</groupId>
+            <artifactId>chili-commons</artifactId>
+            <version>${chili.version}</version>
         </dependency> 
     </dependencies>
     <build>

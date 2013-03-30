@@ -2,39 +2,46 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office;
+package info.yalamanchili.office.integration;
 
-import info.yalamanchili.office.integration.TestUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import info.chili.commons.PropertyFileLoader;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  *
- * @author ayalamanchili
+ * @author yalamanchili
  */
-public class OfficeTest {
+public abstract class AbstractOfficeTest {
 
-    protected final static String ADMIN = "adminadmin";
-    protected final static String USER = "useruser";
-    protected static WebDriver driver;
+    protected static Properties properties = null;
+    public final String ADMIN = "adminadmin";
+    public final String USER = "useruser";
 
-    @BeforeClass
-    public static void init() {
-        //TODO externalize the browser drivers
-        driver = new FirefoxDriver();
+    public void waitFor(WebDriver driver, long sec) {
+        driver.manage().timeouts().implicitlyWait(sec, TimeUnit.SECONDS);
     }
 
-    public boolean login(String username, String password) {
-        driver.get(TestUtils.getRootURL());
+    public String getRootURL() {
+        if (properties == null) {
+            properties = PropertyFileLoader.loadProperties("test");
+            System.out.println(properties.toString());
+        }
+        return properties.getProperty("root_url");
+    }
+
+    public boolean login(WebDriver driver, String username, String password) {
+        driver.get(getRootURL());
         WebElement usernameTB = driver.findElement(By.id("gwt-debug-usernameTb"));
+        usernameTB.clear();
         usernameTB.sendKeys(username);
         WebElement passwordTB = driver.findElement(By.id("gwt-debug-passwordTb"));
+        passwordTB.clear();
         passwordTB.sendKeys(password);
         WebElement loginB = driver.findElement(By.id("gwt-debug-loginB"));
         loginB.click();
@@ -45,10 +52,5 @@ public class OfficeTest {
             }
         });
         return true;
-    }
-
-    @AfterClass
-    public static void destroy() {
-        driver.close();
     }
 }

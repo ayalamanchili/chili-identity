@@ -4,17 +4,19 @@
  */
 package info.yalamanchili.office.integration.profile;
 
-import info.yalamanchili.office.integration.TestUtils;
+import info.yalamanchili.office.integration.AbstractOfficeTest;
+import static info.yalamanchili.office.integration.profile.LoginTest.driver;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
- * @author yalamanchili
+ * @author ayalamanchili
  */
-public class ProfileTest {
+public class CreateEmployeeTest extends AbstractOfficeTest {
 
     protected static FirefoxDriver driver;
 
@@ -24,11 +26,12 @@ public class ProfileTest {
     }
 
     @Test
-    public void testUserLogin() {
+    public void testCreateEmployee() {
+        assertTrue(login(driver, ADMIN, ADMIN));
     }
 
     @AfterClass
     public static void destroy() {
-        driver.close();
+        driver.kill();
     }
 }
