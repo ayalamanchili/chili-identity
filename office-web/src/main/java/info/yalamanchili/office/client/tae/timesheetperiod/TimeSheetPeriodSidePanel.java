@@ -40,7 +40,7 @@ public class TimeSheetPeriodSidePanel extends ALComposite implements ClickHandle
     @Override
     protected void addWidgets() {
          if (Auth.isAdmin() || Auth.isHR()) {
-            timesheetperiodsidepanel.add(createtimesheetperiodlink);
+//            timesheetperiodsidepanel.add(createtimesheetperiodlink);
         }
     }
 
