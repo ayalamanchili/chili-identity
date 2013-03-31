@@ -26,7 +26,8 @@ import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 public class CreateClientInfoPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
-    protected Anchor addClientL = new Anchor("Client not present? request for new adding new Client");
+    protected Anchor addClientL = new Anchor("Client not present? submit request");
+    protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -66,7 +67,7 @@ public class CreateClientInfoPanel extends CreateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-                new ResponseStatusWidget().show("Request submitted. Please wait for a email confirmation and then continue");
+                new ResponseStatusWidget().show("Successfully Added Client information");
             }
         });
 
@@ -83,6 +84,7 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     protected void addListeners() {
         addClientL.addClickHandler(this);
+        addVendorL.addClickHandler(this);
     }
 
     @Override
@@ -98,6 +100,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("clientContact", new SelectClientContactWidget(false, false));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
         addDropDown("vendor", new SelectVendorWidget(false, false));
+        entityDisplayWidget.add(addVendorL);
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);
@@ -114,6 +117,9 @@ public class CreateClientInfoPanel extends CreateComposite {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
             new GenericPopup(new GenericBPMStartFormPanel("add_new_client_request", "add_new_client_request")).show();
+        }
+        if (event.getSource().equals(addVendorL)) {
+            new GenericPopup(new GenericBPMStartFormPanel("add_new_vendor_request", "add_new_vendor_request")).show();
         }
         super.onClick(event);
     }

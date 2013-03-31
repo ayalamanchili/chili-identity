@@ -78,7 +78,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
 
     protected void renderTaskFormPanel(String result) {
         if (result != null && !result.trim().toString().equals("null")) {
-            panel.add(new GenericBPMTaskFormPanel("Task", taskId, JSONUtils.convertFormProperties(result)));
+            panel.add(new GenericBPMTaskFormPanel("Fill the form and complete the task", taskId, JSONUtils.convertFormProperties(result)));
             completeB.setVisible(false);
             resolveB.setVisible(false);
         }
@@ -95,6 +95,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     protected void configure() {
         nameF.setEnabled(false);
         descriptionF.setEnabled(false);
+        descriptionF.setVisibleLines(5);
         nameF.setWidth("100%");
         descriptionF.setWidth("100%");
     }
