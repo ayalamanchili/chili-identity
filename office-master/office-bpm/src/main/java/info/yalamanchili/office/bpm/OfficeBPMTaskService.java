@@ -14,7 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class OfficeBPMTaskService {
     protected TaskService bpmTaskService;
     @Autowired
     protected FormService bpmFormService;
+    @Autowired
+    protected HistoryService bpmHistoryService;
     @Autowired
     protected Mapper mapper;
 
@@ -98,6 +103,16 @@ public class OfficeBPMTaskService {
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles);
         for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {
             result.getEntities().add(mapper.map(bpmTask, Task.class));
+        }
+        result.setSize(query.count());
+        return result;
+    }
+
+    public TaskTable getHistoricalTasks(int start, int limit) {
+        TaskTable result = new TaskTable();
+        HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished();
+        for (HistoricTaskInstance task : query.listPage(start, limit)) {
+            result.getEntities().add(mapper.map(task, Task.class));
         }
         result.setSize(query.count());
         return result;

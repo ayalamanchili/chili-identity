@@ -23,10 +23,11 @@ public class ReadAllTasks extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllTasks.class.getName());
     public static ReadAllTasks instance;
+    protected String url;
 
-    public ReadAllTasks(String parentId) {
+    public ReadAllTasks(String url) {
         instance = this;
-        this.parentId = parentId;
+        this.url = url;
         initTable("Task", OfficeWelcome.constants);
     }
 
@@ -71,7 +72,11 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     }
 
     public String getReadAllTasksUrl(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser/" + start.toString() + "/" + limit.toString();
+        if (url != null) {
+            return url + start.toString() + "/" + limit.toString();
+        } else {
+            return OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser/" + start.toString() + "/" + limit.toString();
+        }
     }
 
     @Override

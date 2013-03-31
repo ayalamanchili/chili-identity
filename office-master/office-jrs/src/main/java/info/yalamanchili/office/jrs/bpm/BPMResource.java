@@ -91,6 +91,12 @@ public class BPMResource {
         return officeBPMTaskService.getTasksForAssigneeAndRoles(SecurityService.instance().getCurrentUser(), start, limit);
     }
 
+    @GET
+    @Path("/history/tasks/{start}/{limit}")
+    public TaskTable getHistoryTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return officeBPMTaskService.getHistoricalTasks(start, limit);
+    }
+
     @PUT
     @Path("task")
     public void createTask(Task task) {

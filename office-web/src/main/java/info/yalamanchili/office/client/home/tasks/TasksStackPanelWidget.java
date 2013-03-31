@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 
 /**
@@ -21,6 +22,7 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink myTasksL = new ClickableLink("My Tasks");
+    protected ClickableLink completedTasksL = new ClickableLink("Completed Tasks");
 
     public TasksStackPanelWidget() {
         init(panel);
@@ -29,6 +31,7 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         myTasksL.addClickHandler(this);
+        completedTasksL.addClickHandler(this);
     }
 
     @Override
@@ -38,6 +41,7 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         mainPanel.add(myTasksL);
+        mainPanel.add(completedTasksL);
         panel.add(mainPanel);
     }
 
@@ -45,7 +49,13 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(myTasksL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
-            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+            String myTasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser/";
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(myTasksUrl));
+        }
+        if (event.getSource().equals(completedTasksL)) {
+            TabPanel.instance().getHomePanel().entityPanel.clear();
+            String completedTasksUrl = OfficeWelcome.constants.root_url() + "bpm/history/tasks/";
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(completedTasksUrl));
         }
     }
 }
