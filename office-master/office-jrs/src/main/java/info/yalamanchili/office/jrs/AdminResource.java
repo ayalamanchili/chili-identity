@@ -1,6 +1,7 @@
 package info.yalamanchili.office.jrs;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -177,6 +178,9 @@ public class AdminResource {
         CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (Long roleId : ids) {
             CRole role = cRoleDao.findById(roleId);
+            if(role.getRolename().equals("ROLE_USER")){
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.action", "cannot remove user role.");
+            }
             if (ids.contains(roleId)) {
                 emp.getUser().getRoles().remove(role);
                 OfficeBPMIdentityService.instance().removeUserFromGroup(emp.getUser().getUsername(), role.getRolename());
