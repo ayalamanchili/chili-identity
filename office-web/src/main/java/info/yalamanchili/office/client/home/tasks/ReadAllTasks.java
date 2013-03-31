@@ -4,9 +4,11 @@
  */
 package info.yalamanchili.office.client.home.tasks;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -52,6 +54,7 @@ public class ReadAllTasks extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Assignee"));
+        table.setText(0, 3, getKeyValue("CreatedDate"));
     }
 
     @Override
@@ -61,6 +64,7 @@ public class ReadAllTasks extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "assignee"));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createTime"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             //TODO add due date
         }
     }
