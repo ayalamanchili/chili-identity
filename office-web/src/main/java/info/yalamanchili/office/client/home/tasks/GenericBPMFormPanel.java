@@ -46,7 +46,9 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             }
             if (fields.get(key) instanceof EnumField) {
                 EnumField enumField = (EnumField) fields.get(key);
-                value.put("value", new JSONString(enumField.getValue()));
+                if (enumField.getValue() != null) {
+                    value.put("value", new JSONString(enumField.getValue()));
+                }
             }
             vars.set(i, value);
             i++;
@@ -120,12 +122,19 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         boolean valid = true;
         for (int i = 0; i < formProperties.size(); i++) {
             JSONObject formProperty = formProperties.get(i).isObject();
-            BaseField field = fields.get(JSONUtils.toString(formProperty, "id"));
-            if (field instanceof StringField) {
-                if (JSONUtils.toString(formProperty, "required").equals("true")) {
+            if (JSONUtils.toString(formProperty, "required").trim().length() > 0 && JSONUtils.toString(formProperty, "required").equals("true")) {
+                BaseField field = fields.get(JSONUtils.toString(formProperty, "id"));
+                if (field instanceof StringField) {
                     StringField stringField = (StringField) field;
                     if (stringField.getValue() == null || stringField.getValue().isEmpty()) {
                         stringField.setMessage("value is required");
+                        valid = false;
+                    }
+                }
+                if (field instanceof EnumField) {
+                    EnumField enumField = (EnumField) field;
+                    if (enumField.getValue() == null || enumField.getValue().trim().equalsIgnoreCase("SELECT")) {
+                        enumField.setMessage("value is required");
                         valid = false;
                     }
                 }
