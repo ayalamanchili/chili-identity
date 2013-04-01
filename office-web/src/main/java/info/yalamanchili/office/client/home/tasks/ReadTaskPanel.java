@@ -7,6 +7,7 @@ package info.yalamanchili.office.client.home.tasks;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -134,7 +135,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             completeClicked();
         }
         if (event.getSource().equals(deleteB)) {
-            deleteClicked();
+            if (Window.confirm("Are you sure? you want to Delete")) {
+                deleteClicked();
+            }
         }
     }
 
