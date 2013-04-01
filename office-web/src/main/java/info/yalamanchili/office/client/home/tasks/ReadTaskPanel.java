@@ -19,6 +19,7 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
@@ -47,6 +48,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     Button claimB = new Button("Claim");
     Button resolveB = new Button("Resolve");
     Button completeB = new Button("Complete");
+    Button deleteB = new Button("Delete");
 
     public ReadTaskPanel(JSONObject task) {
         this.task = task;
@@ -89,6 +91,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         claimB.addClickHandler(this);
         resolveB.addClickHandler(this);
         completeB.addClickHandler(this);
+        deleteB.addClickHandler(this);
     }
 
     @Override
@@ -114,6 +117,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         panel.add(claimB);
         panel.add(resolveB);
         panel.add(completeB);
+        if (Auth.isAdmin()) {
+            panel.add(deleteB);
+        }
     }
 
     @Override
@@ -126,6 +132,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         }
         if (event.getSource().equals(completeB)) {
             completeClicked();
+        }
+        if (event.getSource().equals(deleteB)) {
+            deleteClicked();
         }
     }
 
@@ -165,6 +174,18 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         });
     }
 
+    protected void deleteClicked() {
+        HttpService.HttpServiceAsync.instance().doGet(getDeleteTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Task Deleted");
+                TabPanel.instance().getHomePanel().entityPanel.clear();
+                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+            }
+        });
+    }
+
     protected String getClaimTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/claimtask/" + taskId;
     }
@@ -175,6 +196,10 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
 
     protected String getCompleteTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/completetask/" + taskId;
+    }
+
+    protected String getDeleteTaskURL(String taskId) {
+        return OfficeWelcome.constants.root_url() + "bpm/deletetask/" + taskId;
     }
 
     protected String getTaskFormPropertiesURL(String taskId) {

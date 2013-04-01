@@ -63,6 +63,12 @@ public class BPMResource {
         officeBPMTaskService.completeTask(taskId, vars.getEntries());
     }
 
+    @GET
+    @Path("/deletetask/{taskId}")
+    public void deleteTask(@PathParam("taskId") String taskId) {
+        officeBPMTaskService.deleteTask(taskId);
+    }
+
     @PUT
     @Path("/submittask/{taskId}")
     public void submitTask(@PathParam("taskId") String taskId, Entries vars) {
