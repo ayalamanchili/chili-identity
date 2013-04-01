@@ -64,6 +64,18 @@ public class FormProperty {
         return readable;
     }
 
+    public void setReadable(boolean readable) {
+        this.readable = readable;
+    }
+
+    public void setWritable(boolean writable) {
+        this.writable = writable;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
     public boolean isWritable() {
         return writable;
     }
@@ -79,13 +91,13 @@ public class FormProperty {
         if (property.getType().getName().equals("enum")) {
             List<Entry> enums = new ArrayList<Entry>();
             HashMap<String, String> enumValues = (HashMap<String, String>) property.getType().getInformation("values");
-            for (String key : enumValues.keySet()){
-                Entry e=new Entry();
+            for (String key : enumValues.keySet()) {
+                Entry e = new Entry();
                 e.setId(key);
                 e.setValue(enumValues.get(key));
                 enums.add(e);
             }
-           type.setValues(enums);
+            type.setValues(enums);
         }
         p.setType(type);
         return p;

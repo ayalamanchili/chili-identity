@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
@@ -112,6 +113,25 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         //TODO add task name and description;
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        for (int i = 0; i < formProperties.size(); i++) {
+            JSONObject formProperty = formProperties.get(i).isObject();
+            BaseField field = fields.get(JSONUtils.toString(formProperty, "id"));
+            if (field instanceof StringField) {
+                if (JSONUtils.toString(formProperty, "required").equals("true")) {
+                    StringField stringField = (StringField) field;
+                    if (stringField.getValue() == null || stringField.getValue().isEmpty()) {
+                        stringField.setMessage("value is required");
+                        valid = false;
+                    }
+                }
+            }
+        }
+        return valid;
     }
 
     protected abstract String getURI();
