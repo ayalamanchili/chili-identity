@@ -8,11 +8,13 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
+import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,8 @@ public class EmployeeService {
     //TODO remove extended
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     protected EntityManager em;
+    @Autowired
+    protected ProfileNotificationService profileNotificationService;
 
     public CUser changePassword(Long empId, User user) {
         //TODO check existing password
@@ -45,6 +49,7 @@ public class EmployeeService {
     public CUser resetPassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
+        profileNotificationService.sendResetPasswordNotification(getEmployee(empId), user.getNewPassword());
         return em.merge(user1);
 
     }
