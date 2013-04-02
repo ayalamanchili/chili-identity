@@ -37,9 +37,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>id=gwt-debug-EmployeeType_employeeType_LB</td>
-	<td>label=CONSULTANT</td>
+	<td>waitForTextPresent</td>
+	<td>CONSULTANT </td>
+	<td>Loading...</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -118,11 +118,16 @@
 	<td></td>
 </tr>
 <tr>
-	<td>pause</td>
+	<td>waitForTextNotPresent</td>
 	<td></td>
-	<td>2000</td>
+	<td>Loading...</td>
 </tr>
 <!-- delete the employee created-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>class=gwt-Image y-gwt-ClickableImage deleteLink</td>
+	<td></td>
+</tr>
 <tr>
 	<td>click</td>
 	<td>class=gwt-Image y-gwt-ClickableImage deleteLink</td>
