@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:9090/" />
+<title>CreateEmployeeSuccessTest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CreateEmployeeSuccessTest</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/office-web/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-passwordTb</td>
+	<td>adminadmin</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=gwt-debug-loginB</td>
+	<td>adminadmin</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=gwt-debug-Create EmployeeCL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=gwt-debug-Create EmployeeCL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=gwt-debug-EmployeeType_employeeType_LB</td>
+	<td>label=CONSULTANT</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=gwt-debug-EmployeeType_employeeType_LB</td>
+	<td>label=CONSULTANT</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>xpath=(//input[@id='gwt-debug-Employee_firstName_TB'])[2]</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>xpath=(//input[@id='gwt-debug-Employee_lastName_TB'])[2]</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Employee_email_TB</td>
+	<td>test@gmail.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@type='text'])[10]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=td.blue-current-month-other-day</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=gwt-debug-Employee_sex_LB</td>
+	<td>label=MALE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@type='text'])[11]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=td.blue-current-month-other-day</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Employee_passwordHash_PTB</td>
+	<td>testtest</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Employee_jobTitle_TB</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=div.y-gwt-CreateEntityDisplayWidget &gt; button.gwt-Button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>Successfully Created Employee</td>
+</tr>
+</tbody></table>
+</body>
+</html>
