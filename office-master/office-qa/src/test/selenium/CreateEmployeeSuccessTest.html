@@ -106,6 +106,43 @@
 	<td></td>
 	<td>Successfully Created Employee</td>
 </tr>
+<!-- search for created employee-->
+<tr>
+	<td>type</td>
+	<td>css=input.gwt-SuggestBox.searchComposite</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.gwt-Button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td></td>
+	<td>2000</td>
+</tr>
+<!-- delete the employee created-->
+<tr>
+	<td>click</td>
+	<td>class=gwt-Image y-gwt-ClickableImage deleteLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure? you want to Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure? All Employee details will be deleted</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>Successfully Deleted Employee Information</td>
+</tr>
 </tbody></table>
 </body>
 </html>
