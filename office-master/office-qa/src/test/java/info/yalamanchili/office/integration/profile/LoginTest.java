@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import static org.junit.Assert.*;
 
-public class LoginTest extends AbstractOfficeTest{
+public class LoginTest extends AbstractOfficeTest {
 
     protected static FirefoxDriver driver;
 
@@ -18,21 +18,21 @@ public class LoginTest extends AbstractOfficeTest{
 
     @Test
     public void testUserLogin() {
-        assertTrue(login(driver, USER,USER));
+        assertTrue(login(USER, USER));
     }
 
     @Test
     public void testAdminLogin() {
-        assertTrue(login(driver, ADMIN,ADMIN));
+        assertTrue(login(ADMIN, ADMIN));
     }
 
     @Test(expected = org.openqa.selenium.TimeoutException.class)
     public void loginFailureTest() {
-        login(driver, "user", "incorrectpassword");
+        login("user", "incorrectpassword");
     }
 
     @AfterClass
     public static void destroy() {
-        driver.kill();
+        driver.close();
     }
 }

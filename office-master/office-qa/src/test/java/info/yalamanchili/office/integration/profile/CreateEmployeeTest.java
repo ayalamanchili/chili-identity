@@ -7,12 +7,11 @@ package info.yalamanchili.office.integration.profile;
 import info.yalamanchili.office.integration.AbstractOfficeTest;
 import java.util.Date;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
@@ -20,16 +19,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
  */
 public class CreateEmployeeTest extends AbstractOfficeTest {
 
-    protected static ChromeDriver driver;
-
     @BeforeClass
     public static void init() {
-        driver = new ChromeDriver();
+        driver = new FirefoxDriver();
     }
 
     @Test
     public void testCreateEmployee() throws InterruptedException {
-        assertTrue(login(driver, ADMIN, ADMIN));
+        login(ADMIN, ADMIN);
         //click link
         WebElement createEmployeeL = driver.findElement(By.id("gwt-debug-Create EmployeeCL"));
         createEmployeeL.click();
@@ -47,7 +44,8 @@ public class CreateEmployeeTest extends AbstractOfficeTest {
         System.out.println("ddddd" + employeefirstNameF.toString());
         System.out.println("ddddd" + employeefirstNameF.isDisplayed());
         System.out.println("ddddd" + employeefirstNameF.isEnabled());
-        System.out.println("d"+driver.getPageSource());
+        System.out.println("d" + driver.getPageSource());
+        employeefirstNameF.click();
         employeefirstNameF.sendKeys("testemp");
 
         WebElement createB = driver.findElement(By.linkText("create"));
@@ -56,6 +54,6 @@ public class CreateEmployeeTest extends AbstractOfficeTest {
 
     @AfterClass
     public static void destroy() {
-//        driver.kill();
+        driver.close();
     }
 }
