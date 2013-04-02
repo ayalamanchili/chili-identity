@@ -76,17 +76,8 @@ public class AdminResource {
     @Path("/resetpassword/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public CUser resetPassword(@PathParam("empId") Long empId, User user, info.yalamanchili.office.dto.profile.Employee employee) {
-        Employee emp = mapper.map(employee, Employee.class);
+    public CUser resetPassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
-        String resetPassword = employeeService.generatepassword();
-        Email email = new Email();
-        email.setEmail(employee.getEmail());
-        email.setPrimaryEmail(true);
-        emp.addEmail(email);
-        emp = employeeDao.save(emp);
-        //Email notification
-        profileNotificationService.sendResetPasswordNotification(emp, resetPassword);
         return employeeService.resetPassword(empId, user);
     }
 
