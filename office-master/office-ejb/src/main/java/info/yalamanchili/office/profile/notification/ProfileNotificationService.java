@@ -122,6 +122,19 @@ public class ProfileNotificationService {
     }
 
     @Async
+    public void sendResetPasswordNotification(Employee emp, String resetPassword) {
+        Email email = new Email();
+        Set<String> tos = new HashSet<String>();
+        if (emp.getPrimaryEmail() == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.email", "no primary email for employee");
+        }
+        tos.add(emp.getPrimaryEmail().getEmail());
+        email.setTos(tos);
+        email.setBody("you reset password is:" + resetPassword);
+        messagingService.sendEmail(email);
+    }
+
+    @Async
     public void feedBackNotification(Feedback fb, String username) {
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
@@ -143,7 +156,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
+
     public void sendAccountResetApprovedNotification(String username, String password) {
         Employee emp = mailUtils.findEmployee(username);
         if (emp != null) {
