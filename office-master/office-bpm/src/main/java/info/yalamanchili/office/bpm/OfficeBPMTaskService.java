@@ -6,6 +6,8 @@ package info.yalamanchili.office.bpm;
 
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.types.Comment;
+import info.yalamanchili.office.bpm.types.Comment.CommentTable;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -29,7 +31,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class OfficeBPMTaskService {
-    
+
     @Autowired
     protected TaskService bpmTaskService;
     @Autowired
@@ -38,7 +40,7 @@ public class OfficeBPMTaskService {
     protected HistoryService bpmHistoryService;
     @Autowired
     protected Mapper mapper;
-    
+
     public void createTask(Task task) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.newTask();
         mapper.map(task, bpmTask);
@@ -46,15 +48,15 @@ public class OfficeBPMTaskService {
         bpmTaskService.saveTask(bpmTask);
         bpmTaskService.setAssignee(bpmTask.getId(), bpmTask.getAssignee());
     }
-    
+
     public void claimTask(String taskId, String userId) {
         bpmTaskService.claim(taskId, userId);
     }
-    
+
     public void resolveTask(String taskId) {
         bpmTaskService.resolveTask(taskId);
     }
-    
+
     public void completeTask(String taskId, List<Entry> request) {
         Map<String, Object> vars = new HashMap<String, Object>();
         if (request != null) {
@@ -64,11 +66,27 @@ public class OfficeBPMTaskService {
         }
         bpmTaskService.complete(taskId, vars);
     }
-    
+
     public void deleteTask(String taskId) {
         bpmTaskService.deleteTask(taskId);
+        bpmTaskService.addComment(taskId, taskId, taskId);
     }
-    
+
+    public void addComment(String taskId, String comment) {
+        bpmTaskService.addComment(taskId, null, comment);
+    }
+
+    public CommentTable getComments(String taskId) {
+        CommentTable result = new CommentTable();
+        List<org.activiti.engine.task.Comment> bpmComments = bpmTaskService.getTaskComments(taskId);
+        for (org.activiti.engine.task.Comment bpmComment : bpmComments) {
+            result.getEntities().add(mapper.map(bpmComment, Comment.class));
+        }
+        Integer size=bpmComments.size();
+        result.setSize(size.longValue());
+        return result;
+    }
+
     public TaskTable getAllUnasigneed(int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskUnassigned();
@@ -78,20 +96,20 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getTasksForAssigneeAndRoles(Employee emp, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskTable taskForAssignee = getTasksForAsignee(emp.getEmployeeId(), start, limit);
-        
+
         List<String> roles = SecurityService.instance().getUserRoles(emp);
         TaskTable taskForRoles = getTasksForRoles(roles, start, limit);
-        
+
         result.getEntities().addAll(taskForAssignee.getEntities());
         result.getEntities().addAll(taskForRoles.getEntities());
         result.setSize(taskForAssignee.getSize() + taskForRoles.getSize());
         return result;
     }
-    
+
     public TaskTable getTasksForAsignee(String assignee, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee);
@@ -101,7 +119,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getTasksForRoles(List<String> roles, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles);
@@ -111,7 +129,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getHistoricalTasks(int start, int limit) {
         TaskTable result = new TaskTable();
         HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished();
@@ -121,7 +139,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public static OfficeBPMTaskService instance() {
         return SpringContext.getBean(OfficeBPMTaskService.class);
     }

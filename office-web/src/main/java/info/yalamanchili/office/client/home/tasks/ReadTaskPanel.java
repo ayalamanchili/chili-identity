@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class ReadTaskPanel extends ALComposite implements ClickHandler {
-
+    
     private static Logger logger = Logger.getLogger(ReadTaskPanel.class.getName());
     protected JSONObject task;
     protected String taskId;
@@ -50,7 +50,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     Button resolveB = new Button("Resolve");
     Button completeB = new Button("Complete");
     Button deleteB = new Button("Delete");
-
+    
     public ReadTaskPanel(JSONObject task) {
         this.task = task;
         this.taskId = JSONUtils.toString(task, "id");
@@ -58,7 +58,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         populateValuesAndRenderButtons();
         populateTaskForm();
     }
-
+    
     private void populateValuesAndRenderButtons() {
         nameF.setValue(JSONUtils.toString(task, "name"));
         descriptionF.setValue(JSONUtils.toString(task, "description"));
@@ -68,7 +68,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             claimB.setVisible(false);
         }
     }
-
+    
     private void populateTaskForm() {
         HttpService.HttpServiceAsync.instance().doGet(getTaskFormPropertiesURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -78,7 +78,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected void renderTaskFormPanel(String result) {
         if (result != null && !result.trim().toString().equals("null")) {
             panel.add(new GenericBPMTaskFormPanel("Fill the form and complete the task", taskId, JSONUtils.convertFormProperties(result)));
@@ -86,7 +86,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             resolveB.setVisible(false);
         }
     }
-
+    
     @Override
     protected void addListeners() {
         claimB.addClickHandler(this);
@@ -94,7 +94,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         completeB.addClickHandler(this);
         deleteB.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         nameF.setEnabled(false);
@@ -103,7 +103,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         nameF.setWidth("100%");
         descriptionF.setWidth("100%");
     }
-
+    
     @Override
     protected void addWidgets() {
         captionPanel.setCaptionHTML("Task");
@@ -121,8 +121,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         if (Auth.isAdmin()) {
             panel.add(deleteB);
         }
+        panel.add(new CommentsPanel(taskId));
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(claimB)) {
@@ -140,7 +141,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         }
     }
-
+    
     protected void claimClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getClaimTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -152,7 +153,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected void resolveClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getResolveTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -164,7 +165,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected void completeClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getCompleteTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -176,7 +177,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected void deleteClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getDeleteTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -188,23 +189,23 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
             }
         });
     }
-
+    
     protected String getClaimTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/claimtask/" + taskId;
     }
-
+    
     protected String getResolveTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/resolvetask/" + taskId;
     }
-
+    
     protected String getCompleteTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/completetask/" + taskId;
     }
-
+    
     protected String getDeleteTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/deletetask/" + taskId;
     }
-
+    
     protected String getTaskFormPropertiesURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/task_form_properties/" + taskId;
     }

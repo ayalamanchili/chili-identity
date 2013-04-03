@@ -8,6 +8,8 @@ import info.chili.service.jrs.types.Entries;
 import info.yalamanchili.office.bpm.OfficeBPMFormService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.bpm.types.Comment;
+import info.yalamanchili.office.bpm.types.Comment.CommentTable;
 import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
@@ -107,6 +109,19 @@ public class BPMResource {
     @Path("task")
     public void createTask(Task task) {
         officeBPMTaskService.createTask(task);
+    }
+    //Comments
+
+    @GET
+    @Path("task/comments/{taskId}")
+    public CommentTable getComments(@PathParam("taskId") String taskId) {
+        return officeBPMTaskService.getComments(taskId);
+    }
+
+    @PUT
+    @Path("addcomment")
+    public void addComment(Comment comment) {
+        officeBPMTaskService.addComment(comment.getTaskId(), comment.getFullMessage());
     }
     //Form management
 
