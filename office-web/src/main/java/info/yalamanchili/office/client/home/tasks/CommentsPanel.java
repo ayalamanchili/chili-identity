@@ -44,8 +44,6 @@ public class CommentsPanel extends ALComposite implements ClickHandler {
         panel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-                commentsPanel.clear();
-                addWidgets();
                 getComments();
             }
         });
@@ -62,6 +60,8 @@ public class CommentsPanel extends ALComposite implements ClickHandler {
     }
 
     protected void populateComments(String commentsResponse) {
+        commentsPanel.clear();
+        addWidgets();
         if (commentsResponse != null && !commentsResponse.isEmpty()) {
             JSONObject table = (JSONObject) JSONParser.parseLenient(commentsResponse);
             if (table.get("entities") != null) {
@@ -106,6 +106,7 @@ public class CommentsPanel extends ALComposite implements ClickHandler {
                 public void onResponse(String arg0) {
                     new ResponseStatusWidget().show("Successfully added Comment");
                     commentTA.setText("");
+                    getComments();
                 }
             });
         }
