@@ -33,9 +33,8 @@ public class ReadCommentPanel extends ALComposite {
     }
 
     protected final void populateComment() {
-        logger.info("dddd"+comment);
         commentTA.setText(JSONUtils.toString(comment, "fullMessage"));
-        String status = "By: " + JSONUtils.toString(comment, "userId") + " on: " + DateUtils.getFormatedDate(JSONUtils.toString(comment, "time"), DateTimeFormat.PredefinedFormat.DATE_LONG);
+        String status = "By: " + JSONUtils.toString(comment, "userId") + " at: " + DateUtils.getFormatedDate(JSONUtils.toString(comment, "time"), DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
         statusLabel.setText(status);
     }
 
