@@ -4,11 +4,13 @@
  */
 package info.yalamanchili.office.client.home.tasks;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import java.util.logging.Logger;
 
@@ -22,8 +24,7 @@ public class ReadCommentPanel extends ALComposite {
     protected JSONObject comment;
     protected FlowPanel panel = new FlowPanel();
     TextArea commentTA = new TextArea();
-    Label userL = new Label();
-    Label timeL = new Label();
+    Label statusLabel = new Label();
 
     public ReadCommentPanel(JSONObject comment) {
         this.comment = comment;
@@ -32,7 +33,10 @@ public class ReadCommentPanel extends ALComposite {
     }
 
     protected final void populateComment() {
+        logger.info("dddd"+comment);
         commentTA.setText(JSONUtils.toString(comment, "fullMessage"));
+        String status = "By: " + JSONUtils.toString(comment, "userId") + " on: " + DateUtils.getFormatedDate(JSONUtils.toString(comment, "time"), DateTimeFormat.PredefinedFormat.DATE_LONG);
+        statusLabel.setText(status);
     }
 
     @Override
@@ -48,7 +52,6 @@ public class ReadCommentPanel extends ALComposite {
     @Override
     protected void addWidgets() {
         panel.add(commentTA);
-        panel.add(userL);
-        panel.add(timeL);
+        panel.add(statusLabel);
     }
 }

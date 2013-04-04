@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
@@ -38,6 +39,8 @@ public class OfficeBPMTaskService {
     protected FormService bpmFormService;
     @Autowired
     protected HistoryService bpmHistoryService;
+    @Autowired
+    protected IdentityService bpmIdentityService;
     @Autowired
     protected Mapper mapper;
 
@@ -73,6 +76,7 @@ public class OfficeBPMTaskService {
     }
 
     public void addComment(String taskId, String comment) {
+        bpmIdentityService.setAuthenticatedUserId(SecurityService.instance().getCurrentUserId());
         bpmTaskService.addComment(taskId, null, comment);
     }
 
@@ -82,7 +86,7 @@ public class OfficeBPMTaskService {
         for (org.activiti.engine.task.Comment bpmComment : bpmComments) {
             result.getEntities().add(mapper.map(bpmComment, Comment.class));
         }
-        Integer size=bpmComments.size();
+        Integer size = bpmComments.size();
         result.setSize(size.longValue());
         return result;
     }
