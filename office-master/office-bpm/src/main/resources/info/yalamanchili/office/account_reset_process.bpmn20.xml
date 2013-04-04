@@ -17,10 +17,15 @@
         </serviceTask>
         <sequenceFlow id="flow2" sourceRef="accountResetRequestEmailNotification" targetRef="accountResetApprovalTask" />
         <userTask id="accountResetApprovalTask" 
-                  name="Account reset Task for ${account.firstName} ${account.lastName} Email:${account.email} Phone:${account.phoneNumber}" 
+                  name="Account reset Task" 
                   activiti:candidateGroups="ROLE_HR,ROLE_ADMIN">
             <documentation>
-                Account Reset for Employee
+               Account reset Task for
+               FirstName= ${account.firstName} 
+               LastName= ${account.lastName} 
+               Email= ${account.email} 
+               Phone= ${account.phoneNumber}" 
+               Please verify if the account exists for this user and reset the password if exists otherwise create the account.
             </documentation>
             <extensionElements>
                 <activiti:formProperty id="status" 

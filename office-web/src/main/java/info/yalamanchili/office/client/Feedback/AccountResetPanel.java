@@ -7,6 +7,8 @@ package info.yalamanchili.office.client.Feedback;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.IntegerField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
@@ -84,6 +86,32 @@ public class AccountResetPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        StringField firstNameF = (StringField) fields.get("firstName");
+        StringField lastNameF = (StringField) fields.get("lastName");
+        StringField emailF = (StringField) fields.get("email");
+        IntegerField phoneNumberF = (IntegerField) fields.get("phoneNumber");
+        if (firstNameF.getValue() == null || firstNameF.getValue().isEmpty()) {
+            firstNameF.setMessage("value is required");
+            valid = false;
+        }
+        if (lastNameF.getValue() == null || lastNameF.getValue().isEmpty()) {
+            lastNameF.setMessage("value is required");
+            valid = false;
+        }
+        if (emailF.getValue() == null || emailF.getValue().isEmpty()) {
+            emailF.setMessage("value is required");
+            valid = false;
+        }
+        if (phoneNumberF.getValue() == null || phoneNumberF.getValue().isEmpty()) {
+            phoneNumberF.setMessage("value is required");
+            valid = false;
+        }
+        return valid;
     }
 
     @Override
