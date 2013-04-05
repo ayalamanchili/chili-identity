@@ -42,7 +42,10 @@ public class BulkImportService {
         for (String name : SpringContext.getApplicationContext().getBeanNamesForType(BulkImportProcess.class)) {
             Entry e = new Entry();
             e.setId(i.toString());
-            e.setValue(name);
+            if (name.contains("BulkImportProcessBean")) {
+                name = name.replace("BulkImportProcessBean", "");
+            }
+            e.setValue(name.toUpperCase());
             res.add(e);
             i++;
         }
