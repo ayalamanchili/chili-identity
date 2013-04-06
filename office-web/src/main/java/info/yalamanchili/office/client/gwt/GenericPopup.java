@@ -4,14 +4,10 @@
  */
 package info.yalamanchili.office.client.gwt;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import info.chili.gwt.widgets.ClickableImage;
-import info.yalamanchili.office.client.resources.OfficeImages;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
@@ -26,25 +22,26 @@ public class GenericPopup extends PopupPanel {
         return instance;
     }
 
-    public GenericPopup(Composite widget, int left, int top) {
+    public GenericPopup(Widget widget, int left, int top) {
         instance = this;
         addWidgets(widget, left, top);
         configure();
     }
-     public GenericPopup(Composite widget,String styleName, int left, int top) {
+
+    public GenericPopup(Widget widget, String styleName, int left, int top) {
         instance = this;
         addWidgets(widget, left, top);
         configure();
         useStyleName(styleName);
     }
 
-    public GenericPopup(Composite widget) {
-        instance=this;
+    public GenericPopup(Widget widget) {
+        instance = this;
         addWidgets(widget, Window.getClientWidth() / 3, Window.getClientHeight() / 3);
         configure();
     }
 
-    protected void addWidgets(Composite widget, int left, int top) {
+    protected void addWidgets(Widget widget, int left, int top) {
         FlowPanel panel = new FlowPanel();
         panel.add(widget);
         setWidget(panel);
