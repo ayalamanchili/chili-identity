@@ -46,6 +46,7 @@ public class Project extends AbstractEntity {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     protected List<StatementOfWork> SOWS;
 
+    @org.hibernate.annotations.Index(name = "PRJ_NM")
     public String getName() {
         return name;
     }

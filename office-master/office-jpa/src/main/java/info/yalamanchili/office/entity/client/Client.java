@@ -31,7 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 @Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"name"}))
+        @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Client.class, fields = {"name"}, message = "{client.name.not.unique.msg}")
 public class Client extends AbstractEntity {
 
@@ -44,22 +44,22 @@ public class Client extends AbstractEntity {
     protected List<Address> locations;
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
-    
     @ManyToMany(cascade = CascadeType.MERGE)
     protected List<Vendor> vendors;
 
     public void setVendors(List<Vendor> vendors) {
         this.vendors = vendors;
     }
+
     @XmlTransient
     public List<Vendor> getVendors() {
-         if (this.vendors == null) {
+        if (this.vendors == null) {
             this.vendors = new ArrayList<Vendor>();
         }
         return this.vendors;
     }
-    
-      public void addVendor(Vendor entity) {
+
+    public void addVendor(Vendor entity) {
         if (entity == null) {
             return;
         }
@@ -67,6 +67,7 @@ public class Client extends AbstractEntity {
 //        entity.set(this);
     }
 
+    @org.hibernate.annotations.Index(name = "CLNT_NM")
     public String getName() {
         return name;
     }
@@ -84,7 +85,7 @@ public class Client extends AbstractEntity {
     }
 
     /**
-     * 
+     *
      * @generated
      */
     @XmlTransient
@@ -112,7 +113,7 @@ public class Client extends AbstractEntity {
 
     @XmlTransient
     public List<Address> getLocations() {
-          if (this.locations == null) {
+        if (this.locations == null) {
             this.locations = new ArrayList<Address>();
         }
         return this.locations;
@@ -120,8 +121,8 @@ public class Client extends AbstractEntity {
 
     public void setLocations(List<Address> locations) {
         this.locations = locations;
-        
-        
+
+
     }
 
     public void addLocations(Address entity) {
@@ -133,7 +134,7 @@ public class Client extends AbstractEntity {
 
     @XmlTransient
     public List<Contact> getContacts() {
-          if (this.contacts == null) {
+        if (this.contacts == null) {
             this.contacts = new ArrayList<Contact>();
         }
         return this.contacts;

@@ -49,6 +49,7 @@ public class StatementOfWork extends AbstractEntity {
     @OneToMany(mappedBy = "statementOfWork")
     protected List<TimeSheet> timeSheets;
 
+    @org.hibernate.annotations.Index(name = "SOW_NM")
     public String getName() {
         return name;
     }
@@ -104,7 +105,8 @@ public class StatementOfWork extends AbstractEntity {
     public void setProject(Project project) {
         this.project = project;
     }
-  @XmlTransient
+
+    @XmlTransient
     public List<TimeSheet> getTimeSheets() {
         return timeSheets;
     }

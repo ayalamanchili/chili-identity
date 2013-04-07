@@ -31,7 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 @Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"name"}))
+        @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Vendor.class, fields = {"name"}, message = "{vendor.name.not.unique.msg}")
 public class Vendor extends AbstractEntity {
 
@@ -56,10 +56,6 @@ public class Vendor extends AbstractEntity {
     }
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -88,8 +84,13 @@ public class Vendor extends AbstractEntity {
 //      contact.setClient(this);
     }
 
+    @org.hibernate.annotations.Index(name = "VNDR_NM")
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

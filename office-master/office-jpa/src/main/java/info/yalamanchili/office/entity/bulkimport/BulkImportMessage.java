@@ -32,6 +32,7 @@ public class BulkImportMessage extends AbstractEntity {
     @ForeignKey(name = "FK_BulkImport_Messages")
     protected BulkImport bulkImport;
 
+    @org.hibernate.annotations.Index(name = "BLK_IMPRT_MSG_NM")
     public String getCode() {
         return code;
     }

@@ -1,12 +1,10 @@
 package info.yalamanchili.office.entity.security;
 
 import info.chili.jpa.validation.Unique;
-import info.yalamanchili.office.entity.profile.Employee;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,15 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Index;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -32,7 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 @Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"username"}))
+        @UniqueConstraint(columnNames = {"username"}))
 @Unique(entity = CUser.class, fields = {"username"}, message = "{user.name.not.unique.msg}", idName = "userId")
 public class CUser implements Serializable {
 
@@ -54,6 +51,7 @@ public class CUser implements Serializable {
     }
 
     @NotEmpty(message = "{username.not.empty.msg}")
+    @Index(name = "USR_NM")
     public String getUsername() {
         return username;
     }
@@ -64,6 +62,7 @@ public class CUser implements Serializable {
 
     @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
     @NotEmpty(message = "{user.passwordHash.not.empty.msg}")
+    @Index(name = "USR_PWD")
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -83,8 +82,8 @@ public class CUser implements Serializable {
     @ManyToMany(targetEntity = CRole.class, fetch = FetchType.EAGER)
     @ForeignKey(name = "FK_CRoles_CUsers")
     @JoinTable(name = "UserRoles", joinColumns =
-    @JoinColumn(name = "UserId"), inverseJoinColumns =
-    @JoinColumn(name = "RoleId"))
+            @JoinColumn(name = "UserId"), inverseJoinColumns =
+            @JoinColumn(name = "RoleId"))
     @XmlElement
     public Set<CRole> getRoles() {
         if (roles == null) {

@@ -26,8 +26,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -137,6 +135,7 @@ public class TimeSheet extends AbstractEntity {
         this.adpHours = adpHours;
     }
 
+    @org.hibernate.annotations.Index(name = "TME_SHT_STRT_DT")
     public Date getStartDate() {
         return startDate;
     }
@@ -145,6 +144,7 @@ public class TimeSheet extends AbstractEntity {
         this.startDate = startDate;
     }
 
+    @org.hibernate.annotations.Index(name = "TME_SHT_END_DT")
     public Date getEndDate() {
         return endDate;
     }

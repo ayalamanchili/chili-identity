@@ -29,7 +29,7 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  * @generated
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
-parameters = {
+        parameters = {
     @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
 })
 @XmlRootElement
@@ -45,7 +45,7 @@ public class Email extends AbstractEntity {
     /**
      * @NOT generated
      */
-    @org.hibernate.validator.constraints.Email(message="Enter a valid email asddress")
+    @org.hibernate.validator.constraints.Email(message = "Enter a valid email asddress")
     // @Unique(entity = Email.class, property = "email", message="{email.not.unique.msg}")
     @NotEmpty(message = "{email.not.empty.msg}")
     @Type(type = "encryptedString")
@@ -79,6 +79,7 @@ public class Email extends AbstractEntity {
     /**
      * @generated
      */
+    @org.hibernate.annotations.Index(name = "EMAIL_ADDRESS")
     public String getEmail() {
         return email;
     }

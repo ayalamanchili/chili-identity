@@ -47,6 +47,7 @@ public class BulkImport extends AbstractEntity {
     @OneToMany(mappedBy = "bulkImport", cascade = CascadeType.ALL)
     protected List<BulkImportEntity> entities;
 
+    @org.hibernate.annotations.Index(name = "BLK_IMPRT_NM")
     public String getName() {
         return name;
     }

@@ -38,6 +38,7 @@ public class File extends AbstractEntity {
     public File() {
     }
 
+    @org.hibernate.annotations.Index(name = "FLE_NM")
     public String getName() {
         return name;
     }

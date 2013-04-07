@@ -104,6 +104,7 @@ public class Contact extends AbstractEntity {
     /**
      * @generated
      */
+    @org.hibernate.annotations.Index(name = "CNT_FST_NM")
     public String getFirstName() {
         return firstName;
     }
@@ -118,6 +119,7 @@ public class Contact extends AbstractEntity {
     /**
      * @generated
      */
+    @org.hibernate.annotations.Index(name = "CNT_LST_NM")
     public String getLastName() {
         return lastName;
     }

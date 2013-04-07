@@ -32,6 +32,7 @@ public class BulkImportEntity extends AbstractEntity {
     public BulkImportEntity() {
     }
 
+    @org.hibernate.annotations.Index(name = "BLK_IMPRT_ENTY_TP")
     public String getEntityType() {
         return entityType;
     }
@@ -40,6 +41,7 @@ public class BulkImportEntity extends AbstractEntity {
         this.entityType = entityType;
     }
 
+    @org.hibernate.annotations.Index(name = "BLK_IMPRT_ENTY_ID")
     public Long getEntityId() {
         return entityId;
     }

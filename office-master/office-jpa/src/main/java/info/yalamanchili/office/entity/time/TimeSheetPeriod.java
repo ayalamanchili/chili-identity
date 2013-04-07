@@ -40,6 +40,7 @@ public class TimeSheetPeriod extends AbstractEntity {
     @OneToMany(mappedBy = "timeSheetPeriod")
     protected List<TimeSheet> timeSheets;
 
+    @org.hibernate.annotations.Index(name = "TME_PRD_NM")
     public String getName() {
         return name;
     }
@@ -48,6 +49,7 @@ public class TimeSheetPeriod extends AbstractEntity {
         this.name = name;
     }
 
+    @org.hibernate.annotations.Index(name = "TME_PRD_STRT_DT")
     public Date getStartDate() {
         return startDate;
     }
@@ -56,6 +58,7 @@ public class TimeSheetPeriod extends AbstractEntity {
         this.startDate = startDate;
     }
 
+    @org.hibernate.annotations.Index(name = "TME_PRD_END_DT")
     public Date getEndDate() {
         return endDate;
     }

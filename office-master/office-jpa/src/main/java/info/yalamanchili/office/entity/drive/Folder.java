@@ -36,6 +36,7 @@ public class Folder extends AbstractEntity {
     public Folder() {
     }
 
+    @org.hibernate.annotations.Index(name = "FLDR_NM")
     public String getName() {
         return name;
     }

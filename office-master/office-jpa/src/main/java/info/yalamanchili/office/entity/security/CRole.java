@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Index;
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -39,6 +40,7 @@ public class CRole implements Serializable {
         this.roleId = roleId;
     }
 
+    @Index(name = "ROLE_NM")
     public String getRolename() {
         return rolename;
     }
@@ -49,8 +51,8 @@ public class CRole implements Serializable {
 
     @ManyToMany(targetEntity = CRole.class)
     @JoinTable(name = "RoleGroups", joinColumns =
-    @JoinColumn(name = "RoleId"), inverseJoinColumns =
-    @JoinColumn(name = "GroupId"))
+            @JoinColumn(name = "RoleId"), inverseJoinColumns =
+            @JoinColumn(name = "GroupId"))
     @XmlTransient
     @ForeignKey(name = "FK_Groupes_CRoles")
     public Set<CRole> getGroups() {

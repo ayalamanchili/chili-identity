@@ -127,6 +127,7 @@ public class Employee extends Contact {
         super();
     }
 
+    @org.hibernate.annotations.Index(name = "EMP_EMPID")
     public String getEmployeeId() {
         return employeeId;
     }
