@@ -67,7 +67,7 @@ public class CreateClientInfoPanel extends CreateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-                new ResponseStatusWidget().show("Successfully Added Client information");
+                postCreateSuccess(arg0);
             }
         });
 

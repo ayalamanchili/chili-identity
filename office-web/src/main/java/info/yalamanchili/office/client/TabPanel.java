@@ -67,7 +67,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     @Override
     public void onSelection(SelectionEvent<Integer> selectedTabIndex) {
-        logger.info(tabPanel.getWidget(selectedTabIndex.getSelectedItem()).toString());
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(homePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
@@ -136,10 +135,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         homePanel.sidePanelBottom.clear();
         homePanel.sidePanelBottom.add(new HomeStackPanel());
         if (Auth.hasOnlyUserRole()) {
-        homePanel.entityPanel.add(new ReadAllMessagePanel());
-        }
-        else
-        {
+            homePanel.entityPanel.add(new ReadAllMessagePanel());
+        } else {
             homePanel.entityPanel.add(new ReadAllTasks());
         }
     }
