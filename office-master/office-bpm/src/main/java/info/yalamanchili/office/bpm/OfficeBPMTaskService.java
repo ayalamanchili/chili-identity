@@ -8,6 +8,8 @@ import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.types.Comment;
 import info.yalamanchili.office.bpm.types.Comment.CommentTable;
+import info.yalamanchili.office.bpm.types.HistoricTask;
+import info.yalamanchili.office.bpm.types.HistoricTask.HistoricTaskTable;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -134,11 +136,11 @@ public class OfficeBPMTaskService {
         return result;
     }
 
-    public TaskTable getHistoricalTasks(int start, int limit) {
-        TaskTable result = new TaskTable();
+    public HistoricTaskTable getHistoricalTasks(int start, int limit) {
+        HistoricTaskTable result = new HistoricTaskTable();
         HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished();
         for (HistoricTaskInstance task : query.listPage(start, limit)) {
-            result.getEntities().add(mapper.map(task, Task.class));
+            result.getEntities().add(mapper.map(task, HistoricTask.class));
         }
         result.setSize(query.count());
         return result;

@@ -11,6 +11,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Comment;
 import info.yalamanchili.office.bpm.types.Comment.CommentTable;
 import info.yalamanchili.office.bpm.types.FormProperty;
+import info.yalamanchili.office.bpm.types.HistoricTask;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -101,7 +102,7 @@ public class BPMResource {
 
     @GET
     @Path("/history/tasks/{start}/{limit}")
-    public TaskTable getHistoryTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
+    public HistoricTask.HistoricTaskTable getHistoryTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
         return officeBPMTaskService.getHistoricalTasks(start, limit);
     }
 
