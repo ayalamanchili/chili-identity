@@ -33,6 +33,7 @@ import org.hibernate.search.annotations.Indexed;
 public class SkillSet extends AbstractEntity {
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @org.hibernate.annotations.Index(name="SKL_SET_UPDT_TM_STMP")
     protected Date lastUpdated;
     protected String resumeUrl;
     @ManyToMany(cascade = CascadeType.ALL)

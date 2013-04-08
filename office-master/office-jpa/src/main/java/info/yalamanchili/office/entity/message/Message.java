@@ -38,6 +38,7 @@ public class Message extends AbstractEntity {
     protected String message;
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @org.hibernate.annotations.Index(name="MSG_TM_STMP")
     protected Date messageTs;
     @ManyToMany
 //    @NotEmpty(message = "{tos.not.empty.msg}")

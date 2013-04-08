@@ -40,6 +40,7 @@ public class Post extends AbstractEntity {
     private static final long serialVersionUID = 1L;
     @Temporal(TemporalType.TIMESTAMP)
     @Field(index = Index.UN_TOKENIZED)
+    @org.hibernate.annotations.Index(name="POST_TM_STMP")
     protected Date postTimeStamp;
     @NotEmpty(message = "{postContent.not.empty.msg}")
     @Lob

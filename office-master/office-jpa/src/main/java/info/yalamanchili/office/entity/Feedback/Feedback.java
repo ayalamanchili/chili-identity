@@ -31,6 +31,7 @@ public class Feedback extends AbstractEntity {
     protected String feedbackmsg;
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @org.hibernate.annotations.Index(name="SUB_TM_STMP")
     protected Date submitteddate;
     @Field
     protected String submittedby;
