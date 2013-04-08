@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -49,8 +50,12 @@ public class Employee extends Contact {
      */
     @Transient
     private static final long serialVersionUID = 2L;
+    /**
+     *
+     */
     @NotEmpty(message = "{employeeId.not.empty.msg}")
     @Field
+    @org.hibernate.annotations.Index(name="EMPID")
     protected String employeeId;
     protected String jobTitle;
 

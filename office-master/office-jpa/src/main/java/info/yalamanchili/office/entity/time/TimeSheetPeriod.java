@@ -32,10 +32,12 @@ public class TimeSheetPeriod extends AbstractEntity {
     @Field
     protected String name;
     @Temporal(javax.persistence.TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "TME_PRD_STRT_DT")
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{endDate.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "TME_PRD_END_DT")
     protected Date endDate;
     @OneToMany(mappedBy = "timeSheetPeriod")
     protected List<TimeSheet> timeSheets;
@@ -48,8 +50,7 @@ public class TimeSheetPeriod extends AbstractEntity {
     public void setName(String name) {
         this.name = name;
     }
-
-    @org.hibernate.annotations.Index(name = "TME_PRD_STRT_DT")
+    
     public Date getStartDate() {
         return startDate;
     }
@@ -58,7 +59,6 @@ public class TimeSheetPeriod extends AbstractEntity {
         this.startDate = startDate;
     }
 
-    @org.hibernate.annotations.Index(name = "TME_PRD_END_DT")
     public Date getEndDate() {
         return endDate;
     }

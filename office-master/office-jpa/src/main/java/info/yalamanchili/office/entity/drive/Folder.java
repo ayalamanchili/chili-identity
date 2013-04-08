@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -23,6 +24,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Folder extends AbstractEntity {
 
     @NotEmpty(message = "{folder.not.empty.msg}")
+    @Index(name = "FLDR_NM")
     protected String name;
     protected String description;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
@@ -36,7 +38,6 @@ public class Folder extends AbstractEntity {
     public Folder() {
     }
 
-    @org.hibernate.annotations.Index(name = "FLDR_NM")
     public String getName() {
         return name;
     }

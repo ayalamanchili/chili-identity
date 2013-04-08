@@ -23,11 +23,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Audited
 @Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"name"}))
+        @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Certification.class, fields = {"name"}, message = "{certification.name.not.unique.msg}")
 public class Certification extends AbstractEntity {
 
     @NotEmpty(message = "{certification.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "CERT_NM")
     protected String name;
     protected String description;
 

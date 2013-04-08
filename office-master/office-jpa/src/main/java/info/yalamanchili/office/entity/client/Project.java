@@ -32,6 +32,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Project extends AbstractEntity {
 
     @NotEmpty(message = "{project.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "PRJ_NM")
     protected String name;
     protected String description;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -45,8 +46,7 @@ public class Project extends AbstractEntity {
     protected Client client;
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     protected List<StatementOfWork> SOWS;
-
-    @org.hibernate.annotations.Index(name = "PRJ_NM")
+    
     public String getName() {
         return name;
     }

@@ -13,6 +13,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class File extends AbstractEntity {
 
     @NotEmpty(message = "{file.not.empty.msg}")
+    @Index(name = "FILE_NM")
     protected String name;
     @NotEmpty
     protected String fileUrl;
@@ -38,7 +40,6 @@ public class File extends AbstractEntity {
     public File() {
     }
 
-    @org.hibernate.annotations.Index(name = "FLE_NM")
     public String getName() {
         return name;
     }

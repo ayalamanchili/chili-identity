@@ -32,6 +32,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class BulkImport extends AbstractEntity {
 
     @NotEmpty(message = "{name.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "BLK_IMPRT_NM")
     protected String name;
     protected String description;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -47,7 +48,7 @@ public class BulkImport extends AbstractEntity {
     @OneToMany(mappedBy = "bulkImport", cascade = CascadeType.ALL)
     protected List<BulkImportEntity> entities;
 
-    @org.hibernate.annotations.Index(name = "BLK_IMPRT_NM")
+    
     public String getName() {
         return name;
     }

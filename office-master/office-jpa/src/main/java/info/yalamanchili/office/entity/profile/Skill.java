@@ -28,6 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Skill extends AbstractEntity {
 
     @NotEmpty(message = "{skill.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "SKL_NM")
     protected String name;
     protected String description;
 

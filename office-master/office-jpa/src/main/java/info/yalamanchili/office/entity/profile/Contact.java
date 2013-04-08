@@ -51,12 +51,14 @@ public class Contact extends AbstractEntity {
      */
     @NotEmpty(message = "{firstName.not.empty.msg}")
     @Field
+    @org.hibernate.annotations.Index(name = "CNT_FST_NM")
     protected String firstName;
     /**
      * @generated
      */
     @NotEmpty(message = "{lastName.not.empty.msg}")
     @Field
+    @org.hibernate.annotations.Index(name = "CNT_LST_NM")
     protected String lastName;
     /**
      * @generated

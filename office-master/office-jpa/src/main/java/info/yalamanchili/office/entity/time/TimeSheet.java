@@ -63,6 +63,7 @@ public class TimeSheet extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "TME_SHT_STRT_DT")
     protected Date startDate;
     /**
      * end date Only populated if the dates differ from time sheet period start
@@ -70,6 +71,7 @@ public class TimeSheet extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{endDate.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "TME_SHT_END_DT")
     protected Date endDate;
     /**
      * notes
@@ -135,7 +137,6 @@ public class TimeSheet extends AbstractEntity {
         this.adpHours = adpHours;
     }
 
-    @org.hibernate.annotations.Index(name = "TME_SHT_STRT_DT")
     public Date getStartDate() {
         return startDate;
     }
@@ -144,7 +145,6 @@ public class TimeSheet extends AbstractEntity {
         this.startDate = startDate;
     }
 
-    @org.hibernate.annotations.Index(name = "TME_SHT_END_DT")
     public Date getEndDate() {
         return endDate;
     }

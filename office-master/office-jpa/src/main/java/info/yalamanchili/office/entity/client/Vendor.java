@@ -36,6 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Vendor extends AbstractEntity {
 
     @NotEmpty(message = "{vendor.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "VNDR_NM")
     protected String name;
     protected String description;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -83,8 +84,7 @@ public class Vendor extends AbstractEntity {
         getContacts().add(contact);
 //      contact.setClient(this);
     }
-
-    @org.hibernate.annotations.Index(name = "VNDR_NM")
+    
     public String getName() {
         return name;
     }

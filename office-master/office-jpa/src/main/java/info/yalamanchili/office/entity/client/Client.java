@@ -36,6 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Client extends AbstractEntity {
 
     @NotEmpty(message = "{client.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "CLNT_NM")
     protected String name;
     protected String description;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
@@ -67,7 +68,6 @@ public class Client extends AbstractEntity {
 //        entity.set(this);
     }
 
-    @org.hibernate.annotations.Index(name = "CLNT_NM")
     public String getName() {
         return name;
     }
