@@ -4,18 +4,18 @@
  */
 package info.yalamanchili.office.client.config;
 
-import info.yalamanchili.office.client.config.OfficeClientConfig;
-
 /**
  *
  * @author ayalamanchili
  */
 public class OfficeClientConfigProd implements OfficeClientConfig {
 
+    @Override
     public String getFileUploadUrl() {
         return "https://apps.sstech.us/office-web/office/rpc/fileService";
     }
 
+    @Override
     public String getFileDownloadUrl() {
         return "https://apps.sstech.us/office-web/office/rpc/fileService?path=";
     }
