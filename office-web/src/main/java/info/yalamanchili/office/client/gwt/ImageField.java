@@ -1,5 +1,7 @@
 package info.yalamanchili.office.client.gwt;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import info.chili.gwt.composite.ALComposite;
@@ -13,24 +15,32 @@ import com.google.gwt.user.client.ui.Label;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
 //TODO add File/ImageUploadPanel support for this (merge)
-public class ImageField extends ALComposite {
+public class ImageField extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ImageField.class.getName());
     FlowPanel panel = new FlowPanel();
     Label label = new Label();
     Image image = new Image();
+    protected String entityId;
+    protected String url;
+    protected boolean validUrl;
 
     public ImageField(String labelName, String url, String entityId, final int width, final int height, boolean showLabel) {
+        this.url = url;
+        this.entityId = entityId;
+        validUrl = validUrl();
         label.setText(labelName);
         label.setVisible(showLabel);
         setPixelSize(width, height);
         image.addStyleName("imageField-Image");
         logger.info("ddd" + url);
-        if (!validUrl(url)) {
-            setDefaultImage(width, height);
+        if (validUrl) {
+            url = OfficeWelcome.config.getFileDownloadUrl() + url + "&entityId=" + entityId;
+            image.setUrl(url);
         } else {
-            image.setUrl(OfficeWelcome.config.getFileDownloadUrl() + url + "&entityId=" + entityId);
+            setDefaultImage(width, height);
         }
+        //TODO is this ever happening? do it beeter
         image.addErrorHandler(new ErrorHandler() {
             public void onError(ErrorEvent event) {
                 setDefaultImage(width, height);
@@ -39,7 +49,7 @@ public class ImageField extends ALComposite {
         init(panel);
     }
 
-    protected boolean validUrl(String url) {
+    protected boolean validUrl() {
         if (url == null || url.trim().length() < 1) {
             return false;
         }
@@ -73,12 +83,21 @@ public class ImageField extends ALComposite {
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
+        image.addClickHandler(this);
     }
 
     @Override
     protected void addWidgets() {
         panel.add(label);
         panel.add(image);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(image)) {
+            if (validUrl) {
+                new GenericPopup(new Image(OfficeWelcome.config.getFileDownloadUrl() + url + "&entityId=" + entityId)).show();
+            }
+        }
     }
 }
