@@ -97,7 +97,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
         Employee emp = EmployeeDao.instance().findById(empId);
         tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit, true));
         //TODO fix size
-        tableObj.setSize(getDao().size());
+        tableObj.setSize(TimeSheetDao.instance().getTimeSheetsSizeForEmployee(emp, true));
         return tableObj;
     }
 
