@@ -38,6 +38,14 @@
             </build>
         </profile>
         <profile>
+            <id>test</id>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/office-service-test.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
             <id>prod</id>
             <build> 
                 <filters>

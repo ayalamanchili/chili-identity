@@ -281,6 +281,48 @@
     </scm>     
     <profiles>
         <profile>
+            <id>test</id>
+            <build>
+                <plugins>			
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>gwt-maven-plugin
+                        </artifactId>
+                        <version>${gwt.plugin.version}</version>
+                        <dependencies>
+                        </dependencies>
+                        <configuration>
+                            <module>info.yalamanchili.office.office_test</module>
+                            <runTarget>
+                                office.html
+                            </runTarget>
+                            <noServer>false</noServer>
+                            <draftCompile>false</draftCompile>
+                            <soyc>false</soyc>
+                            <extraJvmArgs>-Xmx512m</extraJvmArgs>
+                            <!-- target dir for generated interfaces -->
+                            <generateDirectory>src/main/java</generateDirectory>
+                            <i18nConstantsWithLookupBundle>
+                                info.yalamanchili.office.client.internalization.OfficeConstants
+                            </i18nConstantsWithLookupBundle>
+                            <i18nMessagesBundle>
+                                info.yalamanchili.office.client.internalization.OfficeMessages
+                            </i18nMessagesBundle>
+                            <gwtVersion>${gwt.version}</gwtVersion>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>i18n</goal>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>prod</id>
             <build>
                 <plugins>			
@@ -297,7 +339,6 @@
                                 office.html
                             </runTarget>
                             <noServer>false</noServer>
-                            <!-- use only for dev -->
                             <draftCompile>false</draftCompile>
                             <soyc>false</soyc>
                             <extraJvmArgs>-Xmx512m</extraJvmArgs>
