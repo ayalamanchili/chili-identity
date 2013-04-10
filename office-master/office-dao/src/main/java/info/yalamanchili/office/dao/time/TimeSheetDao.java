@@ -9,6 +9,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
@@ -58,6 +59,17 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
         return (Long) query.getSingleResult();
     }
 
+    public Long getTimeSheetsSizeForEmployee(Employee employee, boolean includeInactive) {
+        Query query;
+        if (includeInactive) {
+            query = getEntityManager().createQuery("select count(*) from " + TimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+        } else {
+            query = getEntityManager().createQuery("select count(*) from " + TimeSheet.class.getCanonicalName() + " where employee=:employeeParam and versionStatus='ACTIVE'");
+        }
+        query.setParameter("employeeParam", employee);
+        return (Long) query.getSingleResult();
+    }
+
     public List<TimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit, boolean includeInactive) {
         Query query;
         if (includeInactive) {
@@ -97,7 +109,7 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
     protected void validatetimesheet(TimeSheet newTS) {
         //validate new timesheet start date less than end date
         if (!newTS.getStartDate().before(newTS.getEndDate())) {
-             throw new ServiceException(StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.timesheet", "start date must be less than end date");
+            throw new ServiceException(StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.timesheet", "start date must be less than end date");
         }
         //validate if new timesheet belongs to existing period
         TimeSheetPeriod payPeriod = TimeSheetPeriodDao.instance().findById(newTS.getTimeSheetPeriod().getId());
@@ -130,7 +142,7 @@ public class TimeSheetDao extends CRUDDao<TimeSheet> {
                 return;
             }
             if (newTS.getStartDate().before(existingTS.getEndDate())) {
-                 throw new ServiceException(StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.timesheet", "You are trying to enter a duplicate timesheet please check dates");
+                throw new ServiceException(StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.timesheet", "You are trying to enter a duplicate timesheet please check dates");
             }
         }
     }
