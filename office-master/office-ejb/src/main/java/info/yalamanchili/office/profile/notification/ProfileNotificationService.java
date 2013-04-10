@@ -117,6 +117,7 @@ public class ProfileNotificationService {
         }
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
+        email.setSubject("Employee Temp Password");
         email.setBody("you temp password is:" + tempPassword);
         messagingService.sendEmail(email);
     }
@@ -130,6 +131,7 @@ public class ProfileNotificationService {
         }
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
+        email.setSubject("Employee Reset Password");
         email.setBody("you reset password is:" + resetPassword);
         messagingService.sendEmail(email);
     }
