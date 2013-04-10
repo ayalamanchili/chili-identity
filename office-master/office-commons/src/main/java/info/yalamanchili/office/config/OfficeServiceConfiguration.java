@@ -24,6 +24,7 @@ public class OfficeServiceConfiguration {
     protected Boolean initTestData = false;
     @Value("#{officeProperties['enableLoginInterceptor']}")
     protected Boolean enableLoginInterceptor = false;
+    @Value("#{officeProperties['isSendMail']}")
     protected Boolean isSendMail = true;
     protected String adminEmail="yphanikumar@gmail.com";
 
