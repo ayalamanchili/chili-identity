@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -31,7 +32,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.GenericPopup;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
@@ -45,7 +45,7 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     RichTextArea createPostTextArea = new RichTextArea();
     Button createPostB = new Button("Share");
     Image fileUploadIcon = new Image(OfficeImages.INSTANCE.fileAttachmentIcon());
-    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "", "PostFile/fileURL", false) {
+    FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "", "PostFile/fileURL", false, true) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
@@ -88,20 +88,25 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     protected JSONObject populatePostEntity() {
         JSONObject post = new JSONObject();
         post.put("postContent", new JSONString(createPostTextArea.getHTML()));
-        if (fileUploadPanel.getFileUpload().getFilename() != null && !"".equals(fileUploadPanel.getFileUpload().getFilename().trim())) {
-            JSONArray postAttachments = new JSONArray();
-            JSONObject postAttachment = new JSONObject();
-            postAttachment.put("fileURL", fileUploadPanel.getFileName());
-            postAttachment.put("fileType", new JSONString("IMAGE"));
-            if (FileUtils.isImage(fileUploadPanel.getFileName().stringValue())) {
+        JSONArray postAttachments = new JSONArray();
+        int i = 0;
+        for (FileUpload upload : fileUploadPanel.getFileUploads()) {
+            if (upload.getFilename() != null && !"".equals(upload.getFilename().trim())) {
+
+                JSONObject postAttachment = new JSONObject();
+                postAttachment.put("fileURL", fileUploadPanel.getFileName(upload));
                 postAttachment.put("fileType", new JSONString("IMAGE"));
-            } else if (FileUtils.isDocument(fileUploadPanel.getFileName().stringValue())) {
-                postAttachment.put("fileType", new JSONString("FILE"));
-            } else {
-                Window.alert("Unsupported file extension");
-                throw new RuntimeException("unsupported file type");
+                if (FileUtils.isImage(fileUploadPanel.getFileName(upload).stringValue())) {
+                    postAttachment.put("fileType", new JSONString("IMAGE"));
+                } else if (FileUtils.isDocument(fileUploadPanel.getFileName(upload).stringValue())) {
+                    postAttachment.put("fileType", new JSONString("FILE"));
+                } else {
+                    Window.alert("Unsupported file extension");
+                    throw new RuntimeException("unsupported file type");
+                }
+                postAttachments.set(i, postAttachment);
+                i++;
             }
-            postAttachments.set(0, postAttachment);
             post.put("postFiles", postAttachments);
             logger.info(post.toString());
         }
@@ -111,19 +116,19 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     protected void createPostClicked(JSONObject post) {
         HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        createPostTextArea.setText("");
-                        uploadImage(arg0);
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                createPostTextArea.setText("");
+                uploadImage(arg0);
+            }
+        });
     }
 
     protected void uploadImage(String postString) {
         JSONObject post = (JSONObject) JSONParser.parseLenient(postString);
         JSONArray postFiles = JSONUtils.toJSONArray(post.get("postFiles"));
         logger.info(fileUploadPanel.toString());
-        fileUploadPanel.upload(JSONUtils.toString(postFiles.get(0), "id"));
+        fileUploadPanel.upload(postFiles, "fileURL");
     }
 
     protected void postCreateSuccess(String result) {
