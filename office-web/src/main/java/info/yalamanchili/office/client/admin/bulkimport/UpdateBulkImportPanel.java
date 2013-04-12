@@ -5,14 +5,17 @@
 package info.yalamanchili.office.client.admin.bulkimport;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.FileuploadField;
+import info.yalamanchili.office.client.gwt.SelectComposite;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +23,7 @@ import info.yalamanchili.office.client.rpc.HttpService;
  */
 public class UpdateBulkImportPanel extends UpdateComposite {
 
+    public static Logger loggar = Logger.getLogger(UpdateBulkImportPanel.class.getName());
     FileuploadField bulkImportUploadPanel = new FileuploadField(OfficeWelcome.constants, "BulkImport", "fileUrl", "BulkImport/fileUrl", false) {
         @Override
         public void onUploadComplete() {
@@ -35,9 +39,12 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
-        if (!bulkImportUploadPanel.isEmpty()) {
-            entity.put("fileUrl", bulkImportUploadPanel.getFileName());
+        SelectComposite adapterSC = (SelectComposite) fields.get("adapter");
+        if (adapterSC.getSelectedObject() != null) {
+            JSONString adapter = adapterSC.getSelectedObject().get("value").isString();
+            entity.put("adapter", adapter);
         }
+        entity.put("fileUrl", bulkImportUploadPanel.getFileName());
         return entity;
     }
 
@@ -52,7 +59,7 @@ public class UpdateBulkImportPanel extends UpdateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
+                uploadImage(arg0);
             }
         });
     }
@@ -61,6 +68,10 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+    }
+
+    protected void uploadImage(String entityId) {
+        bulkImportUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -82,6 +93,7 @@ public class UpdateBulkImportPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("adapter", new SelectImportAdapterComposite(false, true));
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         entityDisplayWidget.add(bulkImportUploadPanel);
@@ -94,6 +106,6 @@ public class UpdateBulkImportPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "bulkimport";
+        return OfficeWelcome.constants.root_url() + "bulkimport/save";
     }
 }
