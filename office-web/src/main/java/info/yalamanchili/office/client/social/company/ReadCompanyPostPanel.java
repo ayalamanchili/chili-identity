@@ -21,4 +21,10 @@ public class ReadCompanyPostPanel extends ReadPostWidget {
     protected void viewClicked() {
         postBodyArea.setHeight("80%");
     }
+
+    @Override
+    protected void configure() {
+        super.configure();
+        postBodyArea.setHeight("6em");
+    }
 }
