@@ -6,18 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class OfficeWelcome extends ListActivity {
 
-    public static String baseURL = "http://10.0.2.2:9080/office/resources/";
+    public static String baseURL = "http://10.0.2.2:9080/office/resources/secured/";
     public static String TAG = "office-android";
     private SimpleAdapter notes;
     public static Map<String, String> headers = new HashMap<String, String>();
