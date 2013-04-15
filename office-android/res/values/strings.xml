@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">office-android</string>
+    <string name="app_name">System Soft</string>
     <string name="page_size">10</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>

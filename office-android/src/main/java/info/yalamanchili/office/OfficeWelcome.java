@@ -47,23 +47,49 @@ public class OfficeWelcome extends ListActivity {
     protected ArrayList<HashMap<String, Object>> getData() {
         ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 
+        HashMap<String, Object> homeMaintainence = new HashMap<String, Object>();
+        homeMaintainence.put("text", "Home");
+        // Intent carIntent = new Intent(this, ReadAllCars.class);
+        // carMaintainence.put("intent", carIntent);
+        list.add(homeMaintainence);
+
+        HashMap<String, Object> socialMaintainence = new HashMap<String, Object>();
+        socialMaintainence.put("text", "Social");
+        // Intent carIntent = new Intent(this, ReadAllCars.class);
+        // carMaintainence.put("intent", carIntent);
+        list.add(socialMaintainence);
+
         HashMap<String, Object> manufacturerMaintainence = new HashMap<String, Object>();
         manufacturerMaintainence.put("text", "My Office");
         Intent readAllEmployeesIntent = new Intent(this, ReadAllEmployees.class);
         manufacturerMaintainence.put("intent", readAllEmployeesIntent);
         list.add(manufacturerMaintainence);
 
-        HashMap<String, Object> carMaintainence = new HashMap<String, Object>();
-        carMaintainence.put("text", "Social");
+
+
+        HashMap<String, Object> timeMaintainence = new HashMap<String, Object>();
+        timeMaintainence.put("text", "Time");
         // Intent carIntent = new Intent(this, ReadAllCars.class);
         // carMaintainence.put("intent", carIntent);
-        list.add(carMaintainence);
+        list.add(timeMaintainence);
 
-        HashMap<String, Object> truckMaintainence = new HashMap<String, Object>();
-        truckMaintainence.put("text", "Profile");
+        HashMap<String, Object> driveMaintainence = new HashMap<String, Object>();
+        driveMaintainence.put("text", "Drive");
+        // Intent carIntent = new Intent(this, ReadAllCars.class);
+        // carMaintainence.put("intent", carIntent);
+        list.add(driveMaintainence);
+
+        HashMap<String, Object> profileMaintainence = new HashMap<String, Object>();
+        profileMaintainence.put("text", "Profile");
         // Intent truckIntent = new Intent(this, ReadAllTrucks.class);
         // truckMaintainence.put("intent", truckIntent);
-        list.add(truckMaintainence);
+        list.add(profileMaintainence);
+
+        HashMap<String, Object> adminMaintainence = new HashMap<String, Object>();
+        adminMaintainence.put("text", "Admin");
+        // Intent truckIntent = new Intent(this, ReadAllTrucks.class);
+        // truckMaintainence.put("intent", truckIntent);
+        list.add(adminMaintainence);
 
         return list;
     }

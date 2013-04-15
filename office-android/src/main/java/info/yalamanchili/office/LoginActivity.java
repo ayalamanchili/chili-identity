@@ -1,63 +1,45 @@
 package info.yalamanchili.office;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import java.util.Map;
 
 import org.json.JSONObject;
 
-import info.chili.android.crud.AbstractCreateActivity;
-import info.chili.android.views.Field;
-import info.chili.android.views.StringField;
 import info.chili.android.commons.Base64;
+import info.chili.android.http.AsyncHttpPut;
+import info.chili.android.http.HttpRequest;
 import org.json.JSONException;
 
-public class LoginActivity extends AbstractCreateActivity {
+public class LoginActivity extends Activity implements View.OnClickListener {
+
+    EditText userNameTb;
+    EditText passwordTb;
+    Button loginB;
 
     @Override
-    protected int contentViewId() {
-        return R.layout.login;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //set the layout
+        setContentView(R.layout.login);
+        //assign the fields
+        userNameTb = (EditText) findViewById(R.id.login_usernameTb);
+        passwordTb = (EditText) findViewById(R.id.login_passwordTb);
+        loginB = (Button) findViewById(R.id.login_loginB);
+        //add listner
+        loginB.setOnClickListener(this);
     }
 
-    @Override
-    protected int createButtonId() {
-        return R.id.login_loginB;
-    }
-
-    @Override
-    protected void assignFields() {
-        addAndAssignField(R.id.login_usernameSF, "username", "Username",
-                Field.STRING_FIELD);
-        addAndAssignField(R.id.login_passwordSF, "passwordHash", "Password",
-                Field.STRING_FIELD);
-
-    }
-
-    @Override
-    protected int appTitleBarId() {
-        return R.layout.office_title_bar;
-    }
-
-    @Override
-    protected int appTitleBArTextViewId() {
-        return R.id.office_title_text;
-    }
-
-    @Override
-    protected String titleText() {
-        return "Login in to Portal";
-    }
-
-    @Override
-    protected void preCreate() {
-        entity = new JSONObject();
-
-    }
-
-    @Override
     protected void postCreateSuccess(String result) {
         try {
             JSONObject user = new JSONObject(result);
-            initUserRoles(user);
+//            initUserRoles(user);
             Intent intent = new Intent(this, OfficeWelcome.class);
             startActivity(intent);
         } catch (JSONException ex) {
@@ -65,20 +47,50 @@ public class LoginActivity extends AbstractCreateActivity {
         }
     }
 
-    protected void initUserRoles(JSONObject user) {
+    @Override
+    public void onClick(View view) {
+        if (view.equals(loginB)) {
+            loginClicked();
+        }
     }
 
-    @Override
-    protected String createURL() {
+    protected void loginClicked() {
+        JSONObject entity = new JSONObject();
+        try {
+            Log.d(OfficeWelcome.TAG, "username" + userNameTb.getText().toString().trim());
+            entity.put("username", userNameTb.getText().toString().trim());
+            entity.put("passwordHash", passwordTb.getText().toString().trim());
+        } catch (JSONException ex) {
+           throw new RuntimeException(ex);
+        }
+        
+        HttpRequest request = new HttpRequest(loginUrl(),
+                entity.toString(),
+                headers());
+        new AsyncHttpPut(this) {
+            @Override
+            protected void onResponse(String result) {
+                Toast.makeText(LoginActivity.this, "Login Success",
+                        Toast.LENGTH_LONG);
+                postCreateSuccess(result);
+                //TODO Should this be called here or at the impl activity
+                finish();
+            }
+
+            @Override
+            protected void onValidationErrors(String errorsString) {
+               
+            }
+        }.execute(request);
+    }
+
+    protected String loginUrl() {
         return OfficeWelcome.baseURL + "admin/login";
     }
 
-    @Override
     protected Map<String, String> headers() {
         OfficeWelcome.getHeaders().put("Content-Type", "application/json");
-        StringField usernameSF = (StringField) fields.get("username");
-        StringField passwordSF = (StringField) fields.get("passwordHash");
-        String userpass = usernameSF.getValue().trim() + ":" + passwordSF.getValue().trim();
+        String userpass = userNameTb.getText().toString().trim() + ":" + passwordTb.getText().toString().trim();
         OfficeWelcome.getHeaders().put("Authorization",
                 "Basic " + Base64.encodeBytes(userpass.getBytes()));
         return OfficeWelcome.getHeaders();
