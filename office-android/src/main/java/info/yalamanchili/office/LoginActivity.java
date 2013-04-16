@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,11 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import info.chili.android.commons.Base64;
 
 import org.json.JSONObject;
 
 import info.chili.android.http.AsyncHttpPut;
 import info.chili.android.http.HttpRequest;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.http.StatusLine;
 import org.json.JSONException;
 
@@ -44,15 +46,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     protected void postCreateSuccess(String result) {
-        try {
-            JSONObject user = new JSONObject(result);
+        //set username and password
+        OfficeConfig.username = userNameTb.getText().toString().trim();
+        OfficeConfig.password = passwordTb.getText().toString().trim();
+        JSONObject user = JSONUtils.getObject(result);
 //            initUserRoles(user);
-            Intent intent = new Intent(this, OfficeWelcome.class);
-            startActivity(intent);
-        } catch (JSONException ex) {
-            Toast.makeText(LoginActivity.this, "incorrect username or password. please try again",
-                    Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(this, OfficeWelcome.class);
+        startActivity(intent);
     }
 
     @Override
@@ -63,20 +63,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     protected void loginClicked() {
-        //set username and password
-        OfficeConfig.username = userNameTb.getText().toString().trim();
-        OfficeConfig.password = passwordTb.getText().toString().trim();
-        JSONObject entity = new JSONObject();
-        try {
-            entity.put("username", userNameTb.getText().toString().trim());
-            entity.put("passwordHash", passwordTb.getText().toString().trim());
-        } catch (JSONException ex) {
-            throw new RuntimeException(ex);
+        if (!validate()) {
+            return;
         }
-
+        JSONObject entity = new JSONObject();
+        JSONUtils.putValue(entity, "username", userNameTb.getText().toString().trim());
+        JSONUtils.putValue(entity, "passwordHash", passwordTb.getText().toString().trim());
         HttpRequest request = new HttpRequest(loginUrl(),
-                entity.toString(),
-                OfficeConfig.getHeaders());
+                entity.toString(), getHeaders());
         new AsyncHttpPut(this) {
             @Override
             protected void onResponse(String result) {
@@ -89,7 +83,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             @Override
             protected void onError(StatusLine status) {
-                //invalid user name and password
                 if (status.getStatusCode() == 401) {
                     //TODO change this to alert
                     Toast.makeText(LoginActivity.this, "incorrect username or password. please try again",
@@ -97,6 +90,15 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
             }
         }.execute(request);
+    }
+
+    protected boolean validate() {
+        if (userNameTb.getText() == null || passwordTb.getText() == null || userNameTb.getText().toString().trim().length() < 1 || passwordTb.getText().toString().trim().length() < 1) {
+            Toast.makeText(LoginActivity.this, "username and password are required",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     protected void initPreferences() {
@@ -136,5 +138,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     protected String loginUrl() {
         return OfficeConfig.getBaseUrl() + "admin/login";
+    }
+
+    public Map<String, String> getHeaders() {
+        HashMap<String, String> headers = new HashMap<String, String>();
+        headers.put("Content-Type", "application/json");
+        String userpass = userNameTb.getText().toString().trim() + ":" + passwordTb.getText().toString().trim();
+        headers.put("Authorization",
+                "Basic " + Base64.encodeBytes(userpass.getBytes()));
+        return headers;
     }
 }
