@@ -23,13 +23,11 @@ public class OfficeConfig {
     public static Map<String, String> headers = null;
 
     public static String getBaseUrl() {
-        return getEndpoint() + getContextRoot() + "/secured";
+        return getEndpoint() + getContextRoot() + "secured/";
     }
 
     public static String getEndpoint() {
-        if (endpoint == null) {
-            endpoint = LoginActivity.preferences.getString("endpoint", "NA");
-        }
+        endpoint = LoginActivity.preferences.getString("endpoint", "NA");
         return endpoint;
     }
 
