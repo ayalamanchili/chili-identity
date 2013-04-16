@@ -281,6 +281,12 @@ legend {
     border: 1px solid #919191;
     padding: 1px;
 }
+.postImage{
+    padding: 3px;
+}
+.postFile{
+    padding:3px;
+}
 .socialSidePanel{
     /*    background-color: #ededed;*/
     border-color: #919191;

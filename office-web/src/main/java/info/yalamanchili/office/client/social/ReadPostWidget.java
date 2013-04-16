@@ -77,12 +77,14 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
             for (int i = 0; i < postFiles.size(); i++) {
                 JSONObject postFile = (JSONObject) postFiles.get(i);
                 if ("IMAGE".equals(JSONUtils.toString(postFile, "fileType"))) {
-                    ImageField imageField = new ImageField("Image", JSONUtils.toString(postFile, "fileURL"), JSONUtils.toString(postFile, "id"), 50, 50, false);
+                    ImageField imageField = new ImageField("Image", JSONUtils.toString(postFile, "fileURL"), JSONUtils.toString(postFile, "id"), 100, 100, false);
+                    imageField.addStyleName("postImage");
                     attachmentsPanel.add(imageField);
                 }
                 if ("FILE".equals(JSONUtils.toString(postFile, "fileType"))) {
                     String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(postFile, "fileURL") + "&entityId=" + JSONUtils.toString(postFile, "id");
                     FileField fileField = new FileField(fileURL);
+                    fileField.addStyleName("postFile");
                     attachmentsPanel.add(fileField);
                 }
             }
@@ -152,11 +154,11 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
             likeB.setVisible(false);
             HttpService.HttpServiceAsync.instance().doPut(getlikeURL(), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postCreateSuccess(arg0);
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postCreateSuccess(arg0);
+                }
+            });
 
         }
         if (arg0.getSource().equals(viewIcon)) {
@@ -165,11 +167,11 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         if (arg0.getSource().equals(deleteLink)) {
             HttpService.HttpServiceAsync.instance().doPut(getdeleteURL(), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postDeleteSuccess(arg0);
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postDeleteSuccess(arg0);
+                }
+            });
         }
     }
 
