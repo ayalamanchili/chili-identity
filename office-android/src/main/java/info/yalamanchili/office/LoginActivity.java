@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import info.chili.android.http.AsyncHttpPut;
 import info.chili.android.http.HttpRequest;
+import org.apache.http.StatusLine;
 import org.json.JSONException;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
@@ -49,7 +50,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, OfficeWelcome.class);
             startActivity(intent);
         } catch (JSONException ex) {
-            throw new RuntimeException(ex);
+            Toast.makeText(LoginActivity.this, "incorrect username or password. please try again",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -66,7 +68,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         OfficeConfig.password = passwordTb.getText().toString().trim();
         JSONObject entity = new JSONObject();
         try {
-            Log.d(OfficeConfig.TAG, "username" + userNameTb.getText().toString().trim());
             entity.put("username", userNameTb.getText().toString().trim());
             entity.put("passwordHash", passwordTb.getText().toString().trim());
         } catch (JSONException ex) {
@@ -87,7 +88,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
 
             @Override
-            protected void onValidationErrors(String errorsString) {
+            protected void onError(StatusLine status) {
+                //invalid user name and password
+                if (status.getStatusCode() == 401) {
+                    //TODO change this to alert
+                    Toast.makeText(LoginActivity.this, "incorrect username or password. please try again",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         }.execute(request);
     }

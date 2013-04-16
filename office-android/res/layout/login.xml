@@ -14,6 +14,7 @@
         android:id="@+id/login_passwordTb"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:hint="@string/login_password" />
     <Button
         android:id="@+id/login_loginB"
