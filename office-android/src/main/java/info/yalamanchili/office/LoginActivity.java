@@ -13,11 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.util.Map;
 
 import org.json.JSONObject;
 
-import info.chili.android.commons.Base64;
 import info.chili.android.http.AsyncHttpPut;
 import info.chili.android.http.HttpRequest;
 import org.json.JSONException;
@@ -63,9 +61,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     protected void loginClicked() {
+        //set username and password
+        OfficeConfig.username = userNameTb.getText().toString().trim();
+        OfficeConfig.password = passwordTb.getText().toString().trim();
         JSONObject entity = new JSONObject();
         try {
-            Log.d(OfficeWelcome.TAG, "username" + userNameTb.getText().toString().trim());
+            Log.d(OfficeConfig.TAG, "username" + userNameTb.getText().toString().trim());
             entity.put("username", userNameTb.getText().toString().trim());
             entity.put("passwordHash", passwordTb.getText().toString().trim());
         } catch (JSONException ex) {
@@ -74,7 +75,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         HttpRequest request = new HttpRequest(loginUrl(),
                 entity.toString(),
-                headers());
+                OfficeConfig.getHeaders());
         new AsyncHttpPut(this) {
             @Override
             protected void onResponse(String result) {
@@ -127,14 +128,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     protected String loginUrl() {
-        return OfficeWelcome.baseURL + "admin/login";
-    }
-
-    protected Map<String, String> headers() {
-        OfficeWelcome.getHeaders().put("Content-Type", "application/json");
-        String userpass = userNameTb.getText().toString().trim() + ":" + passwordTb.getText().toString().trim();
-        OfficeWelcome.getHeaders().put("Authorization",
-                "Basic " + Base64.encodeBytes(userpass.getBytes()));
-        return OfficeWelcome.getHeaders();
+        return OfficeConfig.getBaseUrl() + "admin/login";
     }
 }

@@ -29,6 +29,7 @@ import android.widget.TextView;
 import info.chili.android.http.AsyncHttpGet;
 import info.chili.android.http.HttpRequest;
 import info.chili.android.widgets.ReadAllPageBar;
+import info.yalamanchili.office.OfficeConfig;
 
 public class ReadAllEmployees extends Activity implements OnItemClickListener,
         OnClickListener {
@@ -91,7 +92,7 @@ public class ReadAllEmployees extends Activity implements OnItemClickListener,
     }
 
     public String getReadALLURL(Integer pageOffSet, Integer pageSize) {
-        return OfficeWelcome.baseURL + "employee/0/10";
+        return OfficeConfig.getBaseUrl()+ "employee/0/10";
     }
 
     protected void loadNextPage() {
@@ -108,7 +109,7 @@ public class ReadAllEmployees extends Activity implements OnItemClickListener,
     }
 
     protected void loadPage(int pageOffSet, int pageSize) {
-        HttpRequest request = new HttpRequest(getReadALLURL(pageOffSet, pageSize), OfficeWelcome.getHeaders());
+        HttpRequest request = new HttpRequest(getReadALLURL(pageOffSet, pageSize), OfficeConfig.getHeaders());
         new AsyncHttpGet(this) {
             @Override
             protected void onResponse(String result) {
@@ -132,7 +133,6 @@ public class ReadAllEmployees extends Activity implements OnItemClickListener,
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(OfficeWelcome.TAG, "in start");
         main();
     }
 

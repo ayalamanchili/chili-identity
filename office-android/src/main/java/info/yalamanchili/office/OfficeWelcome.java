@@ -15,19 +15,8 @@ import android.widget.SimpleAdapter;
 
 public class OfficeWelcome extends ListActivity {
 
-    public static String baseURL = "http://10.0.2.2:9080/office/resources/secured/";
-    public static String TAG = "office-android";
     private SimpleAdapter notes;
-    public static Map<String, String> headers = new HashMap<String, String>();
 
-    /**
-     * Called when the activity is first created.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after
-     * previously being shut down then this Bundle contains the data it most
-     * recently supplied in onSaveInstanceState(Bundle). <b>Note: Otherwise it
-     * is null.</b>
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +54,6 @@ public class OfficeWelcome extends ListActivity {
         manufacturerMaintainence.put("intent", readAllEmployeesIntent);
         list.add(manufacturerMaintainence);
 
-
-
         HashMap<String, Object> timeMaintainence = new HashMap<String, Object>();
         timeMaintainence.put("text", "Time");
         // Intent carIntent = new Intent(this, ReadAllCars.class);
@@ -92,9 +79,5 @@ public class OfficeWelcome extends ListActivity {
         list.add(adminMaintainence);
 
         return list;
-    }
-
-    public static Map<String, String> getHeaders() {
-        return headers;
     }
 }
