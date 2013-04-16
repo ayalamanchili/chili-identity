@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="Portal" >
         <ListPreference
-            android:defaultValue="http://10.0.2.2:8080"
+            android:defaultValue="http://10.0.2.2:9080"
             android:entries="@array/listArray"
             android:entryValues="@array/listValues"
             android:key="endpoint"

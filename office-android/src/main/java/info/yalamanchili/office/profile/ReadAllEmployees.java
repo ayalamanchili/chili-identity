@@ -1,6 +1,5 @@
 package info.yalamanchili.office.profile;
 
-import info.yalamanchili.office.OfficeWelcome;
 import info.yalamanchili.office.R;
 
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +27,7 @@ import android.widget.TextView;
 import info.chili.android.http.AsyncHttpGet;
 import info.chili.android.http.HttpRequest;
 import info.chili.android.widgets.ReadAllPageBar;
+import info.yalamanchili.office.JSONUtils;
 import info.yalamanchili.office.OfficeConfig;
 
 public class ReadAllEmployees extends Activity implements OnItemClickListener,
@@ -92,7 +91,7 @@ public class ReadAllEmployees extends Activity implements OnItemClickListener,
     }
 
     public String getReadALLURL(Integer pageOffSet, Integer pageSize) {
-        return OfficeConfig.getBaseUrl()+ "employee/0/10";
+        return OfficeConfig.getBaseUrl() + "employee/0/10";
     }
 
     protected void loadNextPage() {
@@ -168,7 +167,7 @@ public class ReadAllEmployees extends Activity implements OnItemClickListener,
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LinearLayout todoView;
-            JSONObject engine = getItem(position);
+            JSONObject employee = getItem(position);
             if (convertView == null) {
                 todoView = new LinearLayout(getContext());
                 String inflater = Context.LAYOUT_INFLATER_SERVICE;
@@ -180,7 +179,8 @@ public class ReadAllEmployees extends Activity implements OnItemClickListener,
             }
             TextView textViewOne = (TextView) todoView
                     .findViewById(R.id.readall_list_item_one);
-            textViewOne.setText(engine.toString());
+            String text = JSONUtils.getString(employee, "firstName") + " " + JSONUtils.getString(employee, "lastName");
+            textViewOne.setText(text);
             return todoView;
         }
     }
