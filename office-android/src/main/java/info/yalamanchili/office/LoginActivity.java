@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +22,6 @@ import info.chili.android.http.HttpRequest;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.StatusLine;
-import org.json.JSONException;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
 
@@ -43,12 +43,39 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginB.setOnClickListener(this);
         //preferecnes
         initPreferences();
+        populateUsername();
+    }
+
+    protected void populateUsername() {
+        String username = preferences.getString("username", "NA");
+        if (username.equals("NA")) {
+            username = null;
+        }
+        if (username != null) {
+            userNameTb.setText(username);
+        }
+    }
+
+    protected void saveUsername() {
+        String username = preferences.getString("username", "NA");
+        if (username.equals("NA")) {
+            username = null;
+        }
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        if (username == null) {
+            prefEditor.putString("username", OfficeConfig.username);
+            prefEditor.commit();
+        } else if (!OfficeConfig.username.equals(username)) {
+            prefEditor.putString("username", OfficeConfig.username);
+            prefEditor.commit();
+        }
     }
 
     protected void postCreateSuccess(String result) {
         //set username and password
         OfficeConfig.username = userNameTb.getText().toString().trim();
         OfficeConfig.password = passwordTb.getText().toString().trim();
+        saveUsername();
         JSONObject user = JSONUtils.getObject(result);
 //            initUserRoles(user);
         Intent intent = new Intent(this, OfficeWelcome.class);

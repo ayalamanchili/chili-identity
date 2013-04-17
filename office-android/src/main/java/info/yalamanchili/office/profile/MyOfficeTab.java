@@ -23,7 +23,7 @@ public class MyOfficeTab extends ListActivity {
 
     private SimpleAdapter listAdapter;
     public static Map<String, String> headers = new HashMap<String, String>();
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +54,13 @@ public class MyOfficeTab extends ListActivity {
 //        Intent readAllEmployeesIntent = new Intent(this, ReadAllEmployees.class);
 //        skillsMaintainence.put("intent", readAllEmployeesIntent);
         list.add(skillsMaintainence);
-        
+
         HashMap<String, Object> certificationsMaintainence = new HashMap<String, Object>();
         certificationsMaintainence.put("text", "Certifications");
 //        Intent readAllEmployeesIntent = new Intent(this, ReadAllEmployees.class);
 //        certificationsMaintainence.put("intent", readAllEmployeesIntent);
         list.add(certificationsMaintainence);
-    
+
         return list;
     }
 }

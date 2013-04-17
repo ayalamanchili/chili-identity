@@ -9,5 +9,4 @@ package info.yalamanchili.office.profile;
  * @author ayalamanchili
  */
 public class ReadEmployeeActivity {
-    
 }
