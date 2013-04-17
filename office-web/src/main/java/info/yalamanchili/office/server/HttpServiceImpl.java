@@ -52,20 +52,6 @@ public class HttpServiceImpl extends BaseRemoteService implements HttpService {
         this.password = null;
     }
 
-    protected Map<String, String> processBasicAuthHeader(Map<String, String> headers) {
-        if (headers != null && headers.keySet().contains("username") && headers.keySet().contains("password")) {
-            String username = headers.get("username");
-            String password = headers.get("password");
-            if (username != null && password != null) {
-                headers.remove("username");
-                headers.remove("password");
-                headers.put("Authorization",
-                        "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
-            }
-        }
-        return headers;
-    }
-
     protected Map<String, String> addHeaders() {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");

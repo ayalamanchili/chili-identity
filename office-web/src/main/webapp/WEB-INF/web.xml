@@ -41,7 +41,10 @@
         <servlet-name>FileUploadServlet</servlet-name>
         <url-pattern>/office/rpc/fileService</url-pattern>
     </servlet-mapping>
-
+    <!--Session timeout unlimited -->
+    <session-config>
+        <session-timeout>-1</session-timeout>
+    </session-config>
     <welcome-file-list>
         <welcome-file>office.html</welcome-file>
     </welcome-file-list>
