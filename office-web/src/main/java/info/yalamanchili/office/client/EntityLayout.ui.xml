@@ -1,12 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:office="urn:import:info.yalamanchili.office.client">
-    <g:DockLayoutPanel unit='EM' styleName="{style.entityLayout}">
-        <g:north size='2'>
+    <g:DockLayoutPanel unit='PCT' styleName="{style.entityLayout}">
+        <g:north size='3.5'>
             <g:FlowPanel ui:field='entityTitlePanel'>
             </g:FlowPanel>
         </g:north>
-        <g:west size='15'>
+        <g:west size='13'>
             <g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
                 <g:ScrollPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
                 </g:ScrollPanel>
