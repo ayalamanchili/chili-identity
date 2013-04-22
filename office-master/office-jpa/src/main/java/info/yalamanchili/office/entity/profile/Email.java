@@ -162,6 +162,6 @@ public class Email extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Email{" + "email=" + email + ", emailHash=" + emailHash + ", primaryEmail=" + primaryEmail + ", emailType=" + emailType + ", contact=" + contact + '}';
+        return "Email{" + "email=" + email + ", primaryEmail=" + primaryEmail + ", emailType=" + emailType + ", contact=" + contact + '}';
     }
 }
