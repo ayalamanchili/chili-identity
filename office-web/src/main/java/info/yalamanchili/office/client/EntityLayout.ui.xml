@@ -6,7 +6,7 @@
             <g:FlowPanel ui:field='entityTitlePanel'>
             </g:FlowPanel>
         </g:north>
-        <g:west size='15'>
+        <g:west size='14'>
             <g:FlowPanel styleName="{style.sidePanel}" ui:field='sidePanel'>
                 <g:ScrollPanel styleName="{style.sidePanelTop}" ui:field='sidePanelTop'>
                 </g:ScrollPanel>
@@ -14,7 +14,7 @@
                 </g:ScrollPanel>
             </g:FlowPanel>
         </g:west>
-        <g:center>
+        <g:center size='86'>
             <g:ScrollPanel addStyleNames='entityPanelHolder' ui:field='entityPanelHolder'>
                 <g:FlowPanel ui:field='entityPanel' styleName="{style.entityPanel}">
                 </g:FlowPanel>
