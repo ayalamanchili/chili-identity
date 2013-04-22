@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.chili.gwt.callback.RunAsyncCallback;
@@ -29,6 +28,7 @@ import info.yalamanchili.office.client.tae.TAEMenu;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
+import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
@@ -42,6 +42,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
     public EntityLayout timeandExpensePanel = new EntityLayout();
+    //TODO add expense  menu commands for tab panel.
+    // jira issue no SSTO-954
+    public EntityLayout expensePanel = new EntityLayout();
     public EntityLayout drivePanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
     public EntityLayout adminPanel = new EntityLayout();
@@ -55,9 +58,12 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
         tabPanel.add(timeandExpensePanel, "Time", false);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
+            tabPanel.add(expensePanel, "Expense", false);
+        }
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(profilePanel, "Profile", false);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_EXPENSE)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
             tabPanel.add(adminPanel, "Admin", false);
         }
         tabPanel.add(helpPanel, "Help", false);
@@ -91,6 +97,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 @Override
                 public void onResponse() {
                     selectTimeandExpenseTab();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(expensePanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onResponse() {
+                    expenseTab();
                 }
             });
         }
@@ -169,8 +183,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel());
             timeandExpensePanel.sidePanelTop.add(new TimeSheetSidePanel());
         }
+    }
 
-
+    public void expenseTab() {
+        expensePanel.entityPanel.clear();
+        expensePanel.sidePanelTop.clear();
+        expensePanel.entityTitlePanel.add(new ExpenseMenu());
+//        expensePanel.entityPanel.add(new ());
+//        expensePanel.sidePanelTop.add(new ());
     }
 
     public void selectDriveTab() {
@@ -180,7 +200,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         drivePanel.entityPanel.add(new DriveEntityPanel());
         drivePanel.sidePanelTop.add(new DriveTreePanel());
         drivePanel.sidePanelBottom.add(new SearchDrivePanel());
-
     }
 
     public void selectProfileTab() {
@@ -223,6 +242,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public EntityLayout getTimeandExpensePanel() {
         return timeandExpensePanel;
+    }
+
+    public EntityLayout getExpensePanel() {
+        return expensePanel;
     }
 
     public EntityLayout getProfilePanel() {
