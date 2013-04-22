@@ -26,8 +26,16 @@
     <beans:bean id ="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" >
         <beans:constructor-arg value="256"/>
     </beans:bean>
+    <!-- this is standrad encryptor used for encrypting data.-->
     <beans:bean id="hibernateStringEncryptor" class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
         <beans:property name="registeredName" value="hibernateStringEncryptor"/>
         <beans:property name="password" value="${jasypt.password}"/>
+    </beans:bean>
+    <beans:bean id="officeStringDigester" class="org.jasypt.digest.StandardStringDigester" >
+        <beans:property name="algorithm" value="SHA-1" />
+        <beans:property name="iterations" value="100000" />
+        <beans:property name="saltGenerator">
+            <beans:bean id="saltGenerator" class="org.jasypt.salt.ZeroSaltGenerator"/>
+        </beans:property>
     </beans:bean>
 </beans:beans>

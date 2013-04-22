@@ -7,6 +7,7 @@ package info.yalamanchili.office.email;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.security.SecurityUtils;
 import java.io.File;
 import java.util.logging.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -81,7 +82,6 @@ public class EmailService {
     }
 
     private Address[] convertToEmailAddress(Set<String> emails) {
-        emails = filterEmails(emails);
         List<Address> addresses = new ArrayList<Address>();
         for (String emailAddress : emails) {
             Address address = null;
@@ -121,8 +121,8 @@ public class EmailService {
 
 //TODO update to return just emp preferecnes
     public info.yalamanchili.office.entity.profile.Email findEmail(String emailAddress) {
-        Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where email=:emailAddressParam");
-        getEmailQ.setParameter("emailAddressParam", emailAddress);
+        Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where emailHash=:emailAddressParam");
+        getEmailQ.setParameter("emailAddressParam", SecurityUtils.hash(emailAddress));
         if (getEmailQ.getResultList().size() > 0) {
             return (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
         } else {

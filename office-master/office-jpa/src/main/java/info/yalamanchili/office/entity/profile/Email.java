@@ -4,10 +4,13 @@
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
+import info.chili.spring.SpringContext;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
@@ -21,6 +24,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.hibernate.type.EncryptedStringType;
 
 /**
@@ -51,6 +55,11 @@ public class Email extends AbstractEntity {
     @Type(type = "encryptedString")
     @org.hibernate.annotations.Index(name = "EMAIL_ADDRESS")
     protected String email;
+    /*
+     * email hashed used for querying data
+     */
+    @NotEmpty
+    protected String emailHash;
     /**
      * @generated
      */
@@ -90,6 +99,14 @@ public class Email extends AbstractEntity {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getEmailHash() {
+        return emailHash;
+    }
+
+    public void setEmailHash(String emailHash) {
+        this.emailHash = emailHash;
     }
 
     /**
@@ -136,8 +153,15 @@ public class Email extends AbstractEntity {
         this.contact = contact;
     }
 
+    @PrePersist
+    @PreUpdate
+    protected void setHash() {
+        StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
+        this.emailHash = officeStringDigester.digest(this.email);
+    }
+
     @Override
     public String toString() {
-        return "Email{" + "email=" + email + ", primaryEmail=" + primaryEmail + ", emailType=" + emailType + ", contact=" + contact + '}';
+        return "Email{" + "email=" + email + ", emailHash=" + emailHash + ", primaryEmail=" + primaryEmail + ", emailType=" + emailType + ", contact=" + contact + '}';
     }
 }
