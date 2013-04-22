@@ -42,8 +42,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
     public EntityLayout timeandExpensePanel = new EntityLayout();
-    //TODO add expense  menu commands for tab panel.
-    // jira issue no SSTO-954
     public EntityLayout expensePanel = new EntityLayout();
     public EntityLayout drivePanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
@@ -104,7 +102,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
                 public void onResponse() {
-                    expenseTab();
+                    selectExpenseTab();
                 }
             });
         }
@@ -185,7 +183,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
     }
 
-    public void expenseTab() {
+    public void selectExpenseTab() {
         expensePanel.entityPanel.clear();
         expensePanel.sidePanelTop.clear();
         expensePanel.entityTitlePanel.add(new ExpenseMenu());
