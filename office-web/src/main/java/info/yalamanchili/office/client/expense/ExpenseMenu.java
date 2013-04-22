@@ -13,8 +13,6 @@ import info.yalamanchili.office.client.TabPanel;
  *
  * @author Prashanthi
  */
-//To do add expense menu to tab panel 
-// jira issue no ssto 954
 public class ExpenseMenu extends Composite {
 
     MenuBar expenseMenuBar = new MenuBar(false);
