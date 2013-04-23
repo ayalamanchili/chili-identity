@@ -8,6 +8,6 @@ package info.yalamanchili.office.client.expensecategory;
  *
  * @author Prashanthi
  */
-public class CreateExpanseCategoryPanel {
+public class ReadAllExpenseCategoryPanel {
     
 }
