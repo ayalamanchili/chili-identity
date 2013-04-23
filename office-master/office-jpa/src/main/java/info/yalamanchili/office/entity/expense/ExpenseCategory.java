@@ -5,13 +5,30 @@
 package info.yalamanchili.office.entity.expense;
 
 import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.validation.Unique;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
  * @author Prashanthi
  */
+@Indexed
+@XmlRootElement
+@Entity
+@Audited
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = {"name"}))
+@Unique(entity = ExpenseCategory.class, fields = {"name"}, message = "{expenseCategory.name.not.unique.msg}")
 public class ExpenseCategory extends AbstractEntity {
 
+    @NotEmpty(message = "{expenseCategory.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "EXPC_NM")
     protected String name;
     protected String description;
 
@@ -32,5 +49,10 @@ public class ExpenseCategory extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpenseCategory{" + "name=" + name + ",description=" + description + '}';
     }
 }
