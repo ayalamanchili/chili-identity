@@ -19,6 +19,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -30,12 +31,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
-@Table(uniqueConstraints =
-        @UniqueConstraint(columnNames = {"name"}))
-@Unique(entity = Expense.class, fields = {"name"}, message = "{Expense.name.not.unique.msg}")
+
 public class Expense extends AbstractEntity{
     
-    @NotEmpty(message = "{Expense.not.empty.msg}")
+    @NotEmpty(message = "{expense.not.empty.msg}")
     protected String name;
 
     protected String description;
@@ -47,11 +46,12 @@ public class Expense extends AbstractEntity{
     @NotNull(message = "{expenseDate.not.empty.msg}")
     protected Date expenseDate;
     
- //   @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_Expenses")
     @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
     
-     //   @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull(message = "{category.not.empty.msg}")
     protected ExpenseCategory category;
     
