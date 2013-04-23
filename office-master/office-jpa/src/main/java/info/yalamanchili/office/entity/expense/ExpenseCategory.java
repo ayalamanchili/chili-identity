@@ -24,10 +24,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @Table(uniqueConstraints =
 @UniqueConstraint(columnNames = {"name"}))
-@Unique(entity = ExpenseCategory.class, fields = {"name"}, message = "{expenseCategory.name.not.unique.msg}")
+@Unique(entity = ExpenseCategory.class, fields = {"name"}, message = "{expensecategory.name.not.unique.msg}")
 public class ExpenseCategory extends AbstractEntity {
 
-    @NotEmpty(message = "{expenseCategory.not.empty.msg}")
+    @NotEmpty(message = "{expensecategory.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "EXPC_NM")
     protected String name;
     protected String description;
