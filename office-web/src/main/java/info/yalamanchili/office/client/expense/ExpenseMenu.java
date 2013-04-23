@@ -8,6 +8,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
 
 /**
  *
@@ -41,7 +42,7 @@ public class ExpenseMenu extends Composite {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-//            TabPanel.instance().getExpensePanel().entityPanel.add(new ());
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpenseCategoryPanel());
 //            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ());
         }
     };
