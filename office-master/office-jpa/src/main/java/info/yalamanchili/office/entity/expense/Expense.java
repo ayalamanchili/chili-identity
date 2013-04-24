@@ -32,31 +32,43 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
+public class Expense extends AbstractEntity {
+    /*
+     * 
+     */
 
-public class Expense extends AbstractEntity{
-    
     @NotEmpty(message = "{expense.not.empty.msg}")
     protected String name;
-
+    /*
+     * 
+     */
     protected String description;
-    
+    /*
+     * 
+     */
     @NotNull(message = "{amount.not.empty.msg}")
     protected BigDecimal amount;
-    
+    /*
+     * 
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{expenseDate.not.empty.msg}")
     protected Date expenseDate;
-    
- //   @ManyToOne(cascade = CascadeType.MERGE)
- //   @ForeignKey(name = "FK_Employee_Expenses")
- //   @NotNull(message = "{employee.not.empty.msg}")
+    /*
+     * 
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Employee_Expenses")
+    @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
-    
-  //  @ManyToOne(cascade = CascadeType.MERGE)
-   // @NotNull(message = "{category.not.empty.msg}")
+    /*
+     * 
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @NotNull(message = "{category.not.empty.msg}")
     protected ExpenseCategory category;
-    
-     public String getName() {
+
+    public String getName() {
         return name;
     }
 
@@ -71,15 +83,17 @@ public class Expense extends AbstractEntity{
     public Date getExpenseDate() {
         return expenseDate;
     }
-     @XmlElement
+
+    @XmlElement
     public Employee getEmployee() {
         return employee;
     }
+
     @XmlElement
     public ExpenseCategory getCategory() {
         return category;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -103,5 +117,9 @@ public class Expense extends AbstractEntity{
     public void setCategory(ExpenseCategory category) {
         this.category = category;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Expense{" + "name=" + name + ", description=" + description + ", amount=" + amount + ", expenseDate=" + expenseDate + ", employee=" + employee + ", category=" + category + '}';
+    }
 }
