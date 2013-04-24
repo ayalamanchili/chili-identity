@@ -29,11 +29,11 @@ public class CreateExpenseCategoryPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject certification = new JSONObject();
-        assignEntityValueFromField("name", certification);
-        assignEntityValueFromField("description", certification);
-        logger.info(certification.toString());
-        return certification;
+        JSONObject ExpenseCategory = new JSONObject();
+        assignEntityValueFromField("name", ExpenseCategory);
+        assignEntityValueFromField("description", ExpenseCategory);
+        logger.info(ExpenseCategory.toString());
+        return ExpenseCategory;
     }
 
     @Override
