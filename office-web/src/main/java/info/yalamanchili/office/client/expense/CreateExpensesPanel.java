@@ -21,10 +21,12 @@ import java.util.logging.Logger;
  * @author raghu
  */
 public class CreateExpensesPanel extends CreateComposite {
+
     private static Logger logger = Logger.getLogger(CreateExpensesPanel.class.getName());
-   
-    public CreateExpensesPanel(CreateComposite.CreateCompositeType type)
-    {
+    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, false);
+    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget(false, false);
+
+    public CreateExpensesPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Expenses", OfficeWelcome.constants);
     }
@@ -32,34 +34,34 @@ public class CreateExpensesPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("expenseDate", entity);
-        assignEntityValueFromField("category", entity);
+        entity.put("category", selectCategoryWidgetF.getSelectedObject());
+        entity.put("employee", selectEmployeeWidgetF.getSelectedObject());
+        logger.info("ddd" + entity);
         return entity;
     }
 
     @Override
     protected void createButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
     protected void addButtonClicked() {
-        
     }
 
     @Override
@@ -71,32 +73,29 @@ public class CreateExpensesPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(false, true));
+        addDropDown("employee", selectEmployeeWidgetF);
         addField("name", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
-        addDropDown("category", new SelectExpenseCategoryWidget(false, true));
+        addDropDown("category", selectCategoryWidgetF);
         addField("expenseDate", false, true, DataType.DATE_FIELD);
         addField("description", false, false, DataType.TEXT_AREA_FIELD);
-       
+
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
-         return OfficeWelcome.constants.root_url() + "expense";
+        return OfficeWelcome.constants.root_url() + "expense";
     }
 }
