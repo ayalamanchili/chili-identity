@@ -71,7 +71,7 @@ public class Expense extends AbstractEntity{
     public Date getExpenseDate() {
         return expenseDate;
     }
-
+     @XmlElement
     public Employee getEmployee() {
         return employee;
     }
