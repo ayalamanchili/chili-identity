@@ -8,8 +8,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.phone.CreatePhonePanel;
@@ -26,7 +26,7 @@ public abstract class CreateContactPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateContactPanel.class.getName());
     protected List<CreatePhonePanel> createPhoneWidgets = new ArrayList<CreatePhonePanel>();
-    protected Anchor addPhoneL = new Anchor("add Phone");
+    protected ClickableLink addPhoneL = new ClickableLink("add Phone");
 
     public CreateContactPanel(CreateCompositeType type) {
         super(type);

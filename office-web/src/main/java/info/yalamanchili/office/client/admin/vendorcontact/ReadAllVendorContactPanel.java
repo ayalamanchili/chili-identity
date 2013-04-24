@@ -14,6 +14,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
+import info.yalamanchili.office.client.profile.contact.ReadContactPanel;
 import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -92,6 +93,8 @@ public class ReadAllVendorContactPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadContactPanel(getEntity(entityId)));
     }
 
     @Override

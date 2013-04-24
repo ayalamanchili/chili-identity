@@ -11,6 +11,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
@@ -27,7 +28,7 @@ public abstract class UpdateContactPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateContactPanel.class.getName());
     protected List<UpdatePhonePanel> updatePhoneWidgets = new ArrayList<UpdatePhonePanel>();
-    protected Anchor addPhoneL = new Anchor("add Phone");
+    protected ClickableLink addPhoneL = new ClickableLink("add Phone");
     protected JSONArray phones = new JSONArray();
 
     public UpdateContactPanel(JSONObject entity) {
