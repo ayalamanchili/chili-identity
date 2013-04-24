@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
@@ -46,13 +47,13 @@ public class Expense extends AbstractEntity{
     @NotNull(message = "{expenseDate.not.empty.msg}")
     protected Date expenseDate;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Employee_Expenses")
-    @NotNull(message = "{employee.not.empty.msg}")
+ //   @ManyToOne(cascade = CascadeType.MERGE)
+ //   @ForeignKey(name = "FK_Employee_Expenses")
+ //   @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @NotNull(message = "{category.not.empty.msg}")
+  //  @ManyToOne(cascade = CascadeType.MERGE)
+   // @NotNull(message = "{category.not.empty.msg}")
     protected ExpenseCategory category;
     
      public String getName() {
@@ -74,7 +75,7 @@ public class Expense extends AbstractEntity{
     public Employee getEmployee() {
         return employee;
     }
-
+    @XmlElement
     public ExpenseCategory getCategory() {
         return category;
     }
