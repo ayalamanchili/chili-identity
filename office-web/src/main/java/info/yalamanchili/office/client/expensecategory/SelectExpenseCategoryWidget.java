@@ -37,6 +37,5 @@ public class SelectExpenseCategoryWidget extends SelectComposite {
 
     @Override
     protected void validate() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
