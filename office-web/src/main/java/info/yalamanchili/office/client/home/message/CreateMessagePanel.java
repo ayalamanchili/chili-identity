@@ -115,7 +115,7 @@ public class CreateMessagePanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("search", false, true, DataType.SUGGEST_FIELD);
-        entityDisplayWidget.add(addTo);
+        entityFieldsPanel.add(addTo);
         addField("to", false, true, DataType.TEXT_AREA_FIELD);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("message", false, false, DataType.RICH_TEXT_AREA);

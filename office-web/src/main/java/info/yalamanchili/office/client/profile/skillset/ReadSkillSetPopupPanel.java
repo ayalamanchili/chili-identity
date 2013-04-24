@@ -38,6 +38,6 @@ public class ReadSkillSetPopupPanel extends ReadSkillSetPanel {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
-        entityDisplayWidget.add(new SkillSetOptionsPopupPanel(super.empId));
+        entityFieldsPanel.add(new SkillSetOptionsPopupPanel(super.empId));
     }
 }

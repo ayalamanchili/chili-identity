@@ -87,7 +87,7 @@ public class CreateNotificationGroupPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
-        entityDisplayWidget.add(employeeSelectWidget);
+        entityFieldsPanel.add(employeeSelectWidget);
     }
 
     @Override

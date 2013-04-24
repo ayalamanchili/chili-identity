@@ -9,7 +9,7 @@ public abstract class ReadComposite extends CRUDComposite {
         this.entity = entity;
         init(className, true, constants);
         entityCaptionPanel.addStyleName("y-gwt-ReadEntityCaptionPanel");
-        entityDisplayWidget.addStyleName("y-gwt-ReadEntityDisplayWidget");
+        entityFieldsPanel.addStyleName("y-gwt-ReadEntityDisplayWidget");
         basePanel.addStyleName("y-gwt-ReadBasePanel");
         populateFieldsFromEntity(entity);
     }
@@ -17,7 +17,7 @@ public abstract class ReadComposite extends CRUDComposite {
     protected void initReadComposite(String id, String className, final ConstantsWithLookup constants) {
         init(className, true, constants);
         entityCaptionPanel.addStyleName("y-gwt-ReadEntityCaptionPanel");
-        entityDisplayWidget.addStyleName("y-gwt-ReadEntityDisplayWidget");
+        entityFieldsPanel.addStyleName("y-gwt-ReadEntityDisplayWidget");
         basePanel.addStyleName("y-gwt-ReadBasePanel");
         this.entityId = id;
         loadEntity(entityId);
@@ -26,7 +26,7 @@ public abstract class ReadComposite extends CRUDComposite {
     protected void initReadComposite(String className, final ConstantsWithLookup constants) {
         init(className, true, constants);
         entityCaptionPanel.addStyleName("y-gwt-ReadEntityCaptionPanel");
-        entityDisplayWidget.addStyleName("y-gwt-ReadEntityDisplayWidget");
+        entityFieldsPanel.addStyleName("y-gwt-ReadEntityDisplayWidget");
         basePanel.addStyleName("y-gwt-ReadBasePanel");
         loadEntity(null);
     }

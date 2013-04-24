@@ -7,8 +7,6 @@ package info.yalamanchili.office.mapper.profile;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Email;
-import info.yalamanchili.office.entity.profile.Phone;
 import org.dozer.Mapper;
 
 /**
@@ -16,53 +14,6 @@ import org.dozer.Mapper;
  * @author anuyalamanchili
  */
 public class ContactMapper {
-
-    /**
-     *
-     * @param dto
-     * @return
-     */
-    public static Contact map(ContactDto dto, Contact entity) {
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        if (entity == null) {
-            entity = mapper.map(dto, Contact.class);
-        } else {
-            mapper.map(dto, entity);
-        }
-        //Email
-        if (dto.getEmail() == null || dto.getEmail().trim().isEmpty()) {
-            if (entity.getEmails().size() > 0) {
-                entity.getEmails().remove(0);
-            }
-        } else {
-            Email email;
-            if (entity.getEmails().size() > 0) {
-                email = (Email) entity.getEmails().get(0);
-            } else {
-                email = new Email();
-                entity.addEmail(email);
-            }
-            email.setEmail(dto.getEmail());
-            email.setPrimaryEmail(true);
-
-        }
-        //Phone
-        if (dto.getPhoneNumber() == null || dto.getPhoneNumber().trim().isEmpty()) {
-            if (entity.getPhones().size() > 0) {
-                entity.getPhones().remove(0);
-            }
-        } else {
-            Phone phone;
-            if (entity.getPhones().size() > 0) {
-                mapper.map(dto, entity.getPhones().get(0));
-            } else {
-                phone = mapper.map(dto, Phone.class);
-                entity.addPhone(phone);
-            }
-        }
-        return entity;
-    }
-
     /**
      *
      * @param entity

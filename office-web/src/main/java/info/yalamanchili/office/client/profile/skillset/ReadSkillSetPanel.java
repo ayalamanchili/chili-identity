@@ -93,8 +93,8 @@ public class ReadSkillSetPanel extends ReadComposite {
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
         String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
         FileField fileField = new FileField(fileURL);
-        entityDisplayWidget.add(fileField);
-        entityDisplayWidget.add(new SkillSetOptionsPanel(empId));
+        entityFieldsPanel.add(fileField);
+        entityFieldsPanel.add(new SkillSetOptionsPanel(empId));
     }
 
     @Override

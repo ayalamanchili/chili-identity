@@ -77,7 +77,7 @@ public class CreateEmailPanel extends CreateComposite {
     protected void addWidgets() {
         addField("email", false, true, DataType.STRING_FIELD);
         addField("primaryEmail", false, false, DataType.BOOLEAN_FIELD);
-        entityDisplayWidget.add(emailTypeF);
+        entityFieldsPanel.add(emailTypeF);
     }
 
     @Override

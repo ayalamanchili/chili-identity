@@ -42,7 +42,9 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
      */
     protected FlowPanel basePanel = new FlowPanel();
     protected CaptionPanel entityCaptionPanel = new CaptionPanel();
-    protected FlowPanel entityDisplayWidget = new FlowPanel();
+    protected FlowPanel entityPanel = new FlowPanel();
+    protected FlowPanel entityFieldsPanel = new FlowPanel();
+    protected FlowPanel entityActionsPanel = new FlowPanel();
     /*
      * attributes
      */
@@ -72,7 +74,9 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         this.entityName = entityName;
         this.constants = constants;
         addWidgetsBeforeCaptionPanel();
-        entityCaptionPanel.setContentWidget(entityDisplayWidget);
+        entityPanel.add(entityFieldsPanel);
+        entityPanel.add(entityActionsPanel);
+        entityCaptionPanel.setContentWidget(entityPanel);
         basePanel.add(entityCaptionPanel);
         entityCaptionPanel.setCaptionHTML(entityName);
         addListeners();
@@ -97,51 +101,51 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
                     attributeName, entityName, readOnly, isRequired);
             longField.addEnterKeyPressesListener(this);
             fields.put(attributeName, longField);
-            entityDisplayWidget.add(longField);
+            entityFieldsPanel.add(longField);
         }
         if (DataType.INTEGER_FIELD.equals(type)) {
             IntegerField integerField = new IntegerField(constants,
                     attributeName, entityName, readOnly, isRequired);
             integerField.addEnterKeyPressesListener(this);
             fields.put(attributeName, integerField);
-            entityDisplayWidget.add(integerField);
+            entityFieldsPanel.add(integerField);
         }
         if (DataType.STRING_FIELD.equals(type)) {
             StringField stringField = new StringField(constants,
                     attributeName, entityName, readOnly, isRequired);
             stringField.addEnterKeyPressesListener(this);
             fields.put(attributeName, stringField);
-            entityDisplayWidget.add(stringField);
+            entityFieldsPanel.add(stringField);
         }
         if (DataType.DATE_FIELD.equals(type)) {
             DateField dateField = new DateField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, dateField);
-            entityDisplayWidget.add(dateField);
+            entityFieldsPanel.add(dateField);
         }
         if (DataType.BOOLEAN_FIELD.equals(type)) {
             BooleanField booleanField = new BooleanField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, booleanField);
-            entityDisplayWidget.add(booleanField);
+            entityFieldsPanel.add(booleanField);
         }
         if (DataType.FLOAT_FIELD.equals(type)) {
             FloatField floatField = new FloatField(constants,
                     attributeName, entityName, readOnly, isRequired);
             floatField.addEnterKeyPressesListener(this);
             fields.put(attributeName, floatField);
-            entityDisplayWidget.add(floatField);
+            entityFieldsPanel.add(floatField);
         }
         if (DataType.PASSWORD_FIELD.equals(type)) {
             PasswordField passwordField = new PasswordField(constants, attributeName, entityName, isRequired);
             fields.put(attributeName, passwordField);
-            entityDisplayWidget.add(passwordField);
+            entityFieldsPanel.add(passwordField);
         }
         if (DataType.DROPDOWN_FIELD.equals(type)) {
             StringField dropDownField = new StringField(constants,
                     attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, dropDownField);
-            entityDisplayWidget.add(dropDownField);
+            entityFieldsPanel.add(dropDownField);
         }
         if (DataType.IMAGE_FIELD.equals(type)) {
             FileuploadField fileUploadPanel = new FileuploadField(constants, attributeName, entityName,
@@ -150,31 +154,31 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
                 public void onUploadComplete() {
                 }
             };
-            entityDisplayWidget.add(fileUploadPanel);
+            entityFieldsPanel.add(fileUploadPanel);
         }
         if (DataType.TEXT_AREA_FIELD.equals(type)) {
             TextAreaField textAreaField = new TextAreaField(constants, attributeName, entityName, readOnly, isRequired);
             textAreaField.addStyleName("y-gwt-TextAreaField");
             fields.put(attributeName, textAreaField);
-            entityDisplayWidget.add(textAreaField);
+            entityFieldsPanel.add(textAreaField);
         }
         if (DataType.RICH_TEXT_AREA.equals(type)) {
             RichTextField richTextField = new RichTextField(constants, attributeName, entityName, readOnly, isRequired);
             richTextField.addStyleName("y-gwt-RichTextField");
             fields.put(attributeName, richTextField);
-            entityDisplayWidget.add(richTextField);
+            entityFieldsPanel.add(richTextField);
         }
         if (DataType.CURRENCY_FIELD.equals(type)) {
             CurrencyField currencyField = new CurrencyField(constants, attributeName, entityName, readOnly, isRequired);
             currencyField.addStyleName("y-gwt-CurrencyField");
             currencyField.addEnterKeyPressesListener(this);
             fields.put(attributeName, currencyField);
-            entityDisplayWidget.add(currencyField);
+            entityFieldsPanel.add(currencyField);
         }
         if (DataType.SUGGEST_FIELD.equals(type)) {
             info.chili.gwt.widgets.SuggestBox suggestBox = new info.chili.gwt.widgets.SuggestBox(constants, attributeName, entityName, readOnly, isRequired);
             fields.put(attributeName, suggestBox);
-            entityDisplayWidget.add(suggestBox);
+            entityFieldsPanel.add(suggestBox);
         }
     }
 
@@ -182,13 +186,13 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         EnumField enumField = new EnumField(constants, key, entityName,
                 readOnly, isRequired, values);
         fields.put(key, enumField);
-        entityDisplayWidget.add(enumField);
+        entityFieldsPanel.add(enumField);
     }
 
     protected void addDropDown(String key, SelectComposite widget) {
         fields.put(key, widget);
         widget.getListBox().setEnabled(!readOnly);
-        entityDisplayWidget.add(widget);
+        entityFieldsPanel.add(widget);
     }
 
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {

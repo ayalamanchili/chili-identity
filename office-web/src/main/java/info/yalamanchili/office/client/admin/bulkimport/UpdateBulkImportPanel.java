@@ -96,7 +96,7 @@ public class UpdateBulkImportPanel extends UpdateComposite {
         addDropDown("adapter", new SelectImportAdapterComposite(false, true));
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
-        entityDisplayWidget.add(bulkImportUploadPanel);
+        entityFieldsPanel.add(bulkImportUploadPanel);
         //just show name description and fileuplaod fields
     }
 

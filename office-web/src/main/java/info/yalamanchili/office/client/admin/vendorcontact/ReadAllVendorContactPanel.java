@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
+//TODO extend from generic readall contacts
 public class ReadAllVendorContactPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllVendorContactPanel.class.getName());
@@ -64,8 +65,7 @@ public class ReadAllVendorContactPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Middle Initial"));
         table.setText(0, 3, getKeyValue("Last Name"));
         table.setText(0, 4, getKeyValue("Email"));
-        table.setText(0, 5, getKeyValue("Phone"));
-        table.setText(0, 6, getKeyValue("Sex"));
+        table.setText(0, 5, getKeyValue("Sex"));
     }
 
     @Override
@@ -77,8 +77,7 @@ public class ReadAllVendorContactPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "middleInitial"));
             table.setText(i, 3, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
-            table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "sex"));
+            table.setText(i, 5, JSONUtils.toString(entity, "sex"));
         }
     }
 
@@ -99,11 +98,11 @@ public class ReadAllVendorContactPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {

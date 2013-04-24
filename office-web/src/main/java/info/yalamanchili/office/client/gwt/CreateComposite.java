@@ -29,16 +29,16 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
     public void initCreateComposite(String className, final ConstantsWithLookup constants) {
         init(className, false, constants);
         if (CreateCompositeType.CREATE.equals(type)) {
-            entityDisplayWidget.add(create);
+            entityActionsPanel.add(create);
             create.addClickHandler(this);
         }
         if (CreateCompositeType.ADD.equals(type)) {
-            entityDisplayWidget.add(add);
+            entityActionsPanel.add(add);
             add.addClickHandler(this);
         }
 
         entityCaptionPanel.addStyleName("y-gwt-CreateEntityCaptionPanel");
-        entityDisplayWidget.addStyleName("y-gwt-CreateEntityDisplayWidget");
+        entityFieldsPanel.addStyleName("y-gwt-CreateEntityDisplayWidget");
         basePanel.addStyleName("y-gwt-CreateBasePanel");
     }
 
@@ -89,6 +89,10 @@ public abstract class CreateComposite extends CRUDComposite implements ClickHand
         if (add.isAttached()) {
             add.setEnabled(false);
         }
+    }
+
+    public JSONObject getPopulatedEntity() {
+        return populateEntityFromFields();
     }
 
     protected void setButtonText(String key) {

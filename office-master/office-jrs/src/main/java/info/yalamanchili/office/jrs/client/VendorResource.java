@@ -20,6 +20,7 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
+import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -48,6 +49,8 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @Autowired
     public VendorDao vendorDao;
+    @Autowired
+    protected ContactService contactService;
     @PersistenceContext
     protected EntityManager em;
 
@@ -77,7 +80,8 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public void addvendorContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
-        vendor.addContact(ContactMapper.map(dto, null));
+        Contact contact = contactService.save(dto);
+        vendor.addContact(contact);
     }
 
     @PUT

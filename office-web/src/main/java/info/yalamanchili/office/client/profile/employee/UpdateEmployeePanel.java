@@ -105,7 +105,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("jobTitle", false, true, DataType.STRING_FIELD);
 
-        entityDisplayWidget.add(empImageUploadPanel);
+        entityFieldsPanel.add(empImageUploadPanel);
 
     }
 

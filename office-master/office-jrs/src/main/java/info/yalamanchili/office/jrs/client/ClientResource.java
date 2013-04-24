@@ -8,7 +8,6 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
-import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.profile.ContactDto;
@@ -21,6 +20,7 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
+import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -51,6 +51,8 @@ public class ClientResource extends CRUDResource<Client> {
 
     @Autowired
     public ClientDao clientDao;
+    @Autowired
+    protected ContactService contactService;
     @PersistenceContext
     protected EntityManager em;
 
@@ -100,9 +102,10 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Path("/clientcontact/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public void addclientContact(@PathParam("clientId") Long clientId, ContactDto dto) {
+    public void addclientContact(@PathParam("clientId") Long clientId, ContactDto contactDto) {
         Client clnt = (Client) getDao().findById(clientId);
-        clnt.addContact(ContactMapper.map(dto, null));
+        Contact contact = contactService.save(contactDto);
+        clnt.addContact(contact);
     }
 
     @PUT

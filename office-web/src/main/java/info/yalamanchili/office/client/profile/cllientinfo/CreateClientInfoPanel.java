@@ -96,11 +96,11 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
         addDropDown("client", new SelectClientWidget(false, true));
-        entityDisplayWidget.add(addClientL);
+        entityFieldsPanel.add(addClientL);
         addDropDown("clientContact", new SelectClientContactWidget(false, false));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
         addDropDown("vendor", new SelectVendorWidget(false, false));
-        entityDisplayWidget.add(addVendorL);
+        entityFieldsPanel.add(addVendorL);
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);

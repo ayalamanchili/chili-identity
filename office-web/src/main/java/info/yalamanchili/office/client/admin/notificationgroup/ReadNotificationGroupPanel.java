@@ -41,7 +41,7 @@ public class ReadNotificationGroupPanel extends ReadComposite {
     protected void addWidgets() {
         employeeSelectWidget = new MultiSelectEmployeeWidget("Employees", getEntityId(), true, true);
         addField("name", true, false, DataType.STRING_FIELD);
-        entityDisplayWidget.add(employeeSelectWidget);
+        entityFieldsPanel.add(employeeSelectWidget);
     }
 
     @Override

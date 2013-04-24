@@ -5,17 +5,13 @@
 package info.yalamanchili.office.entity.expense;
 
 import info.chili.jpa.AbstractEntity;
-import info.chili.jpa.validation.Unique;
-import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.profile.Phone;
 import java.io.Serializable;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,8 +15,8 @@ import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
+import javax.validation.Valid;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -64,18 +65,8 @@ public class ContactDto implements Serializable {
     /**
      * phoneNumber
      */
-    @Size(min = 10, max = 10, message = "{phone.phoneNumber.length.invalid.msg}")
-    protected String phoneNumber;
-    /**
-     * phone country code
-     */
-    @Size(min = 0, max = 4, message = "{phone.countryCode.length.invalid.msg}")
-    protected String countryCode;
-    /**
-     * phone extension
-     */
-    @Size(min = 0, max = 4, message = "{phone.extension.length.invalid.msg}")
-    protected String extension;
+    @Valid
+    protected List<Phone> phones;
 
     public Long getId() {
         return id;
@@ -141,28 +132,13 @@ public class ContactDto implements Serializable {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    @XmlElement
+    public List<Phone> getPhones() {
+        return phones;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
     @XmlRootElement

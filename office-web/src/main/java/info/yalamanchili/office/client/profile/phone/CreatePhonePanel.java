@@ -82,14 +82,14 @@ public class CreatePhonePanel extends CreateComposite {
         addField("countryCode", false, false, DataType.LONG_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
         addField("extension", false, false, DataType.LONG_FIELD);
-        entityDisplayWidget.add(phoneTypeF);
+        entityFieldsPanel.add(phoneTypeF);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/phone/" + TreeEmployeePanel.instance().getEntityId();

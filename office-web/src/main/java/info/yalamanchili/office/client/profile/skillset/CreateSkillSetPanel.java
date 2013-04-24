@@ -37,7 +37,7 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        entityDisplayWidget.add(resumeUploadPanel);
+        entityFieldsPanel.add(resumeUploadPanel);
     }
 
     @Override

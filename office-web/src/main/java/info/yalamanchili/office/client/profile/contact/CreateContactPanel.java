@@ -4,12 +4,18 @@
  */
 package info.yalamanchili.office.client.profile.contact;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.profile.phone.CreatePhonePanel;
 import info.yalamanchili.office.client.rpc.HttpService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -19,6 +25,8 @@ import java.util.logging.Logger;
 public abstract class CreateContactPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateContactPanel.class.getName());
+    protected List<CreatePhonePanel> createPhoneWidgets = new ArrayList<CreatePhonePanel>();
+    protected Anchor addPhoneL = new Anchor("add Phone");
 
     public CreateContactPanel(CreateCompositeType type) {
         super(type);
@@ -27,15 +35,20 @@ public abstract class CreateContactPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
+        entity = new JSONObject();
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("email", entity);
-        assignEntityValueFromField("countryCode", entity);
-        assignEntityValueFromField("phoneNumber", entity);
-        assignEntityValueFromField("extension", entity);
+        //populate phones
+        JSONArray phones = new JSONArray();
+        int i = 0;
+        for (CreatePhonePanel createPhoneWidget : createPhoneWidgets) {
+            phones.set(i, createPhoneWidget.getPopulatedEntity());
+            i++;
+        }
+        entity.put("phones", phones);
         logger.info(entity.toString());
         return entity;
     }
@@ -48,16 +61,16 @@ public abstract class CreateContactPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -65,6 +78,7 @@ public abstract class CreateContactPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
+        addPhoneL.addClickHandler(this);
     }
 
     @Override
@@ -79,9 +93,24 @@ public abstract class CreateContactPanel extends CreateComposite {
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, false, strs);
         addField("email", false, false, DataType.STRING_FIELD);
-        addField("countryCode", false, false, DataType.LONG_FIELD);
-        addField("phoneNumber", false, false, DataType.LONG_FIELD);
-        addField("extension", false, false, DataType.LONG_FIELD);
+        addCreatePhonePanel();
+        entityFieldsPanel.add(addPhoneL);
+    }
+
+    protected void addCreatePhonePanel() {
+        CreatePhonePanel createPhonePanel = new CreatePhonePanel(CreateCompositeType.ADD);
+        createPhonePanel.add.setVisible(false);
+        entityFieldsPanel.add(createPhonePanel);
+        createPhoneWidgets.add(createPhonePanel);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(addPhoneL)) {
+            addCreatePhonePanel();
+        } else {
+            super.onClick(event);
+        }
     }
 
     @Override

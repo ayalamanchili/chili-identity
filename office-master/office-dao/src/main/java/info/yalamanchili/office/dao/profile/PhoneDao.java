@@ -1,5 +1,6 @@
 package info.yalamanchili.office.dao.profile;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
@@ -14,14 +15,14 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class PhoneDao extends CRUDDao<Phone> {
 
-	@PersistenceContext
-	protected EntityManager em;
+    @PersistenceContext
+    protected EntityManager em;
 
-	public PhoneDao() {
-		super(Phone.class);
-	}
-        
-        public Phone save(Phone entity) {
+    public PhoneDao() {
+        super(Phone.class);
+    }
+
+    public Phone save(Phone entity) {
         if (entity.getId() != null) {
             Phone updatedPhone = null;
             updatedPhone = super.save(entity);
@@ -33,10 +34,14 @@ public class PhoneDao extends CRUDDao<Phone> {
             return em.merge(updatedPhone);
         }
         return super.save(entity);
-         }
-        
-	@Override
-	public EntityManager getEntityManager() {
-		return em;
-	}
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
+    public static PhoneDao instance() {
+        return SpringContext.getBean(PhoneDao.class);
+    }
 }

@@ -38,7 +38,7 @@ public class CreateFilePanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
-        entityDisplayWidget.add(fileUploadPanel);
+        entityFieldsPanel.add(fileUploadPanel);
     }
 
     @Override

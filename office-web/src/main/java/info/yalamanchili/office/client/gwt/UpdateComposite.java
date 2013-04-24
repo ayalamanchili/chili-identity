@@ -10,21 +10,21 @@ import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.utils.Utils;
 
 public abstract class UpdateComposite extends CRUDComposite implements ClickHandler {
-    
+
     Logger logger = Logger.getLogger(UpdateComposite.class.getName());
-    protected Button update = new Button("update");
-    
+    public Button update = new Button("update");
+
     public void initUpdateComposite(JSONObject entity, String className, final ConstantsWithLookup constants) {
         this.entity = entity;
         init(className, false, constants);
         entityCaptionPanel.addStyleName("y-gwt-UpdateEntityCaptionPanel");
-        entityDisplayWidget.addStyleName("y-gwt-UpdateEntityDisplayWidget");
+        entityFieldsPanel.addStyleName("y-gwt-UpdateEntityDisplayWidget");
         basePanel.addStyleName("y-gwt-UpdateBasePanel");
-        entityDisplayWidget.add(update);
+        entityActionsPanel.add(update);
         update.addClickHandler(this);
         populateFieldsFromEntity(entity);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         entity = populateEntityFromFields();
@@ -35,30 +35,34 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
             disableSubmitButtons();
         }
     }
-    
+
+    public JSONObject getPopulatedEntity() {
+        return populateEntityFromFields();
+    }
+
     @Override
     protected void enterKeyPressed() {
         onClick(null);
     }
-    
+
     @Override
     protected void enableSubmitButtons() {
         update.setEnabled(true);
     }
-    
+
     @Override
     protected void disableSubmitButtons() {
         update.setEnabled(false);
     }
-    
+
     protected void setButtonText(String key) {
         update.setText(Utils.getKeyValue(key, constants));
     }
-    
+
     protected abstract JSONObject populateEntityFromFields();
-    
+
     protected abstract void updateButtonClicked();
-    
+
     public abstract void populateFieldsFromEntity(JSONObject entity);
 
     /**
@@ -68,6 +72,6 @@ public abstract class UpdateComposite extends CRUDComposite implements ClickHand
     protected boolean processClientSideValidations(JSONObject entity) {
         return true;
     }
-    
+
     protected abstract void postUpdateSuccess(String result);
 }
