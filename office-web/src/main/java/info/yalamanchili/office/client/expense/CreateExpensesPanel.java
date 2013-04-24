@@ -83,10 +83,10 @@ public class CreateExpensesPanel extends CreateComposite {
     protected void addWidgets() {
         addDropDown("employee", new SelectEmployeeWidget(false, true));
         addField("name", false, true, DataType.STRING_FIELD);
-        addField("amount", false, false, DataType.CURRENCY_FIELD);
+        addField("amount", false, true, DataType.CURRENCY_FIELD);
         addDropDown("category", new SelectExpenseCategoryWidget(false, true));
         addField("expenseDate", false, true, DataType.DATE_FIELD);
-        addField("description", false, true, DataType.TEXT_AREA_FIELD);
+        addField("description", false, false, DataType.TEXT_AREA_FIELD);
        
     }
 
