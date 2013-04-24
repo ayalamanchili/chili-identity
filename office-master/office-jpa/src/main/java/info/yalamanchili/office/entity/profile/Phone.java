@@ -40,7 +40,7 @@ public class Phone extends AbstractEntity {
      * @generated
      */
     @Size(min = 10, max = 10, message = "{phone.phoneNumber.length.invalid.msg}")
-    @Pattern(regexp = "(^$|[0-9]{10})", message = "{invalid.phone.Number.Format}")
+    @Pattern(regexp = "(^$|[0-9]{10})", message = "{invalid.phonenumber.format}")
     @NotEmpty(message = "{phone.phoneNumber.not.empty.msg}")
     @Field
     @org.hibernate.annotations.Index(name = "PHN_NO")

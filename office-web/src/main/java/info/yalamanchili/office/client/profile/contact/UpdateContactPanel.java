@@ -90,6 +90,7 @@ public abstract class UpdateContactPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
+        addPhoneL.addClickHandler(this);
     }
 
     @Override
