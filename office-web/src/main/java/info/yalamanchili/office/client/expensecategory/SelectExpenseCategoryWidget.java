@@ -21,7 +21,7 @@ public class SelectExpenseCategoryWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "phoneType"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -32,7 +32,7 @@ public class SelectExpenseCategoryWidget extends SelectComposite {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "phonetype/dropdown", start, limit, columns);
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "expensecategory/dropdown", start, limit, columns);
     }
 
     @Override
