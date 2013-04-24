@@ -78,9 +78,9 @@ public class UpdatePhonePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        addField("countryCode", false, false, DataType.LONG_FIELD);
         addField("phoneNumber", false, true, DataType.LONG_FIELD);
         addField("extension", false, false, DataType.LONG_FIELD);
-        addField("countryCode", false, false, DataType.LONG_FIELD);
         addDropDown("phoneType", new SelectPhoneTypeWidget(false, false));
     }
 
