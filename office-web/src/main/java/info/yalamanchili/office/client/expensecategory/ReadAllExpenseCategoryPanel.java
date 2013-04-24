@@ -65,6 +65,8 @@ public class ReadAllExpenseCategoryPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseCategoryPanel(getEntity(entityId)));
     }
 
     @Override
