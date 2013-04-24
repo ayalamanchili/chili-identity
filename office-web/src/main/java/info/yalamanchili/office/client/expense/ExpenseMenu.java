@@ -26,20 +26,20 @@ public class ExpenseMenu extends Composite {
 
     protected void configureExpenseMenu() {
         MenuBar menu = new MenuBar(true);
-        expenseMenuBar.addItem("Expense", ecpenseMaintainenceCmd);
-        expenseMenuBar.addItem("ExpenseCategories", ecpenseCategoriesMaintainenceCmd);
+        expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
+        expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
 
         expenseMenuBar.addStyleName("entityMenuBar");
     }
-    Command ecpenseMaintainenceCmd = new Command() {
+    Command expenseMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-//            TabPanel.instance().getExpensePanel().entityPanel.add(new ());
-//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ());
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpensesPanel());
+            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpensesSidePanel());
         }
     };
-    Command ecpenseCategoriesMaintainenceCmd = new Command() {
+    Command expenseCategoriesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
