@@ -61,6 +61,7 @@ public class Expense extends AbstractEntity {
      * 
      */
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Category_Expenses")
     @NotNull(message = "{category.not.empty.msg}")
     protected ExpenseCategory category;
 
