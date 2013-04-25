@@ -21,26 +21,26 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class ExpenseDao extends CRUDDao<Expense> {
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     public Expense save(Expense entity) {
         entity.setCategory(getEntityManager().find(ExpenseCategory.class, entity.getCategory().getId()));
         entity.setEmployee(getEntityManager().find(Employee.class, entity.getEmployee().getId()));
-        return getEntityManager().merge(entity);
+        return super.save(entity);
     }
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public ExpenseDao() {
         super(Expense.class);
     }
-    
+
     public static ExpenseDao instance() {
         return SpringContext.getBean(ExpenseDao.class);
     }
