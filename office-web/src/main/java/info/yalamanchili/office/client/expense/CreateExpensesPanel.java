@@ -67,8 +67,8 @@ public class CreateExpensesPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Expense Successfully Created");
-        TabPanel.instance().getExpensePanel().entityPanel.clear();
-        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpensesPanel());
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpensesPanel());
     }
 
     @Override

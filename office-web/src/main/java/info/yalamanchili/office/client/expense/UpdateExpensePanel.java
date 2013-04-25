@@ -20,14 +20,14 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class UpdateExpensePanel extends UpdateComposite{
+public class UpdateExpensePanel extends UpdateComposite {
 
-     private static Logger logger = Logger.getLogger(UpdateExpensePanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateExpensePanel.class.getName());
 
     public UpdateExpensePanel(JSONObject entity) {
         initUpdateComposite(entity, "Expenses", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
@@ -41,7 +41,7 @@ public class UpdateExpensePanel extends UpdateComposite{
 
     @Override
     protected void updateButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
@@ -57,7 +57,7 @@ public class UpdateExpensePanel extends UpdateComposite{
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-       assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("expenseDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.TEXT_AREA_FIELD);
@@ -67,19 +67,17 @@ public class UpdateExpensePanel extends UpdateComposite{
 
     @Override
     protected void postUpdateSuccess(String result) {
-       new ResponseStatusWidget().show("Successfully  Updated Email Information");
-        TabPanel.instance().getExpensePanel().entityPanel.clear();
-        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpensesPanel());
+        new ResponseStatusWidget().show("Successfully  Updated Email Information");
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpensesPanel());
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -90,18 +88,14 @@ public class UpdateExpensePanel extends UpdateComposite{
         addDropDown("category", new SelectExpenseCategoryWidget(false, true));
         addField("expenseDate", false, true, DataType.DATE_FIELD);
         addField("description", false, false, DataType.TEXT_AREA_FIELD);
-        
-        
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
-         return OfficeWelcome.constants.root_url() + "expense";
+        return OfficeWelcome.constants.root_url() + "expense";
     }
-    
 }

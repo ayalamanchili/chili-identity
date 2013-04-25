@@ -27,22 +27,23 @@ import java.util.logging.Logger;
  */
 public class ReadAllExpensesPanel extends CRUDReadAllComposite {
 
-     private static Logger logger = Logger.getLogger(ReadAllExpensesPanel.class.getName());
+    private static Logger logger = Logger.getLogger(ReadAllExpensesPanel.class.getName());
     public static ReadAllExpensesPanel instance;
-    
-     public ReadAllExpensesPanel() {
+
+    public ReadAllExpensesPanel() {
         instance = this;
         initTable("Expenses", OfficeWelcome.constants);
     }
-     
+
     @Override
     public void viewClicked(String entityId) {
-        
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadExpensePanel(getEntity(entityId)));
     }
 
     @Override
     public void deleteClicked(String entityId) {
-          HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -54,20 +55,19 @@ public class ReadAllExpensesPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Expenses Information");
-        TabPanel.instance().getExpensePanel().entityPanel.clear();
-        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpensesPanel());
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpensesPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-     TabPanel.instance().getExpensePanel().entityPanel.clear();
-     TabPanel.instance().getExpensePanel().entityPanel.add(new UpdateExpensePanel(getEntity(entityId)));   
-     
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpensePanel(getEntity(entityId)));
     }
 
     @Override
     public void preFetchTable(int start) {
-          HttpService.HttpServiceAsync.instance().doGet(getExpensesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+        HttpService.HttpServiceAsync.instance().doGet(getExpensesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
@@ -86,12 +86,11 @@ public class ReadAllExpensesPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("Amount"));
         table.setText(0, 5, getKeyValue("Category"));
         table.setText(0, 6, getKeyValue("Description"));
-        
     }
 
     @Override
     public void fillData(JSONArray entities) {
-       for (int i = 1; i <= entities.size(); i++) {
+        for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
@@ -105,20 +104,19 @@ public class ReadAllExpensesPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-         if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isHR()) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
-    
+
     public String getExpensesURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "expense/"  + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "expense/" + start.toString() + "/"
                 + limit.toString();
     }
-    
-     protected String getDeleteURL(String entityId) {
+
+    protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "expense/delete/" + entityId;
     }
-    
 }
