@@ -67,7 +67,7 @@ public class OfficeBPMIdentityService {
     /**
      * sync Portal internal users with Activiti BPM users
      */
-    @Async
+//    @Async
     public void syncUsersAndRoles() {
         syncRoles();
         TypedQuery<Employee> empQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:empTypeParam", Employee.class);
