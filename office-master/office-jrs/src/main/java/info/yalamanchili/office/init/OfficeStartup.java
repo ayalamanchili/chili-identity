@@ -31,6 +31,7 @@ import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.drive.Folder;
+import info.yalamanchili.office.entity.expense.ExpenseCategory;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.math.BigDecimal;
@@ -399,6 +400,9 @@ public class OfficeStartup {
         //Certifications
         getJAVACertification();
         getDOTNETCertification();
+        //Expenses
+        getTravelExpenseCategory();
+        getPerdiemExpenseCategory();
         //TAE
         techSysClient();
 
@@ -567,6 +571,34 @@ public class OfficeStartup {
             employeetype.setName("CONSULTANT");
             employeetype.setDescription("SSTECH Consultant Employee");
             return em.merge(employeetype);
+        }
+    }
+
+    protected ExpenseCategory getTravelExpenseCategory() {
+        Query getExpenseCategoryQuery = em.createQuery("from " + ExpenseCategory.class.getCanonicalName()
+                + " where name=:nameParam");
+        getExpenseCategoryQuery.setParameter("nameParam", "TRAVEL");
+        if (getExpenseCategoryQuery.getResultList().size() > 0) {
+            return (ExpenseCategory) getExpenseCategoryQuery.getResultList().get(0);
+        } else {
+            ExpenseCategory employeetype = new ExpenseCategory();
+            employeetype.setName("TRAVEL");
+            employeetype.setDescription("TRAVEL Employee Expenses");
+            return em.merge(employeetype);
+        }
+    }
+
+    protected ExpenseCategory getPerdiemExpenseCategory() {
+        Query getExpenseCategoryQuery = em.createQuery("from " + ExpenseCategory.class.getCanonicalName()
+                + " where name=:nameParam");
+        getExpenseCategoryQuery.setParameter("nameParam", "PERDIEM");
+        if (getExpenseCategoryQuery.getResultList().size() > 0) {
+            return (ExpenseCategory) getExpenseCategoryQuery.getResultList().get(0);
+        } else {
+            ExpenseCategory expenseCategory = new ExpenseCategory();
+            expenseCategory.setName("PERDIEM");
+            expenseCategory.setDescription("PERDIEM Employee Expenses");
+            return em.merge(expenseCategory);
         }
     }
 
