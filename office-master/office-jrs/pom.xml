@@ -16,6 +16,11 @@
             <artifactId>office-ejb</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>info.yalamanchili.office</groupId>
+            <artifactId>office-toolbox</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Jersey -->
         <dependency>
             <groupId>com.sun.jersey</groupId>

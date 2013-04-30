@@ -1,5 +1,6 @@
 package info.yalamanchili.office.dao.profile;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -55,5 +56,9 @@ public class EmailDao extends CRUDDao<Email> {
     @Override
     public EntityManager getEntityManager() {
         return em;
+    }
+
+    public static EmailDao instance() {
+        return SpringContext.getBean(EmailDao.class);
     }
 }
