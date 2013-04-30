@@ -31,6 +31,15 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
+<<<<<<< .mine
+          HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                loadSearchSuggestions(values.values());
+            }
+        });
+=======
         HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -38,6 +47,12 @@ public class SearchVendorPanel extends SearchComposite {
                 loadSearchSuggestions(values.values());
             }
         });
+>>>>>>> .r2929
+    }
+    
+      protected String getnameDropDownUrl() {
+        //TODO think about the limit
+        return OfficeWelcome.constants.root_url() + "vendor/dropdown/0/500?column=id&column=name";
     }
 
     @Override
@@ -81,6 +96,16 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
+<<<<<<< .mine
+          logger.info("ggggg" + entity.toString());
+        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
+=======
         logger.info("ggggg" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -89,6 +114,7 @@ public class SearchVendorPanel extends SearchComposite {
                 processSearchResult(result);
             }
         });
+>>>>>>> .r2929
     }
 
     @Override
