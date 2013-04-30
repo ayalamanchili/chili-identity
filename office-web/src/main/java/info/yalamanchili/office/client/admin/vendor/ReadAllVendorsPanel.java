@@ -36,6 +36,11 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         initTable("Vendors", OfficeWelcome.constants);
     }
 
+    public ReadAllVendorsPanel(JSONArray array) {
+        instance = this;
+        initTable("Client", array, OfficeWelcome.constants);
+    }
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllVendorPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
