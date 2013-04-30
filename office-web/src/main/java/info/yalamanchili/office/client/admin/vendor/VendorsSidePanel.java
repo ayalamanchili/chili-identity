@@ -42,6 +42,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler {
         if (Auth.isAdmin() || Auth.isHR()) {
             vendorsidepanel.add(createvendorslink);
         }
+        vendorsidepanel.add(new SearchVendorPanel());
     }
 
     @Override
