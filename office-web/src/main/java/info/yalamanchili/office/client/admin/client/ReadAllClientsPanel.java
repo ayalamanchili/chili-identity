@@ -37,6 +37,11 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
         initTable("Clients", OfficeWelcome.constants);
     }
 
+    public ReadAllClientsPanel(JSONArray array) {
+        instance = this;
+        initTable("Client", array, OfficeWelcome.constants);
+    }
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getclientsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
