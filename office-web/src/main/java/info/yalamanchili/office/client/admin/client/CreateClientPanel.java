@@ -61,8 +61,8 @@ public class CreateClientPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Client Created");
-        TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
+        //TabPanel.instance().adminPanel.sidePanelTop.clear();
+        //TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel());
     }
