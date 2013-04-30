@@ -35,14 +35,10 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         instance = this;
         initTable("Vendors", OfficeWelcome.constants);
     }
-     public ReadAllVendorsPanel(JSONArray array) {
-        instance = this;
-        initTable("Vendor", array, OfficeWelcome.constants);
-    }
 
     public ReadAllVendorsPanel(JSONArray array) {
         instance = this;
-        initTable("Client", array, OfficeWelcome.constants);
+        initTable("Vendor", array, OfficeWelcome.constants);
     }
 
     @Override
