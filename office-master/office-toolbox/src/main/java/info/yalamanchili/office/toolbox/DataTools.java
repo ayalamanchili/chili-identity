@@ -9,6 +9,7 @@ import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.entity.profile.Email;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.jasypt.digest.StandardStringDigester;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ayalamanchili
  */
 @Component
+@Transactional
 public class DataTools {
 
     @PersistenceContext
@@ -27,8 +29,11 @@ public class DataTools {
      */
     public void hashEmails() {
         //TODO use hibernate batch and scrollable result list
+        StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
         for (Email email : EmailDao.instance().query(0, EmailDao.instance().size().intValue())) {
-            em.merge(email);
+            email.setEmailHash(officeStringDigester.digest(email.getEmail()));
+            email = em.merge(email);
+            em.flush();
         }
     }
 
