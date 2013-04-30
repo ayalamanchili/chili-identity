@@ -214,15 +214,15 @@ public class VendorResource extends CRUDResource<Vendor> {
     public List<info.yalamanchili.office.entity.client.Vendor> searchVendor(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("text") String text) {
         
-        getDao().search(limit, start, limit);
+      //  getDao().search(limit, start, limit);
         return getDao().search(text, start, limit, true);
     }
     
     @PUT
     @Path("/searchvendor/{start}/{limit}")
     public List<info.yalamanchili.office.entity.client.Vendor> searchVendor(Vendor entity, @PathParam("start") int start, @PathParam("limit") int limit) {
-        List<info.yalamanchili.office.entity.client.Vendor> vendor = new ArrayList<info.yalamanchili.office.entity.client.Vendor>();
-        getDao().search(limit, start, limit);
+       // List<info.yalamanchili.office.entity.client.Vendor> vendor = new ArrayList<info.yalamanchili.office.entity.client.Vendor>();
+        //getDao().search(limit, start, limit);
         return getDao().search(entity, start, limit);
     }
     
