@@ -42,6 +42,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler {
         if (Auth.isAdmin() || Auth.isHR()) {
             clientsidepanel.add(createclientlink);
         }
+        clientsidepanel.add(new SearchClientpanel());
     }
 
     @Override
