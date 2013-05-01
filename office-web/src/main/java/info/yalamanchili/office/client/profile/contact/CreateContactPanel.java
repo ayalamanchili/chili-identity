@@ -30,7 +30,7 @@ public abstract class CreateContactPanel extends CreateComposite {
 
     public CreateContactPanel(CreateCompositeType type) {
         super(type);
-        initCreateComposite("ClientContact", OfficeWelcome.constants);
+        initCreateComposite("Contact", OfficeWelcome.constants);
     }
 
     @Override
