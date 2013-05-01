@@ -36,7 +36,9 @@ public class RootLayout extends Composite {
     public RootLayout() {
         initWidget(uiBinder.createAndBindUi(this));
         instance = this;
-        entityPanel.add(new TabPanel());
+        if (OfficeWelcome.instance().employee != null) {
+            entityPanel.add(new TabPanel());
+        }
     }
 
     @UiHandler("feedbacklnk")
