@@ -35,13 +35,13 @@ public class ReadEmployeePanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("this is the response from the server" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info("this is the response from the server" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
 
     }
 
@@ -57,6 +57,9 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
+        if (Auth.isAdmin()) {
+            assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
+        }
         assignFieldValueFromEntity("employeeType", entity, null);
     }
 
@@ -84,6 +87,7 @@ public class ReadEmployeePanel extends ReadComposite {
         addEnumField("sex", true, false, strs);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("jobTitle", true, false, DataType.STRING_FIELD);
+        addField("ssn", true, false, DataType.STRING_FIELD);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
@@ -40,6 +41,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("jobTitle", entity);
+        if (Auth.isAdmin()) {
+            assignEntityValueFromField("ssn", entity);
+        }
         if (!empImageUploadPanel.isEmpty()) {
             entity.put("imageURL", empImageUploadPanel.getFileName());
         }
@@ -79,6 +83,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("employeeType", entity, null);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
+        if (Auth.isAdmin()) {
+            assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
+        }
         //TODO add image panel for employee image
     }
 
@@ -104,7 +111,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addEnumField("sex", false, true, strs);
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("jobTitle", false, true, DataType.STRING_FIELD);
-
+        if (Auth.isAdmin()) {
+            addField("ssn", false, true, DataType.STRING_FIELD);
+        }
         entityFieldsPanel.add(empImageUploadPanel);
 
     }

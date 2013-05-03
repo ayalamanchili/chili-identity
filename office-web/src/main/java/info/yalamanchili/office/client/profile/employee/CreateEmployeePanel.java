@@ -12,12 +12,13 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 public class CreateEmployeePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
-    FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL",false) {
+    FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
@@ -42,6 +43,9 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("startDate", employee);
         assignEntityValueFromField("employeeType", employee);
         assignEntityValueFromField("jobTitle", employee);
+        if (Auth.isAdmin()) {
+            assignEntityValueFromField("ssn", employee);
+        }
         employee.put("fileUrl", empImageUploadPanel.getFileName());
         return employee;
     }
@@ -69,6 +73,9 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("passwordHash", false, true, DataType.PASSWORD_FIELD);
         addField("jobTitle", false, false, DataType.STRING_FIELD);
+        if (Auth.isAdmin()) {
+            addField("ssn", false, false, DataType.STRING_FIELD);
+        }
         entityFieldsPanel.add(empImageUploadPanel);
     }
 
@@ -81,16 +88,16 @@ public class CreateEmployeePanel extends CreateComposite {
     public void createButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadImage(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadImage(arg0);
+            }
+        });
 
     }
 
