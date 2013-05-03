@@ -50,6 +50,7 @@ public class Employee implements Serializable {
     protected String jobTitle;
     @NotNull(message = "{employeetype.not.null.msg}")
     protected EmployeeType employeeType;
+    protected String ssn;
 
     public Employee() {
     }
@@ -172,6 +173,14 @@ public class Employee implements Serializable {
 
     public String getJobTitle() {
         return jobTitle;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
     }
 
     @Override

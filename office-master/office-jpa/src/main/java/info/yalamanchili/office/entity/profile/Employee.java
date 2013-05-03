@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
@@ -13,11 +14,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -27,18 +29,27 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.envers.Audited;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.hibernate.type.EncryptedStringType;
 
 /**
  * @todo add comment for javadoc
  * @author ayalamanchili
  * @generated
  */
+@TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
+        parameters = {
+    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+})
 @Indexed
 @XmlRootElement
 @Entity
@@ -55,7 +66,7 @@ public class Employee extends Contact {
      */
     @NotEmpty(message = "{employeeId.not.empty.msg}")
     @Field
-    @org.hibernate.annotations.Index(name="EMPID")
+    @org.hibernate.annotations.Index(name = "EMPID")
     protected String employeeId;
     protected String jobTitle;
 
@@ -124,6 +135,17 @@ public class Employee extends Contact {
      */
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<Todo> todos;
+    /*
+     * ssn
+     */
+    @Type(type = "encryptedString")
+    @org.hibernate.annotations.Index(name = "EMP_SSN_IDX")
+    protected String ssn;
+    /*
+     * ssn hash
+     */
+    @org.hibernate.annotations.Index(name = "EMP_SSN_HASH_IDX")
+    protected String ssnHash;
 
     /**
      * @generated
@@ -318,6 +340,32 @@ public class Employee extends Contact {
 
     public void setTimeSheets(List<TimeSheet> timeSheets) {
         this.timeSheets = timeSheets;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public String getSsnHash() {
+        return ssnHash;
+    }
+
+    public void setSsnHash(String ssnHash) {
+        this.ssnHash = ssnHash;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void setHash() {
+        if (this.ssn != null) {
+            StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
+            this.ssnHash = officeStringDigester.digest(this.ssn);
+
+        }
     }
 
     @Override
