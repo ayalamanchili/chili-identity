@@ -5,6 +5,7 @@
 package info.yalamanchili.office.jrs.admin;
 
 import info.yalamanchili.office.toolbox.DataTools;
+import info.yalamanchili.office.toolbox.EmployeeDataLoad;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -34,5 +35,15 @@ public class AdminUtilsResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void hashEmails() {
         DataTools.instance().hashEmails();
+    }
+
+    /*
+     * hashes  all the emails in the databases
+     */
+    @Path("sync_employee_addresses")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void syncEmployeeAddresses() {
+        EmployeeDataLoad.instance().syncEmployeeAddresses();
     }
 }

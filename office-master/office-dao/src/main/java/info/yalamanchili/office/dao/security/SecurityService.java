@@ -1,5 +1,6 @@
 package info.yalamanchili.office.dao.security;
 
+import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CRole;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.*;
+import org.jasypt.digest.StandardStringDigester;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,6 +74,11 @@ public class SecurityService {
         } else {
             return null;
         }
+    }
+
+    public Employee findEmployeeBySSN(String ssn) {
+        StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
+        return QueryUtils.findEntity(em, Employee.class, "ssnHash", officeStringDigester.digest(ssn));
     }
 
     public String getCurrentUserId() {

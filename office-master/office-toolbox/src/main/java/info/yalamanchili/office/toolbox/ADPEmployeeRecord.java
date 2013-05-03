@@ -15,8 +15,8 @@ public class ADPEmployeeRecord {
     protected String ssn;
     protected String email;
     protected String status;
-    protected String celluar;
-    protected String phone;
+    protected String cellPhone;
+    protected String homePhone;
     protected String dob;
     protected String street1;
     protected String street2;
@@ -64,20 +64,21 @@ public class ADPEmployeeRecord {
         this.status = status;
     }
 
-    public String getCelluar() {
-        return celluar;
+    public String getCellPhone() {
+        return cellPhone;
     }
 
-    public void setCelluar(String celluar) {
-        this.celluar = celluar;
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
     }
 
-    public String getPhone() {
-        return phone;
+   
+    public String getHomePhone() {
+        return homePhone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setHomePhone(String homePhone) {
+        this.homePhone = homePhone;
     }
 
     public String getDob() {
@@ -130,6 +131,6 @@ public class ADPEmployeeRecord {
 
     @Override
     public String toString() {
-        return "ADPEmployeeRecord{" + "firstName=" + firstName + ", lastName=" + lastName + ", ssn=" + ssn + ", email=" + email + ", status=" + status + ", celluar=" + celluar + ", phone=" + phone + ", dob=" + dob + ", street1=" + street1 + ", street2=" + street2 + ", city=" + city + ", state=" + state + ", zip=" + zip + '}';
+        return "ADPEmployeeRecord{" + "firstName=" + firstName + ", lastName=" + lastName + ", ssn=" + ssn + ", email=" + email + ", status=" + status + ", celluar=" + cellPhone + ", phone=" + homePhone + ", dob=" + dob + ", street1=" + street1 + ", street2=" + street2 + ", city=" + city + ", state=" + state + ", zip=" + zip + '}';
     }
 }
