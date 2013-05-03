@@ -12,6 +12,7 @@ import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class CreateEmailPanel extends CreateComposite {
@@ -30,6 +31,7 @@ public class CreateEmailPanel extends CreateComposite {
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("primaryEmail", entity);
         entity.put("emailType", emailTypeF.getSelectedObject());
+        entity.put("emailHash", new JSONString("abcde"));
         return entity;
     }
 
@@ -42,16 +44,16 @@ public class CreateEmailPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
