@@ -53,12 +53,13 @@ public class Email extends AbstractEntity {
     // @Unique(entity = Email.class, property = "email", message="{email.not.unique.msg}")
     @NotEmpty(message = "{email.not.empty.msg}")
     @Type(type = "encryptedString")
-    @org.hibernate.annotations.Index(name = "EMAIL_ADDRESS")
+    @org.hibernate.annotations.Index(name = "EMAIL_ADDRESS_IDX")
     protected String email;
     /*
      * email hashed used for querying data
      */
     @NotEmpty
+    @org.hibernate.annotations.Index(name = "EMAIL_ADDRESS_HASH_IDX")
     protected String emailHash;
     /**
      * @generated
