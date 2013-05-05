@@ -4,20 +4,30 @@
  */
 package info.yalamanchili.office.toolbox;
 
+import info.chili.jpa.QueryUtils;
+import info.chili.jpa.validation.ValidationUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.toolbox.types.ADPEmployeeRecord;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static info.yalamanchili.office.toolbox.ExcelUtils.*;
 
 /**
  *
@@ -25,19 +35,57 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Transactional
-public class EmployeeDataLoad {
+public class EmployeeDataTool {
+
+    private final static Logger logger = Logger.getLogger(EmployeeDataTool.class.getName());
+    @PersistenceContext
+    protected EntityManager em;
 
     public static void main(String... args) {
-        EmployeeDataLoad load = new EmployeeDataLoad();
+        EmployeeDataTool load = new EmployeeDataTool();
         System.out.println(load.loadADPRecords());
     }
 
-    public void syncEmployeeAddresses() {
+    public void syncADPEmpployeeData() {
         for (ADPEmployeeRecord record : loadADPRecords()) {
             if (record.getSsn() != null) {
-                System.out.println(SecurityService.instance().findEmployeeBySSN(record.getSsn()));
+                Employee emp = SecurityService.instance().findEmployeeBySSN(record.getSsn());
+                if (emp != null) {
+                    syncEmployeeAddresses(record, emp);
+                }
             }
         }
+    }
+
+    public void syncEmployeeAddresses(ADPEmployeeRecord record, Employee emp) {
+        logger.log(Level.INFO, "sync Address for emp:{0}", emp.getEmployeeId());
+        if (!isExistingAddress(record, emp)) {
+            Address address = new Address();
+            address.setStreet1(record.getStreet1());
+            address.setStreet2(record.getStreet2());
+            address.setCity(record.getCity());
+            address.setState(record.getState());
+            address.setZip(record.getZip());
+            address.setCountry("USA");
+            address.setAddressType((AddressType) QueryUtils.findEntity(em, AddressType.class, "addressType", "HOME"));
+            address.setContact(emp);
+            if (ValidationUtils.validate(address).isEmpty()) {
+                logger.log(Level.INFO, "inserting address:{0}: for employee:{1}", new Object[]{address, emp.getEmployeeId()});
+                em.merge(address);
+            } else {
+                logger.log(Level.SEVERE, "validation error:{0}", address);
+            }
+        }
+
+    }
+
+    protected boolean isExistingAddress(ADPEmployeeRecord record, Employee emp) {
+        for (Address address : emp.getAddresss()) {
+            if (record.getStreet1() != null && address.getStreet1().equals(record.getStreet1().trim())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<ADPEmployeeRecord> loadADPRecords() {
@@ -74,25 +122,6 @@ public class EmployeeDataLoad {
         return adpEmpRecords;
     }
 
-    protected String getCellStringValue(Row record, int column) {
-        if (column == 16) {
-            System.out.println(record.getCell(column).getCellType());
-        }
-        if (record.getCell(column) != null && record.getCell(column).getCellType() == HSSFCell.CELL_TYPE_STRING && !record.getCell(column).getStringCellValue().isEmpty()) {
-            return record.getCell(column).getStringCellValue();
-        } else {
-            return null;
-        }
-    }
-
-    protected String getCellNumericValue(Row record, int column) {
-        if (record.getCell(column) != null && record.getCell(column).getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-            return record.getCell(column).toString();
-        } else {
-            return null;
-        }
-    }
-
     protected String removeDashes(String str) {
         if (str != null) {
             return str.replace("-", "");
@@ -102,11 +131,10 @@ public class EmployeeDataLoad {
     }
 
     protected String getDataFileUrl() {
-        return "C:\\Users\\ayalamanchili\\Desktop\\load.xls";
-        //return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
+        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
     }
 
-    public static EmployeeDataLoad instance() {
-        return SpringContext.getBean(EmployeeDataLoad.class);
+    public static EmployeeDataTool instance() {
+        return SpringContext.getBean(EmployeeDataTool.class);
     }
 }
