@@ -81,7 +81,7 @@ public class EmployeeDataTool {
 
     protected boolean isExistingAddress(ADPEmployeeRecord record, Employee emp) {
         for (Address address : emp.getAddresss()) {
-            if (record.getStreet1() != null && address.getStreet1().equals(record.getStreet1().trim())) {
+            if (record.getStreet1() != null && address.getStreet1().trim().equals(record.getStreet1().trim())) {
                 return true;
             }
         }

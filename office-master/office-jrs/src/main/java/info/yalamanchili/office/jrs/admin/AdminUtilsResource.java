@@ -9,7 +9,9 @@ import info.yalamanchili.office.toolbox.EmployeeDataTool;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -27,14 +29,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class AdminUtilsResource {
 
+    @Autowired
+    private DataTools dataTools;
     /*
      * hashes  all the emails in the databases
      */
+
     @Path("hash_emails")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void hashEmails() {
-        DataTools.instance().hashEmails();
+        dataTools.hashEmails();
+    }
+    
+    /**
+     *
+     * @param str
+     * @return
+     */
+    @Path("hash/{str}")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getHash(@PathParam("str") String str) {
+        return dataTools.getHash(str);
     }
 
     /*

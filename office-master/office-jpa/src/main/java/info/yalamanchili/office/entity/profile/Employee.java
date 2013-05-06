@@ -37,6 +37,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.hibernate.type.EncryptedStringType;
@@ -139,6 +140,7 @@ public class Employee extends Contact {
      * ssn
      */
     @Type(type = "encryptedString")
+    @Length(min = 9, max = 9)
     @org.hibernate.annotations.Index(name = "EMP_SSN_IDX")
     protected String ssn;
     /*

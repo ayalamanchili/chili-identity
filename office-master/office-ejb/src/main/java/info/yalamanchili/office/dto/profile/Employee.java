@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -50,7 +51,8 @@ public class Employee implements Serializable {
     protected String jobTitle;
     @NotNull(message = "{employeetype.not.null.msg}")
     protected EmployeeType employeeType;
-    protected String ssn;
+    @Length(min = 9, max = 9)
+    private String ssn;
 
     public Employee() {
     }
@@ -176,7 +178,7 @@ public class Employee implements Serializable {
     }
 
     public String getSsn() {
-        return ssn;
+        return "*********";
     }
 
     public void setSsn(String ssn) {

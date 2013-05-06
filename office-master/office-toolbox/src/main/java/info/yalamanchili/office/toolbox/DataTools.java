@@ -10,6 +10,7 @@ import info.yalamanchili.office.entity.profile.Email;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jasypt.digest.StandardStringDigester;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,18 +24,22 @@ public class DataTools {
 
     @PersistenceContext
     protected EntityManager em;
-
+    @Autowired
+    private StandardStringDigester officeStringDigester;
     /*
      * query all emails and merge them to save/populate the email hash field in database
      */
+
     public void hashEmails() {
-        //TODO use hibernate batch and scrollable result list
-        StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
         for (Email email : EmailDao.instance().query(0, EmailDao.instance().size().intValue())) {
             email.setEmailHash(officeStringDigester.digest(email.getEmail()));
             email = em.merge(email);
             em.flush();
         }
+    }
+
+    public String getHash(String str) {
+       return officeStringDigester.digest(str);
     }
 
     public static DataTools instance() {

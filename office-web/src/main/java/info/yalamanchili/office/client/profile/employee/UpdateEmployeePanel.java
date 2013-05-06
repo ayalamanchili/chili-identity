@@ -112,7 +112,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("startDate", false, false, DataType.DATE_FIELD);
         addField("jobTitle", false, true, DataType.STRING_FIELD);
         if (Auth.isAdmin()) {
-            addField("ssn", false, true, DataType.STRING_FIELD);
+            addField("ssn", false, false, DataType.STRING_FIELD);
         }
         entityFieldsPanel.add(empImageUploadPanel);
 
