@@ -7,6 +7,7 @@ package info.yalamanchili.office.jrs.admin;
 import info.yalamanchili.office.toolbox.DataTools;
 import info.yalamanchili.office.toolbox.EmployeeDataTool;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -41,7 +42,7 @@ public class AdminUtilsResource {
     public void hashEmails() {
         dataTools.hashEmails();
     }
-    
+
     /**
      *
      * @param str
@@ -62,5 +63,12 @@ public class AdminUtilsResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void syncADPEmpployeeData() {
         EmployeeDataTool.instance().syncADPEmpployeeData();
+    }
+
+    @Path("fixssn")
+    @GET
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void fixssn(@PathParam("str") String str) {
+        dataTools.fixSSN();
     }
 }
