@@ -11,6 +11,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jasypt.digest.StandardStringDigester;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DataTools {
 
+    private final static Logger logger = Logger.getLogger(DataTools.class.getName());
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -52,11 +54,10 @@ public class DataTools {
                 if (emp.getSsn().contains("-")) {
                     System.out.println("oldssn" + emp.getSsn());
                     emp.setSsn(emp.getSsn().replace("-", ""));
-                    System.out.println("newssn" + emp.getSsn());
                     if (ValidationUtils.validate(emp).isEmpty()) {
                         em.merge(emp);
                     } else {
-                        System.out.println("ssnvalidationerror"+emp.getEmployeeId());
+                        logger.log(Level.SEVERE, "validation error:{0}", emp);
                     }
 
                 }
