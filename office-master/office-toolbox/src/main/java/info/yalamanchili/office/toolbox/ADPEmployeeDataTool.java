@@ -12,7 +12,10 @@ import info.yalamanchili.office.toolbox.types.ADPEmployeeRecord;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.entity.profile.PhoneType;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,16 +36,16 @@ import static info.yalamanchili.office.toolbox.ExcelUtils.*;
  *
  * @author ayalamanchili
  */
-@Component
+@Component("adpEmployeeDataTool")
 @Transactional
-public class EmployeeDataTool {
+public class ADPEmployeeDataTool {
 
-    private final static Logger logger = Logger.getLogger(EmployeeDataTool.class.getName());
+    private final static Logger logger = Logger.getLogger(ADPEmployeeDataTool.class.getName());
     @PersistenceContext
     protected EntityManager em;
 
     public static void main(String... args) {
-        EmployeeDataTool load = new EmployeeDataTool();
+        ADPEmployeeDataTool load = new ADPEmployeeDataTool();
         System.out.println(load.loadADPRecords());
     }
 
@@ -52,10 +55,15 @@ public class EmployeeDataTool {
                 Employee emp = SecurityService.instance().findEmployeeBySSN(record.getSsn());
                 if (emp != null) {
                     syncEmployeeAddresses(record, emp);
+                    syncEmployeePhones(record, emp);
+                    syncEmployeeEmails(record, emp);
                 }
             }
         }
     }
+    /*
+     * Sync addresses
+     */
 
     public void syncEmployeeAddresses(ADPEmployeeRecord record, Employee emp) {
         logger.log(Level.INFO, "sync Address for emp:{0}", emp.getEmployeeId());
@@ -87,6 +95,71 @@ public class EmployeeDataTool {
         }
         return false;
     }
+    /*
+     * sync phones
+     */
+
+    public void syncEmployeePhones(ADPEmployeeRecord record, Employee emp) {
+        if (record.getCellPhone() != null && !phoneExists(record.getCellPhone(), emp)) {
+            insertPhone(emp, record.getCellPhone(), (PhoneType) QueryUtils.findEntity(em, PhoneType.class, "phoneType", "CELL"));
+        }
+        if (record.getHomePhone() != null && !phoneExists(record.getHomePhone(), emp)) {
+            insertPhone(emp, record.getHomePhone(), (PhoneType) QueryUtils.findEntity(em, PhoneType.class, "phoneType", "HOME"));
+        }
+    }
+
+    protected void insertPhone(Employee emp, String number, PhoneType phoneType) {
+        Phone phone = new Phone();
+        phone.setPhoneNumber(number);
+        phone.setPhoneType(phoneType);
+        phone.setContact(emp);
+        if (ValidationUtils.validate(phone).isEmpty()) {
+            logger.log(Level.INFO, "inserting phone:{0}: for employee:{1}", new Object[]{phone, emp.getEmployeeId()});
+            em.merge(phone);
+        } else {
+            logger.log(Level.SEVERE, "validation error:{0}", phone);
+        }
+    }
+
+    protected boolean phoneExists(String phoneNumber, Employee emp) {
+        for (Phone phone : emp.getPhones()) {
+            if (phone.getPhoneNumber() != null && phone.getPhoneNumber().trim().equals(phoneNumber.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /*
+     * Sync emails
+     */
+
+    public void syncEmployeeEmails(ADPEmployeeRecord record, Employee emp) {
+        if (record.getEmail() != null && !emailExists(record.getEmail(), emp)) {
+            Email email = new Email();
+            email.setEmail(record.getEmail());
+            email.setEmailHash(record.getEmail());
+            email.setPrimaryEmail(false);
+            email.setContact(emp);
+            if (ValidationUtils.validate(email).isEmpty()) {
+                logger.log(Level.INFO, "inserting email:{0}: for employee:{1}", new Object[]{email, emp.getEmployeeId()});
+                em.merge(email);
+            } else {
+                logger.log(Level.SEVERE, "validation error:{0}", email);
+            }
+        }
+    }
+
+    protected boolean emailExists(String emailAddress, Employee emp) {
+        for (Email email : emp.getEmails()) {
+            if (email.getEmail() != null && email.getEmail().trim().equals(emailAddress.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /*
+     * load adp records from excel
+     */
 
     public List<ADPEmployeeRecord> loadADPRecords() {
         List<ADPEmployeeRecord> adpEmpRecords = new ArrayList<ADPEmployeeRecord>();
@@ -124,7 +197,12 @@ public class EmployeeDataTool {
 
     protected String removeDashes(String str) {
         if (str != null) {
-            return str.replace("-", "");
+            str = str.replace("-", "");
+            str = str.replace("(", "");
+            str = str.replace(")", "");
+            str = str.replace(" ", "");
+            str = str.replace("_", "");
+            return str;
         } else {
             return null;
         }
@@ -134,7 +212,7 @@ public class EmployeeDataTool {
         return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
     }
 
-    public static EmployeeDataTool instance() {
-        return SpringContext.getBean(EmployeeDataTool.class);
+    public static ADPEmployeeDataTool instance() {
+        return (ADPEmployeeDataTool) SpringContext.getBean("adpEmployeeDataTool");
     }
 }

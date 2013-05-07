@@ -5,7 +5,7 @@
 package info.yalamanchili.office.jrs.admin;
 
 import info.yalamanchili.office.toolbox.DataTools;
-import info.yalamanchili.office.toolbox.EmployeeDataTool;
+import info.yalamanchili.office.toolbox.ADPEmployeeDataTool;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -62,7 +62,7 @@ public class AdminUtilsResource {
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void syncADPEmpployeeData() {
-        EmployeeDataTool.instance().syncADPEmpployeeData();
+        ADPEmployeeDataTool.instance().syncADPEmpployeeData();
     }
 
     @Path("fixssn")
