@@ -25,6 +25,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -141,7 +142,9 @@ public class Employee extends Contact {
      * ssn
      */
     @Type(type = "encryptedString")
-    @Size(min = 9, max = 9, message = "{ssnNumber.length.invalid.msg}")
+    @Size(min = 9, max = 9, message = "{ssnnumber.length.invalid.msg}")
+   @Pattern(regexp = "(^$|[0-9]{9})", message = "{invalid.ssnNumber.format}")
+    /* @NotEmpty(message = "{ssnNumber.not.empty.msg}")*/
     @org.hibernate.annotations.Index(name = "EMP_SSN_IDX")
     protected String ssn;
     /*
