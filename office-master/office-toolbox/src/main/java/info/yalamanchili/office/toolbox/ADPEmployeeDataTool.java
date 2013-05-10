@@ -174,8 +174,7 @@ public class ADPEmployeeDataTool {
 
             Calendar empDOB = Calendar.getInstance();
             empDOB.setTime(emp.getDateOfBirth());
-            System.out.println("ddd" + empDOB.getTime());
-            System.out.println("ddd" + recordDOB.getTime());
+            
             if (!empDOB.getTime().equals(recordDOB.getTime())) {
                 emp.setDateOfBirth(record.getDob());
                 if (ValidationUtils.validate(emp).isEmpty()) {
