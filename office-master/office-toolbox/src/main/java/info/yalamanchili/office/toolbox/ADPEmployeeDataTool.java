@@ -31,6 +31,11 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import static info.yalamanchili.office.toolbox.ExcelUtils.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  *
@@ -46,7 +51,7 @@ public class ADPEmployeeDataTool {
 
     public static void main(String... args) {
         ADPEmployeeDataTool load = new ADPEmployeeDataTool();
-        System.out.println(load.loadADPRecords());
+        load.loadADPRecords();
     }
 
     public void syncADPEmpployeeData() {
@@ -57,6 +62,7 @@ public class ADPEmployeeDataTool {
                     syncEmployeeAddresses(record, emp);
                     syncEmployeePhones(record, emp);
                     syncEmployeeEmails(record, emp);
+                    syncDateOfBirth(record, emp);
                 }
             }
         }
@@ -95,10 +101,10 @@ public class ADPEmployeeDataTool {
         }
         return false;
     }
+
     /*
      * sync phones
      */
-
     public void syncEmployeePhones(ADPEmployeeRecord record, Employee emp) {
         if (record.getCellPhone() != null && !phoneExists(record.getCellPhone(), emp)) {
             insertPhone(emp, record.getCellPhone(), (PhoneType) QueryUtils.findEntity(em, PhoneType.class, "phoneType", "CELL"));
@@ -158,6 +164,43 @@ public class ADPEmployeeDataTool {
         return false;
     }
     /*
+     * Sync date of births
+     */
+
+    public void syncDateOfBirth(ADPEmployeeRecord record, Employee emp) {
+        if (record.getDob() != null) {
+            Calendar recordDOB = Calendar.getInstance();
+            recordDOB.setTime(record.getDob());
+
+            Calendar empDOB = Calendar.getInstance();
+            empDOB.setTime(emp.getDateOfBirth());
+            System.out.println("ddd" + empDOB.getTime());
+            System.out.println("ddd" + recordDOB.getTime());
+            if (!empDOB.getTime().equals(recordDOB.getTime())) {
+                emp.setDateOfBirth(record.getDob());
+                if (ValidationUtils.validate(emp).isEmpty()) {
+                    logger.log(Level.INFO, "updating dob to:{0} from {1} for emp{2}", new Object[]{recordDOB.getTime(), empDOB.getTime(), emp.getEmployeeId()});
+                    em.merge(emp);
+                } else {
+                    logger.log(Level.SEVERE, "validation error:{0}", emp);
+                }
+            }
+        }
+    }
+
+    protected Date convertToDate(String dob) {
+        if (dob != null) {
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH).parse(dob);
+                return date;
+            } catch (ParseException ex) {
+                logger.log(Level.SEVERE, "date parsing error", dob);
+            }
+        }
+        return null;
+    }
+    /*
      * load adp records from excel
      */
 
@@ -184,7 +227,7 @@ public class ADPEmployeeDataTool {
             adpEmpRecord.setCellPhone(removeDashes((getCellStringValue(record, 4))));
             adpEmpRecord.setHomePhone(removeDashes((getCellStringValue(record, 14))));
             adpEmpRecord.setStatus(getCellStringValue(record, 8));
-            adpEmpRecord.setDob(getCellNumericValue(record, 16));
+            adpEmpRecord.setDob(convertToDate(getCellNumericValue(record, 16)));
             adpEmpRecord.setStreet1(getCellStringValue(record, 18));
             adpEmpRecord.setStreet2(getCellStringValue(record, 20));
             adpEmpRecord.setCity(getCellStringValue(record, 22));
@@ -209,6 +252,7 @@ public class ADPEmployeeDataTool {
     }
 
     protected String getDataFileUrl() {
+//        return "C:\\Users\\ayalamanchili\\Desktop\\load.xls";
         return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
     }
 

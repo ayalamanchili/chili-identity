@@ -4,6 +4,8 @@
  */
 package info.yalamanchili.office.toolbox.types;
 
+import java.util.Date;
+
 /**
  *
  * @author ayalamanchili
@@ -17,7 +19,7 @@ public class ADPEmployeeRecord {
     protected String status;
     protected String cellPhone;
     protected String homePhone;
-    protected String dob;
+    protected Date dob;
     protected String street1;
     protected String street2;
     protected String city;
@@ -81,11 +83,11 @@ public class ADPEmployeeRecord {
         this.homePhone = homePhone;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
