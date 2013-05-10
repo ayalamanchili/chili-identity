@@ -15,7 +15,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.yalamanchili.office.client.rpc.HttpService;
-import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -133,11 +132,11 @@ public class SearchEmployeePanel extends SearchComposite {
 
     protected String getFirstNameDropDownUrl() {
         //TODO think anout the limit
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=firstName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=firstName";
     }
 
     protected String getLastNameDropDownUrl() {
         //TODO think anout the limit
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/500?column=id&column=lastName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=lastName";
     }
 }
