@@ -44,7 +44,11 @@ public class DataTools {
         }
     }
 
-    public String getHash(String str) {
+    public String hash(String str) {
+        return officeStringDigester.digest(str);
+    }
+
+    public String encrypt(String str) {
         return officeStringDigester.digest(str);
     }
 

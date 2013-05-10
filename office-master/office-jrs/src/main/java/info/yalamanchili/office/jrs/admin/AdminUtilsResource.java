@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.jrs.admin;
 
+import info.yalamanchili.office.security.SecurityUtils;
 import info.yalamanchili.office.toolbox.DataTools;
 import info.yalamanchili.office.toolbox.ADPEmployeeDataTool;
 import javax.ws.rs.Consumes;
@@ -51,8 +52,20 @@ public class AdminUtilsResource {
     @Path("hash/{str}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getHash(@PathParam("str") String str) {
-        return dataTools.getHash(str);
+    public String hash(@PathParam("str") String str) {
+        return dataTools.hash(str);
+    }
+    
+        /**
+     *
+     * @param str
+     * @return
+     */
+    @Path("encrypt/{str}")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String encrypt(@PathParam("str") String str) {
+        return SecurityUtils.encrypt(str);
     }
 
     /*
