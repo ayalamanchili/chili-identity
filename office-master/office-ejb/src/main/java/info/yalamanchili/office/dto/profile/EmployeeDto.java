@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author ayalamanchili
  */
-@XmlRootElement
+@XmlRootElement(name = "Employee")
 @XmlType
 public class EmployeeDto implements Serializable {
 

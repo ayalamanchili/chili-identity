@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.annotations.Parameter;
@@ -102,6 +103,7 @@ public class Email extends AbstractEntity {
         this.email = email;
     }
 
+    @XmlTransient
     public String getEmailHash() {
         return emailHash;
     }
