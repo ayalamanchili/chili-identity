@@ -60,9 +60,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @GET
     @Path("/read/{id}")
     public info.yalamanchili.office.dto.profile.Employee readEmployee(@PathParam("id") Long id) {
-        Employee emp=(Employee) getDao().findById(id);
-        System.out.println("ddddd"+emp.getSsn());
-        return mapper.map(emp, info.yalamanchili.office.dto.profile.Employee.class);
+        return mapper.map(getDao().findById(id), info.yalamanchili.office.dto.profile.Employee.class);
     }
 
     @GET
