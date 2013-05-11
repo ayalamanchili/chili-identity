@@ -84,7 +84,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @PUT
     @Path("/searchclient/{start}/{limit}")
-    public List<info.yalamanchili.office.dto.profile.Employee> searchEmployee(Client entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(Client entity, @PathParam("start") int start, @PathParam("limit") int limit) {
       //  List<info.yalamanchili.office.dto.profile.Employee> employees = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
       //  for (Object empObj : getDao().search(entity, start, limit)) {
       //      employees.add(info.yalamanchili.office.dto.profile.Employee.map(mapper, (Employee) empObj));

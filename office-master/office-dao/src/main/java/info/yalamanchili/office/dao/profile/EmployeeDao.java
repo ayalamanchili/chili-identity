@@ -34,7 +34,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     public EmployeeDao() {
         super(Employee.class);
     }
-    
+
     @Override
     public Employee save(Employee entity) {
         if (entity.getId() != null) {

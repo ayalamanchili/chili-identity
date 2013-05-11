@@ -3,7 +3,7 @@ package info.yalamanchili.office.jrs.profile;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dto.profile.Employee;
+import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.jrs.CRUDResource;

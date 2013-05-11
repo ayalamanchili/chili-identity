@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement
 @XmlType
-public class Employee implements Serializable {
+public class EmployeeDto implements Serializable {
 
     protected Long id;
     protected String username;
@@ -54,7 +54,7 @@ public class Employee implements Serializable {
     @Length(min = 9, max = 9)
     private String ssn;
 
-    public Employee() {
+    public EmployeeDto() {
     }
 
     public Long getId() {
@@ -190,8 +190,8 @@ public class Employee implements Serializable {
         return "Employee{" + "id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + '}';
     }
 
-    public static Employee map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
-        Employee dto = mapper.map(entity, Employee.class);
+    public static EmployeeDto map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
+        EmployeeDto dto = mapper.map(entity, EmployeeDto.class);
         if (entity.getPrimaryEmail() != null) {
             dto.setEmail(entity.getPrimaryEmail().getEmail());
         }
