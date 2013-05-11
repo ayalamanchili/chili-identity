@@ -87,7 +87,9 @@ public class ReadEmployeePanel extends ReadComposite {
         addEnumField("sex", true, false, strs);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("jobTitle", true, false, DataType.STRING_FIELD);
-        addField("ssn", true, false, DataType.STRING_FIELD);
+        if (Auth.isAdmin()) {
+            addField("ssn", true, false, DataType.STRING_FIELD);
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
+import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -56,6 +57,15 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected Mapper mapper;
     @Autowired
     protected ProfileNotificationService profileNotificationservice;
+
+    @GET
+    @Path("/{id}")
+    @Override
+    public EmployeeReadDto read(@PathParam("id") Long id) {
+        Employee emp = employeeDao.findById(id);
+        System.out.println("dddd" + emp.getSsn());
+        return mapper.map(emp, EmployeeReadDto.class);
+    }
 
     @GET
     @Path("/{start}/{limit}")
