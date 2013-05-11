@@ -58,6 +58,21 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected ProfileNotificationService profileNotificationservice;
 
     @GET
+    @Path("/read/{id}")
+    public info.yalamanchili.office.dto.profile.Employee readEmployee(@PathParam("id") Long id) {
+        Employee emp=(Employee) getDao().findById(id);
+        System.out.println("ddddd"+emp.getSsn());
+        return mapper.map(emp, info.yalamanchili.office.dto.profile.Employee.class);
+    }
+
+    @GET
+    @Path("/{id}")
+    @Override
+    public Employee read(Long id) {
+        return null;
+    }
+
+    @GET
     @Path("/{start}/{limit}")
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.Employee> employees = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();

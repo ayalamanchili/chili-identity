@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.time.TimeSheet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -25,7 +26,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -364,11 +364,19 @@ public class Employee extends Contact {
     @PrePersist
     @PreUpdate
     protected void setHash() {
+        if (!validateNumbers(this.ssn)) {
+            throw new RuntimeException();
+        }
         if (this.ssn != null) {
             StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
             this.ssnHash = officeStringDigester.digest(this.ssn);
 
         }
+    }
+
+    protected boolean validateNumbers(String str) {
+        Pattern digitPattern = Pattern.compile("^(\\d{9})$");
+        return digitPattern.matcher(str).matches();
     }
 
     @Override

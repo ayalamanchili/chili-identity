@@ -97,6 +97,6 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/" + entityId;
+        return OfficeWelcome.constants.root_url() + "employee/read/" + entityId;
     }
 }

@@ -35,12 +35,6 @@ public class EmployeeDao extends CRUDDao<Employee> {
         super(Employee.class);
     }
     
-    public Employee findById(Long id) {
-        Employee emp = (Employee) getEntityManager().find(entityCls, id);
-        emp.setSsn("*********");
-        return emp;
-    }
-    
     @Override
     public Employee save(Employee entity) {
         if (entity.getId() != null) {
