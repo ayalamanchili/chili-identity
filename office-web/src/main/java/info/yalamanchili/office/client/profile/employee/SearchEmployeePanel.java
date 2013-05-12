@@ -43,6 +43,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("firstName", DataType.STRING_FIELD);
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
+        addField("employeeId", DataType.STRING_FIELD);
     }
 
     @Override
@@ -51,6 +52,7 @@ public class SearchEmployeePanel extends SearchComposite {
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
+        assignEntityValueFromField("employeeId", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -63,7 +65,6 @@ public class SearchEmployeePanel extends SearchComposite {
                 @Override
                 public void onResponse(String result) {
                     processSearchResult(result);
-//                searchTB.setText("");
                 }
             });
         }
@@ -71,7 +72,6 @@ public class SearchEmployeePanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
-        logger.info("fffff" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -128,15 +128,25 @@ public class SearchEmployeePanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("employeeId");
+                sb.loadData(values.values());
+            }
+        });
     }
 
     protected String getFirstNameDropDownUrl() {
-        //TODO think anout the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=firstName";
     }
 
     protected String getLastNameDropDownUrl() {
-        //TODO think anout the limit
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=lastName";
+    }
+
+    protected String getEmployeeIdDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=employeeId";
     }
 }
