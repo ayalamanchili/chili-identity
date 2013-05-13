@@ -365,7 +365,7 @@ public class Employee extends Contact {
     @PrePersist
     @PreUpdate
     protected void setHash() {
-        if (!validateNumbers(this.ssn)) {
+        if (this.ssn != null && !validateNumbers(this.ssn)) {
             throw new RuntimeException();
         }
         if (this.ssn != null) {
