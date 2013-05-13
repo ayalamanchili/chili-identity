@@ -270,21 +270,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         return employees;
     }
 
-//    @PUT
-//    @Path("/searchEmployee/{start}/{limit}")
-//    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
-//        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
-//        for (Object empObj : getDao().search(mapper.map(entity, Employee.class), start, limit)) {
-//            employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
-//        }
-//        return employees;
-//    }
-
     @PUT
     @Path("/searchEmployee/{start}/{limit}")
-    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(Employee entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
-        for (Object empObj : getDao().search(entity, start, limit)) {
+        for (Object empObj : getDao().search(mapper.map(entity, Employee.class), start, limit)) {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         return employees;
