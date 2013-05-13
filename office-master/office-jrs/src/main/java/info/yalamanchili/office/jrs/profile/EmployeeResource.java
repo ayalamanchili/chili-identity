@@ -9,6 +9,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
+import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -63,7 +64,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Override
     public EmployeeReadDto read(@PathParam("id") Long id) {
         Employee emp = employeeDao.findById(id);
-        System.out.println("dddd" + emp.getSsn());
         return mapper.map(emp, EmployeeReadDto.class);
     }
 
@@ -269,6 +269,16 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return employees;
     }
+
+//    @PUT
+//    @Path("/searchEmployee/{start}/{limit}")
+//    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+//        List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
+//        for (Object empObj : getDao().search(mapper.map(entity, Employee.class), start, limit)) {
+//            employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
+//        }
+//        return employees;
+//    }
 
     @PUT
     @Path("/searchEmployee/{start}/{limit}")

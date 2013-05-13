@@ -4,12 +4,14 @@
  */
 package info.yalamanchili.office.dao.profile;
 
+import info.chili.commons.SearchUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -27,10 +29,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class EmployeeDao extends CRUDDao<Employee> {
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     public EmployeeDao() {
         super(Employee.class);
     }
@@ -46,7 +48,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return super.save(entity);
     }
-    
+
     protected void updateSSN(Employee entity) {
         if (entity.getSsn() == null) {
             entity.setSsn(null);
@@ -55,7 +57,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
             entity.setSsn(findById(entity.getId()).getSsn());
         }
     }
-    
+
     public Email updatePrimaryEmail(Contact emp, Email newEmail) {
         if (emp.getPrimaryEmail() == null) {
             newEmail.setPrimaryEmail(Boolean.TRUE);
@@ -74,7 +76,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return newEmail;
     }
-    
+
     public Employee getEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
@@ -86,12 +88,20 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(e);
         }
     }
+
+//    @Override
+//    public List<Employee> search(Employee entity, int start, int limit) {
+//        Query searchQuery = getEntityManager().createQuery(SearchUtils.getNestedSearchQuery(entity), entityCls);
+//        searchQuery.setFirstResult(start);
+//        searchQuery.setMaxResults(limit);
+//        return searchQuery.getResultList();
+//    }
     
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }

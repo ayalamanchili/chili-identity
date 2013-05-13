@@ -44,6 +44,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
+       // addField("state", DataType.STRING_FIELD);
     }
 
     @Override
@@ -53,6 +54,11 @@ public class SearchEmployeePanel extends SearchComposite {
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("employeeId", entity);
+   //     JSONArray addresses = new JSONArray();
+     //   JSONObject address = new JSONObject();
+    //    assignEntityValueFromField("state", address);
+    //    addresses.set(0, address);
+    //    entity.put("addresss", addresses);
         logger.info(entity.toString());
         return entity;
     }
