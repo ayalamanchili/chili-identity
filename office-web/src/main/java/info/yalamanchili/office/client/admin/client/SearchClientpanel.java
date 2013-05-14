@@ -21,14 +21,14 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class SearchClientpanel extends SearchComposite{
+public class SearchClientpanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchClientpanel.class.getName());
-   
-     public SearchClientpanel() {
+
+    public SearchClientpanel() {
         init("Client Search", "Client", OfficeWelcome.constants);
     }
-     
+
     @Override
     protected void populateSearchSuggestBox() {
         HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -40,29 +40,26 @@ public class SearchClientpanel extends SearchComposite{
         });
     }
 
-       protected String getnameDropDownUrl() {
+    protected String getnameDropDownUrl() {
         //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "client/dropdown/0/500?column=id&column=name";
     }
-       
+
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
     protected void addWidgets() {
-          addField("name", DataType.STRING_FIELD);
+        addField("name", DataType.STRING_FIELD);
     }
 
     @Override
@@ -75,7 +72,7 @@ public class SearchClientpanel extends SearchComposite{
 
     @Override
     protected void search(String searchText) {
-         if (getSearchText() != null) {
+        if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
@@ -88,7 +85,7 @@ public class SearchClientpanel extends SearchComposite{
 
     @Override
     protected void search(JSONObject entity) {
-          logger.info("ggggg" + entity.toString());
+        logger.info("ggggg" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -100,20 +97,19 @@ public class SearchClientpanel extends SearchComposite{
 
     @Override
     protected void postSearchSuccess(JSONArray result) {
-       TabPanel.instance().adminPanel.entityPanel.clear();
-       TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel(result));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel(result));
     }
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-         return URL.encode(OfficeWelcome.constants.root_url() + "client/searchclient/" + start.toString() + "/"
-                + limit.toString() + "/?text=" + searchText);
+        return URL.encode(OfficeWelcome.constants.root_url() + "client/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString());
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-         return OfficeWelcome.constants.root_url() + "client/searchclient/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "client/search/" + start.toString() + "/"
                 + limit.toString();
     }
-    
 }

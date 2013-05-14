@@ -48,7 +48,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class VendorResource extends CRUDResource<Vendor> {
-    
+
     @Autowired
     public VendorDao vendorDao;
     @Autowired
@@ -57,12 +57,12 @@ public class VendorResource extends CRUDResource<Vendor> {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     @Override
     public CRUDDao getDao() {
         return vendorDao;
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     public VendorTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -87,7 +87,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         Contact contact = contactService.save(dto);
         vendor.addContact(contact);
     }
-    
+
     @PUT
     @Path("/contact/remove/{vendorId}/{contactId}")
     public void removeContact(@PathParam("vendorId") Long vendorId, @PathParam("contactId") Long contactId) {
@@ -127,7 +127,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         tableObj.setSize((long) vendors.getContacts().size());
         return tableObj;
     }
-    
+
     @GET
     @Path("/contacts/dropdown/{id}/{start}/{limit}")
     public List<Entry> getVendorContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
@@ -157,7 +157,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         Vendor vend = (Vendor) getDao().findById(vendorId);
         vend.addLocations(address);
     }
-    
+
     @PUT
     @Path("/location/remove/{vendorId}/{locationId}")
     public void removeLocation(@PathParam("vendorId") Long vendorId, @PathParam("locationId") Long locationId) {
@@ -193,7 +193,7 @@ public class VendorResource extends CRUDResource<Vendor> {
         tableObj.setSize((long) evendor.getLocations().size());
         return tableObj;
     }
-    
+
     @GET
     @Path("/locations/dropdown/{id}/{start}/{limit}")
     public List<Entry> getVendorLocationsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
@@ -208,44 +208,27 @@ public class VendorResource extends CRUDResource<Vendor> {
         }
         return result;
     }
-    
-    @GET
-    @Path("/searchvendor/{start}/{limit}")
-    public List<info.yalamanchili.office.entity.client.Vendor> searchVendor(@PathParam("start") int start,
-            @PathParam("limit") int limit, @QueryParam("text") String text) {
-        
-      //  getDao().search(limit, start, limit);
-        return getDao().search(text, start, limit, true);
-    }
-    
-    @PUT
-    @Path("/searchvendor/{start}/{limit}")
-    public List<info.yalamanchili.office.entity.client.Vendor> searchVendor(Vendor entity, @PathParam("start") int start, @PathParam("limit") int limit) {
-       // List<info.yalamanchili.office.entity.client.Vendor> vendor = new ArrayList<info.yalamanchili.office.entity.client.Vendor>();
-        //getDao().search(limit, start, limit);
-        return getDao().search(entity, start, limit);
-    }
-    
+
     @XmlRootElement
     @XmlType
     public static class VendorTable {
-        
+
         protected Long size;
         protected List<Vendor> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<Vendor> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<Vendor> entities) {
             this.entities = entities;
         }

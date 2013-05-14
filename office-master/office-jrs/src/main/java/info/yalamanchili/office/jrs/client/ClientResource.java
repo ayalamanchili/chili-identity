@@ -69,32 +69,10 @@ public class ClientResource extends CRUDResource<Client> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
-    // Client Search
-     @GET
-    @Path("/searchclient/{start}/{limit}")
-    public List<info.yalamanchili.office.entity.client.Client> searchClient(@PathParam("start") int start,
-            @PathParam("limit") int limit, @QueryParam("text") String text) {
-        //List<info.yalamanchili.office.entity.client.Client> clients = new ArrayList<info.yalamanchili.office.entity.client.Client>();
-       // for (Object empObj : getDao().search(text, start, limit, true)) {
-       //     employees.add(info.yalamanchili.office.dto.profile.Employee.map(mapper, (Employee) empObj));
-       // }
-        return getDao().search(text, start, limit, true);
-    }
-
-    @PUT
-    @Path("/searchclient/{start}/{limit}")
-    public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(Client entity, @PathParam("start") int start, @PathParam("limit") int limit) {
-      //  List<info.yalamanchili.office.dto.profile.Employee> employees = new ArrayList<info.yalamanchili.office.dto.profile.Employee>();
-      //  for (Object empObj : getDao().search(entity, start, limit)) {
-      //      employees.add(info.yalamanchili.office.dto.profile.Employee.map(mapper, (Employee) empObj));
-      //  }
-        return getDao().search(entity, start, limit);
-    }
-
     /*
      * Client Projects
      */
+
     @PUT
     @Path("/project/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")

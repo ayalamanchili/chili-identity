@@ -32,7 +32,7 @@ public class SearchVendorPanel extends SearchComposite {
     @Override
     protected void populateSearchSuggestBox() {
 
-          HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
@@ -41,8 +41,8 @@ public class SearchVendorPanel extends SearchComposite {
         });
 
     }
-    
-      protected String getnameDropDownUrl() {
+
+    protected String getnameDropDownUrl() {
         //TODO think about the limit
         return OfficeWelcome.constants.root_url() + "vendor/dropdown/0/500?column=id&column=name";
     }
@@ -89,7 +89,7 @@ public class SearchVendorPanel extends SearchComposite {
     @Override
     protected void search(JSONObject entity) {
 
-          logger.info("ggggg" + entity.toString());
+        logger.info("ggggg" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -108,15 +108,13 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "vendor/searchvendor/" + start.toString() + "/"
-                + limit.toString() + "/?text=" + searchText);
+        return URL.encode(OfficeWelcome.constants.root_url() + "vendor/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString());
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "vendor/searchvendor/" + start.toString() + "/"
+        return OfficeWelcome.constants.root_url() + "vendor/search/" + start.toString() + "/"
                 + limit.toString();
     }
-
-   
 }
