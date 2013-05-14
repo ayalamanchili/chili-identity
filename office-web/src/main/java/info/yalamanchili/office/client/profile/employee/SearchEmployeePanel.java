@@ -68,7 +68,7 @@ public class SearchEmployeePanel extends SearchComposite {
     @Override
     protected void search(String searchText) {
         if (getSearchText() != null) {
-            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
+            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 50),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String result) {
@@ -80,7 +80,7 @@ public class SearchEmployeePanel extends SearchComposite {
     
     @Override
     protected void search(JSONObject entity) {
-        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 50), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
