@@ -27,7 +27,7 @@ public interface OfficeImages extends ClientBundle {
     @ImageOptions(height = 50, width = 50)
     ImageResource defaultImage_50_50();
 
-    @Source("images/logo.png")
+    @Source("images/logo_beta.png")
     ImageResource logo();
 
     @Source("images/loginFeaturesImage.png")
