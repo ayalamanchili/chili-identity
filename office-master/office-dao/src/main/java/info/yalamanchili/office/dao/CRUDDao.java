@@ -124,7 +124,7 @@ public abstract class CRUDDao<T> {
     }
 
     public List<T> search(T entity, int start, int limit) {
-        Query searchQuery = getEntityManager().createQuery(SearchUtils.getSearchQueryString(entity), entityCls);
+        Query searchQuery = getEntityManager().createQuery(SearchUtils.getSearchQuery(entity), entityCls);
         searchQuery.setFirstResult(start);
         searchQuery.setMaxResults(limit);
         return searchQuery.getResultList();

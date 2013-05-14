@@ -90,14 +90,6 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     @Override
-    public List<Employee> search(Employee entity, int start, int limit) {
-        Query searchQuery = getEntityManager().createQuery(SearchUtils.getNestedSearchQuery(entity), entityCls);
-        searchQuery.setFirstResult(start);
-        searchQuery.setMaxResults(limit);
-        return searchQuery.getResultList();
-    }
-    
-    @Override
     public EntityManager getEntityManager() {
         return em;
     }
