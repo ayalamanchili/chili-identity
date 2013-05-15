@@ -54,7 +54,7 @@ public class DataTools {
 
     public void fixSSN() {
         for (Employee emp : EmployeeDao.instance().query(0, 1000)) {
-            logger.log(Level.SEVERE, "ssn:{0}", emp.getSsn());
+            logger.log(Level.SEVERE, "ssn:{0}", emp.getEmployeeId() + ":" + emp.getSsn());
             if (emp.getSsn() != null && !emp.getSsn().trim().isEmpty()) {
                 if (emp.getSsn().contains("-")) {
                     System.out.println("oldssn" + emp.getSsn());
