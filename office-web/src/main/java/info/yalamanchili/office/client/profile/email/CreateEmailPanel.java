@@ -31,7 +31,6 @@ public class CreateEmailPanel extends CreateComposite {
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("primaryEmail", entity);
         entity.put("emailType", emailTypeF.getSelectedObject());
-        entity.put("emailHash", new JSONString("abcde"));
         return entity;
     }
 

@@ -16,7 +16,6 @@ import info.yalamanchili.office.client.rpc.HttpService;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -36,7 +35,6 @@ public class UpdateEmailPanel extends UpdateComposite {
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("primaryEmail", entity);
         assignEntityValueFromField("emailType", entity);
-        entity.put("emailHash", new JSONString("abcde"));
         return entity;
     }
 

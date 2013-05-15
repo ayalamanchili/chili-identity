@@ -59,7 +59,6 @@ public class Email extends AbstractEntity {
     /*
      * email hashed used for querying data
      */
-    @NotEmpty
     @org.hibernate.annotations.Index(name = "EMAIL_ADDRESS_HASH_IDX")
     protected String emailHash;
     /**
