@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 /**
- * This servlet acts a proxy routher to fileService to add authentication header
+ * This servlet acts a proxy router to fileService to add authentication header
  */
 @RequestMapping("/**/fileService")
 @Scope("session")
@@ -37,10 +37,9 @@ public class FileServiceImpl extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private final static Logger logger = Logger.getLogger(FileServiceImpl.class.getName());
-    //TODO injection not working
-    @Autowired
+    private final static String PORTAL_AUTH_HEADER_ATTR = "portal-auth-header";
+
     protected OfficeWebConfiguration officeWebConfiguration;
-    protected HttpServiceImpl httpServiceImpl;
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,7 +48,7 @@ public class FileServiceImpl extends HttpServlet {
         HttpPost post = new HttpPost(getOfficeWebConfiguration().getOfficeServicesUrl() + "file/upload");
         HttpHelper.copyHeaders(request, post, "Content-Length", "Host");
         HttpHelper.copyBody(request, post);
-        addAuthenticationHeader(post);
+        addAuthenticationHeader(post, request);
         //Make call
         HttpResponse resp = HttpHelper.getHttpClient(true).execute(post);
         //process and map response back
@@ -63,7 +62,7 @@ public class FileServiceImpl extends HttpServlet {
         //prepare request
         HttpGet get = new HttpGet(getOfficeWebConfiguration().getOfficeServicesUrl() + "file/download?" + request.getQueryString());
         HttpHelper.copyHeaders(request, get, "Content-Length", "Host");
-        addAuthenticationHeader(get);
+        addAuthenticationHeader(get, request);
         //TODO change to false
         //Make call
         HttpResponse resp = HttpHelper.getHttpClient(true).execute(get);
@@ -72,8 +71,12 @@ public class FileServiceImpl extends HttpServlet {
         HttpHelper.copyBody(response, resp);
     }
 
-    protected void addAuthenticationHeader(HttpRequestBase request) {
-        request.addHeader("Authorization", "Basic " + new String(Base64.encodeBase64((getHttpServiceImpl().getUsername() + ":" + getHttpServiceImpl().getPassword()).getBytes())));
+    protected void addAuthenticationHeader(HttpRequestBase body, HttpServletRequest request) {
+        if (request.getSession(true).getAttribute(PORTAL_AUTH_HEADER_ATTR) == null) {
+            HttpServiceImpl httpServiceImpl = OfficeWebSpringContext.getBean(HttpServiceImpl.class);
+            request.getSession().setAttribute(PORTAL_AUTH_HEADER_ATTR, "Basic " + new String(Base64.encodeBase64((httpServiceImpl.getUsername() + ":" + httpServiceImpl.getPassword()).getBytes())));
+        }
+        body.addHeader("Authorization", (String) request.getSession().getAttribute(PORTAL_AUTH_HEADER_ATTR));
     }
 
     protected OfficeWebConfiguration getOfficeWebConfiguration() {
@@ -81,12 +84,5 @@ public class FileServiceImpl extends HttpServlet {
             officeWebConfiguration = OfficeWebSpringContext.getBean(OfficeWebConfiguration.class);
         }
         return officeWebConfiguration;
-    }
-
-    protected HttpServiceImpl getHttpServiceImpl() {
-        if (httpServiceImpl == null) {
-            httpServiceImpl = OfficeWebSpringContext.getBean(HttpServiceImpl.class);
-        }
-        return httpServiceImpl;
     }
 }
