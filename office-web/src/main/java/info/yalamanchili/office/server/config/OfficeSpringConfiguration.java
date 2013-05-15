@@ -1,7 +1,6 @@
 package info.yalamanchili.office.server.config;
 
 import info.yalamanchili.office.config.OfficeWebConfiguration;
-import info.yalamanchili.office.server.FileServiceImpl;
 import info.yalamanchili.office.server.HttpServiceImpl;
 
 import java.util.HashMap;
