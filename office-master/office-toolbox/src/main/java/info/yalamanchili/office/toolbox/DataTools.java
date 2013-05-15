@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jasypt.digest.StandardStringDigester;
@@ -54,8 +55,10 @@ public class DataTools {
 
     public void fixSSN() {
         for (Employee emp : EmployeeDao.instance().query(0, 1000)) {
-            logger.log(Level.SEVERE, "ssn:{0}", emp.getEmployeeId() + ":" + emp.getSsn());
             if (emp.getSsn() != null && !emp.getSsn().trim().isEmpty()) {
+                if (!validateNumbers(emp.getSsn())) {
+                    logger.log(Level.SEVERE, "invalid ssn:{0}", emp.getEmployeeId() + ":" + emp.getSsn());
+                }
                 if (emp.getSsn().contains("-")) {
                     System.out.println("oldssn" + emp.getSsn());
                     emp.setSsn(emp.getSsn().replace("-", ""));
@@ -68,6 +71,11 @@ public class DataTools {
                 }
             }
         }
+    }
+
+    protected boolean validateNumbers(String str) {
+        Pattern digitPattern = Pattern.compile("^(\\d{9})$");
+        return digitPattern.matcher(str).matches();
     }
 
     public static DataTools instance() {
