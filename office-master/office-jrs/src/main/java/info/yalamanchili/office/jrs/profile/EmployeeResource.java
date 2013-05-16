@@ -64,6 +64,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Override
     public EmployeeReadDto read(@PathParam("id") Long id) {
         Employee emp = employeeDao.findById(id);
+        emp.getUser().isEnabled();
         return mapper.map(emp, EmployeeReadDto.class);
     }
 
