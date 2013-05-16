@@ -74,9 +74,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         addEmployeePanel();
-        if (Auth.hasOnlyUserRole()) {
-            panel.add(updateProfile);
-        }
+        panel.add(updateProfile);
         panel.add(changePassword);
         addAddressesPanel();
         addPhonesPanel();
@@ -242,19 +240,19 @@ public class ProfileHome extends ALComposite implements ClickHandler {
                 skillSetPanel.clear();
                 HttpService.HttpServiceAsync.instance().doGet(getSkillSetUrl(OfficeWelcome.instance().employeeId), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                if (response != null && !response.isEmpty()) {
-                                    JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
-                                    skillSetPanel.add(new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
-                                    skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id"), false, false));
-                                    skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id"), false, false));
-                                } else {
-                                    TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                    skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
-                                }
-                            }
-                        });
+                    @Override
+                    public void onResponse(String response) {
+                        if (response != null && !response.isEmpty()) {
+                            JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
+                            skillSetPanel.add(new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
+                            skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id"), false, false));
+                            skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id"), false, false));
+                        } else {
+                            TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
+                        }
+                    }
+                });
 
 
             }
@@ -280,16 +278,16 @@ public class ProfileHome extends ALComposite implements ClickHandler {
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String arg0) {
-                                JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
-                                if (arg0 != null && preferences != null) {
-                                    preferencesPanel.clear();
-                                    preferencesPanel.setContent(
-                                            new UpdatePreferencesPanel(preferences));
-                                }
-                            }
-                        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
+                        if (arg0 != null && preferences != null) {
+                            preferencesPanel.clear();
+                            preferencesPanel.setContent(
+                                    new UpdatePreferencesPanel(preferences));
+                        }
+                    }
+                });
 
 
             }
