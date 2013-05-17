@@ -19,28 +19,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class EmployeeReadDto extends Employee {
 
-    @Enumerated(EnumType.STRING)
-    protected VersionStatus status;
+    protected boolean status;
 
-    public VersionStatus getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(VersionStatus status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
     @Override
     public String getSsn() {
         return "*********";
-    }
-
-    @PrePersist
-    @PreUpdate
-    protected void preSave() {
-        //TODO invoke validator also
-        if (this.status == null) {
-            this.status = VersionStatus.ACTIVE;
-        }
     }
 }
