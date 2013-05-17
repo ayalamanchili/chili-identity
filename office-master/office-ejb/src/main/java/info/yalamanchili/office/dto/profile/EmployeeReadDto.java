@@ -4,12 +4,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
-import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.profile.Employee;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
