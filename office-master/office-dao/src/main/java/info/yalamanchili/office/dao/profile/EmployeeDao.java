@@ -39,9 +39,9 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     @Override
     public Employee save(Employee entity) {
+        updateSSN(entity);
         if (entity.getId() != null) {
             Employee updatedEmployee = null;
-            updateSSN(entity);
             updatedEmployee = super.save(entity);
             updatedEmployee.setEmployeeType(em.find(EmployeeType.class, entity.getEmployeeType().getId()));
             return em.merge(updatedEmployee);
@@ -50,11 +50,16 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     protected void updateSSN(Employee entity) {
+        //TODO is this needed?
         if (entity.getSsn() == null) {
             entity.setSsn(null);
         }
-        if (entity.getSsn().equals("*********") && entity.getId() != null) {
-            entity.setSsn(findById(entity.getId()).getSsn());
+        if (entity.getSsn().equals("*********")) {
+            if (entity.getId() != null) {
+                entity.setSsn(findById(entity.getId()).getSsn());
+            } else {
+                entity.setSsn(null);
+            }
         }
     }
 

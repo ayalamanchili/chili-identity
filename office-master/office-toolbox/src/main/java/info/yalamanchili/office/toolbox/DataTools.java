@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class DataTools {
     protected EntityManager em;
     @Autowired
     private StandardStringDigester officeStringDigester;
+    @Autowired
+    private HibernatePBEStringEncryptor hibernateStringEncryptor;
     /*
      * query all emails and merge them to save/populate the email hash field in database
      */
@@ -50,7 +53,11 @@ public class DataTools {
     }
 
     public String encrypt(String str) {
-        return officeStringDigester.digest(str);
+        return hibernateStringEncryptor.encrypt(str);
+    }
+
+    public String decrypt(String str) {
+        return hibernateStringEncryptor.decrypt(str);
     }
 
     public void fixSSN() {

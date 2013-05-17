@@ -42,6 +42,11 @@ public class SecurityUtils {
         return encryptor.encrypt(string);
     }
 
+    public static String decrypt(String string) {
+        HibernatePBEStringEncryptor encryptor = (HibernatePBEStringEncryptor) SpringContext.getBean("hibernateStringEncryptor");
+        return encryptor.decrypt(string);
+    }
+
     public static String getCurrentUser() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }

@@ -55,8 +55,8 @@ public class AdminUtilsResource {
     public String hash(@PathParam("str") String str) {
         return dataTools.hash(str);
     }
-    
-        /**
+
+    /**
      *
      * @param str
      * @return
@@ -68,9 +68,16 @@ public class AdminUtilsResource {
         return SecurityUtils.encrypt(str);
     }
 
+    @Path("decrypt/{str}")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String decrypt(@PathParam("str") String str) {
+        return SecurityUtils.decrypt(str);
+    }
     /*
      * hashes  all the emails in the databases
      */
+
     @Path("sync_adp_emp_data")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
