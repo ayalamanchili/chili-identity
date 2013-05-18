@@ -7,7 +7,6 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.CroleDao;
 import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
@@ -35,6 +34,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.dto.profile.EmployeeReadDto;
+import info.yalamanchili.office.dto.security.User;
 
 @Path("secured/admin")
 @Produces("application/json")
@@ -62,8 +63,8 @@ public class AdminResource {
 
     @Path("/login")
     @PUT
-    public Employee login(CUser user) {
-        return securityService.login(user);
+    public EmployeeReadDto login(CUser user) {
+        return mapper.map(securityService.login(user),EmployeeReadDto.class);
     }
 
     @Path("/changepassword/{empId}")

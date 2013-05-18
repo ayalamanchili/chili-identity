@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,11 +50,11 @@ public class AdminUtilsResource {
      * @param str
      * @return
      */
-    @Path("hash/{str}")
+    @Path("hash")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String hash(@PathParam("str") String str) {
-        return dataTools.hash(str);
+    public String hash(@QueryParam("value") String value) {
+        return dataTools.hash(value);
     }
 
     /**
@@ -61,18 +62,18 @@ public class AdminUtilsResource {
      * @param str
      * @return
      */
-    @Path("encrypt/{str}")
+    @Path("encrypt")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String encrypt(@PathParam("str") String str) {
-        return SecurityUtils.encrypt(str);
+    public String encrypt(@QueryParam("value") String value) {
+        return SecurityUtils.encrypt(value);
     }
 
-    @Path("decrypt/{str}")
+    @Path("decrypt")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String decrypt(@PathParam("str") String str) {
-        return SecurityUtils.decrypt(str);
+    public String decrypt(@QueryParam("value") String value) {
+        return SecurityUtils.decrypt(value);
     }
     /*
      * hashes  all the emails in the databases
