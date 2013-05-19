@@ -5,34 +5,28 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.profile.Employee;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
  * @author ayalamanchili
  */
 @XmlRootElement
-public class EmployeeReadDto extends Employee {
+public class EmployeeSaveDto extends Employee {
 
-    protected boolean status;
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+   
+    @XmlElement
+    @Override
+    public String getSsn() {
+        return ssn;
     }
 
     @Override
     public void setSsn(String ssn) {
         this.ssn = ssn;
-    }
-
-    @Override
-    @XmlElement
-    public String getSsn() {
-        return "*********";
     }
 }

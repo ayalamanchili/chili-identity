@@ -125,7 +125,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee";
+        return OfficeWelcome.constants.root_url() + "employee/save";
     }
 
     protected void uploadImage(String entityId) {

@@ -345,6 +345,7 @@ public class Employee extends Contact {
         this.timeSheets = timeSheets;
     }
 
+    @XmlTransient
     public String getSsn() {
         return ssn;
     }

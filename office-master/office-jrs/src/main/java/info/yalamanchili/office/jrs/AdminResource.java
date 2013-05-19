@@ -34,6 +34,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.security.User;
 
@@ -95,7 +96,7 @@ public class AdminResource {
     @PUT
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public String createUser(info.yalamanchili.office.dto.profile.EmployeeDto employee) {
+    public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         String employeeId = generateEmployeeId(employee);
 
@@ -128,7 +129,7 @@ public class AdminResource {
         return emp.getId().toString();
     }
 
-    private String generateEmployeeId(info.yalamanchili.office.dto.profile.EmployeeDto emp) {
+    private String generateEmployeeId(EmployeeCreateDto emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
         findUserQuery.setParameter("empIdParam", empId);

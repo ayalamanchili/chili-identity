@@ -29,14 +29,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class EmployeeDao extends CRUDDao<Employee> {
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     public EmployeeDao() {
         super(Employee.class);
     }
-
+    
     @Override
     public Employee save(Employee entity) {
         updateSSN(entity);
@@ -48,21 +48,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return super.save(entity);
     }
-
+    
     protected void updateSSN(Employee entity) {
-        //TODO is this needed?
-        if (entity.getSsn() == null) {
-            entity.setSsn(null);
-        }
-        if (entity.getSsn().equals("*********")) {
-            if (entity.getId() != null) {
-                entity.setSsn(findById(entity.getId()).getSsn());
-            } else {
-                entity.setSsn(null);
-            }
+        if ("*********".equals(entity.getSsn()) && null != entity.getId()) {
+            entity.setSsn(findById(entity.getId()).getSsn());
         }
     }
-
+    
     public Email updatePrimaryEmail(Contact emp, Email newEmail) {
         if (emp.getPrimaryEmail() == null) {
             newEmail.setPrimaryEmail(Boolean.TRUE);
@@ -81,7 +73,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return newEmail;
     }
-
+    
     public Employee getEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
@@ -93,12 +85,12 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(e);
         }
     }
-
+    
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-
+    
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }

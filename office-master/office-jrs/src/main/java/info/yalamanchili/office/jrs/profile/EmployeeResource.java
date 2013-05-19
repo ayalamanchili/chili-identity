@@ -9,6 +9,7 @@ import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
+import info.yalamanchili.office.dto.profile.EmployeeSaveDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -67,6 +68,18 @@ public class EmployeeResource extends CRUDResource<Employee> {
         EmployeeReadDto response = mapper.map(emp, EmployeeReadDto.class);
         response.setStatus(emp.getUser().isEnabled());
         return response;
+    }
+
+    @PUT
+    @Override
+    public Employee save(Employee entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @PUT
+    @Path("/save")
+    public Employee save(EmployeeSaveDto dto) {
+        return (Employee) getDao().save(mapper.map(dto, Employee.class));
     }
 
     @GET

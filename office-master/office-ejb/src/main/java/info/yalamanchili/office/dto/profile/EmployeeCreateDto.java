@@ -10,12 +10,10 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.dozer.Mapper;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -23,16 +21,13 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author ayalamanchili
  */
 @XmlRootElement(name = "Employee")
-@XmlType
-public class EmployeeDto implements Serializable {
+public class EmployeeCreateDto implements Serializable {
 
-    protected Long id;
     @NotEmpty(message = "{firstName.not.empty.msg}")
     protected String firstName;
     @NotEmpty(message = "{lastName.not.empty.msg}")
     protected String lastName;
     protected String middleInitial;
-    protected String employeeId;
     @Past(message = "{dateOfBirth.past.msg}")
     @NotNull(message = "{dateOfBirth.not.empty.msg}")
     protected Date dateOfBirth;
@@ -47,18 +42,11 @@ public class EmployeeDto implements Serializable {
     protected String jobTitle;
     @NotNull(message = "{employeetype.not.null.msg}")
     protected EmployeeType employeeType;
+    @Pattern(regexp = "(^(\\d{9})$)", message = "{invalid.ssn.format}")
     protected String ssn;
-
-    public EmployeeDto() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @NotEmpty(message = "{user.passwordHash.not.empty.msg}")
+    @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
+    protected String passwordHash;
 
     public String getFirstName() {
         return firstName;
@@ -82,14 +70,6 @@ public class EmployeeDto implements Serializable {
 
     public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
     }
 
     public Date getDateOfBirth() {
@@ -140,6 +120,14 @@ public class EmployeeDto implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
     public EmployeeType getEmployeeType() {
         return employeeType;
     }
@@ -148,36 +136,19 @@ public class EmployeeDto implements Serializable {
         this.employeeType = employeeType;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
     public String getSsn() {
-        return "*********";
+        return ssn;
     }
 
     public void setSsn(String ssn) {
         this.ssn = ssn;
     }
 
-    @Override
-    public String toString() {
-        return "EmployeeDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + ", jobTitle=" + jobTitle + ", employeeType=" + employeeType + '}';
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public static EmployeeDto map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
-        EmployeeDto dto = mapper.map(entity, EmployeeDto.class);
-        if (entity.getPrimaryEmail() != null) {
-            dto.setEmail(entity.getPrimaryEmail().getEmail());
-        }
-        if (entity.getPhones().size() > 0) {
-            dto.setPhoneNumber(entity.getPhones().get(0).getPhoneNumber());
-        }
-        dto.setId(entity.getId());
-        return dto;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

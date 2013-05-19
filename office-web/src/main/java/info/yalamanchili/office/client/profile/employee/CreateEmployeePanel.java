@@ -46,7 +46,7 @@ public class CreateEmployeePanel extends CreateComposite {
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", employee);
         }
-        employee.put("fileUrl", empImageUploadPanel.getFileName());
+        employee.put("imageURL", empImageUploadPanel.getFileName());
         return employee;
     }
 
