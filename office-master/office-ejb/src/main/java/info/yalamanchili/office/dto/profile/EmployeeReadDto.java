@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.chili.security.SecurityUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +34,6 @@ public class EmployeeReadDto extends Employee {
     @Override
     @XmlElement
     public String getSsn() {
-        return "*********";
+        return SecurityUtils.OBFUSCATED_STR;
     }
 }

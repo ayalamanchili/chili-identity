@@ -4,6 +4,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.chili.security.SecurityUtils;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
@@ -157,7 +158,7 @@ public class EmployeeDto implements Serializable {
     }
 
     public String getSsn() {
-        return "*********";
+        return SecurityUtils.OBFUSCATED_STR;
     }
 
     public void setSsn(String ssn) {

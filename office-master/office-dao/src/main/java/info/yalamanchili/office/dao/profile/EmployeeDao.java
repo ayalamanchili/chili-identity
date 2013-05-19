@@ -4,14 +4,13 @@
  */
 package info.yalamanchili.office.dao.profile;
 
-import info.chili.commons.SearchUtils;
+import info.chili.security.SecurityUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -48,9 +47,9 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return super.save(entity);
     }
-    
+    //TODO move this to entity setter
     protected void updateSSN(Employee entity) {
-        if ("*********".equals(entity.getSsn()) && null != entity.getId()) {
+        if (SecurityUtils.OBFUSCATED_STR.equals(entity.getSsn()) && null != entity.getId()) {
             entity.setSsn(findById(entity.getId()).getSsn());
         }
     }
