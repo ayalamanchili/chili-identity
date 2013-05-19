@@ -41,6 +41,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.StringDigester;
 import org.jasypt.hibernate.type.EncryptedStringType;
 
 /**
@@ -370,7 +371,7 @@ public class Employee extends Contact {
             throw new RuntimeException();
         }
         if (this.ssn != null) {
-            StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
+            StringDigester officeStringDigester = (StringDigester) SpringContext.getBean("officeStringDigester");
             this.ssnHash = officeStringDigester.digest(this.ssn);
 
         }

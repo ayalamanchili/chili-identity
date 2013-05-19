@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.StringDigester;
 import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class DataTools {
     @PersistenceContext
     protected EntityManager em;
     @Autowired
-    private StandardStringDigester officeStringDigester;
+    private StringDigester officeStringDigester;
     @Autowired
     private HibernatePBEStringEncryptor hibernateStringEncryptor;
     /*

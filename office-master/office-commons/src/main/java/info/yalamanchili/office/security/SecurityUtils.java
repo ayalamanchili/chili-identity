@@ -10,6 +10,7 @@ import info.yalamanchili.office.entity.security.acl.AclClass;
 import info.yalamanchili.office.entity.security.acl.AclSid;
 import javax.persistence.EntityManager;
 import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.StringDigester;
 import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +34,7 @@ public class SecurityUtils {
      * used for hasing encrypted string properties used for querying data
      */
     public static String hash(String string) {
-        StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
+        StringDigester officeStringDigester = (StringDigester) SpringContext.getBean("officeStringDigester");
         return officeStringDigester.digest(string);
     }
 

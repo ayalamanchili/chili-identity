@@ -32,7 +32,8 @@
         <beans:property name="password" value="${jasypt.password}"/>
     </beans:bean>
     <!-- used for hasing-->
-    <beans:bean id="officeStringDigester" class="org.jasypt.digest.StandardStringDigester" >
+    <beans:bean id="officeStringDigester" class="org.jasypt.digest.PooledStringDigester" >
+        <beans:property name="poolSize" value="2" />
         <beans:property name="algorithm" value="SHA-1" />
         <beans:property name="iterations" value="100000" />
         <beans:property name="saltGenerator">

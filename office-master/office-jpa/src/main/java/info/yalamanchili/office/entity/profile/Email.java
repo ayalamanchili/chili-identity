@@ -26,6 +26,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.StringDigester;
 import org.jasypt.hibernate.type.EncryptedStringType;
 
 /**
@@ -158,7 +159,7 @@ public class Email extends AbstractEntity {
     @PrePersist
     @PreUpdate
     protected void setHash() {
-        StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
+        StringDigester officeStringDigester = (StringDigester) SpringContext.getBean("officeStringDigester");
         this.emailHash = officeStringDigester.digest(this.email);
     }
 
