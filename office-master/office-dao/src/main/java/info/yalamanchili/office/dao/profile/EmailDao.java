@@ -42,13 +42,14 @@ public class EmailDao extends CRUDDao<Email> {
         if (entity.getId() != null) {
             Contact cnt = ContactDao.instance().findById(entity.getContact().getId());
             entity = employeeDao.updatePrimaryEmail(cnt, entity);
-            entity = super.save(entity);
+            Email updatedEmail=null;
+            updatedEmail = super.save(entity);
             if (entity.getEmailType() == null) {
-                entity.setEmailType(null);
+                updatedEmail.setEmailType(null);
             } else {
-                entity.setEmailType(em.find(EmailType.class, entity.getEmailType().getId()));
+                updatedEmail.setEmailType(em.find(EmailType.class, entity.getEmailType().getId()));
             }
-            return em.merge(entity);
+            return em.merge(updatedEmail);
         }
         return super.save(entity);
     }
