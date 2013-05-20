@@ -116,7 +116,7 @@ public class OfficeStartup {
         userEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
         userEmp.setSex(Sex.MALE);
         userEmp.setStartDate(new Date());
-        userEmp.setEmployeeType(getConsultantEmployeeType());
+        userEmp.setEmployeeType(getEmployeeType());
         
         Preferences userPrefs = new Preferences();
         userPrefs.setEnableEmailNotifications(Boolean.TRUE);
@@ -161,7 +161,7 @@ public class OfficeStartup {
         adminEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -3));
         adminEmp.setSex(Sex.FEMALE);
         adminEmp.setStartDate(new Date());
-        adminEmp.setEmployeeType(getInternalEmployeeType());
+        adminEmp.setEmployeeType(getCorporateEmployeeType());
         
         Preferences adminPrefs = new Preferences();
         adminPrefs.setEnableEmailNotifications(Boolean.TRUE);
@@ -237,7 +237,7 @@ public class OfficeStartup {
         rohanEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
         rohanEmp.setSex(Sex.MALE);
         rohanEmp.setStartDate(new Date());
-        rohanEmp.setEmployeeType(getConsultantEmployeeType());
+        rohanEmp.setEmployeeType(getEmployeeType());
         
         Preferences userPref = new Preferences();
         userPref.setEnableEmailNotifications(Boolean.TRUE);
@@ -280,7 +280,7 @@ public class OfficeStartup {
         pavanEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
         pavanEmp.setSex(Sex.MALE);
         pavanEmp.setStartDate(new Date());
-        pavanEmp.setEmployeeType(getConsultantEmployeeType());
+        pavanEmp.setEmployeeType(getEmployeeType());
         
         Preferences userPrefes = new Preferences();
         userPrefes.setEnableEmailNotifications(Boolean.TRUE);
@@ -323,7 +323,7 @@ public class OfficeStartup {
         shristiEmp.setDateOfBirth(DateUtils.getNextYear(new Date(), -1));
         shristiEmp.setSex(Sex.MALE);
         shristiEmp.setStartDate(new Date());
-        shristiEmp.setEmployeeType(getConsultantEmployeeType());
+        shristiEmp.setEmployeeType(getEmployeeType());
         
         Preferences userPre = new Preferences();
         userPre.setEnableEmailNotifications(Boolean.TRUE);
@@ -387,8 +387,8 @@ public class OfficeStartup {
         getCellPhoneType();
         getHomePhoneType();
         //Employee Type
-        getInternalEmployeeType();
-        getConsultantEmployeeType();
+        getCorporateEmployeeType();
+        getEmployeeType();
     }
     
     protected void initTestData() {
@@ -546,29 +546,29 @@ public class OfficeStartup {
         }
     }
     
-    protected EmployeeType getInternalEmployeeType() {
+    protected EmployeeType getCorporateEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "INTERNAL");
+        getEmployeeTypeQuery.setParameter("nameParam", "CORPORATE_EMPLOYEE");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("INTERNAL");
+            employeetype.setName("CORPORATE_EMPLOYEE");
             employeetype.setDescription("SSTECH Internal Employee");
             return em.merge(employeetype);
         }
     }
     
-    protected EmployeeType getConsultantEmployeeType() {
+    protected EmployeeType getEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "CONSULTANT");
+        getEmployeeTypeQuery.setParameter("nameParam", "EMPLOYEE");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("CONSULTANT");
+            employeetype.setName("EMPLOYEE");
             employeetype.setDescription("SSTECH Consultant Employee");
             return em.merge(employeetype);
         }
