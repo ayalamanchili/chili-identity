@@ -39,7 +39,7 @@ public class ServiceInterceptor {
     private static final Log log = LogFactory.getLog(ServiceInterceptor.class);
     @Autowired
     protected ServiceMessages serviceMessages;
-    
+    //
     @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..))")
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
