@@ -53,6 +53,21 @@ public class EmailDao extends CRUDDao<Email> {
         }
         return super.save(entity);
     }
+    
+     @Override
+      public void delete(Long id) {
+      Email ent =  em.find(Email.class , id);
+//     Contact cnt = ContactDao.instance().findById(ent.getContact().getId());
+      super.delete(id);
+      if(ent.getContact().getPrimaryEmail() == null)
+      {
+        if(ent.getContact().getEmails().size() > 0)
+        {
+         ent.getContact().getEmails().get(0).setPrimaryEmail(Boolean.TRUE);
+        }
+      }
+          
+     }
 
     @Override
     public EntityManager getEntityManager() {
