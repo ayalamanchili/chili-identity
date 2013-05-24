@@ -107,6 +107,7 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.entityPanel.clear();
         if (parentId != null) {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(TreeClientPanel.instance().getEntityId()));
+            TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
         } else {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
         }
