@@ -74,6 +74,7 @@ public class CreateProjectPanel extends CreateComposite {
         TabPanel.instance().adminPanel.entityPanel.clear();
         if (!showClient) {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel(clntId));
+            TabPanel.instance().adminPanel.entityPanel.add(new ProjectOptionsPanel());
         } else {
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllProjectsPanel());
         }
