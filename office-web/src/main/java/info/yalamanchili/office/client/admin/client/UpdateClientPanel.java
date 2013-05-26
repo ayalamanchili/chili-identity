@@ -56,10 +56,10 @@ public class UpdateClientPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Client");
-        TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientsPanel());
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new ClientSidePanel());
     }
 
     @Override
