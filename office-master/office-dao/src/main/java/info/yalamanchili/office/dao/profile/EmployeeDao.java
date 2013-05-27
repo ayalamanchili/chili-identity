@@ -5,6 +5,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.chili.security.SecurityUtils;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -58,16 +59,12 @@ public class EmployeeDao extends CRUDDao<Employee> {
         if (emp.getPrimaryEmail() == null) {
             newEmail.setPrimaryEmail(Boolean.TRUE);
         } else {
-            //existing primary and newEmail that is update is same
-            if (emp.getPrimaryEmail().equals(newEmail.getId())) {
-                newEmail.setPrimaryEmail(Boolean.TRUE);
-                return newEmail;
-            }
             Email existingEmail = emp.getPrimaryEmail();
             if (newEmail.getPrimaryEmail()) {
                 existingEmail.setPrimaryEmail(Boolean.FALSE);
-            } else {
-                existingEmail.setPrimaryEmail(Boolean.TRUE);
+            }
+            if(emp.getPrimaryEmail().getId().equals(newEmail.getId()) && newEmail.getPrimaryEmail().equals(Boolean.FALSE)){
+                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "emp.atleast.one.priary.email", "Employee must have atleast one primary email");
             }
         }
         return newEmail;
