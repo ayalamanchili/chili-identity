@@ -29,14 +29,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class EmployeeDao extends CRUDDao<Employee> {
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     public EmployeeDao() {
         super(Employee.class);
     }
-    
+
     @Override
     public Employee save(Employee entity) {
         updateSSN(entity);
@@ -49,12 +49,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return super.save(entity);
     }
     //TODO move this to entity setter
+
     protected void updateSSN(Employee entity) {
         if (SecurityUtils.OBFUSCATED_STR.equals(entity.getSsn()) && null != entity.getId()) {
             entity.setSsn(findById(entity.getId()).getSsn());
         }
     }
-    
+
     public Email updatePrimaryEmail(Contact emp, Email newEmail) {
         if (emp.getPrimaryEmail() == null) {
             newEmail.setPrimaryEmail(Boolean.TRUE);
@@ -63,13 +64,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
             if (newEmail.getPrimaryEmail()) {
                 existingEmail.setPrimaryEmail(Boolean.FALSE);
             }
-            if(emp.getPrimaryEmail().getId().equals(newEmail.getId()) && newEmail.getPrimaryEmail().equals(Boolean.FALSE)){
-                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "emp.atleast.one.priary.email", "Employee must have atleast one primary email");
+            if (emp.getPrimaryEmail() != null && emp.getPrimaryEmail().getId().equals(newEmail.getId()) && newEmail.getPrimaryEmail().equals(Boolean.FALSE)) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "emp.atleast.one.priary.email", "Employee must have atleast one primary email");
             }
         }
         return newEmail;
     }
-    
+
     public Employee getEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
@@ -81,12 +82,12 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }
