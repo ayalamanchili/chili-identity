@@ -1,10 +1,12 @@
 package info.yalamanchili.office.dao.profile;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
+import info.yalamanchili.office.entity.profile.Employee;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,7 +44,7 @@ public class EmailDao extends CRUDDao<Email> {
         if (entity.getId() != null) {
             Contact cnt = ContactDao.instance().findById(entity.getContact().getId());
             entity = employeeDao.updatePrimaryEmail(cnt, entity);
-            Email updatedEmail=null;
+            Email updatedEmail = null;
             updatedEmail = super.save(entity);
             if (entity.getEmailType() == null) {
                 updatedEmail.setEmailType(null);
@@ -53,21 +55,24 @@ public class EmailDao extends CRUDDao<Email> {
         }
         return super.save(entity);
     }
-    
-     @Override
-      public void delete(Long id) {
-      Email ent =  em.find(Email.class , id);
-//     Contact cnt = ContactDao.instance().findById(ent.getContact().getId());
-      super.delete(id);
-      if(ent.getContact().getPrimaryEmail() == null)
-      {
-        if(ent.getContact().getEmails().size() > 0)
-        {
-         ent.getContact().getEmails().get(0).setPrimaryEmail(Boolean.TRUE);
+
+    @Override
+    public void delete(Long id) {
+        Email email = em.find(Email.class, id);
+        Contact contact = ContactDao.instance().findById(email.getContact().getId());
+        if (contact instanceof Employee) {
+            Employee emp = (Employee) contact;
+            if (emp.getEmails().size() == 1) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "emp.atleast.one.email", "Employee must have atleast one email");
+            }
+            if (emp.getPrimaryEmail() != null && emp.getPrimaryEmail().getId().equals(email.getId())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.delete.primary.email", "Cannot delete primary email");
+            }
         }
-      }
-          
-     }
+        //This is needed to avoid flushing contact which throws a email entity not found exception
+        em.detach(contact);
+        super.delete(id);
+    }
 
     @Override
     public EntityManager getEntityManager() {
