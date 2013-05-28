@@ -21,7 +21,7 @@ public class MessageStackPanelWidget extends ALComposite implements ClickHandler
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-    protected ClickableLink createMyMsgL = new ClickableLink("My Message");
+    protected ClickableLink myMsgL = new ClickableLink("My Message");
     protected ClickableLink createMsgL = new ClickableLink("New Message");
 
     public MessageStackPanelWidget() {
@@ -30,29 +30,30 @@ public class MessageStackPanelWidget extends ALComposite implements ClickHandler
 
     @Override
     protected void addListeners() {
-        createMyMsgL.addClickHandler(this);
+        myMsgL.addClickHandler(this);
         createMsgL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        createMyMsgL.addStyleName("createMyMsgL");
+        myMsgL.addStyleName("createMyMsgL");
         createMsgL.addStyleName("createMsgL");
     }
 
     @Override
     protected void addWidgets() {
-        mainPanel.add(createMyMsgL);
+        mainPanel.add(myMsgL);
         mainPanel.add(createMsgL);
         panel.add(mainPanel);
-    }   
+    }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createMsgL)) {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new CreateMessagePanel(CreateComposite.CreateCompositeType.CREATE));
-        } else {
+        }
+        if (event.getSource().equals(myMsgL)) {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
         }
