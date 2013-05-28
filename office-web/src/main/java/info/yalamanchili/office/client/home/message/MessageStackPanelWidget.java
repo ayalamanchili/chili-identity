@@ -21,8 +21,8 @@ public class MessageStackPanelWidget extends ALComposite implements ClickHandler
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-    protected ClickableLink createMyMsgL = new ClickableLink("My message");
-    protected ClickableLink createMsgL = new ClickableLink("New Messsage");
+    protected ClickableLink createMyMsgL = new ClickableLink("My Message");
+    protected ClickableLink createMsgL = new ClickableLink("New Message");
 
     public MessageStackPanelWidget() {
         init(panel);
