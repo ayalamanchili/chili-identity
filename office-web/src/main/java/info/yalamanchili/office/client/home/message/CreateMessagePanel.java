@@ -116,11 +116,11 @@ public class CreateMessagePanel extends CreateComposite {
     protected void addWidgets() {
         addField("search", false, true, DataType.SUGGEST_FIELD);
         entityFieldsPanel.add(addTo);
-        addField("to", false, true, DataType.TEXT_AREA_FIELD);
+        addField("tos", false, true, DataType.TEXT_AREA_FIELD);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("message", false, false, DataType.RICH_TEXT_AREA);
         suggestionsBox = (SuggestBox) fields.get("search");
-        tosTB = (TextAreaField) fields.get("to");
+        tosTB = (TextAreaField) fields.get("tos");
     }
 
     @Override
