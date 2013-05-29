@@ -3,16 +3,12 @@ package info.yalamanchili.office.server;
 import info.chili.http.SyncHttp;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.config.OfficeWebConfiguration;
-import static info.yalamanchili.office.server.FileServiceImpl.PORTAL_AUTH_HEADER_ATTR;
-import info.yalamanchili.office.server.config.OfficeWebSpringContext;
 import java.util.HashMap;
 
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
