@@ -51,6 +51,68 @@
 	<td>id=gwt-debug-Create ClientCL</td>
 	<td></td>
 </tr>
+<tr>
+	<td>pause</td>
+	<td></td>
+	<td>1000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>xpath=(//input[@id='gwt-debug-Client_name_TB'])[2]</td>
+	<td>vendor</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Client_description_TB</td>
+	<td>description</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[contains(text(),'create')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>Successfully created Client</td>
+</tr>
+<!--search-->
+<tr>
+	<td>click</td>
+	<td>//td[contains(text(),'Clients')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=input.gwt-SuggestBox.searchComposite</td>
+	<td>vendor</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.gwt-Button</td>
+	<td></td>
+</tr>
+<!-- delete the client created-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>class=gwt-Image y-gwt-ClickableImage deleteLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>class=gwt-Image y-gwt-ClickableImage deleteLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure? you want to Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>Successfully Deleted Client Information</td>
+</tr>
 </tbody></table>
 </body>
 </html>
