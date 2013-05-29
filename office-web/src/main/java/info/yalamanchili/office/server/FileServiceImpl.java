@@ -19,7 +19,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,8 +36,7 @@ public class FileServiceImpl extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private final static Logger logger = Logger.getLogger(FileServiceImpl.class.getName());
-    private final static String PORTAL_AUTH_HEADER_ATTR = "portal-auth-header";
-
+    protected final static String PORTAL_AUTH_HEADER_ATTR = "portal-auth-header";
     protected OfficeWebConfiguration officeWebConfiguration;
 
     @Override
@@ -72,11 +70,9 @@ public class FileServiceImpl extends HttpServlet {
     }
 
     protected void addAuthenticationHeader(HttpRequestBase body, HttpServletRequest request) {
-        if (request.getSession(true).getAttribute(PORTAL_AUTH_HEADER_ATTR) == null) {
-            HttpServiceImpl httpServiceImpl = OfficeWebSpringContext.getBean(HttpServiceImpl.class);
-            request.getSession().setAttribute(PORTAL_AUTH_HEADER_ATTR, "Basic " + new String(Base64.encodeBase64((httpServiceImpl.getUsername() + ":" + httpServiceImpl.getPassword()).getBytes())));
+        if (request.getSession(false).getAttribute(PORTAL_AUTH_HEADER_ATTR) != null) {
+            body.addHeader("Authorization", (String) request.getSession().getAttribute(PORTAL_AUTH_HEADER_ATTR));
         }
-        body.addHeader("Authorization", (String) request.getSession().getAttribute(PORTAL_AUTH_HEADER_ATTR));
     }
 
     protected OfficeWebConfiguration getOfficeWebConfiguration() {

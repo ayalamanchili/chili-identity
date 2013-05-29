@@ -3,12 +3,16 @@ package info.yalamanchili.office.server;
 import info.chili.http.SyncHttp;
 import info.yalamanchili.office.client.rpc.HttpService;
 import info.yalamanchili.office.config.OfficeWebConfiguration;
+import static info.yalamanchili.office.server.FileServiceImpl.PORTAL_AUTH_HEADER_ATTR;
+import info.yalamanchili.office.server.config.OfficeWebSpringContext;
 import java.util.HashMap;
 
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,15 +22,12 @@ public class HttpServiceImpl extends BaseRemoteService implements HttpService {
 
     private static final long serialVersionUID = 1L;
     private final static Logger logger = Logger.getLogger(HttpServiceImpl.class.getName());
-    private String username;
-    private String password;
     @Autowired
     OfficeWebConfiguration officeWebConfiguration;
 
     @Override
     public String login(String username, String password) throws Exception {
-        this.username = username;
-        this.password = password;
+        populateAuthorizationHeader(username, password);
         JSONObject user = new JSONObject();
         user.put("username", username);
         user.put("passwordHash", password);
@@ -47,26 +48,20 @@ public class HttpServiceImpl extends BaseRemoteService implements HttpService {
 
     @Override
     public void logout() throws Exception {
-        this.username = null;
-        this.password = null;
+        this.getThreadLocalRequest().getSession().invalidate();
     }
 
     protected Map<String, String> addHeaders() {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
-        if (username == null || password == null) {
-            return headers;
+        if (this.getThreadLocalRequest().getSession().getAttribute(FileServiceImpl.PORTAL_AUTH_HEADER_ATTR) != null) {
+            headers.put("Authorization", (String) this.getThreadLocalRequest().getSession().getAttribute(FileServiceImpl.PORTAL_AUTH_HEADER_ATTR));
         }
-        headers.put("Authorization",
-                "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
         return headers;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
+    protected void populateAuthorizationHeader(String username, String password) {
+        this.getThreadLocalRequest().getSession().removeAttribute(FileServiceImpl.PORTAL_AUTH_HEADER_ATTR);
+        this.getThreadLocalRequest().getSession().setAttribute(FileServiceImpl.PORTAL_AUTH_HEADER_ATTR, "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
     }
 }
