@@ -14,7 +14,7 @@ import info.yalamanchili.office.client.TabPanel;
 import static info.yalamanchili.office.client.admin.bulkimport.ReadAllBulkImportsPanel.instance;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**

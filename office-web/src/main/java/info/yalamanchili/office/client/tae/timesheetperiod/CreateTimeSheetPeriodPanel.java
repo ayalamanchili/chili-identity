@@ -14,7 +14,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.emailtype.CreateEmailTypePanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 /**
  *

@@ -17,7 +17,7 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import info.yalamanchili.office.client.social.company.CompanyFeedHome;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 

@@ -12,7 +12,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 
 public class UpdateEmployeePanel extends UpdateComposite {
 

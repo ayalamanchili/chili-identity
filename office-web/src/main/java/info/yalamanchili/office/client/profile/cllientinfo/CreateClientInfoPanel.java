@@ -6,7 +6,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 
 import java.util.logging.Logger;

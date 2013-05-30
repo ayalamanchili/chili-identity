@@ -27,7 +27,7 @@ import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPane
 import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 public class TreeEmployeePanel extends TreePanelComposite {

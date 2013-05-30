@@ -14,7 +14,7 @@ import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**

@@ -6,7 +6,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;

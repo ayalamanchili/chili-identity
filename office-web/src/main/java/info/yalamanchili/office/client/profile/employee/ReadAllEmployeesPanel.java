@@ -12,7 +12,7 @@ import info.yalamanchili.office.client.gwt.ImageField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
 
@@ -20,7 +20,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 
 /**
  *

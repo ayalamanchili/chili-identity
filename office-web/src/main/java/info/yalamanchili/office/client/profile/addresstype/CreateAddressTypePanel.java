@@ -14,7 +14,7 @@ import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
 import info.yalamanchili.office.client.profile.certification.CreateCertificationPanel;
 import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**

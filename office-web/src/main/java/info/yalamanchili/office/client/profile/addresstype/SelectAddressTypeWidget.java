@@ -3,7 +3,7 @@ package info.yalamanchili.office.client.profile.addresstype;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.SelectComposite;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 public class SelectAddressTypeWidget extends SelectComposite {
 

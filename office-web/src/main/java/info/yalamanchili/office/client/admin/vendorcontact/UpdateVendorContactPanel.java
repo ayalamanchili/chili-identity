@@ -10,7 +10,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
 import info.yalamanchili.office.client.profile.contact.UpdateContactPanel;
 

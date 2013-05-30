@@ -17,7 +17,7 @@ import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**

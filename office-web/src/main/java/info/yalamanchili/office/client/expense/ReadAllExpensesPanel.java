@@ -18,7 +18,7 @@ import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.GenericTableRowOptionsWidget;
 import info.yalamanchili.office.client.gwt.ReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**

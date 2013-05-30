@@ -25,7 +25,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileField;
 import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.resources.OfficeImages;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.social.company.CompanyFeedHome;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 //TODO make this abstract

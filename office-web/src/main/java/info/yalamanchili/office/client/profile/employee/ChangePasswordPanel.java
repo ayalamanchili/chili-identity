@@ -15,7 +15,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 
 /**

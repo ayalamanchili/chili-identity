@@ -33,7 +33,7 @@ import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 public class CreateEmployeePostWidget extends ALComposite implements ClickHandler, FocusHandler, BlurHandler, KeyUpHandler {

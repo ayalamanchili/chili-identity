@@ -15,7 +15,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.social.employee.ReadEmployeePostPanel;
 
 /**

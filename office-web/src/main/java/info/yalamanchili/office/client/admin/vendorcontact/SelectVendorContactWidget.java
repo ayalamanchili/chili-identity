@@ -8,7 +8,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.listeners.GenericListener;
 import info.yalamanchili.office.client.gwt.SelectComposite;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 
 /**

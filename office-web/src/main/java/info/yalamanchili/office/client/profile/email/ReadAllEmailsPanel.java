@@ -8,7 +8,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

@@ -4,7 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 
 public abstract class CRUDReadAllComposite extends ReadAllComposite<TableRowOptionsWidget> {
 

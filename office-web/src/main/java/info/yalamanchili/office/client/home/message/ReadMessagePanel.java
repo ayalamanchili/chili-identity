@@ -12,7 +12,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ReadComposite;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.tae.bonuspayment.ReadAdjustmentHoursPanel;
 import java.util.logging.Logger;
 

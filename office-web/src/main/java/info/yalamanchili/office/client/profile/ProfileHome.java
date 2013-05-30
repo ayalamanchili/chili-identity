@@ -32,7 +32,7 @@ import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
 import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite implements ClickHandler {

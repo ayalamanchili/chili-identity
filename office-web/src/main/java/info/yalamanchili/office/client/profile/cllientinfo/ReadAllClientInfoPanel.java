@@ -8,7 +8,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

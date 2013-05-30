@@ -7,7 +7,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.phonetype.SelectPhoneTypeWidget;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
 

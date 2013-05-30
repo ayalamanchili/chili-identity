@@ -12,7 +12,7 @@ import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
 /**

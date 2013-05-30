@@ -13,7 +13,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
-import info.yalamanchili.office.client.rpc.HttpService;
+import info.chili.gwt.rpc.HttpService;
 
 /**
  *

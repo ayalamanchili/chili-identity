@@ -7,7 +7,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget.OptionsType;
-import info.yalamanchili.office.client.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import java.util.logging.Logger;
 
