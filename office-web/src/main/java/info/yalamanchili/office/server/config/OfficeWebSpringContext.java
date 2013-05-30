@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
  * @author yphanikumar
  */
 @Component
+//TODO move this to commons
 public class OfficeWebSpringContext implements ApplicationContextAware {
 
     private static ApplicationContext context;
