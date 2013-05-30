@@ -55,6 +55,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
 
     @Override
     public void onClick(ClickEvent event) {
+        GenericPopup.instance().hide(true);
         if (event.getSource().equals(createFolderL)) {
             newFolderLinkClicked();
         }
