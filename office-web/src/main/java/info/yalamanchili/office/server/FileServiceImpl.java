@@ -5,8 +5,8 @@
 package info.yalamanchili.office.server;
 
 import info.chili.gwt.server.AbstractFileServiceServlet;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeWebConfiguration;
-import info.yalamanchili.office.server.config.OfficeWebSpringContext;
 
 /**
  *
@@ -23,7 +23,7 @@ public class FileServiceImpl extends AbstractFileServiceServlet {
     @Override
     protected String getServiceBaseUrl() {
         if (officeWebConfiguration == null) {
-            officeWebConfiguration = OfficeWebSpringContext.getBean(OfficeWebConfiguration.class);
+            officeWebConfiguration = SpringContext.getBean(OfficeWebConfiguration.class);
         }
         return officeWebConfiguration.getOfficeServicesUrl();
     }

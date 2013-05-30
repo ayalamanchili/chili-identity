@@ -1,5 +1,6 @@
 package info.yalamanchili.office.server.config;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeWebConfiguration;
 import info.yalamanchili.office.server.HttpServiceImpl;
 
@@ -23,8 +24,8 @@ public class OfficeSpringConfiguration {
     }
 
     @Bean
-    public OfficeWebSpringContext officeWebSpringContext() {
-        return new OfficeWebSpringContext();
+    public SpringContext springContext() {
+        return new SpringContext();
     }
 
     @Bean
