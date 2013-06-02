@@ -5,7 +5,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;

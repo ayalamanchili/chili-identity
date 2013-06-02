@@ -8,7 +8,7 @@ import info.chili.commons.BeanMapper;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.profile.Employee;

@@ -6,7 +6,7 @@ package info.yalamanchili.office.jrs.client;
 
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;

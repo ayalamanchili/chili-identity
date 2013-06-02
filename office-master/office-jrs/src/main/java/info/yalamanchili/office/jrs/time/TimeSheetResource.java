@@ -6,7 +6,7 @@ package info.yalamanchili.office.jrs.time;
 
 import info.chili.service.jrs.types.Entries;
 import info.chili.service.jrs.types.Entry;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.TimeSheetDao;

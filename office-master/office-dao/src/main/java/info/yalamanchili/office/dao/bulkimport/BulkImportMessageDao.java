@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dao.bulkimport;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import java.util.List;

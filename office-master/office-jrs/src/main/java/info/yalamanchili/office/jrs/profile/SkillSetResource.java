@@ -5,7 +5,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.CertificationDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;

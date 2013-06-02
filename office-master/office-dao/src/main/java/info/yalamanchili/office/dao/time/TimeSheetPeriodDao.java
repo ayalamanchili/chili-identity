@@ -8,7 +8,7 @@ import info.chili.commons.BeanMapper;
 import info.chili.jpa.AbstractEntity;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import java.util.Calendar;
 import javax.persistence.EntityManager;

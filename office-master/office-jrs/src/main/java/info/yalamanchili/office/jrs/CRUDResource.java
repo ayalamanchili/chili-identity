@@ -5,7 +5,7 @@
 package info.yalamanchili.office.jrs;
 
 import info.chili.service.jrs.types.Entry;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import java.util.ArrayList;
 
 import java.util.List;

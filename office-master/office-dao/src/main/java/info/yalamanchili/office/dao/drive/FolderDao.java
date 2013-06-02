@@ -6,7 +6,7 @@ package info.yalamanchili.office.dao.drive;
 
 import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.drive.Folder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

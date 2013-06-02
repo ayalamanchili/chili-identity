@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.TodoDao;
 import info.yalamanchili.office.entity.profile.Todo;
 import info.yalamanchili.office.jrs.CRUDResource;

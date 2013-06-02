@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package info.yalamanchili.office.dao.profile;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

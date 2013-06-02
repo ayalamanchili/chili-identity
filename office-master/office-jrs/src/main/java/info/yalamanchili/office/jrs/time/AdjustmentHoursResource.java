@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.time;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.AdjustmentHoursDao;
 import info.yalamanchili.office.entity.time.AdjustmentHours;

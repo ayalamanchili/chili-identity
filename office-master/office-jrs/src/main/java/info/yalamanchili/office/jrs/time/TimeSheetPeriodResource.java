@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.time;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;

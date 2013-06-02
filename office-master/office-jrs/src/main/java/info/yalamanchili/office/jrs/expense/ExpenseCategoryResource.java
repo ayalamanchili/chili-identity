@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.expense;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.expense.ExpenseCategoryDao;
 import info.yalamanchili.office.entity.expense.ExpenseCategory;
 import info.yalamanchili.office.jrs.CRUDResource;

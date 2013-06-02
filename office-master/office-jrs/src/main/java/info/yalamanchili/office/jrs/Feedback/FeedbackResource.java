@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.Feedback;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.feedback.FeedbackDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.Feedback.Feedback;

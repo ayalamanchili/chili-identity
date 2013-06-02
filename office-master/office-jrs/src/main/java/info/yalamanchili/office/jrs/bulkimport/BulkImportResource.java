@@ -6,7 +6,7 @@ package info.yalamanchili.office.jrs.bulkimport;
 
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bulkimport.BulkImportService;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
 import info.yalamanchili.office.dao.bulkimport.BulkImportMessageDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;

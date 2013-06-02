@@ -1,6 +1,6 @@
 package info.yalamanchili.office.jrs.profile;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.PhoneDao;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jrs.CRUDResource;

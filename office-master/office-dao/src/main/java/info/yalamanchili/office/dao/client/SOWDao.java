@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dao.client;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 
 import javax.persistence.EntityManager;

@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.message;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dto.message.MessageDto;
 import info.yalamanchili.office.dao.message.MessageDao;

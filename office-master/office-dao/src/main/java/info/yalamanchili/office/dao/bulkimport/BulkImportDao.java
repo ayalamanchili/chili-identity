@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dao.bulkimport;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.client.Client;
 import javax.persistence.EntityManager;

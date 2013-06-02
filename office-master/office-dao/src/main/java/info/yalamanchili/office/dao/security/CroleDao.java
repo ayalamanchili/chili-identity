@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dao.security;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.security.CRole;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

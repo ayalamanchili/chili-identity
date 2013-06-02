@@ -10,7 +10,7 @@ import info.yalamanchili.office.entity.profile.Certification;
 
 
 import javax.ws.rs.Consumes;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;

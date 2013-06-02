@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dao.time;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.time.AdjustmentHours;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

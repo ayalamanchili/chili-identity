@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.dao.feedback;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

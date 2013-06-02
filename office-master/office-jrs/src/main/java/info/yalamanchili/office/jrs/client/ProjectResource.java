@@ -4,7 +4,7 @@
  */
 package info.yalamanchili.office.jrs.client;
 
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.ProjectDao;
 
 import info.yalamanchili.office.entity.client.Project;

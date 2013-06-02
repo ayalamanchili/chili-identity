@@ -5,7 +5,7 @@
 package info.yalamanchili.office.dao.message;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.CRUDDao;
+import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.profile.Employee;
