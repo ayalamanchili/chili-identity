@@ -7,6 +7,8 @@
  */
 package info.yalamanchili.office.client.admin.vendor;
 
+import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
@@ -35,6 +37,13 @@ public class TreeVendorsPanel extends TreePanelComposite {
         super(entityId);
         instance = this;
         init("Vendors", OfficeWelcome.constants);
+    }
+
+    public TreeVendorsPanel(JSONObject vendor) {
+        super(vendor);
+        instance = this;
+        String name = JSONUtils.toString(vendor, "name");
+        init(name, OfficeWelcome.constants);
     }
 
     @Override

@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.admin.client;
 
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
@@ -39,6 +40,13 @@ public class TreeClientPanel extends TreePanelComposite {
         super(entityId);
         instance = this;
         init("Client", OfficeWelcome.constants);
+    }
+
+    public TreeClientPanel(JSONObject client) {
+        super(client);
+        instance = this;
+        String name = JSONUtils.toString(client, "name");
+        init(name, OfficeWelcome.constants);
     }
 
     @Override

@@ -85,7 +85,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(entityId));
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(getEntity(entityId)));
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadVendorsPanel(entityId));
     }
@@ -117,6 +117,6 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorsPanel(getEntity(entityId)));
         TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(entityId));
+        TabPanel.instance().adminPanel.sidePanelTop.add(new TreeVendorsPanel(getEntity(entityId)));
     }
 }
