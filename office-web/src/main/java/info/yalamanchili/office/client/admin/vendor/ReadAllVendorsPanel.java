@@ -110,8 +110,6 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Vendor Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorsPanel());
-        TabPanel.instance().adminPanel.sidePanel.clear();
-        TabPanel.instance().adminPanel.sidePanel.add(new VendorsSidePanel());
     }
 
     @Override
