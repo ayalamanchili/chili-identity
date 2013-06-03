@@ -234,7 +234,48 @@
                     <autoversionsubmodules>true</autoversionsubmodules>
                 </configuration>
             </plugin>
+            <!-- maven licence plugin-->       
+            <plugin>
+                <inherited>false</inherited>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                        <configuration>
+                            <header>LICENSE.txt</header>
+                            <aggregate>true</aggregate>
+                            <excludes>
+                                <exclude>LICENSE.txt</exclude>
+                                <exclude>**/c:/**</exclude>
+                                <exclude>**/nbactions.xml</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>1.9.0</version>
+                    <configuration>
+                        <header>LICENSE.txt</header>
+                        <aggregate>true</aggregate>
+                        <excludes>
+                            <exclude>LICENSE.txt</exclude>
+                            <exclude>**/c:/**</exclude>
+                            <exclude>**/nbactions.xml</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
     <scm>
         <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-master</connection>

@@ -1,6 +1,5 @@
-/** 
- * Automanage 
- * Copyright (C) 2011 yalamanchili.info 
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 package info.yalamanchili.office.entity.profile;
 

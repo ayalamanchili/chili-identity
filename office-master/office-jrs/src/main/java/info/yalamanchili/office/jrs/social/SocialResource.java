@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 package info.yalamanchili.office.jrs.social;
 
 import info.yalamanchili.office.dao.social.SocialDao;
