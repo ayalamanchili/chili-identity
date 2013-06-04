@@ -42,7 +42,7 @@ public interface OfficeImages extends ClientBundle {
     @Source("images/default-image.gif")
     ImageResource defaultImage();
 
-    @Source("images/forgot_password_icon.jpg")
+    @Source("images/forgot_password_icon.png")
     ImageResource forgotPassword();
 
     @Source("images/Tab_button.png")

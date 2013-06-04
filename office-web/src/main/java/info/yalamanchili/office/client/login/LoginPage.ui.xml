@@ -30,7 +30,7 @@
                         <g:Button title='Login' ui:field='loginB' debugId="loginB">Login</g:Button>
                     </g:customCell>
                     <g:customCell styleName="{style.loginPageWidget}">
-                        <g:Image ui:field='forgotPasswordIcon' resource='{officeImages.forgotPassword}'/>
+                        <g:Image ui:field='forgotPasswordIcon' title="Forgot/Reset password" resource='{officeImages.forgotPassword}'/>
                     </g:customCell>
                 </g:row>           
             </g:Grid>
