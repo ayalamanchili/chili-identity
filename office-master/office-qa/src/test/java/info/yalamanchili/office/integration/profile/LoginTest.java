@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 package info.yalamanchili.office.integration.profile;
 
 import info.yalamanchili.office.integration.AbstractOfficeTest;
