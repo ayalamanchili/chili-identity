@@ -28,6 +28,7 @@ import org.dozer.Mapper;
 public class Post {
 
     protected Long id;
+    protected Long employeeId;
     protected String employeeName;
     protected String employeeImageUrl;
     protected String postContent;
@@ -44,6 +45,14 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getEmployeeName() {
@@ -116,6 +125,7 @@ public class Post {
         if (entity.getEmployee() != null) {
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
             dto.setEmployeeImageUrl(entity.getEmployee().getImageURL());
+            dto.setEmployeeId(entity.getEmployee().getId());
             dto.setPostFiles(entity.getPostFiles());
             Query getEmpDetailsQuery = em.createQuery("select postLike.employee.firstName, postLike.employee.lastName from PostLike postLike where postLike.post=:postParam");
             getEmpDetailsQuery.setParameter("postParam", entity);
