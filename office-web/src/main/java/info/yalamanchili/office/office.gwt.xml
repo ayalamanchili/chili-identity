@@ -39,8 +39,8 @@
     <stylesheet src="office.css" />
 
     <source path='client' />
-    <!-- this is a temp should remove-->
-    <inherits name='com.google.gwt.user.Debug'/>
+    
+    <inherits name="com.google.gwt.precompress.Precompress"/>
     
     <replace-with class="info.yalamanchili.office.client.config.OfficeClientConfigProd">
         <when-type-is class="info.yalamanchili.office.client.config.OfficeClientConfig" />
