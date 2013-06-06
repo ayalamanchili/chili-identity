@@ -25,12 +25,13 @@
                   name="Account reset Task" 
                   activiti:candidateGroups="ROLE_HR,ROLE_ADMIN">
             <documentation>
-               Account reset Task for
-               FirstName= ${account.firstName} 
-               LastName= ${account.lastName} 
-               Email= ${account.email} 
-               Phone= ${account.phoneNumber}" 
-               Please verify if the account exists for this user and reset the password if exists otherwise create the account.
+                Account reset Task for
+                FirstName= ${account.firstName} 
+                LastName= ${account.lastName} 
+                Email= ${account.email} 
+                Phone= ${account.phoneNumber}" 
+                Date of Birth= ${account.dateOfBirth}" 
+                Please verify if the account exists for this user and reset the password if exists otherwise create the account.
             </documentation>
             <extensionElements>
                 <activiti:formProperty id="status" 
@@ -57,7 +58,7 @@
             </extensionElements> 
         </userTask>
         <sequenceFlow id="flow3" sourceRef="accountResetApprovalTask" targetRef="approvalGateway" />
-               <!-- Task escalation email after 7 days-->
+        <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
                        attachedToRef="accountResetApprovalTask">

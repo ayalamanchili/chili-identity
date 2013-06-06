@@ -39,6 +39,7 @@ public class AccountResetPanel extends CreateComposite {
         assignEntityValueFromField("lastName", account);
         assignEntityValueFromField("email", account);
         assignEntityValueFromField("phoneNumber", account);
+        assignEntityValueFromField("dateOfBirth", account);
         logger.info(account.toString());
         return account;
     }
@@ -84,7 +85,8 @@ public class AccountResetPanel extends CreateComposite {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.INTEGER_FIELD);
+        addField("phoneNumber", false, true, DataType.STRING_FIELD);
+        addField("dateOfBirth", false, true, DataType.STRING_FIELD);
     }
 
     @Override
@@ -97,7 +99,8 @@ public class AccountResetPanel extends CreateComposite {
         StringField firstNameF = (StringField) fields.get("firstName");
         StringField lastNameF = (StringField) fields.get("lastName");
         StringField emailF = (StringField) fields.get("email");
-        IntegerField phoneNumberF = (IntegerField) fields.get("phoneNumber");
+        StringField phoneNumberF = (StringField) fields.get("phoneNumber");
+        StringField dateOfBirthF = (StringField) fields.get("dateOfBirth");
         if (firstNameF.getValue() == null || firstNameF.getValue().isEmpty()) {
             firstNameF.setMessage("value is required");
             valid = false;
@@ -112,6 +115,10 @@ public class AccountResetPanel extends CreateComposite {
         }
         if (phoneNumberF.getValue() == null || phoneNumberF.getValue().isEmpty()) {
             phoneNumberF.setMessage("value is required");
+            valid = false;
+        }
+        if (dateOfBirthF.getValue() == null || dateOfBirthF.getValue().isEmpty()) {
+            dateOfBirthF.setMessage("value is required");
             valid = false;
         }
         return valid;

@@ -23,6 +23,7 @@ public class AccountReset implements Serializable {
     protected String lastName;
     protected String email;
     protected String phoneNumber;
+    protected String dateOfBirth;
 
     public String getFirstName() {
         return firstName;
@@ -55,4 +56,13 @@ public class AccountReset implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+    
 }
