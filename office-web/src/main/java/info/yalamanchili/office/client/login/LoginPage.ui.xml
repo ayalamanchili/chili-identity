@@ -49,7 +49,7 @@
             <g:Grid styleName="{officeImages.officeCss.footerPanel}">
                 <g:row>
                     <g:customCell styleName="{officeImages.officeCss.copyRightLabel}">
-                        <g:Label >COPYRIGHT &copy; 2012 sstech.us - All Rights Reserved</g:Label>
+                        <g:Label >COPYRIGHT &copy; 2013 sstech.us - All Rights Reserved</g:Label>
                     </g:customCell>
                     <g:customCell styleName = "{officeImages.officeCss.feedbackAnchor}">
                         <g:Anchor ui:field='accountResetL'>Account Reset</g:Anchor>
