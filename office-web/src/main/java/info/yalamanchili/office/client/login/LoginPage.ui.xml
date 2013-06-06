@@ -52,7 +52,7 @@
                         <g:Label >COPYRIGHT &copy; 2013 sstech.us - All Rights Reserved</g:Label>
                     </g:customCell>
                     <g:customCell styleName = "{officeImages.officeCss.feedbackAnchor}">
-                        <g:Anchor ui:field='accountResetL'>Account Reset</g:Anchor>
+                        <g:Anchor ui:field='accountResetL'>account reset</g:Anchor>
                     </g:customCell>
                 </g:row>
             </g:Grid>
