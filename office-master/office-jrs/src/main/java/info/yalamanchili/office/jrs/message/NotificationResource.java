@@ -44,6 +44,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
     @Path("/group/save")
     @PUT
     public void saveNotificationGroup(NotificationGroup group) {
+         String groupName=group.getName();
         List<Employee> emps = new ArrayList<Employee>();
         emps.addAll(group.getEmployees());
         if (group.getId() != null) {
@@ -63,6 +64,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
                 group.getEmployees().add(emp);
             }
         }
+        group.setName(groupName);
         notificationGroupDao.save(group);
     }
 
