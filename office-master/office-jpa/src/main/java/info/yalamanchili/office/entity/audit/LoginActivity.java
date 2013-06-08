@@ -20,7 +20,9 @@ import javax.persistence.Temporal;
 public class LoginActivity extends AbstractEntity {
 
     protected String name;
+    @org.hibernate.annotations.Index(name = "LOGINACT_EMPID_IDX")
     protected String employeeId;
+    @org.hibernate.annotations.Index(name = "LOGINACT_TS_IDX")
     protected Date loginTimeStamp;
 
     public String getName() {

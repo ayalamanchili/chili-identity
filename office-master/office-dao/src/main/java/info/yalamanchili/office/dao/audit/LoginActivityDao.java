@@ -10,6 +10,7 @@ package info.yalamanchili.office.dao.audit;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.audit.LoginActivity;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -29,6 +30,14 @@ public class LoginActivityDao extends CRUDDao<LoginActivity> {
 
     public LoginActivityDao() {
         super(LoginActivity.class);
+    }
+
+    @Override
+    public List<LoginActivity> query(int start, int limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + LoginActivity.class.getCanonicalName() + " order by loginTimeStamp DESC", LoginActivity.class);
+        findAllQuery.setFirstResult(start);
+        findAllQuery.setMaxResults(limit);
+        return findAllQuery.getResultList();
     }
 
     public Long getLoginCount(String employeeId) {
