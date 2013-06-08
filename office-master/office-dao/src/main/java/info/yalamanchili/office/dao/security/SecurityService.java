@@ -38,7 +38,9 @@ public class SecurityService {
         query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
 
         try {
-            return query.getSingleResult();
+            Employee emp= query.getSingleResult();
+            LoginSuccessListener.instance().onLoginSuccess(emp);
+            return emp;
         } catch (NoResultException e) {
             return null;
         } catch (Exception e) {
