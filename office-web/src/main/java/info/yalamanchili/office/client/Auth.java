@@ -7,7 +7,7 @@ public class Auth {
 
     public enum ROLE {
 
-        ROLE_USER, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME
+        ROLE_USER, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME, ROLE_RELATIONSHIP
     }
 
     public static boolean isAdmin() {
@@ -45,6 +45,14 @@ public class Auth {
 
     public static boolean isPayroll() {
         if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_TIME.name())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isRelationshipTeam() {
+        if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_RELATIONSHIP.name())) {
             return true;
         } else {
             return false;
