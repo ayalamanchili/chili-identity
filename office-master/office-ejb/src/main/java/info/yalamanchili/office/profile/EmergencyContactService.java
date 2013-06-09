@@ -38,8 +38,8 @@ public class EmergencyContactService {
     protected Mapper mapper;
     @Autowired
     protected ProfileNotificationService profileNotificationService;
-     @Autowired
-     protected EmergencyContactDao emergencyContactDao;
+    @Autowired
+    protected EmergencyContactDao emergencyContactDao;
 
     //TODO try to consolidate add and update
     public void addEmergencyContact(Long empId, info.yalamanchili.office.dto.profile.EmergencyContactDto ec) {
@@ -109,11 +109,13 @@ public class EmergencyContactService {
             ecEntity.getContact().getPhones().get(0).setExtension(ec.getExtension());
         }
         em.merge(ecEntity);
-        profileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
+        if (!ecEntity.getEmployee().getEmployeeType().getName().equals("CORPORATE_EMPLOYEE")) {
+            profileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
+        }
         return ec;
     }
-    
-       public EmergencyContactDto read(Long id) {
+
+    public EmergencyContactDto read(Long id) {
         EmergencyContact ec = emergencyContactDao.findById(id);
         return EmergencyContactDto.map(mapper, ec);
     }

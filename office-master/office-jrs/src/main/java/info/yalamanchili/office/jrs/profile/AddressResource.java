@@ -48,14 +48,15 @@ public class AddressResource extends CRUDResource<Address> {
 
     @PUT
     @Path("/employee")
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public Address saveemployeeaddress(Address address) {
-        Employee emp = securityService.getCurrentUser();
         if (address.getId() == null) {
             return save(address);
         } else {
             Address savedAddress = (Address) getDao().save(address);
-            BPMProfileService.instance().startAddressUpdatedProcess(emp);
+            Employee emp = (Employee) savedAddress.getContact();
+            if (!emp.getEmployeeType().getName().equals("CORPORATE_EMPLOYEE")) {
+                BPMProfileService.instance().startAddressUpdatedProcess(emp);
+            }
             return savedAddress;
         }
     }
