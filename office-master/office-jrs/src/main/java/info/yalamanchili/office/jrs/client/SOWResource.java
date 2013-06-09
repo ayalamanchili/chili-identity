@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 /**
  *
  * @author bala
@@ -46,7 +47,7 @@ public class SOWResource extends CRUDResource<StatementOfWork> {
         return sOWDao;
     }
 
-     @GET
+    @GET
     @Path("/{start}/{limit}")
     public SOWTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         SOWTable tableObj = new SOWTable();
@@ -54,6 +55,7 @@ public class SOWResource extends CRUDResource<StatementOfWork> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
+
     @XmlRootElement
     @XmlType
     public static class SOWTable {

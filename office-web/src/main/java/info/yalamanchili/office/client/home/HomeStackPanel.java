@@ -43,11 +43,13 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER)) {
+        if (Auth.hasNonUserRoles()) {
             panel.add(taskStackPanel, "Tasks");
-            panel.add(auditStackPanelWidget, "Audit");
         }
         panel.add(msgStackPanel, "Messages");
+        if (Auth.isCorporateEmployee()) {
+            panel.add(auditStackPanelWidget, "Audit");
+        }
         panel.add(todoStackPanel, "TODO's");
     }
 

@@ -34,45 +34,43 @@ public class TAEMenu extends Composite {
     }
 
     protected void configureTAEMenu() {
-        tAEMenuBar.addItem("Time Sheets", timeSheetsMaintainenceCmd);
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isPayroll()) {
+            tAEMenuBar.addItem("Time Sheets", timeSheetsMaintainenceCmd);
             tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
-        }
-        if (Auth.isAdmin() || Auth.isAccountant() || Auth.isPayroll()) {
             tAEMenuBar.addItem("Adjustment Hours", bonusPaymentsMaintainenceCmd);
         }
         tAEMenuBar.addStyleName("entityMenuBar");
     }
     Command timeSheetPeriodsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
             if (Auth.hasOnlyUserRole()) {
-                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
             } else {
-                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
-                TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetPeriodSidePanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeSheetPeriodsPanel());
+                TabPanel.instance().getTimePanel().sidePanelTop.add(new TimeSheetPeriodSidePanel());
             }
         }
     };
     Command timeSheetsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
             if (Auth.hasOnlyUserRole()) {
-                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
             } else {
-                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel());
-                TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new TimeSheetSidePanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimesheetPanel());
+                TabPanel.instance().getTimePanel().sidePanelTop.add(new TimeSheetSidePanel());
             }
         }
     };
     Command bonusPaymentsMaintainenceCmd = new Command() {
         public void execute() {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllAdjustmentHoursPanel());
-            TabPanel.instance().getTimeandExpensePanel().sidePanelTop.add(new AdjustmentHoursSidePanel());
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllAdjustmentHoursPanel());
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new AdjustmentHoursSidePanel());
         }
     };
 }

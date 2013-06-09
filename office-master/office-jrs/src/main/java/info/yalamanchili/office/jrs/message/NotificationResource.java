@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +44,9 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
 
     @Path("/group/save")
     @PUT
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void saveNotificationGroup(NotificationGroup group) {
-         String groupName=group.getName();
+        String groupName = group.getName();
         List<Employee> emps = new ArrayList<Employee>();
         emps.addAll(group.getEmployees());
         if (group.getId() != null) {
@@ -98,6 +100,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
 
     @Path("/group/delete/{id}")
     @PUT
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void deleteNotificationGroup(@PathParam("id") Long id) {
         notificationGroupDao.delete(id);
     }

@@ -50,8 +50,8 @@ public class AdjustmentHoursSidePanel extends ALComposite implements ClickHandle
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createbonuspaymentslink)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateAdjustmentHoursPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().timePanel.entityPanel.clear();
+            TabPanel.instance().timePanel.entityPanel.add(new CreateAdjustmentHoursPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

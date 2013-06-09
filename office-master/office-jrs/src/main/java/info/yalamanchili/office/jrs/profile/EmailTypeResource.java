@@ -27,61 +27,61 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class EmailTypeResource extends CRUDResource<EmailType> {
-	@Autowired
-	public EmailTypeDao emailTypeDao;
 
-	@Override
-	public CRUDDao getDao() {
-		return emailTypeDao;
-	}
-        
+    @Autowired
+    public EmailTypeDao emailTypeDao;
+
+    @Override
+    public CRUDDao getDao() {
+        return emailTypeDao;
+    }
+
     @GET
     @Path("/{start}/{limit}")
-     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public EmailTypeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         EmailTypeTable tableObj = new EmailTypeTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
- @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+
+    @PUT
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public EmailType save(EmailType entity) {
         return super.save(entity);
     }
-     
+
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     @XmlRootElement
-	@XmlType
-	public static class EmailTypeTable {
-		protected Long size;
-		protected List<EmailType> entities;
+    @XmlType
+    public static class EmailTypeTable {
 
-		public Long getSize() {
-			return size;
-		}
+        protected Long size;
+        protected List<EmailType> entities;
 
-		public void setSize(Long size) {
-			this.size = size;
-		}
+        public Long getSize() {
+            return size;
+        }
 
-		@XmlElement
-		public List<EmailType> getEntities() {
-			return entities;
-		}
+        public void setSize(Long size) {
+            this.size = size;
+        }
 
-		public void setEntities(List<EmailType> entities) {
-			this.entities = entities;
-		}
+        @XmlElement
+        public List<EmailType> getEntities() {
+            return entities;
+        }
 
-	}
+        public void setEntities(List<EmailType> entities) {
+            this.entities = entities;
+        }
+    }
 }

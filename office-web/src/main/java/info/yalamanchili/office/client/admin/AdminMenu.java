@@ -39,17 +39,13 @@ public class AdminMenu extends Composite {
     }
 
     protected void configureAdminMenu() {
-//        MenuBar menu = new MenuBar(true);
-
-        if (Auth.isAdmin() || Auth.isHR()) {
-            adminMenuBar.addItem("Clients", clientsMaintainenceCmd);
-            adminMenuBar.addItem("Projects", projectsMaintainenceCmd);
-            adminMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
-            adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
-            adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
-            if (Auth.isAdmin() || Auth.isAccountant() || Auth.isPayroll()) {
-                adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
-            }
+        adminMenuBar.addItem("Clients", clientsMaintainenceCmd);
+        adminMenuBar.addItem("Projects", projectsMaintainenceCmd);
+        adminMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
+        adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
+        adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
+        if (Auth.isAdmin() || Auth.isAccountant() || Auth.isPayroll()) {
+            adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
         }
         adminMenuBar.addStyleName("entityMenuBar");
     }

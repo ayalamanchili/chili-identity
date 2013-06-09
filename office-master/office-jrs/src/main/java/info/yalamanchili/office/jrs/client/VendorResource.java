@@ -68,11 +68,27 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @GET
     @Path("/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public VendorTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         VendorTable tableObj = new VendorTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @PUT
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public Vendor save(Vendor vendor) {
+        return super.save(vendor);
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public void delete(Long id) {
+        super.delete(id);
     }
 
     /**
@@ -84,7 +100,7 @@ public class VendorResource extends CRUDResource<Vendor> {
      */
     @PUT
     @Path("/vendorcontact/{vendorId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addvendorContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
         Contact contact = contactService.save(dto);
@@ -93,6 +109,7 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @PUT
     @Path("/contact/remove/{vendorId}/{contactId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void removeContact(@PathParam("vendorId") Long vendorId, @PathParam("contactId") Long contactId) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
         if (vendor == null) {
@@ -117,7 +134,7 @@ public class VendorResource extends CRUDResource<Vendor> {
      */
     @GET
     @Path("/vendorcontact/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public ContactDtoTable getVendorContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ContactDtoTable tableObj = new ContactDtoTable();
@@ -155,7 +172,7 @@ public class VendorResource extends CRUDResource<Vendor> {
      */
     @PUT
     @Path("/vendorlocation/{vendorId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addvendorlocation(@PathParam("vendorId") Long vendorId, Address address) {
         Vendor vend = (Vendor) getDao().findById(vendorId);
         vend.addLocations(address);
@@ -163,6 +180,7 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @PUT
     @Path("/location/remove/{vendorId}/{locationId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void removeLocation(@PathParam("vendorId") Long vendorId, @PathParam("locationId") Long locationId) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
         if (vendor == null) {
@@ -187,8 +205,8 @@ public class VendorResource extends CRUDResource<Vendor> {
      */
     @GET
     @Path("/vendorlocation/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public AddressTable getClientLocations(@PathParam("id") long id, @PathParam("start") int start,
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    public AddressTable getVendorLocations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         AddressTable tableObj = new AddressTable();
         Vendor evendor = (Vendor) getDao().findById(id);

@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -35,13 +36,12 @@ public class ProfileMenu extends Composite {
 
     protected void configureAdminMenu() {
         MenuBar menu = new MenuBar(true);
-
         profileMenuBar.addItem("Employees", employeeMaintainenceCmd);
-
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
             profileMenuBar.addItem("Skills", skillsMaintainenceCmd);
             profileMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
-            profileMenuBar.addItem("EmployeeType", employeeTypesMaintainenceCmd);
+        }
+        if (Auth.isAdmin()) {
             profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);

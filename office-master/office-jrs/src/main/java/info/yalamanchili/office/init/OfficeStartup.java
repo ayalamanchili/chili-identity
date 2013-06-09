@@ -302,7 +302,7 @@ public class OfficeStartup {
         Email userPraimaryEmails = new Email();
         userPraimaryEmails.setEmailType(getWorkEmailType());
         userPraimaryEmails.setPrimaryEmail(true);
-        userPraimaryEmails.setEmail("adapalapavank@gmail.com");
+        userPraimaryEmails.setEmail("asdf@gmail.com");
         
         Email userSecondaryEmailes = new Email();
         userSecondaryEmailes.setPrimaryEmail(false);
@@ -345,7 +345,7 @@ public class OfficeStartup {
         Email userPrimaryemails = new Email();
         userPrimaryemails.setEmailType(getWorkEmailType());
         userPrimaryemails.setPrimaryEmail(true);
-        userPrimaryemails.setEmail("shristi_17@hotmail.com");
+        userPrimaryemails.setEmail("test@hotmail.com");
         
         Email userSecondaryemails = new Email();
         userSecondaryemails.setPrimaryEmail(false);

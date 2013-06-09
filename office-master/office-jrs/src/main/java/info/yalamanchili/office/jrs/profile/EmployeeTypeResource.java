@@ -24,11 +24,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 /**
  *
  * @author bala
  */
-
 @Path("secured/employeetype")
 @Component
 @Transactional
@@ -48,29 +48,28 @@ public class EmployeeTypeResource extends CRUDResource<EmployeeType> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public EmployeeType save(EmployeeType entity) {
         return super.save(entity);
     }
-     
+
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     @Override
     public CRUDDao getDao() {
         return employeeTypeDao;
     }//
-    
 
     @XmlRootElement
     @XmlType
-    public static class EmployeeTypeTable{
+    public static class EmployeeTypeTable {
 
         protected Long size;
         protected List<EmployeeType> entities;

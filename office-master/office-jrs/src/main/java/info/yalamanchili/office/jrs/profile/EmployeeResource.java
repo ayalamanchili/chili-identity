@@ -81,6 +81,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/save")
+    //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
     }

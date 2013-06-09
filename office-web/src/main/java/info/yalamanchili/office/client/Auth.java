@@ -3,6 +3,8 @@
  */
 package info.yalamanchili.office.client;
 
+import info.chili.gwt.utils.JSONUtils;
+
 public class Auth {
 
     public enum ROLE {
@@ -61,6 +63,25 @@ public class Auth {
 
     public static boolean hasOnlyUserRole() {
         if (OfficeWelcome.instance().roles.size() == 1 && OfficeWelcome.instance().roles.contains(ROLE.ROLE_USER.name())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /*
+     * return true for users with more that just user role
+     */
+
+    public static boolean hasNonUserRoles() {
+        if (OfficeWelcome.instance().roles.size() > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isCorporateEmployee() {
+        if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("CORPORATE_EMPLOYEE")) {
             return true;
         } else {
             return false;

@@ -66,10 +66,10 @@ public class CreateAdjustmentHoursPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Adjustment Hours Created");
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.clear();
-        TabPanel.instance().timeandExpensePanel.sidePanelTop.add(new AdjustmentHoursSidePanel());
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel());
+        TabPanel.instance().timePanel.sidePanelTop.clear();
+        TabPanel.instance().timePanel.sidePanelTop.add(new AdjustmentHoursSidePanel());
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel());
     }
 
     @Override

@@ -11,7 +11,6 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.OfficeRoles;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -22,8 +21,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,17 +39,24 @@ public class SkillResource extends CRUDResource<Skill> {
     public SkillDao skillDao;
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
     @Override
     public Skill save(Skill entity) {
         return super.save(entity);
     }
 
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
+    @Override
+    public void delete(Long id) {
+        super.delete(id);
+    }
+
     @GET
     @Path("/{id}")
-//    @PostAuthorize("hasPermission(returnObject, 'READ')")
     @Override
-    public Skill read(@PathParam("id")Long id) {
+    public Skill read(@PathParam("id") Long id) {
         return super.read(id);
     }
 

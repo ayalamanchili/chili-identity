@@ -38,7 +38,6 @@ public class PhoneTypeResource extends CRUDResource<PhoneType> {
 
     @GET
     @Path("/{start}/{limit}")
-     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public PhoneTypeResource.PhoneTypeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         PhoneTypeResource.PhoneTypeTable tableObj = new PhoneTypeResource.PhoneTypeTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -47,20 +46,20 @@ public class PhoneTypeResource extends CRUDResource<PhoneType> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public PhoneType save(PhoneType entity) {
         return super.save(entity);
     }
-     
+
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-     
+
     @XmlRootElement
     @XmlType
     public static class PhoneTypeTable {

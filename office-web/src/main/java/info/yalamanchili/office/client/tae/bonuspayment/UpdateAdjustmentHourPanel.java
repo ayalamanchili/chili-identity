@@ -72,8 +72,8 @@ public class UpdateAdjustmentHourPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Bonus Payments Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel(bonuspaymentsId));
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel(bonuspaymentsId));
     }
 
     @Override

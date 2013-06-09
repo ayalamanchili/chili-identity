@@ -84,23 +84,23 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createtimeSheetlink)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().timePanel.entityPanel.clear();
+            TabPanel.instance().timePanel.entityPanel.add(new CreateTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
         }
         if (event.getSource().equals(createMonthlyTimeSheetsB)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new CreateMonthlyTimeSheetPanel());
+            TabPanel.instance().timePanel.entityPanel.clear();
+            TabPanel.instance().timePanel.entityPanel.add(new CreateMonthlyTimeSheetPanel());
         }
         if (event.getSource().equals(showTimeSheetsForPeriodB)) {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().entityPanel.clear();
             if (timePeriodWidget.getSelectedObjectId() != null && !timePeriodWidget.getSelectedObjectId().isEmpty()) {
-                TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllTimesheetPanel(timePeriodWidget.getSelectedObjectId()));
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimesheetPanel(timePeriodWidget.getSelectedObjectId()));
             }
         }
         if (event.getSource().equals(showTimeSheetsForEmpB)) {
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.clear();
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new EmployeeTimeSummaryPanel(empWidget.getSelectedObjectId()));
-            TabPanel.instance().getTimeandExpensePanel().entityPanel.add(new ReadAllEmployeeTimeSheets(empWidget.getSelectedObjectId()));
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().entityPanel.add(new EmployeeTimeSummaryPanel(empWidget.getSelectedObjectId()));
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllEmployeeTimeSheets(empWidget.getSelectedObjectId()));
         }
         if (event.getSource().equals(createEmpTimeSheetsB)) {
             //create employee time sheet

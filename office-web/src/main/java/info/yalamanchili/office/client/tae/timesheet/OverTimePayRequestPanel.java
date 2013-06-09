@@ -27,7 +27,7 @@ public class OverTimePayRequestPanel extends GenericBPMStartFormPanel {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Request Submited you will be notified via email");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
     }
 }

@@ -107,8 +107,8 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadTimeSheetPanel(entityId));
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new ReadTimeSheetPanel(entityId));
     }
 
     @Override
@@ -129,13 +129,13 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Time Sheet Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllTimesheetPanel(timeSheetPeriodId));
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new ReadAllTimesheetPanel(timeSheetPeriodId));
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateTimesheetPanel(timeSheetPeriodId, getEntity(entityId)));
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new UpdateTimesheetPanel(timeSheetPeriodId, getEntity(entityId)));
     }
 }

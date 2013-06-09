@@ -46,39 +46,37 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public ProjectResource.ProjectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ProjectResource.ProjectTable tableObj = new ProjectResource.ProjectTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
-   @PUT
-   @Path("/sow/{projectId}")
-   @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
-    public void addSOW(@PathParam("projectId") Long projectId,StatementOfWork SOW) {
-        
+
+    @PUT
+    @Path("/sow/{projectId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public void addSOW(@PathParam("projectId") Long projectId, StatementOfWork SOW) {
         Project project = (Project) getDao().findById(projectId);
-        
         project.addSOW(SOW);
     }
-   
+
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     @Override
     public Project save(Project entity) {
         return super.save(entity);
     }
-    
+
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-     
+
     @XmlRootElement
     @XmlType
     public static class ProjectTable {

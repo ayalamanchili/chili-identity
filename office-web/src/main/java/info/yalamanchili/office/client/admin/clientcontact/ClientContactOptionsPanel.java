@@ -12,6 +12,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
@@ -40,7 +42,9 @@ public class ClientContactOptionsPanel extends ALComposite implements ClickHandl
 
     @Override
     protected void addWidgets() {
-        panel.add(addClientContactLink);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_EXPENSE, ROLE.ROLE_TIME)) {
+            panel.add(addClientContactLink);
+        }
     }
 
     @Override

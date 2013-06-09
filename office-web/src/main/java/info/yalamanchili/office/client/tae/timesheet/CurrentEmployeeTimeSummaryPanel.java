@@ -49,8 +49,8 @@ public class CurrentEmployeeTimeSummaryPanel extends ALComposite implements Clic
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(overtimePayRequest)) {
-            TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-            TabPanel.instance().timeandExpensePanel.entityPanel.add(new OverTimePayRequestPanel());
+            TabPanel.instance().timePanel.entityPanel.clear();
+            TabPanel.instance().timePanel.entityPanel.add(new OverTimePayRequestPanel());
         }
     }
 }

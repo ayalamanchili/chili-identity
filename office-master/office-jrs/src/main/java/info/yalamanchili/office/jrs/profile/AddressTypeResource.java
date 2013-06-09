@@ -35,7 +35,6 @@ public class AddressTypeResource extends CRUDResource<AddressType> {
 	}
     @GET
     @Path("/{start}/{limit}")
-     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public AddressTypeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AddressTypeTable tableObj = new AddressTypeTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -44,7 +43,7 @@ public class AddressTypeResource extends CRUDResource<AddressType> {
     }
    
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public AddressType save(AddressType entity) {
         return super.save(entity);
@@ -52,7 +51,7 @@ public class AddressTypeResource extends CRUDResource<AddressType> {
      
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);

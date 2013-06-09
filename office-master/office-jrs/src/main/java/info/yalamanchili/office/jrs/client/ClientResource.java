@@ -66,19 +66,35 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ClientTable tableObj = new ClientTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
     }
+
+    @PUT
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public Client save(Client client) {
+        return super.save(client);
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public void delete(Long id) {
+        super.delete(id);
+    }
+
     /*
      * Client Projects
      */
-
     @PUT
     @Path("/project/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addProject(@PathParam("clientId") Long clientId, Project project) {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addProject(project);
@@ -86,7 +102,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @GET
     @Path("/projects/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public ProjectTable getProjects(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ProjectTable tableObj = new ProjectTable();
@@ -104,7 +120,7 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @PUT
     @Path("/clientcontact/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addclientContact(@PathParam("clientId") Long clientId, ContactDto contactDto) {
         Client clnt = (Client) getDao().findById(clientId);
         Contact contact = contactService.save(contactDto);
@@ -113,6 +129,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @PUT
     @Path("/contact/remove/{clientId}/{contactId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void removeContact(@PathParam("clientId") Long clientId, @PathParam("contactId") Long contactId) {
         Client client = (Client) getDao().findById(clientId);
         if (client == null) {
@@ -136,7 +153,7 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @GET
     @Path("/clientcontact/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public ContactDtoTable getClientContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ContactDtoTable tableObj = new ContactDtoTable();
@@ -182,7 +199,7 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @PUT
     @Path("/clientlocation/{clientId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addclientlocation(@PathParam("clientId") Long clientId, Address address) {
         Client clnt = (Client) getDao().findById(clientId);
         clnt.addLocations(address);
@@ -190,6 +207,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @PUT
     @Path("/location/remove/{clientId}/{locationId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void removeLocation(@PathParam("clientId") Long clientId, @PathParam("locationId") Long locationId) {
         Client client = (Client) getDao().findById(clientId);
         if (client == null) {
@@ -213,7 +231,7 @@ public class ClientResource extends CRUDResource<Client> {
      */
     @GET
     @Path("/clientlocation/{id}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public AddressTable getClientLocations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         AddressTable tableObj = new AddressTable();

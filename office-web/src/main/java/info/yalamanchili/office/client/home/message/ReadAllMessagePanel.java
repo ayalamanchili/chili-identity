@@ -18,7 +18,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 

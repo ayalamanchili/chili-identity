@@ -24,11 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author bala
  */
-
 @Path("secured/timesheetperiod")
 @Component
 @Scope("request")
@@ -44,7 +44,7 @@ public class TimeSheetPeriodResource extends CRUDResource<TimeSheetPeriod> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
     public TimeSheetPeriodResource.TimeSheetTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         TimeSheetPeriodResource.TimeSheetTable tableObj = new TimeSheetPeriodResource.TimeSheetTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -53,20 +53,20 @@ public class TimeSheetPeriodResource extends CRUDResource<TimeSheetPeriod> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
     @Override
     public TimeSheetPeriod save(TimeSheetPeriod entity) {
         return super.save(entity);
     }
-    
+
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class TimeSheetTable {

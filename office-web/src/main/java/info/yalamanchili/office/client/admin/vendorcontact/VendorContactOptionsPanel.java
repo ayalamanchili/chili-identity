@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite.CreateCompositeType;
 
@@ -40,7 +41,9 @@ public class VendorContactOptionsPanel extends ALComposite implements ClickHandl
 
     @Override
     protected void addWidgets() {
-        panel.add(addVendorContactLink);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
+            panel.add(addVendorContactLink);
+        }
     }
 
     @Override

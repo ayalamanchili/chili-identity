@@ -45,8 +45,8 @@ public class ReadAllAdjustmentHoursPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAdjustmentHoursPanel(entityId));
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new ReadAdjustmentHoursPanel(entityId));
     }
 
     @Override
@@ -67,14 +67,14 @@ public class ReadAllAdjustmentHoursPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Bonus Payments Information");
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel(bonusPaymentsId));
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new ReadAllAdjustmentHoursPanel(bonusPaymentsId));
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timeandExpensePanel.entityPanel.clear();
-        TabPanel.instance().timeandExpensePanel.entityPanel.add(new UpdateAdjustmentHourPanel(bonusPaymentsId, getEntity(entityId)));
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new UpdateAdjustmentHourPanel(bonusPaymentsId, getEntity(entityId)));
     }
 
     @Override
