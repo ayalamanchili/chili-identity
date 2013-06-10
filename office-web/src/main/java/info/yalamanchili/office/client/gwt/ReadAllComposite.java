@@ -89,7 +89,7 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
     /**
      * The go to page.
      */
-    protected ListBoxField goToPage = new ListBoxField("Page: ", Alignment.HORIZONTAL);
+    protected ListBoxField goToPage = new ListBoxField("Page: ",false, Alignment.HORIZONTAL);
     /**
      * The no of results l.
      */

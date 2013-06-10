@@ -23,21 +23,19 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.ListBoxField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 //TODO extend base field
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
-    
+
     private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
     protected ConstantsWithLookup constants;
     CaptionPanel captionPanel = new CaptionPanel();
     CHorizontalPanel panel = new CHorizontalPanel();
-    ListBoxField availableListBox = new ListBoxField("Available", Alignment.VERTICAL);
-    ListBoxField selectedListBox = new ListBoxField("Selected", Alignment.VERTICAL);
+    ListBoxField availableListBox = new ListBoxField("Available", true, Alignment.VERTICAL);
+    ListBoxField selectedListBox = new ListBoxField("Selected", true, Alignment.VERTICAL);
     public Button selectButton = new Button("  Add  ");
     public Button unselectButton = new Button("  Remove  ");
     Map<String, String> available;
@@ -48,7 +46,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
     public MultiSelectBox() {
         init(captionPanel);
     }
-    
+
     public void popuplateWidget(String title, MultiSelectObj obj) {
         captionPanel.setCaptionHTML(title);
         this.available = obj.getAvailable();
@@ -63,7 +61,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
             }
         }
     }
-    
+
     @Override
     public void addWidgets() {
         panel.add(availableListBox);
@@ -72,16 +70,17 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         panel.add(selectedListBox);
         captionPanel.setContentWidget(panel);
     }
-    
+
     @Override
     public void addListeners() {
         selectButton.addClickHandler(this);
         unselectButton.addClickHandler(this);
     }
-    
+
     @Override
     public void configure() {
         availableListBox.getListBox().setVisibleItemCount(10);
+        availableListBox.getListBox().setMultipleSelect(true);
         selectedListBox.getListBox().setVisibleItemCount(10);
         availableListBox.getLabel().addStyleName("y-gwt-multipleSelectWidget-availabelLabel");
         selectedListBox.getLabel().addStyleName("y-gwt-multipleSelectWidget-selectedLabel");
@@ -94,7 +93,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         unselectButton
                 .addStyleName("y-gwt-multipleSelectWidget-unselectButton");
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(selectButton)) {
@@ -118,9 +117,9 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
             itemsUnselected(getSelectedIds());
         }
     }
-    
+
     public abstract void itemsSelected(List<String> selectedIds);
-    
+
     public abstract void itemsUnselected(List<String> selectedIds);
 
     /*
@@ -140,7 +139,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         }
         return ids;
     }
-    
+
     private Set<String> getSelectedIds(ListBoxField listBox) {
         Set<String> ids = new HashSet<String>();
         for (int i = 0; i < listBox.getListBox().getItemCount(); i++) {
@@ -150,7 +149,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         }
         return ids;
     }
-    
+
     protected void removeSelectedItems(ListBoxField listBox) {
         for (int i = 0; i < listBox.getListBox().getItemCount(); i++) {
             if (listBox.getListBox().isItemSelected(i)) {
@@ -158,22 +157,22 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
             }
         }
     }
-    
+
     public void setReadOnly(boolean readOnly) {
         availableListBox.getListBox().setEnabled(!readOnly);
         selectedListBox.getListBox().setEnabled(!readOnly);
         selectButton.setEnabled(!readOnly);
         unselectButton.setEnabled(!readOnly);
     }
-    
+
     public ConstantsWithLookup getConstants() {
         return constants;
     }
-    
+
     public void setConstants(ConstantsWithLookup constants) {
         this.constants = constants;
     }
-    
+
     public static MultiSelectObj getMultiSelectBox(String response) {
         MultiSelectObj obj = new MultiSelectObj();
         JSONObject multiSelectObj = (JSONObject) JSONParser.parseLenient(response);
