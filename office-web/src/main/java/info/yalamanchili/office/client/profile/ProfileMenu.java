@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.company.CompanyContactTypeSidePanel;
+import info.yalamanchili.office.client.company.ReadAllCompanyContactTypePanel;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -35,7 +37,6 @@ public class ProfileMenu extends Composite {
     }
 
     protected void configureAdminMenu() {
-        MenuBar menu = new MenuBar(true);
         profileMenuBar.addItem("Employees", employeeMaintainenceCmd);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
             profileMenuBar.addItem("Skills", skillsMaintainenceCmd);
@@ -45,6 +46,7 @@ public class ProfileMenu extends Composite {
             profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
+            profileMenuBar.addItem("CompanyContactType", companyContactTypeMaintainenceCmd);
         }
         profileMenuBar.addStyleName("entityMenuBar");
     }
@@ -105,6 +107,16 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
+
+
+        }
+    };
+    Command companyContactTypeMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCompanyContactTypePanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
 
 
         }
