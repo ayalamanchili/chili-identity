@@ -22,7 +22,7 @@ public class Email implements Serializable {
     protected Set<String> bccs;
     protected String subject;
     protected String body;
-    protected boolean isHtml = false;
+    protected Boolean isHtml = false;
     protected Set<String> attachments;
     protected String templateName = "default_email_template.html";
 
@@ -83,11 +83,11 @@ public class Email implements Serializable {
         this.body = body;
     }
 
-    public boolean getIsHtml() {
+    public Boolean getIsHtml() {
         return isHtml;
     }
 
-    public void setIsHtml(boolean isHtml) {
+    public void setIsHtml(Boolean isHtml) {
         this.isHtml = isHtml;
     }
 

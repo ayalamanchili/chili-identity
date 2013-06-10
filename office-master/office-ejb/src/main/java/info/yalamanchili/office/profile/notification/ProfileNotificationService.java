@@ -187,7 +187,8 @@ public class ProfileNotificationService {
         }
         email.setTos(tos);
         email.setSubject("New Message From The Employee:" + msg.getFromEmp().getFirstName() + "," + msg.getFromEmp().getFirstName());
-        email.setBody("New Message:" + msg.getMessage());
+        email.setBody("Message:" + msg.getMessage());
+        email.setIsHtml(true);
         messagingService.sendEmail(email);
     }
 
