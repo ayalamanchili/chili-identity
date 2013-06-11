@@ -32,6 +32,8 @@ import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
+import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import java.util.logging.Logger;
 
 public class TreeEmployeePanel extends TreePanelComposite {
@@ -47,6 +49,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String PHONE_NODE = "phone";
     protected static final String REPORTS_TO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
+    protected static final String COMPANY_CONTACT_NODE = "companyContact";
     protected static final String SKILL_SET_NODE = "skillset";
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
@@ -83,6 +86,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+            addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
+        }
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
 
         if (Auth.isAdmin()) {
@@ -124,6 +130,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmergencyContactsPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new EmergencyContactOptionsPanel());
+        }
+        if (COMPANY_CONTACT_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp

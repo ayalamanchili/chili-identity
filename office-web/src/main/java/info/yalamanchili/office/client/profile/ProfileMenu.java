@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
-import info.yalamanchili.office.client.company.CompanyContactTypeSidePanel;
-import info.yalamanchili.office.client.company.ReadAllCompanyContactTypePanel;
+import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
+import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -46,7 +46,7 @@ public class ProfileMenu extends Composite {
             profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
-            profileMenuBar.addItem("CompanyContactType", companyContactTypeMaintainenceCmd);
+            profileMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
         }
         profileMenuBar.addStyleName("entityMenuBar");
     }

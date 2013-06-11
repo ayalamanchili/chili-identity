@@ -9,6 +9,7 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
@@ -26,6 +27,7 @@ import info.yalamanchili.office.profile.EmergencyContactService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
@@ -105,6 +107,18 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+    }
+
+    @GET
+    @Path("/corpemployees/dropdown/{start}/{limit}")
+    public List<Entry> getCropEmployeesDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        List<Entry> result = new ArrayList<Entry>();
+        Map<String, String> values = EmployeeDao.instance().getCorpEntityStringMapByParams(start, limit, columns.toArray(new String[columns.size()]));
+        for (String key : values.keySet()) {
+            result.add(new Entry(key, values.get(key)));
+        }
+        return result;
     }
 
     /* Address */

@@ -11,10 +11,12 @@ import info.chili.security.SecurityUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.QueryUtils;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -84,6 +86,10 @@ public class EmployeeDao extends CRUDDao<Employee> {
         } catch (NonUniqueResultException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public Map<String, String> getCorpEntityStringMapByParams(int start, int limit, String... params) {
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name='CORPORATE_EMPLOYEE'", start, limit, params);
     }
 
     @Override
