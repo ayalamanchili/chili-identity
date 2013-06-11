@@ -86,9 +86,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
-            addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
-        }
+        addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
 
         if (Auth.isAdmin()) {
