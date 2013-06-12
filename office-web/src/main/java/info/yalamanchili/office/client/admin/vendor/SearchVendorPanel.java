@@ -47,7 +47,7 @@ public class SearchVendorPanel extends SearchComposite {
 
     protected String getnameDropDownUrl() {
         //TODO think about the limit
-        return OfficeWelcome.constants.root_url() + "vendor/dropdown/0/500?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "vendor/dropdown/0/1000?column=id&column=name";
     }
 
     @Override

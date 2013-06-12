@@ -31,7 +31,7 @@ public class SelectClientWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 500, "id", "name"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 1000, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
