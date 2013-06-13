@@ -48,7 +48,7 @@ public class Phone extends AbstractEntity {
     /**
      * @generated
      */
-    @Size(min = 0, max = 4, message = "{phone.extension.length.invalid.msg}")
+    @Size(min = 0, max = 5, message = "{phone.extension.length.invalid.msg}")
     @Field
     protected String extension;
     /**
