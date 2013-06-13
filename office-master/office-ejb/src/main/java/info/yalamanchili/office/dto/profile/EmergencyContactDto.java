@@ -39,7 +39,7 @@ public class EmergencyContactDto implements Serializable {
     protected String email;
     @Size(min = 0, max = 4, message = "{emergnecycontact.countryCode.length.invalid.msg}")
     protected String countryCode;
-    @Size(min = 0, max = 4, message = "{emergnecycontact.extension.length.invalid.msg}")
+    @Size(min = 0, max = 5, message = "{emergnecycontact.extension.length.invalid.msg}")
     protected String extension;
     @Size(min = 10, max = 10, message = "{emergnecycontact.phoneNumber.lenght.invalid.msg}")
     @NotEmpty(message = "{emergencycontact.phoneNumber.not.empty.msg}")
