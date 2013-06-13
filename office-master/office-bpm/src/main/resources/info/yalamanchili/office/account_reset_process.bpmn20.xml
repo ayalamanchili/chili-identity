@@ -13,17 +13,10 @@
     <process id="account_reset_process">
         <startEvent id="accountResetStart">
         </startEvent>
-        <sequenceFlow id="flow1" sourceRef="accountResetStart" targetRef="accountResetRequestEmailNotification" />
-        <!--account reset request submit eamil notification-->
-        <serviceTask
-            id="accountResetRequestEmailNotification"
-            name="Account reset request submited notification"
-            activiti:expression="${profileNotificationService.sendAccountResetRequestNotification(account)}">
-        </serviceTask>
-        <sequenceFlow id="flow2" sourceRef="accountResetRequestEmailNotification" targetRef="accountResetApprovalTask" />
+        <sequenceFlow id="flow1" sourceRef="accountResetStart" targetRef="accountResetApprovalTask" />
         <userTask id="accountResetApprovalTask" 
                   name="Account reset Task" 
-                  activiti:candidateGroups="ROLE_HR,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_ADMIN">
             <documentation>
                 Account reset Task for
                 FirstName= ${account.firstName} 
@@ -34,6 +27,7 @@
                 Please verify if the account exists for this user and reset the password if exists otherwise create the account.
             </documentation>
             <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.AccountResetCompleteNotification" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"

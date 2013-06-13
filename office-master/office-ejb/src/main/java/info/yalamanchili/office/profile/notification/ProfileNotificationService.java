@@ -11,14 +11,12 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.types.AccountReset;
-import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -149,18 +147,6 @@ public class ProfileNotificationService {
         email.setBody(fb.getFeedbackmsg());
         email.setIsHtml(Boolean.TRUE);
         email.setTemplateName("default_html_email_template.html");
-        messagingService.sendEmail(email);
-    }
-
-    @Async
-    public void sendAccountResetRequestNotification(AccountReset account) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
-        Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject("Account Reset Request received");
-        String messageText = "Account Reset Request received for : " + account.getFirstName() + "," + account.getLastName();
-        messageText = messageText.concat("Email:" + account.getEmail() + ": PhoneNumber:" + account.getPhoneNumber());
-        email.setBody(messageText);
         messagingService.sendEmail(email);
     }
 

@@ -30,7 +30,7 @@ public class AccountResetCompleteNotification implements TaskListener {
         Email email = new Email();
         email.addTo(account.getEmail());
         email.setSubject("Account Reset");
-        mailUtils.getEmailsAddressesForRoles(OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR);
+        mailUtils.getEmailsAddressesForRoles(OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_RELATIONSHIP);
         StringBuilder message = new StringBuilder();
         //task statuss
         String status = (String) delegateTask.getExecution().getVariable("status");
