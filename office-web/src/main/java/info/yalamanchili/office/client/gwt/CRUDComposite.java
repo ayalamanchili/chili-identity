@@ -292,7 +292,7 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         if (fields.get(fieldKey) instanceof RichTextField) {
             RichTextField field = (RichTextField) fields.get(fieldKey);
             if (field.getValue() != null && !field.getValue().trim().isEmpty()) {
-                entity.put(fieldKey, new JSONString(field.getValue()));
+                entity.put(fieldKey, new JSONString(field.getHtml()));
             } else {
                 entity.put(fieldKey, null);
             }
@@ -321,7 +321,7 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         }
         if (DataType.RICH_TEXT_AREA.equals(type)) {
             RichTextField field = (RichTextField) fields.get(fieldKey);
-            field.setValue(JSONUtils.toString(entity, fieldKey));
+            field.setHtml(JSONUtils.toString(entity, fieldKey));
         }
         if (DataType.DATE_FIELD.equals(type)) {
             DateField field = (DateField) fields.get(fieldKey);

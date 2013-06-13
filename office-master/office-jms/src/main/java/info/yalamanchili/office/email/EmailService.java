@@ -60,7 +60,6 @@ public class EmailService {
                 mimeMessage.setSubject(email.getSubject());
                 final Context ctx = new Context();
                 ctx.setVariable("email", email);
-
                 String htmlContent = templateEngine.process(email.getTemplateName(), ctx);
                 message.setText(htmlContent, true);
                 processAttchments(message, email);

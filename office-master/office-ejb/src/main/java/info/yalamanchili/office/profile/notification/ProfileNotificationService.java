@@ -147,6 +147,8 @@ public class ProfileNotificationService {
         email.setTos(tos);
         email.setSubject("Employee Feedback from " + username);
         email.setBody(fb.getFeedbackmsg());
+        email.setIsHtml(Boolean.TRUE);
+        email.setTemplateName("default_html_email_template.html");
         messagingService.sendEmail(email);
     }
 
@@ -186,8 +188,9 @@ public class ProfileNotificationService {
             tos.add(emp.getPrimaryEmail().getEmail());
         }
         email.setTos(tos);
-        email.setSubject("New Message From The Employee:" + msg.getFromEmp().getFirstName() + "," + msg.getFromEmp().getFirstName());
-        email.setBody("Message:" + msg.getMessage());
+        email.setSubject("Portal Message: " + msg.getSubject() + " :From:" + msg.getFromEmp().getFirstName() + "," + msg.getFromEmp().getFirstName());
+        email.setBody(msg.getMessage());
+        email.setTemplateName("default_html_email_template.html");
         email.setIsHtml(true);
         messagingService.sendEmail(email);
     }
