@@ -46,7 +46,7 @@ public class TimeNotificationService {
         //body "overtime Pay request submited for empleyee name  please go to my tasks to complete the task to approve or deny.
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_EXPENSE};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Overtime Pay request submited for" + emp.getFirstName() + " " + emp.getLastName());
         String messageText = "'overtime Pay request submited for empleyee name  please go to my tasks to complete the task to approve or deny.";
         email.setBody(messageText);
@@ -61,7 +61,7 @@ public class TimeNotificationService {
         //reason is: reason
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_EXPENSE};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         Set<String> tos = new HashSet<String>();
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);

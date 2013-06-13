@@ -42,7 +42,7 @@ public class GenericTaskCompleteNotification implements TaskListener {
             }
         }
         if (roles.size() > 0) {
-            email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+            email.setTos(mailUtils.getEmailsAddressesForRoles(roles.toArray(new String[roles.size()])));
         }
         if (employee != null) {
             email.addTo(employee.getPrimaryEmail().getEmail());

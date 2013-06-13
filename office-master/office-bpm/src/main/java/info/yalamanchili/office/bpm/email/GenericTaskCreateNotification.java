@@ -39,7 +39,7 @@ public class GenericTaskCreateNotification implements TaskListener {
             }
         }
         if (roles.size() > 0) {
-            email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+            email.setTos(mailUtils.getEmailsAddressesForRoles(roles.toArray(new String[roles.size()])));
         }
         if (delegateTask.getAssignee() != null && !delegateTask.getAssignee().isEmpty()) {
             email.addTo(delegateTask.getAssignee());

@@ -39,7 +39,7 @@ public class SocialNotificationService {
         String[] roles = {OfficeRoles.ROLE_USER, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_ADMIN};
         Email email = new Email();
         email.setIsHtml(true);
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New Post in company feed");
         email.setBody(post.getPostContent());
         if (post.getPostFiles().size() > 0) {

@@ -9,20 +9,17 @@ package info.yalamanchili.office.email;
 
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.security.CUser;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,10 +44,10 @@ public class MailUtils {
         }
     }
 
-    public Set<String> getEmailsAddressesForRoles(List<String> roles) {
+    public Set<String> getEmailsAddressesForRoles(String... roles) {
         Set<String> emails = new HashSet<String>();
         Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
-        getUsersInRoleQuery.setParameter("roles", roles);
+        getUsersInRoleQuery.setParameter("roles", Arrays.asList(roles));
         List<CUser> users = getUsersInRoleQuery.getResultList();
         //TODO improve the query into a single query
         for (CUser user : users) {

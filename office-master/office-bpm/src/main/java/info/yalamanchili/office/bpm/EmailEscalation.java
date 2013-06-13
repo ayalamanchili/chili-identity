@@ -45,7 +45,7 @@ public class EmailEscalation implements JavaDelegate {
                 }
             }
             if (roles.size() > 0) {
-                email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+                email.setTos(mailUtils.getEmailsAddressesForRoles(roles.toArray(new String[roles.size()])));
             }
             email.setSubject("Task Escalation Email");
             String messageText = "Task is Escalated. Please complete.\n Details: \n Name" + task.getName() + " \n Description:" + task.getDescription();

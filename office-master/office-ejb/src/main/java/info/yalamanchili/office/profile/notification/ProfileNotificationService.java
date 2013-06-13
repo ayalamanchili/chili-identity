@@ -48,7 +48,7 @@ public class ProfileNotificationService {
     public void skillSetUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_RECRUITER};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Resume Updated");
         String messageText = emp.getFirstName() + " " + emp.getLastName() + "'s Resume Updated";
         email.setBody(messageText);
@@ -59,7 +59,7 @@ public class ProfileNotificationService {
     public void sendNewUserCreatedNotification(Employee employee) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
         String messageText = "New User " + employee.getFirstName() + "," + employee.getLastName() + "," + employee.getEmployeeId() + " Is Created";
         email.setBody(messageText);
@@ -81,7 +81,7 @@ public class ProfileNotificationService {
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Address Updated");
         String messageText = "Employee Address For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
@@ -92,7 +92,7 @@ public class ProfileNotificationService {
     public void sendClientInformationUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Client Information Added/Updated");
         String messageText = "Client Information For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Added/Updated";
         email.setBody(messageText);
@@ -104,7 +104,7 @@ public class ProfileNotificationService {
     public void sendEmergencyContactUpdateNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Emergency Contact Addition");
         String messageText = "Emergency Contact For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
         email.setBody(messageText);
@@ -156,28 +156,12 @@ public class ProfileNotificationService {
     public void sendAccountResetRequestNotification(AccountReset account) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(Arrays.asList(roles)));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Account Reset Request received");
         String messageText = "Account Reset Request received for : " + account.getFirstName() + "," + account.getLastName();
         messageText = messageText.concat("Email:" + account.getEmail() + ": PhoneNumber:" + account.getPhoneNumber());
         email.setBody(messageText);
         messagingService.sendEmail(email);
-    }
-
-    public void sendAccountResetApprovedNotification(String username, String password) {
-        Employee emp = mailUtils.findEmployee(username);
-        if (emp != null) {
-            Email email = new Email();
-            Set<String> tos = new HashSet<String>();
-            tos.add(emp.getPrimaryEmail().getEmail());
-            email.setTos(tos);
-            email.setSubject("Account Reset Complete");
-            String messageText = "New account information username:" + username + ": password:" + password;
-            email.setBody(messageText);
-            messagingService.sendEmail(email);
-        } else {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.username", "employee not found with username. pleaes re complete the task with correct username");
-        }
     }
 
     @Async

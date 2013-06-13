@@ -29,11 +29,12 @@
                 FirstName= ${account.firstName} 
                 LastName= ${account.lastName} 
                 Email= ${account.email} 
-                Phone= ${account.phoneNumber}" 
-                Date of Birth= ${account.dateOfBirth}" 
+                Phone= ${account.phoneNumber} 
+                Date of Birth= ${account.dateOfBirth} 
                 Please verify if the account exists for this user and reset the password if exists otherwise create the account.
             </documentation>
             <extensionElements>
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.AccountResetCompleteNotification" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"
@@ -57,7 +58,6 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="flow3" sourceRef="accountResetApprovalTask" targetRef="approvalGateway" />
         <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
@@ -73,27 +73,7 @@
             name="Task Email Escalation"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
-        <!--desision-->
-        <exclusiveGateway id="approvalGateway" />
-        <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="accountResetApprovedNotification">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved'}
-            </conditionExpression>
-        </sequenceFlow>
-        <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="accountResetEnd">
-            <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'rejected'}
-            </conditionExpression>
-        </sequenceFlow>
-        <!-- request approved email-->
-        <serviceTask
-            id="accountResetApprovedNotification"
-            name="Account Reset request Approved notification"
-            activiti:expression="${profileNotificationService.sendAccountResetApprovedNotification(username,password)}">
-        </serviceTask>
-        <sequenceFlow id="flow4" sourceRef="approvalGateway" targetRef="accountResetEnd" />
+        <sequenceFlow id="flow4" sourceRef="accountResetApprovalTask" targetRef="accountResetEnd" />
         <!-- end-->
         <endEvent id="accountResetEnd" />
     </process>
