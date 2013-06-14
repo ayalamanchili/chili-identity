@@ -43,7 +43,7 @@ public class CertificationSidePanel extends ALComposite implements ClickHandler 
     
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             certificationSidePanel.add(createCertificationLink);
         }
         //certificationSidePanel.add(new SearchcertificationPanel());
