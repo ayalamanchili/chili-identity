@@ -10,7 +10,6 @@ package info.yalamanchili.office.profile.notification;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.bpm.types.AccountReset;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
@@ -133,7 +132,7 @@ public class ProfileNotificationService {
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
         email.setSubject("Employee Reset Password");
-        email.setBody("you reset password is:" + resetPassword);
+        email.setBody("username of the employee id : " + emp.getEmployeeId() + "  and reset password is:" + resetPassword);
         messagingService.sendEmail(email);
     }
 
