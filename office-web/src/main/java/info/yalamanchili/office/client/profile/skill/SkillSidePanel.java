@@ -15,9 +15,6 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
-import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
-import info.yalamanchili.office.client.profile.employee.SearchEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -33,10 +30,11 @@ public class SkillSidePanel extends ALComposite implements ClickHandler {
     public SkillSidePanel() {
         init(skillSidePanel);
     }
-   @Override
+
+    @Override
     protected void addListeners() {
         createSkillLink.addClickHandler(this);
-   }
+    }
 
     @Override
     protected void configure() {
@@ -44,23 +42,18 @@ public class SkillSidePanel extends ALComposite implements ClickHandler {
     }
 
     @Override
-    protected void addWidgets() 
-    {
-        if (Auth.isAdmin() || Auth.isHR())
-        {
+    protected void addWidgets() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER)) {
             skillSidePanel.add(createSkillLink);
         }
         //skillSidePanel.add(new SearchskillPanel());
     }
 
     @Override
-    public void onClick(ClickEvent clickEvent) 
-    {
-        if (clickEvent.getSource().equals(createSkillLink))
-        {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillPanel(CreateComposite.CreateCompositeType.CREATE));
+    public void onClick(ClickEvent clickEvent) {
+        if (clickEvent.getSource().equals(createSkillLink)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSkillPanel(CreateComposite.CreateCompositeType.CREATE));
         }
-   }
+    }
 }
-
