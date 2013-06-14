@@ -22,33 +22,33 @@ import java.util.logging.Logger;
  * @author bala
  */
 public class CertificationSidePanel extends ALComposite implements ClickHandler {
-
+    
     private static Logger logger = Logger.getLogger(CertificationSidePanel.class.getName());
     public FlowPanel certificationSidePanel = new FlowPanel();
     ClickableLink createCertificationLink = new ClickableLink("Create Certification");
-
+    
     public CertificationSidePanel() {
         init(certificationSidePanel);
     }
-
+    
     @Override
     protected void addListeners() {
         createCertificationLink.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER)) {
             certificationSidePanel.add(createCertificationLink);
         }
         //certificationSidePanel.add(new SearchcertificationPanel());
     }
-
+    
     @Override
     public void onClick(ClickEvent clickEvent) {
         if (clickEvent.getSource().equals(createCertificationLink)) {
