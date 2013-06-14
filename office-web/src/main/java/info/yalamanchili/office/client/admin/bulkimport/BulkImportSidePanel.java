@@ -14,8 +14,6 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.client.ClientSidePanel;
-import info.yalamanchili.office.client.admin.client.CreateClientPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import java.util.logging.Logger;
 
@@ -44,7 +42,7 @@ public class BulkImportSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isHR() || Auth.isPayroll()) {
             panel.add(createBulkImportL);
         }
     }
