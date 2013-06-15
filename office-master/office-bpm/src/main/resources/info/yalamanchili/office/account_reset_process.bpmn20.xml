@@ -16,7 +16,7 @@
         <sequenceFlow id="flow1" sourceRef="accountResetStart" targetRef="accountResetApprovalTask" />
         <userTask id="accountResetApprovalTask" 
                   name="Account reset Task" 
-                  activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_ADMIN,ROLE_HR">
             <documentation>
                 Account reset Task for
                 FirstName= ${account.firstName} 
@@ -24,7 +24,9 @@
                 Email= ${account.email} 
                 Phone= ${account.phoneNumber} 
                 Date of Birth= ${account.dateOfBirth} 
-                Please verify if the account exists for this user and reset the password if exists otherwise create the account.
+                Please verify if the account exists for this user
+                if exists reset the password and reject task with login details 
+                else if create the account and approve the task with login details.
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
