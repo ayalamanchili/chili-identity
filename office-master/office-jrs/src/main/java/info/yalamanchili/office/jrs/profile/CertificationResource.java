@@ -65,7 +65,7 @@ public class CertificationResource extends CRUDResource<Certification> {
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
     @Override
-    public void delete(Long id) {
+    public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
 

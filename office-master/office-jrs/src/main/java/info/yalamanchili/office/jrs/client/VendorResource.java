@@ -87,7 +87,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @Path("/delete/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
-    public void delete(Long id) {
+    public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
 
