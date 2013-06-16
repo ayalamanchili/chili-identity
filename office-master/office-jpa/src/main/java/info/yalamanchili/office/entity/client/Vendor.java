@@ -48,6 +48,7 @@ public class Vendor extends AbstractEntity {
     /*
      * 
      */
+    @org.hibernate.annotations.Index(name = "VNDR_TYPE")
     @Enumerated(EnumType.STRING)
     @Field
     protected VendorType vendorType;
