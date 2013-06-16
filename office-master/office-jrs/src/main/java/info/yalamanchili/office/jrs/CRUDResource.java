@@ -21,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,7 @@ public abstract class CRUDResource<T> {
 
     @GET
     @Path("/{id}")
+    @Transactional(readOnly = true)
     public T read(@PathParam("id") Long id) {
         return (T) getDao().findById(id);
     }
@@ -52,6 +54,7 @@ public abstract class CRUDResource<T> {
 
     @GET
     @Path("/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
     public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         List<Entry> result = new ArrayList<Entry>();
@@ -64,12 +67,14 @@ public abstract class CRUDResource<T> {
 
     @GET
     @Path("/size")
+    @Transactional(propagation = Propagation.NEVER)
     public long size() {
         return getDao().size();
     }
 
     @GET
     @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
     public List<T> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         return getDao().search(searchText, start, limit, true);
@@ -77,6 +82,7 @@ public abstract class CRUDResource<T> {
 
     @PUT
     @Path("/search/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
     public List<T> search(T entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         return getDao().search(entity, start, limit);
     }
