@@ -34,12 +34,12 @@ public class CreateVendorPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject clnt = new JSONObject();
-
-        assignEntityValueFromField("name", clnt);
-        assignEntityValueFromField("description", clnt);
-        logger.info(clnt.toString());
-        return clnt;
+        JSONObject vendor = new JSONObject();
+        assignEntityValueFromField("name", vendor);
+        assignEntityValueFromField("description", vendor);
+        assignEntityValueFromField("vendorType", vendor);
+        logger.info(vendor.toString());
+        return vendor;
     }
 
     @Override
@@ -85,6 +85,8 @@ public class CreateVendorPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
+        String[] strs = {"TIER_ONE", "THIRD_PARTY"};
+        addEnumField("vendorType", false, false, strs);
     }
 
     @Override

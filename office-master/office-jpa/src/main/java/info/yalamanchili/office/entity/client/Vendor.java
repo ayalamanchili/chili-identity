@@ -11,18 +11,21 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Sex;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -42,6 +45,15 @@ public class Vendor extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "VNDR_NM")
     protected String name;
     protected String description;
+    /*
+     * 
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    protected VendorType vendorType;
+    /*
+     * 
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
     @ManyToMany(mappedBy = "vendors", cascade = CascadeType.MERGE)
@@ -85,9 +97,8 @@ public class Vendor extends AbstractEntity {
             return;
         }
         getContacts().add(contact);
-//      contact.setClient(this);
     }
-    
+
     public String getName() {
         return name;
     }
@@ -98,6 +109,14 @@ public class Vendor extends AbstractEntity {
 
     public String getDescription() {
         return description;
+    }
+
+    public VendorType getVendorType() {
+        return vendorType;
+    }
+
+    public void setVendorType(VendorType vendorType) {
+        this.vendorType = vendorType;
     }
 
     @XmlTransient

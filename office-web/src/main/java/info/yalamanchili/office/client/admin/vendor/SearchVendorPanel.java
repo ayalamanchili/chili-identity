@@ -65,12 +65,15 @@ public class SearchVendorPanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("name", DataType.STRING_FIELD);
+        String[] strs = {"TIER_ONE", "THIRD_PARTY"};
+        addEnumField("vendorType", false, false, strs);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("vendorType", entity);
         logger.info(entity.toString());
         return entity;
     }
