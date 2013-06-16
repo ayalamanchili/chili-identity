@@ -8,12 +8,12 @@
 package info.yalamanchili.office.jrs.reporting;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.reporting.AdminReportingService;
+import info.yalamanchili.office.reporting.AdhocReportingService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,13 +26,10 @@ import org.springframework.stereotype.Component;
 public class ReportingResource {
 
     @GET
-    @Path("/pdf")
+    @Path("/incomplete_profiles")
     @Produces({"application/pdf"})
-    public Response doPdfReport() {
-        AdminReportingService adminReportingService = SpringContext.getBean(AdminReportingService.class);
-        return Response.
-                ok(adminReportingService.doPdfReport()).
-                header("Content-Disposition", "inline; filename=spring3-rest-jasper-report.pdf").
-                build();
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String generateIncompleteProfileReport() {
+        return AdhocReportingService.instance().generateIncompleteProfileReport();
     }
 }
