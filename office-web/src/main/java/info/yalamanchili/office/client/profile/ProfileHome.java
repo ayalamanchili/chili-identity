@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.GenericPopup;
@@ -33,9 +32,9 @@ import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopu
 import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPanel;
 import info.yalamanchili.office.client.profile.skill.MultiSelectSkillWidget;
 import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
-import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite implements ClickHandler {
@@ -53,6 +52,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel addressesPanel;
     protected DisclosurePanel clientInfoPanel;
     protected DisclosurePanel emergencyContactsPanel;
+    protected DisclosurePanel companyContactsPanel;
     protected DisclosurePanel skillSetDP;
     protected DisclosurePanel preferencesPanel;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
@@ -84,6 +84,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         addEmailsPanel();
         addClientInfoPanel();
         addEmergencyContactsPanel();
+        addCompanyContactsPanel();
         addSkillSetPanel();
         addPreferencesPanel();
     }
@@ -227,6 +228,23 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     public void refreshEmergencyContactsPanel() {
         emergencyContactsPanel.setOpen(false);
         emergencyContactsPanel.setOpen(true);
+    }
+    /*
+     *company contact
+     */
+
+    protected void addCompanyContactsPanel() {
+        companyContactsPanel = new DisclosurePanel("CompanyContacts");
+        panel.add(companyContactsPanel);
+        companyContactsPanel.addStyleName("profileHome");
+        companyContactsPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                companyContactsPanel.setContent(
+                        new ReadAllCompanyContactPanel(OfficeWelcome.instance().employeeId));
+
+            }
+        });
     }
     /* SkillSet Panel */
 //TODO clean up

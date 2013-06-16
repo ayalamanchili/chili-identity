@@ -8,13 +8,13 @@
 package info.yalamanchili.office.dao.company;
 
 import info.chili.dao.CRUDDao;
-import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
-import java.util.Map;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +31,12 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
 
     public CompanyContactDao() {
         super(CompanyContact.class);
+    }
+
+    public List<CompanyContact> getEmployeeCompanyContacts(Long employeeId) {
+        Query query = getEntityManager().createQuery("from " + CompanyContact.class.getCanonicalName() + "  where employee.id=:employeeIdParam", CompanyContact.class);
+        query.setParameter("employeeIdParam", employeeId);
+        return query.getResultList();
     }
 
     @Override

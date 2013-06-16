@@ -44,9 +44,10 @@ public class CompanyContactResource extends CRUDResource<CompanyContact> {
     @GET
     @Path("/employeecontacts/{empId}/{start}/{limit}")
     public CompanyContactResource.CompanyContactTable table(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<CompanyContact> cnts = companyContactDao.getEmployeeCompanyContacts(empId);
         CompanyContactResource.CompanyContactTable tableObj = new CompanyContactResource.CompanyContactTable();
-        tableObj.setEntities(getDao().query(start, limit));
-        tableObj.setSize(getDao().size());
+        tableObj.setEntities(cnts);
+        tableObj.setSize(new Long(cnts.size()));
         return tableObj;
     }
 
