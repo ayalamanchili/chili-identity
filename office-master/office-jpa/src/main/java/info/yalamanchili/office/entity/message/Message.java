@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -38,6 +39,7 @@ public class Message extends AbstractEntity {
     @NotEmpty(message = "{subject.not.empty.msg}")
     protected String subject;
     @Field
+    @Lob
     protected String message;
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
