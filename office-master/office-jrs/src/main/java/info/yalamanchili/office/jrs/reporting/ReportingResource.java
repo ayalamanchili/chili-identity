@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.jrs.reporting;
 
-import info.chili.spring.SpringContext;
 import info.yalamanchili.office.reporting.AdhocReportingService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
