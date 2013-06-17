@@ -48,6 +48,9 @@ public class ProfileMenu extends Composite {
             profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             profileMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_RECRUITER)) {
+            profileMenuBar.addItem("Practice", practiceMaintainenceCmd);
+        }
         profileMenuBar.addStyleName("entityMenuBar");
     }
     Command employeeMaintainenceCmd = new Command() {
@@ -89,8 +92,6 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPhoneTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PhoneTypeSidePanel());
-
-
         }
     };
     Command addressTypesMaintainenceCmd = new Command() {
@@ -107,8 +108,6 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmailTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmailTypeSidePanel());
-
-
         }
     };
     Command companyContactTypeMaintainenceCmd = new Command() {
@@ -117,8 +116,14 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCompanyContactTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
-
-
+        }
+    };
+    Command practiceMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPracticePanel());
+//            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PracticeSidePanel());
         }
     };
 }
