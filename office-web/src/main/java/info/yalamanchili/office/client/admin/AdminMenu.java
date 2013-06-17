@@ -18,8 +18,6 @@ import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroup
 import info.yalamanchili.office.client.admin.notificationgroup.ReadAllNotificationGroupsPanel;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
-//import info.yalamanchili.office.client.admin.practice.PracticeSidePanel;
-//import info.yalamanchili.office.client.admin.practice.ReadAllPracticePanel;
 import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
@@ -49,7 +47,6 @@ public class AdminMenu extends Composite {
         if (Auth.isAdmin() || Auth.isAccountant() || Auth.isPayroll()) {
             adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
         }
-        adminMenuBar.addItem("Practice", practiceMaintainenceCmd);
         adminMenuBar.addStyleName("entityMenuBar");
     }
     Command notificationGroupMaintainenceCmd = new Command() {
@@ -98,14 +95,6 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllBulkImportsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new BulkImportSidePanel());
-        }
-    };
-    Command practiceMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getAdminPanel().entityPanel.clear();
-            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-//            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllPracticePanel());
-//            TabPanel.instance().getAdminPanel().sidePanelTop.add(new PracticeSidePanel());
         }
     };
 }
