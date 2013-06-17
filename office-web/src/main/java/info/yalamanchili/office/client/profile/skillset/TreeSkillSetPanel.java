@@ -43,8 +43,8 @@ public class TreeSkillSetPanel extends TreePanelComposite {
     protected void addWidgets() {
         addFirstChildLink("Skills", SKILLS_NODE);
         addFirstChildLink("Certifications", CERTIFICATIONS_NODE);
-        addFirstChildLink("Practice", PRACTICE_NODE);
-        addFirstChildLink("Technology Group", TECHNOLOGYGROUP_NODE);
+//        addFirstChildLink("Practice", PRACTICE_NODE);
+//        addFirstChildLink("Technology Group", TECHNOLOGYGROUP_NODE);
     }
 
     @Override
