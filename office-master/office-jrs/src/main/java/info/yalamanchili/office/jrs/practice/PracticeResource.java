@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
@@ -46,6 +48,21 @@ public class PracticeResource extends CRUDResource<Practice> {
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @PUT
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER')")
+    @Override
+    public Practice save(Practice entity) {
+        return super.save(entity);
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER')")
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        super.delete(id);
     }
 
     @XmlRootElement
