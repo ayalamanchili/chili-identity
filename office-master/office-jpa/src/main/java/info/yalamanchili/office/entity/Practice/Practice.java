@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.Practice;
+package info.yalamanchili.office.entity.practice;
 
 import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
@@ -27,12 +27,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Audited
 @Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"name"}))
+        @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Practice.class, fields = {"name"}, message = "{practice.name.not.unique.msg}")
 public class Practice extends AbstractEntity {
 
     @Field
     @NotEmpty(message = "{practice.name.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "PRACTICE_NM_IDX")
     protected String name;
     protected String description;
 

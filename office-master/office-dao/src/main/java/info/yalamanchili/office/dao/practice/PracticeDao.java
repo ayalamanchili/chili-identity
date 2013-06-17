@@ -9,7 +9,7 @@ package info.yalamanchili.office.dao.practice;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.entity.Practice.Practice;
+import info.yalamanchili.office.entity.practice.Practice;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;

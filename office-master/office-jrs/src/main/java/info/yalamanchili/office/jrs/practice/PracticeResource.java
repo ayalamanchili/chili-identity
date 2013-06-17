@@ -9,7 +9,7 @@ package info.yalamanchili.office.jrs.practice;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
-import info.yalamanchili.office.entity.Practice.Practice;
+import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
