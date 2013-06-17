@@ -9,10 +9,10 @@
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
  
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.gmail.com" />
-        <property name="port" value="587" />
-        <property name="username" value="systemsoft.office" />
-        <property name="password" value="water123!" />
+        <property name="host" value="${email.host}" />
+        <property name="port" value="${email.port}" />
+        <property name="username" value="${email.username}" />
+        <property name="password" value="${email.password}" />
  
         <property name="javaMailProperties">
             <props>

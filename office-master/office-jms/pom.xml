@@ -62,6 +62,43 @@
             <version>${thymeleaf.version}</version>
         </dependency>
     </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/email-dev.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>test</id>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/email-test.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/email-prod.properties</filter>
+                </filters>
+            </build>
+        </profile>
+    </profiles>    
     <scm>
         <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-jms</connection>
         <url>http://yalamanchili.info:8080/projects/office/trunk/office-jms</url>
