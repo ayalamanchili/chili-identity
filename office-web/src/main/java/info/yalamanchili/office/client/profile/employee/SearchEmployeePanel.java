@@ -71,7 +71,7 @@ public class SearchEmployeePanel extends SearchComposite {
     @Override
     protected void search(String searchText) {
         if (getSearchText() != null) {
-            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 50),
+            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 100),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String result) {

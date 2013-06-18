@@ -89,7 +89,7 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
     /**
      * The go to page.
      */
-    protected ListBoxField goToPage = new ListBoxField("Page: ",false, Alignment.HORIZONTAL);
+    protected ListBoxField goToPage = new ListBoxField("Page: ", false, Alignment.HORIZONTAL);
     /**
      * The no of results l.
      */
@@ -118,6 +118,7 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
         this.constants = constants;
         this.entities = entities;
         init(basePanel);
+        setTotalResults(entities.size());
         createTableHeader();
         fillData(entities);
     }
@@ -173,8 +174,12 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
     public void initPaging(Long noOfRecords) {
         pageSize = new Integer(10);
         numberOfRecords = noOfRecords;
-        noOfResultsL.setText("Total Results:" + noOfRecords.toString());
+        setTotalResults(noOfRecords.intValue());
         createPageLinks();
+    }
+
+    public void setTotalResults(Integer noOfRecords) {
+        noOfResultsL.setText("Total Results:" + noOfRecords.toString());
     }
 
     /**
