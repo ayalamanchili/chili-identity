@@ -14,6 +14,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
+import info.yalamanchili.office.client.practice.PracticeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -123,7 +124,7 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
 //            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPracticePanel());
-//            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PracticeSidePanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PracticeSidePanel());
         }
     };
 }
