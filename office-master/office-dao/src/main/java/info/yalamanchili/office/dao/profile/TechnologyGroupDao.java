@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -9,11 +12,15 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.TechnologyGroup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Prashanthi
  */
+@Component
+@Scope("prototype")
 public class TechnologyGroupDao extends CRUDDao<TechnologyGroup> {
 
     @PersistenceContext
