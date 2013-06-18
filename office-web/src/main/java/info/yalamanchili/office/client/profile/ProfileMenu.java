@@ -52,6 +52,7 @@ public class ProfileMenu extends Composite {
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_RECRUITER)) {
             profileMenuBar.addItem("Practice", practiceMaintainenceCmd);
+            profileMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
         }
         profileMenuBar.addStyleName("entityMenuBar");
     }
@@ -126,6 +127,14 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPracticePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PracticeSidePanel());
+        }
+    };
+    Command technologyGroupMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
+//            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new TechnologyGroupSidePanel());
         }
     };
 }
