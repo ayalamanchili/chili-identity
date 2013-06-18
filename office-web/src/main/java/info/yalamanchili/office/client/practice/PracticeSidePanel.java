@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -19,37 +22,37 @@ import java.util.logging.Logger;
  * @author Prashanthi
  */
 public class PracticeSidePanel extends ALComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(PracticeSidePanel.class.getName());
     public FlowPanel practiceSidePanel = new FlowPanel();
     ClickableLink createPracticeLink = new ClickableLink("Create Practice");
-    
+
     public PracticeSidePanel() {
         init(practiceSidePanel);
     }
-    
+
     @Override
     protected void addListeners() {
         createPracticeLink.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             practiceSidePanel.add(createPracticeLink);
         }
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createPracticeLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePracticePanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePracticePanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
