@@ -34,6 +34,7 @@ public class DriveTreePanel extends ALComposite implements SelectionHandler<Tree
 
     private static Logger logger = Logger.getLogger(TreeEmployeePanel.class.getName());
     private static DriveTreePanel instance;
+    protected TreeEntityItem rootNode;
 
     public static DriveTreePanel instance() {
         return instance;
@@ -52,11 +53,12 @@ public class DriveTreePanel extends ALComposite implements SelectionHandler<Tree
             @Override
             public void onResponse(String arg0) {
                 JSONObject driveFolder = (JSONObject) JSONParser.parseLenient(arg0);
-                TreeEntityItem rootNode = new TreeEntityItem(OfficeWelcome.constants, "DRIVE", driveFolder);
+                rootNode = new TreeEntityItem(OfficeWelcome.constants, "DRIVE", driveFolder);
                 tree.addItem(rootNode);
                 if (driveFolder.containsKey("children")) {
                     buildDriveTree(rootNode, driveFolder, JSONUtils.toJSONArray(driveFolder.get("children")));
                 }
+                rootNode.setState(true);
             }
         });
     }

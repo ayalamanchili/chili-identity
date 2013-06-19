@@ -42,8 +42,8 @@ public class DriveService {
     public void addFolder(Long parentFolderId, FolderDto folderDto) {
         Folder parentFolder = folderDao.findById(parentFolderId);
         Folder folder = mapper.map(folderDto, Folder.class);
-        parentFolder.addChild(folder);
-        folderDao.save(parentFolder);
+        folder.setParent(parentFolder);
+        folderDao.save(folder);
     }
 
     public String addFile(Long folderId, FileDto fileDto) {
