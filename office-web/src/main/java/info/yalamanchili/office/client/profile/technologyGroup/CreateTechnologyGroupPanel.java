@@ -15,6 +15,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -24,6 +25,8 @@ import java.util.logging.Logger;
 public class CreateTechnologyGroupPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateTechnologyGroupPanel.class.getName());
+    SelectTechnologyGroupWidget contactTypeF = new SelectTechnologyGroupWidget(false, false);
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, false);
 
     public CreateTechnologyGroupPanel(CreateComposite.CreateCompositeType type) {
         super(type);
