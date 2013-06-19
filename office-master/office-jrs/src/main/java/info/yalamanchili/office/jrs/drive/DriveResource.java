@@ -69,7 +69,7 @@ public class DriveResource {
 
     @PUT
     @Path("/files/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
     public void deletefile(@PathParam("id") Long id) {
         File file = FileDao.instance().findById(id);
         FileDao.instance().delete(id);
@@ -78,7 +78,7 @@ public class DriveResource {
 
     @PUT
     @Path("/folder/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
     public void deletefolder(@PathParam("id") Long id) {
         FolderDao.instance().delete(id);
     }
@@ -88,7 +88,7 @@ public class DriveResource {
     public FileTable getFiles(@PathParam("folderId") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         return driveService.getFiles(id, start, limit);
     }
-    
+
     @GET
     @Path("/searchdrive/{start}/{limit}")
     public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
