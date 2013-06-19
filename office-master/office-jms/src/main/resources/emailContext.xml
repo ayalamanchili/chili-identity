@@ -17,6 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.from">${email.from}</prop>
                 <prop key="mail.smtp.starttls.enable">true</prop>
             </props>
         </property>
