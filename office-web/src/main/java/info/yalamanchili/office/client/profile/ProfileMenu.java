@@ -28,6 +28,8 @@ import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypes
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
+import info.yalamanchili.office.client.profile.technologyGroup.ReadAllTechnologyGroupPanel;
+import info.yalamanchili.office.client.profile.technologyGroup.TechnologyGroupSidePanel;
 
 public class ProfileMenu extends Composite {
 
@@ -133,8 +135,8 @@ public class ProfileMenu extends Composite {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
-//            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new TechnologyGroupSidePanel());
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new TechnologyGroupSidePanel());
         }
     };
 }
