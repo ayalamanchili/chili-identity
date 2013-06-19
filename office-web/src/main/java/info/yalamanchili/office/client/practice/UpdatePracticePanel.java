@@ -15,6 +15,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
+import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -24,6 +25,8 @@ import java.util.logging.Logger;
 public class UpdatePracticePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdatePracticePanel.class.getName());
+    SelectPracticeWidget contactTypeF = new SelectPracticeWidget(false, false);
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, false);
 
     public UpdatePracticePanel(JSONObject entity) {
         logger.info("ddddd" + entity);
