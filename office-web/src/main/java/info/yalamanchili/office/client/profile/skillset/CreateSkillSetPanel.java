@@ -11,10 +11,10 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.CreateComposite;
 import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +25,7 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     protected String employeeId;
     private static Logger logger = Logger.getLogger(CreateSkillSetPanel.class.getName());
+    SelectPracticeWidget practiceF = new SelectPracticeWidget(false, false);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
         @Override
         public void onUploadComplete() {
@@ -40,6 +41,7 @@ public class CreateSkillSetPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("practice", practiceF);
         entityFieldsPanel.add(resumeUploadPanel);
     }
 
@@ -57,23 +59,24 @@ public class CreateSkillSetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadResume(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadResume(arg0);
+            }
+        });
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject skillSet = new JSONObject();
         assignEntityValueFromField("lastUpdated", skillSet);
+        skillSet.put("practice", practiceF.getSelectedObject());
         skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
         return skillSet;
     }
