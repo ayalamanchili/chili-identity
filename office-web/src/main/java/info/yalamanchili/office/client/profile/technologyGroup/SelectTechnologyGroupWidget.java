@@ -19,7 +19,7 @@ import info.yalamanchili.office.client.gwt.SelectComposite;
 public class SelectTechnologyGroupWidget extends SelectComposite {
 
     public SelectTechnologyGroupWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "echnologyGroup", readOnly, isRequired);
+        super(OfficeWelcome.constants, "TechnologyGroup", readOnly, isRequired);
     }
 
     @Override
