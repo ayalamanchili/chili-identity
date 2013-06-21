@@ -29,6 +29,8 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.ui.*;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.ListBoxField;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.Collection;
@@ -64,6 +66,19 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected ConstantsWithLookup constants;
     protected String entityName;
     protected Map<String, Object> fields = new HashMap<String, Object>();
+    //search paging
+    protected ListBoxField goToPage = new ListBoxField("Page: ", false, Alignment.HORIZONTAL);
+    protected Label noOfResultsL = new Label("Total Results:");
+    //
+    protected Long numberOfRecords = new Long(0);
+    /**
+     * The page size.
+     */
+    protected Integer pageSize = 10;// default
+    /**
+     * The number of pages.
+     */
+    protected Integer numberOfPages;
 
     public JSONObject getEntity() {
         return entity;
@@ -253,6 +268,29 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             String key = (String) resObj.keySet().toArray()[0];
             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
             postSearchSuccess(results);
+        }
+    }
+
+    public void initPaging(Long noOfRecords) {
+        pageSize = new Integer(10);
+        numberOfRecords = noOfRecords;
+        setTotalResults(noOfRecords.intValue());
+        createPageLinks();
+    }
+
+    public void setTotalResults(Integer noOfRecords) {
+        noOfResultsL.setText("Total Results:" + noOfRecords.toString());
+    }
+
+    /**
+     * Creates the page links.
+     */
+    protected void createPageLinks() {
+        if (numberOfPages == null || numberOfPages == 0) {
+            numberOfPages = (numberOfRecords.intValue() / pageSize) + 1;
+            for (int i = 1; i <= numberOfPages; i++) {
+                goToPage.addValue(new Long(i), new Integer(i).toString());
+            }
         }
     }
 

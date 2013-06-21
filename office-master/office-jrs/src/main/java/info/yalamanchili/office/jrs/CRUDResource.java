@@ -83,7 +83,7 @@ public abstract class CRUDResource<T> {
     @GET
     @Path("/search_size/{searchText}")
     @Transactional(propagation = Propagation.NEVER)
-    public long sizeSize(@PathParam("searchText") String searchText) {
+    public long searchSize(@PathParam("searchText") String searchText) {
         return getDao().searchSize(searchText);
     }
 
@@ -97,7 +97,7 @@ public abstract class CRUDResource<T> {
     @PUT
     @Path("/search_size")
     @Transactional(propagation = Propagation.NEVER)
-    public long sizeSize(T entity) {
+    public long searchSize(T entity) {
         return getDao().searchSize(entity);
     }
 
