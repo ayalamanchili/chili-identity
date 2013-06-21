@@ -55,6 +55,10 @@ public class SkillSet extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Practice_SkillSets")
     private Practice practice;
+    
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Practice_SkillSets")
+    private TechnologyGroup technologyGroup;
 
     public SkillSet() {
     }
@@ -114,6 +118,14 @@ public class SkillSet extends AbstractEntity {
         this.practice = practice;
     }
 
+    public TechnologyGroup getTechnologyGroup() {
+        return technologyGroup;
+    }
+
+    public void setTechnologyGroup(TechnologyGroup technologyGroup) {
+        this.technologyGroup = technologyGroup;
+    }
+    
     @PrePersist
     @PreUpdate
     protected void populateUpdatedTimeStamp() {
