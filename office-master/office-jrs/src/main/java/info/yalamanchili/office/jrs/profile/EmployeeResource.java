@@ -12,6 +12,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.profile.EmployeeSaveDto;
@@ -56,7 +57,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class EmployeeResource extends CRUDResource<Employee> {
-    
+
     @Autowired
     public EmployeeDao employeeDao;
     @PersistenceContext
@@ -65,7 +66,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     protected Mapper mapper;
     @Autowired
     protected ProfileNotificationService profileNotificationservice;
-    
+
     @GET
     @Path("/{id}")
     @Override
@@ -75,20 +76,20 @@ public class EmployeeResource extends CRUDResource<Employee> {
         response.setStatus(emp.getUser().isEnabled());
         return response;
     }
-    
+
     @PUT
     @Override
     public Employee save(Employee entity) {
         throw new UnsupportedOperationException();
     }
-    
+
     @PUT
     @Path("/save")
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -101,7 +102,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -109,7 +110,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     @GET
     @Path("/corpemployees/dropdown/{start}/{limit}")
     public List<Entry> getCropEmployeesDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
@@ -133,7 +134,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getAddresss().size());
         return tableObj;
     }
-    
+
     @PUT
     @Path("/address/{empId}")
     public void addAddress(@PathParam("empId") Long empId, Address address) {
@@ -157,9 +158,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
             emp.setSkillSet(ss);
         }
         return emp.getSkillSet();
-        
+
     }
-    
+
     @PUT
     @Path("/skillset/{empId}")
     @Produces("application/text")
@@ -167,9 +168,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
         Employee emp = (Employee) getDao().findById(empId);
         SkillSet skillSetUpdated = emp.getSkillSet();
         if (skillSetUpdated == null) {
-            skillSetUpdated = skillset;  
-        } 
-        if(skillset.getResumeUrl()!=null){
+            skillSetUpdated = skillset;
+        }
+        if (skillset.getResumeUrl() != null) {
             skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
         }
         if (skillset.getPractice() == null || skillset.getPractice().getId() == null) {
@@ -177,19 +178,24 @@ public class EmployeeResource extends CRUDResource<Employee> {
         } else {
             skillSetUpdated.setPractice(PracticeDao.instance().findById(skillset.getPractice().getId()));
         }
+        if (skillset.getTechnologyGroup() == null || skillset.getTechnologyGroup().getId() == null) {
+            skillSetUpdated.setTechnologyGroup(null);
+        } else {
+            skillSetUpdated.setTechnologyGroup(TechnologyGroupDao.instance().findById(skillset.getTechnologyGroup().getId()));
+        }
         emp.setSkillSet(skillSetUpdated);
         emp = em.merge(emp);
         profileNotificationservice.skillSetUpdatedNotification(emp);
         return emp.getSkillSet().getId().toString();
     }
     /* Preferences*/
-    
+
     @GET
     @Path("/preferences/{empId}")
     public Preferences getPreferences(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
         return emp.getPreferences();
-        
+
     }
 
     /* Email */
@@ -202,12 +208,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmails().size());
         return tableObj;
     }
-    
+
     @PUT
     @Path("/email/{empId}")
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);
-        
+
         if (email.getEmailType() != null) {
             EmailType emailType = getDao().getEntityManager().find(EmailType.class, email.getEmailType().getId());
             email.setEmailType(emailType);
@@ -227,7 +233,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getPhones().size());
         return tableObj;
     }
-    
+
     @PUT
     @Path("/phone/{empId}")
     public void addPhone(@PathParam("empId") Long empId, Phone phone) {
@@ -290,14 +296,14 @@ public class EmployeeResource extends CRUDResource<Employee> {
         tableObj.setSize((long) emp.getEmergencyContacts().size());
         return tableObj;
     }
-    
+
     @PUT
     @Path("/emergencycontact/{empId}")
     public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContactDto ecDto) {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
         emergencyContactService.addEmergencyContact(empId, ecDto);
     }
-    
+
     @GET
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(@PathParam("start") int start,
@@ -308,7 +314,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return employees;
     }
-    
+
     @PUT
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -318,32 +324,32 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return employees;
     }
-    
+
     @Override
     public CRUDDao getDao() {
         return employeeDao;
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class EmployeeTable {
-        
+
         protected Long size;
         protected List<info.yalamanchili.office.dto.profile.EmployeeDto> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<info.yalamanchili.office.dto.profile.EmployeeDto> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<info.yalamanchili.office.dto.profile.EmployeeDto> entities) {
             this.entities = entities;
         }
