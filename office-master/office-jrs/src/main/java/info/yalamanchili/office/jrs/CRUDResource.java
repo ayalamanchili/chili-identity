@@ -80,11 +80,25 @@ public abstract class CRUDResource<T> {
         return getDao().search(searchText, start, limit, true);
     }
 
+    @GET
+    @Path("/search_size/{searchText}")
+    @Transactional(propagation = Propagation.NEVER)
+    public long sizeSize(@PathParam("searchText") String searchText) {
+        return getDao().searchSize(searchText);
+    }
+
     @PUT
     @Path("/search/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
     public List<T> search(T entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         return getDao().search(entity, start, limit);
+    }
+
+    @PUT
+    @Path("/search_size")
+    @Transactional(propagation = Propagation.NEVER)
+    public long sizeSize(T entity) {
+        return getDao().searchSize(entity);
     }
 
     public abstract CRUDDao getDao();
