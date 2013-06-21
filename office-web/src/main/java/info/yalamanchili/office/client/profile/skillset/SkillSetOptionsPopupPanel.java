@@ -8,15 +8,21 @@
 package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import info.yalamanchili.office.client.TabPanel;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.GenericPopup;
-import info.yalamanchili.office.client.profile.address.UpdateAddressPopupPanel;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
 public class SkillSetOptionsPopupPanel extends SkillSetOptionsPanel {
+
+    private static Logger logger = Logger.getLogger(SkillSetOptionsPopupPanel.class.getName());
 
     public SkillSetOptionsPopupPanel(String employeeId) {
         super(employeeId);
@@ -30,8 +36,17 @@ public class SkillSetOptionsPopupPanel extends SkillSetOptionsPanel {
     @Override
     public void onClick(ClickEvent clickEvent) {
         if (clickEvent.getSource().equals(updateSkillSetL)) {
-            UpdateSkillSetPopupPanel updateSkillSetPanel = new UpdateSkillSetPopupPanel(employeeId);
-            new GenericPopup(updateSkillSetPanel).show();
+            HttpService.HttpServiceAsync.instance().doGet(getSkillSetURI(),
+                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String arg0) {
+                    logger.info("dddd"+arg0);
+                    if (arg0 != null) {
+                        UpdateSkillSetPopupPanel updateSkillSetPanel = new UpdateSkillSetPopupPanel((JSONObject) (JSONParser.parseLenient(arg0)));
+                        new GenericPopup(updateSkillSetPanel).show();
+                    }
+                }
+            });
         }
     }
 }

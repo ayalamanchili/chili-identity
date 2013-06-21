@@ -68,7 +68,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
             @Override
             public void onSuccess(String arg0) {
-
                 uploadImage(JSONUtils.toString(entity, "id"));
 
             }
