@@ -40,7 +40,7 @@ import org.hibernate.search.annotations.Indexed;
 public class SkillSet extends AbstractEntity {
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    @org.hibernate.annotations.Index(name="SKL_SET_UPDT_TM_STMP")
+    @org.hibernate.annotations.Index(name = "SKL_SET_UPDT_TM_STMP")
     protected Date lastUpdated;
     protected String resumeUrl;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -51,13 +51,11 @@ public class SkillSet extends AbstractEntity {
     protected List<Certification> certifications;
     @OneToOne(mappedBy = "skillSet")
     private Employee employee;
-    
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Practice_SkillSets")
     private Practice practice;
-    
     @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Practice_SkillSets")
+    @ForeignKey(name = "FK_TechGrp_SkillSets")
     private TechnologyGroup technologyGroup;
 
     public SkillSet() {
@@ -125,7 +123,7 @@ public class SkillSet extends AbstractEntity {
     public void setTechnologyGroup(TechnologyGroup technologyGroup) {
         this.technologyGroup = technologyGroup;
     }
-    
+
     @PrePersist
     @PreUpdate
     protected void populateUpdatedTimeStamp() {
