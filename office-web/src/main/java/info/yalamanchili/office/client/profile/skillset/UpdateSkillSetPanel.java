@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileuploadField;
@@ -17,6 +18,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
 import java.util.logging.Logger;
 
 /**
@@ -27,6 +29,7 @@ public class UpdateSkillSetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateSkillSetPanel.class.getName());
     SelectPracticeWidget practiceF = new SelectPracticeWidget(false, false);
+    SelectTechnologyGroupWidget technoglogyGroupF = new SelectTechnologyGroupWidget(false, false);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
         @Override
         public void onUploadComplete() {
@@ -42,6 +45,7 @@ public class UpdateSkillSetPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject skillSet = new JSONObject();
         skillSet.put("practice", practiceF.getSelectedObject());
+        skillSet.put("technologyGroup", technoglogyGroupF.getSelectedObject());
         if (!resumeUploadPanel.isEmpty()) {
             skillSet.put("resumeUrl", resumeUploadPanel.getFileName());
         }
@@ -68,6 +72,7 @@ public class UpdateSkillSetPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("practice", entity, null);
+        assignFieldValueFromEntity("technologyGroup", entity, null);
     }
 
     protected void uploadResume(String entityId) {
@@ -92,6 +97,7 @@ public class UpdateSkillSetPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("practice", practiceF);
+        addDropDown("technologyGroup", technoglogyGroupF);
         entityFieldsPanel.add(resumeUploadPanel);
     }
 

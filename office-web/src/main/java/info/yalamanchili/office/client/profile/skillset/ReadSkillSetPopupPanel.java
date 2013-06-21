@@ -43,6 +43,7 @@ public class ReadSkillSetPopupPanel extends ReadSkillSetPanel {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("practice", entity, null);
+        assignFieldValueFromEntity("technologyGroup", entity, null);
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
         String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
         FileField fileField = new FileField(fileURL);

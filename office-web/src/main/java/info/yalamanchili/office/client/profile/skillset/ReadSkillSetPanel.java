@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.gwt.FileField;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
+import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
 import java.util.logging.Logger;
 
 /**
@@ -31,6 +32,7 @@ public class ReadSkillSetPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(ReadSkillSetPanel.class.getName());
     protected String empId;
     SelectPracticeWidget practiceF = new SelectPracticeWidget(false, false);
+    SelectTechnologyGroupWidget technologyGroupF = new SelectTechnologyGroupWidget(false, false);
     private static ReadSkillSetPanel instance;
 
     public static ReadSkillSetPanel instance() {
@@ -69,11 +71,11 @@ public class ReadSkillSetPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                onLoadSuccess(response);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        onLoadSuccess(response);
+                    }
+                });
 
     }
 
@@ -96,6 +98,7 @@ public class ReadSkillSetPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("entity" + entity.toString());
         assignFieldValueFromEntity("practice", entity, null);
+        assignFieldValueFromEntity("technologyGroup", entity, null);
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
         String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
         FileField fileField = new FileField(fileURL);
@@ -107,6 +110,7 @@ public class ReadSkillSetPanel extends ReadComposite {
     protected void addWidgets() {
         addField("lastUpdated", true, false, DataType.DATE_FIELD);
         addDropDown("practice", practiceF);
+        addDropDown("technologyGroup", technologyGroupF);
     }
 
     @Override
