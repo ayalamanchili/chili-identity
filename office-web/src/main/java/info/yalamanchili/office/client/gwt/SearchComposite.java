@@ -264,32 +264,27 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             keyCode = event.getNativeEvent().getKeyCode();
         }
         if (keyCode == KeyCodes.KEY_ENTER) {
-            // Do something when Enter is pressed.
-
-            if (getSearchText() != null) {
-                search(getSearchText());
-            } else {
-                entity = populateEntityFromFields();
-                if (entity.toString().length() > 3) {
-                    search(entity);
-                }
-            }
+            processSearch();
         }
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == searchButton) {
-            if (getSearchText() != null && getSearchText().trim().length() > 0) {
-                search(getSearchText());
-            } else {
-                entity = populateEntityFromFields();
-                if (entity.toString().length() > 3) {
-                    search(entity);
-                }
-            }
+            processSearch();
         }
 
+    }
+
+    protected void processSearch() {
+        if (getSearchText() != null && getSearchText().trim().length() > 0) {
+            search(getSearchText());
+        } else {
+            entity = populateEntityFromFields();
+            if (entity.toString().length() > 3) {
+                search(entity);
+            }
+        }
     }
 
     public void loadSearchSuggestions(Collection<String> inputs) {
