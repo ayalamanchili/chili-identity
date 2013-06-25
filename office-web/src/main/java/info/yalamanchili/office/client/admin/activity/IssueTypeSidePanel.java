@@ -51,8 +51,8 @@ public class IssueTypeSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createIssueTypeLink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateIssueTypePanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateIssueTypePanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

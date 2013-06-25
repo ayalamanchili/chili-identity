@@ -63,9 +63,9 @@ public class CreateIssueTypePanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully created issuetype data");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new IssueTypeSidePanel());
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.sidePanelTop.add(new IssueTypeSidePanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
 //        TabPanel.instance().myOfficePanel.entityPanel.add(new ());    }
     }
 
