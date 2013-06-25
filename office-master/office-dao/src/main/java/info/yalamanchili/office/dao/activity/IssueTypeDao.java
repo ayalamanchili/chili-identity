@@ -12,11 +12,15 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.activity.IssueType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Prashanthi
  */
+@Component
+@Scope("prototype")
 public class IssueTypeDao extends CRUDDao<IssueType> {
 
     @PersistenceContext
