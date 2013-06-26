@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 public class CreateIssueTypePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateIssueTypePanel.class.getName());
+    SelectIssueTypeWidget issueTypeF = new SelectIssueTypeWidget(false, false);
 
     public CreateIssueTypePanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -62,11 +63,11 @@ public class CreateIssueTypePanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully created issuetype data");
+        new ResponseStatusWidget().show("Successfully Created IssueType Data");
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new IssueTypeSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ());    }
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllIssueTypePanel());
     }
 
     @Override
