@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.activity.IssueTypeSidePanel;
+import info.yalamanchili.office.client.admin.activity.ReadAllIssueTypePanel;
 import info.yalamanchili.office.client.admin.bulkimport.BulkImportSidePanel;
 import info.yalamanchili.office.client.admin.bulkimport.ReadAllBulkImportsPanel;
 import info.yalamanchili.office.client.admin.notificationgroup.NotificationGroupSidePanel;
@@ -103,7 +104,7 @@ public class AdminMenu extends Composite {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
-//            TabPanel.instance().getAdminPanel().entityPanel.add(new ());
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllIssueTypePanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new IssueTypeSidePanel());
         }
     };
