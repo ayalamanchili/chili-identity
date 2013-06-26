@@ -24,8 +24,6 @@ public class TreeSkillSetPanel extends TreePanelComposite {
     private static Logger logger = Logger.getLogger(TreeSkillSetPanel.class.getName());
     protected static final String SKILLS_NODE = "skills";
     protected static final String CERTIFICATIONS_NODE = "certifications";
-    protected static final String PRACTICE_NODE = "Practice";
-    protected static final String TECHNOLOGYGROUP_NODE = "Technology Group";
 
     public TreeSkillSetPanel(String empId) {
         init("SkillSet", OfficeWelcome.constants);
@@ -43,8 +41,6 @@ public class TreeSkillSetPanel extends TreePanelComposite {
     protected void addWidgets() {
         addFirstChildLink("Skills", SKILLS_NODE);
         addFirstChildLink("Certifications", CERTIFICATIONS_NODE);
-//        addFirstChildLink("Practice", PRACTICE_NODE);
-//        addFirstChildLink("Technology Group", TECHNOLOGYGROUP_NODE);
     }
 
     @Override
@@ -65,24 +61,6 @@ public class TreeSkillSetPanel extends TreePanelComposite {
             } else {
                 TabPanel.instance().myOfficePanel.entityPanel.add(new MuitiSelectCertificationWidget("Certifications", ReadSkillSetPanel.instance().getEntityId(), false, false));
             }
-        }
-        if (PRACTICE_NODE.equals(entityNodeKey) && ReadSkillSetPanel.instance().getEntityId() != null) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            if (Auth.hasOnlyUserRole()) {
-//                TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectPracticeWidget("Practice", ReadSkillSetPanel.instance().getEntityId(), true, false));
-            } else {
-//                TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectPracticeWidget("Practice", ReadSkillSetPanel.instance().getEntityId(), false, false));
-            }
-
-        }
-        if (TECHNOLOGYGROUP_NODE.equals(entityNodeKey) && ReadSkillSetPanel.instance().getEntityId() != null) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            if (Auth.hasOnlyUserRole()) {
-//                TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectTechnologyGroupWidget("Technology Group", ReadSkillSetPanel.instance().getEntityId(), true, false));
-            } else {
-//                TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectTechnologyGroupWidget("Technology Group", ReadSkillSetPanel.instance().getEntityId(), false, false));
-            }
-
         }
     }
 
