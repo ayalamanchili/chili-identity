@@ -23,9 +23,9 @@ import javax.xml.bind.annotation.XmlType;
 public class SkillSetDto implements Serializable {
 
     protected String resumeUrl;
-    @NotNull
+    @NotNull(message = "{practice.not.empty.msg}")
     private Practice practice;
-    @NotNull
+    @NotNull(message = "{technologyGroup.not.empty.msg}")
     private TechnologyGroup technologyGroup;
 
     public String getResumeUrl() {
