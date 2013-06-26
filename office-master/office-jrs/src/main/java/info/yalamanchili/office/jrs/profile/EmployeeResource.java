@@ -17,6 +17,7 @@ import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.profile.EmployeeSaveDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
+import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -164,11 +165,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Path("/skillset/{empId}")
     @Produces("application/text")
-    public String addSkillSet(@PathParam("empId") Long empId, SkillSet skillset) {
+    public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
         Employee emp = (Employee) getDao().findById(empId);
         SkillSet skillSetUpdated = emp.getSkillSet();
         if (skillSetUpdated == null) {
-            skillSetUpdated = skillset;
+            skillSetUpdated = mapper.map(skillset, SkillSet.class);
         }
         if (skillset.getResumeUrl() != null) {
             skillSetUpdated.setResumeUrl(skillset.getResumeUrl());
