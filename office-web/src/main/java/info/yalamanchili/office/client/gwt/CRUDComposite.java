@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.listeners.KeyPressListener;
+import info.chili.gwt.utils.Utils;
 
 public abstract class CRUDComposite extends Composite implements KeyPressListener {
 
@@ -81,7 +82,7 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
         entityPanel.add(entityActionsPanel);
         entityCaptionPanel.setContentWidget(entityPanel);
         basePanel.add(entityCaptionPanel);
-        entityCaptionPanel.setCaptionHTML(entityName);
+        entityCaptionPanel.setCaptionHTML(Utils.getKeyValue(entityName, constants));
         addListeners();
         configure();
         addWidgets();

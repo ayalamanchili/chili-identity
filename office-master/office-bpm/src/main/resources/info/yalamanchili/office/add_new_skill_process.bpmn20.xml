@@ -37,7 +37,7 @@ and open the template in the editor.
             <documentation>
                 Add Skill Information:
                 Skill Name: ${skillName} 
-                Skill Description: ${skilldescription}
+                Skill Description: ${skillDescription}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />

@@ -7,18 +7,15 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.FileuploadField;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.GenericPopup;
-import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
@@ -33,8 +30,6 @@ public class UpdateSkillSetPanel extends UpdateComposite {
     private static Logger logger = Logger.getLogger(UpdateSkillSetPanel.class.getName());
     SelectPracticeWidget practiceF = new SelectPracticeWidget(false, false);
     SelectTechnologyGroupWidget technoglogyGroupF = new SelectTechnologyGroupWidget(false, false);
-    protected Anchor addSkilltL = new Anchor("Skills not present? submit request");
-//    protected Anchor addCertificationL = new Anchor("Certifications not present? submit request");
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
         @Override
         public void onUploadComplete() {
@@ -93,8 +88,6 @@ public class UpdateSkillSetPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
-        addSkilltL.addClickHandler(this);
-//        addCertificationL.addClickHandler(this);
     }
 
     @Override
@@ -105,28 +98,11 @@ public class UpdateSkillSetPanel extends UpdateComposite {
     protected void addWidgets() {
         addDropDown("practice", practiceF);
         addDropDown("technologyGroup", technoglogyGroupF);
-        entityFieldsPanel.add(addSkilltL);
-//        entityFieldsPanel.add(addCertificationL);
         entityFieldsPanel.add(resumeUploadPanel);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-    }
-
-    @Override
-    public void onClick(ClickEvent event) {
-        if (event.getSource().equals(addSkilltL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("add_new_skill_request", "add_new_skill_request")).show();
-        }
-//        if (event.getSource().equals(addCertificationL)) {
-//            new GenericPopup(new GenericBPMStartFormPanel("add_new_certification_request", "add_new_certificetion_request")).show();
-//        }
-        super.onClick(event);
-    }
-
-    protected String getAddSkillRequestUrl() {
-        return OfficeWelcome.constants.root_url() + "bpm/startprocess/add_new_skill_request";
     }
 
     @Override
