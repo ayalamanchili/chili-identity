@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.SuggestBox;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -50,6 +51,14 @@ public class SearchClientpanel extends SearchComposite {
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
+        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                SuggestBox sb = (SuggestBox) fields.get("name");
+                sb.loadData(values.values());
+            }
+        });
     }
 
     @Override
