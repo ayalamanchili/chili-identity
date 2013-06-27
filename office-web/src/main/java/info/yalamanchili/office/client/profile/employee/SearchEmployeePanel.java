@@ -11,6 +11,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -26,30 +27,30 @@ import java.util.logging.Logger;
  * @author yalamanchili
  */
 public class SearchEmployeePanel extends SearchComposite {
-    
+
     private static Logger logger = Logger.getLogger(SearchEmployeePanel.class.getName());
-    
+
     public SearchEmployeePanel() {
         init("Employees Search", "Employee", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         addField("firstName", DataType.STRING_FIELD);
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
-        addField("state", DataType.STRING_FIELD);
+        addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
@@ -67,7 +68,7 @@ public class SearchEmployeePanel extends SearchComposite {
         logger.info(entity.toString());
         return entity;
     }
-    
+
     @Override
     protected void search(String searchText) {
         if (getSearchText() != null) {
@@ -80,7 +81,7 @@ public class SearchEmployeePanel extends SearchComposite {
             });
         }
     }
-    
+
     @Override
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 100), entity.toString(),
@@ -91,25 +92,25 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-    
+
     @Override
     protected void postSearchSuccess(JSONArray results) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
     }
-    
+
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
                 + limit.toString() + "/?text=" + searchText);
     }
-    
+
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
         return OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
                 + limit.toString();
     }
-    
+
     @Override
     protected void populateSearchSuggestBox() {
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -120,7 +121,7 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-    
+
     @Override
     protected void populateAdvancedSuggestBoxes() {
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -148,15 +149,15 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-    
+
     protected String getFirstNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=firstName";
     }
-    
+
     protected String getLastNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=lastName";
     }
-    
+
     protected String getEmployeeIdDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=employeeId";
     }
