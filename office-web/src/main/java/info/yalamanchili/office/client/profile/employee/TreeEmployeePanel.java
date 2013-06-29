@@ -32,6 +32,7 @@ import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.TreeSkillSetPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.admin.activity.TreeActivityPanel;
 import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import java.util.logging.Logger;
@@ -51,11 +52,13 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String COMPANY_CONTACT_NODE = "companyContact";
     protected static final String SKILL_SET_NODE = "skillset";
+    protected static final String ACTIVITY_NODE = "activity";
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel = new TreeSkillSetPanel(OfficeWelcome.instance().employeeId);
+    protected TreeActivityPanel activityTreePanel = new TreeActivityPanel(getEntityId());
 
     public TreeEmployeePanel(JSONObject emp) {
         super(emp);
@@ -88,7 +91,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
-
+        if (Auth.hasNonUserRoles()) {
+            addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel.getRoot());
+        }
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
         }
@@ -140,6 +145,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
             skillSetTreePanel.loadEntity();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(getEntityId()));
         }
+        if (ACTIVITY_NODE.equals(entityNodeKey)) {
+            //TODO
+        }
         if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
             if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
@@ -175,8 +183,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ResetPasswordPanel(CreateComposite.CreateCompositeType.CREATE));
 
         } //TODO review
-        else if (skillSetTreePanel != null) {
+        if (skillSetTreePanel != null) {
             skillSetTreePanel.treeNodeSelected(entityNodeKey);
+        }
+        if (activityTreePanel != null) {
+            activityTreePanel.treeNodeSelected(entityNodeKey);
         }
     }
 
