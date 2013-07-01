@@ -621,14 +621,14 @@ public class OfficeStartup {
     }
 
     protected IssueType getAccountsCategory() {
-        IssueType issueTypeCategory = QueryUtils.findEntity(em, IssueType.class, "nmae", "Accounts");
-        if (issueTypeCategory == null) {
+        IssueType accountsCategory = QueryUtils.findEntity(em, IssueType.class, "name", "Accounts");
+        if (accountsCategory == null) {
             IssueType issueType = new IssueType();
             issueType.setName("Accounts");
-            issueType.setDescription("Accounts of the employee");
+            issueType.setDescription("Accounts of the Employee ");
             return em.merge(issueType);
         } else {
-            return issueTypeCategory;
+            return accountsCategory;
         }
     }
 
