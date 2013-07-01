@@ -48,6 +48,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
+        addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
     }
 
@@ -58,11 +59,13 @@ public class SearchEmployeePanel extends SearchComposite {
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("employeeId", entity);
+        //populate address for search
         JSONArray addresses = new JSONArray();
         JSONObject address = new JSONObject();
+        assignEntityValueFromField("city", address);
         assignEntityValueFromField("state", address);
         addresses.set(0, address);
-        if (address.containsKey("state")) {
+        if (address.size() > 0) {
             entity.put("addresss", addresses);
         }
         logger.info(entity.toString());
@@ -72,7 +75,7 @@ public class SearchEmployeePanel extends SearchComposite {
     @Override
     protected void search(String searchText) {
         if (getSearchText() != null) {
-            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 100),
+            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 150),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String result) {
@@ -84,7 +87,7 @@ public class SearchEmployeePanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
-        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 100), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 150), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
