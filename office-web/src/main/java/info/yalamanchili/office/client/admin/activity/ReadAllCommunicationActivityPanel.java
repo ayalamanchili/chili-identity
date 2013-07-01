@@ -58,11 +58,11 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllPracticeURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     private String getReadAllPracticeURL(Integer start, String limit) {
@@ -76,8 +76,9 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Mode"));
         table.setText(0, 3, getKeyValue("Subject"));
         table.setText(0, 4, getKeyValue("Notes"));
-        table.setText(0, 5, getKeyValue("AddedBy"));
-        table.setText(0, 6, getKeyValue("Last Updated"));
+        table.setText(0, 5, getKeyValue("IssueType"));
+        table.setText(0, 6, getKeyValue("AddedBy"));
+        table.setText(0, 7, getKeyValue("Last Updated"));
     }
 
     @Override
@@ -89,8 +90,9 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "mode"));
             table.setText(i, 3, JSONUtils.toString(entity, "subject"));
             table.setText(i, 4, JSONUtils.toString(entity, "notes"));
-            table.setText(i, 5, JSONUtils.toString(entity, "createdBy"));
-            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_LONG));
+            table.setText(i, 5, JSONUtils.toString(entity, "issueType"));
+            table.setText(i, 6, JSONUtils.toString(entity, "createdBy"));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_LONG));
         }
     }
 
