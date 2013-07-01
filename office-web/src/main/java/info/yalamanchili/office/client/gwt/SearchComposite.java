@@ -28,6 +28,7 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.ui.*;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -245,7 +246,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected abstract void postSearchSuccess(JSONArray result);
 
     protected void processSearchResult(String result) {
-        searchTB.setText("");
+        clearSearch();
         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
             new ResponseStatusWidget().show("no results");
         } else {
@@ -289,6 +290,36 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
 
     public void loadSearchSuggestions(Collection<String> inputs) {
         data.addAll(inputs);
+    }
+
+    protected void clearSearch() {
+        searchTB.setText("");
+        for (String fieldKey : fields.keySet()) {
+            if (fields.get(fieldKey) instanceof StringField) {
+                StringField field = (StringField) fields.get(fieldKey);
+                field.setValue("");
+            }
+            if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
+                info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
+                field.setValue("");
+            }
+            if (fields.get(fieldKey) instanceof DateField) {
+                DateField field = (DateField) fields.get(fieldKey);
+                field.setValue("");
+            }
+            if (fields.get(fieldKey) instanceof LongField) {
+                LongField field = (LongField) fields.get(fieldKey);
+                field.setValue("");
+            }
+            if (fields.get(fieldKey) instanceof EnumField) {
+                EnumField field = (EnumField) fields.get(fieldKey);
+                field.setValue("");
+            }
+            if (fields.get(fieldKey) instanceof BooleanField) {
+                BooleanField field = (BooleanField) fields.get(fieldKey);
+                //TODO
+            }
+        }
     }
 
     protected abstract String getSearchURI(String searchText, Integer start, Integer limit);
