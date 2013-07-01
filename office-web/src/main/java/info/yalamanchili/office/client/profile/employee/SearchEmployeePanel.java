@@ -50,6 +50,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("employeeId", DataType.STRING_FIELD);
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
+        addField("clientName", DataType.STRING_FIELD);
     }
 
     @Override
@@ -67,6 +68,18 @@ public class SearchEmployeePanel extends SearchComposite {
         addresses.set(0, address);
         if (address.size() > 0) {
             entity.put("addresss", addresses);
+        }
+        //client information
+        JSONArray clientInfos = new JSONArray();
+        JSONObject clientInfo = new JSONObject();
+        JSONObject client = new JSONObject();
+        assignEntityValueFromField("clientName", client, "name");
+        if (client.size() > 0) {
+            clientInfo.put("client", client);
+        }
+        clientInfos.set(0, clientInfo);
+        if (client.size() > 0) {
+            entity.put("clientInformations", clientInfos);
         }
         logger.info(entity.toString());
         return entity;

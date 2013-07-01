@@ -8,6 +8,7 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,5 +25,11 @@ public class EmployeeSearchDto extends Employee {
     @Override
     public List<Address> getAddresss() {
         return super.getAddresss();
+    }
+
+    @XmlElement
+    @Override
+    public List<ClientInformation> getClientInformations() {
+        return super.getClientInformations();
     }
 }

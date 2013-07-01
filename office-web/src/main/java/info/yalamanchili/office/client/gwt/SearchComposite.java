@@ -197,44 +197,48 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         advancedSearchPanel.add(widget);
     }
 
-    // TODO convert to use getValue()
-    protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
+    protected void assignEntityValueFromField(String fieldKey, JSONObject entity, String propertyValue) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
             if (field.getValue() != null && field.getValue().trim().length() > 0) {
-                entity.put(fieldKey, new JSONString(field.getValue()));
+                entity.put(propertyValue, new JSONString(field.getValue()));
             }
         }
         if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
             info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
             if (field.getValue() != null && field.getValue().trim().length() > 0) {
-                entity.put(fieldKey, new JSONString(field.getValue()));
+                entity.put(propertyValue, new JSONString(field.getValue()));
             }
         }
         if (fields.get(fieldKey) instanceof DateField) {
             DateField field = (DateField) fields.get(fieldKey);
             if (field.getDate() != null) {
-                entity.put(fieldKey, new JSONString(DateUtils.toDateString(field.getDate())));
+                entity.put(propertyValue, new JSONString(DateUtils.toDateString(field.getDate())));
             }
         }
         if (fields.get(fieldKey) instanceof LongField) {
             LongField field = (LongField) fields.get(fieldKey);
             if (field.getValue() != null && field.getValue().trim().length() > 0) {
-                entity.put(fieldKey, new JSONString(String.valueOf(field.getValue())));
+                entity.put(propertyValue, new JSONString(String.valueOf(field.getValue())));
             }
         }
         if (fields.get(fieldKey) instanceof EnumField) {
             EnumField field = (EnumField) fields.get(fieldKey);
             if (field.getValue() != null && field.getValue().trim().length() > 0) {
-                entity.put(fieldKey, new JSONString(field.getValue()));
+                entity.put(propertyValue, new JSONString(field.getValue()));
             }
         }
         if (fields.get(fieldKey) instanceof BooleanField) {
             BooleanField field = (BooleanField) fields.get(fieldKey);
             if (field.getValue() != null) {
-                entity.put(fieldKey, new JSONString(field.getValue().toString()));
+                entity.put(propertyValue, new JSONString(field.getValue().toString()));
             }
         }
+    }
+    // TODO convert to use getValue()
+
+    protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
+        assignEntityValueFromField(fieldKey, entity, fieldKey);
     }
 
     protected abstract JSONObject populateEntityFromFields();
@@ -313,7 +317,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             }
             if (fields.get(fieldKey) instanceof EnumField) {
                 EnumField field = (EnumField) fields.get(fieldKey);
-                field.setValue("");
+                field.setSelectedIndex(0);
             }
             if (fields.get(fieldKey) instanceof BooleanField) {
                 BooleanField field = (BooleanField) fields.get(fieldKey);
