@@ -75,10 +75,9 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Type"));
         table.setText(0, 2, getKeyValue("Mode"));
         table.setText(0, 3, getKeyValue("Subject"));
-        table.setText(0, 4, getKeyValue("Notes"));
-        table.setText(0, 5, getKeyValue("IssueType"));
-        table.setText(0, 6, getKeyValue("AddedBy"));
-        table.setText(0, 7, getKeyValue("Last Updated"));
+        table.setText(0, 4, getKeyValue("IssueType"));
+        table.setText(0, 5, getKeyValue("AddedBy"));
+        table.setText(0, 6, getKeyValue("Last Updated"));
     }
 
     @Override
@@ -89,10 +88,9 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "type"));
             table.setText(i, 2, JSONUtils.toString(entity, "mode"));
             table.setText(i, 3, JSONUtils.toString(entity, "subject"));
-            table.setText(i, 4, JSONUtils.toString(entity, "notes"));
-            table.setText(i, 5, JSONUtils.toString(entity, "issueType"));
-            table.setText(i, 6, JSONUtils.toString(entity, "createdBy"));
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_LONG));
+            table.setText(i, 4, JSONUtils.toString(entity.get("issueType"), "name"));
+            table.setText(i, 5, JSONUtils.toString(entity, "createdBy"));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_LONG));
         }
     }
 

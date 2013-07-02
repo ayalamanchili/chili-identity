@@ -46,6 +46,7 @@ public class CommunicationActivityDao extends CRUDDao<CommunicationActivity> {
 
     @Override
     public CommunicationActivity save(CommunicationActivity entity) {
+        entity.setIssueType(IssueTypeDao.instance().findById(entity.getIssueType().getId()));
         return super.save(entity);
     }
 

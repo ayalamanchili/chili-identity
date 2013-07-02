@@ -8,6 +8,7 @@
 package info.yalamanchili.office.entity.activity;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import java.util.List;
@@ -38,8 +39,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class CommunicationActivity extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     protected CommunicationType type;
     @Enumerated(EnumType.STRING)
+    @NotNull
     protected CommunicationMode mode;
     @NotEmpty
     protected String subject;
@@ -52,6 +55,13 @@ public class CommunicationActivity extends AbstractEntity {
      * activity created by empId
      */
     protected String createdBy;
+    /*
+     * Issue type
+     */
+    @ManyToOne
+    @ForeignKey(name = "FK_IssueType_Activity")
+    @NotNull
+    protected IssueType issueType;
     /*
      * employee the activity is related to 
      */
@@ -110,6 +120,14 @@ public class CommunicationActivity extends AbstractEntity {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public IssueType getIssueType() {
+        return issueType;
+    }
+
+    public void setIssueType(IssueType issueType) {
+        this.issueType = issueType;
     }
 
     public Employee getEmployee() {

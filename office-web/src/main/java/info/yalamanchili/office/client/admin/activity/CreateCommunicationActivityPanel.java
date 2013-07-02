@@ -29,7 +29,7 @@ public class CreateCommunicationActivityPanel extends CreateComposite {
 
     public CreateCommunicationActivityPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Email", OfficeWelcome.constants);
+        initCreateComposite("CommunicationActivity", OfficeWelcome.constants);
     }
 
     @Override
