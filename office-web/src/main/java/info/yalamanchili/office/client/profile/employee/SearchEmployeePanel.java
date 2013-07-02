@@ -48,9 +48,12 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
+        String[] employeeTypeStrs = {"CORPORATE_EMPLOYEE", "EMPLOYEE"};
+        addEnumField("employeeType", false, true, employeeTypeStrs);
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
         addField("clientName", DataType.STRING_FIELD);
+        addField("vendorName", DataType.STRING_FIELD);
     }
 
     @Override
@@ -60,6 +63,12 @@ public class SearchEmployeePanel extends SearchComposite {
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("employeeId", entity);
+        //employeetype
+        JSONObject employeeType = new JSONObject();
+        assignEntityValueFromField("employeeType", employeeType, "name");
+        if (employeeType.size() > 0) {
+            entity.put("employeeType", employeeType);
+        }
         //populate address for search
         JSONArray addresses = new JSONArray();
         JSONObject address = new JSONObject();
@@ -72,13 +81,20 @@ public class SearchEmployeePanel extends SearchComposite {
         //client information
         JSONArray clientInfos = new JSONArray();
         JSONObject clientInfo = new JSONObject();
+        //client
         JSONObject client = new JSONObject();
         assignEntityValueFromField("clientName", client, "name");
         if (client.size() > 0) {
             clientInfo.put("client", client);
         }
+        //vendor
+        JSONObject vendor = new JSONObject();
+        assignEntityValueFromField("vendorName", vendor, "name");
+        if (vendor.size() > 0) {
+            clientInfo.put("vendor", vendor);
+        }
         clientInfos.set(0, clientInfo);
-        if (client.size() > 0) {
+        if (client.size() > 0 || vendor.size() > 0) {
             entity.put("clientInformations", clientInfos);
         }
         logger.info(entity.toString());
