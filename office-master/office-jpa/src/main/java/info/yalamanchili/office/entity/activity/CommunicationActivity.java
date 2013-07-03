@@ -8,7 +8,6 @@
 package info.yalamanchili.office.entity.activity;
 
 import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +18,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,6 +28,8 @@ import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -39,12 +42,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class CommunicationActivity extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "{type.not.empty.msg}")
     protected CommunicationType type;
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "{mode.not.empty.msg}")
     protected CommunicationMode mode;
-    @NotEmpty
+    @NotEmpty(message = "{subject.not.empty.msg}")
     protected String subject;
     @Lob
     protected String notes;
@@ -60,7 +63,7 @@ public class CommunicationActivity extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_IssueType_Activity")
-    @NotNull
+    @NotNull(message = "{issueType.not.empty.msg}")
     protected IssueType issueType;
     /*
      * employee the activity is related to 
@@ -145,5 +148,13 @@ public class CommunicationActivity extends AbstractEntity {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void populateAuditData() {
+        this.setUpdatedTimeStamp(new Date());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        this.setCreatedBy(auth.getName());
     }
 }
