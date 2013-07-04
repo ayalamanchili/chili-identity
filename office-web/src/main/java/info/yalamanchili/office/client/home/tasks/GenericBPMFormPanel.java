@@ -99,8 +99,14 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         }
         for (int i = 0; i < formProperties.size(); i++) {
             JSONObject formProperty = formProperties.get(i).isObject();
+            boolean isRequired;
+            if (JSONUtils.toString(formProperty, "required").equals("true")) {
+                isRequired = true;
+            } else {
+                isRequired = false;
+            }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("string")) {
-                addField(JSONUtils.toString(formProperty, "id"), false, true, DataType.STRING_FIELD);
+                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.STRING_FIELD);
             }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("enum")) {
                 JSONObject type = formProperty.get("type").isObject();
@@ -110,7 +116,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                     JSONObject enm = enumArray.get(y).isObject();
                     enumVals[y] = JSONUtils.toString(enm, "id");
                 }
-                addEnumField(JSONUtils.toString(formProperty, "id"), false, true, enumVals);
+                addEnumField(JSONUtils.toString(formProperty, "id"), false, isRequired, enumVals);
             }
         }
     }
