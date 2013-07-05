@@ -60,7 +60,7 @@ public class ReadAllLoginActivityPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setHTML(i, 2, JSONUtils.toString(entity, "employeeId"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "loginTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_LONG));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "loginTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
             table.setText(i, 4, JSONUtils.toString(entity, "loginCount"));
         }
     }

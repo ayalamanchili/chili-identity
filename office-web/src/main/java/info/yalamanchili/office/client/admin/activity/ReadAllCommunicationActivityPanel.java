@@ -104,7 +104,7 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "subject"));
             table.setText(i, 4, JSONUtils.toString(entity.get("issueType"), "name"));
             table.setText(i, 5, JSONUtils.toString(entity, "createdBy"));
-            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_LONG));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
         }
     }
     
