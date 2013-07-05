@@ -16,7 +16,12 @@ import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.utils.JSONUtils;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -105,6 +110,7 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     }
 
     protected void populateDropDown(Map<Integer, String> values) {
+        values=sortByComparator(values);
         int i = 1;
         for (Integer key : values.keySet()) {
             listBox.insertItem(values.get(key), key.toString(), i);
@@ -159,5 +165,27 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
             url = url.concat("column=" + column + "&");
         }
         return url;
+    }
+    
+     public static Map sortByComparator(Map unsortMap) {
+
+        List list = new LinkedList(unsortMap.entrySet());
+
+        // sort list based on comparator
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry) (o1)).getValue().toString().toLowerCase())
+                        .compareTo(((Map.Entry) (o2)).getValue().toString().toLowerCase());
+            }
+        });
+
+        // put sorted list into map again
+        //LinkedHashMap make sure order in which keys were inserted
+        Map sortedMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
     }
 }
