@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class CreateCommunicationActivityPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateCommunicationActivityPanel.class.getName());
-    SelectIssueTypeWidget issueTypeF = new SelectIssueTypeWidget(false, false);
+    SelectIssueTypeWidget issueTypeF = new SelectIssueTypeWidget(false, true);
 
     public CreateCommunicationActivityPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -47,16 +47,16 @@ public class CreateCommunicationActivityPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -85,9 +85,9 @@ public class CreateCommunicationActivityPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         String[] typeStrs = {"INBOUND", "OUTBOUND", "OTHER"};
-        addEnumField("type", false, false, typeStrs);
+        addEnumField("type", false, true, typeStrs);
         String[] modeStrs = {"EMAIL", "PHONE", "SYSTEM", "OTHER"};
-        addEnumField("mode", false, false, modeStrs);
+        addEnumField("mode", false, true, modeStrs);
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
         addDropDown("issueType", issueTypeF);
