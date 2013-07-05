@@ -110,6 +110,7 @@ public abstract class SelectComposite extends BaseField implements ClickHandler,
     }
 
     protected void populateDropDown(Map<Integer, String> values) {
+        //TODO avoid this sorting on client side
         values=sortByComparator(values);
         int i = 1;
         for (Integer key : values.keySet()) {
