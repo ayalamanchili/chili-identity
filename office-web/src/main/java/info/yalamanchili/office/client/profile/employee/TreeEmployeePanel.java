@@ -90,9 +90,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
-        addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel.getRoot());
+        addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
         if (Auth.hasNonUserRoles()) {
-            addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel.getRoot());
+            addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
         }
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
@@ -193,6 +193,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
 
     @Override
     public void loadEntity() {
+        logger.info("eeeee");
         entity = OfficeWelcome.instance().employee;
     }
 

@@ -3,6 +3,8 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import info.chili.gwt.utils.Utils;
 
 import java.util.logging.Logger;
@@ -17,8 +19,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import info.chili.gwt.utils.JSONUtils;
+import java.util.HashMap;
+import java.util.Map;
 //TODO extend tree item?
-public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem> {
+public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem>, OpenHandler<TreeItem> {
 
     Logger logger = Logger.getLogger(TreePanelComposite.class.getName());
     protected String entityId;
@@ -27,6 +31,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     protected FlowPanel panel = new FlowPanel();
     protected Tree tree = new Tree();
     protected TreeItem rootItem = new TreeItem("root");
+    protected Map<String, TreePanelComposite> childTreeWidgets = new HashMap<String, TreePanelComposite>();
 
     public String getEntityId() {
         if (entityId == null && entity != null) {
@@ -61,6 +66,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
         panel.addStyleName("y-gwt-TreePanel");
         addRootNode(entityNodeNameKey);
         tree.addSelectionHandler(this);
+        tree.addOpenHandler(this);
         addListeners();
         configure();
         addWidgets();
@@ -89,6 +95,16 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
         }
     }
 
+    @Override
+    public void onOpen(OpenEvent<TreeItem> event) {
+        for (String key : childTreeWidgets.keySet()) {
+            if (event.getTarget().getUserObject()!= null && key.equalsIgnoreCase(event.getTarget().getUserObject().toString())) {
+                TreePanelComposite child = childTreeWidgets.get(key);
+                child.loadEntity();
+            }
+        }
+    }
+
     protected void addRootNode(String name) {
         // TODO get the roo node name from constants
         TreeItemLabel label = new TreeItemLabel(name);
@@ -107,11 +123,12 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
         rootItem.addItem(child);
     }
 
-    protected void addFirstChildLink(String childNodeName, String childNodeKey, TreeItem treeItem) {
+    protected void addFirstChildLink(String childNodeName, String childNodeKey, TreePanelComposite childTreeNode) {
+        childTreeWidgets.put(childNodeKey, childTreeNode);
         TreeItemLabel label = new TreeItemLabel(Utils.getKeyValue(childNodeName, constants));
-        treeItem.setWidget(label);
-        treeItem.setUserObject(childNodeKey);
-        rootItem.addItem(treeItem);
+        childTreeNode.getRoot().setWidget(label);
+        childTreeNode.getRoot().setUserObject(childNodeKey);
+        rootItem.addItem(childTreeNode.getRoot());
     }
 
     protected void removeFirstChildLink(String childNodeKey) {
