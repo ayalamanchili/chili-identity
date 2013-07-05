@@ -54,7 +54,7 @@ public class GenericBPMStartFormPanel extends GenericBPMFormPanel {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully submitted");
+        new ResponseStatusWidget().show("Successfully submitted.Please wait for Email confirmation");
         GenericPopup.instance().hide();
     }
 }

@@ -33,7 +33,7 @@ public class CommunicationActivityDao extends CRUDDao<CommunicationActivity> {
     }
 
     public List<CommunicationActivity> getCommunicationActivity(Long empId, int start, int limit) {
-        Query query = getEntityManager().createQuery("from " + CommunicationActivity.class.getCanonicalName() + " ca where ca.employee.id=:employeeIdParam", CommunicationActivity.class);
+        Query query = getEntityManager().createQuery("from " + CommunicationActivity.class.getCanonicalName() + " ca where ca.employee.id=:employeeIdParam order by ca.updatedTimeStamp DESC", CommunicationActivity.class);
         query.setParameter("employeeIdParam", empId);
         return query.getResultList();
     }
