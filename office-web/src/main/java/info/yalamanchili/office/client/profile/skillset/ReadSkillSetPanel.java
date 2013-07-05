@@ -15,6 +15,7 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
@@ -71,11 +72,11 @@ public class ReadSkillSetPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        onLoadSuccess(response);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                onLoadSuccess(response);
+            }
+        });
 
     }
 
@@ -100,7 +101,11 @@ public class ReadSkillSetPanel extends ReadComposite {
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("technologyGroup", entity, null);
         assignFieldValueFromEntity("lastUpdated", entity, DataType.DATE_FIELD);
+        //Resume
+        Label resumeLabel = new Label("Resume");
+        entityFieldsPanel.add(resumeLabel);
         String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+        //TODO convert to generic field
         FileField fileField = new FileField(fileURL);
         entityFieldsPanel.add(fileField);
         entityFieldsPanel.add(new SkillSetOptionsPanel(empId));

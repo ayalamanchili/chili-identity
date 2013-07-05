@@ -11,7 +11,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.utils.FileUtils;
-import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import java.util.logging.Logger;
 
