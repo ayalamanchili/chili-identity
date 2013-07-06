@@ -19,6 +19,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -29,6 +30,7 @@ import java.util.logging.Logger;
 public class SearchEmployeePanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchEmployeePanel.class.getName());
+    protected SelectAddressTypeWidget addressTypeWidget = new SelectAddressTypeWidget(false, false);
 
     public SearchEmployeePanel() {
         init("Employees Search", "Employee", OfficeWelcome.constants);
@@ -52,6 +54,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addEnumField("employeeType", false, false, employeeTypeStrs);
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
+        addDropDown("addressType", addressTypeWidget);
         addField("clientName", DataType.STRING_FIELD);
         addField("vendorName", DataType.STRING_FIELD);
     }
@@ -77,6 +80,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addresses.set(0, address);
         if (address.size() > 0) {
             entity.put("addresss", addresses);
+             assignEntityValueFromField("addressType", entity);
         }
         //client information
         JSONArray clientInfos = new JSONArray();

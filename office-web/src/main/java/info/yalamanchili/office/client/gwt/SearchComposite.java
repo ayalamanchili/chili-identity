@@ -193,7 +193,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         advancedSearchPanel.add(enumField);
     }
 
-    protected void addDropDown(SelectComposite widget) {
+    protected void addDropDown(String key, SelectComposite widget) {
+        fields.put(key, widget);
         advancedSearchPanel.add(widget);
     }
 
@@ -232,6 +233,14 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             BooleanField field = (BooleanField) fields.get(fieldKey);
             if (field.getValue() != null) {
                 entity.put(propertyValue, new JSONString(field.getValue().toString()));
+            }
+        }
+        if (fields.get(fieldKey) instanceof SelectComposite) {
+            SelectComposite field = (SelectComposite) fields.get(fieldKey);
+            if (field.getSelectedObject() != null) {
+                entity.put(fieldKey, field.getSelectedObject());
+            } else {
+                entity.put(fieldKey, null);
             }
         }
     }
@@ -306,6 +315,10 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             if (fields.get(fieldKey) instanceof info.chili.gwt.widgets.SuggestBox) {
                 info.chili.gwt.widgets.SuggestBox field = (info.chili.gwt.widgets.SuggestBox) fields.get(fieldKey);
                 field.setValue("");
+            }
+            if (fields.get(fieldKey) instanceof SelectComposite) {
+                SelectComposite field = (SelectComposite) fields.get(fieldKey);
+                field.getListBox().setSelectedIndex(0);
             }
             if (fields.get(fieldKey) instanceof DateField) {
                 DateField field = (DateField) fields.get(fieldKey);
