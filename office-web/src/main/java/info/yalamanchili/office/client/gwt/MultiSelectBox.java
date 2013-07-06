@@ -27,6 +27,7 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.ListBoxField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 //TODO extend base field
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
 
@@ -51,14 +52,16 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
         captionPanel.setCaptionHTML(title);
         this.available = obj.getAvailable();
         this.selected = obj.getSelected();
+        int i = 0;
         for (String id : available.keySet()) {
             if (selected.contains(id)) {
                 selectedListBox.getListBox().insertItem(available.get(id), id.toString(),
-                        new Integer(id));
+                        i);
             } else {
                 availableListBox.getListBox().insertItem(available.get(id), id.toString(),
-                        new Integer(id));
+                        i);
             }
+            i++;
         }
     }
 
