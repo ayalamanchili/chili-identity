@@ -80,7 +80,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addresses.set(0, address);
         if (address.size() > 0) {
             entity.put("addresss", addresses);
-             assignEntityValueFromField("addressType", entity);
+            assignEntityValueFromField("addressType", address);
         }
         //client information
         JSONArray clientInfos = new JSONArray();
