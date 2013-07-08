@@ -24,17 +24,17 @@
                                        type="string" />
                 <activiti:formProperty id="vendorContactNumber" 
                                        name="Vendor Contact Number"
-                                       required="true"
+                                       required="false"
                                        type="string">
                 </activiti:formProperty>
                 <activiti:formProperty id="vendorContactEmail" 
                                        name="Vendor Contact Email"
-                                       required="true"
+                                       required="false"
                                        type="string">
                 </activiti:formProperty>
                 <activiti:formProperty id="vendorAddress" 
                                        name="Vendor Address"
-                                       required="true"
+                                       required="false"
                                        type="string">
                 </activiti:formProperty>
                 <activiti:formProperty id="notes" 
