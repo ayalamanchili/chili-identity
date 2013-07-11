@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.message;
 
+import info.chili.commons.CollectionsUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -81,6 +82,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
 
     @GET
     @Path("/group/employees/{groupId}/{start}/{limit}")
+    //TODO needs performance tune up
     public MultiSelectObj getGroupEmployees(@PathParam("groupId") Long groupId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
         MultiSelectObj obj = new MultiSelectObj();
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
@@ -95,6 +97,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
                 }
             }
         }
+        obj.setAvailable(CollectionsUtils.sortByComparator(obj.getAvailable()));
         return obj;
     }
 

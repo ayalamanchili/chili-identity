@@ -31,7 +31,7 @@ import info.chili.gwt.utils.Utils;
 //TODO extend base field
 public abstract class MultiSelectBox extends ALComposite implements ClickHandler {
 
-    private Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
+    private static Logger logger = Logger.getLogger(MultiSelectBox.class.getName());
     protected ConstantsWithLookup constants;
     CaptionPanel captionPanel = new CaptionPanel();
     CHorizontalPanel panel = new CHorizontalPanel();
@@ -50,7 +50,7 @@ public abstract class MultiSelectBox extends ALComposite implements ClickHandler
 
     public void popuplateWidget(String title, MultiSelectObj obj) {
         captionPanel.setCaptionHTML(title);
-        this.available = obj.getAvailable();
+        this.available = Utils.sortByComparator(obj.getAvailable());
         this.selected = obj.getSelected();
         int i = 0;
         for (String id : available.keySet()) {
