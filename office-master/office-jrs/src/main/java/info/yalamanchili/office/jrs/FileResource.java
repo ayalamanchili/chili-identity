@@ -103,7 +103,8 @@ public class FileResource {
             return path;
         }
     }
-
+    
+//TODO move to utils
     protected void setContentHeaders(ResponseBuilder response, String fileName) {
         if (info.chili.commons.FileUtils.isPDF(fileName)) {
             response.header("Content-Disposition", "filename=" + fileName);

@@ -39,6 +39,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -324,6 +325,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         return employees;
+    }
+
+    @PUT
+    @Path("/search_employee_report")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("format") String format) {
+        return super.searchReport(mapper.map(entity, Employee.class), format);
     }
 
     @Override
