@@ -28,8 +28,9 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.ui.*;
-import info.chili.gwt.composite.BaseFieldWithTextBox;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.Collection;
@@ -56,8 +57,14 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     /*
      * Advanced search Panels
      */
-    protected DisclosurePanel disclosurePanel = new DisclosurePanel("Advanced Search");
+    protected DisclosurePanel advancedSearchDP = new DisclosurePanel("Advanced Search");
     protected FlowPanel advancedSearchPanel = new FlowPanel();
+    /*
+     * Reporting widgets
+     */
+    protected DisclosurePanel reportsDP = new DisclosurePanel("Reports");
+    protected FlowPanel reportsPanel = new FlowPanel();
+    protected Button generateRepB = new Button("Generate");
     /*
      * attributes
      */
@@ -78,21 +85,30 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         searchTB.addStyleName("searchComposite");
         searchTB.addKeyPressHandler(this);
         mainPanel.add(searchTB);
-        disclosurePanel.setContent(advancedSearchPanel);
-        disclosurePanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+        advancedSearchDP.setContent(advancedSearchPanel);
+        advancedSearchDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 populateAdvancedSuggestBoxes();
             }
         });
-        mainPanel.add(disclosurePanel);
+        mainPanel.add(advancedSearchDP);
         mainPanel.add(searchButton);
+        //reports
+        configureReportsPanel();
         captionPanel.setContentWidget(mainPanel);
         searchButton.addClickHandler(this);
         addListeners();
         configure();
         addWidgets();
         populateSearchSuggestBox();
+    }
+
+    protected void configureReportsPanel() {
+        reportsPanel.add(generateRepB);
+        reportsDP.setContent(reportsPanel);
+        mainPanel.add(reportsDP);
+        generateRepB.addClickHandler(this);
     }
 
     protected abstract void populateSearchSuggestBox();
@@ -256,6 +272,16 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
 
     protected abstract void search(JSONObject entity);
 
+    protected void generateReport(JSONObject entity) {
+        HttpService.HttpServiceAsync.instance().doPut(getReportURL(), entity.toString(),
+                null, true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
+    }
+
     protected abstract void postSearchSuccess(JSONArray result);
 
     protected void processSearchResult(String result) {
@@ -287,7 +313,15 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         if (event.getSource() == searchButton) {
             processSearch();
         }
+        if (event.getSource() == generateRepB) {
+            generateReportClicked();
+        }
+    }
 
+    protected void generateReportClicked() {
+        entity = populateEntityFromFields();
+        if (entity.toString().length() > 3) {
+        }
     }
 
     protected void processSearch() {
@@ -342,4 +376,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected abstract String getSearchURI(String searchText, Integer start, Integer limit);
 
     protected abstract String getSearchURI(Integer start, Integer limit);
+
+    protected String getReportURL() {
+        return null;
+    }
 }
