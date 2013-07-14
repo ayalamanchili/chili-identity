@@ -23,6 +23,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.http.client.RequestBuilder;
@@ -33,8 +35,6 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.client.ui.SuggestOracle.Request;
-import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -71,6 +71,8 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected DisclosurePanel reportsDP = new DisclosurePanel("Reports");
     protected FlowPanel reportsPanel = new FlowPanel();
     protected Button generateRepB = new Button("Generate");
+    protected Label formatL = new Label("Format");
+    protected ListBox formatLB = new ListBox();
     /*
      * attributes
      */
@@ -96,6 +98,13 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 populateAdvancedSuggestBoxes();
+                reportsDP.setVisible(true);
+            }
+        });
+        advancedSearchDP.addCloseHandler(new CloseHandler<DisclosurePanel>() {
+            @Override
+            public void onClose(CloseEvent<DisclosurePanel> event) {
+                reportsDP.setVisible(false);
             }
         });
         mainPanel.add(advancedSearchDP);
@@ -111,10 +120,16 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     }
 
     protected void configureReportsPanel() {
+        reportsPanel.add(formatL);
+        formatLB.addItem("PDF", "pdf");
+        formatLB.addItem("HTML", "html");
+        formatLB.addItem("XML", "xml");
+        reportsPanel.add(formatLB);
         reportsPanel.add(generateRepB);
         reportsDP.setContent(reportsPanel);
         mainPanel.add(reportsDP);
         generateRepB.addClickHandler(this);
+        reportsDP.setVisible(false);
     }
 
     protected abstract void populateSearchSuggestBox();
@@ -302,6 +317,10 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         } catch (RequestException e) {
             Window.alert(e.getLocalizedMessage());
         }
+    }
+
+    protected String getReportFormat() {
+        return formatLB.getValue(formatLB.getSelectedIndex());
     }
 
     protected abstract void postSearchSuccess(JSONArray result);
