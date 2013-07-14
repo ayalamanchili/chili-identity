@@ -107,7 +107,8 @@ public abstract class CRUDResource<T> {
     @Path("/search_report")
     public Response searchReport(T entity, @QueryParam("format") String format) {
         Response.ResponseBuilder response;
-        String fileName = "sample.pdf";
+        //TODO get generated file name
+        String fileName = "sample" + "." + format;
         DynamicReport dynamicReport = null;
         //TODO think about limit performance
         List<T> list = search(entity, 0, 1000);
@@ -117,7 +118,15 @@ public abstract class CRUDResource<T> {
             try {
                 JasperPrint jasperPrint = DynamicJasperHelper.generateJasperPrint(dynamicReport, new ClassicLayoutManager(), list);
                 // OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
-                byte[] cont = JasperExportManager.exportReportToPdf(jasperPrint);
+                if (format.equalsIgnoreCase("pdf")) {
+                    JasperExportManager.exportReportToPdfFile(jasperPrint, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
+                }
+                if (format.equalsIgnoreCase("html")) {
+                    JasperExportManager.exportReportToHtmlFile(jasperPrint, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
+                }
+                if (format.equalsIgnoreCase("xml")) {
+                    JasperExportManager.exportReportToXmlFile(jasperPrint, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName, false);
+                }
                 response = Response.ok(fileName.getBytes());
             } catch (JRException e) {
                 response = Response.serverError();

@@ -12,11 +12,6 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
-            <groupId>ar.com.fdvs</groupId>
-            <artifactId>DynamicJasper</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>info.yalamanchili.office</groupId>
             <artifactId>office-ejb</artifactId>
             <version>${project.version}</version>
