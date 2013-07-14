@@ -25,14 +25,20 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import info.chili.gwt.callback.ALAsyncCallback;
+import com.google.gwt.user.client.ui.SuggestOracle.Request;
+import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import info.chili.gwt.date.DateUtils;
-import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -273,13 +279,29 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected abstract void search(JSONObject entity);
 
     protected void generateReport(JSONObject entity) {
-        HttpService.HttpServiceAsync.instance().doPut(getReportURL(), entity.toString(),
-                null, true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+        //TODO make this abstract
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(getReportURL()));
+        builder.setHeader("Content-Type", "application/json");
+
+        try {
+            com.google.gwt.http.client.Request request = builder.sendRequest(entity.toString(), new RequestCallback() {
+                @Override
+                public void onResponseReceived(com.google.gwt.http.client.Request request, com.google.gwt.http.client.Response response) {
+                    if (200 == response.getStatusCode()) {
+                        Window.open(OfficeWelcome.config.getFileDownloadUrl() + response.getText(), "_blank", "");
+                    } else {
+                        Window.alert("error downloading report");
+                    }
+                }
+
+                @Override
+                public void onError(com.google.gwt.http.client.Request request, Throwable exception) {
+                    Window.alert(exception.getLocalizedMessage());
+                }
+            });
+        } catch (RequestException e) {
+            Window.alert(e.getLocalizedMessage());
+        }
     }
 
     protected abstract void postSearchSuccess(JSONArray result);
@@ -321,6 +343,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected void generateReportClicked() {
         entity = populateEntityFromFields();
         if (entity.toString().length() > 3) {
+            generateReport(entity);
         }
     }
 

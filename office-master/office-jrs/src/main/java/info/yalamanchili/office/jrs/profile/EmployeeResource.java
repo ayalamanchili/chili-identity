@@ -34,6 +34,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -327,7 +328,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         return employees;
     }
 
-    @PUT
+    @POST
     @Path("/search_employee_report")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("format") String format) {

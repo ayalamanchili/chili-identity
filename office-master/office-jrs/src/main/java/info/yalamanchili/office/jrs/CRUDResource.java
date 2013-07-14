@@ -13,6 +13,7 @@ import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.builders.ReflectiveReportBuilder;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -104,34 +105,28 @@ public abstract class CRUDResource<T> {
 
     @PUT
     @Path("/search_report")
-    @Transactional(propagation = Propagation.NEVER)
     public Response searchReport(T entity, @QueryParam("format") String format) {
         Response.ResponseBuilder response;
+        String fileName = "sample.pdf";
+        DynamicReport dynamicReport = null;
         //TODO think about limit performance
         List<T> list = search(entity, 0, 1000);
-        DynamicReport dynamicReport = new ReflectiveReportBuilder(list).build();
-        dynamicReport.setTitle(entity.getClass().getSimpleName());
-        try {
-            JasperPrint jasperPrint = DynamicJasperHelper.generateJasperPrint(dynamicReport, new ClassicLayoutManager(), list);
-            byte[] reportBytes = JasperExportManager.exportReportToPdf(jasperPrint);
-            response = Response.ok(reportBytes);
-            setContentHeaders(response, "report.pdf");
-        } catch (JRException e) {
-            response= Response.serverError();
+        if (list.size() > 0) {
+            dynamicReport = new ReflectiveReportBuilder(list).build();
+            dynamicReport.setTitle(entity.getClass().getSimpleName());
+            try {
+                JasperPrint jasperPrint = DynamicJasperHelper.generateJasperPrint(dynamicReport, new ClassicLayoutManager(), list);
+                // OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
+                byte[] cont = JasperExportManager.exportReportToPdf(jasperPrint);
+                response = Response.ok(fileName.getBytes());
+            } catch (JRException e) {
+                response = Response.serverError();
+            }
+        } else {
+            //no results
+            response = Response.noContent();
         }
         return response.build();
-    }
-
-    //TODO move to utils
-    protected void setContentHeaders(Response.ResponseBuilder response, String fileName) {
-        if (info.chili.commons.FileUtils.isPDF(fileName)) {
-            response.header("Content-Disposition", "filename=" + fileName);
-            response.header("Content-Type", "application/pdf");
-            return;
-        }
-        //Content disposition with attachement forces the browser to download as attachment(avod inconsistent file type handles by browser)
-        response.header("Content-Disposition", "attachment; filename=" + fileName);
-        response.header("Content-Length", fileName);
     }
 
     @PUT

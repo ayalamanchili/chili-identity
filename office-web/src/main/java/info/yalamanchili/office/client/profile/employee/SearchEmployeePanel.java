@@ -19,6 +19,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -196,5 +197,10 @@ public class SearchEmployeePanel extends SearchComposite {
 
     protected String getEmployeeIdDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=employeeId";
+    }
+
+    @Override
+    protected String getReportURL() {
+        return OfficeWelcome.config.getFileDownloadUrl() + "employee/search_employee_report" + "&passthrough=true";
     }
 }
