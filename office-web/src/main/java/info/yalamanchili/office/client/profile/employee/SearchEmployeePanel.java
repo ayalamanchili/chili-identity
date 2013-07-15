@@ -19,6 +19,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -133,6 +134,15 @@ public class SearchEmployeePanel extends SearchComposite {
     protected void postSearchSuccess(JSONArray results) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
+    }
+
+    @Override
+    public boolean enableGenerateReport() {
+        if (Auth.hasNonUserRoles()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

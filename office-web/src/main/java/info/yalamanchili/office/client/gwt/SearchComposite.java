@@ -110,7 +110,9 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         mainPanel.add(advancedSearchDP);
         mainPanel.add(searchButton);
         //reports
-        configureReportsPanel();
+        if (enableGenerateReport()) {
+            configureReportsPanel();
+        }
         captionPanel.setContentWidget(mainPanel);
         searchButton.addClickHandler(this);
         addListeners();
@@ -317,6 +319,10 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         } catch (RequestException e) {
             Window.alert(e.getLocalizedMessage());
         }
+    }
+
+    protected boolean enableGenerateReport() {
+        return false;
     }
 
     protected String getReportFormat() {
