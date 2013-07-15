@@ -7,12 +7,10 @@
  */
 package info.yalamanchili.office.jrs;
 
-import ar.com.fdvs.dj.core.DynamicJasperHelper;
-import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
-import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.builders.ReflectiveReportBuilder;
+import info.chili.commons.SearchUtils;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
+import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import java.util.ArrayList;
 
@@ -28,8 +26,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -107,33 +103,21 @@ public abstract class CRUDResource<T> {
     @Path("/search_report")
     public Response searchReport(T entity, @QueryParam("format") String format) {
         Response.ResponseBuilder response;
-        //TODO get generated file name
-        String fileName = "sample" + "." + format;
-        DynamicReport dynamicReport = null;
-        //TODO think about limit performance
-        List<T> list = search(entity, 0, 1000);
-        if (list.size() > 0) {
-            dynamicReport = new ReflectiveReportBuilder(list).build();
-            dynamicReport.setTitle(entity.getClass().getSimpleName());
-            try {
-                JasperPrint jasperPrint = DynamicJasperHelper.generateJasperPrint(dynamicReport, new ClassicLayoutManager(), list);
-                // OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
-                if (format.equalsIgnoreCase("pdf")) {
-                    JasperExportManager.exportReportToPdfFile(jasperPrint, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
-                }
-                if (format.equalsIgnoreCase("html")) {
-                    JasperExportManager.exportReportToHtmlFile(jasperPrint, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
-                }
-                if (format.equalsIgnoreCase("xml")) {
-                    JasperExportManager.exportReportToXmlFile(jasperPrint, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName, false);
-                }
-                response = Response.ok(fileName.getBytes());
-            } catch (JRException e) {
-                response = Response.serverError();
-            }
-        } else {
-            //no results
-            response = Response.noContent();
+        //TODO get autogenerate unique file name
+        String fileName = "report" + "." + format;
+        List<T> data = new ArrayList();
+        Long size = SearchUtils.getSearchSize(getDao().getEntityManager(), entity);
+        int start = 0;
+        int limit = 100;
+        do {
+            data.addAll(search(entity, start, limit));
+            start = start + limit;
+        } while ((start + limit) < size);
+        try {
+            ReportGenerator.generateReport(data, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
+            response = Response.ok(fileName.getBytes());
+        } catch (JRException e) {
+            response = Response.serverError();
         }
         return response.build();
     }
