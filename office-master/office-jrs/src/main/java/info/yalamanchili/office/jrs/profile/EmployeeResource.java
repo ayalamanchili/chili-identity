@@ -7,13 +7,17 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
+import info.chili.commons.SearchUtils;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
+import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.profile.EmployeeSaveDto;
 import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
@@ -44,6 +48,7 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import net.sf.jasperreports.engine.JRException;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -327,12 +332,30 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return employees;
     }
-
+    
+//TODO use Report Generator
     @POST
     @Path("/search_employee_report")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("format") String format) {
-        return super.searchReport(mapper.map(entity, Employee.class), format);
+        Response.ResponseBuilder response;
+        //TODO get autogenerate unique file name
+        String fileName = "report" + "." + format;
+        List<EmployeeDto> data = new ArrayList<EmployeeDto>();
+        Long size = SearchUtils.getSearchSize(getDao().getEntityManager(), mapper.map(entity, Employee.class));
+        int start = 0;
+        int limit = 100;
+        do {
+            data.addAll(searchEmployee(entity, start, limit));
+            start = start + limit;
+        } while ((start + limit) < size);
+        try {
+            ReportGenerator.generateReport(data, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
+            response = Response.ok(fileName.getBytes());
+        } catch (JRException e) {
+            response = Response.serverError();
+        }
+        return response.build();
     }
 
     @Override

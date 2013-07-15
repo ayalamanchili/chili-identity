@@ -105,7 +105,7 @@ public abstract class CRUDResource<T> {
         Response.ResponseBuilder response;
         //TODO get autogenerate unique file name
         String fileName = "report" + "." + format;
-        List<T> data = new ArrayList();
+        List<T> data = new ArrayList<T>();
         Long size = SearchUtils.getSearchSize(getDao().getEntityManager(), entity);
         int start = 0;
         int limit = 100;

@@ -296,7 +296,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected abstract void search(JSONObject entity);
 
     protected void generateReport(JSONObject entity) {
-        //TODO make this abstract
+        //TODO make this abstract 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(getReportURL()));
         builder.setHeader("Content-Type", "application/json");
 
