@@ -7,6 +7,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
@@ -24,6 +25,11 @@ public class UpdateEmployeePanel extends UpdateComposite {
         @Override
         public void onUploadComplete() {
             postUpdateSuccess(null);
+        }
+
+        @Override
+        public void onFileUploadError() {
+            Window.alert("Image Size exceeded please upload a smaler Image Limit:2MB");
         }
     };
 

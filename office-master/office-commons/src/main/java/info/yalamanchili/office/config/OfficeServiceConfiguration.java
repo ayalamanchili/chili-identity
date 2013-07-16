@@ -20,6 +20,8 @@ public class OfficeServiceConfiguration {
     private final static Logger logger = Logger.getLogger(OfficeServiceConfiguration.class.getName());
     @PersistenceContext
     protected EntityManager em;
+    ///Users/anuyalamanchili/content-management/office/
+    //C://content-management//office/
     protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData = false;
@@ -29,7 +31,11 @@ public class OfficeServiceConfiguration {
     protected Boolean enableLoginInterceptor = false;
     @Value("#{officeProperties['isSendMail']}")
     protected Boolean isSendMail = true;
-    protected String adminEmail="yphanikumar@gmail.com";
+    protected String adminEmail = "yphanikumar@gmail.com";
+    //2MB
+    protected long imageSizeLimit = 200000;
+    //20MB
+    protected long fileSizeLimit = 2000000;
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
@@ -83,6 +89,22 @@ public class OfficeServiceConfiguration {
 
     public void setIsSendMail(Boolean isSendMail) {
         this.isSendMail = isSendMail;
+    }
+
+    public long getImageSizeLimit() {
+        return imageSizeLimit;
+    }
+
+    public void setImageSizeLimit(long imageSizeLimit) {
+        this.imageSizeLimit = imageSizeLimit;
+    }
+
+    public long getFileSizeLimit() {
+        return fileSizeLimit;
+    }
+
+    public void setFileSizeLimit(long fileSizeLimit) {
+        this.fileSizeLimit = fileSizeLimit;
     }
 
     @ManagedOperation

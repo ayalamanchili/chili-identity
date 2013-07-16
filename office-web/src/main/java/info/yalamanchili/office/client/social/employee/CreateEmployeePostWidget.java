@@ -53,6 +53,11 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
         public void onUploadComplete() {
             postCreateSuccess(null);
         }
+
+        @Override
+        public void onFileUploadError() {
+            Window.alert("File Size exceeded. Image MaxLimit:2MB File MaxLimit:20MB");
+        }
     };
 
     public CreateEmployeePostWidget() {

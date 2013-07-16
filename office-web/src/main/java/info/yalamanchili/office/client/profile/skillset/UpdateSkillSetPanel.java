@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.profile.skillset;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -33,6 +34,11 @@ public class UpdateSkillSetPanel extends UpdateComposite {
         @Override
         public void onUploadComplete() {
             postUpdateSuccess(null);
+        }
+
+        @Override
+        public void onFileUploadError() {
+            Window.alert("File Size exceeded. MaxLimit:20MB");
         }
     };
 

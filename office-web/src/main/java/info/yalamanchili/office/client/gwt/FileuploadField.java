@@ -12,6 +12,7 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -201,8 +202,18 @@ public abstract class FileuploadField extends ALComposite implements ClickHandle
 
     @Override
     public void onSubmitComplete(SubmitCompleteEvent event) {
-        logger.info("on submit complete");
-        onUploadComplete();
+        logger.info("onSubmitComplete");
+        if (event.getResults() != null) {
+            onUploadComplete();
+        } else {
+           onFileUploadError();
+        }
+    }
+    /*
+     * override this to change the error message
+     */
+    protected void onFileUploadError(){
+         Window.alert("Error uploading file");
     }
 
     @Override

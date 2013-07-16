@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import info.chili.commons.FileUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 
@@ -103,7 +104,7 @@ public class FileResource {
             return path;
         }
     }
-    
+
 //TODO move to utils
     protected void setContentHeaders(ResponseBuilder response, String fileName) {
         if (info.chili.commons.FileUtils.isPDF(fileName)) {
@@ -129,6 +130,7 @@ public class FileResource {
             if (item.isFormField() || item.getName() == null || item.getName().trim().equals("")) {
                 continue;
             }
+            validateFileSizeLimits(item);
             File fileurl = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
                     + item.getName());
             try {
@@ -138,6 +140,16 @@ public class FileResource {
                 throw new RuntimeException("Error saving File:" + fileurl + ": to disk.", e);
             }
         }
+    }
+
+    protected void validateFileSizeLimits(FileItem file) {
+        if (FileUtils.isImage(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getImageSizeLimit()) {
+            throw new RuntimeException("Image Size exceeded please upload a smaler Image Limit:" + OfficeServiceConfiguration.instance().getImageSizeLimit() / 100000 + "MB");
+        }
+        if (FileUtils.isDocument(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getFileSizeLimit()) {
+            throw new RuntimeException("File Size exceeded please upload a smaler Image Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimit() / 100000 + "MB");
+        }
+
     }
 
     public static FileResource instance() {

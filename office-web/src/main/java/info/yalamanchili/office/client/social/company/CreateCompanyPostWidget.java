@@ -57,6 +57,11 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
         public void onUploadComplete() {
             postCreateSuccess(null);
         }
+
+        @Override
+        public void onFileUploadError() {
+            Window.alert("File Size exceeded. Image MaxLimit:2MB File MaxLimit:20MB");
+        }
     };
 
     public CreateCompanyPostWidget() {
@@ -118,12 +123,12 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     protected void createCompanyPostClicked(JSONObject post) {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        textArea.setText("");
-                        uploadFiles(arg0);
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                textArea.setText("");
+                uploadFiles(arg0);
+            }
+        });
     }
 //TODO move this to abstract class
 

@@ -14,6 +14,7 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
@@ -25,6 +26,11 @@ public class CreateEmployeePanel extends CreateComposite {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
+        }
+
+        @Override
+        public void onFileUploadError() {
+            Window.alert("Image Size exceeded please upload a smaler Image MaxLimit:2MB");
         }
     };
 

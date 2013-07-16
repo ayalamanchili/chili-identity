@@ -8,6 +8,7 @@
 package info.yalamanchili.office.client.drive;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -30,6 +31,11 @@ public class CreateFilePanel extends CreateComposite {
         @Override
         public void onUploadComplete() {
             postCreateSuccess(null);
+        }
+
+        @Override
+        public void onFileUploadError() {
+            Window.alert("File Size exceeded MaxLimit:20MB");
         }
     };
 
@@ -58,16 +64,16 @@ public class CreateFilePanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadFile(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadFile(arg0);
+            }
+        });
     }
 
     @Override
