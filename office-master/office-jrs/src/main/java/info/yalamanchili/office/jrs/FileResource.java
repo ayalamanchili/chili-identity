@@ -149,7 +149,10 @@ public class FileResource {
         if (FileUtils.isDocument(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getFileSizeLimit()) {
             throw new RuntimeException("File Size exceeded please upload a smaler Image Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimit() / 100000 + "MB");
         }
-
+        //all others
+        if (file.getSize() > OfficeServiceConfiguration.instance().getFileSizeLimit()) {
+            throw new RuntimeException("Exceeded max file size permitted by esrver Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimit() / 100000 + "MB");
+        }
     }
 
     public static FileResource instance() {
