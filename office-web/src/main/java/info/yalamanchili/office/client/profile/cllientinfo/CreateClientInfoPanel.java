@@ -119,16 +119,12 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("add_new_client_request", "add_new_client_request")).show();
+            new GenericPopup(new GenericBPMStartFormPanel("Add New Client Request", "add_new_client_request_1")).show();
         }
         if (event.getSource().equals(addVendorL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("add_new_vendor_request", "add_new_vendor_request")).show();
+            new GenericPopup(new GenericBPMStartFormPanel("Add New Vendor Request", "add_new_vendor_request_1")).show();
         }
         super.onClick(event);
-    }
-
-    protected String getAddClientRequestUrl() {
-        return OfficeWelcome.constants.root_url() + "bpm/startprocess/add_new_client_request";
     }
 
     @Override

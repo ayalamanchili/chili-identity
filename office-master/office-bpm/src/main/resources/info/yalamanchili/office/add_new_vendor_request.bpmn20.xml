@@ -10,7 +10,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
  
-    <process id="add_new_vendor_request">
+    <process id="add_new_vendor_request_1">
         <startEvent id="addNewVendorStart">
             <extensionElements>
                 <activiti:formProperty id="vendorName" 
