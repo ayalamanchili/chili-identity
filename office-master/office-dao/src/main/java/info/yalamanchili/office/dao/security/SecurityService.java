@@ -34,7 +34,7 @@ public class SecurityService {
 
     public Employee login(CUser user) {
         TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam and emp.user.passwordHash=:passwordParam", Employee.class);
-        query.setParameter("userNameParam", user.getUsername());
+        query.setParameter("userNameParam", user.getUsername().toLowerCase());
         query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
 
         try {
