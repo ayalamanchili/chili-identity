@@ -86,18 +86,17 @@ public class MessageService {
     }
 
     public void reply(Long messageId, MessageDto reply, boolean replyAll) {
-//        //find the parent message with messageId
-//        //get from address
-//        //Create new message object call it reply.
-//        // set to address  as the above from address
-//        // add this repy to message in first line
-//        //save it.
-//        Message newMessage = new Message();
-//        newMessage.setMessage(reply.getMessage());
-//        info.yalamanchili.office.dto.message.MessageDto parenMessage = em.find(info.yalamanchili.office.dto.message.MessageDto.class, Long.valueOf(messageId));
-//        for (info.yalamanchili.office.dto.message.MessageDto entity : parenMessage.getTos()) {
-//            parenMessage.add(MessageDto.map(em, mapper, entity));
-//        }
+        Message parentMessage = messageDao.findById(messageId);
+        Message replyMsg = new Message();
+        replyMsg.setMessage(reply.getMessage());
+        replyMsg.getTos().add(parentMessage.getFromEmp());
+        replyMsg.setFromEmp(SecurityService.instance().getCurrentUser());
+        //TODO support replyall --> parentMessage.getTos
+        replyMsg.setMessageTs(new Date());
+        parentMessage.getReplies().add(replyMsg);
+
+        ProfileNotificationService.instance().sendNewMessageNotification(replyMsg);
+        messageDao.save(parentMessage);
     }
 
     public static MessageService instance() {
