@@ -101,7 +101,7 @@ public class CreateMessagePanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Message Sent");
         TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
+        TabPanel.instance().homePanel.entityPanel.add(new MyMessagesPanel());
     }
 
     @Override

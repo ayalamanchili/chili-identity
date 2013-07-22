@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
 
 /**
  *

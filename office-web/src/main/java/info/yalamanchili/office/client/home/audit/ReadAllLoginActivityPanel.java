@@ -17,7 +17,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
 import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
-import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class ReadAllLoginActivityPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllMessagePanel.class.getName());
+    private static Logger logger = Logger.getLogger(ReadAllLoginActivityPanel.class.getName());
 
     public ReadAllLoginActivityPanel() {
         initTable("LoginActivity", OfficeWelcome.constants);

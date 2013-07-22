@@ -11,6 +11,7 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dto.message.MessageDto;
 import info.yalamanchili.office.dao.message.MessageDao;
+import info.yalamanchili.office.dto.message.MessageReadDto;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.home.MessageService;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,16 +66,14 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @GET
-    @Path("/{start}/{limit}")
-    public MessageTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-        List<info.yalamanchili.office.dto.message.MessageDto> msgs = new ArrayList<info.yalamanchili.office.dto.message.MessageDto>();
-        MessageTable tableObj = new MessageTable();
-        for (Object msgObj : getDao().query(start, limit)) {
-            msgs.add(info.yalamanchili.office.dto.message.MessageDto.map(mapper, (Message) msgObj));
-        }
-        tableObj.setEntities(msgs);
-        tableObj.setSize(getDao().size());
-        return tableObj;
+    @Path("/mymessages/{start}/{limit}")
+    public List<MessageReadDto>  myMessages(@PathParam("start") int start, @PathParam("limit") int limit) {
+      return messageService.myMessages(start, limit);
+    }
+
+    @PUT
+    @Path("/reply/{messageId}")
+    public void reply(@PathParam("messageId") Long messageId, MessageDto message, @QueryParam("replyAll") boolean replyAll) {
     }
 
     @XmlRootElement

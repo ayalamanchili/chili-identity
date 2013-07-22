@@ -284,6 +284,9 @@ legend {
     border: 1px solid #919191;
     padding: 1px;
 }
+.messageSubjectLabel{
+    font-weight: bold;
+}
 .postImage{
     padding: 3px;
 }
@@ -460,8 +463,8 @@ body{
 }
 
 .gwt-SuggestBoxPopup .item-selected {
-  font-weight: bold;
-  text-decoration:underline;
+    font-weight: bold;
+    text-decoration:underline;
 }
 
 .y-gwt-SideBarComposite {

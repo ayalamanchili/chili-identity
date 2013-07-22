@@ -24,7 +24,6 @@ import info.yalamanchili.office.client.drive.DriveEntityPanel;
 import info.yalamanchili.office.client.drive.DriveTreePanel;
 import info.yalamanchili.office.client.help.HelpHome;
 import info.yalamanchili.office.client.home.HomeStackPanel;
-import info.yalamanchili.office.client.home.message.ReadAllMessagePanel;
 import info.yalamanchili.office.client.social.SocialMenu;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.TAEMenu;
@@ -34,6 +33,7 @@ import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
+import info.yalamanchili.office.client.home.message.MyMessagesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
@@ -153,7 +153,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         homePanel.sidePanelBottom.clear();
         homePanel.sidePanelBottom.add(new HomeStackPanel());
         if (Auth.hasOnlyUserRole()) {
-            homePanel.entityPanel.add(new ReadAllMessagePanel());
+            homePanel.entityPanel.add(new MyMessagesPanel());
         } else {
             homePanel.entityPanel.add(new ReadAllTasks());
         }

@@ -14,11 +14,14 @@ import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.message.MessageDto;
+import info.yalamanchili.office.dto.message.MessageReadDto;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -68,6 +71,15 @@ public class MessageService {
         return null;
     }
 
+    //TODO order by date
+    public List<MessageReadDto> myMessages(int start,int limit){
+        List<MessageReadDto> result= new ArrayList<MessageReadDto>();
+        for(Message entity:messageDao.query(start, limit)){
+            result.add(MessageReadDto.map(mapper, entity));
+        }
+        return result;
+    }
+    
     public MessageDto read(Long id) {
         Message message = MessageDao.instance().findById(id);
         return MessageDto.map(mapper, message);

@@ -58,7 +58,7 @@ public class MessageStackPanelWidget extends ALComposite implements ClickHandler
         }
         if (event.getSource().equals(myMsgL)) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new ReadAllMessagePanel());
+            TabPanel.instance().homePanel.entityPanel.add(new MyMessagesPanel());
         }
     }
 }

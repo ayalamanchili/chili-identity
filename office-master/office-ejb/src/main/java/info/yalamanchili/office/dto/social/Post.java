@@ -36,9 +36,7 @@ public class Post {
     protected Integer numberOfReplies;
     protected List<PostFile> postFiles;
     protected List<String> postLikes;
-    @PersistenceContext
-    protected EntityManager em;
-
+    
     public Long getId() {
         return id;
     }
