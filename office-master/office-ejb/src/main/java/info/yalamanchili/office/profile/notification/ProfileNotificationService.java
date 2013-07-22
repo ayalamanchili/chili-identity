@@ -46,8 +46,8 @@ public class ProfileNotificationService {
         String[] roles = {OfficeRoles.ROLE_RECRUITER};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject("Employee Resume Updated");
-        String messageText = emp.getFirstName() + " " + emp.getLastName() + "'s Resume Updated";
+        email.setSubject("Employee Skillset Updated");
+        String messageText = emp.getFirstName() + " " + emp.getLastName() + "'s Skillset Updated";
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
