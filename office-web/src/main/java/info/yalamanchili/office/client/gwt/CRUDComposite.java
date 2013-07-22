@@ -94,6 +94,9 @@ public abstract class CRUDComposite extends Composite implements KeyPressListene
 
     protected abstract void addWidgets();
 
+    /**
+     * This is used to add widgets before the captionpanel. use basePanel to add the widgets
+     */
     protected abstract void addWidgetsBeforeCaptionPanel();
 
     /*

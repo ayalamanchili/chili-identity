@@ -7,8 +7,11 @@
  */
 package info.yalamanchili.office.client.home.message;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -22,11 +25,12 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class ReadMessagePanel extends ReadComposite {
+public class ReadMessagePanel extends ReadComposite implements ClickHandler {
 
     private static ReadMessagePanel instance;
     private static Logger logger = Logger.getLogger(ReadAdjustmentHoursPanel.class.getName());
-    final RichTextArea bodyTextArea = new RichTextArea();
+    protected final RichTextArea bodyTextArea = new RichTextArea();
+    protected Anchor replyLink = new Anchor("reply");
 
     public static ReadMessagePanel instance() {
         return instance;
@@ -45,13 +49,13 @@ public class ReadMessagePanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        logger.info("response from server" + response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                logger.info("response from server" + response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override
@@ -63,6 +67,7 @@ public class ReadMessagePanel extends ReadComposite {
 
     @Override
     protected void addListeners() {
+        replyLink.addClickHandler(this);
     }
 
     @Override
@@ -74,10 +79,22 @@ public class ReadMessagePanel extends ReadComposite {
         addField("tos", true, false, DataType.STRING_FIELD);
         addField("subject", true, false, DataType.STRING_FIELD);
         addField("message", true, false, DataType.RICH_TEXT_AREA);
+        entityFieldsPanel.add(replyLink);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if(event.getSource().equals(replyLink)){
+            replyLink.setVisible(false);
+            replyLinkClicked();
+        }
+    }
+    protected void replyLinkClicked(){
+        entityFieldsPanel.add(new ReplyMessagePanel(getEntityId()));
     }
 
     @Override
