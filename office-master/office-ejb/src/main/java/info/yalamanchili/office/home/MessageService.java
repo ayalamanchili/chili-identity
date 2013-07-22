@@ -72,17 +72,32 @@ public class MessageService {
     }
 
     //TODO order by date
-    public List<MessageReadDto> myMessages(int start,int limit){
-        List<MessageReadDto> result= new ArrayList<MessageReadDto>();
-        for(Message entity:messageDao.query(start, limit)){
+    public List<MessageReadDto> myMessages(int start, int limit) {
+        List<MessageReadDto> result = new ArrayList<MessageReadDto>();
+        for (Message entity : messageDao.query(start, limit)) {
             result.add(MessageReadDto.map(mapper, entity));
         }
         return result;
     }
-    
+
     public MessageDto read(Long id) {
         Message message = MessageDao.instance().findById(id);
         return MessageDto.map(mapper, message);
+    }
+
+    public void reply(Long messageId, MessageDto reply, boolean replyAll) {
+//        //find the parent message with messageId
+//        //get from address
+//        //Create new message object call it reply.
+//        // set to address  as the above from address
+//        // add this repy to message in first line
+//        //save it.
+//        Message newMessage = new Message();
+//        newMessage.setMessage(reply.getMessage());
+//        info.yalamanchili.office.dto.message.MessageDto parenMessage = em.find(info.yalamanchili.office.dto.message.MessageDto.class, Long.valueOf(messageId));
+//        for (info.yalamanchili.office.dto.message.MessageDto entity : parenMessage.getTos()) {
+//            parenMessage.add(MessageDto.map(em, mapper, entity));
+//        }
     }
 
     public static MessageService instance() {
