@@ -28,7 +28,7 @@ public class MessageReadDto implements Serializable {
     protected String fromEmployeeId;
     protected String fromEmployeeName;
     protected String fromEmployeeImageURL;
-    protected Long numberOfRepiles;
+    protected int numberOfRepiles = 0;
 
     public Long getId() {
         return id;
@@ -86,21 +86,20 @@ public class MessageReadDto implements Serializable {
         this.fromEmployeeImageURL = fromEmployeeImageURL;
     }
 
-    public Long getNumberOfRepiles() {
+    public int getNumberOfRepiles() {
         return numberOfRepiles;
     }
 
-    public void setNumberOfRepiles(Long numberOfRepiles) {
+    public void setNumberOfRepiles(int numberOfRepiles) {
         this.numberOfRepiles = numberOfRepiles;
     }
-   
-   
+
     public static MessageReadDto map(Mapper mapper, info.yalamanchili.office.entity.message.Message entity) {
         MessageReadDto messageDto = mapper.map(entity, MessageReadDto.class);
         messageDto.setFromEmployeeId(entity.getFromEmp().getEmployeeId());
         messageDto.setFromEmployeeName(entity.getFromEmp().getFirstName() + " " + entity.getFromEmp().getLastName());
         messageDto.setFromEmployeeImageURL(entity.getFromEmp().getImageURL());
+        messageDto.setNumberOfRepiles(entity.getReplies().size());
         return messageDto;
     }
 }
-

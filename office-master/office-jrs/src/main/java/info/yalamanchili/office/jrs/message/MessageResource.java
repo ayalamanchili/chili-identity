@@ -77,6 +77,12 @@ public class MessageResource extends CRUDResource<MessageDto> {
         messageService.reply(messageId, message, replyAll);
     }
 
+    @GET
+    @Path("/getreplies/{messageId}")
+    public List<MessageReadDto> getReplies(@PathParam("messageId") Long messageId) {
+        return messageService.getReplies(messageId);
+    }
+
     @XmlRootElement
     @XmlType
     public static class MessageTable {

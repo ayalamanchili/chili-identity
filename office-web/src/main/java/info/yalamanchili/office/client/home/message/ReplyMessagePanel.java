@@ -44,9 +44,10 @@ public class ReplyMessagePanel extends ALComposite implements ClickHandler {
             @Override
             public void onResponse(String arg0) {
                 new ResponseStatusWidget().show("reply sent");
-                //TODO
+                
             }
         });
+        this.getParent().removeFromParent();
     }
 
     @Override

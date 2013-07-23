@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.TextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.date.DateUtils;
@@ -63,16 +62,11 @@ public class ReadMessagePanel extends ALComposite implements ClickHandler {
         subjectTA.setText(JSONUtils.toString(message, "subject"));
         messageBodyArea.setHTML(JSONUtils.toString(message, "message"));
         displayAttachments(message);
-        int numberOfReplies;
-        if (JSONUtils.toString(message, "numberOfReplies").isEmpty()) {
-            numberOfReplies = 0;
-        } else {
-            numberOfReplies = Integer.valueOf(JSONUtils.toString(message, "numberOfReplies"));
+        Integer numberOfReplies = Integer.valueOf(JSONUtils.toString(message, "numberOfRepiles"));
+        if (numberOfReplies > 0) {
+            messageMainPanel.add(new ReadMessageRepliesWidget(messageId, numberOfReplies));
         }
         displayPostStatus(message);
-        if (numberOfReplies > 0) {
-//            messageMainPanel.add(new ReadRepliesWidget(messageId, numberOfReplies));
-        }
         optionsPanel.add(replyLink);
     }
 

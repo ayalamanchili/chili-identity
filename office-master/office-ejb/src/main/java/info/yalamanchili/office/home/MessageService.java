@@ -100,6 +100,14 @@ public class MessageService {
         ProfileNotificationService.instance().sendNewMessageNotification(replyMsg);
     }
 
+    public List<MessageReadDto> getReplies(Long messageId) {
+        List<MessageReadDto> result = new ArrayList<MessageReadDto>();
+        for (Message entity : messageDao.findById(messageId).getReplies()) {
+            result.add(MessageReadDto.map(mapper, entity));
+        }
+        return result;
+    }
+
     public static MessageService instance() {
         return SpringContext.getBean(MessageService.class);
     }
