@@ -72,9 +72,8 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @PUT
-    @Path("/reply/{messageId}/{replyAll}")
-    public void reply(@PathParam("messageId") Long messageId, MessageDto message, @QueryParam("replyAll") boolean replyAll) {
-
+    @Path("/reply/{messageId}")
+    public void reply(@PathParam("messageId") Long messageId, MessageReadDto message, @QueryParam("replyAll") boolean replyAll) {
         messageService.reply(messageId, message, replyAll);
     }
 

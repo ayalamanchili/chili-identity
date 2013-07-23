@@ -74,6 +74,6 @@ public class ReplyMessagePanel extends ALComposite implements ClickHandler {
     }
 
     protected String sendReplyURL() {
-        return null;
+      return OfficeWelcome.constants.root_url() + "message/reply/"+messageId;
     }
 }

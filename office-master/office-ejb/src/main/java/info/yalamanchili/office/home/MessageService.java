@@ -85,18 +85,19 @@ public class MessageService {
         return MessageDto.map(mapper, message);
     }
 
-    public void reply(Long messageId, MessageDto reply, boolean replyAll) {
+    public void reply(Long messageId, MessageReadDto reply, boolean replyAll) {
         Message parentMessage = messageDao.findById(messageId);
         Message replyMsg = new Message();
+        replyMsg.setSubject(parentMessage.getSubject());
         replyMsg.setMessage(reply.getMessage());
         replyMsg.getTos().add(parentMessage.getFromEmp());
         replyMsg.setFromEmp(SecurityService.instance().getCurrentUser());
         //TODO support replyall --> parentMessage.getTos
         replyMsg.setMessageTs(new Date());
+        replyMsg = messageDao.save(replyMsg);
         parentMessage.getReplies().add(replyMsg);
-
-        ProfileNotificationService.instance().sendNewMessageNotification(replyMsg);
         messageDao.save(parentMessage);
+        ProfileNotificationService.instance().sendNewMessageNotification(replyMsg);
     }
 
     public static MessageService instance() {
