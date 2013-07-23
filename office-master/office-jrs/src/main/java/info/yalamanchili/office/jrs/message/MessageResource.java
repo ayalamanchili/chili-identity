@@ -67,13 +67,15 @@ public class MessageResource extends CRUDResource<MessageDto> {
 
     @GET
     @Path("/mymessages/{start}/{limit}")
-    public List<MessageReadDto>  myMessages(@PathParam("start") int start, @PathParam("limit") int limit) {
-      return messageService.myMessages(start, limit);
+    public List<MessageReadDto> myMessages(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return messageService.myMessages(start, limit);
     }
 
     @PUT
-    @Path("/reply/{messageId}")
+    @Path("/reply/{messageId}/{replyAll}")
     public void reply(@PathParam("messageId") Long messageId, MessageDto message, @QueryParam("replyAll") boolean replyAll) {
+
+        messageService.reply(messageId, message, replyAll);
     }
 
     @XmlRootElement
