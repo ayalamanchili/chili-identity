@@ -27,7 +27,7 @@
     <!-- used to include chili-gwt project in gwt compiler path -->
     <inherits name='info.chili.chili-gwt' />
     
-     <!--tinyMCE editor -->
+    <!--tinyMCE editor -->
     <inherits name="gr.open.TinymceGwt"/>
 
     <!-- GWT HTML5 Video support-->
@@ -44,8 +44,8 @@
     <source path='client' />
     <!-- use this setting in development mode to speed up compile time -->
     <set-property name="user.agent" value="safari" />
-    
-     <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
+    <!-- this is for tinyMCE editor support-->
+    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
         
     <!-- enables the debug id are set elementswidgets -->
     <inherits name='com.google.gwt.user.Debug'/>

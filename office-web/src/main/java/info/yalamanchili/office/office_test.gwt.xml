@@ -44,7 +44,7 @@
     <source path='client' />
     <!-- this is a temp should remove-->
     <inherits name='com.google.gwt.user.Debug'/>
-    
+    <!-- this is for tinyMCE editor support-->
      <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
     
     <inherits name="com.google.gwt.precompress.Precompress"/>

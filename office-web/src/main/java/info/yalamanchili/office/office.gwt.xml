@@ -28,7 +28,7 @@
     <!-- used to include chili-gwt project in gwt compiler path -->
     <inherits name='info.chili.chili-gwt' />
     
-     <!--tinyMCE editor -->
+    <!--tinyMCE editor -->
     <inherits name="gr.open.TinymceGwt"/>
     
     <!-- GWT HTML5 Video support-->
@@ -42,8 +42,8 @@
     <stylesheet src="office.css" />
 
     <source path='client' />
-    
-     <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
+    <!-- this is for tinyMCE editor support-->
+    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
     
     <inherits name="com.google.gwt.precompress.Precompress"/>
     
