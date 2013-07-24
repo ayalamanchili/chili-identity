@@ -27,7 +27,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.ImageField;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.social.ReadPostWidget;
-import info.yalamanchili.office.client.social.ReadRepliesWidget;
 import java.util.logging.Logger;
 
 /**

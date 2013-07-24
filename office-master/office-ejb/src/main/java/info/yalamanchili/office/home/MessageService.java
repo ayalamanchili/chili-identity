@@ -94,9 +94,8 @@ public class MessageService {
         replyMsg.setFromEmp(SecurityService.instance().getCurrentUser());
         //TODO support replyall --> parentMessage.getTos
         replyMsg.setMessageTs(new Date());
+        replyMsg.setParentMessage(parentMessage);
         replyMsg = messageDao.save(replyMsg);
-        parentMessage.getReplies().add(replyMsg);
-        messageDao.save(parentMessage);
         ProfileNotificationService.instance().sendNewMessageNotification(replyMsg);
     }
 

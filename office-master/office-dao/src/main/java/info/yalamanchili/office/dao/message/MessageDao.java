@@ -39,7 +39,7 @@ public class MessageDao extends CRUDDao<Message> {
     @Override
     public List<Message> query(int start, int limit) {
         Employee currentEmployee = SecurityService.instance().getCurrentUser();
-        Query findAllQuery = getEntityManager().createQuery("select msg from " + entityCls.getCanonicalName() + " msg JOIN msg.tos emp where emp =:empParam order by msg.messageTs DESC", entityCls);
+        Query findAllQuery = getEntityManager().createQuery("select msg from " + entityCls.getCanonicalName() + " msg JOIN msg.tos emp where msg.parentMessage is null and emp =:empParam order by msg.messageTs DESC", entityCls);
         findAllQuery.setParameter("empParam", currentEmployee);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);

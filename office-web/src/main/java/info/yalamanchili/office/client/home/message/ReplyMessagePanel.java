@@ -50,7 +50,7 @@ public class ReplyMessagePanel extends ALComposite implements ClickHandler {
                 
             }
         });
-        this.getParent().removeFromParent();
+        panel.getParent().removeFromParent();
     }
 
     @Override

@@ -58,6 +58,9 @@ public class MyMessagesPanel extends ALComposite implements ClickHandler {
         JSONObject messagesResp = (JSONObject) JSONParser.parseLenient(result).isObject();
         if (messagesResp != null) {
             JSONArray messages = JSONUtils.toJSONArray(messagesResp.get("Message"));
+            if(messages.size()<=0){
+                showMoreL.setText("No Messages");
+            }
             for (int i = 0; i < messages.size(); i++) {
                 JSONObject message = (JSONObject) messages.get(i);
                 String postId = JSONUtils.toString(message, "id");
