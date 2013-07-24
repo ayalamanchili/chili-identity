@@ -10,6 +10,7 @@ import info.yalamanchili.office.entity.profile.PhoneType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ public class PhoneDao extends CRUDDao<Phone> {
         super(Phone.class);
     }
 
+    @CacheEvict(value = "employees", allEntries = true)
     public Phone save(Phone entity) {
         if (entity.getId() != null) {
             Phone updatedPhone = null;

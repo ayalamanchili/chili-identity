@@ -46,7 +46,7 @@ public class SearchClientpanel extends SearchComposite {
 
     protected String getnameDropDownUrl() {
         //TODO think about the limit
-        return OfficeWelcome.constants.root_url() + "client/dropdown/0/1000?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "client/dropdown/0/10000?column=id&column=name";
     }
 
     @Override
@@ -97,7 +97,6 @@ public class SearchClientpanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
-        logger.info("ggggg" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override

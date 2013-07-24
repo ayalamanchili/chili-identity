@@ -40,6 +40,7 @@ import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.security.User;
+import org.springframework.cache.annotation.CacheEvict;
 
 @Path("secured/admin")
 @Produces("application/json")
@@ -68,7 +69,7 @@ public class AdminResource {
     @Path("/login")
     @PUT
     public EmployeeReadDto login(CUser user) {
-        return mapper.map(securityService.login(user),EmployeeReadDto.class);
+        return mapper.map(securityService.login(user), EmployeeReadDto.class);
     }
 
     @Path("/changepassword/{empId}")
@@ -99,6 +100,7 @@ public class AdminResource {
     @PUT
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @CacheEvict(value = "employees", allEntries = true)
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         String employeeId = generateEmployeeId(employee);

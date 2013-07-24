@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Path("secured/address")

@@ -51,9 +51,12 @@ import javax.xml.bind.annotation.XmlType;
 import net.sf.jasperreports.engine.JRException;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -93,6 +96,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/save")
+    @CacheEvict(value = "employees", allEntries = true)
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
@@ -100,6 +104,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @GET
     @Path("/{start}/{limit}")
+    @Cacheable("employees")
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
         EmployeeTable tableObj = new EmployeeTable();
@@ -114,13 +119,25 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CacheEvict(value = "employees", allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
 
     @GET
+    @Path("/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Cacheable("employees")
+    @Override
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        return super.getDropDown(start, limit, columns);
+    }
+
+    @GET
     @Path("/corpemployees/dropdown/{start}/{limit}")
+    @Cacheable("employees")
     public List<Entry> getCropEmployeesDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         List<Entry> result = new ArrayList<Entry>();
@@ -219,6 +236,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/email/{empId}")
+    @CacheEvict(value = "employees", allEntries = true)
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);
 
@@ -244,6 +262,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/phone/{empId}")
+    @CacheEvict(value = "employees", allEntries = true)
     public void addPhone(@PathParam("empId") Long empId, Phone phone) {
         Employee emp = (Employee) getDao().findById(empId);
         if (phone.getPhoneType() != null) {
@@ -332,7 +351,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return employees;
     }
-    
+
 //TODO use Report Generator
     @POST
     @Path("/search_employee_report")
