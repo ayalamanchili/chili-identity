@@ -143,6 +143,7 @@ public class ReadMessagePanel extends ALComposite implements ClickHandler {
     }
 
     protected void viewClicked() {
+        messageBodyArea.setHeight("8em");
     }
 
     private void postDeleteSuccess(String arg0) {
