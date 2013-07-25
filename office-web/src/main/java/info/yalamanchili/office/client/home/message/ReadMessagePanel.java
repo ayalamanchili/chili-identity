@@ -147,7 +147,7 @@ public class ReadMessagePanel extends ALComposite implements ClickHandler {
 
     private void postDeleteSuccess(String arg0) {
         new ResponseStatusWidget().show("Successfully Deleted");
-        //TODO
+        messageCaptionPanel.getParent().removeFromParent();
     }
 
     public String getdeleteURL() {
