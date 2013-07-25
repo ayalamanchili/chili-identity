@@ -89,6 +89,13 @@ public class AdminUtilsResource {
         ADPEmployeeDataTool.instance().syncADPEmpployeeData();
     }
 
+    @Path("sync_skills_data")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void syncSkillsData() {
+        ADPEmployeeDataTool.instance().syncSkills();
+    }
+
     @Path("fixssn")
     @GET
     @PreAuthorize("hasRole('ROLE_ADMIN')")

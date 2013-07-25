@@ -19,6 +19,7 @@ import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
+import info.yalamanchili.office.entity.profile.Skill;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -38,7 +39,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  *
@@ -54,7 +57,19 @@ public class ADPEmployeeDataTool {
 
     public static void main(String... args) {
         ADPEmployeeDataTool load = new ADPEmployeeDataTool();
-        load.loadADPRecords();
+        load.loadSkills();
+    }
+
+    public void syncSkills() {
+        for (String str : loadSkills()) {
+            Skill skill = QueryUtils.findEntity(em, Skill.class, "name", str);
+            if (skill == null) {
+                skill = new Skill();
+                skill.setName(str);
+                em.merge(skill);
+                em.flush();
+            }
+        }
     }
 
     public void syncADPEmpployeeData() {
@@ -177,7 +192,7 @@ public class ADPEmployeeDataTool {
 
             Calendar empDOB = Calendar.getInstance();
             empDOB.setTime(emp.getDateOfBirth());
-            
+
             if (!empDOB.getTime().equals(recordDOB.getTime())) {
                 emp.setDateOfBirth(record.getDob());
                 if (ValidationUtils.validate(emp).isEmpty()) {
@@ -201,6 +216,28 @@ public class ADPEmployeeDataTool {
             }
         }
         return null;
+    }
+
+    public Set<String> loadSkills() {
+        Set<String> skills = new HashSet<String>();
+        InputStream inp;
+        HSSFWorkbook workbook;
+        try {
+            inp = new FileInputStream(getDataFileUrl());
+            workbook = new HSSFWorkbook(inp);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        HSSFSheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        while (rowIterator.hasNext()) {
+            Row record = rowIterator.next();
+            String skillStr = getCellStringValue(record, 1);
+            if (skillStr != null && !skillStr.isEmpty()) {
+                skills.add(skillStr);
+            }
+        }
+        return skills;
     }
     /*
      * load adp records from excel
