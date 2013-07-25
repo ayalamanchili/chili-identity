@@ -5,6 +5,7 @@ package info.yalamanchili.office.dao.profile;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.PhoneType;
 
@@ -26,7 +27,8 @@ public class PhoneDao extends CRUDDao<Phone> {
         super(Phone.class);
     }
 
-    @CacheEvict(value = "employees", allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
+    @Override
     public Phone save(Phone entity) {
         if (entity.getId() != null) {
             Phone updatedPhone = null;

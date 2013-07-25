@@ -24,6 +24,7 @@ import info.yalamanchili.office.dto.profile.EmployeeSearchDto;
 import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
@@ -96,7 +97,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/save")
-    @CacheEvict(value = "employees", allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
@@ -104,7 +105,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @GET
     @Path("/{start}/{limit}")
-    @Cacheable("employees")
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
         EmployeeTable tableObj = new EmployeeTable();
@@ -119,7 +120,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @CacheEvict(value = "employees", allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
@@ -128,7 +129,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
-    @Cacheable("employees")
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
     @Override
     public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
@@ -137,7 +138,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @GET
     @Path("/corpemployees/dropdown/{start}/{limit}")
-    @Cacheable("employees")
+    @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getCropEmployeesDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         List<Entry> result = new ArrayList<Entry>();
@@ -236,7 +237,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/email/{empId}")
-    @CacheEvict(value = "employees", allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);
 
@@ -262,7 +263,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/phone/{empId}")
-    @CacheEvict(value = "employees", allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     public void addPhone(@PathParam("empId") Long empId, Phone phone) {
         Employee emp = (Employee) getDao().findById(empId);
         if (phone.getPhoneType() != null) {

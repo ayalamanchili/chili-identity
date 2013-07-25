@@ -6,6 +6,7 @@ package info.yalamanchili.office.dao.profile;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.EmailType;
@@ -44,7 +45,7 @@ public class EmailDao extends CRUDDao<Email> {
     }
 
     @Override
-    @CacheEvict(value = "employees", allEntries = true)
+    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     public Email save(Email entity) {
         if (entity.getId() != null) {
             Contact cnt = ContactDao.instance().findById(entity.getContact().getId());
