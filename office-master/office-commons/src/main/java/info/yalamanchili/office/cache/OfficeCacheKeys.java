@@ -12,6 +12,8 @@ package info.yalamanchili.office.cache;
  * @author ayalamanchili
  */
 public interface OfficeCacheKeys {
-    String EMPLOYEES="employees";
-    String ADDRESS_TYPES="addresstypes";
+
+    String EMPLOYEES = "employees";
+    String ADDRESS_TYPES = "addresstypes";
+    String EMAIL_TYPES = "emailtype";
 }
