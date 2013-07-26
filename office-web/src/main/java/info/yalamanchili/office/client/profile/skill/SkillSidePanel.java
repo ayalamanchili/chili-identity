@@ -46,7 +46,7 @@ public class SkillSidePanel extends ALComposite implements ClickHandler {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             skillSidePanel.add(createSkillLink);
         }
-        //skillSidePanel.add(new SearchskillPanel());
+        skillSidePanel.add(new SearchSkillpanel());
     }
 
     @Override
