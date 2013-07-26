@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.EmailTypeDao;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -17,6 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -38,6 +41,7 @@ public class EmailTypeResource extends CRUDResource<EmailType> {
 
     @GET
     @Path("/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.EMAIL_TYPES)
     public EmailTypeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         EmailTypeTable tableObj = new EmailTypeTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -47,6 +51,7 @@ public class EmailTypeResource extends CRUDResource<EmailType> {
 
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.EMAIL_TYPES, allEntries = true)
     @Override
     public EmailType save(EmailType entity) {
         return super.save(entity);
@@ -55,6 +60,7 @@ public class EmailTypeResource extends CRUDResource<EmailType> {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.EMAIL_TYPES, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
