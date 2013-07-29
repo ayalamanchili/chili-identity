@@ -70,7 +70,7 @@ public class MultiSelectSkillWidget extends MultiSelectComposite implements Clic
 
     @Override
     protected String getMultiSelectUrl() {
-        return OfficeWelcome.constants.root_url() + "skillset/skills/" + parentId + "/0/10";
+        return OfficeWelcome.constants.root_url() + "skillset/skills/" + parentId + "/0/1000";
     }
 
     protected String getRemoveSkillsUrl(List<String> unselectedIds) {
