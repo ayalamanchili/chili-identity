@@ -16,4 +16,13 @@ public interface OfficeCacheKeys {
     String EMPLOYEES = "employees";
     String ADDRESS_TYPES = "addresstypes";
     String EMAIL_TYPES = "emailtype";
+    String PHONE_TYPE = "phonetype";
+    String CONTACT_TYPE = "companycontacttype";
+    String PRACTICE = "practice";
+    String TECHNOLOGY_GROUP = "technologyGroup";
+    String SKILL = "skill";
+    String CERTIFICATION = "certification";
+    String CLIENT = "client";
+    String VENDOR = "vendor";
+    String ISSUE_TYPE = "issuetype";
 }
