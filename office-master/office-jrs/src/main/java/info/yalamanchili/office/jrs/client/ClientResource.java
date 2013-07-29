@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.client;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -37,9 +38,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -67,6 +71,7 @@ public class ClientResource extends CRUDResource<Client> {
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @Cacheable(OfficeCacheKeys.CLIENT)
     public ClientTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ClientTable tableObj = new ClientTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -77,6 +82,7 @@ public class ClientResource extends CRUDResource<Client> {
     @PUT
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public Client save(Client client) {
         return super.save(client);
     }
@@ -85,8 +91,19 @@ public class ClientResource extends CRUDResource<Client> {
     @Path("/delete/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+    }
+
+    @GET
+    @Path("/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Cacheable(OfficeCacheKeys.CLIENT)
+    @Override
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        return super.getDropDown(start, limit, columns);
     }
 
     /*

@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.client;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -39,9 +40,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -69,6 +74,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    @Cacheable(OfficeCacheKeys.VENDOR)
     public VendorTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         VendorTable tableObj = new VendorTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -79,6 +85,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PUT
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public Vendor save(Vendor vendor) {
         return super.save(vendor);
     }
@@ -87,8 +94,19 @@ public class VendorResource extends CRUDResource<Vendor> {
     @Path("/delete/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+    }
+
+    @GET
+    @Path("/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Cacheable(OfficeCacheKeys.VENDOR)
+    @Override
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        return super.getDropDown(start, limit, columns);
     }
 
     /**

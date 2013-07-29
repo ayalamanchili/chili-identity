@@ -8,6 +8,8 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -16,13 +18,17 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,6 +46,7 @@ public class SkillResource extends CRUDResource<Skill> {
 
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
+    @CacheEvict(value = OfficeCacheKeys.SKILL, allEntries = true)
     @Override
     public Skill save(Skill entity) {
         return super.save(entity);
@@ -48,8 +55,9 @@ public class SkillResource extends CRUDResource<Skill> {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
+    @CacheEvict(value = OfficeCacheKeys.SKILL, allEntries = true)
     @Override
-    public void delete(@PathParam("id")Long id) {
+    public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
 
@@ -62,11 +70,22 @@ public class SkillResource extends CRUDResource<Skill> {
 
     @GET
     @Path("/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.SKILL)
     public SkillTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         SkillTable tableObj = new SkillTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @GET
+    @Path("/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    @Cacheable(OfficeCacheKeys.SKILL)
+    @Override
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        return super.getDropDown(start, limit, columns);
     }
 
     @Override
