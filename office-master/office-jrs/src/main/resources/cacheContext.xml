@@ -34,6 +34,15 @@
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="employees" />
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="addresstypes" />
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="emailtype" />
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="phonetype" />
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="companycontacttype"/>
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:nmae="practice"/>
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:nmae="technologyGroup"/>
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:nmae="skill"/>
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="certification"/>
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="client"/>
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="vendor"/>
+                <beam class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="issuetype"/>
             </set>
         </property>
     </bean>
