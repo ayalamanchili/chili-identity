@@ -81,7 +81,7 @@ public class CertificationResource extends CRUDResource<Certification> {
     @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
-    @Cacheable(OfficeCacheKeys.SKILL)
+    @Cacheable(OfficeCacheKeys.CERTIFICATION)
     @Override
     public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
