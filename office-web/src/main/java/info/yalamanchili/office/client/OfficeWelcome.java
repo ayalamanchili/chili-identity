@@ -67,7 +67,7 @@ public class OfficeWelcome implements EntryPoint {
                 RootLayoutPanel.get().add(rootLayout);
             }
         });
-
+        SessionTimeoutMonitor.get().initialize();
     }
 
     protected void initUserRoles(JSONObject employee) {
