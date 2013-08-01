@@ -27,7 +27,8 @@
 
     <!-- used to include chili-gwt project in gwt compiler path -->
     <inherits name='info.chili.chili-gwt' />
-    
+    <!-- GWT JQuery-->
+    <inherits name='com.xedge.jquery.GWTJQuery'/>
     <!-- GWT HTML5 Video support-->
     <inherits name='fr.hd3d.html5.video.HTML5Video'/>
     <!--guava-->
@@ -42,7 +43,7 @@
     <!-- this is a temp should remove-->
     <inherits name='com.google.gwt.user.Debug'/>
     
-     <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
+    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
     
     <inherits name="com.google.gwt.precompress.Precompress"/>
     

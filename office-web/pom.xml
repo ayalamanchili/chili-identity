@@ -30,6 +30,12 @@
             <version>${gwt.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!--GWT-JQuery-->
+        <dependency>
+            <groupId>com.xedge.jquery</groupId>
+            <artifactId>GWTJQuery</artifactId>
+            <version>1.1</version>
+        </dependency>
         <!-- Html5 video player-->
         <dependency>
             <groupId>fr.hd3d.html5</groupId>
