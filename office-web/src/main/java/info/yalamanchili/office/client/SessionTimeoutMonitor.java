@@ -14,6 +14,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Window;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.rpc.HttpService;
 
 public class SessionTimeoutMonitor {
 
@@ -24,7 +27,7 @@ public class SessionTimeoutMonitor {
 
     private SessionTimeoutMonitor() {
         int total_timeout = maxSessionTimeoutSeconds();
-        int timeout = 1 * 60;
+        int timeout = 60 * 60;
         if (timeout > total_timeout) {
             timeout = total_timeout / 2;
         }
@@ -36,13 +39,14 @@ public class SessionTimeoutMonitor {
     private class SessionTimeoutTimer extends Timer {
 
         private Timer countdownTimer = new Timer() {
+            @Override
             public void run() {
                 updateTimeRemaining();
             }
         };
         private long startTime = 0;
         private int IDLE_SECONDS = 10 * 60;
-        private int TIMEOUT_SECONDS = 1 * 60;
+        private int TIMEOUT_SECONDS = 60 * 60;
         private int reset_count = 0;
 
         public SessionTimeoutTimer(int idle, int timeout) {
@@ -62,9 +66,18 @@ public class SessionTimeoutMonitor {
             } else {
                 countdownTimer.cancel();
                 activityHandlerRegistration.removeHandler();
-               log.info("logged out");
-//              TODO  call logout and redirect to login page
+                onSessionTimeout();
             }
+        }
+
+        protected void onSessionTimeout() {
+            log.info("logged out");
+            HttpService.HttpServiceAsync.instance().logout(new ALAsyncCallback<Void>() {
+                @Override
+                public void onResponse(Void arg0) {
+                    Window.Location.reload();
+                }
+            });
         }
 
         public void run() {
