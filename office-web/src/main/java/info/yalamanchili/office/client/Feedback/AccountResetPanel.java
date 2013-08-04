@@ -67,7 +67,7 @@ public class AccountResetPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Request Submited");
+        new ResponseStatusWidget().show("Request Submited, please wait for email with further instructions");
         GenericPopup.instance().hide();
     }
 

@@ -53,7 +53,7 @@ public class PublicAdminResource {
 
         Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
         if (emp == null) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "Invalid EmployeeId Please SubmitAccount reset Form location at bottom of the page.");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "Invalid EmployeeId, Please submit AccountReset form located at the bottom");
         }
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         String tempPassword = employeeService.generatepassword();
