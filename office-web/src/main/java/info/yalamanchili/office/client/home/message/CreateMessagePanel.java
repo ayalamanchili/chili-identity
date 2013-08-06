@@ -140,9 +140,9 @@ public class CreateMessagePanel extends CreateComposite {
             @Override
             public void onResponse(String entityString) {
                 logger.info(entityString);
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
-                    suggestionsBox.loadData(values.values());
+                    suggestionsBox.loadData(values);
                 }
             }
         });
@@ -162,7 +162,7 @@ public class CreateMessagePanel extends CreateComposite {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addTo)) {
             if (suggestionsBox.getValue() != null && !suggestionsBox.getValue().trim().isEmpty()) {
-                tosTB.setValue(tosTB.getValue() + " " + suggestionsBox.getValue());
+                tosTB.setValue(tosTB.getValue() + " " + suggestionsBox.getKey());
                 suggestionsBox.setValue("");
             }
         } else {
@@ -171,7 +171,7 @@ public class CreateMessagePanel extends CreateComposite {
     }
 
     protected String getEmployeeIdsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=employeeId";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
     }
 
     protected String getNotoficationGroupDropDownUrl() {
