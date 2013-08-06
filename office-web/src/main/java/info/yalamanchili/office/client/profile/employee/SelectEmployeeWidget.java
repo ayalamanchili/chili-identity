@@ -24,7 +24,7 @@ public class SelectEmployeeWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 1000, "id", "firstName", "lastName"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10000, "id", "firstName", "lastName"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {

@@ -70,7 +70,7 @@ public class MuitiSelectCertificationWidget extends MultiSelectComposite impleme
 
     @Override
     protected String getMultiSelectUrl() {
-        return OfficeWelcome.constants.root_url() + "skillset/certifications/" + parentId + "/0/1000";
+        return OfficeWelcome.constants.root_url() + "skillset/certifications/" + parentId + "/0/2000";
     }
 
     protected String getRemoveCertificationsUrl(List<String> unselectedIds) {
