@@ -32,6 +32,7 @@ public class SearchEmployeePanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchEmployeePanel.class.getName());
     protected SelectAddressTypeWidget addressTypeWidget = new SelectAddressTypeWidget(false, false);
+    protected SelectCorpEmployeeWidget companyContactF = new SelectCorpEmployeeWidget(false, false);
 
     public SearchEmployeePanel() {
         init("Employees Search", "Employee", OfficeWelcome.constants);
@@ -58,6 +59,8 @@ public class SearchEmployeePanel extends SearchComposite {
         addDropDown("addressType", addressTypeWidget);
         addField("clientName", DataType.STRING_FIELD);
         addField("vendorName", DataType.STRING_FIELD);
+        addDropDown("companyContact", companyContactF);
+        companyContactF.setLabelText("Company Contact");
     }
 
     @Override
@@ -101,6 +104,14 @@ public class SearchEmployeePanel extends SearchComposite {
         clientInfos.set(0, clientInfo);
         if (client.size() > 0 || vendor.size() > 0) {
             entity.put("clientInformations", clientInfos);
+        }
+        //search by company Contact
+        JSONArray companyContacts = new JSONArray();
+        JSONObject companyContact = new JSONObject();
+        if (companyContactF.getSelectedObject() != null) {
+            companyContact.put("contact", companyContactF.getSelectedObject());
+            companyContacts.set(0, companyContact);
+            entity.put("companyContacts", companyContacts);
         }
         logger.info(entity.toString());
         return entity;
@@ -197,15 +208,15 @@ public class SearchEmployeePanel extends SearchComposite {
     }
 
     protected String getFirstNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=firstName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
     }
 
     protected String getLastNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=lastName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
     }
 
     protected String getEmployeeIdDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=id&column=employeeId";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=employeeId";
     }
 
     @Override

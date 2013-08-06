@@ -7,9 +7,11 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,6 +22,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class EmployeeSearchDto extends Employee {
+
+    protected List<CompanyContact> companyContacts;
+
+    @XmlElement
+    public List<CompanyContact> getCompanyContacts() {
+        if (companyContacts == null) {
+            this.companyContacts = new ArrayList<CompanyContact>();
+        }
+        return companyContacts;
+    }
+
+    public void setCompanyContacts(List<CompanyContact> companyContacts) {
+        this.companyContacts = companyContacts;
+    }
 
     @XmlElement
     @Override

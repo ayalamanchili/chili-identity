@@ -347,7 +347,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
-        for (Object empObj : getDao().search(mapper.map(entity, Employee.class), start, limit)) {
+        List<Employee> result = null;;
+        if (entity.getCompanyContacts().size() > 0 && entity.getCompanyContacts().get(0).getContact() != null) {
+            result = employeeDao.searchByCompanyContact(entity.getCompanyContacts().get(0).getContact(), start, limit);
+        } else {
+            result = getDao().search(mapper.map(entity, Employee.class), start, limit);
+        }
+        for (Object empObj : result) {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         return employees;
@@ -362,7 +368,12 @@ public class EmployeeResource extends CRUDResource<Employee> {
         //TODO get autogenerate unique file name
         String fileName = "report" + "." + format;
         List<EmployeeDto> data = new ArrayList<EmployeeDto>();
-        Long size = SearchUtils.getSearchSize(getDao().getEntityManager(), mapper.map(entity, Employee.class));
+        Long size;
+        if (entity.getCompanyContacts().size() > 0) {
+            size = 1000l;
+        } else {
+            size = SearchUtils.getSearchSize(getDao().getEntityManager(), mapper.map(entity, Employee.class));
+        }
         int start = 0;
         int limit = 100;
         do {

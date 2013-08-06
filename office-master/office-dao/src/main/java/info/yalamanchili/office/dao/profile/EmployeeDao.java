@@ -12,10 +12,12 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.QueryUtils;
+import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -76,6 +78,14 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return newEmail;
     }
 
+    public List<Employee> searchByCompanyContact(Employee companyContact, int start, int limit) {
+        Query query = getEntityManager().createQuery("select DISTINCT cc.employee FROM " + CompanyContact.class.getCanonicalName() + " cc WHERE cc.contact.id=:contactIdParam", Employee.class);
+        query.setParameter("contactIdParam", companyContact.getId());
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
     public Employee getEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
@@ -87,7 +97,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(e);
         }
     }
-    
+
     public Map<String, String> getCorpEntityStringMapByParams(int start, int limit, String... params) {
         return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name='CORPORATE_EMPLOYEE'", start, limit, params);
     }
