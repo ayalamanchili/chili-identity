@@ -30,7 +30,7 @@ public class ReplyMessagePanel extends ALComposite implements ClickHandler {
     protected String messageId;
     protected CaptionPanel panel = new CaptionPanel();
     protected FlowPanel contentPanel = new FlowPanel();
-    RichTextField replyBodyArea = new RichTextField(OfficeWelcome.constants,"reply","Message",false,true);
+    RichTextField replyBodyArea = new RichTextField(OfficeWelcome.constants, "Message_reply", "Message", false, true);
     Button replyB = new Button("reply");
 
     public ReplyMessagePanel(String messageId) {
@@ -47,7 +47,7 @@ public class ReplyMessagePanel extends ALComposite implements ClickHandler {
             @Override
             public void onResponse(String arg0) {
                 new ResponseStatusWidget().show("reply sent");
-                
+
             }
         });
         panel.getParent().removeFromParent();
@@ -78,6 +78,6 @@ public class ReplyMessagePanel extends ALComposite implements ClickHandler {
     }
 
     protected String sendReplyURL() {
-      return OfficeWelcome.constants.root_url() + "message/reply/"+messageId;
+        return OfficeWelcome.constants.root_url() + "message/reply/" + messageId;
     }
 }
