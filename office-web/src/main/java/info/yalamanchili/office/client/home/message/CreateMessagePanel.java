@@ -9,6 +9,9 @@ package info.yalamanchili.office.client.home.message;
 
 import com.google.common.base.Splitter;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -31,7 +34,7 @@ import java.util.logging.Logger;
  *
  * @author Prashanthi
  */
-public class CreateMessagePanel extends CreateComposite {
+public class CreateMessagePanel extends CreateComposite implements KeyPressHandler {
 
     private static Logger logger = Logger.getLogger(CreateMessagePanel.class.getName());
     SuggestBox suggestionsBox = null;
@@ -124,6 +127,7 @@ public class CreateMessagePanel extends CreateComposite {
         addField("message", false, false, DataType.RICH_TEXT_AREA);
         suggestionsBox = (SuggestBox) fields.get("search");
         tosTB = (TextAreaField) fields.get("tos");
+        suggestionsBox.getSuggestBox().addKeyPressHandler(this);
     }
 
     @Override
@@ -161,12 +165,16 @@ public class CreateMessagePanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addTo)) {
-            if (suggestionsBox.getValue() != null && !suggestionsBox.getValue().trim().isEmpty()) {
-                tosTB.setValue(tosTB.getValue() + " " + suggestionsBox.getKey());
-                suggestionsBox.setValue("");
-            }
+            addTo();
         } else {
             super.onClick(event);
+        }
+    }
+
+    protected void addTo() {
+        if (suggestionsBox.getValue() != null && !suggestionsBox.getValue().trim().isEmpty()) {
+            tosTB.setValue(tosTB.getValue() + " " + suggestionsBox.getKey());
+            suggestionsBox.setValue("");
         }
     }
 
@@ -176,5 +184,17 @@ public class CreateMessagePanel extends CreateComposite {
 
     protected String getNotoficationGroupDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "notification/dropdown/0/1000?column=id&column=name";
+    }
+
+    @Override
+    public void onKeyPress(KeyPressEvent event) {
+        int keyCode = event.getUnicodeCharCode();
+        if (keyCode == 0) {
+            // Probably Firefox
+            keyCode = event.getNativeEvent().getKeyCode();
+        }
+        if (keyCode == KeyCodes.KEY_ENTER) {
+            addTo();
+        }
     }
 }
