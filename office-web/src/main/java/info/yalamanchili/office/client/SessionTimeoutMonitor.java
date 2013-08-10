@@ -48,7 +48,7 @@ public class SessionTimeoutMonitor {
             }
         };
         private long startTime = 0;
-        private int IDLE_SECONDS = 10 * 60;
+        private int IDLE_SECONDS = 60 * 60;
         private int TIMEOUT_SECONDS = 60 * 60;
         private int reset_count = 0;
 
