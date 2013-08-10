@@ -26,10 +26,7 @@
 
     <!-- used to include chili-gwt project in gwt compiler path -->
     <inherits name='info.chili.chili-gwt' />
-    
-    <!-- GWT JQuery-->
-    <inherits name='com.xedge.jquery.GWTJQuery'/>
-
+   
     <!-- GWT HTML5 Video support-->
     <inherits name='fr.hd3d.html5.video.HTML5Video'/>
     
@@ -45,7 +42,7 @@
     <!-- use this setting in development mode to speed up compile time -->
     <set-property name="user.agent" value="safari" />
     
-    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
+     <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
         
     <!-- enables the debug id are set elementswidgets -->
     <inherits name='com.google.gwt.user.Debug'/>
