@@ -197,6 +197,9 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
     public abstract void preFetchTable(int start);
 
     public void postFetchTable(String tableObjString) {
+        if (tableObjString == null) {
+            return;
+        }
         JSONObject table = (JSONObject) JSONParser.parseLenient(tableObjString);
         if (table.get("size") != null) {
             JSONString size = (JSONString) table.get("size");
