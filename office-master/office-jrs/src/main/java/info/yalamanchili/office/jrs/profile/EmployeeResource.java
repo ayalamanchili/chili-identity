@@ -13,7 +13,6 @@ import info.chili.dao.CRUDDao;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
@@ -25,6 +24,8 @@ import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
@@ -228,7 +229,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Email */
     @GET
     @Path("/emails/{id}/{start}/{limit}")
-    @PrivacyAware(key = "emails")
+    @PrivacyAware(key = PrivacyData.EMAILS)
     public EmailTable getEmails(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         EmailTable tableObj = new EmailTable();
         Employee emp = (Employee) getDao().findById(id);

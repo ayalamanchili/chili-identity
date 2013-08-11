@@ -27,7 +27,6 @@ import info.yalamanchili.office.entity.security.CRole;
 import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.entity.activity.IssueType;
 import info.yalamanchili.office.entity.client.Client;
@@ -36,6 +35,9 @@ import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.expense.ExpenseCategory;
+import info.yalamanchili.office.entity.privacy.PrivacyData;
+import info.yalamanchili.office.entity.privacy.PrivacyMode;
+import info.yalamanchili.office.entity.privacy.PrivacySetting;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.math.BigDecimal;
@@ -420,6 +422,13 @@ public class OfficeStartup {
         hrFolder.setName("HR");
         hrFolder.setParent(driveFolder);
         em.merge(hrFolder);
+        
+        //Test privacy setting
+        PrivacySetting privacySetting= new PrivacySetting();
+        privacySetting.setPrivacyData(PrivacyData.EMAILS);
+        privacySetting.setPrivacyMode(PrivacyMode.INTERNAL);
+        privacySetting.setEmployee(userEmp);
+        em.merge(privacySetting);
     }
 
     protected AddressType getHomeAddressType() {

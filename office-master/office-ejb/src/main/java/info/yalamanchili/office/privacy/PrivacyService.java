@@ -1,0 +1,77 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.privacy;
+
+import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.privacy.PrivacyData;
+import info.yalamanchili.office.entity.privacy.PrivacyMode;
+import info.yalamanchili.office.entity.privacy.PrivacySetting;
+import info.yalamanchili.office.entity.profile.Employee;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author anuyalamanchili
+ */
+@Component
+@Scope("request")
+public class PrivacyService {
+
+    protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint, PrivacyData privacyData) {
+        Employee employee = getEmployee(joinPoint);
+        if (employee != null) {
+            PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyData);
+            if (setting != null && !PrivacyMode.PUBLIC.equals(setting.getPrivacyMode())) {
+                if (PrivacyMode.INTERNAL.equals(setting.getPrivacyMode())) {
+                    return canAccessInternalData();
+                }
+                if (PrivacyMode.PRIVATE.equals(setting.getPrivacyMode())) {
+                    return canAccessPrivateData();
+                }
+            }
+
+        }
+        return true;
+    }
+
+    protected boolean canAccessInternalData() {
+        Employee currentUser = SecurityService.instance().getCurrentUser();
+        if ("CORPORATE_EMPLOYEE".equals(currentUser.getEmployeeType().getName())) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    protected boolean canAccessPrivateData() {
+        Employee currentUser = SecurityService.instance().getCurrentUser();
+        if (SecurityService.instance().getUserRoles(currentUser).contains("ROLE_ADMIN")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    protected Employee getEmployee(ProceedingJoinPoint joinPoint) {
+        if (joinPoint.getArgs().length > 0 && joinPoint.getArgs()[0] instanceof Long) {
+            return EmployeeDao.instance().findById((Long) joinPoint.getArgs()[0]);
+        }
+        return null;
+    }
+
+    public static PrivacyService instance() {
+        return SpringContext.getBean(PrivacyService.class);
+    }
+}

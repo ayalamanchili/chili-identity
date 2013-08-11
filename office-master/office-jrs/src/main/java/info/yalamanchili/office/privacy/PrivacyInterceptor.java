@@ -7,9 +7,6 @@
  */
 package info.yalamanchili.office.privacy;
 
-import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.entity.profile.Employee;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -34,7 +31,7 @@ public class PrivacyInterceptor {
     public Object privacyCheck(ProceedingJoinPoint joinPoint,PrivacyAware privacyAware) throws Throwable {
         Object result = null;
         try {
-            if (performPrivacyCheck(joinPoint)) {
+            if (PrivacyService.instance().performPrivacyCheck(joinPoint,privacyAware.key())) {
                 result = joinPoint.proceed();
             }
         } catch (Exception e) {
@@ -42,24 +39,5 @@ public class PrivacyInterceptor {
         }
         return result;
     }
-
-    protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint) {
-        Employee employee = getEmployee(joinPoint);
-        if (employee != null) {
-            Employee currentUser = SecurityService.instance().getCurrentUser();
-//            if (currentUser.getEmployeeId().equals("useruser")) {
-//                return false;
-//            }
-            //TODO check here
-        }
-
-        return true;
-    }
-
-    protected Employee getEmployee(ProceedingJoinPoint joinPoint) {
-        if (joinPoint.getArgs().length > 0 && joinPoint.getArgs()[0] instanceof Long) {
-            return EmployeeDao.instance().findById((Long) joinPoint.getArgs()[0]);
-        }
-        return null;
-    }
+   
 }
