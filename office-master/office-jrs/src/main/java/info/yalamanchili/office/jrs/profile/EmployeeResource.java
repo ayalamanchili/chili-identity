@@ -25,6 +25,7 @@ import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.jrs.profile.EmailResource.EmailTable;
 import info.yalamanchili.office.jrs.profile.EmergencyContactResource.EmergencyContactTable;
@@ -227,6 +228,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Email */
     @GET
     @Path("/emails/{id}/{start}/{limit}")
+    @PrivacyAware(key = "emails")
     public EmailTable getEmails(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         EmailTable tableObj = new EmailTable();
         Employee emp = (Employee) getDao().findById(id);

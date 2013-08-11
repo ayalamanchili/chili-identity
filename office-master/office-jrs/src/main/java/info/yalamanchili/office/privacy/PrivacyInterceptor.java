@@ -30,8 +30,8 @@ public class PrivacyInterceptor {
     public void anyPublicMethod() {
     }
 
-    @Around("anyPublicMethod() && @annotation(info.yalamanchili.office.privacy.PrivacyAware)")
-    public Object privacyCheck(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("anyPublicMethod() && @annotation(privacyAware)")
+    public Object privacyCheck(ProceedingJoinPoint joinPoint,PrivacyAware privacyAware) throws Throwable {
         Object result = null;
         try {
             if (performPrivacyCheck(joinPoint)) {
@@ -47,9 +47,9 @@ public class PrivacyInterceptor {
         Employee employee = getEmployee(joinPoint);
         if (employee != null) {
             Employee currentUser = SecurityService.instance().getCurrentUser();
-
-
-
+//            if (currentUser.getEmployeeId().equals("useruser")) {
+//                return false;
+//            }
             //TODO check here
         }
 

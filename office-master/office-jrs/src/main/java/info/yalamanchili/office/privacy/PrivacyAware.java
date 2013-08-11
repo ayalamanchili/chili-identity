@@ -13,10 +13,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to trigger  customer interceptor to filter the return results based on privacy settings
+ * Used to trigger customer interceptor to filter the return results based on
+ * privacy settings
+ *
  * @author anuyalamanchili
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrivacyAware {
+
+    String key();
 }
