@@ -90,7 +90,7 @@ public class OfficeStartup {
             initTestData();
         }
         //Run sync tasks
-        TimeJobService.instance().syncTimeSheetPeriods();
+//        TimeJobService.instance().syncTimeSheetPeriods();
         OfficeBPMIdentityService.instance().syncUsersAndRoles();
     }
 
