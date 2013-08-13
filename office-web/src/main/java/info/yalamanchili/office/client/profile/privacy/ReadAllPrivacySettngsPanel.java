@@ -65,11 +65,10 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeePruvacyURL(parentId, start, OfficeWelcome.constants.tableSize()),
-                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllPrivacyURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
-                logger.info(result);
                 postFetchTable(result);
             }
         });
@@ -97,8 +96,7 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
     }
 
-    private String getEmployeePruvacyURL(String parentId, Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "employee/privacy/" + parentId + "/" + start.toString() + "/"
-                + limit.toString();
+    private String getReadAllPrivacyURL(Integer start, String limit) {
+        return OfficeWelcome.constants.root_url() + "privacy/" + start.toString() + "/" + limit.toString();
     }
 }
