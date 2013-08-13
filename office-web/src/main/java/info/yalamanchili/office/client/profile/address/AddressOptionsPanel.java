@@ -15,39 +15,38 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
-	protected HorizontalPanel panel = new HorizontalPanel();
+    protected HorizontalPanel panel = new HorizontalPanel();
+    protected ClickableLink addAddressLink = new ClickableLink("Add Address");
 
-	protected ClickableLink addAddressLink = new ClickableLink("Add Address");
+    public AddressOptionsPanel() {
+        init(panel);
+    }
 
-	public AddressOptionsPanel() {
-		init(panel);
-	}
+    @Override
+    protected void addListeners() {
+        addAddressLink.addClickHandler(this);
+    }
 
-	@Override
-	protected void addListeners() {
-		addAddressLink.addClickHandler(this);
-	}
+    @Override
+    protected void configure() {
+        // TODO move this to common css
+        panel.setSpacing(5);
 
-	@Override
-	protected void configure() {
-		// TODO move this to common css
-		panel.setSpacing(5);
+    }
 
-	}
+    @Override
+    protected void addWidgets() {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            panel.add(addAddressLink);
+        }
 
-	@Override
-	protected void addWidgets() {
-		if (Auth.isAdmin() || Auth.isHR()) {
-			panel.add(addAddressLink);
-		}
+    }
 
-	}
-
-	@Override
-	public void onClick(ClickEvent arg0) {
-		if (arg0.getSource().equals(addAddressLink)) {
-			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateCompositeType.ADD));
-		}
-	}
+    @Override
+    public void onClick(ClickEvent arg0) {
+        if (arg0.getSource().equals(addAddressLink)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateCompositeType.ADD));
+        }
+    }
 }
