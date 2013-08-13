@@ -16,18 +16,22 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.fields.ListBoxField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.utils.Utils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -200,6 +204,10 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
         if (tableObjString == null) {
             return;
         }
+        if (tableObjString.equals("NOT_SHARED")) {
+            tablePanel.add(new HTML("User has choosen to not share this data"));
+            return;
+        }
         JSONObject table = (JSONObject) JSONParser.parseLenient(tableObjString);
         if (table.get("size") != null) {
             JSONString size = (JSONString) table.get("size");
@@ -300,5 +308,34 @@ public abstract class ReadAllComposite<T extends GenericTableRowOptionsWidget> e
     public void refresh() {
         table.removeAllRows();
         preFetchTable(0);
+    }
+
+    protected void handleErrorResponse(Throwable err) {
+        //TODO enhance to show generic error messages
+        logger.info(err.getMessage());
+        if (!err.getMessage().isEmpty() && err.getMessage().contains("Error")) {
+            try {
+                JSONValue errors = JSONParser.parseLenient(err.getMessage());
+                processValidationErrors(errors);
+            } catch (Exception e) {
+                new ResponseStatusWidget().show("Call Failed");
+            }
+        } else {
+            new ResponseStatusWidget().show("Call Failed");
+        }
+    }
+
+    protected void processValidationErrors(JSONValue errorsObj) {
+        JSONArray errorsArray = JSONUtils.toJSONArray(errorsObj.isObject().get("Error"));
+        String genericErrorMessage = null;
+        for (int i = 0; i < errorsArray.size(); i++) {
+            JSONObject err = (JSONObject) errorsArray.get(i);
+            genericErrorMessage = new String();
+            genericErrorMessage = genericErrorMessage.concat("Error:");
+            genericErrorMessage = genericErrorMessage.concat(err.get("source").isString().stringValue() + ":" + err.get("description").isString().stringValue());
+        }
+        if (genericErrorMessage != null) {
+            new ResponseStatusWidget().show(genericErrorMessage);
+        }
     }
 }

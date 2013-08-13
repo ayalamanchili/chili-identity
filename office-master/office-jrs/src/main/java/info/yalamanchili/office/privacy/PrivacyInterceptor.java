@@ -28,10 +28,10 @@ public class PrivacyInterceptor {
     }
 
     @Around("anyPublicMethod() && @annotation(privacyAware)")
-    public Object privacyCheck(ProceedingJoinPoint joinPoint,PrivacyAware privacyAware) throws Throwable {
+    public Object privacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) throws Throwable {
         Object result = null;
         try {
-            if (PrivacyService.instance().performPrivacyCheck(joinPoint,privacyAware.key())) {
+            if (PrivacyService.instance().performPrivacyCheck(joinPoint, privacyAware.key())) {
                 result = joinPoint.proceed();
             }
         } catch (Exception e) {
@@ -39,5 +39,4 @@ public class PrivacyInterceptor {
         }
         return result;
     }
-   
 }
