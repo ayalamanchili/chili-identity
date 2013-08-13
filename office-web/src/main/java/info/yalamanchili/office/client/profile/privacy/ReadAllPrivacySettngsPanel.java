@@ -4,11 +4,9 @@
  */
 package info.yalamanchili.office.client.profile.privacy;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -57,6 +55,8 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
         new ResponseStatusWidget().show("Successfully Deleted Privacy Data");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(parentId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
+
     }
 
     @Override
