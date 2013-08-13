@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.activity.TreeActivityPanel;
 import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
+import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettngsPanel;
 import java.util.logging.Logger;
 
@@ -195,7 +196,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (PRIVACY_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(getEntityId()));
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
+            TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
         }
     }
 
