@@ -53,13 +53,13 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String REPORTS_TO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String COMPANY_CONTACT_NODE = "companyContact";
+    protected static final String PRIVACY_NODE = "privacy";
     protected static final String SKILL_SET_NODE = "skillset";
     protected static final String ACTIVITY_NODE = "activity";
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
-    protected static final String PRIVACY_NODE = "privacy";
     protected TreeSkillSetPanel skillSetTreePanel = new TreeSkillSetPanel(OfficeWelcome.instance().employeeId);
     protected TreeActivityPanel activityTreePanel = new TreeActivityPanel(getEntityId());
 
@@ -93,6 +93,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
+        addFirstChildLink("Privacy", PRIVACY_NODE);
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
         if (Auth.hasNonUserRoles()) {
             addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
@@ -107,7 +108,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.isAdmin()) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
-        addFirstChildLink("Privacy", PRIVACY_NODE);
         this.rootItem.setState(true);
     }
 
@@ -142,6 +142,11 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCompanyContactPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new CompanyContactOptionsPanel());
+        }
+        if (PRIVACY_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp
@@ -193,11 +198,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (activityTreePanel != null) {
             activityTreePanel.treeNodeSelected(entityNodeKey);
         }
-        if (PRIVACY_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
-        }
+
     }
 
     @Override
