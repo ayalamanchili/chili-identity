@@ -9,6 +9,7 @@ package info.yalamanchili.office.dao.privacy;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.privacy.PrivacySetting;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -40,6 +41,7 @@ public class PrivacySettingDao extends CRUDDao<PrivacySetting> {
         return q.getResultList();
     }
 //TODO cache this
+
     public PrivacySetting getPrivacySettingsForData(Employee employee, PrivacyData privacyDataParam) {
         Query q = getEntityManager().createQuery("from " + PrivacySetting.class.getCanonicalName() + " where employee=:employeeParam and privacyData=:privacyDataParam", PrivacySetting.class);
         q.setParameter("employeeParam", employee);
@@ -49,6 +51,13 @@ public class PrivacySettingDao extends CRUDDao<PrivacySetting> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public PrivacySetting save(PrivacySetting privacySetting) {
+        Employee emp = EmployeeDao.instance().findById(privacySetting.getEmployee().getId());
+        privacySetting.setEmployee(emp);
+        return super.save(privacySetting);
     }
 
     @Override
