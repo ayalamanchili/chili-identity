@@ -61,6 +61,8 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePrivacyPanel(getEntity(entityId)));
     }
 
     @Override
