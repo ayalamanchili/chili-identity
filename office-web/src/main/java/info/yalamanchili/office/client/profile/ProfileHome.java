@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
+import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import java.util.logging.Logger;
 
 public class ProfileHome extends ALComposite implements ClickHandler {
@@ -53,6 +54,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel clientInfoPanel;
     protected DisclosurePanel emergencyContactsPanel;
     protected DisclosurePanel companyContactsPanel;
+    protected DisclosurePanel privacyPanel;
     protected DisclosurePanel skillSetDP;
     protected DisclosurePanel preferencesPanel;
     protected ClickableLink updateProfile = new ClickableLink("Update Profile");
@@ -87,6 +89,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         addCompanyContactsPanel();
         addSkillSetPanel();
         addPreferencesPanel();
+        addPrivacyPanel();
     }
     /*
      * Read Employee Panel
@@ -322,6 +325,30 @@ public class ProfileHome extends ALComposite implements ClickHandler {
 
     protected String getPreferencesURI() {
         return OfficeWelcome.constants.root_url() + "employee/preferences/" + OfficeWelcome.instance().employeeId;
+    }
+    /*
+     *Privacy
+     */
+
+    protected void addPrivacyPanel() {
+        if (panel.getWidgetIndex(privacyPanel) < 0) {
+            privacyPanel = new DisclosurePanel("Privacy");
+            panel.add(privacyPanel);
+            privacyPanel.addStyleName("profileHome");
+            privacyPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+                @Override
+                public void onOpen(OpenEvent<DisclosurePanel> event) {
+                    privacyPanel.setContent(
+                            new ReadAllPrivacySettingPopupPanel(OfficeWelcome.instance().employeeId));
+
+                }
+            });
+        }
+    }
+
+    public void refreshPrivacy() {
+        employeeePanel.setOpen(false);
+        employeeePanel.setOpen(true);
     }
 
     @Override
