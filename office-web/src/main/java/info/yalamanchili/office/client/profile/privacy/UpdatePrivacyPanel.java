@@ -61,8 +61,8 @@ public class UpdatePrivacyPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("privacyData", entity, null);
-        assignFieldValueFromEntity("privacyMode", entity, null);
+        assignFieldValueFromEntity("privacyData", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("privacyMode", entity, DataType.ENUM_FIELD);
     }
 
     @Override
