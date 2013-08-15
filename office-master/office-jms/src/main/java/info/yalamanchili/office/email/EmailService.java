@@ -51,11 +51,14 @@ public class EmailService {
 
     @Async
     public void sendEmail(final Email email) {
+        final Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
+        if (tos.length < 1) {
+            return;
+        }
         final SpringTemplateEngine templateEngine = (SpringTemplateEngine) SpringContext.getBean("templateEngine");
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
                 mimeMessage.setRecipients(Message.RecipientType.BCC, tos);
                 mimeMessage.setSubject(email.getSubject());
                 final Context ctx = new Context();
@@ -67,7 +70,6 @@ public class EmailService {
         };
         try {
             logger.info("sending email:" + email);
-
             mailSender.send(preparator);
         } catch (MailException ex) {
             ex.printStackTrace();
@@ -126,7 +128,9 @@ public class EmailService {
         Query getEmailQ = em.createQuery("from " + info.yalamanchili.office.entity.profile.Email.class.getCanonicalName() + " where emailHash=:emailAddressParam");
         getEmailQ.setParameter("emailAddressParam", SecurityUtils.hash(emailAddress));
         if (getEmailQ.getResultList().size() > 0) {
-            return (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
+            info.yalamanchili.office.entity.profile.Email email = (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
+            em.refresh(email);
+            return email;
         } else {
             return null;
         }
