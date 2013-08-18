@@ -48,6 +48,6 @@
     <inherits name='com.google.gwt.user.Debug'/>
     
     <replace-with class="info.yalamanchili.office.client.config.OfficeClientConfigDev">
-        <when-type-is class="info.yalamanchili.office.client.config.OfficeClientConfig" />
+        <when-type-is class="info.chili.gwt.config.ClientConfig" />
     </replace-with>
 </module>

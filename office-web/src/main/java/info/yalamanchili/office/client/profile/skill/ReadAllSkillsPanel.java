@@ -14,8 +14,8 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
-import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
+import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 

@@ -10,13 +10,14 @@ package info.yalamanchili.office.client.admin.bulkimport;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
-import info.yalamanchili.office.client.gwt.FileField;
-import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
+import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.fields.FileField;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -67,7 +68,7 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "adapter"));
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
             table.setText(i, 3, JSONUtils.toString(entity, "description"));
-            String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField(fileURL);
             table.setWidget(i, 4, fileField);
         }

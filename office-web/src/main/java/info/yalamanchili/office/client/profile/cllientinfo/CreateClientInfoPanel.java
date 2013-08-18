@@ -7,7 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
@@ -23,7 +23,7 @@ import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocation
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 
 public class CreateClientInfoPanel extends CreateComposite {

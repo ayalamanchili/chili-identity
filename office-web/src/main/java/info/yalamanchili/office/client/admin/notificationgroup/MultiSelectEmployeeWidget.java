@@ -9,7 +9,7 @@ package info.yalamanchili.office.client.admin.notificationgroup;
 
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.MultiSelectComposite;
+import info.chili.gwt.composite.MultiSelectComposite;
 import info.chili.gwt.rpc.HttpService;
 import java.util.List;
 import java.util.logging.Logger;

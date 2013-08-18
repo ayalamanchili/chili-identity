@@ -10,7 +10,7 @@ package info.yalamanchili.office.client.admin.client;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
-import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 
 /**
  *

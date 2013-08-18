@@ -47,6 +47,6 @@
     <inherits name="com.google.gwt.precompress.Precompress"/>
     
     <replace-with class="info.yalamanchili.office.client.config.OfficeClientConfigTest">
-        <when-type-is class="info.yalamanchili.office.client.config.OfficeClientConfig" />
+        <when-type-is class="info.chili.gwt.config.ClientConfig" />
     </replace-with>
 </module>

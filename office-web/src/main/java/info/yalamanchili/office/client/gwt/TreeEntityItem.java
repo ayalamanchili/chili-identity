@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import info.chili.gwt.widgets.GenericPopup;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.JSONObject;

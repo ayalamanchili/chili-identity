@@ -15,7 +15,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 

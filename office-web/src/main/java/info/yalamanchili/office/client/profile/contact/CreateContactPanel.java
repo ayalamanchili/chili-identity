@@ -14,7 +14,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.phone.CreatePhonePanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.ArrayList;

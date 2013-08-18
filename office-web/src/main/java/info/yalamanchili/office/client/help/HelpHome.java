@@ -16,9 +16,10 @@ import fr.hd3d.html5.video.client.VideoSource;
 import fr.hd3d.html5.video.client.VideoSource.VideoType;
 import fr.hd3d.html5.video.client.VideoWidget;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -125,9 +126,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getFullVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + fullVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + fullVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -135,9 +136,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getRolesVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + rolesVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + rolesVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -145,9 +146,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getMyOfficeVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + myofficeVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + myofficeVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -155,9 +156,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getAdminVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + adminVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + adminVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -165,9 +166,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getNotificationsVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + notificationsVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + notificationsVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -175,9 +176,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getSocialVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + socialVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + socialVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -185,9 +186,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getDriveVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + driveVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + driveVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -195,9 +196,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getBulkImportVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + bulkimportVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + bulkimportVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);
@@ -205,9 +206,9 @@ public class HelpHome extends ALComposite implements ClickHandler {
     }
 
     protected VideoWidget getAccountResetVideoWidget() {
-        VideoWidget videoPlayer = new VideoWidget(false, true, OfficeWelcome.config.getFileDownloadUrl() + defaultImage);
+        VideoWidget videoPlayer = new VideoWidget(false, true, ChiliClientConfig.instance().getFileDownloadUrl() + defaultImage);
         List<VideoSource> sources = new ArrayList<VideoSource>();
-        sources.add(new VideoSource(OfficeWelcome.config.getFileDownloadUrl() + videosLinkPrefix + webm + "/" + accountresetVideo + "."
+        sources.add(new VideoSource(ChiliClientConfig.instance().getFileDownloadUrl() + videosLinkPrefix + webm + "/" + accountresetVideo + "."
                 + webm, VideoType.WEBM));
         videoPlayer.setSources(sources);
         videoPlayer.setPixelSize(500, 400);

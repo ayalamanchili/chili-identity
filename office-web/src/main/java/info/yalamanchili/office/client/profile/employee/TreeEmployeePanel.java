@@ -24,7 +24,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.password.ResetPasswordPanel;
 import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPanel;
 import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;

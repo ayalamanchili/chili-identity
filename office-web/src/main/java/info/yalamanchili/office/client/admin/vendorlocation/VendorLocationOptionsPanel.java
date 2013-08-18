@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.chili.gwt.crud.CreateComposite;
 
 /**
  *

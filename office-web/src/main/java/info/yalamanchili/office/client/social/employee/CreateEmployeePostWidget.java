@@ -32,7 +32,7 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.FileuploadField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;

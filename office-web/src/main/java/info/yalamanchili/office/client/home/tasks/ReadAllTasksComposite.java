@@ -8,7 +8,7 @@
 package info.yalamanchili.office.client.home.tasks;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
+import info.chili.gwt.crud.ReadAllComposite;
 
 /**
  *

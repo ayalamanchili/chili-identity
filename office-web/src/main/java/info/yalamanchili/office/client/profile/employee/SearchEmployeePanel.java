@@ -11,6 +11,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -221,6 +222,6 @@ public class SearchEmployeePanel extends SearchComposite {
 
     @Override
     protected String getReportURL() {
-        return OfficeWelcome.config.getFileDownloadUrl() + "employee/search_employee_report" + "&passthrough=true" + "&format=" + getReportFormat();
+        return ChiliClientConfig.instance().getFileDownloadUrl() + "employee/search_employee_report" + "&passthrough=true" + "&format=" + getReportFormat();
     }
 }

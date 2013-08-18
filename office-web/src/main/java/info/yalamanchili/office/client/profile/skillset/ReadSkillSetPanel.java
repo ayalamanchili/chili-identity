@@ -10,16 +10,17 @@ package info.yalamanchili.office.client.profile.skillset;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.ReadComposite;
+import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.gwt.FileField;
+import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
 import java.util.logging.Logger;
@@ -104,7 +105,7 @@ public class ReadSkillSetPanel extends ReadComposite {
         //Resume
         Label resumeLabel = new Label("Resume");
         entityFieldsPanel.add(resumeLabel);
-        String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
         //TODO convert to generic field
         FileField fileField = new FileField(fileURL);
         entityFieldsPanel.add(fileField);

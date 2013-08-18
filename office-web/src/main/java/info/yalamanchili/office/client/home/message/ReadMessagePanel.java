@@ -18,13 +18,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableImage;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.ImageField;
+import info.chili.gwt.fields.ImageField;
+import info.chili.gwt.resources.ChiliImages;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.yalamanchili.office.client.social.ReadPostWidget;
 import java.util.logging.Logger;
@@ -48,8 +50,8 @@ public class ReadMessagePanel extends ALComposite implements ClickHandler {
     protected Label messageStatusPanel = new Label();
     protected HorizontalPanel optionsPanel = new HorizontalPanel();
     protected ClickableImage replyLink = new ClickableImage("reply", OfficeImages.INSTANCE.replyIcon_16_16());
-    protected ClickableImage viewIcon = new ClickableImage("view", OfficeImages.INSTANCE.viewIcon_16_16());
-    protected ClickableImage deleteLink = new ClickableImage("delete", OfficeImages.INSTANCE.deleteIcon_16_16());
+    protected ClickableImage viewIcon = new ClickableImage("view", ChiliImages.INSTANCE.viewIcon_16_16());
+    protected ClickableImage deleteLink = new ClickableImage("delete", ChiliImages.INSTANCE.deleteIcon_16_16());
 
     public ReadMessagePanel(JSONObject post) {
         this.message = post;

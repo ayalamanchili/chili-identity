@@ -11,7 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 /**

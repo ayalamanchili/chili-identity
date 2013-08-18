@@ -14,7 +14,7 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.CreateComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.profile.addresstype.CreateAddressTypePanel;
 import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
 import java.util.logging.Logger;

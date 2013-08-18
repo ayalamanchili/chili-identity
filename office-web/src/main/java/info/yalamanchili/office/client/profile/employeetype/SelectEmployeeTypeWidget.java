@@ -12,7 +12,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.SelectComposite;
+import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
 import java.util.HashMap;
 import java.util.Map;

@@ -11,7 +11,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.gwt.GenericTableRowOptionsWidget;
+import info.chili.gwt.crud.GenericTableRowOptionsWidget;
 
 /**
  *

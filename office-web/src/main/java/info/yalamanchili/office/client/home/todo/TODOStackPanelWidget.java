@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.widgets.GenericPopup;
 
 /**
  *

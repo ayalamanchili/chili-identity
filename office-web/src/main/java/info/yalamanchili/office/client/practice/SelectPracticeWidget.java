@@ -10,7 +10,7 @@ package info.yalamanchili.office.client.practice;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.SelectComposite;
+import info.chili.gwt.composite.SelectComposite;
 
 /**
  *

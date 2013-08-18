@@ -15,7 +15,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contacttype.SelectCompanyContactTypeWidget;
-import info.yalamanchili.office.client.gwt.UpdateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;

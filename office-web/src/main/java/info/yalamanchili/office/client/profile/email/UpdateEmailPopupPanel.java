@@ -3,7 +3,7 @@
  */
 package info.yalamanchili.office.client.profile.email;
 
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 import com.google.gwt.json.client.JSONObject;

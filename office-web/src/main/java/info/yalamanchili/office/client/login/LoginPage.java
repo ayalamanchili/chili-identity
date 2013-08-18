@@ -33,8 +33,8 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Feedback.AccountResetPanel;
 import info.yalamanchili.office.client.Feedback.FeedbackPanel;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 

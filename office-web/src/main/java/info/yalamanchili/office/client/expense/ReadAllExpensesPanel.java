@@ -17,10 +17,10 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.CRUDReadAllComposite;
-import info.yalamanchili.office.client.gwt.GenericTableRowOptionsWidget;
-import info.yalamanchili.office.client.gwt.ReadAllComposite;
-import info.yalamanchili.office.client.gwt.TableRowOptionsWidget;
+import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.GenericTableRowOptionsWidget;
+import info.chili.gwt.crud.ReadAllComposite;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 

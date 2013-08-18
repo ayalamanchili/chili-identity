@@ -15,13 +15,9 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
@@ -33,7 +29,6 @@ public class OfficeWelcome implements EntryPoint {
     public List<String> roles = new ArrayList<String>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
-    public static OfficeClientConfig config = GWT.create(OfficeClientConfig.class);
 
     @Override
     public void onModuleLoad() {

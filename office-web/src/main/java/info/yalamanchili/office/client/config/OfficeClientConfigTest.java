@@ -7,11 +7,13 @@
  */
 package info.yalamanchili.office.client.config;
 
+import info.chili.gwt.config.ClientConfig;
+
 /**
  *
  * @author ayalamanchili
  */
-public class OfficeClientConfigTest implements OfficeClientConfig {
+public class OfficeClientConfigTest implements ClientConfig {
 
     @Override
     public String getFileUploadUrl() {

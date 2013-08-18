@@ -13,7 +13,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.ReadComposite;
+import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 

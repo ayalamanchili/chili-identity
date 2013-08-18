@@ -14,7 +14,7 @@ import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.ReadComposite;
+import info.chili.gwt.crud.ReadComposite;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;

@@ -7,6 +7,8 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.IntegerField;
@@ -35,10 +37,10 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -305,7 +307,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
                 @Override
                 public void onResponseReceived(com.google.gwt.http.client.Request request, com.google.gwt.http.client.Response response) {
                     if (200 == response.getStatusCode()) {
-                        Window.open(OfficeWelcome.config.getFileDownloadUrl() + response.getText(), "_blank", "");
+                        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + response.getText(), "_blank", "");
                     } else {
                         Window.alert("error downloading report");
                     }

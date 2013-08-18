@@ -10,11 +10,12 @@ package info.yalamanchili.office.client.profile.skillset;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Label;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.FileField;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.fields.FileField;
+import info.chili.gwt.widgets.GenericPopup;
 
 /**
  *
@@ -49,7 +50,7 @@ public class ReadSkillSetPopupPanel extends ReadSkillSetPanel {
         //Resume
         Label resumeLabel = new Label("Resume");
         entityFieldsPanel.add(resumeLabel);
-        String fileURL = OfficeWelcome.config.getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "resumeUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
         FileField fileField = new FileField(fileURL);
         entityFieldsPanel.add(fileField);
         //This is overrided

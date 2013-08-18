@@ -9,8 +9,8 @@ package info.yalamanchili.office.client.profile.phone;
 
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 

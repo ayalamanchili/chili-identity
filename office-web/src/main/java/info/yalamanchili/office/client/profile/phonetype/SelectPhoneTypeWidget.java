@@ -6,7 +6,7 @@ package info.yalamanchili.office.client.profile.phonetype;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.gwt.SelectComposite;
+import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import java.util.HashMap;

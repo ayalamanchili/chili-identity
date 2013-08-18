@@ -26,10 +26,6 @@ public interface OfficeImages extends ClientBundle {
     @NotStrict
     OfficeCss officeCss();
 
-    @Source("images/default-image.gif")
-    @ImageOptions(height = 50, width = 50)
-    ImageResource defaultImage_50_50();
-
     @Source("images/logo_beta.png")
     ImageResource logo();
 
@@ -38,9 +34,6 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/loginCenterImage.png")
     ImageResource loginCenter();
-
-    @Source("images/default-image.gif")
-    ImageResource defaultImage();
 
     @Source("images/forgot_password_icon.png")
     ImageResource forgotPassword();
@@ -75,24 +68,6 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/menubar_bg.png")
     ImageResource menuBarBG();
-
-    /*
-     * View Icons
-     */
-    @Source("images/view_icon_16_16.png")
-    ImageResource viewIcon_16_16();
-
-    /*
-     * Update Edit Icons
-     */
-    @Source("images/update_icon_16_16.png")
-    ImageResource updateIcon_16_16();
-    /*
-     * Delete Icons
-     */
-
-    @Source("images/delete_icon_16_16.png")
-    ImageResource deleteIcon_16_16();
 
     /*
      * close icons

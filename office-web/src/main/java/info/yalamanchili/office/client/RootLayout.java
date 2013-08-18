@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.Window;
 import info.yalamanchili.office.client.Feedback.FeedbackPanel;
-import info.yalamanchili.office.client.gwt.CreateComposite;
-import info.yalamanchili.office.client.gwt.GenericPopup;
+import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.widgets.GenericPopup;
 
 public class RootLayout extends Composite {
 

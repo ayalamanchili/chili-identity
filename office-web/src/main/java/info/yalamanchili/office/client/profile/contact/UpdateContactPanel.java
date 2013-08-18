@@ -16,7 +16,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.UpdateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.yalamanchili.office.client.profile.phone.UpdatePhonePanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.ArrayList;
