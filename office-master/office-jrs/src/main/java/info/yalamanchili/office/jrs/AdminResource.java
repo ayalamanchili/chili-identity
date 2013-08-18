@@ -4,18 +4,18 @@
 package info.yalamanchili.office.jrs;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.security.dao.CRoleDao;
+import info.chili.security.domain.CRole;
+import info.chili.security.domain.CUser;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.CroleDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
-import info.yalamanchili.office.entity.security.CRole;
-import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
@@ -153,8 +153,7 @@ public class AdminResource {
     public MultiSelectObj getUserRoles(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
         MultiSelectObj obj = new MultiSelectObj();
         Employee emp = em.find(Employee.class, empId);
-        CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
-        for (CRole role : cRoleDao.query(start, limit)) {
+        for (CRole role : CRoleDao.instance().query(start, limit)) {
             obj.addAvailable(role.getRoleId().toString(), role.getRolename());
         }
         for (CRole role : emp.getUser().getRoles()) {
@@ -168,9 +167,8 @@ public class AdminResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void addUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         Employee emp = em.find(Employee.class, empId);
-        CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (Long roleId : ids) {
-            CRole role = cRoleDao.findById(roleId);
+            CRole role = CRoleDao.instance().findById(roleId);
             emp.getUser().addRole(role);
             OfficeBPMIdentityService.instance().addUserToGroup(emp.getUser().getUsername(), role.getRolename());
         }
@@ -182,9 +180,8 @@ public class AdminResource {
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
         Employee emp = empDao.findById(empId);
-        CroleDao cRoleDao = SpringContext.getBean(CroleDao.class);
         for (Long roleId : ids) {
-            CRole role = cRoleDao.findById(roleId);
+            CRole role = CRoleDao.instance().findById(roleId);
             if (role.getRolename().equals("ROLE_USER")) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.action", "cannot remove user role.");
             }

@@ -7,9 +7,9 @@
  */
 package info.yalamanchili.office.bpm;
 
+import info.chili.security.domain.CRole;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.security.CRole;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -22,7 +22,6 @@ import org.activiti.engine.identity.GroupQuery;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.identity.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**

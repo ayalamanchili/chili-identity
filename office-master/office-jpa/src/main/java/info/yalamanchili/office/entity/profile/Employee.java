@@ -3,9 +3,9 @@
  */
 package info.yalamanchili.office.entity.profile;
 
+import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.Company;
-import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.time.TimeSheet;
 
@@ -40,7 +40,6 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.StringDigester;
 import org.jasypt.hibernate.type.EncryptedStringType;
 

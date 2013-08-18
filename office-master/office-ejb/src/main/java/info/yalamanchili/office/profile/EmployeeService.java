@@ -7,10 +7,10 @@
  */
 package info.yalamanchili.office.profile;
 
+import info.chili.security.domain.CUser;
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dto.security.User;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.logging.Logger;

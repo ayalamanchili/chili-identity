@@ -48,8 +48,8 @@
     <!--Feedback-->
     <class>info.yalamanchili.office.entity.Feedback.Feedback</class>
     <!--Security-->
-    <class>info.yalamanchili.office.entity.security.CRole</class>
-    <class>info.yalamanchili.office.entity.security.CUser</class>
+    <class>info.chili.security.domain.CRole</class>
+    <class>info.chili.security.domain.CUser</class>
     <!--Security ACL-->
     <class>info.yalamanchili.office.entity.security.acl.AclSid</class>
     <class>info.yalamanchili.office.entity.security.acl.AclClass</class>

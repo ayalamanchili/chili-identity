@@ -4,10 +4,10 @@
 package info.yalamanchili.office.dao.security;
 
 import info.chili.jpa.QueryUtils;
+import info.chili.security.domain.CRole;
+import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.security.CRole;
-import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
 import java.util.List;

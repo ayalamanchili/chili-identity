@@ -8,8 +8,8 @@
 package info.yalamanchili.office.init;
 
 import info.chili.commons.EntityQueryUtils;
+import info.chili.security.domain.CUser;
 import info.yalamanchili.office.entity.profile.SkillSet;
-import info.yalamanchili.office.entity.security.CUser;
 import info.yalamanchili.office.entity.security.acl.AclClass;
 import info.yalamanchili.office.entity.security.acl.AclSid;
 import java.util.HashSet;

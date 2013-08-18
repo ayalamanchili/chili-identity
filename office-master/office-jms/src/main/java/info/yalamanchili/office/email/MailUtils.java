@@ -7,8 +7,8 @@
  */
 package info.yalamanchili.office.email;
 
+import info.chili.security.domain.CUser;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.security.CUser;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
