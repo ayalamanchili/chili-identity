@@ -21,11 +21,6 @@ public class CreatePrivacySettingPopupPanel extends CreatePrivacySettingPanel {
     }
 
     @Override
-    protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/privacy/" + OfficeWelcome.instance().employeeId;
-    }
-
-    @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Privacy Data");
         GenericPopup.instance().hide();
