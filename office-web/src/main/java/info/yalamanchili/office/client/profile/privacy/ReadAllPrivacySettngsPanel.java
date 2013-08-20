@@ -99,7 +99,7 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isHR() || Auth.isRelationshipTeam()) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
