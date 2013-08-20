@@ -72,7 +72,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
-        tabPanel.selectTab(2);
+        tabPanel.selectTab(0);
     }
 
     @Override
