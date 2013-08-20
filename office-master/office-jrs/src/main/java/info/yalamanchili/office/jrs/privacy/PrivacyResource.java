@@ -55,7 +55,6 @@ public class PrivacyResource extends CRUDResource<PrivacySetting> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER')")
     @Override
     public PrivacySetting save(PrivacySetting entity) {
         return super.save(entity);
@@ -63,7 +62,6 @@ public class PrivacyResource extends CRUDResource<PrivacySetting> {
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER')")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
