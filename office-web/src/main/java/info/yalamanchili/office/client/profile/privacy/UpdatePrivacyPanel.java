@@ -34,14 +34,14 @@ public class UpdatePrivacyPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject privacy = new JSONObject();
-        assignEntityValueFromField("privacyData", privacy);
-        assignEntityValueFromField("privacyMode", privacy);
+        JSONObject entity = new JSONObject();
+        assignEntityValueFromField("privacyData", entity);
+        assignEntityValueFromField("privacyMode", entity);
         JSONObject emp = new JSONObject();
         emp.put("id", new JSONString(getEmployeeId()));
-        privacy.put("employee", emp);
+        entity.put("employee", emp);
         logger.info(entity.toString());
-        return privacy;
+        return entity;
     }
 
     @Override
