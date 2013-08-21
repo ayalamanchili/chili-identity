@@ -426,7 +426,7 @@ public class OfficeStartup {
         //Test privacy setting
         PrivacySetting privacySetting= new PrivacySetting();
         privacySetting.setPrivacyData(PrivacyData.EMAILS);
-        privacySetting.setPrivacyMode(PrivacyMode.INTERNAL);
+        privacySetting.setPrivacyMode(PrivacyMode.PRIVATE);
         privacySetting.setEmployee(userEmp);
         em.merge(privacySetting);
     }

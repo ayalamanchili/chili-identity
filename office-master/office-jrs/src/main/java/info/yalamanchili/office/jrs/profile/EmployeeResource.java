@@ -178,6 +178,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* SkillSet */
     @GET
     @Path("/skillset/{empId}")
+    @PrivacyAware(key = PrivacyData.SKILL_SET)
     public SkillSet getSkillSet(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
         //If skillset not present create a empty skillset so certifications and skills can be added.
@@ -256,6 +257,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Phone */
     @GET
     @Path("/phones/{id}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.PHONES)
     public PhoneTable getPhones(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         PhoneTable tableObj = new PhoneTable();
         Employee emp = (Employee) getDao().findById(id);
@@ -286,6 +288,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
      */
     @GET
     @Path("/clientinformation/{id}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.CLIENT_INFORMATION)
     public ClientInformationTable getClientInformations(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         ClientInformationTable tableObj = new ClientInformationTable();
@@ -315,6 +318,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Emergency Contact */
     @GET
     @Path("/emergencycontacts/{id}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.EMERGENCY_CONTACTS)
     public EmergencyContactTable getEmergencyContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         EmergencyContactTable tableObj = new EmergencyContactTable();

@@ -120,6 +120,7 @@ public class EmailService {
         }
         return true;
     }
+    
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     protected EntityManager em;
 

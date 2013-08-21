@@ -29,4 +29,9 @@ public class CreatePrivacySettingPopupPanel extends CreatePrivacySettingPanel {
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshPrivacy();
     }
+
+    @Override
+    protected String getEmployeeId() {
+        return OfficeWelcome.instance().employeeId;
+    }
 }

@@ -37,7 +37,7 @@ public class CreatePrivacySettingPanel extends CreateComposite {
         assignEntityValueFromField("privacyData", privacy);
         assignEntityValueFromField("privacyMode", privacy);
         JSONObject employee = new JSONObject();
-        employee.put("id", new JSONString(TreeEmployeePanel.instance().getEntityId()));
+        employee.put("id", new JSONString(getEmployeeId()));
         privacy.put("employee", employee);
         logger.info(privacy.toString());
         return privacy;
@@ -95,14 +95,18 @@ public class CreatePrivacySettingPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        String[] dataStrs = {"EMAILS", "PHONES", "ADDRESSES", "EMERGENCY_CONTACTS", "SKILL_SET", "COMPANY_CONTACTS"};
+        String[] dataStrs = {"EMAILS", "PHONES", "ADDRESSES", "EMERGENCY_CONTACTS", "SKILL_SET", "CLIENT_INFORMATION"};
         addEnumField("privacyData", false, true, dataStrs);
-        String[] modeStrs = {"PUBLIC", "INTERNAL", "PRIVATE"};
+        String[] modeStrs = {"PUBLIC", "PRIVATE"};
         addEnumField("privacyMode", false, true, modeStrs);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    protected String getEmployeeId() {
+        return TreeEmployeePanel.instance().getEntityId();
     }
 
     @Override

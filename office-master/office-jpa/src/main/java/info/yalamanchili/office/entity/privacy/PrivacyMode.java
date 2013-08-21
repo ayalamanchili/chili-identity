@@ -14,6 +14,5 @@ package info.yalamanchili.office.entity.privacy;
 public enum PrivacyMode {
 
     PUBLIC,
-    INTERNAL,
     PRIVATE
 }
