@@ -114,6 +114,7 @@ public class EmailService {
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {
             Employee emp = (Employee) findEmail(emailAddress).getContact();
+            em.refresh(emp.getPreferences());
             if (!emp.getPreferences().getEnableEmailNotifications()) {
                 return false;
             }
@@ -130,7 +131,6 @@ public class EmailService {
         getEmailQ.setParameter("emailAddressParam", SecurityUtils.hash(emailAddress));
         if (getEmailQ.getResultList().size() > 0) {
             info.yalamanchili.office.entity.profile.Email email = (info.yalamanchili.office.entity.profile.Email) getEmailQ.getResultList().get(0);
-            em.refresh(email);
             return email;
         } else {
             return null;
