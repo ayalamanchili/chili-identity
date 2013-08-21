@@ -17,7 +17,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -31,7 +30,7 @@ public class SocialDao {
 
     @Autowired
     protected SecurityService securityService;
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected CompanyDao companyDao;

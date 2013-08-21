@@ -31,7 +31,7 @@ public class EmployeeService {
 
     private final static Logger logger = Logger.getLogger(EmployeeService.class.getName());
     //TODO remove extended
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected ProfileNotificationService profileNotificationService;
