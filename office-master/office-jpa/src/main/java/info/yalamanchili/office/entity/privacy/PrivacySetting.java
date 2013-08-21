@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
@@ -31,7 +32,9 @@ import org.hibernate.search.annotations.Indexed;
 public class PrivacySetting extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "{privacyData.not.empty.msg}")
     protected PrivacyData privacyData;
+    @NotNull(message = "{privacyMode.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     protected PrivacyMode privacyMode;
     @ManyToOne(cascade = CascadeType.MERGE)
