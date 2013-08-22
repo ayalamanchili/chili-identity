@@ -93,7 +93,6 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
-        addFirstChildLink("Privacy", PRIVACY_NODE);
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
         if (Auth.hasNonUserRoles()) {
             addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
@@ -105,6 +104,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
             addFirstChildLink("Preferences", PREFERENCES_NODE);
         }
+        addFirstChildLink("Privacy", PRIVACY_NODE);
         if (Auth.isAdmin()) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
