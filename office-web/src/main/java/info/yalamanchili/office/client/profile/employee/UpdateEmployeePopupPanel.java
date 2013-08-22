@@ -34,7 +34,9 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
     @Override
     protected void addWidgets() {
         // same here update them
-        addDropDown("employeeType", employeeSelectWidget);
+        if (Auth.hasNonUserRoles()) {
+            addDropDown("employeeType", employeeSelectWidget);
+        }
         addField("firstName", true, true, DataType.STRING_FIELD);
         addField("middleInitial", true, false, DataType.STRING_FIELD);
         addField("lastName", true, true, DataType.STRING_FIELD);
