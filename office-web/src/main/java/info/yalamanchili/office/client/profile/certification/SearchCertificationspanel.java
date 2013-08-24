@@ -119,7 +119,7 @@ public class SearchCertificationspanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "certification/search/" + start.toString() + "/"
-                + limit.toString();
+        return URL.encode(OfficeWelcome.constants.root_url() + "certification/search/" + start.toString() + "/"
+                + limit.toString());
     }
 }

@@ -120,7 +120,7 @@ public class SearchClientpanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return OfficeWelcome.constants.root_url() + "client/search/" + start.toString() + "/"
-                + limit.toString();
+        return URL.encode(OfficeWelcome.constants.root_url() + "client/search/" + start.toString() + "/"
+                + limit.toString());
     }
 }
