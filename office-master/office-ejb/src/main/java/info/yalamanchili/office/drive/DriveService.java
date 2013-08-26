@@ -53,6 +53,11 @@ public class DriveService {
         return FileDao.instance().save(file).getId().toString();
     }
 
+    public String updateFile(FileDto fileDto) {
+        File file = mapper.map(fileDto, File.class);
+        return FileDao.instance().save(file).getId().toString();
+    }
+
     public FileTable getFiles(Long folderId, Integer start, Integer limit) {
         FileTable fileTable = new FileTable();
         Folder folder = folderDao.findById(folderId);

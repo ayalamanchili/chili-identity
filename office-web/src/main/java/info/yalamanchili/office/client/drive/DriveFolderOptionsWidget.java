@@ -10,15 +10,12 @@ package info.yalamanchili.office.client.drive;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.rpc.HttpService;
@@ -32,7 +29,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     protected FlowPanel panel = new FlowPanel();
     FolderMenuLabel createFolderL = new FolderMenuLabel("Add Sub Folder");
     FolderMenuLabel createFileL = new FolderMenuLabel("Add File");
-    FolderMenuLabel deleteFolderL = new FolderMenuLabel("Dlete Sub Folder");
+    FolderMenuLabel deleteFolderL = new FolderMenuLabel("Delete Sub Folder");
 
     public DriveFolderOptionsWidget() {
         init(panel);

@@ -68,6 +68,13 @@ public class DriveResource {
     }
 
     @PUT
+    @Path("/update-file")
+    @Produces("application/text")
+    public String updateFile(FileDto file) {
+        return driveService.updateFile(file);
+    }
+
+    @PUT
     @Path("/files/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
     public void deletefile(@PathParam("id") Long id) {

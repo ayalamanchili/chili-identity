@@ -22,6 +22,7 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.logging.Logger;
 
 /**
@@ -86,7 +87,7 @@ public class ReadAllFiles extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -99,11 +100,11 @@ public class ReadAllFiles extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postDeleteSuccess();
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postDeleteSuccess();
+                }
+            });
         }
     }
 
@@ -116,6 +117,7 @@ public class ReadAllFiles extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        new GenericPopup(new UpdateFilePanel(getEntity(entityId))).show();
     }
 
     private String getDeleteURL(String entityId) {
