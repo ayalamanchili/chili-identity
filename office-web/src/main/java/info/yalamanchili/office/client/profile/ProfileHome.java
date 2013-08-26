@@ -79,8 +79,6 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         addEmployeePanel();
-        panel.add(updateProfile);
-        panel.add(changePassword);
         addAddressesPanel();
         addPhonesPanel();
         addEmailsPanel();
@@ -90,6 +88,8 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         addSkillSetPanel();
         addPreferencesPanel();
         addPrivacyPanel();
+        panel.add(updateProfile);
+        panel.add(changePassword);
     }
     /*
      * Read Employee Panel
@@ -107,7 +107,6 @@ public class ProfileHome extends ALComposite implements ClickHandler {
 
                 }
             });
-            employeeePanel.setOpen(true);
         }
     }
 

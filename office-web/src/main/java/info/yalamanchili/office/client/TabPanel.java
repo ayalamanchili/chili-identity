@@ -94,7 +94,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             });
         }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(myOfficePanel)) {
-            myOfficeTab();
+            selectMyOfficeTab();
         }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(timePanel)) {
             GWT.runAsync(new RunAsyncCallback() {
@@ -166,7 +166,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         socialPanel.entityPanel.add(new EmployeeFeedHome());
     }
 
-    public void myOfficeTab() {
+    public void selectMyOfficeTab() {
         myOfficePanel.entityPanel.clear();
         myOfficePanel.sidePanelTop.clear();
         myOfficePanel.entityTitlePanel.add(new ProfileMenu());

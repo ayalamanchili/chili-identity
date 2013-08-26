@@ -89,7 +89,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("employeeType", entity, null);
+        if (fields.containsKey("employeeType")) {
+            assignFieldValueFromEntity("employeeType", entity, null);
+        }
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
