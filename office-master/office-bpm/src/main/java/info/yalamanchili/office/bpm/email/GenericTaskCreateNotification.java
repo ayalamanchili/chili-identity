@@ -10,6 +10,7 @@ package info.yalamanchili.office.bpm.email;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,17 @@ import org.activiti.engine.task.IdentityLink;
  * @author ayalamanchili
  */
 public class GenericTaskCreateNotification implements TaskListener {
-
+    
     @Override
     public void notify(DelegateTask delegateTask) {
         MailUtils mailUtils = (MailUtils) SpringContext.getBean("mailUtils");
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         //
         List<String> roles = new ArrayList<String>();
+        if (delegateTask.getExecution().getVariable("currentEmployee") != null) {
+            Employee currentEmployee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
+            delegateTask.setOwner(currentEmployee.getFirstName() + " " + currentEmployee.getLastName());
+        }
         Email email = new Email();
         for (IdentityLink identityLink : delegateTask.getCandidates()) {
             if (identityLink.getGroupId() != null && !identityLink.getGroupId().isEmpty()) {

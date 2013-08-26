@@ -20,6 +20,10 @@
             <documentation>
                 BulkImport Submit
             </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements> 
         </userTask>
         <sequenceFlow id="bulkImportSubmitUserTaskToSubmitServiceTask" sourceRef="bulkImportSubmitTask" targetRef="bulkImportSubmit" />
         <!--BulkImport Submit Service Task-->
@@ -37,6 +41,8 @@
                 Review Bulk Import 
             </documentation>
             <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"

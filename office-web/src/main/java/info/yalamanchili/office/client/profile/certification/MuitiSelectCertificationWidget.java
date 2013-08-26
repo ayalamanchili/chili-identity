@@ -39,33 +39,33 @@ public class MuitiSelectCertificationWidget extends MultiSelectComposite impleme
     protected void loadData() {
         HttpService.HttpServiceAsync.instance().doGet(getMultiSelectUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        multiSelectBox.popuplateWidget("Certifications", multiSelectBox.getMultiSelectBox(arg0));
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                multiSelectBox.popuplateWidget("Certifications", multiSelectBox.getMultiSelectBox(arg0));
+            }
+        });
     }
 
     @Override
     protected void itemsSelected(List<String> selectedIds) {
         HttpService.HttpServiceAsync.instance().doGet(getAddCertificationsUrl(selectedIds), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("saved");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                new ResponseStatusWidget().show("saved");
+            }
+        });
     }
 
     @Override
     protected void itemsUnselected(List<String> selectedIds) {
         HttpService.HttpServiceAsync.instance().doGet(getRemoveCertificationsUrl(selectedIds), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("saved");
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                new ResponseStatusWidget().show("saved");
+            }
+        });
     }
 
     @Override
@@ -94,9 +94,5 @@ public class MuitiSelectCertificationWidget extends MultiSelectComposite impleme
         if (event.getSource().equals(addCertificationL)) {
             new GenericPopup(new GenericBPMStartFormPanel("AddNewCertificationsRequest", "add_new_certification_request")).show();
         }
-    }
-
-    protected String getAddcertificationsRequestUrl() {
-        return OfficeWelcome.constants.root_url() + "bpm/startprocess/add_new_certification_request";
     }
 }

@@ -95,8 +95,4 @@ public class MultiSelectSkillWidget extends MultiSelectComposite implements Clic
             new GenericPopup(new GenericBPMStartFormPanel("AddNewSkillRequest", "add_new_skill_request")).show();
         }
     }
-
-    protected String getAddSkillRequestUrl() {
-        return OfficeWelcome.constants.root_url() + "bpm/startprocess/add_new_skill_request";
-    }
 }

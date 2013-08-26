@@ -153,7 +153,7 @@ public class BPMResource {
     @GET
     @Path("/startprocess/{processId}")
     public void startProcess(@PathParam("processId") String processId) {
-        OfficeBPMService.instance().startProcess(processId, null);
+        OfficeBPMService.instance().startProcess(processId, getCurrentUserMap());
     }
 
     @GET
@@ -168,4 +168,5 @@ public class BPMResource {
         vars.put("currentEmployee", emp);
         return vars;
     }
+    
 }

@@ -56,8 +56,9 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Assignee"));
-        table.setText(0, 3, getKeyValue("CreatedDate"));
+        table.setText(0, 2, getKeyValue("Owner"));
+        table.setText(0, 3, getKeyValue("Assignee"));
+        table.setText(0, 4, getKeyValue("CreatedDate"));
     }
 
     @Override
@@ -66,8 +67,9 @@ public class ReadAllTasks extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "assignee"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createTime"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 2, JSONUtils.toString(entity, "owner"));
+            table.setText(i, 3, JSONUtils.toString(entity, "assignee"));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createTime"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             //TODO add due date
         }
     }
