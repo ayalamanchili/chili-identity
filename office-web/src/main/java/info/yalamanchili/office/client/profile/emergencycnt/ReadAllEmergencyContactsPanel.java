@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
@@ -38,14 +37,9 @@ public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
     @Override
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+                new ALAsyncCallback<String>() {
             @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-
-            @Override
-            public void onSuccess(String result) {
+            public void onResponse(String result) {
                 postFetchTable(result);
             }
         });

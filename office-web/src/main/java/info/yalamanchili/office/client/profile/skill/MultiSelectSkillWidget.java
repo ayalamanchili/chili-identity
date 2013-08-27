@@ -9,7 +9,6 @@ package info.yalamanchili.office.client.profile.skill;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -39,14 +38,9 @@ public class MultiSelectSkillWidget extends MultiSelectComposite implements Clic
     @Override
     protected void loadData() {
         HttpService.HttpServiceAsync.instance().doGet(getMultiSelectUrl(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+                new ALAsyncCallback<String>() {
             @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-
-            @Override
-            public void onSuccess(String arg0) {
+            public void onResponse(String arg0) {
                 multiSelectBox.popuplateWidget("Skills", multiSelectBox.getMultiSelectBox(arg0));
             }
         });
