@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 
 public class ReadAllPhonesPanel extends CRUDReadAllComposite {
@@ -33,9 +34,14 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
     @Override
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getEmployeePhonesURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
-                false, new ALAsyncCallback<String>() {
+                false, new AsyncCallback<String>() {
             @Override
-            public void onResponse(String result) {
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+
+            @Override
+            public void onSuccess(String result) {
                 postFetchTable(result);
             }
         });
@@ -88,11 +94,11 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override

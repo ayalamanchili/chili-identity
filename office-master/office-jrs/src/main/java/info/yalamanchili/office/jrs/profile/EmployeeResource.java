@@ -154,6 +154,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Address */
     @GET
     @Path("/addresses/{id}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.ADDRESSES)
     public AddressTable getAddresses(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
         AddressTable tableObj = new AddressTable();

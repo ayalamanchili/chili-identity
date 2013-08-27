@@ -31,7 +31,7 @@ public class PrivacyInterceptor {
     public Object privacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) throws Throwable {
         Object result = null;
         try {
-            if (PrivacyService.instance().performPrivacyCheck(joinPoint, privacyAware.key())) {
+            if (PrivacyService.instance().performPrivacyCheck(joinPoint, privacyAware)) {
                 result = joinPoint.proceed();
             }
         } catch (Exception e) {

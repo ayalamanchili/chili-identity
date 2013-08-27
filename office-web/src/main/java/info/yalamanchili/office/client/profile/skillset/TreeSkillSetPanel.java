@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -52,6 +53,10 @@ public class TreeSkillSetPanel extends TreePanelComposite {
     @Override
     public void treeNodeSelected(String entityNodeKey) {
         if (SKILLS_NODE.equals(entityNodeKey)) {
+            if (getEntityId() == null) {
+                new ResponseStatusWidget().show("Data is hidden based on user privacy settings");
+                return;
+            }
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             if (Auth.hasOnlyUserRole()) {
                 TabPanel.instance().myOfficePanel.entityPanel.add(new MultiSelectSkillWidget("Skills", getEntityId(), true, false));
@@ -61,6 +66,10 @@ public class TreeSkillSetPanel extends TreePanelComposite {
 
         }
         if (CERTIFICATIONS_NODE.equals(entityNodeKey)) {
+            if (getEntityId() == null) {
+                new ResponseStatusWidget().show("Data is hidden based on user privacy settings");
+                return;
+            }
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             if (Auth.hasOnlyUserRole()) {
                 TabPanel.instance().myOfficePanel.entityPanel.add(new MuitiSelectCertificationWidget("Certifications", getEntityId(), true, false));

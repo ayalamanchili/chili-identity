@@ -346,8 +346,8 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     }
 
     public void refreshPrivacy() {
-        employeeePanel.setOpen(false);
-        employeeePanel.setOpen(true);
+        privacyPanel.setOpen(false);
+        privacyPanel.setOpen(true);
     }
 
     @Override

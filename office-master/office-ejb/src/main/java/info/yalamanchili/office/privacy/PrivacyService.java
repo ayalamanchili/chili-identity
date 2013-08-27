@@ -7,15 +7,17 @@
  */
 package info.yalamanchili.office.privacy;
 
+import info.chili.commons.ReflectionUtils;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.privacy.PrivacyMode;
 import info.yalamanchili.office.entity.privacy.PrivacySetting;
 import info.yalamanchili.office.entity.profile.Employee;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,14 +30,17 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class PrivacyService {
 
-    protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint, PrivacyData privacyData) {
-        Employee employee = getEmployee(joinPoint);
+    @PersistenceContext
+    protected EntityManager em;
+
+    protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
+        Employee employee = getIdentity(joinPoint, privacyAware);
         Employee currentUser = SecurityService.instance().getCurrentUser();
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
         if (employee != null) {
-            PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyData);
+            PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
             if (setting != null && !PrivacyMode.PUBLIC.equals(setting.getPrivacyMode())) {
                 if (PrivacyMode.PRIVATE.equals(setting.getPrivacyMode())) {
                     return canAccessPrivateData(currentUser);
@@ -56,11 +61,17 @@ public class PrivacyService {
 
     }
 
-    protected Employee getEmployee(ProceedingJoinPoint joinPoint) {
-        if (joinPoint.getArgs().length > 0 && joinPoint.getArgs()[0] instanceof Long) {
-            return EmployeeDao.instance().findById((Long) joinPoint.getArgs()[0]);
+    protected Employee getIdentity(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
+        Employee employee = null;
+        if (privacyAware.identityClass().equals(Employee.class)) {
+            employee = EmployeeDao.instance().findById((Long) joinPoint.getArgs()[0]);
+        } else {
+            //TODO get entitymanager by demand
+            Object ref = em.find(privacyAware.identityClass(), joinPoint.getArgs()[0]);
+            //supports only one level
+            employee = (Employee) ReflectionUtils.callGetter(ref, privacyAware.identityReference());
         }
-        return null;
+        return employee;
     }
 
     public static PrivacyService instance() {

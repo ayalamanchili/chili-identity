@@ -12,11 +12,13 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.CertificationDao;
 import info.yalamanchili.office.dao.profile.SkillDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.profile.Certification;
 import info.yalamanchili.office.entity.profile.Skill;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.MultiSelectObj;
+import info.yalamanchili.office.privacy.PrivacyAware;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -49,6 +51,7 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     //TODO use jpa query to improve performance
     @GET
     @Path("/skills/{skillSetId}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.SKILL_SET, identityClass = SkillSet.class, identityReference = "employee")
     public MultiSelectObj getSkills(@PathParam("skillSetId") Long skillSetId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
         //TODO move logic to DAO
         MultiSelectObj obj = new MultiSelectObj();
@@ -89,10 +92,11 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     }
 
     @GET
-    @Path("/certifications/{empId}/{start}/{limit}")
-    public MultiSelectObj getCertifications(@PathParam("empId") Long empId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
+    @Path("/certifications/{skillSetId}/{start}/{limit}")
+    @PrivacyAware(key = PrivacyData.SKILL_SET, identityClass = SkillSet.class, identityReference = "employee")
+    public MultiSelectObj getCertifications(@PathParam("skillSetId") Long skillSetId, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
         MultiSelectObj obj = new MultiSelectObj();
-        SkillSet skillSet = (SkillSet) getDao().findById(empId);
+        SkillSet skillSet = (SkillSet) getDao().findById(skillSetId);
         CertificationDao certificationDao = (CertificationDao) SpringContext.getBean("certificationDao");
         for (Certification certification : certificationDao.query(start, limit)) {
             obj.addAvailable(certification.getId().toString(), certification.getName());

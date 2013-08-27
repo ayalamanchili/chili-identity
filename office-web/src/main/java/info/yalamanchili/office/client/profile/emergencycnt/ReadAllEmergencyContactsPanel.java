@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
@@ -38,12 +38,17 @@ public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
     @Override
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+                new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                postFetchTable(result);
+            }
+        });
 
     }
 
@@ -102,11 +107,11 @@ public class ReadAllEmergencyContactsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
