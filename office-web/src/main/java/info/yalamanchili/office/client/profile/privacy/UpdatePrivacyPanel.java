@@ -34,7 +34,6 @@ public class UpdatePrivacyPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("privacyData", entity);
         assignEntityValueFromField("privacyMode", entity);
         JSONObject emp = new JSONObject();
