@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Index;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
@@ -33,6 +34,7 @@ public class PrivacySetting extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{privacyData.not.empty.msg}")
+    @Index(name = "PRVCY_DAT")
     protected PrivacyData privacyData;
     @NotNull(message = "{privacyMode.not.empty.msg}")
     @Enumerated(EnumType.STRING)
