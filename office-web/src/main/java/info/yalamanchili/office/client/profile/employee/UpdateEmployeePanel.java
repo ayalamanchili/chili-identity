@@ -57,9 +57,11 @@ public class UpdateEmployeePanel extends UpdateComposite {
             entity.put("imageURL", empImageUploadPanel.getFileName());
         }
         //hack to swap employeetype value attribute with name attribute
-        JSONObject employeeType = employeeSelectWidget.getSelectedObject();
-        employeeType.put("name", employeeType.get("value"));
-        entity.put("employeeType", employeeType);
+        if (fields.containsKey("employeeType")) {
+            JSONObject employeeType = employeeSelectWidget.getSelectedObject();
+            employeeType.put("name", employeeType.get("value"));
+            entity.put("employeeType", employeeType);
+        }
         return entity;
     }
 
