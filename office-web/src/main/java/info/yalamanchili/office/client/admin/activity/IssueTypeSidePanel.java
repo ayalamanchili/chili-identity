@@ -43,7 +43,7 @@ public class IssueTypeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RELATIONSHIP)) {
             issueTypeSidePanel.add(createIssueTypeLink);
         }
     }

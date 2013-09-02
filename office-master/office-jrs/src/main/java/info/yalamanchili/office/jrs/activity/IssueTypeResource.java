@@ -59,7 +59,7 @@ public class IssueTypeResource extends CRUDResource<IssueType> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RELATIONSHIP')")
     @CacheEvict(value = OfficeCacheKeys.ISSUE_TYPE, allEntries = true)
     @Override
     public IssueType save(IssueType entity) {
@@ -68,7 +68,7 @@ public class IssueTypeResource extends CRUDResource<IssueType> {
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RELATIONSHIP')")
     @CacheEvict(value = OfficeCacheKeys.ISSUE_TYPE, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
