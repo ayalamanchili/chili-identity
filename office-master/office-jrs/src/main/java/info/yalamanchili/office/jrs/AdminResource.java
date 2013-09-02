@@ -37,10 +37,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.profile.EmployeeReadDto;
 import info.yalamanchili.office.dto.security.User;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 @Path("secured/admin")
 @Produces("application/json")
@@ -68,6 +70,7 @@ public class AdminResource {
 
     @Path("/login")
     @PUT
+    @Cacheable(value = OfficeCacheKeys.LOGIN, key = "#user.username")
     public EmployeeReadDto login(CUser user) {
         return mapper.map(securityService.login(user), EmployeeReadDto.class);
     }

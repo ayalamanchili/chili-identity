@@ -56,6 +56,7 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -99,7 +100,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/save")
-    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
+        @CacheEvict(value = OfficeCacheKeys.LOGIN, key = "#dto.employeeId")
+    })
     //TODO currently does not have any restrictions since user emp profile update also uses this method
     public Employee save(EmployeeSaveDto dto) {
         return (Employee) getDao().save(mapper.map(dto, Employee.class));
