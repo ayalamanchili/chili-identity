@@ -13,6 +13,7 @@ package info.yalamanchili.office.cache;
  */
 public interface OfficeCacheKeys {
 
+    String LOGIN = "login";
     String EMPLOYEES = "employees";
     String ADDRESS_TYPES = "addresstypes";
     String EMAIL_TYPES = "emailtype";
