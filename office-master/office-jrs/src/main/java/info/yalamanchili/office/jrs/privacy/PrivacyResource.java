@@ -10,7 +10,9 @@ package info.yalamanchili.office.jrs.privacy;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.privacy.PrivacySetting;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -23,7 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,11 +47,13 @@ public class PrivacyResource extends CRUDResource<PrivacySetting> {
     }
 
     @GET
-    @Path("/{start}/{limit}")
-    public PrivacyTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+    @Path("/{employeeId}/{start}/{limit}")
+    public PrivacyTable table(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        List<PrivacySetting> privacySettings = PrivacySettingDao.instance().getPrivacySettings(emp);
         PrivacyTable tableObj = new PrivacyTable();
-        tableObj.setEntities(getDao().query(start, limit));
-        tableObj.setSize(getDao().size());
+        tableObj.setEntities(privacySettings);
+        tableObj.setSize(new Integer(privacySettings.size()).longValue());
         return tableObj;
     }
 

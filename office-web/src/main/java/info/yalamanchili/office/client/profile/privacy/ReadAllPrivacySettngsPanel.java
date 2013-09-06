@@ -26,21 +26,21 @@ import java.util.logging.Logger;
  * @author Prashanthi.P
  */
 public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllPrivacySettngsPanel.class.getName());
     public static ReadAllPrivacySettngsPanel instance;
-    
+
     public ReadAllPrivacySettngsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("Privacy", OfficeWelcome.constants);
         mainPanel.add(new HTML("<h5>By default other employees can view your information. If you wish to secure it, Please add Privacy Data below with Private Mode</h5>"));
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -51,26 +51,26 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
             }
         });
     }
-    
+
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "privacy/delete/" + entityId;
     }
-    
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Privacy Data");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPrivacySettngsPanel(parentId));
         TabPanel.instance().myOfficePanel.entityPanel.add(new PrivacyOptionsPanel());
-        
+
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePrivacyPanel(getEntity(entityId)));
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllPrivacyURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
@@ -81,14 +81,14 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
             }
         });
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("PrivacyData"));
         table.setText(0, 2, getKeyValue("PrivacyMode"));
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -98,7 +98,7 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "privacyMode"));
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.isAdmin() || Auth.isHR() || Auth.isRelationshipTeam()) {
@@ -107,8 +107,8 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
-    
+
     private String getReadAllPrivacyURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "privacy/" + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "privacy/" + parentId + "/" + start.toString() + "/" + limit.toString();
     }
 }
