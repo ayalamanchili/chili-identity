@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.audit;
 
 import info.yalamanchili.office.audit.AuditService;
+import info.yalamanchili.office.dto.audit.EntityAuditDataTbl;
 import info.yalamanchili.office.dto.audit.LoginActivityDto.LoginActivityTable;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -34,5 +35,11 @@ public class AuditResource {
     @Path("/resent_loginactivity/{start}/{limit}")
     public LoginActivityTable getRecentLoginActivity(@PathParam("start") int start, @PathParam("limit") int limit) {
         return AuditService.instance().getLoginActivity(start, limit);
+    }
+
+    @GET
+    @Path("/changes/{entityClass}/{id}")
+    public EntityAuditDataTbl getChangesForEntity(@PathParam("entityClass") String entityClass, @PathParam("id") Long id) {
+        return AuditService.instance().getRecentChanges(entityClass, id);
     }
 }
