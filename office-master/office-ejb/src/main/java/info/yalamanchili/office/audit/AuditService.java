@@ -9,15 +9,13 @@ package info.yalamanchili.office.audit;
 
 import info.chili.commons.ReflectionUtils;
 import info.chili.hibernate.envers.AuditRevisionEntity;
-import info.chili.service.jrs.exception.ServiceException;
+import info.chili.service.jrs.types.Entries;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.audit.LoginActivityDao;
-import info.yalamanchili.office.dto.audit.EntityAuditData;
-import info.yalamanchili.office.dto.audit.EntityAuditDataTbl;
+import info.chili.service.jrs.types.EntityAuditDataTbl;
 import info.yalamanchili.office.dto.audit.LoginActivityDto;
 import info.yalamanchili.office.dto.audit.LoginActivityDto.LoginActivityTable;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,10 +74,10 @@ public class AuditService {
             throw new RuntimeException("Invalid Class Name");
         }
         for (Number revNumber : getAuditReader().getRevisions(entityCls, id)) {
-            EntityAuditData auditData = new EntityAuditData();
+            Entries auditData = new Entries();
             AuditRevisionEntity revEntity = getAuditReader().findRevision(AuditRevisionEntity.class, revNumber);
-            auditData.addData(new Entry("UPDATED-BY", revEntity.getUpdatedUserId()));
-            auditData.addData(new Entry("UPDATED-AT", revEntity.getUpdatedTimeStamp().toString()));
+            auditData.addEntry(new Entry("UPDATED-BY", revEntity.getUpdatedUserId()));
+            auditData.addEntry(new Entry("UPDATED-AT", revEntity.getUpdatedTimeStamp().toString()));
 
             Object entity = getAuditReader().find(entityCls, id, revNumber);
             Map<String, Object> valuesMap = ReflectionUtils.getFieldsDataFromEntity(entity, entityCls);
@@ -91,7 +89,7 @@ public class AuditService {
                 } else {
                     e.setValue(entry.getValue().toString());
                 }
-                auditData.addData(e);
+                auditData.addEntry(e);
             }
             table.addAuditData(auditData);
         }

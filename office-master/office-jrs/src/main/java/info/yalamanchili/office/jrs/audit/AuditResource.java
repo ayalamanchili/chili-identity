@@ -8,7 +8,7 @@
 package info.yalamanchili.office.jrs.audit;
 
 import info.yalamanchili.office.audit.AuditService;
-import info.yalamanchili.office.dto.audit.EntityAuditDataTbl;
+import info.chili.service.jrs.types.EntityAuditDataTbl;
 import info.yalamanchili.office.dto.audit.LoginActivityDto.LoginActivityTable;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
