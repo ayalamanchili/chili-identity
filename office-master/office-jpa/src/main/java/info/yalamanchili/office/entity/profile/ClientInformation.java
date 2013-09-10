@@ -6,10 +6,12 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Vendor;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
@@ -100,6 +102,33 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_ClientInformations")
     protected Employee employee;
+    /**
+     * Item Number (quick books generated number
+     */
+    protected String itemNumber;
+    /**
+     * PayRate
+     */
+    protected BigDecimal payRate;
+    /**
+     * BillingRate
+     */
+    protected BigDecimal billingRate;
+    /**
+     * OverTime PayRate
+     */
+    protected BigDecimal overTimePayRate;
+    /**
+     * recruiter
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_Recruiter_ClientInformations")
+    protected Employee recruiter;
+    /**
+     * Notes
+     */
+    @Lob
+    protected String notes;
 
     public ClientInformation() {
         super();
@@ -161,14 +190,6 @@ public class ClientInformation extends AbstractEntity {
         this.clientLocation = clientLocation;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
     public Vendor getVendor() {
         return vendor;
     }
@@ -193,8 +214,64 @@ public class ClientInformation extends AbstractEntity {
         this.vendorLocation = vendorLocation;
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public String getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(String itemNumber) {
+        this.itemNumber = itemNumber;
+    }
+
+    public BigDecimal getPayRate() {
+        return payRate;
+    }
+
+    public void setPayRate(BigDecimal payRate) {
+        this.payRate = payRate;
+    }
+
+    public BigDecimal getBillingRate() {
+        return billingRate;
+    }
+
+    public void setBillingRate(BigDecimal billingRate) {
+        this.billingRate = billingRate;
+    }
+
+    public BigDecimal getOverTimePayRate() {
+        return overTimePayRate;
+    }
+
+    public void setOverTimePayRate(BigDecimal overTimePayRate) {
+        this.overTimePayRate = overTimePayRate;
+    }
+
+    public Employee getRecruiter() {
+        return recruiter;
+    }
+
+    public void setRecruiter(Employee recruiter) {
+        this.recruiter = recruiter;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     @Override
     public String toString() {
-        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", primary=" + ciPrimary + ", cleint=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", startDate=" + startDate + ", endDate=" + endDate + '}';
+        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", recruiter=" + recruiter + ", notes=" + notes + '}';
     }
 }

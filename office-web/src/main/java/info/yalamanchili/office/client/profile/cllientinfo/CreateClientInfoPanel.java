@@ -108,7 +108,12 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("itemNumber", false, false, DataType.STRING_FIELD);
+        addField("payRate", false, false, DataType.CURRENCY_FIELD);
+        addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
