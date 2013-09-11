@@ -24,13 +24,16 @@ import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 
 public class CreateClientInfoPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget(Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -50,6 +53,12 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("ciPrimary", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
+        assignEntityValueFromField("itemCode", clientInfo);
+        assignEntityValueFromField("payRate", clientInfo);
+        assignEntityValueFromField("billingRate", clientInfo);
+        assignEntityValueFromField("overTimeBillingRate", clientInfo);
+        assignEntityValueFromField("recruiter", clientInfo);
+        assignEntityValueFromField("notes", clientInfo);
         return clientInfo;
     }
 
@@ -108,11 +117,12 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
         addField("itemNumber", false, false, DataType.STRING_FIELD);
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
+        addDropDown("recruiter", selectRecruiterWidget);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 

@@ -14,12 +14,14 @@ import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import java.util.logging.Logger;
 
 /**
@@ -30,6 +32,7 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget(Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
@@ -48,7 +51,13 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-
+        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("itemCode", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("payRate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("recruiter", entity, null);
+        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -71,6 +80,12 @@ public class ReadClientInfoPanel extends ReadComposite {
         addField("ciPrimary", true, false, DataType.BOOLEAN_FIELD);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
+        addField("itemNumber", false, false, DataType.STRING_FIELD);
+        addField("payRate", false, false, DataType.CURRENCY_FIELD);
+        addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
+        addDropDown("recruiter", selectRecruiterWidget);
+        addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -86,12 +101,12 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("read ec6 response" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info("read ec6 response" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 }

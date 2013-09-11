@@ -12,13 +12,17 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.QueryUtils;
+import info.chili.security.domain.CRole;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -102,8 +106,18 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name='CORPORATE_EMPLOYEE'", start, limit, params);
     }
 
-    public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String... roles) {
-        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName()) + " where user.roles.rolename in " + roles[0] + "", start, limit);
+    public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String role) {
+        Map<String, String> res = new HashMap<String, String>();
+        Set<CRole> roles = new HashSet<CRole>();
+        CRole crole = QueryUtils.findEntity(getEntityManager(), CRole.class, "rolename", role);
+        roles.add(crole);
+        Query q = getEntityManager().createQuery("SELECT emp.id, emp.firstName,emp.lastName from Employee emp where emp.user.roles in (:rolesParam)");
+        q.setParameter("rolesParam", roles);
+        for (Object obj : q.getResultList()) {
+            Object[] selects = (Object[]) obj;
+            res.put(selects[0].toString(), selects[1].toString() + " " + selects[2].toString());
+        }
+        return res;
     }
 
     @Override

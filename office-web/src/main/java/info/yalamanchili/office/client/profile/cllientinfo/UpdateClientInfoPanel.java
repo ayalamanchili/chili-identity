@@ -38,6 +38,11 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("payRate", entity);
+        assignEntityValueFromField("billingRate", entity);
+        assignEntityValueFromField("overTimeBillingRate", entity);
+        assignEntityValueFromField("recruiter", entity);
+        assignEntityValueFromField("notes", entity);
         return entity;
     }
 
@@ -78,6 +83,12 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("itemCode", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("payRate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("recruiter", entity, null);
+        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
