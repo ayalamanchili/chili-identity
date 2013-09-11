@@ -13,14 +13,18 @@ import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 
 public class UpdateClientInfoPanel extends UpdateComposite {
+
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget(Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
@@ -38,9 +42,11 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("payRate", entity);
+        assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("itemNumber", entity);
         assignEntityValueFromField("billingRate", entity);
         assignEntityValueFromField("overTimeBillingRate", entity);
+        assignEntityValueFromField("invoiceFrequency", entity);
         assignEntityValueFromField("recruiter", entity);
         assignEntityValueFromField("notes", entity);
         return entity;
@@ -83,10 +89,11 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("itemCode", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("payRate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
@@ -113,6 +120,14 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("itemNumber", false, false, DataType.STRING_FIELD);
+        addField("payRate", false, false, DataType.CURRENCY_FIELD);
+        addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
+        String[] strs = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+        addEnumField("invoiceFrequency", false, false, strs);
+        addDropDown("recruiter", selectRecruiterWidget);
+        addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override

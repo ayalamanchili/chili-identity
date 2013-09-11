@@ -5,12 +5,15 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -118,6 +121,12 @@ public class ClientInformation extends AbstractEntity {
      * OverTime PayRate
      */
     protected BigDecimal overTimePayRate;
+    /**
+     * Invoice Frequency
+     */
+    @Enumerated(EnumType.STRING)
+    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
+    protected InvoiceFrequency invoiceFrequency;
     /**
      * recruiter
      */
@@ -252,6 +261,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setOverTimePayRate(BigDecimal overTimePayRate) {
         this.overTimePayRate = overTimePayRate;
+    }
+
+    public InvoiceFrequency getInvoiceFrequency() {
+        return invoiceFrequency;
+    }
+
+    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
+        this.invoiceFrequency = invoiceFrequency;
     }
 
     public Employee getRecruiter() {

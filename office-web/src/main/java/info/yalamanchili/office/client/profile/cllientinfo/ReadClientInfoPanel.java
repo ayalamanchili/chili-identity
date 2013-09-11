@@ -51,11 +51,11 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("payRate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
@@ -84,6 +84,8 @@ public class ReadClientInfoPanel extends ReadComposite {
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
+        String[] strs = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+        addEnumField("invoiceFrequency", true, false, strs);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }

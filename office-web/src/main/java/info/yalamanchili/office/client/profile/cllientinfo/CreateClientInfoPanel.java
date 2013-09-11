@@ -57,6 +57,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("payRate", clientInfo);
         assignEntityValueFromField("billingRate", clientInfo);
         assignEntityValueFromField("overTimeBillingRate", clientInfo);
+        assignEntityValueFromField("invoiceFrequency", clientInfo);
         assignEntityValueFromField("recruiter", clientInfo);
         assignEntityValueFromField("notes", clientInfo);
         return clientInfo;
@@ -122,6 +123,8 @@ public class CreateClientInfoPanel extends CreateComposite {
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
+        String[] strs = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+        addEnumField("invoiceFrequency", false, false, strs);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
