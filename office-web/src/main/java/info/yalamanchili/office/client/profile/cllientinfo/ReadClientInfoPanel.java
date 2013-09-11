@@ -52,7 +52,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("itemCode", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("payRate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);

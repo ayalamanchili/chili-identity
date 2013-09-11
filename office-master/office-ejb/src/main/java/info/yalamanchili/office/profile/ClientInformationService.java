@@ -13,6 +13,7 @@ import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
@@ -69,6 +70,10 @@ public class ClientInformationService {
         if (ci.getVendorLocation() != null) {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setVendorLocation(address);
+        }
+        if(ci.getRecruiter()!=null){
+            Employee recruiter= EmployeeDao.instance().findById(ci.getRecruiter().getId());
+            ci.setRecruiter(recruiter);
         }
         emp.addClientInformation(ci);
         ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
