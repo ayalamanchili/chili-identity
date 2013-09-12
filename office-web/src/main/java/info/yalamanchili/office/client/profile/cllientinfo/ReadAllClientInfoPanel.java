@@ -53,7 +53,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Client"));
         table.setText(0, 4, getKeyValue("Vendor"));
         table.setText(0, 5, getKeyValue("ItemNumber"));
-        table.setText(0, 6, getKeyValue("OverTimeBillingRate"));
+        table.setText(0, 6, getKeyValue("BillingRate"));
         table.setText(0, 7, getKeyValue("InvoiceFrequency"));
     }
 
@@ -125,7 +125,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
                 table.setText(i, 4, JSONUtils.toString(vendor, "name"));
             }
             table.setText(i, 5, JSONUtils.toString(entity, "itemNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "overTimeBillingRate"));
+            table.setText(i, 6, JSONUtils.toString(entity, "billingRate"));
             table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
         }
     }
