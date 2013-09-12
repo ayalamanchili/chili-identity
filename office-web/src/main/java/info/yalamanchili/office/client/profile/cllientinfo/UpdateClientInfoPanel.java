@@ -80,6 +80,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
@@ -87,7 +88,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
-        assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);

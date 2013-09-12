@@ -11,7 +11,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Utils;
 
 /**
  *
@@ -20,7 +19,7 @@ import info.chili.gwt.utils.Utils;
 public class SelectEmployeeWidget extends SelectComposite {
 
     public SelectEmployeeWidget(String name, Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, Utils.getKeyValue(name, OfficeWelcome.constants), readOnly, isRequired);
+        super(OfficeWelcome.constants, name, readOnly, isRequired);
     }
 
     @Override

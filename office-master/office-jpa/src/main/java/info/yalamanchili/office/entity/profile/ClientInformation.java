@@ -5,11 +5,13 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -145,6 +148,34 @@ public class ClientInformation extends AbstractEntity {
      */
     @Lob
     protected String notes;
+    /* 
+     * comments
+     */
+    @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
+    protected List<ClientInfoComment> comments;
+    /**
+     * -----------Tracking info---------------------------
+     */
+    /**
+     * Account verification docs
+     */
+    protected boolean accountVerificationDocs;
+    /**
+     * Signed Copy of Work Order
+     */
+    protected boolean signedCopyOfWorkOrder;
+    /**
+     * i9Filled
+     */
+    protected boolean i9Filled;
+    /**
+     * w4 filled
+     */
+    protected boolean w4Filled;
+    /**
+     * Logistics Preparation
+     */
+    protected boolean logisticsPreparation;
 
     public ClientInformation() {
         super();
@@ -300,6 +331,54 @@ public class ClientInformation extends AbstractEntity {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public List<ClientInfoComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<ClientInfoComment> comments) {
+        this.comments = comments;
+    }
+
+    public boolean isAccountVerificationDocs() {
+        return accountVerificationDocs;
+    }
+
+    public void setAccountVerificationDocs(boolean accountVerificationDocs) {
+        this.accountVerificationDocs = accountVerificationDocs;
+    }
+
+    public boolean isSignedCopyOfWorkOrder() {
+        return signedCopyOfWorkOrder;
+    }
+
+    public void setSignedCopyOfWorkOrder(boolean signedCopyOfWorkOrder) {
+        this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
+    }
+
+    public boolean isI9Filled() {
+        return i9Filled;
+    }
+
+    public void setI9Filled(boolean i9Filled) {
+        this.i9Filled = i9Filled;
+    }
+
+    public boolean isW4Filled() {
+        return w4Filled;
+    }
+
+    public void setW4Filled(boolean w4Filled) {
+        this.w4Filled = w4Filled;
+    }
+
+    public boolean isLogisticsPreparation() {
+        return logisticsPreparation;
+    }
+
+    public void setLogisticsPreparation(boolean logisticsPreparation) {
+        this.logisticsPreparation = logisticsPreparation;
     }
 
     @Override
