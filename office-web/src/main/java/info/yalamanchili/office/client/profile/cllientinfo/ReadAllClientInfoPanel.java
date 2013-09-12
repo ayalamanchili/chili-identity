@@ -52,29 +52,9 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Job Title"));
         table.setText(0, 3, getKeyValue("Client"));
         table.setText(0, 4, getKeyValue("Vendor"));
-        table.setText(0, 5, getKeyValue("Start Date"));
-        table.setText(0, 6, getKeyValue("End Date"));
-    }
-
-    @Override
-    public void fillData(JSONArray entities) {
-        for (int i = 1; i <= entities.size(); i++) {
-            JSONObject entity = (JSONObject) entities.get(i - 1);
-            addOptionsWidget(i, entity);
-            OfficeWelcome.instance().logger.info(entity.toString());
-            table.setText(i, 1, JSONUtils.toString(entity, "ciPrimary"));
-            table.setText(i, 2, JSONUtils.toString(entity, "consultantJobTitle"));
-            if (entity.get("client") != null) {
-                JSONObject client = entity.get("client").isObject();
-                table.setText(i, 3, JSONUtils.toString(client, "name"));
-            }
-            if (entity.get("vendor") != null) {
-                JSONObject vendor = entity.get("vendor").isObject();
-                table.setText(i, 4, JSONUtils.toString(vendor, "name"));
-            }
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-        }
+        table.setText(0, 5, getKeyValue("ItemNumber"));
+        table.setText(0, 6, getKeyValue("OverTimeBillingRate"));
+        table.setText(0, 7, getKeyValue("InvoiceFrequency"));
     }
 
     @Override
@@ -126,5 +106,27 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateClientInfoPanel(getEntity(entityId)));
+    }
+
+    @Override
+    public void fillData(JSONArray entities) {
+        for (int i = 1; i <= entities.size(); i++) {
+            JSONObject entity = (JSONObject) entities.get(i - 1);
+            addOptionsWidget(i, entity);
+            OfficeWelcome.instance().logger.info(entity.toString());
+            table.setText(i, 1, JSONUtils.toString(entity, "ciPrimary"));
+            table.setText(i, 2, JSONUtils.toString(entity, "consultantJobTitle"));
+            if (entity.get("client") != null) {
+                JSONObject client = entity.get("client").isObject();
+                table.setText(i, 3, JSONUtils.toString(client, "name"));
+            }
+            if (entity.get("vendor") != null) {
+                JSONObject vendor = entity.get("vendor").isObject();
+                table.setText(i, 4, JSONUtils.toString(vendor, "name"));
+            }
+            table.setText(i, 5, JSONUtils.toString(entity, "itemNumber"));
+            table.setText(i, 6, JSONUtils.toString(entity, "overTimeBillingRate"));
+            table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
+        }
     }
 }
