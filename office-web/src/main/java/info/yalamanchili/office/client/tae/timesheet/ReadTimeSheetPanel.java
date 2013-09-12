@@ -73,7 +73,7 @@ public class ReadTimeSheetPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(true, false));
+        addDropDown("employee", new SelectEmployeeWidget("Employee",true, false));
         addDropDown("timeSheetPeriod", new SelectTimesheetPeriodWidget(true, false));
         addField("adpHours", true, false, DataType.FLOAT_FIELD);
         addField("quickBooksHours", true, false, DataType.FLOAT_FIELD);

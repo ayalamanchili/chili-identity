@@ -39,7 +39,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
     //View and Create Time sheets For Employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
-    SelectEmployeeWidget empWidget = new SelectEmployeeWidget(false, false);
+    SelectEmployeeWidget empWidget = new SelectEmployeeWidget("Employee",false, false);
     Button showTimeSheetsForEmpB = new Button("View");
     Button createEmpTimeSheetsB = new Button("Create");
 

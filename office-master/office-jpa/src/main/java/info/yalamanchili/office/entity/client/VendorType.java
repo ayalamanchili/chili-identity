@@ -13,5 +13,5 @@ package info.yalamanchili.office.entity.client;
  */
 public enum VendorType {
 
-    TIER_ONE, THIRD_PARTY,
+    TIER_ONE, THIRD_PARTY, SUB_CONTRACTOR
 }

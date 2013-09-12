@@ -85,7 +85,7 @@ public class UpdateExpensePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(false, true));
+        addDropDown("employee", new SelectEmployeeWidget("Employee", false, true));
         addField("name", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addDropDown("category", new SelectExpenseCategoryWidget(false, true));

@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class UpdateTimesheetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateTimesheetPanel.class.getName());
-    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget(true, false);
+    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget("Employee",true, false);
     SelectTimesheetPeriodWidget selectTimesheetPeriodWidget = new SelectTimesheetPeriodWidget(true, false);
     protected String payPeriodId;
 

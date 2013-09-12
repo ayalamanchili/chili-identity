@@ -33,7 +33,7 @@ public class CreateClientInfoPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
-    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget(Auth.ROLE.ROLE_RECRUITER.name(), false, false);
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -53,11 +53,12 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("ciPrimary", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
-        assignEntityValueFromField("itemCode", clientInfo);
+        assignEntityValueFromField("itemNumber", clientInfo);
         assignEntityValueFromField("payRate", clientInfo);
         assignEntityValueFromField("billingRate", clientInfo);
         assignEntityValueFromField("overTimeBillingRate", clientInfo);
         assignEntityValueFromField("invoiceFrequency", clientInfo);
+        assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
         assignEntityValueFromField("recruiter", clientInfo);
         assignEntityValueFromField("notes", clientInfo);
         return clientInfo;
@@ -123,8 +124,10 @@ public class CreateClientInfoPanel extends CreateComposite {
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-        String[] strs = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-        addEnumField("invoiceFrequency", false, false, strs);
+        String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+        addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
+        String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+        addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }

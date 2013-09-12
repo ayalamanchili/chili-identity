@@ -27,7 +27,7 @@ public class CreateExpensesPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateExpensesPanel.class.getName());
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
-    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget(false, true);
+    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
 
     public CreateExpensesPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -51,16 +51,16 @@ public class CreateExpensesPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override

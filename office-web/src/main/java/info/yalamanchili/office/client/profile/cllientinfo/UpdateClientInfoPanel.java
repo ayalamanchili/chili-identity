@@ -24,7 +24,7 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWi
 
 public class UpdateClientInfoPanel extends UpdateComposite {
 
-    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget(Auth.ROLE.ROLE_RECRUITER.name(), false, false);
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
@@ -47,6 +47,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("billingRate", entity);
         assignEntityValueFromField("overTimeBillingRate", entity);
         assignEntityValueFromField("invoiceFrequency", entity);
+        assignEntityValueFromField("invoiceDeliveryMethod", entity);
         assignEntityValueFromField("recruiter", entity);
         assignEntityValueFromField("notes", entity);
         return entity;
@@ -94,6 +95,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
@@ -124,8 +126,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-        String[] strs = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-        addEnumField("invoiceFrequency", false, false, strs);
+        String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+        addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
+        String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+        addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }

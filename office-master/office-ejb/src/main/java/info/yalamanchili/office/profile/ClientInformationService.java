@@ -71,8 +71,8 @@ public class ClientInformationService {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setVendorLocation(address);
         }
-        if(ci.getRecruiter()!=null){
-            Employee recruiter= EmployeeDao.instance().findById(ci.getRecruiter().getId());
+        if (ci.getRecruiter() != null) {
+            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
             ci.setRecruiter(recruiter);
         }
         emp.addClientInformation(ci);
@@ -123,6 +123,12 @@ public class ClientInformationService {
                 Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
                 ciEntity.setVendorLocation(address);
             }
+        }
+        if (ci.getRecruiter() == null) {
+            ciEntity.setRecruiter(null);
+        } else {
+            Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
+            ciEntity.setRecruiter(recruiter);
         }
         ciEntity = clientInformationDao.save(ciEntity);
         ProfileNotificationService.sendClientInformationUpdatedNotification(ciEntity.getEmployee());

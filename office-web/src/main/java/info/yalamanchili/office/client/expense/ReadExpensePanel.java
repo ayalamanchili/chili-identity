@@ -44,13 +44,13 @@ public class ReadExpensePanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("read ec6 response" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info("read ec6 response" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ReadExpensePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget(false, true));
+        addDropDown("employee", new SelectEmployeeWidget("Employee", false, true));
         addField("name", true, true, DataType.STRING_FIELD);
         addField("amount", true, true, DataType.CURRENCY_FIELD);
         addDropDown("category", new SelectExpenseCategoryWidget(false, true));

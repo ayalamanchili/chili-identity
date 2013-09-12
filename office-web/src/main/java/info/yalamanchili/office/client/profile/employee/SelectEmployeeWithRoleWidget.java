@@ -18,10 +18,11 @@ public class SelectEmployeeWithRoleWidget extends SelectEmployeeWidget {
 
     protected String role;
 
-    public SelectEmployeeWithRoleWidget(String role, Boolean readOnly, Boolean isRequired) {
-        super(readOnly, isRequired);
+    public SelectEmployeeWithRoleWidget(String name, String role, Boolean readOnly, Boolean isRequired) {
+        super(name, readOnly, isRequired);
         this.role = role;
     }
+//FIXME role is hard coded
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {

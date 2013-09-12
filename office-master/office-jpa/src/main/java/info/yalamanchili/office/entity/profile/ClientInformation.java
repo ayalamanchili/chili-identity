@@ -5,6 +5,7 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Vendor;
 import java.math.BigDecimal;
@@ -127,6 +128,12 @@ public class ClientInformation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
     protected InvoiceFrequency invoiceFrequency;
+    /**
+     * Invoice Delivery Method
+     */
+    @Enumerated(EnumType.STRING)
+    @org.hibernate.annotations.Index(name = "CI_INVC_DEL_MTHD")
+    protected InvoiceDeliveryMethod invoiceDeliveryMethod;
     /**
      * recruiter
      */
@@ -269,6 +276,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
         this.invoiceFrequency = invoiceFrequency;
+    }
+
+    public InvoiceDeliveryMethod getInvoiceDeliveryMethod() {
+        return invoiceDeliveryMethod;
+    }
+
+    public void setInvoiceDeliveryMethod(InvoiceDeliveryMethod invoiceDeliveryMethod) {
+        this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
     public Employee getRecruiter() {

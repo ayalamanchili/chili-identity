@@ -32,7 +32,7 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     private static ReadClientInfoPanel instance;
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
-    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget(Auth.ROLE.ROLE_RECRUITER.name(), false, false);
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
@@ -56,6 +56,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
@@ -80,14 +81,16 @@ public class ReadClientInfoPanel extends ReadComposite {
         addField("ciPrimary", true, false, DataType.BOOLEAN_FIELD);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
-        addField("itemNumber", false, false, DataType.STRING_FIELD);
-        addField("payRate", false, false, DataType.CURRENCY_FIELD);
-        addField("billingRate", false, false, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-        String[] strs = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-        addEnumField("invoiceFrequency", true, false, strs);
+        addField("itemNumber", true, false, DataType.STRING_FIELD);
+        addField("payRate", true, false, DataType.CURRENCY_FIELD);
+        addField("billingRate", true, false, DataType.CURRENCY_FIELD);
+        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD);
+        String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+        addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
+        String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+        addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
-        addField("notes", false, false, DataType.RICH_TEXT_AREA);
+        addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override

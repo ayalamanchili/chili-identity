@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class UpdateAdjustmentHourPanel extends UpdateComposite {
 
-    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget(true, false);
+    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget("Employee",true, false);
     private static Logger logger = Logger.getLogger(UpdateAdjustmentHourPanel.class.getName());
     protected String bonuspaymentsId;
 
