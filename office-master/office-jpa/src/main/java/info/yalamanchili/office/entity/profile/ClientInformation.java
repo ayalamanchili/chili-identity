@@ -24,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 
@@ -333,6 +334,7 @@ public class ClientInformation extends AbstractEntity {
         this.notes = notes;
     }
 
+    @XmlTransient
     public List<ClientInfoComment> getComments() {
         return comments;
     }
