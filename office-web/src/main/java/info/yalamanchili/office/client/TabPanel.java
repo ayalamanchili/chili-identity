@@ -51,6 +51,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout drivePanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
     public EntityLayout adminPanel = new EntityLayout();
+    public EntityLayout reportingPanel = new EntityLayout();
     public EntityLayout helpPanel = new EntityLayout();
 
     public TabPanel() {
@@ -69,6 +70,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(profilePanel, "Profile", false);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE)) {
             tabPanel.add(adminPanel, "Admin", false);
+        }
+        if (Auth.isCorporateEmployee()) {
+            tabPanel.add(reportingPanel, "Reporting", false);
         }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
@@ -133,6 +137,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
                 @Override
                 public void onResponse() {
                     selectAdminTab();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(reportingPanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onResponse() {
+                    selectReportingPanel();
                 }
             });
         }
@@ -220,6 +232,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         adminPanel.sidePanelTop.add(new ClientSidePanel());
     }
 
+    public void selectReportingPanel() {
+        adminPanel.entityPanel.clear();
+        adminPanel.sidePanelTop.clear();
+//        adminPanel.entityTitlePanel.add(new AdminMenu());
+//        adminPanel.entityPanel.add(new ReadAllClientsPanel());
+//        adminPanel.sidePanelTop.add(new ClientSidePanel());
+    }
+
     public void selectHelpTab() {
         helpPanel.entityPanel.clear();
         helpPanel.sidePanelTop.clear();
@@ -253,6 +273,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public EntityLayout getProfilePanel() {
         return profilePanel;
+    }
+
+    public EntityLayout getReportingPanel() {
+        return reportingPanel;
     }
 
     public EntityLayout getAdminPanel() {
