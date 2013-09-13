@@ -32,8 +32,8 @@ public class ReportingMenu extends Composite {
     }
     Command ContractingMaintainenceCmd = new Command() {
         public void execute() {
-//            TabPanel.instance().getAdminPanel().entityPanel.clear();
-//            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
 ////            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllNotificationGroupsPanel());
 ////            TabPanel.instance().getAdminPanel().sidePanelTop.add(new NotificationGroupSidePanel());
         }
