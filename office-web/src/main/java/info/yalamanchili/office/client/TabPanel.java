@@ -234,9 +234,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     }
 
     public void selectReportingPanel() {
-        adminPanel.entityPanel.clear();
-        adminPanel.sidePanelTop.clear();
-        adminPanel.entityTitlePanel.add(new ReportingMenu());
+        reportingPanel.entityPanel.clear();
+        reportingPanel.sidePanelTop.clear();
+        reportingPanel.entityTitlePanel.add(new ReportingMenu());
 //        adminPanel.entityPanel.add(new ReadAllClientsPanel());
 //        adminPanel.sidePanelTop.add(new ClientSidePanel());
     }
