@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.message.MyMessagesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
+import info.yalamanchili.office.client.reporting.ReportingMenu;
 import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
@@ -235,7 +236,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectReportingPanel() {
         adminPanel.entityPanel.clear();
         adminPanel.sidePanelTop.clear();
-//        adminPanel.entityTitlePanel.add(new AdminMenu());
+        adminPanel.entityTitlePanel.add(new ReportingMenu());
 //        adminPanel.entityPanel.add(new ReadAllClientsPanel());
 //        adminPanel.sidePanelTop.add(new ClientSidePanel());
     }
