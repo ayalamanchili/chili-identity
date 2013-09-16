@@ -129,6 +129,12 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Invoice Frequency
      */
+    @Enumerated(EnumType.STRING) 
+    protected BillingDuration billingRateDuration;
+    
+     @Enumerated(EnumType.STRING)
+    protected BillingDuration overTimeDuration;
+    
     @Enumerated(EnumType.STRING)
     @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
     protected InvoiceFrequency invoiceFrequency;
