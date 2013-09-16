@@ -102,14 +102,8 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             OfficeWelcome.instance().logger.info(entity.toString());
             table.setText(i, 1, JSONUtils.toString(entity, "ciPrimary"));
             table.setText(i, 2, JSONUtils.toString(entity, "consultantJobTitle"));
-            if (entity.get("client") != null) {
-                JSONObject client = entity.get("client").isObject();
-                table.setText(i, 3, JSONUtils.toString(client, "name"));
-            }
-            if (entity.get("vendor") != null) {
-                JSONObject vendor = entity.get("vendor").isObject();
-                table.setText(i, 4, JSONUtils.toString(vendor, "name"));
-            }
+            table.setText(i, 3, JSONUtils.toString(entity, "client"));
+            table.setText(i, 4, JSONUtils.toString(entity, "vendor"));
             table.setText(i, 5, JSONUtils.toString(entity, "itemNumber"));
             table.setText(i, 6, JSONUtils.toString(entity, "billingRate"));
             table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
