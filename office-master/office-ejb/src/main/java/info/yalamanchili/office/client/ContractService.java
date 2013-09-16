@@ -63,9 +63,12 @@ public class ContractService {
             ContractDto dto = mapper.map(ci, ContractDto.class);
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             //TODO set client
-            dto.setClient(ci.getClient().getName() + "" + ci.getClient().getName());
-            //vendor
-            dto.setVendor(ci.getVendor().getName() + "" + ci.getVendor().getName());
+            if (ci.getClient() != null) {
+                dto.setClient(ci.getClient().getName());
+            }
+            if (ci.getVendor() != null) {
+                dto.setVendor(ci.getVendor().getName());
+            }
             //etc
             table.getEntities().add(dto);
         }
