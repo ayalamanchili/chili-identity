@@ -18,6 +18,12 @@
             <artifactId>chili-security</artifactId>
             <version>${chili.version}</version>
         </dependency> 
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-core</artifactId>
+            <version>${jersey.version}</version>
+            <type>jar</type>
+        </dependency>
         <!-- JPA and Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -341,6 +347,7 @@
         <office.version>1.1-SNAPSHOT</office.version>
         <chili.version>1.2-SNAPSHOT</chili.version>
         <arquillian.version>1.0.0.Alpha4</arquillian.version>
+        <jersey.version>1.8</jersey.version>
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.1.RELEASE</spring.security.version>
         <hibernate.version>3.5.3-Final</hibernate.version>

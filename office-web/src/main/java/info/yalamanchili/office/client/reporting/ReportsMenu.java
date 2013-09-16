@@ -16,20 +16,21 @@ import info.yalamanchili.office.client.TabPanel;
  *
  * @author prasanthi.p
  */
-public class ReportingMenu extends Composite {
+public class ReportsMenu extends Composite {
 
-    MenuBar reportingMenuBar = new MenuBar(false);
+    MenuBar reportsMenuBar = new MenuBar(false);
 
-    public ReportingMenu() {
-        initWidget(reportingMenuBar);
-        configureReportingMenu();
+    public ReportsMenu() {
+        initWidget(reportsMenuBar);
+        configureReportsMenu();
     }
 
-    protected void configureReportingMenu() {
-        reportingMenuBar.addItem("Contracting", ContractingMaintainenceCmd);
+    protected void configureReportsMenu() {
+        reportsMenuBar.addItem("Contracts", ContractingMaintainenceCmd);
 
-        reportingMenuBar.addStyleName("entityMenuBar");
+        reportsMenuBar.addStyleName("entityMenuBar");
     }
+    
     Command ContractingMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();

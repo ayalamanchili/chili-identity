@@ -35,7 +35,7 @@ import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.message.MyMessagesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
-import info.yalamanchili.office.client.reporting.ReportingMenu;
+import info.yalamanchili.office.client.reporting.ReportsMenu;
 import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
 import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
 import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
@@ -73,7 +73,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             tabPanel.add(adminPanel, "Admin", false);
         }
         if (Auth.isCorporateEmployee()) {
-            tabPanel.add(reportingPanel, "Reporting", false);
+            tabPanel.add(reportingPanel, "Reports", false);
         }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
@@ -236,7 +236,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectReportingPanel() {
         reportingPanel.entityPanel.clear();
         reportingPanel.sidePanelTop.clear();
-        reportingPanel.entityTitlePanel.add(new ReportingMenu());
+        reportingPanel.entityTitlePanel.add(new ReportsMenu());
 //        adminPanel.entityPanel.add(new ReadAllClientsPanel());
 //        adminPanel.sidePanelTop.add(new ClientSidePanel());
     }
