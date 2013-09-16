@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -44,27 +45,37 @@ public class ContractService {
     @Autowired
     protected Mapper mapper;
 
-    public List<ContractDto> getContractorPlacementInfo() {
-        List<ContractDto> res = new ArrayList<ContractDto>();
-        TypedQuery<ClientInformation> q = em.createQuery("SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND ci.endDate >= :dateParam", ClientInformation.class);
-        q.setParameter("dateParam", new Date(), TemporalType.DATE);
-        for (ClientInformation ci : q.getResultList()) {
+    public ContractTable getContractorPlacementInfo(int start, int limit) {
+        String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND ci.endDate >= :dateParam";
+        
+        TypedQuery<ClientInformation> query = em.createQuery(queryStr, ClientInformation.class);
+        query.setParameter("dateParam", new Date(), TemporalType.DATE);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        
+        String sizeQueryStr = queryStr.replace("SELECT ci", "SELECT count(*)");
+        TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
+        sizeQuery.setParameter("dateParam", new Date(), TemporalType.DATE);
+        
+        ContractTable table = new ContractTable();
+        table.setSize(sizeQuery.getSingleResult());
+        for (ClientInformation ci : query.getResultList()) {
             ContractDto dto = mapper.map(ci, ContractDto.class);
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             //TODO set client
             //vendor
             //etc
-            res.add(dto);
+            table.getEntities().add(dto);
         }
-        return res;
+        return table;
     }
 
     public Response generateContractorPlacementInfoReport(String format) {
         javax.ws.rs.core.Response.ResponseBuilder response;
         String fileName = "contracts";
-        List<ContractDto> data = getContractorPlacementInfo();
+        ContractTable data = getContractorPlacementInfo(0, 10000);
         try {
-            ReportGenerator.generateReport(data, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
+            ReportGenerator.generateReport(data.getEntities(), format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
             response = javax.ws.rs.core.Response.ok(fileName.getBytes());
         } catch (JRException e) {
             response = javax.ws.rs.core.Response.serverError();

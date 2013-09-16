@@ -12,7 +12,10 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -302,5 +305,33 @@ public class ContractDto implements Serializable {
 
     public void setLogisticsPreparation(boolean logisticsPreparation) {
         this.logisticsPreparation = logisticsPreparation;
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class ContractTable {
+
+        protected Long size;
+        protected List<ContractDto> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<ContractDto> getEntities() {
+            if (this.entities == null) {
+                this.entities = new ArrayList<ContractDto>();
+            }
+            return entities;
+        }
+
+        public void setEntities(List<ContractDto> entities) {
+            this.entities = entities;
+        }
     }
 }

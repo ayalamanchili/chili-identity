@@ -8,10 +8,10 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.client.ContractService;
-import info.yalamanchili.office.dto.client.ContractDto;
-import java.util.List;
+import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 @Transactional
 public class ContractResource {
-    
+
     @GET
-    public List<ContractDto> getContracts(){
-        return ContractService.instance().getContractorPlacementInfo();
+    @Path("/{start}/{limit}")
+    public ContractTable getContracts(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return ContractService.instance().getContractorPlacementInfo(start, limit);
     }
 }
