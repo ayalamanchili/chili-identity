@@ -47,23 +47,25 @@ public class ContractService {
 
     public ContractTable getContractorPlacementInfo(int start, int limit) {
         String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND ci.endDate >= :dateParam";
-        
+
         TypedQuery<ClientInformation> query = em.createQuery(queryStr, ClientInformation.class);
         query.setParameter("dateParam", new Date(), TemporalType.DATE);
         query.setFirstResult(start);
         query.setMaxResults(limit);
-        
+
         String sizeQueryStr = queryStr.replace("SELECT ci", "SELECT count(*)");
         TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
         sizeQuery.setParameter("dateParam", new Date(), TemporalType.DATE);
-        
+
         ContractTable table = new ContractTable();
         table.setSize(sizeQuery.getSingleResult());
         for (ClientInformation ci : query.getResultList()) {
             ContractDto dto = mapper.map(ci, ContractDto.class);
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
             //TODO set client
+            dto.setClient(ci.getClient().getName() + "" + ci.getClient().getName());
             //vendor
+            dto.setVendor(ci.getVendor().getName() + "" + ci.getVendor().getName());
             //etc
             table.getEntities().add(dto);
         }
