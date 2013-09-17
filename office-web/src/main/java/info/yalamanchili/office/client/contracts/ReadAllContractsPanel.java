@@ -107,7 +107,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "itemNumber"));
             table.setText(i, 6, JSONUtils.toString(entity, "billingRate"));
             table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
-            table.setText(i, 8, JSONUtils.toString(entity, "Employee"));
+            table.setText(i, 8, JSONUtils.toString(entity, "employee"));
         }
     }
 
