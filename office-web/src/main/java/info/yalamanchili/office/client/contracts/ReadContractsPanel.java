@@ -73,8 +73,6 @@ public class ReadContractsPanel extends ReadComposite {
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
         addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
-        assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
-        addField("employee", true, false, DataType.STRING_FIELD);
     }
 
     @Override
