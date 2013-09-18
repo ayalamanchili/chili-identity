@@ -8,14 +8,9 @@
 package info.yalamanchili.office.client.contracts;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.admin.client.SelectClientWidget;
-import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import java.util.logging.Logger;
 
 /**
@@ -34,26 +29,17 @@ public class ReadContractsPanel extends ReadComposite {
 
     @Override
     public void loadEntity(String entityId) {
-        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
-        addDropDown("client", new SelectClientWidget(true, false));
-        addDropDown("vendor", new SelectVendorWidget(true, false));
-        addField("itemNumber", true, false, DataType.STRING_FIELD);
-        addField("billingRate", true, false, DataType.CURRENCY_FIELD);
-        String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-        addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
+        assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -66,9 +52,10 @@ public class ReadContractsPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addField("employee", true, false, DataType.STRING_FIELD);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
-        addDropDown("client", new SelectClientWidget(true, false));
-        addDropDown("vendor", new SelectVendorWidget(true, false));
+        addField("client", true, false, DataType.STRING_FIELD);
+        addField("vendor", true, false, DataType.STRING_FIELD);
         addField("itemNumber", true, false, DataType.STRING_FIELD);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
