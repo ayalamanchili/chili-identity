@@ -48,22 +48,22 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
-        if (Window.confirm("Are you sure? All Client details will be deleted")) {
-            HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess();
-                }
-            });
-        }
+//        if (Window.confirm("Are you sure? All Client details will be deleted")) {
+//            HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+//                    new ALAsyncCallback<String>() {
+//                @Override
+//                public void onResponse(String arg0) {
+//                    postDeleteSuccess();
+//                }
+//            });
+//        }
     }
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Client Information");
-        TabPanel.instance().reportingPanel.entityPanel.clear();
-        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllContractsPanel());
+//        new ResponseStatusWidget().show("Successfully Deleted Client Information");
+//        TabPanel.instance().reportingPanel.entityPanel.clear();
+//        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllContractsPanel());
     }
 
     @Override
@@ -128,7 +128,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
         return OfficeWelcome.constants.root_url() + "contract/" + start.toString() + "/" + limit.toString();
     }
 
-    private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "contract/delete/" + entityId;
-    }
+//    private String getDeleteURL(String entityId) {
+//        return OfficeWelcome.instance().constants.root_url() + "contract/delete/" + entityId;
+//    }
 }
