@@ -55,7 +55,8 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
@@ -86,7 +87,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         addField("payRate", true, false, DataType.CURRENCY_FIELD);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
         addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD);
+        String[] billingDuration = {"HOUR","DAY","MONTH"};
+        addEnumField("billingRateDuration", true, false, billingDuration);
+        addEnumField("overTimeDuration", true, false, billingDuration);
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
         addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
