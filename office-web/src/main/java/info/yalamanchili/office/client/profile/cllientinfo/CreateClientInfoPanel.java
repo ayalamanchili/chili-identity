@@ -56,12 +56,13 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("itemNumber", clientInfo);
         assignEntityValueFromField("payRate", clientInfo);
         assignEntityValueFromField("billingRate", clientInfo);
+        assignEntityValueFromField("overTimePayRate", clientInfo);
         assignEntityValueFromField("overTimeBillingRate", clientInfo);
         assignEntityValueFromField("invoiceFrequency", clientInfo);
         assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
         assignEntityValueFromField("recruiter", clientInfo);
         assignEntityValueFromField("notes", clientInfo);
-        assignEntityValueFromField("billingRateDuration",clientInfo);
+        assignEntityValueFromField("billingRateDuration", clientInfo);
         return clientInfo;
     }
 
@@ -120,12 +121,13 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, false, DataType.DATE_FIELD);
         addField("itemNumber", false, false, DataType.STRING_FIELD);
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+        addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-        String[] billingDuration = {"HOUR","DAY","MONTH"};
+        String[] billingDuration = {"HOUR", "DAY", "MONTH"};
         addEnumField("billingRateDuration", false, false, billingDuration);
         addEnumField("overTimeDuration", false, false, billingDuration);
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
@@ -134,7 +136,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
-       
+
     }
 
     @Override

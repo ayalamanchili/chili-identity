@@ -84,6 +84,10 @@ public class ContractDto implements Serializable {
      */
     protected BigDecimal overTimePayRate;
     /**
+     * over time billing rate
+     */
+    protected BigDecimal overTimeBillingRate;
+    /**
      * Invoice Frequency
      */
     protected InvoiceFrequency invoiceFrequency;
@@ -233,6 +237,14 @@ public class ContractDto implements Serializable {
 
     public void setOverTimePayRate(BigDecimal overTimePayRate) {
         this.overTimePayRate = overTimePayRate;
+    }
+
+    public BigDecimal getOverTimeBillingRate() {
+        return overTimeBillingRate;
+    }
+
+    public void setOverTimeBillingRate(BigDecimal overTimeBillingRate) {
+        this.overTimeBillingRate = overTimeBillingRate;
     }
 
     public InvoiceFrequency getInvoiceFrequency() {

@@ -57,13 +57,13 @@ public class ClientInformation extends AbstractEntity {
     @Field(index = Index.UN_TOKENIZED)
     protected Boolean ciPrimary;
     /**
-     *
+     * startDate
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     /**
-     *
+     * endDate
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
@@ -127,14 +127,22 @@ public class ClientInformation extends AbstractEntity {
      */
     protected BigDecimal overTimePayRate;
     /**
+     * over time billing rate
+     */
+    protected BigDecimal overTimeBillingRate;
+    /**
+     * billingRateDuration
+     */
+    @Enumerated(EnumType.STRING)
+    protected BillingDuration billingRateDuration;
+    /**
+     * overTimeDuration
+     */
+    @Enumerated(EnumType.STRING)
+    protected BillingDuration overTimeDuration;
+    /**
      * Invoice Frequency
      */
-    @Enumerated(EnumType.STRING) 
-    protected BillingDuration billingRateDuration;
-    
-     @Enumerated(EnumType.STRING)
-    protected BillingDuration overTimeDuration;
-    
     @Enumerated(EnumType.STRING)
     @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
     protected InvoiceFrequency invoiceFrequency;
@@ -306,6 +314,30 @@ public class ClientInformation extends AbstractEntity {
 
     public void setOverTimePayRate(BigDecimal overTimePayRate) {
         this.overTimePayRate = overTimePayRate;
+    }
+
+    public BigDecimal getOverTimeBillingRate() {
+        return overTimeBillingRate;
+    }
+
+    public void setOverTimeBillingRate(BigDecimal overTimeBillingRate) {
+        this.overTimeBillingRate = overTimeBillingRate;
+    }
+
+    public BillingDuration getBillingRateDuration() {
+        return billingRateDuration;
+    }
+
+    public void setBillingRateDuration(BillingDuration billingRateDuration) {
+        this.billingRateDuration = billingRateDuration;
+    }
+
+    public BillingDuration getOverTimeDuration() {
+        return overTimeDuration;
+    }
+
+    public void setOverTimeDuration(BillingDuration overTimeDuration) {
+        this.overTimeDuration = overTimeDuration;
     }
 
     public InvoiceFrequency getInvoiceFrequency() {
