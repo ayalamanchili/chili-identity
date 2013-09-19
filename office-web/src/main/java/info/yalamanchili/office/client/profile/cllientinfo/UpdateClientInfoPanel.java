@@ -43,12 +43,15 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("itemNumber", entity);
+         assignEntityValueFromField("payRate", entity);
         assignEntityValueFromField("billingRate", entity);
-        assignEntityValueFromField("overTimeBillingRate", entity);
+        assignEntityValueFromField("overTimePayRate", entity);
         assignEntityValueFromField("invoiceFrequency", entity);
         assignEntityValueFromField("invoiceDeliveryMethod", entity);
         assignEntityValueFromField("recruiter", entity);
         assignEntityValueFromField("notes", entity);
+         assignEntityValueFromField("billingRateDuration",entity);
+        assignEntityValueFromField("overTimeDuration",entity);
         return entity;
     }
 
@@ -93,11 +96,12 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -125,8 +129,12 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addField("itemNumber", false, false, DataType.STRING_FIELD);
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+
         addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
+        String[] billingDuration = {"HOUR","DAY","MONTH"};
+        addEnumField("billingRateDuration", false, false, billingDuration);
+        addEnumField("overTimeDuration", false, false, billingDuration);
+
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
         addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
