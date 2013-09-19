@@ -56,13 +56,16 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("itemNumber", clientInfo);
         assignEntityValueFromField("payRate", clientInfo);
         assignEntityValueFromField("billingRate", clientInfo);
+        assignEntityValueFromField("billingRateDuration", clientInfo);
         assignEntityValueFromField("overTimePayRate", clientInfo);
         assignEntityValueFromField("overTimeBillingRate", clientInfo);
+        assignEntityValueFromField("overTimeDuration", clientInfo);
         assignEntityValueFromField("invoiceFrequency", clientInfo);
         assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
         assignEntityValueFromField("recruiter", clientInfo);
         assignEntityValueFromField("notes", clientInfo);
-        assignEntityValueFromField("billingRateDuration", clientInfo);
+
+
         return clientInfo;
     }
 
@@ -110,26 +113,32 @@ public class CreateClientInfoPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        //Basic
         addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
+        //client
         addDropDown("client", new SelectClientWidget(false, true));
         entityFieldsPanel.add(addClientL);
         addDropDown("clientContact", new SelectClientContactWidget(false, false));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
+        //Vendor
         addDropDown("vendor", new SelectVendorWidget(false, false));
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
+        //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
         addField("itemNumber", false, false, DataType.STRING_FIELD);
+        //Rate info
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
-        addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
         String[] billingDuration = {"HOUR", "DAY", "MONTH"};
         addEnumField("billingRateDuration", false, false, billingDuration);
+        addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
+        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
         addEnumField("overTimeDuration", false, false, billingDuration);
+
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
         addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};

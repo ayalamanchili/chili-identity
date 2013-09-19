@@ -54,9 +54,9 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
@@ -73,6 +73,7 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addField("ciPrimary", true, false, DataType.BOOLEAN_FIELD);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
         addDropDown("client", new SelectClientWidget(true, false));
         addDropDown("clientContact", new SelectClientContactWidget(true, false));
@@ -80,15 +81,14 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("vendor", new SelectVendorWidget(true, false));
         addDropDown("vendorContact", new SelectVendorContactWidget(true, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false));
-        addField("ciPrimary", true, false, DataType.BOOLEAN_FIELD);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
         addField("itemNumber", true, false, DataType.STRING_FIELD);
         addField("payRate", true, false, DataType.CURRENCY_FIELD);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
-        addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
-        String[] billingDuration = {"HOUR","DAY","MONTH"};
+        String[] billingDuration = {"HOUR", "DAY", "MONTH"};
         addEnumField("billingRateDuration", true, false, billingDuration);
+        addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
         addEnumField("overTimeDuration", true, false, billingDuration);
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
         addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
@@ -113,7 +113,6 @@ public class ReadClientInfoPanel extends ReadComposite {
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
                 entity = (JSONObject) JSONParser.parseLenient(response);
                 populateFieldsFromEntity(entity);
             }
