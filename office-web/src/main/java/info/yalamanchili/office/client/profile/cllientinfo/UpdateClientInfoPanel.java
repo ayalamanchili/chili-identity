@@ -42,7 +42,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("itemNumber", entity);
         assignEntityValueFromField("billingRate", entity);
         assignEntityValueFromField("overTimeBillingRate", entity);
