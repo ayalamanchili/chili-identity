@@ -52,7 +52,6 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
-        assignEntityValueFromField("itemNumber", clientInfo);
         assignEntityValueFromField("payRate", clientInfo);
         assignEntityValueFromField("billingRate", clientInfo);
         assignEntityValueFromField("billingRateDuration", clientInfo);
@@ -128,7 +127,6 @@ public class CreateClientInfoPanel extends CreateComposite {
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-        addField("itemNumber", false, false, DataType.STRING_FIELD);
         //Rate info
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
