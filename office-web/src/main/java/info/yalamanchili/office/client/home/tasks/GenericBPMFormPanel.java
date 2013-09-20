@@ -18,6 +18,7 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -46,6 +47,10 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             if (fields.get(key) instanceof StringField) {
                 StringField stringField = (StringField) fields.get(key);
                 value.put("value", new JSONString(stringField.getValue()));
+            }
+            if (fields.get(key) instanceof BooleanField) {
+                BooleanField booleanField = (BooleanField) fields.get(key);
+                value.put("value", new JSONString(booleanField.getValue().toString()));
             }
             if (fields.get(key) instanceof EnumField) {
                 EnumField enumField = (EnumField) fields.get(key);
@@ -107,6 +112,9 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("string")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.STRING_FIELD);
+            }
+            if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("boolean")) {
+                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.BOOLEAN_FIELD);
             }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("enum")) {
                 JSONObject type = formProperty.get("type").isObject();

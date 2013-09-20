@@ -207,6 +207,10 @@ public class ClientInformation extends AbstractEntity {
      * Logistics Preparation
      */
     protected boolean logisticsPreparation;
+    /**
+     * HR orientation
+     */
+    protected boolean hrOrientation;
 
     public ClientInformation() {
         super();
@@ -445,8 +449,16 @@ public class ClientInformation extends AbstractEntity {
         this.joiningReport = joiningReport;
     }
 
+    public boolean isHrOrientation() {
+        return hrOrientation;
+    }
+
+    public void setHrOrientation(boolean hrOrientation) {
+        this.hrOrientation = hrOrientation;
+    }
+
     @Override
     public String toString() {
-        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRateDuration=" + billingRateDuration + ", overTimeDuration=" + overTimeDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", recruiter=" + recruiter + ", visaStatus=" + visaStatus + ", notes=" + notes + ", comments=" + comments + ", accountVerificationDocs=" + accountVerificationDocs + ", signedCopyOfWorkOrder=" + signedCopyOfWorkOrder + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + ", joiningReport=" + joiningReport + ", logisticsPreparation=" + logisticsPreparation + '}';
+        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRateDuration=" + billingRateDuration + ", overTimeDuration=" + overTimeDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", recruiter=" + recruiter + ", visaStatus=" + visaStatus + ", notes=" + notes + ", comments=" + comments + ", accountVerificationDocs=" + accountVerificationDocs + ", signedCopyOfWorkOrder=" + signedCopyOfWorkOrder + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + ", joiningReport=" + joiningReport + ", logisticsPreparation=" + logisticsPreparation + ", hrOrientation=" + hrOrientation + '}';
     }
 }

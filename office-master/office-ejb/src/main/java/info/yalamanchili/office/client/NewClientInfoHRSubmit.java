@@ -21,14 +21,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class NewClientInfoHRSubmit implements JavaDelegate {
-
+    
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        Object itemNumber = execution.getVariable("itemNumber");
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
-        System.out.println("ddddd" + itemNumber);
-        if (itemNumber != null) {
-            ci.setItemNumber(itemNumber.toString());
+        Object joinReport = execution.getVariable("joinReport");
+        if (joinReport != null) {
+            ci.setItemNumber(joinReport.toString());
+        }
+        Object hrOrientation = execution.getVariable("hrOrientation");
+        if (hrOrientation != null) {
+            ci.setHrOrientation(Boolean.getBoolean(hrOrientation.toString()));
         }
         ClientInformationDao.instance().save(ci);
     }
