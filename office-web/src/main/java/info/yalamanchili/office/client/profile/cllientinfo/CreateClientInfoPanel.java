@@ -50,7 +50,6 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendor", clientInfo);
         assignEntityValueFromField("vendorContact", clientInfo);
         assignEntityValueFromField("vendorLocation", clientInfo);
-        assignEntityValueFromField("ciPrimary", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
         assignEntityValueFromField("itemNumber", clientInfo);
@@ -114,7 +113,6 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         //Basic
-        addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
         //client
         addDropDown("client", new SelectClientWidget(false, true));

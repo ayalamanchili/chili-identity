@@ -33,7 +33,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("consultantJobTitle", entity);
-        assignEntityValueFromField("ciPrimary", entity);
         assignEntityValueFromField("client", entity);
         assignEntityValueFromField("clientContact", entity);
         assignEntityValueFromField("clientLocation", entity);
@@ -82,7 +81,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
@@ -117,7 +115,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
-        addField("ciPrimary", false, false, DataType.BOOLEAN_FIELD);
         addDropDown("client", new SelectClientWidget(false, true));
         addDropDown("clientContact", new SelectClientContactWidget(false, false));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false));

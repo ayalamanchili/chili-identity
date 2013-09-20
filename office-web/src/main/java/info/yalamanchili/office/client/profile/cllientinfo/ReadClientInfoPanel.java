@@ -48,7 +48,6 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
-        assignFieldValueFromEntity("ciPrimary", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
@@ -73,7 +72,6 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("ciPrimary", true, false, DataType.BOOLEAN_FIELD);
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
         addDropDown("client", new SelectClientWidget(true, false));
         addDropDown("clientContact", new SelectClientContactWidget(true, false));
