@@ -158,9 +158,10 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Recruiter_ClientInformations")
     protected Employee recruiter;
-    
-    /** Status    */
-     protected String visaStatus;
+    /**
+     * Status
+     */
+    protected String visaStatus;
 
     public void setVisaStatus(String visaStatus) {
         this.visaStatus = visaStatus;
@@ -198,6 +199,10 @@ public class ClientInformation extends AbstractEntity {
      * w4 filled
      */
     protected boolean w4Filled;
+    /**
+     * joining report
+     */
+    protected String joiningReport;
     /**
      * Logistics Preparation
      */
@@ -432,8 +437,16 @@ public class ClientInformation extends AbstractEntity {
         this.logisticsPreparation = logisticsPreparation;
     }
 
+    public String getJoiningReport() {
+        return joiningReport;
+    }
+
+    public void setJoiningReport(String joiningReport) {
+        this.joiningReport = joiningReport;
+    }
+
     @Override
     public String toString() {
-        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", recruiter=" + recruiter + ", notes=" + notes + '}';
+        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRateDuration=" + billingRateDuration + ", overTimeDuration=" + overTimeDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", recruiter=" + recruiter + ", visaStatus=" + visaStatus + ", notes=" + notes + ", comments=" + comments + ", accountVerificationDocs=" + accountVerificationDocs + ", signedCopyOfWorkOrder=" + signedCopyOfWorkOrder + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + ", joiningReport=" + joiningReport + ", logisticsPreparation=" + logisticsPreparation + '}';
     }
 }
