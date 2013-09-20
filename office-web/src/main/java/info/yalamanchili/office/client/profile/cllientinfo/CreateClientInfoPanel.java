@@ -62,6 +62,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("invoiceFrequency", clientInfo);
         assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
         assignEntityValueFromField("recruiter", clientInfo);
+         assignEntityValueFromField("visaStatus", clientInfo);
         assignEntityValueFromField("notes", clientInfo);
 
 
@@ -142,6 +143,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
+        addField("visaStatus", false, false, DataType.STRING_FIELD);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
 
     }
