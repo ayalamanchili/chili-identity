@@ -158,6 +158,17 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Recruiter_ClientInformations")
     protected Employee recruiter;
+    
+    /** Status    */
+     protected String visaStatus;
+
+    public void setVisaStatus(String visaStatus) {
+        this.visaStatus = visaStatus;
+    }
+
+    public String getVisaStatus() {
+        return visaStatus;
+    }
     /**
      * Notes
      */
