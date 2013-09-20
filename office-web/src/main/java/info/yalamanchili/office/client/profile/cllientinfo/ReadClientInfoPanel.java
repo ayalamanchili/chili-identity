@@ -59,6 +59,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
+         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
 
@@ -93,6 +94,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
+        addField("visaStatus", true, false, DataType.STRING_FIELD);
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 
