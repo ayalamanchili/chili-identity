@@ -51,6 +51,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("notes", entity);
         assignEntityValueFromField("billingRateDuration", entity);
         assignEntityValueFromField("overTimeDuration", entity);
+         assignEntityValueFromField("visaStatus", entity);
         return entity;
     }
 
@@ -100,6 +101,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
+         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -135,6 +137,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
+        addField("visaStatus", false, false, DataType.STRING_FIELD);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 
