@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="new_client_info_process">
+        <startEvent id="newClientInfoProcessStart"/>
+        <sequenceFlow id="newClientInfoProcessStartToAccountTask" sourceRef="newClientInfoProcessStart" targetRef="newClientInfoAccountTask" />
+        <!--submit User task-->
+        <userTask id="newClientInfoAccountTask" 
+                  name="new Client Info Account Task" 
+                  activiti:candidateGroups="ROLE_EXPENSE">
+            <documentation>
+                New Client Information Account Department Task
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="itemNumber" 
+                                       name="Item Number"
+                                       required="true"
+                                       type="string"/>
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="newClientInfoAccountTaskToSubmit" sourceRef="newClientInfoAccountTask" targetRef="newClientInfoAccountSubmit" />
+        <!--BulkImport Submit Service Task-->
+        <serviceTask
+            id="newClientInfoAccountSubmit"
+            name="BulkImport Process Submit"
+            activiti:class="info.yalamanchili.office.client.NewClientInfoAccountSubmit">
+        </serviceTask>
+        <sequenceFlow id="newClientInfoHRSubmitToEnd" sourceRef="newClientInfoAccountSubmit" targetRef="newClientInfoProcessEnd"/> 
+        <!-- end-->
+        <endEvent id="newClientInfoProcessEnd" />
+    </process>
+</definitions>

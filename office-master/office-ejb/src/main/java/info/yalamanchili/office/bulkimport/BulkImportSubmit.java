@@ -10,12 +10,9 @@ package info.yalamanchili.office.bulkimport;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportStatus;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *

@@ -8,12 +8,14 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.BeanMapper;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
@@ -21,11 +23,14 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -76,7 +81,17 @@ public class ClientInformationService {
             ci.setRecruiter(recruiter);
         }
         emp.addClientInformation(ci);
+        //TODO no need for notification  integrate this to bis process
         ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
+        startNewClientInfoProcess(ci);
+    }
+
+    @Async
+    protected void startNewClientInfoProcess(ClientInformation ci) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("clientInfo", ci);
+        vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
+        OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 
 //merge save and addci methods
