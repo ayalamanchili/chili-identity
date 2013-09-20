@@ -18,7 +18,7 @@
                   name="new Client Info Account Task" 
                   activiti:candidateGroups="ROLE_EXPENSE">
             <documentation>
-                New Client Information Account Department Task
+                #{clientInfo.toString()}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -27,17 +27,48 @@
                                        name="Item Number"
                                        required="true"
                                        type="string"/>
+                <activiti:formProperty id="accountNotes" 
+                                       name="Notes"
+                                       required="false"
+                                       type="string"/>
             </extensionElements> 
         </userTask>
         <sequenceFlow id="newClientInfoAccountTaskToSubmit" sourceRef="newClientInfoAccountTask" targetRef="newClientInfoAccountSubmit" />
         <!--BulkImport Submit Service Task-->
         <serviceTask
             id="newClientInfoAccountSubmit"
-            name="BulkImport Process Submit"
+            name="New Client Information Account Department Submit"
             activiti:class="info.yalamanchili.office.client.NewClientInfoAccountSubmit">
         </serviceTask>
-        <sequenceFlow id="newClientInfoHRSubmitToEnd" sourceRef="newClientInfoAccountSubmit" targetRef="newClientInfoProcessEnd"/> 
-        <!-- end-->
+        <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoAccountSubmit" targetRef="newClientInfoHRTask" />
+        <!--submit User task-->
+        <userTask id="newClientInfoHRTask" 
+                  name="new Client Info HR Task" 
+                  activiti:candidateGroups="ROLE_HR">
+            <documentation>
+                #{clientInfo.toString()}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="joinReport" 
+                                       name="Joining Report Details"
+                                       required="false"
+                                       type="string"/>
+                <activiti:formProperty id="hrOrientation" 
+                                       name="HR Orientation"
+                                       required="false"
+                                       type="boolean"/>
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="newClientInfoHRTaskToSubmit" sourceRef="newClientInfoHRTask" targetRef="newClientInfoHRSubmit" />
+        <!--BulkImport Submit Service Task-->
+        <serviceTask
+            id="newClientInfoHRSubmit"
+            name="new Client Information HR Department Submit"
+            activiti:class="info.yalamanchili.office.client.NewClientInfoHRSubmit">
+        </serviceTask>
+        <sequenceFlow id="newClientInfoHRSubmitToEnd" sourceRef="newClientInfoHRSubmit" targetRef="newClientInfoProcessEnd"/> 
         <endEvent id="newClientInfoProcessEnd" />
     </process>
 </definitions>
