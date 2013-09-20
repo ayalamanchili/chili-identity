@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class NewClientInfoHRSubmit implements JavaDelegate {
-    
+
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
@@ -31,7 +31,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
         }
         Object hrOrientation = execution.getVariable("hrOrientation");
         if (hrOrientation != null) {
-            ci.setHrOrientation(Boolean.getBoolean(hrOrientation.toString()));
+            ci.setHrOrientation(Boolean.parseBoolean(hrOrientation.toString()));
         }
         ClientInformationDao.instance().save(ci);
     }
