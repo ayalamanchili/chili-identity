@@ -102,27 +102,29 @@ public class AdminResource {
     @Path("/createuser")
     @PUT
     @Produces("application/text")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
     @CacheEvict(value = "employees", allEntries = true)
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
+        emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         String employeeId = generateEmployeeId(employee);
-
-        //Create CUser
-        CUser user = mapper.map(employee, CUser.class);
-        user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
-        user.setUsername(employeeId);
-        user.setEnabled(true);
-        user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_USER));
-        user = securityService.createCuser(user);
-        emp.setUser(user);
+        if (!emp.getEmployeeType().getName().equals("SUB_CONTRACTOR")) {
+            //Create CUser
+            CUser user = mapper.map(employee, CUser.class);
+            user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
+            user.setUsername(employeeId);
+            user.setEnabled(true);
+            user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_USER));
+            user = securityService.createCuser(user);
+            emp.setUser(user);
+        }
 
         //Create employee with basic information
         emp.setEmployeeId(employeeId);
         Preferences prefs = new Preferences();
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
-        emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
+        
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("CORPORATE_EMPLOYEE")) {
             officeBPMIdentityService.createUser(employeeId);
@@ -132,6 +134,7 @@ public class AdminResource {
         email.setPrimaryEmail(true);
         emp.addEmail(email);
         emp = employeeDao.save(emp);
+        em.merge(emp);
         //Email notification
         profileNotificationService.sendNewUserCreatedNotification(emp);
         return emp.getId().toString();

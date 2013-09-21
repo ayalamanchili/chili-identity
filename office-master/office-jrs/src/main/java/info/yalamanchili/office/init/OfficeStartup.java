@@ -397,6 +397,7 @@ public class OfficeStartup {
         //Employee Type
         getCorporateEmployeeType();
         getEmployeeType();
+        getSubContractorEmployeeType();
     }
 
     protected void initTestData() {
@@ -579,6 +580,20 @@ public class OfficeStartup {
         }
     }
 
+        protected EmployeeType getSubContractorEmployeeType() {
+        Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", "SUB_CONTRACTOR");
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            EmployeeType employeetype = new EmployeeType();
+            employeetype.setName("SUB_CONTRACTOR");
+            employeetype.setDescription("SSTECH SUB_CONTRACTOR");
+            return em.merge(employeetype);
+        }
+    }
+        
     protected EmployeeType getEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
