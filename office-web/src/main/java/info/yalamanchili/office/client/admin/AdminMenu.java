@@ -24,6 +24,8 @@ import info.yalamanchili.office.client.admin.project.ProjectSidePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.admin.sow.ReadAllSOWPanel;
 import info.yalamanchili.office.client.admin.sow.SOWSidePanel;
+import info.yalamanchili.office.client.admin.subcontractor.ReadAllSubcontractorsPanel;
+import info.yalamanchili.office.client.admin.subcontractor.SubcontractorSidePanel;
 import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
 import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
 
@@ -44,6 +46,7 @@ public class AdminMenu extends Composite {
         adminMenuBar.addItem("Clients", clientsMaintainenceCmd);
         adminMenuBar.addItem("Projects", projectsMaintainenceCmd);
         adminMenuBar.addItem("Vendors", vendorsMaintainenceCmd);
+        adminMenuBar.addItem("Subcontractors", subcontractorsMaintainenceCmd);
         adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
         adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
         adminMenuBar.addItem("IssueType", issueTypeMaintainenceCmd);
@@ -90,6 +93,14 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllVendorsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new VendorsSidePanel());
+        }
+    };
+    Command subcontractorsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllSubcontractorsPanel());
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new SubcontractorSidePanel());
         }
     };
     Command bulkImportMaintainenceCmd = new Command() {

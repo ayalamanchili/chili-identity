@@ -41,64 +41,38 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Unique(entity = Vendor.class, fields = {"name"}, message = "{vendor.name.not.unique.msg}")
 public class Vendor extends AbstractEntity {
 
+    /**
+     * name
+     */
     @NotEmpty(message = "{vendor.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "VNDR_NM")
     protected String name;
+    /**
+     * vendor description
+     */
     protected String description;
     /*
-     * 
+     * vendor type
      */
     @org.hibernate.annotations.Index(name = "VNDR_TYPE")
     @Enumerated(EnumType.STRING)
     @Field
     protected VendorType vendorType;
     /*
-     * 
+     * vendor locations
      */
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Address> locations;
+    /**
+     * clients
+     */
     @ManyToMany(mappedBy = "vendors", cascade = CascadeType.MERGE)
     protected List<Client> clients;
-
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
-    }
-
-    @XmlTransient
-    public List<Client> getClients() {
-        if (this.clients == null) {
-            this.clients = new ArrayList<Client>();
-        }
-        return this.clients;
-    }
+    /**
+     * vendor contacts
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setLocations(List<Address> locations) {
-        this.locations = locations;
-    }
-
-    public void addLocations(Address entity) {
-        if (entity == null) {
-            return;
-        }
-        getLocations().add(entity);
-    }
-
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
-    public void addContact(Contact contact) {
-        if (contact == null) {
-            return;
-        }
-        getContacts().add(contact);
-    }
 
     public String getName() {
         return name;
@@ -110,6 +84,10 @@ public class Vendor extends AbstractEntity {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public VendorType getVendorType() {
@@ -128,12 +106,46 @@ public class Vendor extends AbstractEntity {
         return this.locations;
     }
 
+    public void setLocations(List<Address> locations) {
+        this.locations = locations;
+    }
+
+    public void addLocations(Address entity) {
+        if (entity == null) {
+            return;
+        }
+        getLocations().add(entity);
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    @XmlTransient
+    public List<Client> getClients() {
+        if (this.clients == null) {
+            this.clients = new ArrayList<Client>();
+        }
+        return this.clients;
+    }
+
     @XmlTransient
     public List<Contact> getContacts() {
         if (this.contacts == null) {
             this.contacts = new ArrayList<Contact>();
         }
         return this.contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public void addContact(Contact contact) {
+        if (contact == null) {
+            return;
+        }
+        getContacts().add(contact);
     }
 
     @Override

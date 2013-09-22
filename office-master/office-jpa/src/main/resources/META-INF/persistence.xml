@@ -38,6 +38,7 @@
     <class>info.yalamanchili.office.entity.time.TimeSheetPeriod</class>
     <!--Client-->
     <class>info.yalamanchili.office.entity.client.Client</class>
+    <class>info.yalamanchili.office.entity.client.Subcontractor</class>
     <class>info.yalamanchili.office.entity.client.Project</class>
     <class>info.yalamanchili.office.entity.client.StatementOfWork</class>
     <class>info.chili.hibernate.envers.AuditRevisionEntity</class>
