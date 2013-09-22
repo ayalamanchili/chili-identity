@@ -25,5 +25,6 @@ public interface OfficeCacheKeys {
     String CERTIFICATION = "certification";
     String CLIENT = "client";
     String VENDOR = "vendor";
+    String SUB_CONTRACTOR = "subcontractor";
     String ISSUE_TYPE = "issuetype";
 }

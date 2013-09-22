@@ -32,6 +32,7 @@ import info.yalamanchili.office.entity.activity.IssueType;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
+import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.expense.ExpenseCategory;
@@ -406,6 +407,7 @@ public class OfficeStartup {
         getDOTNETSkill();
         //vendor
         techSysVendor();
+        sstechSubcontractro();
         //Certifications
         getJAVACertification();
         getDOTNETCertification();
@@ -423,9 +425,9 @@ public class OfficeStartup {
         hrFolder.setName("HR");
         hrFolder.setParent(driveFolder);
         em.merge(hrFolder);
-        
+
         //Test privacy setting
-        PrivacySetting privacySetting= new PrivacySetting();
+        PrivacySetting privacySetting = new PrivacySetting();
         privacySetting.setPrivacyData(PrivacyData.EMAILS);
         privacySetting.setPrivacyMode(PrivacyMode.PRIVATE);
         privacySetting.setEmployee(userEmp);
@@ -580,7 +582,7 @@ public class OfficeStartup {
         }
     }
 
-        protected EmployeeType getSubContractorEmployeeType() {
+    protected EmployeeType getSubContractorEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
         getEmployeeTypeQuery.setParameter("nameParam", "SUB_CONTRACTOR");
@@ -593,7 +595,7 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
-        
+
     protected EmployeeType getEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
@@ -731,6 +733,12 @@ public class OfficeStartup {
         techSysVendor.addContact(vendorContact);
 
         return em.merge(techSysVendor);
+    }
+
+    public Subcontractor sstechSubcontractro() {
+        Subcontractor subcntr = new Subcontractor();
+        subcntr.setName("sstech sub contractor");
+        return em.merge(subcntr);
     }
 
     public void userRole() {
