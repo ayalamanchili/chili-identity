@@ -26,6 +26,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
         Object joinReport = execution.getVariable("joinReport");
+       
         if (joinReport != null) {
             ci.setJoiningReport(joinReport.toString());
         }
@@ -33,6 +34,27 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
         if (hrOrientation != null) {
             ci.setHrOrientation(Boolean.parseBoolean(hrOrientation.toString()));
         }
+         Object accDocs = execution.getVariable("accountVerificationDocs");
+        if(accDocs!=null)        {
+           ci.setAccountVerificationDocs(Boolean.parseBoolean(accDocs.toString()));
+        }
+        Object signedWO = execution.getVariable("signedCopyOfWorkOrder");
+        if(signedWO!=null)        {
+           ci.setAccountVerificationDocs(Boolean.parseBoolean(signedWO.toString()));
+        }
+        Object i9Fill = execution.getVariable("i9Filled");
+        if(i9Fill!=null)        {
+           ci.setAccountVerificationDocs(Boolean.parseBoolean(i9Fill.toString()));
+        }
+         Object w4Fill = execution.getVariable("w4Filled");
+        if(w4Fill!=null)        {
+           ci.setAccountVerificationDocs(Boolean.parseBoolean(w4Fill.toString()));
+        }
+          Object logisticsPrep = execution.getVariable("logisticsPreparation");
+        if(logisticsPrep!=null)        {
+           ci.setAccountVerificationDocs(Boolean.parseBoolean(logisticsPrep.toString()));
+        }
+       
         ClientInformationDao.instance().save(ci);
     }
 }
