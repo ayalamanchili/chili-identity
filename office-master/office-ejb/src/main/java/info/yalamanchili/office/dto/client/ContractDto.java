@@ -9,6 +9,7 @@ package info.yalamanchili.office.dto.client;
 
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
+import info.yalamanchili.office.entity.profile.BillingDuration;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -98,12 +99,44 @@ public class ContractDto implements Serializable {
     /**
      * recruiter
      */
-    protected Employee recruiter;
+    protected String recruiter;
     /**
      * Notes
      */
     protected String notes;
-    /**
+    
+    protected BillingDuration billingRateDuration;
+    
+     protected BillingDuration overTimeDuration;
+      
+    protected String visaStatus;
+  
+
+    public void setBillingRateDuration(BillingDuration billingRateDuration) {
+        this.billingRateDuration = billingRateDuration;
+    }
+
+    public void setOverTimeDuration(BillingDuration overTimeDuration) {
+        this.overTimeDuration = overTimeDuration;
+    }
+
+    public void setVisaStatus(String visaStatus) {
+        this.visaStatus = visaStatus;
+    }
+
+    public BillingDuration getBillingRateDuration() {
+        return billingRateDuration;
+    }
+
+    public BillingDuration getOverTimeDuration() {
+        return overTimeDuration;
+    }
+
+    public String getVisaStatus() {
+        return visaStatus;
+    }
+     
+     /**
      * -----------Tracking info---------------------------
      */
     /**
@@ -263,11 +296,11 @@ public class ContractDto implements Serializable {
         this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
-    public Employee getRecruiter() {
+    public String getRecruiter() {
         return recruiter;
     }
 
-    public void setRecruiter(Employee recruiter) {
+    public void setRecruiter(String recruiter) {
         this.recruiter = recruiter;
     }
 
