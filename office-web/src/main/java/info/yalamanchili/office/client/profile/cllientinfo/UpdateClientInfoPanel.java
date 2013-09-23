@@ -13,10 +13,14 @@ import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
+import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
+import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
@@ -51,7 +55,15 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("notes", entity);
         assignEntityValueFromField("billingRateDuration", entity);
         assignEntityValueFromField("overTimeDuration", entity);
-         assignEntityValueFromField("visaStatus", entity);
+        assignEntityValueFromField("visaStatus", entity);
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            assignEntityValueFromField("subcontractor", entity);
+            assignEntityValueFromField("subcontractorContact", entity);
+            assignEntityValueFromField("subcontractorAddress", entity);
+            assignEntityValueFromField("subcontractorPayRate", entity);
+            assignEntityValueFromField("subcontractorOvertimePayRate", entity);
+        }
+        assignEntityValueFromField("notes", entity);
         return entity;
     }
 
@@ -101,7 +113,15 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
-         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            assignFieldValueFromEntity("subcontractor", entity, null);
+            assignFieldValueFromEntity("subcontractorContact", entity, null);
+            assignFieldValueFromEntity("subcontractorAddress", entity, null);
+            assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+        }
+        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -138,6 +158,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("visaStatus", false, false, DataType.STRING_FIELD);
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
+            addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
+            addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
+            addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
+            addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+        }
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 

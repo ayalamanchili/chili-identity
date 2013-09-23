@@ -3,7 +3,9 @@
  */
 package info.yalamanchili.office.client;
 
+import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class Auth {
 
@@ -86,5 +88,13 @@ public class Auth {
         } else {
             return false;
         }
+    }
+
+    public static boolean isSubContractor(JSONObject emp) {
+        String empType = JSONUtils.toString(emp.get("employeeType"), "name");
+        if (empType != null && empType.equals("SUB_CONTRACTOR")) {
+            return true;
+        }
+        return false;
     }
 }

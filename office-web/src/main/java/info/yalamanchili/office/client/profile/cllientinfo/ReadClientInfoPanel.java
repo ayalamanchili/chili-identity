@@ -18,10 +18,14 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
+import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
+import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
+import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -59,7 +63,14 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, null);
-         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            assignFieldValueFromEntity("subcontractor", entity, null);
+            assignFieldValueFromEntity("subcontractorContact", entity, null);
+            assignFieldValueFromEntity("subcontractorAddress", entity, null);
+            assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+        }
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
 
@@ -95,6 +106,13 @@ public class ReadClientInfoPanel extends ReadComposite {
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("visaStatus", true, false, DataType.STRING_FIELD);
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
+            addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
+            addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
+            addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
+            addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+        }
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 

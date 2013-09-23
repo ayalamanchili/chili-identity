@@ -200,11 +200,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
 
     }
-
+    
     @Override
     public void loadEntity() {
-        logger.info("eeeee");
-        entity = OfficeWelcome.instance().employee;
     }
 
     @Override

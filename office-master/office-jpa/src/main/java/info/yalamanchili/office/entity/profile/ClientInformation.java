@@ -8,6 +8,7 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
+import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -175,6 +176,32 @@ public class ClientInformation extends AbstractEntity {
      */
     @Lob
     protected String notes;
+    /**
+     * subcontractor
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_SubCntr_ClientInformations")
+    protected Subcontractor subcontractor;
+    /**
+     * subcontractorContact;
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_SubCntrContact_ClientInformations")
+    protected Contact subcontractorContact;
+    /**
+     * subcontractor Address
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_SubCntrLocation_ClientInformations")
+    protected Address subcontractorAddress;
+    /**
+     * subcontractorPayRate
+     */
+    protected BigDecimal subcontractorPayRate;
+    /**
+     * subcontractorOvertimePayRate
+     */
+    protected BigDecimal subcontractorOvertimePayRate;
     /* 
      * comments
      */
@@ -390,6 +417,46 @@ public class ClientInformation extends AbstractEntity {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Subcontractor getSubcontractor() {
+        return subcontractor;
+    }
+
+    public void setSubcontractor(Subcontractor subcontractor) {
+        this.subcontractor = subcontractor;
+    }
+
+    public Contact getSubcontractorContact() {
+        return subcontractorContact;
+    }
+
+    public void setSubcontractorContact(Contact subcontractorContact) {
+        this.subcontractorContact = subcontractorContact;
+    }
+
+    public Address getSubcontractorAddress() {
+        return subcontractorAddress;
+    }
+
+    public void setSubcontractorAddress(Address subcontractorAddress) {
+        this.subcontractorAddress = subcontractorAddress;
+    }
+
+    public BigDecimal getSubcontractorPayRate() {
+        return subcontractorPayRate;
+    }
+
+    public void setSubcontractorPayRate(BigDecimal subcontractorPayRate) {
+        this.subcontractorPayRate = subcontractorPayRate;
+    }
+
+    public BigDecimal getSubcontractorOvertimePayRate() {
+        return subcontractorOvertimePayRate;
+    }
+
+    public void setSubcontractorOvertimePayRate(BigDecimal subcontractorOvertimePayRate) {
+        this.subcontractorOvertimePayRate = subcontractorOvertimePayRate;
     }
 
     @XmlTransient

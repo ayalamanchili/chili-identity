@@ -10,6 +10,7 @@ package info.yalamanchili.office.profile;
 import info.chili.commons.BeanMapper;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
@@ -17,6 +18,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -40,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ClientInformationService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -49,7 +51,7 @@ public class ClientInformationService {
     protected ProfileNotificationService ProfileNotificationService;
     @Autowired
     protected ClientInformationDao clientInformationDao;
-
+    
     public void addClientInformation(Long empId, ClientInformation ci) {
         Employee emp = (Employee) em.find(Employee.class, empId);
         if (ci.getClient() != null) {
@@ -80,12 +82,24 @@ public class ClientInformationService {
             Employee recruiter = EmployeeDao.instance().findById(ci.getRecruiter().getId());
             ci.setRecruiter(recruiter);
         }
+        if (ci.getSubcontractor() != null) {
+            Subcontractor subcontractor = SubcontractorDao.instance().findById(ci.getSubcontractor().getId());
+            ci.setSubcontractor(subcontractor);
+        }
+        if (ci.getSubcontractorContact() != null) {
+            Contact contact = ContactDao.instance().findById(ci.getSubcontractorContact().getId());
+            ci.setSubcontractorContact(contact);
+        }
+        if (ci.getSubcontractorAddress() != null) {
+            Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
+            ci.setSubcontractorAddress(address);
+        }
         emp.addClientInformation(ci);
         //TODO no need for notification  integrate this to bis process
         ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
         startNewClientInfoProcess(ci);
     }
-
+    
     @Async
     protected void startNewClientInfoProcess(ClientInformation ci) {
         Map<String, Object> vars = new HashMap<String, Object>();
@@ -137,6 +151,26 @@ public class ClientInformationService {
             } else {
                 Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
                 ciEntity.setVendorLocation(address);
+            }
+        }
+        if (ci.getSubcontractor() == null) {
+            ciEntity.setSubcontractor(null);
+        } else {
+            Subcontractor subcontractor = SubcontractorDao.instance().findById(ci.getSubcontractor().getId());
+            ciEntity.setSubcontractor(subcontractor);
+            //Subciontractor contact
+            if (ci.getSubcontractorContact() == null) {
+                ciEntity.setSubcontractorContact(null);
+            } else {
+                Contact contact = ContactDao.instance().findById(ci.getSubcontractorContact().getId());
+                ciEntity.setSubcontractorContact(contact);
+            }
+            //Subcontractor location
+            if (ci.getSubcontractorAddress() == null) {
+                ciEntity.setSubcontractorAddress(null);
+            } else {
+                Address address = AddressDao.instance().findById(ci.getSubcontractorAddress().getId());
+                ciEntity.setSubcontractorAddress(address);
             }
         }
         if (ci.getRecruiter() == null) {

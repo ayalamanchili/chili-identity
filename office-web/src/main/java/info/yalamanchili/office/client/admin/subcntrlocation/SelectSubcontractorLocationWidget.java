@@ -15,9 +15,9 @@ import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWi
  *
  * @author anuyalamanchili
  */
-public class SelectSubcontractorLocationPanel extends SelectComposite implements GenericListener {
+public class SelectSubcontractorLocationWidget extends SelectComposite implements GenericListener {
 
-    public SelectSubcontractorLocationPanel(Boolean readOnly, Boolean isRequired) {
+    public SelectSubcontractorLocationWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "SubcontractorLocation", readOnly, isRequired);
         SelectSubcontractorWidget.instance().addListner(this);
     }

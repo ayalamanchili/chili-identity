@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
-import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;

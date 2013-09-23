@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
@@ -25,6 +26,9 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWi
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
+import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
+import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 
@@ -61,7 +65,14 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("invoiceFrequency", clientInfo);
         assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
         assignEntityValueFromField("recruiter", clientInfo);
-         assignEntityValueFromField("visaStatus", clientInfo);
+        assignEntityValueFromField("visaStatus", clientInfo);
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            assignEntityValueFromField("subcontractor", clientInfo);
+            assignEntityValueFromField("subcontractorContact", clientInfo);
+            assignEntityValueFromField("subcontractorAddress", clientInfo);
+            assignEntityValueFromField("subcontractorPayRate", clientInfo);
+            assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
+        }
         assignEntityValueFromField("notes", clientInfo);
 
 
@@ -142,6 +153,13 @@ public class CreateClientInfoPanel extends CreateComposite {
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("visaStatus", false, false, DataType.STRING_FIELD);
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
+            addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
+            addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
+            addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
+            addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+        }
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
 
     }
