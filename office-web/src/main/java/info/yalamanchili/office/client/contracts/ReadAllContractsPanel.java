@@ -40,9 +40,16 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
         initTable("Contract", array, OfficeWelcome.constants);
     }
 
+     public ReadAllContractsPanel(String parentId) {
+        instance = this;
+        this.parentId = parentId;
+        initTable("Contract", OfficeWelcome.constants);
+    }
+     
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().reportingPanel.entityPanel.clear();
+          logger.info("jaffa" + entityId);
         TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(getEntity(entityId)));
     }
 
