@@ -69,6 +69,26 @@ public class ContractService {
             if (ci.getVendor() != null) {
                 dto.setVendor(ci.getVendor().getName());
             }
+             if (ci.getRecruiter() != null) {
+                dto.setRecruiter(ci.getRecruiter().getFirstName() + " " +ci.getRecruiter().getLastName());
+            }
+             if(ci.getClientContact() != null)
+             {
+                dto.setClientContact(ci.getClientContact().getFirstName() +" "+ci.getClientContact().getLastName() );
+             }
+              if(ci.getVendorContact() != null)
+             {
+                dto.setVendorContact(ci.getVendorContact().getFirstName() +" "+ci.getVendorContact().getLastName());
+             }
+              if(ci.getClientLocation() != null)
+              {
+                dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getState());
+              }
+               if(ci.getVendorLocation()!= null)
+              {
+                dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getState());
+              }
+               
             //etc
             table.getEntities().add(dto);
         }
