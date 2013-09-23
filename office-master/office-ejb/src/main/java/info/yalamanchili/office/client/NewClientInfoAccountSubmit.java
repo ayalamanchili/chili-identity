@@ -25,9 +25,11 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         Object itemNumber = execution.getVariable("itemNumber");
+        Object accNotes = execution.getVariable("notes");
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
         if (itemNumber != null) {
             ci.setItemNumber(itemNumber.toString());
+            ci.setNotes(accNotes.toString());
         }
         ClientInformationDao.instance().save(ci);
     }
