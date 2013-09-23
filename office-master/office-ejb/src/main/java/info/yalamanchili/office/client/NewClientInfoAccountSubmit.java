@@ -26,9 +26,8 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         Object itemNumber = execution.getVariable("itemNumber");
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
-        System.out.println("ddddd" + itemNumber);
         if (itemNumber != null) {
-            ci.setJoiningReport(itemNumber.toString());
+            ci.setItemNumber(itemNumber.toString());
         }
         ClientInformationDao.instance().save(ci);
     }

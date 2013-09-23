@@ -27,7 +27,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
         Object joinReport = execution.getVariable("joinReport");
         if (joinReport != null) {
-            ci.setItemNumber(joinReport.toString());
+            ci.setJoiningReport(joinReport.toString());
         }
         Object hrOrientation = execution.getVariable("hrOrientation");
         if (hrOrientation != null) {
