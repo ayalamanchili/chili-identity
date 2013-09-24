@@ -36,24 +36,30 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
-         assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
-          assignFieldValueFromEntity("clientContact", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("clientContact", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorContact", entity, DataType.STRING_FIELD);
-          assignFieldValueFromEntity("vendorLocation", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("vendorLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
-         
+        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
-          assignFieldValueFromEntity("recruiter", entity, DataType.STRING_FIELD);
-         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
-         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("recruiter", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("accountVerificationDocs", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("signedCopyOfWorkOrder", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("i9Filled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -86,9 +92,16 @@ public class ReadContractsPanel extends ReadComposite {
         String[] billingDuration = {"HOUR", "DAY", "MONTH"};
         addEnumField("billingRateDuration", true, false, billingDuration);
         addEnumField("overTimeDuration", true, false, billingDuration);
-         addField("recruiter", true, false, DataType.STRING_FIELD);
+        addField("recruiter", true, false, DataType.STRING_FIELD);
         addField("visaStatus", true, false, DataType.STRING_FIELD);
-         addField("notes", true, false, DataType.RICH_TEXT_AREA);
+        addField("joiningReport", true, false, DataType.STRING_FIELD);
+        addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD);
+        addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD);
+        addField("i9Filled", true, false, DataType.BOOLEAN_FIELD);
+        addField("w4Filled", true, false, DataType.BOOLEAN_FIELD);
+        addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
+        addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
+        addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
