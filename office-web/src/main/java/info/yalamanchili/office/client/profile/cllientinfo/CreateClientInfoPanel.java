@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -17,7 +18,8 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import info.chili.gwt.utils.JSONUtils;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.InlineHTML;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
@@ -126,6 +128,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         //Basic
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
         //client
+        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true));
         entityFieldsPanel.add(addClientL);
         addDropDown("clientContact", new SelectClientContactWidget(false, false));
@@ -136,6 +139,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         //Contract basic
+        entityFieldsPanel.add(new HTML("</fieldset>"));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
         //Rate info
@@ -162,6 +166,12 @@ public class CreateClientInfoPanel extends CreateComposite {
         }
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
 
+    }
+
+    protected HTML getLineSeperatorTag(String title) {
+        HTML lineSeperator = new HTML("<fieldset>\n" + "<legend align=\"center\">" + title + "</legend>");
+        lineSeperator.addStyleName("lineSeperator");
+        return lineSeperator;
     }
 
     @Override
