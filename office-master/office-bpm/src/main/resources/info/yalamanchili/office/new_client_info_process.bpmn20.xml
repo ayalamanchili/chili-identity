@@ -46,7 +46,13 @@
                   name="new Client Info HR Task" 
                   activiti:candidateGroups="ROLE_HR">
             <documentation>
-                #{clientInfo.toString()}
+                 Add Client Information:
+                Client Name: ${clientName} 
+                Client Contact Name: ${clientContactName}
+                Client Contact Number : ${clientContactNumber} 
+                Client Contact Email : ${clientContactEmail} 
+                Client Address : ${clientAddress} 
+                Notes : ${notes}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -57,6 +63,26 @@
                                        type="string"/>
                 <activiti:formProperty id="hrOrientation" 
                                        name="HR Orientation"
+                                       required="false"
+                                       type="boolean"/>
+                 <activiti:formProperty id="accountVerificationDocs" 
+                                       name="Account verification Docs"
+                                       required="false"
+                                       type="boolean"/>
+                  <activiti:formProperty id="signedCopyOfWorkOrder" 
+                                       name="Signed Copy Of WorkOrder"
+                                       required="false"
+                                       type="boolean"/>
+                   <activiti:formProperty id="i9Filled" 
+                                       name="I9 Filled"
+                                       required="false"
+                                       type="boolean"/>
+                      <activiti:formProperty id="w4Filled" 
+                                       name="W4 Filled"
+                                       required="false"
+                                       type="boolean"/>
+                         <activiti:formProperty id="logisticsPreparation" 
+                                       name="Logistics Preparation"
                                        required="false"
                                        type="boolean"/>
             </extensionElements> 
