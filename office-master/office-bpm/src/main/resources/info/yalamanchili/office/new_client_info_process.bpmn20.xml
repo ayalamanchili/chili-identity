@@ -46,13 +46,7 @@
                   name="new Client Info HR Task" 
                   activiti:candidateGroups="ROLE_HR">
             <documentation>
-                 Add Client Information:
-                Client Name: ${clientName} 
-                Client Contact Name: ${clientContactName}
-                Client Contact Number : ${clientContactNumber} 
-                Client Contact Email : ${clientContactEmail} 
-                Client Address : ${clientAddress} 
-                Notes : ${notes}
+               #{clientInfo.toString()}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
