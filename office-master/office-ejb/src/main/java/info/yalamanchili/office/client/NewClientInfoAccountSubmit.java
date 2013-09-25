@@ -31,7 +31,7 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
             ci.setItemNumber(itemNumber.toString());
         }
         if (acctNotes != null) {
-            if (!ci.getNotes().isEmpty()) {
+            if (ci.getNotes() != null && !ci.getNotes().isEmpty()) {
                 ci.setNotes(ci.getNotes() + acctNotes.toString());
             } else {
                 ci.setNotes(acctNotes.toString());
