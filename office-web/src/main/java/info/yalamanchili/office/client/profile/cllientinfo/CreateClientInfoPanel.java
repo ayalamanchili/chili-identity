@@ -3,7 +3,6 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -18,8 +17,6 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.InlineHTML;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
@@ -139,10 +136,11 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         //Contract basic
-        entityFieldsPanel.add(new HTML("</fieldset>"));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-        //Rate info
+        addDropDown("recruiter", selectRecruiterWidget);
+        //Billing Information
+        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
         String[] billingDuration = {"HOUR", "DAY", "MONTH"};
@@ -150,14 +148,14 @@ public class CreateClientInfoPanel extends CreateComposite {
         addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
         addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
         addEnumField("overTimeDuration", false, false, billingDuration);
-
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
         addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
-        addDropDown("recruiter", selectRecruiterWidget);
+        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", false, false, DataType.STRING_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
             addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
             addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
@@ -165,14 +163,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
         }
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
-
-    }
-
-    protected HTML getLineSeperatorTag(String title) {
-        HTML lineSeperator = new HTML("<fieldset>\n" + "<legend align=\"center\">" + title + "</legend>");
-        lineSeperator.addStyleName("lineSeperator");
-        return lineSeperator;
-    }
+    } 
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
