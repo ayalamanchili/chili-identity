@@ -25,10 +25,10 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
-        Object joinReport = execution.getVariable("joinReport");
+        Object joiningReport = execution.getVariable("joiningReport");
        
-        if (joinReport != null) {
-            ci.setJoiningReport(joinReport.toString());
+        if (joiningReport != null) {
+            ci.setJoiningReport(joiningReport.toString());
         }
         Object hrOrientation = execution.getVariable("hrOrientation");
         if (hrOrientation != null) {

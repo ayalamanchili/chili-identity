@@ -25,9 +25,11 @@ import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import java.util.logging.Logger;
 
 public class UpdateClientInfoPanel extends UpdateComposite {
 
+    private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
     SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public UpdateClientInfoPanel(JSONObject entity) {
@@ -52,10 +54,16 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("invoiceFrequency", entity);
         assignEntityValueFromField("invoiceDeliveryMethod", entity);
         assignEntityValueFromField("recruiter", entity);
-        assignEntityValueFromField("notes", entity);
         assignEntityValueFromField("billingRateDuration", entity);
         assignEntityValueFromField("overTimeDuration", entity);
         assignEntityValueFromField("visaStatus", entity);
+        assignEntityValueFromField("joiningReport", entity);
+        assignEntityValueFromField("accountVerificationDocs", entity);
+        assignEntityValueFromField("signedCopyOfWorkOrder", entity);
+        assignEntityValueFromField("i9Filled", entity);
+        assignEntityValueFromField("w4Filled", entity);
+        assignEntityValueFromField("logisticsPreparation", entity);
+        assignEntityValueFromField("hrOrientation", entity);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
             assignEntityValueFromField("subcontractor", entity);
             assignEntityValueFromField("subcontractorContact", entity);
@@ -64,6 +72,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignEntityValueFromField("subcontractorOvertimePayRate", entity);
         }
         assignEntityValueFromField("notes", entity);
+        logger.info("ddddddddddddd" + entity.toString());
         return entity;
     }
 

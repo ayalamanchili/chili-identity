@@ -213,19 +213,19 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Account verification docs
      */
-    protected boolean accountVerificationDocs;
+    protected Boolean accountVerificationDocs;
     /**
      * Signed Copy of Work Order
      */
-    protected boolean signedCopyOfWorkOrder;
+    protected Boolean signedCopyOfWorkOrder;
     /**
      * i9Filled
      */
-    protected boolean i9Filled;
+    protected Boolean i9Filled;
     /**
      * w4 filled
      */
-    protected boolean w4Filled;
+    protected Boolean w4Filled;
     /**
      * joining report
      */
@@ -233,11 +233,11 @@ public class ClientInformation extends AbstractEntity {
     /**
      * Logistics Preparation
      */
-    protected boolean logisticsPreparation;
+    protected Boolean logisticsPreparation;
     /**
      * HR orientation
      */
-    protected boolean hrOrientation;
+    protected Boolean hrOrientation;
 
     public ClientInformation() {
         super();
@@ -468,43 +468,71 @@ public class ClientInformation extends AbstractEntity {
         this.comments = comments;
     }
 
-    public boolean isAccountVerificationDocs() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Boolean getAccountVerificationDocs() {
         return accountVerificationDocs;
     }
 
-    public void setAccountVerificationDocs(boolean accountVerificationDocs) {
-        this.accountVerificationDocs = accountVerificationDocs;
-    }
-
-    public boolean isSignedCopyOfWorkOrder() {
+    public Boolean getSignedCopyOfWorkOrder() {
         return signedCopyOfWorkOrder;
     }
 
-    public void setSignedCopyOfWorkOrder(boolean signedCopyOfWorkOrder) {
-        this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
-    }
-
-    public boolean isI9Filled() {
+    public Boolean getI9Filled() {
         return i9Filled;
     }
 
-    public void setI9Filled(boolean i9Filled) {
-        this.i9Filled = i9Filled;
-    }
-
-    public boolean isW4Filled() {
+    public Boolean getW4Filled() {
         return w4Filled;
     }
 
-    public void setW4Filled(boolean w4Filled) {
-        this.w4Filled = w4Filled;
-    }
-
-    public boolean isLogisticsPreparation() {
+    public Boolean getLogisticsPreparation() {
         return logisticsPreparation;
     }
 
-    public void setLogisticsPreparation(boolean logisticsPreparation) {
+    public Boolean getHrOrientation() {
+        return hrOrientation;
+    }
+
+    public Boolean isAccountVerificationDocs() {
+        return accountVerificationDocs;
+    }
+
+    public void setAccountVerificationDocs(Boolean accountVerificationDocs) {
+        this.accountVerificationDocs = accountVerificationDocs;
+    }
+
+    public Boolean isSignedCopyOfWorkOrder() {
+        return signedCopyOfWorkOrder;
+    }
+
+    public void setSignedCopyOfWorkOrder(Boolean signedCopyOfWorkOrder) {
+        this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
+    }
+
+    public Boolean isI9Filled() {
+        return i9Filled;
+    }
+
+    public void setI9Filled(Boolean i9Filled) {
+        this.i9Filled = i9Filled;
+    }
+
+    public Boolean isW4Filled() {
+        return w4Filled;
+    }
+
+    public void setW4Filled(Boolean w4Filled) {
+        this.w4Filled = w4Filled;
+    }
+
+    public Boolean isLogisticsPreparation() {
+        return logisticsPreparation;
+    }
+
+    public void setLogisticsPreparation(Boolean logisticsPreparation) {
         this.logisticsPreparation = logisticsPreparation;
     }
 
@@ -516,11 +544,11 @@ public class ClientInformation extends AbstractEntity {
         this.joiningReport = joiningReport;
     }
 
-    public boolean isHrOrientation() {
+    public Boolean isHrOrientation() {
         return hrOrientation;
     }
 
-    public void setHrOrientation(boolean hrOrientation) {
+    public void setHrOrientation(Boolean hrOrientation) {
         this.hrOrientation = hrOrientation;
     }
 

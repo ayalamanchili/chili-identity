@@ -152,31 +152,31 @@ public class ContractDto implements Serializable {
         return joiningReport;
     }
 
-    protected boolean accountVerificationDocs;
+    protected Boolean accountVerificationDocs;
     /**
      * Signed Copy of Work Order
      */
-    protected boolean signedCopyOfWorkOrder;
+    protected Boolean signedCopyOfWorkOrder;
     /**
      * i9Filled
      */
-    protected boolean i9Filled;
+    protected Boolean i9Filled;
     /**
      * w4 filled
      */
-    protected boolean w4Filled;
+    protected Boolean w4Filled;
     /**
      * Logistics Preparation
      */
-    protected boolean logisticsPreparation;
+    protected Boolean logisticsPreparation;
 
-    protected boolean hrOrientation;
+    protected Boolean hrOrientation;
 
-    public void setHrOrientation(boolean hrOrientation) {
+    public void setHrOrientation(Boolean hrOrientation) {
         this.hrOrientation = hrOrientation;
     }
 
-    public boolean isHrOrientation() {
+    public Boolean isHrOrientation() {
         return hrOrientation;
     }
       
@@ -332,43 +332,43 @@ public class ContractDto implements Serializable {
         this.notes = notes;
     }
 
-    public boolean isAccountVerificationDocs() {
+    public Boolean isAccountVerificationDocs() {
         return accountVerificationDocs;
     }
 
-    public void setAccountVerificationDocs(boolean accountVerificationDocs) {
+    public void setAccountVerificationDocs(Boolean accountVerificationDocs) {
         this.accountVerificationDocs = accountVerificationDocs;
     }
 
-    public boolean isSignedCopyOfWorkOrder() {
+    public Boolean isSignedCopyOfWorkOrder() {
         return signedCopyOfWorkOrder;
     }
 
-    public void setSignedCopyOfWorkOrder(boolean signedCopyOfWorkOrder) {
+    public void setSignedCopyOfWorkOrder(Boolean signedCopyOfWorkOrder) {
         this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
     }
 
-    public boolean isI9Filled() {
+    public Boolean isI9Filled() {
         return i9Filled;
     }
 
-    public void setI9Filled(boolean i9Filled) {
+    public void setI9Filled(Boolean i9Filled) {
         this.i9Filled = i9Filled;
     }
 
-    public boolean isW4Filled() {
+    public Boolean isW4Filled() {
         return w4Filled;
     }
 
-    public void setW4Filled(boolean w4Filled) {
+    public void setW4Filled(Boolean w4Filled) {
         this.w4Filled = w4Filled;
     }
 
-    public boolean isLogisticsPreparation() {
+    public Boolean isLogisticsPreparation() {
         return logisticsPreparation;
     }
 
-    public void setLogisticsPreparation(boolean logisticsPreparation) {
+    public void setLogisticsPreparation(Boolean logisticsPreparation) {
         this.logisticsPreparation = logisticsPreparation;
     }
 
