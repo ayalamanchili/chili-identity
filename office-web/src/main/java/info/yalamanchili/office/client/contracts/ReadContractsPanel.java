@@ -10,7 +10,12 @@ package info.yalamanchili.office.client.contracts;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
+import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
+import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -73,6 +78,7 @@ public class ReadContractsPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("employee", true, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
         addField("client", true, false, DataType.STRING_FIELD);
         addField("clientLocation", true, false, DataType.STRING_FIELD);
@@ -82,6 +88,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("vendorLocation", true, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("itemNumber", true, false, DataType.STRING_FIELD);
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
@@ -93,14 +100,24 @@ public class ReadContractsPanel extends ReadComposite {
         addEnumField("billingRateDuration", true, false, billingDuration);
         addEnumField("overTimeDuration", true, false, billingDuration);
         addField("recruiter", true, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", true, false, DataType.STRING_FIELD);
         addField("joiningReport", true, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
         addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD);
         addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD);
         addField("i9Filled", true, false, DataType.BOOLEAN_FIELD);
         addField("w4Filled", true, false, DataType.BOOLEAN_FIELD);
         addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
         addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
+//        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+//            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
+//            addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
+//            addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
+//            addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
+//            addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
+//            addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+//        }
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 
