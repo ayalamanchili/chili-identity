@@ -89,6 +89,15 @@ public class ContractService {
                 dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getState());
               }
                
+               if(ci.getSubcontractor() != null)
+               {
+                 dto.setSubContractorName(ci.getSubcontractor().getName());
+               }
+               
+               if(ci.getSubcontractorContact()!=null)
+               {
+                 dto.setSubContractorContactName(ci.getSubcontractorContact().getFirstName() + " " + ci.getSubcontractorContact().getLastName());
+               }
             //etc
             table.getEntities().add(dto);
         }
