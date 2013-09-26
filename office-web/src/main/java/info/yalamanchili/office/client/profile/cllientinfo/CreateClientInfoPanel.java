@@ -152,8 +152,6 @@ public class CreateClientInfoPanel extends CreateComposite {
         addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
-        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-        addField("visaStatus", false, false, DataType.STRING_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
@@ -162,8 +160,10 @@ public class CreateClientInfoPanel extends CreateComposite {
             addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
             addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
         }
+        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
+        addField("visaStatus", false, false, DataType.STRING_FIELD);
         addField("notes", false, false, DataType.RICH_TEXT_AREA);
-    } 
+    }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {

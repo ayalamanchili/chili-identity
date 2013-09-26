@@ -92,6 +92,7 @@ public class ReadClientInfoPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(true, false));
         addDropDown("clientContact", new SelectClientContactWidget(true, false));
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false));
@@ -100,6 +101,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false));
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("itemNumber", true, false, DataType.STRING_FIELD);
         addField("payRate", true, false, DataType.CURRENCY_FIELD);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
@@ -112,21 +114,24 @@ public class ReadClientInfoPanel extends ReadComposite {
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
-        addField("visaStatus", true, false, DataType.STRING_FIELD);
-        addField("joiningReport", false, true, DataType.STRING_FIELD);
-        addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD);
-        addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
-        addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
-        addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
-        addField("logisticsPreparation", false, true, DataType.BOOLEAN_FIELD);
-        addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
             addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
             addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
             addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
             addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
         }
+        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
+        addField("visaStatus", true, false, DataType.STRING_FIELD);
+        addField("joiningReport", false, true, DataType.STRING_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
+        addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD);
+        addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
+        addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
+        addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
+        addField("logisticsPreparation", false, true, DataType.BOOLEAN_FIELD);
+        addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 
