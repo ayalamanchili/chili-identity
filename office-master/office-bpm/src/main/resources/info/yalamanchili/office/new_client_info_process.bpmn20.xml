@@ -51,7 +51,7 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
-                <activiti:formProperty id="joinReport" 
+                <activiti:formProperty id="joiningReport" 
                                        name="Joining Report Details"
                                        required="false"
                                        type="string"/>
