@@ -371,6 +371,26 @@ public class ContractDto implements Serializable {
     public void setLogisticsPreparation(Boolean logisticsPreparation) {
         this.logisticsPreparation = logisticsPreparation;
     }
+    /* Sub Contactor */
+     protected String subContractorName;
+
+    public void setSubContractorName(String subContractorName) {
+        this.subContractorName = subContractorName;
+    }
+
+    public void setSubContractorContactName(String subContractorContactName) {
+        this.subContractorContactName = subContractorContactName;
+    }
+
+    public String getSubContractorName() {
+        return subContractorName;
+    }
+
+    public String getSubContractorContactName() {
+        return subContractorContactName;
+    }
+     
+     protected String subContractorContactName;
 
     @XmlRootElement
     @XmlType
