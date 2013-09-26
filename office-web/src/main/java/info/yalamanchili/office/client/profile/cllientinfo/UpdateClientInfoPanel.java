@@ -114,6 +114,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("accountVerificationDocs", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("signedCopyOfWorkOrder", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("i9Filled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
             assignFieldValueFromEntity("subcontractor", entity, null);
             assignFieldValueFromEntity("subcontractorContact", entity, null);
@@ -158,6 +165,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
         addField("visaStatus", false, false, DataType.STRING_FIELD);
+        addField("joiningReport", false, true, DataType.STRING_FIELD);
+        addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD);
+        addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
+        addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
+        addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
+        addField("logisticsPreparation", false, true, DataType.BOOLEAN_FIELD);
+        addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
             addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
             addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
