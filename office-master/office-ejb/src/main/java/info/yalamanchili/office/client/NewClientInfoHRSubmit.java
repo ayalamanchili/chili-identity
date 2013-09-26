@@ -40,19 +40,19 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
         }
         Object signedWO = execution.getVariable("signedCopyOfWorkOrder");
         if(signedWO!=null)        {
-           ci.setAccountVerificationDocs(Boolean.parseBoolean(signedWO.toString()));
+           ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
         }
         Object i9Fill = execution.getVariable("i9Filled");
         if(i9Fill!=null)        {
-           ci.setAccountVerificationDocs(Boolean.parseBoolean(i9Fill.toString()));
+           ci.setI9Filled(Boolean.parseBoolean(i9Fill.toString()));
         }
          Object w4Fill = execution.getVariable("w4Filled");
         if(w4Fill!=null)        {
-           ci.setAccountVerificationDocs(Boolean.parseBoolean(w4Fill.toString()));
+           ci.setW4Filled(Boolean.parseBoolean(w4Fill.toString()));
         }
           Object logisticsPrep = execution.getVariable("logisticsPreparation");
         if(logisticsPrep!=null)        {
-           ci.setAccountVerificationDocs(Boolean.parseBoolean(logisticsPrep.toString()));
+           ci.setLogisticsPreparation(Boolean.parseBoolean(logisticsPrep.toString()));
         }
        
         ClientInformationDao.instance().save(ci);
