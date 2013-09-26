@@ -142,6 +142,16 @@ public class ContractDto implements Serializable {
     /**
      * Account verification docs
      */
+    protected String joiningReport;
+
+    public void setJoiningReport(String joiningReport) {
+        this.joiningReport = joiningReport;
+    }
+
+    public String getJoiningReport() {
+        return joiningReport;
+    }
+
     protected boolean accountVerificationDocs;
     /**
      * Signed Copy of Work Order
@@ -160,6 +170,16 @@ public class ContractDto implements Serializable {
      */
     protected boolean logisticsPreparation;
 
+    protected boolean hrOrientation;
+
+    public void setHrOrientation(boolean hrOrientation) {
+        this.hrOrientation = hrOrientation;
+    }
+
+    public boolean isHrOrientation() {
+        return hrOrientation;
+    }
+      
     public String getConsultantJobTitle() {
         return consultantJobTitle;
     }
