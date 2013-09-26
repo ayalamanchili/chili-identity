@@ -153,6 +153,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", new SelectClientWidget(false, true));
         addDropDown("clientContact", new SelectClientContactWidget(false, false));
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
@@ -161,6 +162,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("itemNumber", false, false, DataType.STRING_FIELD);
         addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, false, DataType.CURRENCY_FIELD);
@@ -173,8 +175,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
         addDropDown("recruiter", selectRecruiterWidget);
+        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", false, false, DataType.STRING_FIELD);
         addField("joiningReport", false, true, DataType.STRING_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
         addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD);
         addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
         addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
@@ -182,6 +186,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addField("logisticsPreparation", false, true, DataType.BOOLEAN_FIELD);
         addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
             addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
             addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
