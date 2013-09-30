@@ -13,7 +13,6 @@ import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
@@ -75,7 +74,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignEntityValueFromField("terminationNotice", entity);
             assignEntityValueFromField("notes", entity);
         }
-        logger.info("ddddddddddddd" + entity.toString());
         return entity;
     }
 
@@ -192,7 +190,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
             addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD);
             addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
@@ -200,7 +198,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
             }
-             addField("terminationNotice", false, false, DataType.STRING_FIELD);
+            addField("terminationNotice", false, false, DataType.STRING_FIELD);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
     }

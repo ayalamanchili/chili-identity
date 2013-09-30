@@ -67,7 +67,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
             assignEntityValueFromField("recruiter", clientInfo);
             assignEntityValueFromField("visaStatus", clientInfo);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+           if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("subcontractor", clientInfo);
                 assignEntityValueFromField("subcontractorContact", clientInfo);
                 assignEntityValueFromField("subcontractorAddress", clientInfo);
@@ -157,7 +157,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));

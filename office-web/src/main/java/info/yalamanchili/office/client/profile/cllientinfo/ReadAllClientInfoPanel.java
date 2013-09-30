@@ -3,7 +3,6 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -15,7 +14,6 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 

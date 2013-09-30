@@ -72,14 +72,14 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
             assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
             assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignFieldValueFromEntity("subcontractor", entity, null);
                 assignFieldValueFromEntity("subcontractorContact", entity, null);
                 assignFieldValueFromEntity("subcontractorAddress", entity, null);
                 assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
             }
-             assignFieldValueFromEntity("terminationNotice", entity, DataType.RICH_TEXT_AREA);
+            assignFieldValueFromEntity("terminationNotice", entity, DataType.RICH_TEXT_AREA);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
     }
@@ -118,7 +118,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
             addDropDown("recruiter", selectRecruiterWidget);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));

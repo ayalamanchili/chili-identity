@@ -62,7 +62,7 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subContractorContactName", entity, DataType.STRING_FIELD);
         }
@@ -111,7 +111,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("w4Filled", true, false, DataType.BOOLEAN_FIELD);
         addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
         addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addField("subContractorName", true, false, DataType.STRING_FIELD);
             addField("subContractorContactName", true, false, DataType.STRING_FIELD);
