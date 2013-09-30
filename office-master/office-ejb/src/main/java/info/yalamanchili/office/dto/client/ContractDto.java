@@ -10,7 +10,6 @@ package info.yalamanchili.office.dto.client;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.BillingDuration;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class ContractDto implements Serializable {
 
+    protected Long id;
     /**
      * jobtitle
      */
@@ -104,13 +104,17 @@ public class ContractDto implements Serializable {
      * Notes
      */
     protected String notes;
-    
     protected BillingDuration billingRateDuration;
-    
-     protected BillingDuration overTimeDuration;
-      
+    protected BillingDuration overTimeDuration;
     protected String visaStatus;
-  
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setBillingRateDuration(BillingDuration billingRateDuration) {
         this.billingRateDuration = billingRateDuration;
@@ -135,8 +139,7 @@ public class ContractDto implements Serializable {
     public String getVisaStatus() {
         return visaStatus;
     }
-     
-     /**
+    /**
      * -----------Tracking info---------------------------
      */
     /**
@@ -151,7 +154,6 @@ public class ContractDto implements Serializable {
     public String getJoiningReport() {
         return joiningReport;
     }
-
     protected Boolean accountVerificationDocs;
     /**
      * Signed Copy of Work Order
@@ -169,7 +171,6 @@ public class ContractDto implements Serializable {
      * Logistics Preparation
      */
     protected Boolean logisticsPreparation;
-
     protected Boolean hrOrientation;
 
     public void setHrOrientation(Boolean hrOrientation) {
@@ -179,7 +180,7 @@ public class ContractDto implements Serializable {
     public Boolean isHrOrientation() {
         return hrOrientation;
     }
-      
+
     public String getConsultantJobTitle() {
         return consultantJobTitle;
     }
@@ -372,7 +373,7 @@ public class ContractDto implements Serializable {
         this.logisticsPreparation = logisticsPreparation;
     }
     /* Sub Contactor */
-     protected String subContractorName;
+    protected String subContractorName;
 
     public void setSubContractorName(String subContractorName) {
         this.subContractorName = subContractorName;
@@ -389,8 +390,7 @@ public class ContractDto implements Serializable {
     public String getSubContractorContactName() {
         return subContractorContactName;
     }
-     
-     protected String subContractorContactName;
+    protected String subContractorContactName;
 
     @XmlRootElement
     @XmlType

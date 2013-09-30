@@ -12,9 +12,6 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
-import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
-import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -66,8 +63,8 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
-             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
-              assignFieldValueFromEntity("subContractorContactName", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("subContractorContactName", entity, DataType.STRING_FIELD);
         }
     }
 
@@ -115,9 +112,9 @@ public class ReadContractsPanel extends ReadComposite {
         addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
         addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
-           // entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-            addField("subContractorName",  true, false, DataType.STRING_FIELD);
-            addField("subContractorContactName",  true, false, DataType.STRING_FIELD);
+            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
+            addField("subContractorName", true, false, DataType.STRING_FIELD);
+            addField("subContractorContactName", true, false, DataType.STRING_FIELD);
         }
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
