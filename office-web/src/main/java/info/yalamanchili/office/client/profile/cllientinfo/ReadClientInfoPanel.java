@@ -124,14 +124,14 @@ public class ReadClientInfoPanel extends ReadComposite {
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", true, false, DataType.STRING_FIELD);
-        addField("joiningReport", false, true, DataType.STRING_FIELD);
+        addField("joiningReport", true, false, DataType.STRING_FIELD);
         entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
-        addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD);
-        addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
-        addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
-        addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
-        addField("logisticsPreparation", false, true, DataType.BOOLEAN_FIELD);
-        addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
+        addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD);
+        addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD);
+        addField("i9Filled", true, false, DataType.BOOLEAN_FIELD);
+        addField("w4Filled", true, false, DataType.BOOLEAN_FIELD);
+        addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
+        addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 
