@@ -74,10 +74,11 @@ public class CreateClientInfoPanel extends CreateComposite {
                 assignEntityValueFromField("subcontractorPayRate", clientInfo);
                 assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
             }
+            assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
         }
 
-
+        
         return clientInfo;
     }
 
@@ -166,6 +167,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", false, false, DataType.STRING_FIELD);
+            addField("terminationNotice", false, false, DataType.STRING_FIELD);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
     }
