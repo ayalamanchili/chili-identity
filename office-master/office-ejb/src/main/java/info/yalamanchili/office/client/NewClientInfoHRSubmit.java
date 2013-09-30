@@ -38,10 +38,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
         if(accDocs!=null)        {
            ci.setAccountVerificationDocs(Boolean.parseBoolean(accDocs.toString()));
         }
-        Object signedWO = execution.getVariable("signedCopyOfWorkOrder");
-        if(signedWO!=null)        {
-           ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
-        }
+       
         Object i9Fill = execution.getVariable("i9Filled");
         if(i9Fill!=null)        {
            ci.setI9Filled(Boolean.parseBoolean(i9Fill.toString()));
