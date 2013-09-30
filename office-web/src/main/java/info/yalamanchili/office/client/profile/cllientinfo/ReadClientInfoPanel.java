@@ -79,6 +79,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
             }
+             assignFieldValueFromEntity("terminationNotice", entity, DataType.RICH_TEXT_AREA);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
     }
@@ -135,6 +136,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("w4Filled", true, false, DataType.BOOLEAN_FIELD);
             addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
             addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
+            addField("terminationNotice", true, false, DataType.STRING_FIELD);
             addField("notes", true, false, DataType.RICH_TEXT_AREA);
         }
     }
