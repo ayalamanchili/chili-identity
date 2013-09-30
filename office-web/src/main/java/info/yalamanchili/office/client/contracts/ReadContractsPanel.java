@@ -90,11 +90,11 @@ public class ReadContractsPanel extends ReadComposite {
         addField("vendor", true, false, DataType.STRING_FIELD);
         addField("vendorContact", true, false, DataType.STRING_FIELD);
         addField("vendorLocation", true, false, DataType.STRING_FIELD);
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("startDate", true, false, DataType.DATE_FIELD);
+        addField("endDate", true, false, DataType.DATE_FIELD);
         entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("itemNumber", true, false, DataType.STRING_FIELD);
-        addField("payRate", false, false, DataType.CURRENCY_FIELD);
+        addField("payRate", true, false, DataType.CURRENCY_FIELD);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
         String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
         addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
