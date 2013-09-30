@@ -72,6 +72,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 assignEntityValueFromField("subcontractorPayRate", entity);
                 assignEntityValueFromField("subcontractorOvertimePayRate", entity);
             }
+            assignEntityValueFromField("terminationNotice", entity);
             assignEntityValueFromField("notes", entity);
         }
         logger.info("ddddddddddddd" + entity.toString());
@@ -140,6 +141,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
             }
+            assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
     }
@@ -198,6 +200,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
             }
+             addField("terminationNotice", false, false, DataType.STRING_FIELD);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
     }
