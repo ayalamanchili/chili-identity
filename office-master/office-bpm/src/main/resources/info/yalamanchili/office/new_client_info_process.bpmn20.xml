@@ -31,6 +31,10 @@
                                        name="Item Number"
                                        required="true"
                                        type="string"/>
+                 <activiti:formProperty id="signedCopyOfWorkOrder" 
+                                       name="Signed Copy Of WorkOrder"
+                                       required="false"
+                                       type="boolean"/>
                 <activiti:formProperty id="accountNotes" 
                                        name="Notes"
                                        required="false"
@@ -67,10 +71,7 @@
                                        name="Account verification Docs"
                                        required="false"
                                        type="boolean"/>
-                  <activiti:formProperty id="signedCopyOfWorkOrder" 
-                                       name="Signed Copy Of WorkOrder"
-                                       required="false"
-                                       type="boolean"/>
+                 
                    <activiti:formProperty id="i9Filled" 
                                        name="I9 Filled"
                                        required="false"
