@@ -162,38 +162,40 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
-        addField("itemNumber", false, false, DataType.STRING_FIELD);
-        addField("payRate", false, false, DataType.CURRENCY_FIELD);
-        addField("billingRate", false, false, DataType.CURRENCY_FIELD);
-        String[] billingDuration = {"HOUR", "DAY", "MONTH"};
-        addEnumField("billingRateDuration", false, false, billingDuration);
-        addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
-        addEnumField("overTimeDuration", false, false, billingDuration);
-        String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-        addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
-        String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
-        addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
-        addDropDown("recruiter", selectRecruiterWidget);
-        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-        addField("visaStatus", false, false, DataType.STRING_FIELD);
-        addField("joiningReport", false, true, DataType.STRING_FIELD);
-        entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
-        addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD);
-        addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
-        addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
-        addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
-        addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD);
-        addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
-            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-            addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
-            addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
-            addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
-            addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
-            addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
+            addField("itemNumber", false, false, DataType.STRING_FIELD);
+            addField("payRate", false, false, DataType.CURRENCY_FIELD);
+            addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+            String[] billingDuration = {"HOUR", "DAY", "MONTH"};
+            addEnumField("billingRateDuration", false, false, billingDuration);
+            addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
+            addEnumField("overTimeDuration", false, false, billingDuration);
+            String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+            addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
+            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+            addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
+            addDropDown("recruiter", selectRecruiterWidget);
+            entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
+            addField("visaStatus", false, false, DataType.STRING_FIELD);
+            addField("joiningReport", false, true, DataType.STRING_FIELD);
+            entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
+            addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD);
+            addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
+            addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
+            addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
+            addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD);
+            addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+                entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
+                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
+                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
+                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
+                addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
+                addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+            }
+            addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
-        addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
