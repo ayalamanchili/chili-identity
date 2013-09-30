@@ -25,6 +25,7 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWi
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
@@ -138,31 +139,33 @@ public class CreateClientInfoPanel extends CreateComposite {
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-        addDropDown("recruiter", selectRecruiterWidget);
-        //Billing Information
-        entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
-        addField("payRate", false, false, DataType.CURRENCY_FIELD);
-        addField("billingRate", false, false, DataType.CURRENCY_FIELD);
-        String[] billingDuration = {"HOUR", "DAY", "MONTH"};
-        addEnumField("billingRateDuration", false, false, billingDuration);
-        addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-        addEnumField("overTimeDuration", false, false, billingDuration);
-        String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-        addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
-        String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
-        addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
-            entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-            addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
-            addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
-            addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
-            addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
-            addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
+            addDropDown("recruiter", selectRecruiterWidget);
+            //Billing Information
+            entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
+            addField("payRate", false, false, DataType.CURRENCY_FIELD);
+            addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+            String[] billingDuration = {"HOUR", "DAY", "MONTH"};
+            addEnumField("billingRateDuration", false, false, billingDuration);
+            addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
+            addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
+            addEnumField("overTimeDuration", false, false, billingDuration);
+            String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+            addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
+            String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
+            addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+                entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
+                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
+                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
+                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
+                addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
+                addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+            }
+            entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
+            addField("visaStatus", false, false, DataType.STRING_FIELD);
+            addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
-        entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-        addField("visaStatus", false, false, DataType.STRING_FIELD);
-        addField("notes", false, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
