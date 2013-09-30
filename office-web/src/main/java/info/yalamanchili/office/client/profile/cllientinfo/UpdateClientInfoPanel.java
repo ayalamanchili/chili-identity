@@ -47,31 +47,33 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("itemNumber", entity);
-        assignEntityValueFromField("payRate", entity);
-        assignEntityValueFromField("billingRate", entity);
-        assignEntityValueFromField("overTimePayRate", entity);
-        assignEntityValueFromField("invoiceFrequency", entity);
-        assignEntityValueFromField("invoiceDeliveryMethod", entity);
-        assignEntityValueFromField("recruiter", entity);
-        assignEntityValueFromField("billingRateDuration", entity);
-        assignEntityValueFromField("overTimeDuration", entity);
-        assignEntityValueFromField("visaStatus", entity);
-        assignEntityValueFromField("joiningReport", entity);
-        assignEntityValueFromField("accountVerificationDocs", entity);
-        assignEntityValueFromField("signedCopyOfWorkOrder", entity);
-        assignEntityValueFromField("i9Filled", entity);
-        assignEntityValueFromField("w4Filled", entity);
-        assignEntityValueFromField("logisticsPreparation", entity);
-        assignEntityValueFromField("hrOrientation", entity);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
-            assignEntityValueFromField("subcontractor", entity);
-            assignEntityValueFromField("subcontractorContact", entity);
-            assignEntityValueFromField("subcontractorAddress", entity);
-            assignEntityValueFromField("subcontractorPayRate", entity);
-            assignEntityValueFromField("subcontractorOvertimePayRate", entity);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            assignEntityValueFromField("itemNumber", entity);
+            assignEntityValueFromField("payRate", entity);
+            assignEntityValueFromField("billingRate", entity);
+            assignEntityValueFromField("overTimePayRate", entity);
+            assignEntityValueFromField("invoiceFrequency", entity);
+            assignEntityValueFromField("invoiceDeliveryMethod", entity);
+            assignEntityValueFromField("recruiter", entity);
+            assignEntityValueFromField("billingRateDuration", entity);
+            assignEntityValueFromField("overTimeDuration", entity);
+            assignEntityValueFromField("visaStatus", entity);
+            assignEntityValueFromField("joiningReport", entity);
+            assignEntityValueFromField("accountVerificationDocs", entity);
+            assignEntityValueFromField("signedCopyOfWorkOrder", entity);
+            assignEntityValueFromField("i9Filled", entity);
+            assignEntityValueFromField("w4Filled", entity);
+            assignEntityValueFromField("logisticsPreparation", entity);
+            assignEntityValueFromField("hrOrientation", entity);
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+                assignEntityValueFromField("subcontractor", entity);
+                assignEntityValueFromField("subcontractorContact", entity);
+                assignEntityValueFromField("subcontractorAddress", entity);
+                assignEntityValueFromField("subcontractorPayRate", entity);
+                assignEntityValueFromField("subcontractorOvertimePayRate", entity);
+            }
+            assignEntityValueFromField("notes", entity);
         }
-        assignEntityValueFromField("notes", entity);
         logger.info("ddddddddddddd" + entity.toString());
         return entity;
     }
@@ -112,32 +114,34 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("recruiter", entity, null);
-        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("accountVerificationDocs", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("signedCopyOfWorkOrder", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("i9Filled", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
-            assignFieldValueFromEntity("subcontractor", entity, null);
-            assignFieldValueFromEntity("subcontractorContact", entity, null);
-            assignFieldValueFromEntity("subcontractorAddress", entity, null);
-            assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("recruiter", entity, null);
+            assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
+            assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("accountVerificationDocs", entity, DataType.BOOLEAN_FIELD);
+            assignFieldValueFromEntity("signedCopyOfWorkOrder", entity, DataType.BOOLEAN_FIELD);
+            assignFieldValueFromEntity("i9Filled", entity, DataType.BOOLEAN_FIELD);
+            assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
+            assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
+            assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+                assignFieldValueFromEntity("subcontractor", entity, null);
+                assignFieldValueFromEntity("subcontractorContact", entity, null);
+                assignFieldValueFromEntity("subcontractorAddress", entity, null);
+                assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
+                assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+            }
+            assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
-        assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override

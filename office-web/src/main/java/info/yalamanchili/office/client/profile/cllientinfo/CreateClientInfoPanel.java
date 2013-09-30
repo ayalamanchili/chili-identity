@@ -56,24 +56,26 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
-        assignEntityValueFromField("payRate", clientInfo);
-        assignEntityValueFromField("billingRate", clientInfo);
-        assignEntityValueFromField("billingRateDuration", clientInfo);
-        assignEntityValueFromField("overTimePayRate", clientInfo);
-        assignEntityValueFromField("overTimeBillingRate", clientInfo);
-        assignEntityValueFromField("overTimeDuration", clientInfo);
-        assignEntityValueFromField("invoiceFrequency", clientInfo);
-        assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
-        assignEntityValueFromField("recruiter", clientInfo);
-        assignEntityValueFromField("visaStatus", clientInfo);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
-            assignEntityValueFromField("subcontractor", clientInfo);
-            assignEntityValueFromField("subcontractorContact", clientInfo);
-            assignEntityValueFromField("subcontractorAddress", clientInfo);
-            assignEntityValueFromField("subcontractorPayRate", clientInfo);
-            assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
+            assignEntityValueFromField("payRate", clientInfo);
+            assignEntityValueFromField("billingRate", clientInfo);
+            assignEntityValueFromField("billingRateDuration", clientInfo);
+            assignEntityValueFromField("overTimePayRate", clientInfo);
+            assignEntityValueFromField("overTimeBillingRate", clientInfo);
+            assignEntityValueFromField("overTimeDuration", clientInfo);
+            assignEntityValueFromField("invoiceFrequency", clientInfo);
+            assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
+            assignEntityValueFromField("recruiter", clientInfo);
+            assignEntityValueFromField("visaStatus", clientInfo);
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
+                assignEntityValueFromField("subcontractor", clientInfo);
+                assignEntityValueFromField("subcontractorContact", clientInfo);
+                assignEntityValueFromField("subcontractorAddress", clientInfo);
+                assignEntityValueFromField("subcontractorPayRate", clientInfo);
+                assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
+            }
+            assignEntityValueFromField("notes", clientInfo);
         }
-        assignEntityValueFromField("notes", clientInfo);
 
 
         return clientInfo;
