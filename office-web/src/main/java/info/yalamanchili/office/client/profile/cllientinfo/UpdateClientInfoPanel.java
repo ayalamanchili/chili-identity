@@ -183,7 +183,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD);
         addField("i9Filled", false, false, DataType.BOOLEAN_FIELD);
         addField("w4Filled", false, false, DataType.BOOLEAN_FIELD);
-        addField("logisticsPreparation", false, true, DataType.BOOLEAN_FIELD);
+        addField("logisticsPreparation", false, false, DataType.BOOLEAN_FIELD);
         addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity())) {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
