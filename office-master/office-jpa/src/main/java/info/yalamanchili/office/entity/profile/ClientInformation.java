@@ -176,6 +176,16 @@ public class ClientInformation extends AbstractEntity {
      */
     @Lob
     protected String notes;
+    
+    protected String terminationNotice;
+
+    public void setTerminationNotice(String terminationNotice) {
+        this.terminationNotice = terminationNotice;
+    }
+
+    public String getTerminationNotice() {
+        return terminationNotice;
+    }
     /**
      * subcontractor
      */
