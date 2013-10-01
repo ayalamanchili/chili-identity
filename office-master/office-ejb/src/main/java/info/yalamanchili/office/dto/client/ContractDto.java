@@ -104,6 +104,16 @@ public class ContractDto implements Serializable {
      * Notes
      */
     protected String notes;
+    protected String terminationNotice;
+
+    public void setTerminationNotice(String terminationNotice) {
+        this.terminationNotice = terminationNotice;
+    }
+
+    public String getTerminationNotice() {
+        return terminationNotice;
+    }
+    
     protected BillingDuration billingRateDuration;
     protected BillingDuration overTimeDuration;
     protected String visaStatus;
