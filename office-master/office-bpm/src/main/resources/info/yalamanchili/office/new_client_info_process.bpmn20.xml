@@ -23,6 +23,9 @@
                 Client       : #{clientInfo.client.name}
                 Vendor       : #{clientInfo.vendor.name}
                 Billing Rate : #{clientInfo.billingRate}
+                PayRate      : #{clientInfo.payRate}
+                Invoice Frequency : #{clietnInfo.invoiceFrequency}
+                Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -31,7 +34,7 @@
                                        name="Item Number"
                                        required="true"
                                        type="string"/>
-                 <activiti:formProperty id="signedCopyOfWorkOrder" 
+                <activiti:formProperty id="signedCopyOfWorkOrder" 
                                        name="Signed Copy Of WorkOrder"
                                        required="false"
                                        type="boolean"/>
@@ -54,7 +57,14 @@
                   name="new Client Info HR Department Task" 
                   activiti:candidateGroups="ROLE_HR">
             <documentation>
-               #{clientInfo.toString()}
+                New Client Information has been created with following details. Please fill the fields below to complete the task.
+                Employee     : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Client       : #{clientInfo.client.name}
+                Vendor       : #{clientInfo.vendor.name}
+                Billing Rate : #{clientInfo.billingRate}
+                PayRate      : #{clientInfo.payRate}
+                Invoice Frequency : #{clietnInfo.invoiceFrequency}
+                Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -67,20 +77,20 @@
                                        name="HR Orientation"
                                        required="false"
                                        type="boolean"/>
-                 <activiti:formProperty id="accountVerificationDocs" 
+                <activiti:formProperty id="accountVerificationDocs" 
                                        name="Account verification Docs"
                                        required="false"
                                        type="boolean"/>
                  
-                   <activiti:formProperty id="i9Filled" 
+                <activiti:formProperty id="i9Filled" 
                                        name="I9 Filled"
                                        required="false"
                                        type="boolean"/>
-                      <activiti:formProperty id="w4Filled" 
+                <activiti:formProperty id="w4Filled" 
                                        name="W4 Filled"
                                        required="false"
                                        type="boolean"/>
-                         <activiti:formProperty id="logisticsPreparation" 
+                <activiti:formProperty id="logisticsPreparation" 
                                        name="Logistics Preparation"
                                        required="false"
                                        type="boolean"/>
