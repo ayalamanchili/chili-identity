@@ -24,7 +24,7 @@
                 Vendor       : #{clientInfo.vendor.name}
                 Billing Rate : #{clientInfo.billingRate}
                 PayRate      : #{clientInfo.payRate}
-                Invoice Frequency : #{clietnInfo.invoiceFrequency}
+                Invoice Frequency : #{clientInfo.invoiceFrequency}
                 Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
@@ -63,7 +63,7 @@
                 Vendor       : #{clientInfo.vendor.name}
                 Billing Rate : #{clientInfo.billingRate}
                 PayRate      : #{clientInfo.payRate}
-                Invoice Frequency : #{clietnInfo.invoiceFrequency}
+                Invoice Frequency : #{clientInfo.invoiceFrequency}
                 Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
