@@ -70,6 +70,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 assignEntityValueFromField("subcontractorAddress", entity);
                 assignEntityValueFromField("subcontractorPayRate", entity);
                 assignEntityValueFromField("subcontractorOvertimePayRate", entity);
+                assignEntityValueFromField("subcontractorinvoiceFrequency", entity);
+                assignEntityValueFromField("subcontractorpaymentTerms", entity);
+                assignEntityValueFromField("subcontractorw4Filled", entity);
+                assignEntityValueFromField("subcontractCOI", entity);
             }
             assignEntityValueFromField("terminationNotice", entity);
             assignEntityValueFromField("notes", entity);
@@ -138,6 +142,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 assignFieldValueFromEntity("subcontractorAddress", entity, null);
                 assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+                assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
+                assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
+                assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
@@ -197,6 +205,11 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+                String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+                addEnumField("subcontractorinvoiceFrequency", false, false, invoiceFrequencie);
+                addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD);
+                addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD);
+                addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD);
             }
             addField("terminationNotice", false, false, DataType.STRING_FIELD);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
