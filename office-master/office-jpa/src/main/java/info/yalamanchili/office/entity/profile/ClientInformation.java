@@ -176,7 +176,6 @@ public class ClientInformation extends AbstractEntity {
      */
     @Lob
     protected String notes;
-    
     protected String terminationNotice;
 
     public void setTerminationNotice(String terminationNotice) {
@@ -212,6 +211,56 @@ public class ClientInformation extends AbstractEntity {
      * subcontractorOvertimePayRate
      */
     protected BigDecimal subcontractorOvertimePayRate;
+    /**
+     * subcontractor Invoice Frequency
+     */
+    @Enumerated(EnumType.STRING)
+    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
+    protected InvoiceFrequency subcontractorinvoiceFrequency;
+    /**
+     * subcontractor PaymentTerms
+     */
+    protected String subcontractorpaymentTerms;
+    /**
+     * subcontractor W4Filled
+     */
+    protected Boolean subcontractorw4Filled;
+    /**
+     * subcontractor certificate of insurance
+     */
+    protected Boolean subcontractCOI;
+
+    public InvoiceFrequency getSubcontractorinvoiceFrequency() {
+        return subcontractorinvoiceFrequency;
+    }
+
+    public void setSubcontractorinvoiceFrequency(InvoiceFrequency subcontractorinvoiceFrequency) {
+        this.subcontractorinvoiceFrequency = subcontractorinvoiceFrequency;
+    }
+
+    public String getSubcontractorpaymentTerms() {
+        return subcontractorpaymentTerms;
+    }
+
+    public void setSubcontractorpaymentTerms(String subcontractorpaymentTerms) {
+        this.subcontractorpaymentTerms = subcontractorpaymentTerms;
+    }
+
+    public Boolean getSubcontractorw4Filled() {
+        return subcontractorw4Filled;
+    }
+
+    public void setSubcontractorw4Filled(Boolean subcontractorw4Filled) {
+        this.subcontractorw4Filled = subcontractorw4Filled;
+    }
+
+    public Boolean getSubcontractCOI() {
+        return subcontractCOI;
+    }
+
+    public void setSubcontractCOI(Boolean subcontractCOI) {
+        this.subcontractCOI = subcontractCOI;
+    }
     /* 
      * comments
      */
