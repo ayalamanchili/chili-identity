@@ -67,18 +67,22 @@ public class CreateClientInfoPanel extends CreateComposite {
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
             assignEntityValueFromField("recruiter", clientInfo);
             assignEntityValueFromField("visaStatus", clientInfo);
-           if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("subcontractor", clientInfo);
                 assignEntityValueFromField("subcontractorContact", clientInfo);
                 assignEntityValueFromField("subcontractorAddress", clientInfo);
                 assignEntityValueFromField("subcontractorPayRate", clientInfo);
                 assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
+                assignEntityValueFromField("subcontractorinvoiceFrequency", clientInfo);
+                assignEntityValueFromField("subcontractorpaymentTerms", clientInfo);
+                assignEntityValueFromField("subcontractorw4Filled", clientInfo);
+                assignEntityValueFromField("subcontractCOI", clientInfo);
             }
             assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
         }
 
-        
+
         return clientInfo;
     }
 
@@ -164,6 +168,11 @@ public class CreateClientInfoPanel extends CreateComposite {
                 addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+                String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+                addEnumField("subcontractorinvoiceFrequency", false, false, invoiceFrequencie);
+                addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD);
+                addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD);
+                addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD);
             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", false, false, DataType.STRING_FIELD);
