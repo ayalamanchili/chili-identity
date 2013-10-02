@@ -78,6 +78,10 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("subcontractorAddress", entity, null);
                 assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
+                assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
+                assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
+                assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
@@ -120,11 +124,16 @@ public class ReadClientInfoPanel extends ReadComposite {
             addDropDown("recruiter", selectRecruiterWidget);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
-                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
-                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
-                addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
-                addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
+                addDropDown("subcontractor", new SelectSubcontractorWidget(true, false));
+                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(true, false));
+                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(true, false));
+                addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD);
+                addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD);
+                String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+                addEnumField("subcontractorinvoiceFrequency", true, false, invoiceFrequencie);
+                addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD);
+                addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD);
+                addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD);
             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", true, false, DataType.STRING_FIELD);
