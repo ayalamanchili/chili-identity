@@ -61,11 +61,15 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
-         assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subContractorContactName", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
+            assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
         }
     }
 
@@ -117,8 +121,13 @@ public class ReadContractsPanel extends ReadComposite {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addField("subContractorName", true, false, DataType.STRING_FIELD);
             addField("subContractorContactName", true, false, DataType.STRING_FIELD);
+            String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
+            addEnumField("subcontractorinvoiceFrequency", true, false, invoiceFrequencie);
+            addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD);
+            addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD);
+            addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD);
         }
-      
+
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
 
