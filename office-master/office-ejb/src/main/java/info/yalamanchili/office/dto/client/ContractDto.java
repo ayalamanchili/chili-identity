@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -113,7 +115,6 @@ public class ContractDto implements Serializable {
     public String getTerminationNotice() {
         return terminationNotice;
     }
-    
     protected BillingDuration billingRateDuration;
     protected BillingDuration overTimeDuration;
     protected String visaStatus;
@@ -384,6 +385,57 @@ public class ContractDto implements Serializable {
     }
     /* Sub Contactor */
     protected String subContractorName;
+    protected String subContractorContactName;
+    /**
+     * subcontractor Invoice Frequency
+     */
+    @Enumerated(EnumType.STRING)
+    @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
+    protected InvoiceFrequency subcontractorinvoiceFrequency;
+    /**
+     * subcontractor PaymentTerms
+     */
+    protected String subcontractorpaymentTerms;
+    /**
+     * subcontractor W4Filled
+     */
+    protected Boolean subcontractorw4Filled;
+    /**
+     * subcontractor certificate of insurance
+     */
+    protected Boolean subcontractCOI;
+
+    public InvoiceFrequency getSubcontractorinvoiceFrequency() {
+        return subcontractorinvoiceFrequency;
+    }
+
+    public void setSubcontractorinvoiceFrequency(InvoiceFrequency subcontractorinvoiceFrequency) {
+        this.subcontractorinvoiceFrequency = subcontractorinvoiceFrequency;
+    }
+
+    public String getSubcontractorpaymentTerms() {
+        return subcontractorpaymentTerms;
+    }
+
+    public void setSubcontractorpaymentTerms(String subcontractorpaymentTerms) {
+        this.subcontractorpaymentTerms = subcontractorpaymentTerms;
+    }
+
+    public Boolean getSubcontractorw4Filled() {
+        return subcontractorw4Filled;
+    }
+
+    public void setSubcontractorw4Filled(Boolean subcontractorw4Filled) {
+        this.subcontractorw4Filled = subcontractorw4Filled;
+    }
+
+    public Boolean getSubcontractCOI() {
+        return subcontractCOI;
+    }
+
+    public void setSubcontractCOI(Boolean subcontractCOI) {
+        this.subcontractCOI = subcontractCOI;
+    }
 
     public void setSubContractorName(String subContractorName) {
         this.subContractorName = subContractorName;
@@ -400,7 +452,6 @@ public class ContractDto implements Serializable {
     public String getSubContractorContactName() {
         return subContractorContactName;
     }
-    protected String subContractorContactName;
 
     @XmlRootElement
     @XmlType
