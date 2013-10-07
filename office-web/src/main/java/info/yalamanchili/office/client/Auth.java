@@ -97,4 +97,12 @@ public class Auth {
         }
         return false;
     }
+    
+    public static boolean is1099(JSONObject emp) {
+        String empType = JSONUtils.toString(emp.get("employeeType"), "name");
+        if (empType != null && empType.equals("1099")) {
+            return true;
+        }
+        return false;
+    }
 }
