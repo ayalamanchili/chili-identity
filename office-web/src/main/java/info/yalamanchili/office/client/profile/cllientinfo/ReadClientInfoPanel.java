@@ -83,6 +83,12 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
                 assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
             }
+             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
+                assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
+                assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
+                 assignFieldValueFromEntity("payTimeDuration1099", entity, DataType.ENUM_FIELD);
+             }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
@@ -135,6 +141,13 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD);
                 addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD);
             }
+             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                entityFieldsPanel.add(getLineSeperatorTag("1099 Information"));
+                 addField("payRate1099", true, false, DataType.CURRENCY_FIELD);
+                 addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD);
+                 addField("payTimeDuration1099", true, false, DataType.STRING_FIELD);
+                 addEnumField("payTimeDuration1099", true, false, billingDuration);
+             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", true, false, DataType.STRING_FIELD);
             addField("joiningReport", true, false, DataType.STRING_FIELD);
