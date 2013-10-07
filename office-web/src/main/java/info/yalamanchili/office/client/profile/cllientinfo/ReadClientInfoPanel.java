@@ -83,7 +83,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
                 assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
             }
-             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
@@ -145,7 +145,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Information"));
                  addField("payRate1099", true, false, DataType.CURRENCY_FIELD);
                  addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD);
-                 addField("payTimeDuration1099", true, false, DataType.STRING_FIELD);
+                 addField("paymentTerms1099", true, false, DataType.STRING_FIELD);
                  addEnumField("payTimeDuration1099", true, false, billingDuration);
              }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
