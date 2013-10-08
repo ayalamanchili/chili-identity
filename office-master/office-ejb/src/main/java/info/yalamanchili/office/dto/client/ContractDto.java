@@ -383,6 +383,37 @@ public class ContractDto implements Serializable {
     public void setLogisticsPreparation(Boolean logisticsPreparation) {
         this.logisticsPreparation = logisticsPreparation;
     }
+    /**
+     * 1099 Details
+     */
+    protected BigDecimal payRate1099;
+    protected BigDecimal overTimePayrate1099;
+    @Enumerated(EnumType.STRING)
+    protected BillingDuration payTimeDuration1099;
+
+    public BigDecimal getPayRate1099() {
+        return payRate1099;
+    }
+
+    public void setPayRate1099(BigDecimal payRate1099) {
+        this.payRate1099 = payRate1099;
+    }
+
+    public BigDecimal getOverTimePayrate1099() {
+        return overTimePayrate1099;
+    }
+
+    public void setOverTimePayrate1099(BigDecimal overTimePayrate1099) {
+        this.overTimePayrate1099 = overTimePayrate1099;
+    }
+
+    public BillingDuration getPayTimeDuration1099() {
+        return payTimeDuration1099;
+    }
+
+    public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
+        this.payTimeDuration1099 = payTimeDuration1099;
+    }
     /* Sub Contactor */
     protected String subContractorName;
     protected String subContractorContactName;
