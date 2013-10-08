@@ -73,6 +73,7 @@ public class EmailService {
             mailSender.send(preparator);
         } catch (MailException ex) {
             ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
     }
 
