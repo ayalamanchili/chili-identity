@@ -135,10 +135,10 @@ public class ReadContractsPanel extends ReadComposite {
         }
         if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
             entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
-            addField("payRate1099", false, false, DataType.CURRENCY_FIELD);
-            addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD);
-            addField("paymentTerms1099", false, false, DataType.STRING_FIELD);
-            addEnumField("payTimeDuration1099", false, false, billingDuration);
+            addField("payRate1099", true, false, DataType.CURRENCY_FIELD);
+            addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD);
+            addField("paymentTerms1099", true, false, DataType.STRING_FIELD);
+            addEnumField("payTimeDuration1099", true, false, billingDuration);
         }
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
     }
