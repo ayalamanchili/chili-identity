@@ -64,8 +64,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected TreeActivityPanel activityTreePanel = new TreeActivityPanel(getEntityId());
 
     public TreeEmployeePanel(JSONObject emp) {
-        super(emp);
+        super();
         instance = this;
+        this.entity=emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
