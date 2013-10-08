@@ -94,7 +94,6 @@ public class ReadContractsPanel extends ReadComposite {
         addField("vendorLocation", true, false, DataType.STRING_FIELD);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
-        addField("terminationNotice", true, false, DataType.STRING_FIELD);
         entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
         addField("itemNumber", true, false, DataType.STRING_FIELD);
         addField("payRate", true, false, DataType.CURRENCY_FIELD);
@@ -110,6 +109,7 @@ public class ReadContractsPanel extends ReadComposite {
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", true, false, DataType.STRING_FIELD);
         addField("joiningReport", true, false, DataType.STRING_FIELD);
+        addField("terminationNotice", true, false, DataType.STRING_FIELD);
         entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
         addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD);
         addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD);

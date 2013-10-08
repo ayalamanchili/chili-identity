@@ -10,8 +10,11 @@ package info.yalamanchili.office.jrs.client;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +33,11 @@ public class ContractResource {
     @Path("/{start}/{limit}")
     public ContractTable getContracts(@PathParam("start") int start, @PathParam("limit") int limit) {
         return ContractService.instance().getContractorPlacementInfo(start, limit);
+    }
+
+    @POST
+    @Path("/report")
+    public Response generateContractsReport(@QueryParam("format") String format) {
+        return ContractService.instance().generateContractorPlacementInfoReport(format);
     }
 }

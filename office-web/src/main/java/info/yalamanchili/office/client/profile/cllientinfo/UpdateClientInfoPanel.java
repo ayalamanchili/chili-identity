@@ -75,12 +75,12 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 assignEntityValueFromField("subcontractorw4Filled", entity);
                 assignEntityValueFromField("subcontractCOI", entity);
             }
-             if (Auth.is1099(TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.is1099(TreeEmployeePanel.instance().getEntity())) {
                 assignEntityValueFromField("payRate1099", entity);
                 assignEntityValueFromField("overTimePayrate1099", entity);
                 assignEntityValueFromField("payTimeDuration1099", entity);
                 assignEntityValueFromField("paymentTerms1099", entity);
-             }
+            }
             assignEntityValueFromField("terminationNotice", entity);
             assignEntityValueFromField("notes", entity);
         }
@@ -153,12 +153,13 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
                 assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
             }
-               if (Auth.is1099(TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.is1099(TreeEmployeePanel.instance().getEntity())) {
+                entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
                 assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
                 assignFieldValueFromEntity("payTimeDuration1099", entity, DataType.ENUM_FIELD);
-               }
+            }
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
@@ -224,10 +225,10 @@ public class UpdateClientInfoPanel extends UpdateComposite {
                 addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD);
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-              addField("payRate1099", false, false, DataType.CURRENCY_FIELD);
-              addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD);
-              addField("paymentTerms1099", false, false, DataType.STRING_FIELD);
-              addEnumField("payTimeDuration1099", false, false, billingDuration);
+                addField("payRate1099", false, false, DataType.CURRENCY_FIELD);
+                addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD);
+                addField("paymentTerms1099", false, false, DataType.STRING_FIELD);
+                addEnumField("payTimeDuration1099", false, false, billingDuration);
             }
             addField("terminationNotice", false, false, DataType.STRING_FIELD);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);

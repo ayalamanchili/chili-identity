@@ -303,7 +303,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         builder.setHeader("Content-Type", "application/json");
 
         try {
-            com.google.gwt.http.client.Request request = builder.sendRequest(entity.toString(), new RequestCallback() {
+            builder.sendRequest(entity.toString(), new RequestCallback() {
                 @Override
                 public void onResponseReceived(com.google.gwt.http.client.Request request, com.google.gwt.http.client.Response response) {
                     if (200 == response.getStatusCode()) {

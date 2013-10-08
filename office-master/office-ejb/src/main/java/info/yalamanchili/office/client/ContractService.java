@@ -23,9 +23,6 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
-import java.util.ArrayList;
-
-import java.util.List;
 import javax.ws.rs.core.Response;
 //import javax.ws.rs.core.Response;
 import net.sf.jasperreports.engine.JRException;
@@ -46,7 +43,7 @@ public class ContractService {
     protected Mapper mapper;
 
     public ContractTable getContractorPlacementInfo(int start, int limit) {
-        String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND ci.endDate >= :dateParam";
+        String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND (ci.endDate >= :dateParam or ci.endDate is null)";
 
         TypedQuery<ClientInformation> query = em.createQuery(queryStr, ClientInformation.class);
         query.setParameter("dateParam", new Date(), TemporalType.DATE);

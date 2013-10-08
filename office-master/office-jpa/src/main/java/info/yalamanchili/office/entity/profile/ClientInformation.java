@@ -163,28 +163,15 @@ public class ClientInformation extends AbstractEntity {
      * Status
      */
     protected String visaStatus;
-
-    public void setVisaStatus(String visaStatus) {
-        this.visaStatus = visaStatus;
-    }
-
-    public String getVisaStatus() {
-        return visaStatus;
-    }
     /**
      * Notes
      */
     @Lob
     protected String notes;
+    /**
+     * termination notice
+     */
     protected String terminationNotice;
-
-    public void setTerminationNotice(String terminationNotice) {
-        this.terminationNotice = terminationNotice;
-    }
-
-    public String getTerminationNotice() {
-        return terminationNotice;
-    }
     /**
      * subcontractor
      */
@@ -229,83 +216,13 @@ public class ClientInformation extends AbstractEntity {
      * subcontractor certificate of insurance
      */
     protected Boolean subcontractCOI;
-    
     /**
      * 1099 Details
      */
     protected BigDecimal payRate1099;
-
     protected BigDecimal overTimePayrate1099;
-     
     @Enumerated(EnumType.STRING)
     protected BillingDuration payTimeDuration1099;
-    
-    protected String paymentTerms1099;
-    public void setPayRate1099(BigDecimal payRate1099) {
-        this.payRate1099 = payRate1099;
-    }
-
-    public void setOverTimePayrate1099(BigDecimal overTimePayrate1099) {
-        this.overTimePayrate1099 = overTimePayrate1099;
-    }
-
-    public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
-        this.payTimeDuration1099 = payTimeDuration1099;
-    }
-
-    public void setPaymentTerms1099(String paymentTerms1099) {
-        this.paymentTerms1099 = paymentTerms1099;
-    }
-
-    public BigDecimal getPayRate1099() {
-        return payRate1099;
-    }
-
-    public BigDecimal getOverTimePayrate1099() {
-        return overTimePayrate1099;
-    }
-
-    public BillingDuration getPayTimeDuration1099() {
-        return payTimeDuration1099;
-    }
-
-    public String getPaymentTerms1099() {
-        return paymentTerms1099;
-    }
-     
-  
-     
-    public InvoiceFrequency getSubcontractorinvoiceFrequency() {
-        return subcontractorinvoiceFrequency;
-    }
-
-    public void setSubcontractorinvoiceFrequency(InvoiceFrequency subcontractorinvoiceFrequency) {
-        this.subcontractorinvoiceFrequency = subcontractorinvoiceFrequency;
-    }
-
-    public String getSubcontractorpaymentTerms() {
-        return subcontractorpaymentTerms;
-    }
-
-    public void setSubcontractorpaymentTerms(String subcontractorpaymentTerms) {
-        this.subcontractorpaymentTerms = subcontractorpaymentTerms;
-    }
-
-    public Boolean getSubcontractorw4Filled() {
-        return subcontractorw4Filled;
-    }
-
-    public void setSubcontractorw4Filled(Boolean subcontractorw4Filled) {
-        this.subcontractorw4Filled = subcontractorw4Filled;
-    }
-
-    public Boolean getSubcontractCOI() {
-        return subcontractCOI;
-    }
-
-    public void setSubcontractCOI(Boolean subcontractCOI) {
-        this.subcontractCOI = subcontractCOI;
-    }
     /* 
      * comments
      */
@@ -515,6 +432,22 @@ public class ClientInformation extends AbstractEntity {
         this.recruiter = recruiter;
     }
 
+    public String getVisaStatus() {
+        return visaStatus;
+    }
+
+    public void setVisaStatus(String visaStatus) {
+        this.visaStatus = visaStatus;
+    }
+
+    public String getTerminationNotice() {
+        return terminationNotice;
+    }
+
+    public void setTerminationNotice(String terminationNotice) {
+        this.terminationNotice = terminationNotice;
+    }
+
     public String getNotes() {
         return notes;
     }
@@ -563,6 +496,62 @@ public class ClientInformation extends AbstractEntity {
         this.subcontractorOvertimePayRate = subcontractorOvertimePayRate;
     }
 
+    public InvoiceFrequency getSubcontractorinvoiceFrequency() {
+        return subcontractorinvoiceFrequency;
+    }
+
+    public void setSubcontractorinvoiceFrequency(InvoiceFrequency subcontractorinvoiceFrequency) {
+        this.subcontractorinvoiceFrequency = subcontractorinvoiceFrequency;
+    }
+
+    public String getSubcontractorpaymentTerms() {
+        return subcontractorpaymentTerms;
+    }
+
+    public void setSubcontractorpaymentTerms(String subcontractorpaymentTerms) {
+        this.subcontractorpaymentTerms = subcontractorpaymentTerms;
+    }
+
+    public Boolean getSubcontractorw4Filled() {
+        return subcontractorw4Filled;
+    }
+
+    public void setSubcontractorw4Filled(Boolean subcontractorw4Filled) {
+        this.subcontractorw4Filled = subcontractorw4Filled;
+    }
+
+    public Boolean getSubcontractCOI() {
+        return subcontractCOI;
+    }
+
+    public void setSubcontractCOI(Boolean subcontractCOI) {
+        this.subcontractCOI = subcontractCOI;
+    }
+
+    public BigDecimal getPayRate1099() {
+        return payRate1099;
+    }
+
+    public void setPayRate1099(BigDecimal payRate1099) {
+        this.payRate1099 = payRate1099;
+    }
+
+    public BigDecimal getOverTimePayrate1099() {
+        return overTimePayrate1099;
+    }
+
+    public void setOverTimePayrate1099(BigDecimal overTimePayrate1099) {
+        this.overTimePayrate1099 = overTimePayrate1099;
+    }
+
+    public BillingDuration getPayTimeDuration1099() {
+        return payTimeDuration1099;
+    }
+
+    public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
+        this.payTimeDuration1099 = payTimeDuration1099;
+    }
+
     @XmlTransient
     public List<ClientInfoComment> getComments() {
         return comments;
@@ -570,10 +559,6 @@ public class ClientInformation extends AbstractEntity {
 
     public void setComments(List<ClientInfoComment> comments) {
         this.comments = comments;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public Boolean getAccountVerificationDocs() {

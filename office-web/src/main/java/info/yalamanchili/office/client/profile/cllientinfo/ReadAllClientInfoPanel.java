@@ -15,6 +15,7 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
@@ -58,7 +59,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, ROLE.ROLE_HR)) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));

@@ -78,12 +78,12 @@ public class CreateClientInfoPanel extends CreateComposite {
                 assignEntityValueFromField("subcontractorw4Filled", clientInfo);
                 assignEntityValueFromField("subcontractCOI", clientInfo);
             }
-             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-              assignEntityValueFromField("payRate1099", clientInfo);
-              assignEntityValueFromField("overTimePayrate1099", clientInfo);
-              assignEntityValueFromField("payTimeDuration1099", clientInfo);
-              assignEntityValueFromField("paymentTerms1099", clientInfo);
-             }
+            if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                assignEntityValueFromField("payRate1099", clientInfo);
+                assignEntityValueFromField("overTimePayrate1099", clientInfo);
+                assignEntityValueFromField("payTimeDuration1099", clientInfo);
+                assignEntityValueFromField("paymentTerms1099", clientInfo);
+            }
             assignEntityValueFromField("terminationNotice", clientInfo);
             assignEntityValueFromField("notes", clientInfo);
         }
@@ -180,12 +180,13 @@ public class CreateClientInfoPanel extends CreateComposite {
                 addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD);
                 addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD);
             }
-             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-               addField("payRate1099", false, false, DataType.CURRENCY_FIELD);
-               addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD);
-               addField("paymentTerms1099", false, false, DataType.STRING_FIELD);
-               addEnumField("payTimeDuration1099", false, false, billingDuration);
-             }
+            if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
+                addField("payRate1099", false, false, DataType.CURRENCY_FIELD);
+                addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD);
+                addField("paymentTerms1099", false, false, DataType.STRING_FIELD);
+                addEnumField("payTimeDuration1099", false, false, billingDuration);
+            }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", false, false, DataType.STRING_FIELD);
             addField("terminationNotice", false, false, DataType.STRING_FIELD);

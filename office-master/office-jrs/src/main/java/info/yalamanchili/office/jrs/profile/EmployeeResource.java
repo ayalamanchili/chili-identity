@@ -330,6 +330,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
      */
     @PUT
     @Path("/clientinformation/{empId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
     public void addClientInformation(@PathParam("empId") Long empId, ClientInformation clientInformation) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
         clientInformationService.addClientInformation(empId, clientInformation);

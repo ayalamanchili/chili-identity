@@ -27,19 +27,19 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
     public void updateClicked(String entityId) {
-        UpdateClientInfoPopupPanel updateReportsToPanel = new UpdateClientInfoPopupPanel(getEntity(entityId));
-        new GenericPopup(updateReportsToPanel).show();
+//        UpdateClientInfoPopupPanel updateReportsToPanel = new UpdateClientInfoPopupPanel(getEntity(entityId));
+//        new GenericPopup(updateReportsToPanel).show();
     }
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Reports To Information");
-        ProfileHome.instance().refreshClientInformation();
+//        new ResponseStatusWidget().show("Successfully Deleted Reports To Information");
+//        ProfileHome.instance().refreshClientInformation();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     protected void createButtonClicked() {
-        CreateClientInfoPopupPanel createPanel = new CreateClientInfoPopupPanel(CreateComposite.CreateCompositeType.ADD);;
-        new GenericPopup(createPanel).show();
+//        CreateClientInfoPopupPanel createPanel = new CreateClientInfoPopupPanel(CreateComposite.CreateCompositeType.ADD);;
+//        new GenericPopup(createPanel).show();
     }
 }
