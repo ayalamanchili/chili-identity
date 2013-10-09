@@ -7,36 +7,39 @@
  */
 package info.yalamanchili.office.client.contracts;
 
-import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.config.ChiliClientConfig;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.gwt.SearchComposite;
 import java.util.logging.Logger;
 
 /**
  *
  * @author anuyalamanchili
  */
-public class ContractsSidePanel extends SearchComposite {
+public class ContractsSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ContractsSidePanel.class.getName());
+    protected FlowPanel panel = new FlowPanel();
+    protected Button generateRepB = new Button("Generate");
+    protected Label formatL = new Label("Format");
+    protected ListBox formatLB = new ListBox();
 
     public ContractsSidePanel() {
-        init("Contracts Search", "Contract", OfficeWelcome.constants);
-    }
-
-    @Override
-    protected void populateSearchSuggestBox() {
-    }
-
-    @Override
-    protected void populateAdvancedSuggestBoxes() {
+        init(panel);
     }
 
     @Override
     protected void addListeners() {
+        generateRepB.addClickHandler(this);
     }
 
     @Override
@@ -45,49 +48,35 @@ public class ContractsSidePanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
+        panel.add(formatL);
+        formatLB.addItem("PDF", "pdf");
+        formatLB.addItem("HTML", "html");
+        formatLB.addItem("XML", "xml");
+        panel.add(formatLB);
+        panel.add(generateRepB);
     }
 
     @Override
-    protected void generateReportClicked() {
-        generateReport(new JSONObject());
+    public void onClick(ClickEvent event) {
+        HttpService.HttpServiceAsync.instance().doGet(getReportURL(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                Window.alert(arg0.getLocalizedMessage());
+            }
+
+            @Override
+            public void onSuccess(String resp) {
+                Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + resp, "_blank", "");
+
+            }
+        });
     }
 
-    @Override
-    protected JSONObject populateEntityFromFields() {
-        entity = new JSONObject();
-        return entity;
+    protected String getReportFormat() {
+        return formatLB.getValue(formatLB.getSelectedIndex());
     }
 
-    @Override
-    protected void search(String searchText) {
-    }
-
-    @Override
-    protected void search(JSONObject entity) {
-    }
-
-    @Override
-    protected void postSearchSuccess(JSONArray result) {
-    }
-
-    @Override
-    protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "client/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
-    }
-
-    @Override
-    protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "client/search/" + start.toString() + "/"
-                + limit.toString());
-    }
-
-    @Override
-    public boolean enableGenerateReport() {
-        return true;
-    }
-
-    @Override
     protected String getReportURL() {
         return ChiliClientConfig.instance().getFileDownloadUrl() + "contract/report" + "&format=" + getReportFormat();
     }
