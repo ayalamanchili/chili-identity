@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import info.chili.reporting.ReportGenerator;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
@@ -36,24 +37,24 @@ import net.sf.jasperreports.engine.JRException;
 @Component
 @Scope("request")
 public class ContractService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-    
+
     public ContractTable getContractorPlacementInfo(int start, int limit) {
         String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND (ci.endDate >= :dateParam or ci.endDate is null)";
-        
+
         TypedQuery<ClientInformation> query = em.createQuery(queryStr, ClientInformation.class);
         query.setParameter("dateParam", new Date(), TemporalType.DATE);
         query.setFirstResult(start);
         query.setMaxResults(limit);
-        
+
         String sizeQueryStr = queryStr.replace("SELECT ci", "SELECT count(*)");
         TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
         sizeQuery.setParameter("dateParam", new Date(), TemporalType.DATE);
-        
+
         ContractTable table = new ContractTable();
         table.setSize(sizeQuery.getSingleResult());
         for (ClientInformation ci : query.getResultList()) {
@@ -83,11 +84,11 @@ public class ContractService {
             if (ci.getVendorLocation() != null) {
                 dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getState());
             }
-            
+
             if (ci.getSubcontractor() != null) {
                 dto.setSubContractorName(ci.getSubcontractor().getName());
             }
-            
+
             if (ci.getSubcontractorContact() != null) {
                 dto.setSubContractorContactName(ci.getSubcontractorContact().getFirstName() + " " + ci.getSubcontractorContact().getLastName());
             }
@@ -96,20 +97,19 @@ public class ContractService {
         }
         return table;
     }
-    
-    public Response generateContractorPlacementInfoReport(String format) {
-        javax.ws.rs.core.Response.ResponseBuilder response;
-        String fileName = "contracts";
+
+    public String generateContractorPlacementInfoReport(String format) {
+        String fileName = "contracts."+format;
         ContractTable data = getContractorPlacementInfo(0, 10000);
         try {
             ReportGenerator.generateReport(data.getEntities(), format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
-            response = javax.ws.rs.core.Response.ok(fileName.getBytes());
         } catch (JRException e) {
-            response = javax.ws.rs.core.Response.serverError();
+            e.printStackTrace();
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "system", "Error generating error");
         }
-        return response.build();
+        return fileName;
     }
-    
+
     public static ContractService instance() {
         return SpringContext.getBean(ContractService.class);
     }

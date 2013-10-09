@@ -68,7 +68,6 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
             @Override
             public void onSuccess(String resp) {
                 Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + resp, "_blank", "");
-
             }
         });
     }
@@ -78,6 +77,6 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
     }
 
     protected String getReportURL() {
-        return ChiliClientConfig.instance().getFileDownloadUrl() + "contract/report" + "&format=" + getReportFormat();
+        return OfficeWelcome.constants.root_url() + "contract/report" + "?format=" + getReportFormat();
     }
 }

@@ -35,9 +35,9 @@ public class ContractResource {
         return ContractService.instance().getContractorPlacementInfo(start, limit);
     }
 
-    @POST
+    @GET
     @Path("/report")
-    public Response generateContractsReport(@QueryParam("format") String format) {
+    public String generateContractsReport(@QueryParam("format") String format) {
         return ContractService.instance().generateContractorPlacementInfoReport(format);
     }
 }

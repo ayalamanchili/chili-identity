@@ -112,13 +112,7 @@ public class ContractDto implements Serializable {
     protected String notes;
     protected String terminationNotice;
 
-    public void setTerminationNotice(String terminationNotice) {
-        this.terminationNotice = terminationNotice;
-    }
-
-    public String getTerminationNotice() {
-        return terminationNotice;
-    }
+  
     protected BillingDuration billingRateDuration;
     protected BillingDuration overTimeDuration;
     protected String visaStatus;
@@ -192,7 +186,7 @@ public class ContractDto implements Serializable {
         this.hrOrientation = hrOrientation;
     }
 
-    public Boolean isHrOrientation() {
+    public Boolean getHrOrientation() {
         return hrOrientation;
     }
 
@@ -356,7 +350,7 @@ public class ContractDto implements Serializable {
         this.notes = notes;
     }
 
-    public Boolean isAccountVerificationDocs() {
+    public Boolean getAccountVerificationDocs() {
         return accountVerificationDocs;
     }
 
@@ -364,7 +358,7 @@ public class ContractDto implements Serializable {
         this.accountVerificationDocs = accountVerificationDocs;
     }
 
-    public Boolean isSignedCopyOfWorkOrder() {
+    public Boolean getSignedCopyOfWorkOrder() {
         return signedCopyOfWorkOrder;
     }
 
@@ -372,7 +366,7 @@ public class ContractDto implements Serializable {
         this.signedCopyOfWorkOrder = signedCopyOfWorkOrder;
     }
 
-    public Boolean isI9Filled() {
+    public Boolean getI9Filled() {
         return i9Filled;
     }
 
@@ -380,7 +374,7 @@ public class ContractDto implements Serializable {
         this.i9Filled = i9Filled;
     }
 
-    public Boolean isW4Filled() {
+    public Boolean getW4Filled() {
         return w4Filled;
     }
 
@@ -388,7 +382,7 @@ public class ContractDto implements Serializable {
         this.w4Filled = w4Filled;
     }
 
-    public Boolean isLogisticsPreparation() {
+    public Boolean getLogisticsPreparation() {
         return logisticsPreparation;
     }
 
@@ -503,6 +497,14 @@ public class ContractDto implements Serializable {
 
     public String getSubContractorContactName() {
         return subContractorContactName;
+    }
+
+    public String getTerminationNotice() {
+        return terminationNotice;
+    }
+
+    public void setTerminationNotice(String terminationNotice) {
+        this.terminationNotice = terminationNotice;
     }
 
     @XmlRootElement
