@@ -390,6 +390,15 @@ public class ContractDto implements Serializable {
     protected BigDecimal overTimePayrate1099;
     @Enumerated(EnumType.STRING)
     protected BillingDuration payTimeDuration1099;
+    protected String paymentTerms1099;
+
+    public void setPaymentTerms1099(String paymentTerms1099) {
+        this.paymentTerms1099 = paymentTerms1099;
+    }
+
+    public String getPaymentTerms1099() {
+        return paymentTerms1099;
+    }
 
     public BigDecimal getPayRate1099() {
         return payRate1099;
