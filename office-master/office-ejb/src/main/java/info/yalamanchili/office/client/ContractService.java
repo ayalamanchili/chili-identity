@@ -36,29 +36,31 @@ import net.sf.jasperreports.engine.JRException;
 @Component
 @Scope("request")
 public class ContractService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     public ContractTable getContractorPlacementInfo(int start, int limit) {
         String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <= :dateParam AND (ci.endDate >= :dateParam or ci.endDate is null)";
-
+        
         TypedQuery<ClientInformation> query = em.createQuery(queryStr, ClientInformation.class);
         query.setParameter("dateParam", new Date(), TemporalType.DATE);
         query.setFirstResult(start);
         query.setMaxResults(limit);
-
+        
         String sizeQueryStr = queryStr.replace("SELECT ci", "SELECT count(*)");
         TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
         sizeQuery.setParameter("dateParam", new Date(), TemporalType.DATE);
-
+        
         ContractTable table = new ContractTable();
         table.setSize(sizeQuery.getSingleResult());
         for (ClientInformation ci : query.getResultList()) {
             ContractDto dto = mapper.map(ci, ContractDto.class);
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+            //map employee type 
+            dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
             //TODO set client
             if (ci.getClient() != null) {
                 dto.setClient(ci.getClient().getName());
@@ -66,41 +68,35 @@ public class ContractService {
             if (ci.getVendor() != null) {
                 dto.setVendor(ci.getVendor().getName());
             }
-             if (ci.getRecruiter() != null) {
-                dto.setRecruiter(ci.getRecruiter().getFirstName() + " " +ci.getRecruiter().getLastName());
+            if (ci.getRecruiter() != null) {
+                dto.setRecruiter(ci.getRecruiter().getFirstName() + " " + ci.getRecruiter().getLastName());
             }
-             if(ci.getClientContact() != null)
-             {
-                dto.setClientContact(ci.getClientContact().getFirstName() +" "+ci.getClientContact().getLastName() );
-             }
-              if(ci.getVendorContact() != null)
-             {
-                dto.setVendorContact(ci.getVendorContact().getFirstName() +" "+ci.getVendorContact().getLastName());
-             }
-              if(ci.getClientLocation() != null)
-              {
+            if (ci.getClientContact() != null) {
+                dto.setClientContact(ci.getClientContact().getFirstName() + " " + ci.getClientContact().getLastName());
+            }
+            if (ci.getVendorContact() != null) {
+                dto.setVendorContact(ci.getVendorContact().getFirstName() + " " + ci.getVendorContact().getLastName());
+            }
+            if (ci.getClientLocation() != null) {
                 dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getState());
-              }
-               if(ci.getVendorLocation()!= null)
-              {
+            }
+            if (ci.getVendorLocation() != null) {
                 dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getState());
-              }
-               
-               if(ci.getSubcontractor() != null)
-               {
-                 dto.setSubContractorName(ci.getSubcontractor().getName());
-               }
-               
-               if(ci.getSubcontractorContact()!=null)
-               {
-                 dto.setSubContractorContactName(ci.getSubcontractorContact().getFirstName() + " " + ci.getSubcontractorContact().getLastName());
-               }
+            }
+            
+            if (ci.getSubcontractor() != null) {
+                dto.setSubContractorName(ci.getSubcontractor().getName());
+            }
+            
+            if (ci.getSubcontractorContact() != null) {
+                dto.setSubContractorContactName(ci.getSubcontractorContact().getFirstName() + " " + ci.getSubcontractorContact().getLastName());
+            }
             //etc
             table.getEntities().add(dto);
         }
         return table;
     }
-
+    
     public Response generateContractorPlacementInfoReport(String format) {
         javax.ws.rs.core.Response.ResponseBuilder response;
         String fileName = "contracts";
@@ -113,7 +109,7 @@ public class ContractService {
         }
         return response.build();
     }
-
+    
     public static ContractService instance() {
         return SpringContext.getBean(ContractService.class);
     }
