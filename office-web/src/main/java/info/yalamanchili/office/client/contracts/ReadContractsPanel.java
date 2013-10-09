@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.contracts;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
@@ -63,7 +64,7 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+        if (isSubContractor(entity)) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subContractorContactName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -76,6 +77,15 @@ public class ReadContractsPanel extends ReadComposite {
             assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("payTimeDuration1099", entity, DataType.ENUM_FIELD);
+        }
+    }
+    //pleado same for 1099 
+
+    protected boolean isSubContractor(JSONObject contractDto) {
+        if ((JSONUtils.toString(contractDto, "employeeType")).equals("SUB_CONTRACTOR")) {
+            return true;
+        } else {
+            return false;
         }
     }
 
