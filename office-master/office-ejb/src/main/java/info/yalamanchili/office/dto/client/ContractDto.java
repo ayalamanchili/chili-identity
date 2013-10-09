@@ -71,6 +71,10 @@ public class ContractDto implements Serializable {
      */
     protected String employee;
     /**
+     * employee tpe
+     */
+    protected String employeeType;
+    /**
      * Item Number (quick books generated number
      */
     protected String itemNumber;
@@ -270,6 +274,14 @@ public class ContractDto implements Serializable {
 
     public void setEmployee(String employee) {
         this.employee = employee;
+    }
+
+    public String getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(String employeeType) {
+        this.employeeType = employeeType;
     }
 
     public String getItemNumber() {
