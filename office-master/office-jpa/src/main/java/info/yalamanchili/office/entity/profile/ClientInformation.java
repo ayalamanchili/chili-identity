@@ -223,7 +223,7 @@ public class ClientInformation extends AbstractEntity {
     protected BigDecimal overTimePayrate1099;
     @Enumerated(EnumType.STRING)
     protected BillingDuration payTimeDuration1099;
-    protected String paymentTerm1099;
+    protected String paymentTerms1099;
     /* 
      * comments
      */
@@ -553,12 +553,12 @@ public class ClientInformation extends AbstractEntity {
         this.payTimeDuration1099 = payTimeDuration1099;
     }
 
-    public String getPaymentTerm1099() {
-        return paymentTerm1099;
+    public String getPaymentTerms1099() {
+        return paymentTerms1099;
     }
 
-    public void setPaymentTerm1099(String paymentTerm1099) {
-        this.paymentTerm1099 = paymentTerm1099;
+    public void setPaymentTerms1099(String paymentTerms1099) {
+        this.paymentTerms1099 = paymentTerms1099;
     }
 
     @XmlTransient
