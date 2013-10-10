@@ -92,9 +92,6 @@ public class ContractService {
             if (ci.getSubcontractorContact() != null) {
                 dto.setSubContractorContactName(ci.getSubcontractorContact().getFirstName() + " " + ci.getSubcontractorContact().getLastName());
             }
-             if (ci.getEmployee().getEmployeeType() != null) {
-                dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
-            }
             //etc
             table.getEntities().add(dto);
         }
