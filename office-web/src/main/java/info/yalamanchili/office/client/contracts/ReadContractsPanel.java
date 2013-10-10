@@ -72,7 +72,7 @@ public class ReadContractsPanel extends ReadComposite {
             assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
             assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
         }
-        if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+        if (is1099(entity)) {
             assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
@@ -83,6 +83,14 @@ public class ReadContractsPanel extends ReadComposite {
 
     protected boolean isSubContractor(JSONObject contractDto) {
         if ((JSONUtils.toString(contractDto, "employeeType")).equals("SUB_CONTRACTOR")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+     protected boolean is1099(JSONObject contractDto) {
+        if ((JSONUtils.toString(contractDto, "employeeType")).equals("1099")) {
             return true;
         } else {
             return false;
@@ -133,7 +141,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("w4Filled", true, false, DataType.BOOLEAN_FIELD);
         addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
         addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
-        if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+        if (isSubContractor(entity)) {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addField("subContractorName", true, false, DataType.STRING_FIELD);
             addField("subContractorContactName", true, false, DataType.STRING_FIELD);
@@ -143,7 +151,7 @@ public class ReadContractsPanel extends ReadComposite {
             addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD);
             addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD);
         }
-        if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+        if  (is1099(entity)) {
             entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
             addField("payRate1099", true, false, DataType.CURRENCY_FIELD);
             addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD);
