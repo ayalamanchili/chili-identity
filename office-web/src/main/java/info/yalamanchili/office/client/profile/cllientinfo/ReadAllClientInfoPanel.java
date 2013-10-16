@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -14,6 +15,7 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
@@ -126,8 +128,8 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "itemNumber"));
             table.setText(i, 5, JSONUtils.toString(entity, "billingRate"));
             table.setText(i, 6, JSONUtils.toString(entity, "invoiceFrequency"));
-            table.setText(i, 7, JSONUtils.toString(entity, "startDate"));
-            table.setText(i, 8, JSONUtils.toString(entity, "endDate"));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
     }
 }
