@@ -75,8 +75,8 @@
         </profile>
     </profiles>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-bpm</connection>
-        <url>http://yalamanchili.info:8080/projects/office/trunk/office-bpm</url>
+        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-bpm</connection>
+        <url>http://yalamanchili.info/projects/office/trunk/office-bpm</url>
     </scm> 
     <properties>
         <activiti-version>5.10</activiti-version>

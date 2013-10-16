@@ -33,7 +33,7 @@
         </dependency>
     </dependencies>
     <scm>
-        <connection>scm:svn:http://yalamanchili.info:8080/projects/office/trunk/office-ejb</connection>
-        <url>http://yalamanchili.info:8080/projects/office/trunk/office-ejb</url>
+        <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-ejb</connection>
+        <url>http://yalamanchili.info/projects/office/trunk/office-ejb</url>
     </scm> 
 </project>
