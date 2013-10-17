@@ -188,7 +188,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
         myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
 
-
     }
 
     public void selectTimeTab() {

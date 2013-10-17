@@ -88,8 +88,8 @@ public class ReadContractsPanel extends ReadComposite {
             return false;
         }
     }
-    
-     protected boolean is1099(JSONObject contractDto) {
+
+    protected boolean is1099(JSONObject contractDto) {
         if ((JSONUtils.toString(contractDto, "employeeType")).equals("1099")) {
             return true;
         } else {
@@ -151,7 +151,7 @@ public class ReadContractsPanel extends ReadComposite {
             addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD);
             addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD);
         }
-        if  (is1099(entity)) {
+        if (is1099(entity)) {
             entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
             addField("payRate1099", true, false, DataType.CURRENCY_FIELD);
             addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD);

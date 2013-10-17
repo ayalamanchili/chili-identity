@@ -31,4 +31,3 @@ public class UpdateSubcontractorContactPanel extends UpdateContactPanel {
         TabPanel.instance().adminPanel.entityPanel.add(new SubcontractorContactOptionsPanel());
     }
 }
-

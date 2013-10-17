@@ -60,16 +60,16 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         HttpService.HttpServiceAsync.instance().doGet(getReportURL(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                Window.alert(arg0.getLocalizedMessage());
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        Window.alert(arg0.getLocalizedMessage());
+                    }
 
-            @Override
-            public void onSuccess(String resp) {
-                Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + resp, "_blank", "");
-            }
-        });
+                    @Override
+                    public void onSuccess(String resp) {
+                        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + resp, "_blank", "");
+                    }
+                });
     }
 
     protected String getReportFormat() {

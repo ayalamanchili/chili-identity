@@ -11,28 +11,29 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AppsPanel extends Composite {
-	private static AppsPanel instance;
 
-	public static AppsPanel instance() {
-		return instance;
-	}
+    private static AppsPanel instance;
 
-	@UiField
-	public StackLayoutPanel appsPanel;
+    public static AppsPanel instance() {
+        return instance;
+    }
 
-	private static AppsPanelUiBinder uiBinder = GWT
-			.create(AppsPanelUiBinder.class);
+    @UiField
+    public StackLayoutPanel appsPanel;
 
-	interface AppsPanelUiBinder extends UiBinder<Widget, AppsPanel> {
-	}
+    private static AppsPanelUiBinder uiBinder = GWT
+            .create(AppsPanelUiBinder.class);
 
-	public AppsPanel() {
-		instance = this;
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    interface AppsPanelUiBinder extends UiBinder<Widget, AppsPanel> {
+    }
 
-	public AppsPanel(String firstName) {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public AppsPanel() {
+        instance = this;
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public AppsPanel(String firstName) {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
 }

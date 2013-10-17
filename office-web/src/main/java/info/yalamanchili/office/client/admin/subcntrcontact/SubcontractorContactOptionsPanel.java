@@ -55,4 +55,3 @@ public class SubcontractorContactOptionsPanel extends ALComposite implements Cli
         }
     }
 }
-

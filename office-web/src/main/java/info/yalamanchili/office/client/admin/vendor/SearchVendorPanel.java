@@ -89,12 +89,12 @@ public class SearchVendorPanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    processSearchResult(result);
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
 //                searchTB.setText("");
-                }
-            });
+                        }
+                    });
         }
     }
 
@@ -104,11 +104,11 @@ public class SearchVendorPanel extends SearchComposite {
         logger.info("ggggg" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
 
     }
 

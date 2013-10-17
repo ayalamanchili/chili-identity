@@ -40,7 +40,7 @@
 
     <source path='client' />
     
-     <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
+    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
     
     <inherits name="com.google.gwt.precompress.Precompress"/>
     

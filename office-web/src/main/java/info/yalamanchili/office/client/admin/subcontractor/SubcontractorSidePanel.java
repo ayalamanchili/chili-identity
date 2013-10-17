@@ -42,7 +42,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addWidgets() {
-       if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
             subcontractorSidePanel.add(createSubcontractorLink);
         }
         subcontractorSidePanel.add(new SearchSubcontractorPanel());
@@ -56,4 +56,3 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         }
     }
 }
-

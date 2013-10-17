@@ -128,11 +128,11 @@ public class SessionTimeoutMonitor {
 
         activityHandlerRegistration = Event
                 .addNativePreviewHandler(new Event.NativePreviewHandler() {
-            @Override
-            public void onPreviewNativeEvent(NativePreviewEvent event) {
-                keepSessionAlive();
-            }
-        });
+                    @Override
+                    public void onPreviewNativeEvent(NativePreviewEvent event) {
+                        keepSessionAlive();
+                    }
+                });
     }
 
     public int keepSessionAlive(int flag) {

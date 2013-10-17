@@ -30,11 +30,11 @@ public class MultiSelectEmployeeWidget extends MultiSelectComposite {
     protected void loadData() {
         HttpService.HttpServiceAsync.instance().doGet(getMultiSelectUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                multiSelectBox.popuplateWidget("Employees", multiSelectBox.getMultiSelectBox(arg0));
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        multiSelectBox.popuplateWidget("Employees", multiSelectBox.getMultiSelectBox(arg0));
+                    }
+                });
     }
 
     @Override

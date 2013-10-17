@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class EntityLayout extends Composite {
 
     private static EntityLayout instance;
-    
+
     public static EntityLayout instance() {
         return instance;
     }
@@ -30,22 +30,22 @@ public class EntityLayout extends Composite {
     public FlowPanel entityPanel;
     private static EntityLayoutUiBinder uiBinder = GWT
             .create(EntityLayoutUiBinder.class);
-    
+
     interface EntityLayoutUiBinder extends UiBinder<Widget, EntityLayout> {
     }
-    
+
     public EntityLayout() {
         instance = this;
         initWidget(uiBinder.createAndBindUi(this));
         entityTitlePanel.addStyleName("entityTitlePanel");
     }
-    
+
     public void clear() {
         sidePanelTop.clear();
         sidePanelBottom.clear();
         entityPanel.clear();
     }
-    
+
     public void clearAll() {
         entityTitlePanel.clear();
         sidePanelTop.clear();

@@ -70,5 +70,3 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel {
         return OfficeWelcome.constants.root_url() + "subcontractor/location/add/" + TreeSubcontractorPanel.instance().getEntityId();
     }
 }
-
-

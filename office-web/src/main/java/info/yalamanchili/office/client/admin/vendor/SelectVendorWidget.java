@@ -12,14 +12,13 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
 
-
 /**
  *
  * @author raghu
  */
 public class SelectVendorWidget extends SelectComposite {
 
-     private static SelectVendorWidget instance;
+    private static SelectVendorWidget instance;
 
     public static SelectVendorWidget instance() {
         return instance;
@@ -29,15 +28,16 @@ public class SelectVendorWidget extends SelectComposite {
         super(OfficeWelcome.constants, "Vendor", readOnly, isRequired);
         instance = this;
     }
+
     @Override
     protected void fetchDropDownData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 2000, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                processData(entityString);
-            }
-        });
+                    @Override
+                    public void onResponse(String entityString) {
+                        processData(entityString);
+                    }
+                });
     }
 
     @Override
@@ -49,5 +49,5 @@ public class SelectVendorWidget extends SelectComposite {
     protected void validate() {
         clearMessage();
     }
-    
+
 }

@@ -26,22 +26,22 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllCommunicationActivityPanel.class.getName());
     public static ReadAllCommunicationActivityPanel instance;
-    
+
     public ReadAllCommunicationActivityPanel(String employeeId) {
         instance = this;
         this.parentId = employeeId;
         initTable("Activity", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadCommunicationActivityPanel(entityId));
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -52,22 +52,22 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "communication_activity/delete/" + entityId;
     }
-    
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted CommunicationActivity Data");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllCommunicationActivityPanel(parentId));
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllPracticeURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
@@ -78,11 +78,11 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     private String getReadAllPracticeURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "communication_activity/" + parentId + "/" + start.toString() + "/" + limit.toString();
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -93,7 +93,7 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("AddedBy"));
         table.setText(0, 6, getKeyValue("Last Updated"));
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -107,7 +107,7 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
             table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
