@@ -23,27 +23,26 @@ import java.util.logging.Logger;
  * @author Bapuji
  */
 public class CreatePhoneTypePanel extends CreateComposite {
-    
+
     private static Logger logger = Logger.getLogger(CreatePhoneTypePanel.class.getName());
 
     public CreatePhoneTypePanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("PhoneType", OfficeWelcome.constants);
     }
-     @Override
+
+    @Override
     public JSONObject populateEntityFromFields() {
-         
-         JSONObject phonetype=new JSONObject();
-         
+
+        JSONObject phonetype = new JSONObject();
+
         assignEntityValueFromField("phoneType", phonetype);
-         logger.info(phonetype.toString());
-         return phonetype;
-         
-        
+        logger.info(phonetype.toString());
+        return phonetype;
 
     }
-     
-     @Override
+
+    @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
@@ -60,8 +59,8 @@ public class CreatePhoneTypePanel extends CreateComposite {
                 });
 
     }
-     
-     @Override
+
+    @Override
     protected void addButtonClicked() {
     }
 
@@ -85,8 +84,7 @@ public class CreatePhoneTypePanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("phoneType", false, true, DataType.STRING_FIELD);
-        
-        
+
     }
 
     @Override
@@ -97,6 +95,5 @@ public class CreatePhoneTypePanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "phonetype";
     }
-    
-    
+
 }

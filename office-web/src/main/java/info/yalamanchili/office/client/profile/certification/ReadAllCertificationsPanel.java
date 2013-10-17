@@ -78,7 +78,6 @@ public class ReadAllCertificationsPanel extends CRUDReadAllComposite {
 
         }
 
-
     }
 
     @Override

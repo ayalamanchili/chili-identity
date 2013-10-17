@@ -30,11 +30,11 @@ public class SelectEmployeeTypeWidget extends SelectComposite {
     protected void fetchDropDownData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                processData(entityString);
-            }
-        });
+                    @Override
+                    public void onResponse(String entityString) {
+                        processData(entityString);
+                    }
+                });
     }
 
     @Override

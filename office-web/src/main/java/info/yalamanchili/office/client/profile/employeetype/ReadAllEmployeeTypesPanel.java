@@ -23,7 +23,6 @@ import java.util.logging.Logger;
  *
  * @author bala
  */
-
 public class ReadAllEmployeeTypesPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllEmployeeTypesPanel.class.getName());
@@ -72,7 +71,6 @@ public class ReadAllEmployeeTypesPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
 
         }
-
 
     }
 

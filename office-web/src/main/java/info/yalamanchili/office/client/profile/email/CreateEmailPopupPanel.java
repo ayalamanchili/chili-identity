@@ -10,17 +10,20 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 public class CreateEmailPopupPanel extends CreateEmailPanel {
-	 public CreateEmailPopupPanel(CreateComposite.CreateCompositeType type) {
-	        super(type);
-	    }
-	 @Override
-	    protected String getURI() {
-	        return OfficeWelcome.constants.root_url() + "employee/email/" + OfficeWelcome.instance().employeeId;
-	    }
-	 @Override
-	    protected void postCreateSuccess(String result) {
-             new ResponseStatusWidget().show("Successfully Added Employee Email");
-             GenericPopup.instance().hide();
-             ProfileHome.instance().refreshEmails();
-	    }
+
+    public CreateEmailPopupPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
+    }
+
+    @Override
+    protected String getURI() {
+        return OfficeWelcome.constants.root_url() + "employee/email/" + OfficeWelcome.instance().employeeId;
+    }
+
+    @Override
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Added Employee Email");
+        GenericPopup.instance().hide();
+        ProfileHome.instance().refreshEmails();
+    }
 }

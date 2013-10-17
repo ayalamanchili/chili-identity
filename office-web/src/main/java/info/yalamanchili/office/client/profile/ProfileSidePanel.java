@@ -13,31 +13,31 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class ProfileSidePanel extends ALComposite implements ClickHandler {
 
-	private static Logger logger = Logger.getLogger(ProfileSidePanel.class.getName());
+    private static Logger logger = Logger.getLogger(ProfileSidePanel.class.getName());
 
-	public FlowPanel adminSidePanel = new FlowPanel();
+    public FlowPanel adminSidePanel = new FlowPanel();
 
-	public ProfileSidePanel() {
-		init(adminSidePanel);
-	}
+    public ProfileSidePanel() {
+        init(adminSidePanel);
+    }
 
-	@Override
-	public void onClick(ClickEvent clickEvent) {
+    @Override
+    public void onClick(ClickEvent clickEvent) {
 
-	}
+    }
 
-	@Override
-	protected void addListeners() {
-	}
+    @Override
+    protected void addListeners() {
+    }
 
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void configure() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	protected void addWidgets() {
+    @Override
+    protected void addWidgets() {
 
-	}
+    }
 }

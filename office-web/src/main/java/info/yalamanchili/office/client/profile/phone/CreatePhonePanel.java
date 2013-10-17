@@ -92,7 +92,7 @@ public class CreatePhonePanel extends CreateComposite {
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/phone/" + TreeEmployeePanel.instance().getEntityId();

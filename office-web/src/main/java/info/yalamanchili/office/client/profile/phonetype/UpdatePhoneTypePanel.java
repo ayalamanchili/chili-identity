@@ -22,39 +22,40 @@ import info.chili.gwt.rpc.HttpService;
  * @author Bapuji
  */
 public class UpdatePhoneTypePanel extends UpdateComposite {
-    
+
     public UpdatePhoneTypePanel(JSONObject entity) {
         initUpdateComposite(entity, "PhoneType", OfficeWelcome.constants);
     }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("phoneType", entity);
-       
-        
+
         return entity;
     }
-     @Override
+
+    @Override
     protected void updateButtonClicked() {
         // OfficeWelcome.logger.info("dddd"+entity);
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
 
     }
-     @Override
+
+    @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-       assignFieldValueFromEntity("phoneType", entity, DataType.STRING_FIELD);
-        
-       
+        assignFieldValueFromEntity("phoneType", entity, DataType.STRING_FIELD);
+
     }
 
     @Override
@@ -63,6 +64,7 @@ public class UpdatePhoneTypePanel extends UpdateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhoneTypePanel());
     }
+
     @Override
     protected void addListeners() {
     }
@@ -73,9 +75,8 @@ public class UpdatePhoneTypePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-       addField("phoneType", false, true, DataType.STRING_FIELD);
-        
-        
+        addField("phoneType", false, true, DataType.STRING_FIELD);
+
     }
 
     @Override

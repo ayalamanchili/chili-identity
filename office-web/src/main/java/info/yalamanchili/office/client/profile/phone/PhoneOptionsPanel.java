@@ -15,39 +15,39 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class PhoneOptionsPanel extends ALComposite implements ClickHandler {
 
-	protected HorizontalPanel panel = new HorizontalPanel();
+    protected HorizontalPanel panel = new HorizontalPanel();
 
-	protected ClickableLink addPhonelLink = new ClickableLink("Add Phone");
+    protected ClickableLink addPhonelLink = new ClickableLink("Add Phone");
 
-	public PhoneOptionsPanel() {
-		init(panel);
-	}
+    public PhoneOptionsPanel() {
+        init(panel);
+    }
 
-	@Override
-	protected void addListeners() {
-		addPhonelLink.addClickHandler(this);
-	}
+    @Override
+    protected void addListeners() {
+        addPhonelLink.addClickHandler(this);
+    }
 
-	@Override
-	protected void configure() {
-		// TODO move this to common css
-		panel.setSpacing(5);
+    @Override
+    protected void configure() {
+        // TODO move this to common css
+        panel.setSpacing(5);
 
-	}
+    }
 
-	@Override
-	protected void addWidgets() {
-		if (Auth.isAdmin() || Auth.isHR()) {
-			panel.add(addPhonelLink);
-		}
+    @Override
+    protected void addWidgets() {
+        if (Auth.isAdmin() || Auth.isHR()) {
+            panel.add(addPhonelLink);
+        }
 
-	}
+    }
 
-	@Override
-	public void onClick(ClickEvent arg0) {
-		if (arg0.getSource().equals(addPhonelLink)) {
-			TabPanel.instance().myOfficePanel.entityPanel.clear();
-			TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhonePanel(CreateCompositeType.ADD));
-		}
-	}
+    @Override
+    public void onClick(ClickEvent arg0) {
+        if (arg0.getSource().equals(addPhonelLink)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhonePanel(CreateCompositeType.ADD));
+        }
+    }
 }

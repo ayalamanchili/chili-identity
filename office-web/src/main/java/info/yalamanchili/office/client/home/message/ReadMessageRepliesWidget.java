@@ -81,4 +81,3 @@ public class ReadMessageRepliesWidget extends ALComposite implements OpenHandler
         getReplies();
     }
 }
-

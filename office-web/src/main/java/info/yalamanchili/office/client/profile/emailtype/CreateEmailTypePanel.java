@@ -23,25 +23,26 @@ import java.util.logging.Logger;
  * @author raghu
  */
 public class CreateEmailTypePanel extends CreateComposite {
-private static Logger logger = Logger.getLogger(CreateEmailTypePanel.class.getName());
-    public CreateEmailTypePanel(CreateComposite.CreateCompositeType type)
-    {
+
+    private static Logger logger = Logger.getLogger(CreateEmailTypePanel.class.getName());
+
+    public CreateEmailTypePanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("EmailType", OfficeWelcome.constants);
     }
-            
+
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject emailtype=new JSONObject();
-         
+        JSONObject emailtype = new JSONObject();
+
         assignEntityValueFromField("emailType", emailtype);
-         logger.info(emailtype.toString());
-         return emailtype;
+        logger.info(emailtype.toString());
+        return emailtype;
     }
 
     @Override
     protected void createButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -59,7 +60,7 @@ private static Logger logger = Logger.getLogger(CreateEmailTypePanel.class.getNa
 
     @Override
     protected void addButtonClicked() {
-        
+
     }
 
     @Override
@@ -73,12 +74,12 @@ private static Logger logger = Logger.getLogger(CreateEmailTypePanel.class.getNa
 
     @Override
     protected void addListeners() {
-       
+
     }
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
@@ -88,12 +89,12 @@ private static Logger logger = Logger.getLogger(CreateEmailTypePanel.class.getNa
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
+
     }
 
     @Override
     protected String getURI() {
-         return OfficeWelcome.constants.root_url() + "emailtype";
+        return OfficeWelcome.constants.root_url() + "emailtype";
     }
-    
+
 }

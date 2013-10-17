@@ -22,6 +22,7 @@ import info.chili.gwt.utils.JSONUtils;
 import java.util.HashMap;
 import java.util.Map;
 //TODO extend tree item?
+
 public abstract class TreePanelComposite extends Composite implements SelectionHandler<TreeItem>, OpenHandler<TreeItem> {
 
     Logger logger = Logger.getLogger(TreePanelComposite.class.getName());
@@ -98,7 +99,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     @Override
     public void onOpen(OpenEvent<TreeItem> event) {
         for (String key : childTreeWidgets.keySet()) {
-            if (event.getTarget().getUserObject()!= null && key.equalsIgnoreCase(event.getTarget().getUserObject().toString())) {
+            if (event.getTarget().getUserObject() != null && key.equalsIgnoreCase(event.getTarget().getUserObject().toString())) {
                 TreePanelComposite child = childTreeWidgets.get(key);
                 child.loadEntity();
             }

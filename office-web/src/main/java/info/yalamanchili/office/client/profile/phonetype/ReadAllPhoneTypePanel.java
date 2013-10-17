@@ -14,7 +14,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.chili.gwt.crud.CRUDReadAllComposite ;
+import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
 import info.yalamanchili.office.client.profile.certification.UpdateCertificationPanel;
@@ -26,20 +26,20 @@ import java.util.logging.Logger;
  * @author Bapuji
  */
 public class ReadAllPhoneTypePanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllPhoneTypePanel.class.getName());
     public static ReadAllPhoneTypePanel instance;
-    
+
     public ReadAllPhoneTypePanel() {
         instance = this;
         initTable("PhoneType", OfficeWelcome.constants);
     }
-    
+
     public ReadAllPhoneTypePanel(JSONArray array) {
         instance = this;
         initTable("PhoneType", array, OfficeWelcome.constants);
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllPhoneTypeURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
@@ -51,33 +51,31 @@ public class ReadAllPhoneTypePanel extends CRUDReadAllComposite {
                 });
 
     }
-    
-     public String getReadAllPhoneTypeURL(Integer start, String limit) {
+
+    public String getReadAllPhoneTypeURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "phonetype/" + start.toString() + "/" + limit.toString();
     }
-     
-     @Override
+
+    @Override
     public void createTableHeader() {
 
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("phoneType"));
-        
-        
+
     }
-     @Override
+
+    @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-           table.setText(i, 1, JSONUtils.toString(entity, "phoneType"));
-           
-            
+            table.setText(i, 1, JSONUtils.toString(entity, "phoneType"));
 
         }
 
-
     }
-      @Override
+
+    @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
     }
@@ -97,13 +95,15 @@ public class ReadAllPhoneTypePanel extends CRUDReadAllComposite {
                     }
                 });
     }
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "phonetype/delete/" + entityId;
     }
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Phonetype Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear(); 
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhoneTypePanel());
     }
 
@@ -112,5 +112,5 @@ public class ReadAllPhoneTypePanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePhoneTypePanel(getEntity(entityId)));
     }
-    
+
 }

@@ -62,8 +62,8 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
         if (event.getSource().equals(createFileL)) {
             newFileLinkClicked();
         }
-        if(event.getSource().equals(deleteFolderL)){
-           deleteFolderLinkClicked();
+        if (event.getSource().equals(deleteFolderL)) {
+            deleteFolderLinkClicked();
         }
     }
 
@@ -74,22 +74,21 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     protected void newFileLinkClicked() {
         new GenericPopup(new CreateFilePanel()).show();
     }
-      protected void deleteFolderLinkClicked() {
-         if (Window.confirm("Are you sure? Folder and all files in this folder will be deleted")) {
+
+    protected void deleteFolderLinkClicked() {
+        if (Window.confirm("Are you sure? Folder and all files in this folder will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                       @Override
+                        @Override
                         public void onResponse(String arg0) {
-                            new ResponseStatusWidget().show("Successfully Deleted Folder"); 
-                             DriveTreePanel.instance().refresh();
+                            new ResponseStatusWidget().show("Successfully Deleted Folder");
+                            DriveTreePanel.instance().refresh();
                         }
                     });
-         }
+        }
     }
-      
-   
-   
-     private String getDeleteURL() {
+
+    private String getDeleteURL() {
         return OfficeWelcome.instance().constants.root_url() + "drive/folder/delete/" + DriveTreePanel.instance().getSelectedNode().getEntityId();
     }
 

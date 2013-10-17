@@ -21,7 +21,7 @@ import info.yalamanchili.office.client.drive.DriveFolderOptionsWidget;
  * @author yphanikumar
  */
 public class TreeEntityItem extends TreeItem {
-    
+
     protected JSONObject entity;
     protected String entityId;
     protected String key;
@@ -31,36 +31,36 @@ public class TreeEntityItem extends TreeItem {
             rightClick(event);
         }
     };
-    
+
     public TreeEntityItem(ConstantsWithLookup constants, String key, JSONObject entity) {
         super();
         super.setWidget(itemWIdget);
         itemWIdget.setText(Utils.getKeyValue(key, constants));
         this.key = key;
         this.entity = entity;
-        
+
     }
-    
+
     public TreeEntityItem(ConstantsWithLookup constants, String key, String entityId) {
         super();
         super.setWidget(itemWIdget);
         itemWIdget.setText(Utils.getKeyValue(key, constants));
         this.key = key;
         this.entityId = entityId;
-        
+
     }
-    
+
     public JSONObject getEntity() {
         return entity;
     }
-    
+
     public String getEntityId() {
         if (entityId == null) {
             return JSONUtils.toString(entity, "id");
         }
         return entityId;
     }
-    
+
     public String getKey() {
         return key;
     }

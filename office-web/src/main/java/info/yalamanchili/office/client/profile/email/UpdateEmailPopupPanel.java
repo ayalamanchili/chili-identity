@@ -10,14 +10,15 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 
 public class UpdateEmailPopupPanel extends UpdateEmailPanel {
-	 public UpdateEmailPopupPanel(JSONObject entity) {
-	        super(entity);
-	    }
 
-	    @Override
-	    protected void postUpdateSuccess(String result) {
-                new ResponseStatusWidget().show("Successfully Updated Email Information");
-	        GenericPopup.instance().hide();
-	        ProfileHome.instance().refreshEmails();
-	    }
+    public UpdateEmailPopupPanel(JSONObject entity) {
+        super(entity);
+    }
+
+    @Override
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Updated Email Information");
+        GenericPopup.instance().hide();
+        ProfileHome.instance().refreshEmails();
+    }
 }

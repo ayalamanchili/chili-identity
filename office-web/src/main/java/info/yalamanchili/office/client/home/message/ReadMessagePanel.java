@@ -85,7 +85,6 @@ public class ReadMessagePanel extends ALComposite implements ClickHandler {
             messageStatusPanel.setText(poststatus + " Sent: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
         }
 
-
     }
 
     @Override
@@ -136,11 +135,11 @@ public class ReadMessagePanel extends ALComposite implements ClickHandler {
         if (arg0.getSource().equals(deleteLink)) {
             HttpService.HttpServiceAsync.instance().doPut(getdeleteURL(), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess(arg0);
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess(arg0);
+                        }
+                    });
         }
     }
 

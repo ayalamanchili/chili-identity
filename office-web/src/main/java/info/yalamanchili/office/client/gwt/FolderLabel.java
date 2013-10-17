@@ -29,20 +29,20 @@ import info.yalamanchili.office.client.resources.OfficeImages;
  * Label with right click enabled
  */
 public abstract class FolderLabel extends Label implements ContextMenuHandler {
-    
+
     public FolderLabel() {
         this.addDomHandler(this, ContextMenuEvent.getType());
         this.addStyleName("folderLabel");
     }
-    
+
     @Override
     public void onContextMenu(ContextMenuEvent event) {
         // stop the browser from opening the context menu
         event.preventDefault();
         event.stopPropagation();
         handleRightClick(event);
-        
+
     }
-    
+
     public abstract void handleRightClick(ContextMenuEvent event);
 }

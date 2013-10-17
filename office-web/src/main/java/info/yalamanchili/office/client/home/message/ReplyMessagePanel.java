@@ -44,12 +44,12 @@ public class ReplyMessagePanel extends ALComposite implements ClickHandler {
         replyMessage.put("message", new JSONString(replyBodyArea.getValue()));
         HttpService.HttpServiceAsync.instance().doPut(sendReplyURL(), replyMessage.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                new ResponseStatusWidget().show("reply sent");
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("reply sent");
 
-            }
-        });
+                    }
+                });
         panel.getParent().removeFromParent();
     }
 

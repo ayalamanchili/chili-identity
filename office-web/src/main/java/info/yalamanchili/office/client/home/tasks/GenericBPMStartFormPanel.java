@@ -26,16 +26,16 @@ public class GenericBPMStartFormPanel extends GenericBPMFormPanel {
         initCreateComposite(processName, OfficeWelcome.constants);
         HttpService.HttpServiceAsync.instance().doGet(getStartFormPropertiesURL(processId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                //TODO weird return check
-                if (result != null && !result.trim().toString().equals("null")) {
-                    GenericBPMStartFormPanel.this.processId = processId;
-                    GenericBPMStartFormPanel.this.formProperties = JSONUtils.convertFormProperties(result);
-                    addWidgets();
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        //TODO weird return check
+                        if (result != null && !result.trim().toString().equals("null")) {
+                            GenericBPMStartFormPanel.this.processId = processId;
+                            GenericBPMStartFormPanel.this.formProperties = JSONUtils.convertFormProperties(result);
+                            addWidgets();
+                        }
+                    }
+                });
     }
 
     protected String getStartFormPropertiesURL(String processId) {

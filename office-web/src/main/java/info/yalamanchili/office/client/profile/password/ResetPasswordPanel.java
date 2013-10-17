@@ -37,8 +37,8 @@ public class ResetPasswordPanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject rstpassword = new JSONObject();
         assignEntityValueFromField("newPassword", rstpassword);
-        rstpassword.put("userName",new JSONString("dummy"));
-        rstpassword.put("oldPassword",new JSONString("abcde"));
+        rstpassword.put("userName", new JSONString("dummy"));
+        rstpassword.put("oldPassword", new JSONString("abcde"));
         return rstpassword;
     }
 

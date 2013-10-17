@@ -8,12 +8,8 @@
 package info.yalamanchili.office.client.profile.cllientinfo;
 
 import com.google.gwt.json.client.JSONObject;
-import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.widgets.GenericPopup;
-import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.yalamanchili.office.client.profile.ProfileHome;
+import info.chili.gwt.utils.JSONUtils;
 
 /**
  *

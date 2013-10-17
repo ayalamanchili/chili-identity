@@ -82,15 +82,15 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     private void populateTaskForm() {
         HttpService.HttpServiceAsync.instance().doGet(getTaskFormPropertiesURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                renderTaskFormPanel(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        renderTaskFormPanel(result);
+                    }
+                });
     }
 
     protected void renderTaskFormPanel(String result) {
-        logger.info("dddd"+result);
+        logger.info("dddd" + result);
         if (result != null && !result.trim().toString().equals("null")) {
             panel.add(new GenericBPMTaskFormPanel("Fill_the_form_and_complete_the_task", taskId, JSONUtils.convertFormProperties(result)));
             completeB.setVisible(false);
@@ -156,49 +156,49 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     protected void claimClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getClaimTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Task Claimed");
-                TabPanel.instance().getHomePanel().entityPanel.clear();
-                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Claimed");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
     }
 
     protected void resolveClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getResolveTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Task Resolved");
-                TabPanel.instance().getHomePanel().entityPanel.clear();
-                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Resolved");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
     }
 
     protected void completeClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getCompleteTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Task Completed");
-                TabPanel.instance().getHomePanel().entityPanel.clear();
-                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Completed");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
     }
 
     protected void deleteClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getDeleteTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Task Deleted");
-                TabPanel.instance().getHomePanel().entityPanel.clear();
-                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Deleted");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
     }
 
     protected String getClaimTaskURL(String taskId) {

@@ -28,11 +28,11 @@ public class EmailTypeSidePanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(EmailTypeSidePanel.class.getName());
     public FlowPanel emailTypeSidePanel = new FlowPanel();
     ClickableLink createEmailTypeLink = new ClickableLink("Create EmailType");
-    
-     public EmailTypeSidePanel()
-    {
-      init(emailTypeSidePanel);
+
+    public EmailTypeSidePanel() {
+        init(emailTypeSidePanel);
     }
+
     @Override
     protected void addListeners() {
         createEmailTypeLink.addClickHandler(this);
@@ -40,22 +40,22 @@ public class EmailTypeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
     protected void addWidgets() {
-         if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isHR()) {
             emailTypeSidePanel.add(createEmailTypeLink);
         }
     }
 
     @Override
     public void onClick(ClickEvent event) {
-         if (event.getSource().equals(createEmailTypeLink)) {
+        if (event.getSource().equals(createEmailTypeLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmailTypePanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
-    
+
 }

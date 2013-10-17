@@ -86,12 +86,12 @@ public class SearchDrivePanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    logger.info(result);
-                    processSearchResult(result);
-                }
-            });
+                        @Override
+                        public void onResponse(String result) {
+                            logger.info(result);
+                            processSearchResult(result);
+                        }
+                    });
         }
     }
 

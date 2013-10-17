@@ -69,17 +69,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadImage(JSONUtils.toString(entity, "id"));
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(JSONUtils.toString(entity, "id"));
 
-            }
-        });
+                    }
+                });
 
     }
 

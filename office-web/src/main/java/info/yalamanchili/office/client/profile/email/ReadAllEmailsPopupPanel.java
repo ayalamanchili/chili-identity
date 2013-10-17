@@ -8,7 +8,6 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 
-
 import info.yalamanchili.office.client.profile.ProfileHome;
 
 import com.google.gwt.json.client.JSONObject;

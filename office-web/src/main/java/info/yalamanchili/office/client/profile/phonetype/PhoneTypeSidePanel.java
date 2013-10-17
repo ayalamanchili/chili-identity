@@ -25,20 +25,20 @@ import java.util.logging.Logger;
  * @author Bapuji
  */
 public class PhoneTypeSidePanel extends ALComposite implements ClickHandler {
-    
-    
-    private static Logger logger=Logger.getLogger(PhoneTypeSidePanel.class.getName());
-    public FlowPanel phonetypesidepanel=new FlowPanel();
-    ClickableLink createphonetypelink= new ClickableLink("Create PhoneType");
-    
-    public PhoneTypeSidePanel(){
+
+    private static Logger logger = Logger.getLogger(PhoneTypeSidePanel.class.getName());
+    public FlowPanel phonetypesidepanel = new FlowPanel();
+    ClickableLink createphonetypelink = new ClickableLink("Create PhoneType");
+
+    public PhoneTypeSidePanel() {
         init(phonetypesidepanel);
     }
-    
-     @Override
+
+    @Override
     protected void addListeners() {
         createphonetypelink.addClickHandler(this);
     }
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
@@ -59,5 +59,5 @@ public class PhoneTypeSidePanel extends ALComposite implements ClickHandler {
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePhoneTypePanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
-    
+
 }

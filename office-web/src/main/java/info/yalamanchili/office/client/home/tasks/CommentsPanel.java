@@ -55,11 +55,11 @@ public class CommentsPanel extends ALComposite implements ClickHandler {
     protected void getComments() {
         HttpService.HttpServiceAsync.instance().doGet(getCommentsUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                populateComments(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        populateComments(result);
+                    }
+                });
     }
 
     protected void populateComments(String commentsResponse) {
@@ -105,13 +105,13 @@ public class CommentsPanel extends ALComposite implements ClickHandler {
             entity.put("fullMessage", new JSONString(commentTA.getValue()));
             HttpService.HttpServiceAsync.instance().doPut(getAddCommentUrl(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    new ResponseStatusWidget().show("Successfully added Comment");
-                    commentTA.setText("");
-                    getComments();
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            new ResponseStatusWidget().show("Successfully added Comment");
+                            commentTA.setText("");
+                            getComments();
+                        }
+                    });
         }
     }
 

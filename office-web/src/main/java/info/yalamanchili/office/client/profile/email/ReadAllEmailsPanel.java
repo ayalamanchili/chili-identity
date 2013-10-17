@@ -32,12 +32,12 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getEmployeeEmailsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
 
     }
 
@@ -85,11 +85,11 @@ public class ReadAllEmailsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override

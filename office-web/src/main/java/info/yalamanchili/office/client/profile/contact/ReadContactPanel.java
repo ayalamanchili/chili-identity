@@ -79,7 +79,7 @@ public class ReadContactPanel extends ReadComposite {
     }
 
     @Override
-    public void loadEntity(String entityId) {   
+    public void loadEntity(String entityId) {
     }
 
     @Override

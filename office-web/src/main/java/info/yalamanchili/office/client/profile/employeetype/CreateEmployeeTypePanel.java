@@ -16,11 +16,11 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
+
 /**
  *
  * @author bala
  */
-
 public class CreateEmployeeTypePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeeTypePanel.class.getName());

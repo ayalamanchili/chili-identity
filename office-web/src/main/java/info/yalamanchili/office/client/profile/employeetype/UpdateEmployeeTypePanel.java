@@ -20,13 +20,12 @@ import info.chili.gwt.rpc.HttpService;
  *
  * @author bala
  */
-
 public class UpdateEmployeeTypePanel extends UpdateComposite {
-    
+
     public UpdateEmployeeTypePanel(JSONObject entity) {
         initUpdateComposite(entity, "EmployeeType", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
@@ -36,19 +35,19 @@ public class UpdateEmployeeTypePanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-       // OfficeWelcome.logger.info("dddd"+entity);
+        // OfficeWelcome.logger.info("dddd"+entity);
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -61,18 +60,18 @@ public class UpdateEmployeeTypePanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee EmployeeType Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear(); 
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeeTypesPanel());
     }
 
     @Override
     protected void addListeners() {
-        
+
     }
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
@@ -83,14 +82,12 @@ public class UpdateEmployeeTypePanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
+
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employeetype";
     }
-    
-    
-    
+
 }

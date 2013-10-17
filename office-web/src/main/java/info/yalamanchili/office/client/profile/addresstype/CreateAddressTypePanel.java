@@ -26,12 +26,13 @@ import java.util.logging.Logger;
  */
 public class CreateAddressTypePanel extends CreateComposite {
 
-     private static Logger logger = Logger.getLogger(CreateAddressTypePanel.class.getName());
-     
-      public CreateAddressTypePanel(CreateComposite.CreateCompositeType type) {
+    private static Logger logger = Logger.getLogger(CreateAddressTypePanel.class.getName());
+
+    public CreateAddressTypePanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("AddressType", OfficeWelcome.constants);
     }
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject addressType = new JSONObject();
@@ -42,7 +43,7 @@ public class CreateAddressTypePanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-          HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -59,7 +60,7 @@ public class CreateAddressTypePanel extends CreateComposite {
 
     @Override
     protected void addButtonClicked() {
-        
+
     }
 
     @Override
@@ -73,27 +74,27 @@ public class CreateAddressTypePanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        
+
     }
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
     protected void addWidgets() {
-         addField("addressType", false, true, DataType.STRING_FIELD);
+        addField("addressType", false, true, DataType.STRING_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
+
     }
 
     @Override
     protected String getURI() {
-         return OfficeWelcome.constants.root_url() + "addresstype";
+        return OfficeWelcome.constants.root_url() + "addresstype";
     }
-    
+
 }

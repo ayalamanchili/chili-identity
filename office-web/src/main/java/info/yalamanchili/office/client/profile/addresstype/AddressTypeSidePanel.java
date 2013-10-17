@@ -24,14 +24,15 @@ import java.util.logging.Logger;
  * @author raghu
  */
 public class AddressTypeSidePanel extends ALComposite implements ClickHandler {
-private static Logger logger = Logger.getLogger(AddressTypeSidePanel.class.getName());
+
+    private static Logger logger = Logger.getLogger(AddressTypeSidePanel.class.getName());
     public FlowPanel addressTypeSidePanel = new FlowPanel();
     ClickableLink createAddressTypeLink = new ClickableLink("Create AddressType");
-   
-    public AddressTypeSidePanel()
-    {
-      init(addressTypeSidePanel);
+
+    public AddressTypeSidePanel() {
+        init(addressTypeSidePanel);
     }
+
     @Override
     protected void addListeners() {
         createAddressTypeLink.addClickHandler(this);
@@ -39,12 +40,12 @@ private static Logger logger = Logger.getLogger(AddressTypeSidePanel.class.getNa
 
     @Override
     protected void configure() {
-       
+
     }
 
     @Override
     protected void addWidgets() {
-         if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isHR()) {
             addressTypeSidePanel.add(createAddressTypeLink);
         }
     }
@@ -56,5 +57,5 @@ private static Logger logger = Logger.getLogger(AddressTypeSidePanel.class.getNa
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressTypePanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
-    
+
 }

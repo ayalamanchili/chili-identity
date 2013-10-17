@@ -66,7 +66,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     public TreeEmployeePanel(JSONObject emp) {
         super();
         instance = this;
-        this.entity=emp;
+        this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
@@ -162,26 +162,26 @@ public class TreeEmployeePanel extends TreePanelComposite {
             if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Successfully deactivated User");
-                    }
-                });
+                            @Override
+                            public void onResponse(String arg0) {
+                                new ResponseStatusWidget().show("Successfully deactivated User");
+                            }
+                        });
             }
 
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {
             HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
-                    if (arg0 != null && preferences != null) {
-                        TabPanel.instance().myOfficePanel.entityPanel.clear();
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePreferencesPanel(preferences));
-                    }
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
+                            if (arg0 != null && preferences != null) {
+                                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePreferencesPanel(preferences));
+                            }
+                        }
+                    });
 
         }
         if (ROLES_NODE.equals(entityNodeKey)) {
@@ -201,7 +201,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
 
     }
-    
+
     @Override
     public void loadEntity() {
     }

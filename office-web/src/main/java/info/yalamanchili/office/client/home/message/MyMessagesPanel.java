@@ -46,19 +46,19 @@ public class MyMessagesPanel extends ALComposite implements ClickHandler {
     public void loadMessages() {
         HttpService.HttpServiceAsync.instance().doGet(getMyMessagesURL(start, limit), OfficeWelcome.instance().getHeaders(),
                 true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                showMessages(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        showMessages(result);
+                    }
+                });
     }
 
     protected void showMessages(String result) {
         JSONObject messagesResp = (JSONObject) JSONParser.parseLenient(result).isObject();
         if (messagesResp != null) {
             JSONArray messages = JSONUtils.toJSONArray(messagesResp.get("Message"));
-            if(messages.size()<=0){
+            if (messages.size() <= 0) {
                 showMoreL.setText("No Messages");
             }
             for (int i = 0; i < messages.size(); i++) {

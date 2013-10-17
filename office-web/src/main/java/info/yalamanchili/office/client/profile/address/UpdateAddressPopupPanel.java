@@ -24,7 +24,7 @@ public class UpdateAddressPopupPanel extends UpdateAddressPanel {
 
     @Override
     protected void postUpdateSuccess(String result) {
-          new ResponseStatusWidget().show("Successfully Updated Employee Address");
+        new ResponseStatusWidget().show("Successfully Updated Employee Address");
         GenericPopup.instance().hide();
         ProfileHome.instance().refreshAddresses();
     }

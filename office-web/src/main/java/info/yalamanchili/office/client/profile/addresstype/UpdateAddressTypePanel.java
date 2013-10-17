@@ -22,35 +22,35 @@ import info.chili.gwt.rpc.HttpService;
  */
 public class UpdateAddressTypePanel extends UpdateComposite {
 
-     public UpdateAddressTypePanel(JSONObject entity) {
+    public UpdateAddressTypePanel(JSONObject entity) {
         initUpdateComposite(entity, "AddressType", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-         assignEntityValueFromField("addressType", entity);
-         return entity;
+        assignEntityValueFromField("addressType", entity);
+        return entity;
     }
 
     @Override
     protected void updateButtonClicked() {
-         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-       assignFieldValueFromEntity("addressType", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("addressType", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -62,12 +62,12 @@ public class UpdateAddressTypePanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
-       
+
     }
 
     @Override
     protected void configure() {
-       
+
     }
 
     @Override
@@ -77,12 +77,12 @@ public class UpdateAddressTypePanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-       
+
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "addresstype";
     }
-    
+
 }

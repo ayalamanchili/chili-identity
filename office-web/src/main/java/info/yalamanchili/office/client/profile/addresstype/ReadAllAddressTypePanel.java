@@ -23,8 +23,9 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class ReadAllAddressTypePanel extends CRUDReadAllComposite{
-     private static Logger logger = Logger.getLogger(ReadAllAddressTypePanel.class.getName());
+public class ReadAllAddressTypePanel extends CRUDReadAllComposite {
+
+    private static Logger logger = Logger.getLogger(ReadAllAddressTypePanel.class.getName());
     public static ReadAllAddressTypePanel instance;
 
     public ReadAllAddressTypePanel() {
@@ -68,7 +69,6 @@ public class ReadAllAddressTypePanel extends CRUDReadAllComposite{
             table.setText(i, 1, JSONUtils.toString(entity, "addressType"));
         }
 
-
     }
 
     @Override
@@ -91,6 +91,7 @@ public class ReadAllAddressTypePanel extends CRUDReadAllComposite{
                     }
                 });
     }
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "addresstype/delete/" + entityId;
     }
@@ -98,7 +99,7 @@ public class ReadAllAddressTypePanel extends CRUDReadAllComposite{
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Addresstype Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear(); 
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressTypePanel());
     }
 
