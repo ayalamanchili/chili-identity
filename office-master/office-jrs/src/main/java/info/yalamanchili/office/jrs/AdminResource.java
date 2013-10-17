@@ -124,7 +124,7 @@ public class AdminResource {
         Preferences prefs = new Preferences();
         prefs.setEnableEmailNotifications(Boolean.TRUE);
         emp.setPreferences(prefs);
-        
+
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("CORPORATE_EMPLOYEE")) {
             officeBPMIdentityService.createUser(employeeId);

@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * 
+ *
  * @author ayalamanchili
  */
 @Path("secured/company")
@@ -27,12 +27,12 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class CompanyResource extends CRUDResource<Company> {
 
-	@Autowired
-	public CompanyDao companyDao;
+    @Autowired
+    public CompanyDao companyDao;
 
-	@Override
-	public CRUDDao getDao() {
-		return companyDao;
-	}
+    @Override
+    public CRUDDao getDao() {
+        return companyDao;
+    }
 
 }

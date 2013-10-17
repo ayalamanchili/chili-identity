@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author bala

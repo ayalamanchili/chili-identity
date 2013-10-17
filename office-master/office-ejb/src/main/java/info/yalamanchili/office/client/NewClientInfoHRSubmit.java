@@ -26,7 +26,7 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
         Object joiningReport = execution.getVariable("joiningReport");
-       
+
         if (joiningReport != null) {
             ci.setJoiningReport(joiningReport.toString());
         }
@@ -34,24 +34,24 @@ public class NewClientInfoHRSubmit implements JavaDelegate {
         if (hrOrientation != null) {
             ci.setHrOrientation(Boolean.parseBoolean(hrOrientation.toString()));
         }
-         Object accDocs = execution.getVariable("accountVerificationDocs");
-        if(accDocs!=null)        {
-           ci.setAccountVerificationDocs(Boolean.parseBoolean(accDocs.toString()));
+        Object accDocs = execution.getVariable("accountVerificationDocs");
+        if (accDocs != null) {
+            ci.setAccountVerificationDocs(Boolean.parseBoolean(accDocs.toString()));
         }
-       
+
         Object i9Fill = execution.getVariable("i9Filled");
-        if(i9Fill!=null)        {
-           ci.setI9Filled(Boolean.parseBoolean(i9Fill.toString()));
+        if (i9Fill != null) {
+            ci.setI9Filled(Boolean.parseBoolean(i9Fill.toString()));
         }
-         Object w4Fill = execution.getVariable("w4Filled");
-        if(w4Fill!=null)        {
-           ci.setW4Filled(Boolean.parseBoolean(w4Fill.toString()));
+        Object w4Fill = execution.getVariable("w4Filled");
+        if (w4Fill != null) {
+            ci.setW4Filled(Boolean.parseBoolean(w4Fill.toString()));
         }
-          Object logisticsPrep = execution.getVariable("logisticsPreparation");
-        if(logisticsPrep!=null)        {
-           ci.setLogisticsPreparation(Boolean.parseBoolean(logisticsPrep.toString()));
+        Object logisticsPrep = execution.getVariable("logisticsPreparation");
+        if (logisticsPrep != null) {
+            ci.setLogisticsPreparation(Boolean.parseBoolean(logisticsPrep.toString()));
         }
-       
+
         ClientInformationDao.instance().save(ci);
     }
 }

@@ -24,8 +24,6 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class SkillSetDao extends CRUDDao<SkillSet> {
 
-    
-    
     @PersistenceContext
     protected EntityManager em;
 
@@ -33,8 +31,9 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
     public EntityManager getEntityManager() {
         return em;
     }
+
     public SkillSetDao() {
         super(SkillSet.class);
     }
-   
+
 }

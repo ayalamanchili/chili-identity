@@ -31,8 +31,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Audited
-@Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"phoneType"}))
+@Table(uniqueConstraints
+        = @UniqueConstraint(columnNames = {"phoneType"}))
 @Unique(entity = PhoneType.class, fields = {"phoneType"}, message = "{phonetype.name.not.unique.msg}")
 public class PhoneType extends AbstractEntity {
 

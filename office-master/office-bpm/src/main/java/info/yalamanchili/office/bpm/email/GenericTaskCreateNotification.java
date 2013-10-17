@@ -23,7 +23,7 @@ import org.activiti.engine.task.IdentityLink;
  * @author ayalamanchili
  */
 public class GenericTaskCreateNotification implements TaskListener {
-    
+
     @Override
     public void notify(DelegateTask delegateTask) {
         MailUtils mailUtils = (MailUtils) SpringContext.getBean("mailUtils");

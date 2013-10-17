@@ -32,8 +32,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
-@Table(uniqueConstraints =
-        @UniqueConstraint(columnNames = {"name"}))
+@Table(uniqueConstraints
+        = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Subcontractor.class, fields = {"name"}, message = "{subcontractor.name.not.unique.msg}")
 public class Subcontractor extends AbstractEntity {
 

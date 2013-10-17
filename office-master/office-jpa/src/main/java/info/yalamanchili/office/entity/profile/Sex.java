@@ -9,12 +9,13 @@ package info.yalamanchili.office.entity.profile;
  * @generated
  */
 public enum Sex {
-	/**
-	 * @generated
-	 */
-	MALE,
-	/**
-	 * @generated
-	 */
-	FEMALE,
+
+    /**
+     * @generated
+     */
+    MALE,
+    /**
+     * @generated
+     */
+    FEMALE,
 }

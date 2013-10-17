@@ -19,12 +19,14 @@ import java.lang.annotation.Target;
  * privacy settings
  *
  * @author anuyalamanchili
- */ 
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrivacyAware {
 
     PrivacyData key();
+
     Class<?> identityClass() default Employee.class;
+
     String identityReference() default "";
 }

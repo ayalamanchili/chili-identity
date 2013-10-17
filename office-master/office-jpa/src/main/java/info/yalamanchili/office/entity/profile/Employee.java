@@ -50,8 +50,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-})
+            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+        })
 @Indexed
 @XmlRootElement
 @Entity

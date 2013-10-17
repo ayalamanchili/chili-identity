@@ -6,6 +6,7 @@
  * and open the template in the editor.
  */
 package info.yalamanchili.office.qb;
+
 import info.yalamanchili.office.adp.ADPBulkImportProcessBean;
 import info.yalamanchili.office.bulkimport.BulkImportProcess;
 import info.yalamanchili.office.entity.VersionStatus;

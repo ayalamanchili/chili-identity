@@ -36,7 +36,7 @@ public class Post {
     protected Integer numberOfReplies;
     protected List<PostFile> postFiles;
     protected List<String> postLikes;
-    
+
     public Long getId() {
         return id;
     }

@@ -29,12 +29,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class Feedback extends AbstractEntity {
 
     @Field
-    @NotEmpty(message="{feedbackmsg.not.empty.msg}")
+    @NotEmpty(message = "{feedbackmsg.not.empty.msg}")
     @Lob
     protected String feedbackmsg;
     @Field
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    @org.hibernate.annotations.Index(name="SUB_TM_STMP")
+    @org.hibernate.annotations.Index(name = "SUB_TM_STMP")
     protected Date submitteddate;
     @Field
     protected String submittedby;

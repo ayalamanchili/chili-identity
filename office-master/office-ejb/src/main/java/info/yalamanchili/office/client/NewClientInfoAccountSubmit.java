@@ -37,9 +37,9 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
                 ci.setNotes(acctNotes.toString());
             }
         }
-         Object signedWO = execution.getVariable("signedCopyOfWorkOrder");
-        if(signedWO!=null)        {
-           ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
+        Object signedWO = execution.getVariable("signedCopyOfWorkOrder");
+        if (signedWO != null) {
+            ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
         }
         ClientInformationDao.instance().save(ci);
     }

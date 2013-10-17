@@ -47,10 +47,9 @@ public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
         c2.setTime(entity.getEndDate());
         //TODO try to process all the errors collect them and throw a service exception at the end
         if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
-             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.timesheetperiod", "Start date and End date should be in same month");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.timesheetperiod", "Start date and End date should be in same month");
         }
-        
-        
+
         //TODO check if the startDate and endDate belong to same week
         if (entity instanceof AbstractEntity) {
             if (((AbstractEntity) entity).getId() != null) {

@@ -11,7 +11,6 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dao.profile.CertificationDao;
 import info.yalamanchili.office.entity.profile.Certification;
 
-
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;

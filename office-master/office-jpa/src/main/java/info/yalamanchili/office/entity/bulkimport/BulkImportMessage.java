@@ -34,7 +34,7 @@ public class BulkImportMessage extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_BulkImport_Messages")
     protected BulkImport bulkImport;
-    
+
     public String getCode() {
         return code;
     }

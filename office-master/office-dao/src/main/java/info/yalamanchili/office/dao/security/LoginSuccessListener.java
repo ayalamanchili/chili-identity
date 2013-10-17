@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 //TODO move this along with SecurityService to EJB layer
 public class LoginSuccessListener {
-    
+
     public void onLoginSuccess(Employee emp) {
         LoginActivity loginActivity = new LoginActivity();
         loginActivity.setName(emp.getFirstName() + " " + emp.getLastName());
@@ -31,7 +31,7 @@ public class LoginSuccessListener {
         loginActivity.setLoginTimeStamp(new Date());
         LoginActivityDao.instance().save(loginActivity);
     }
-    
+
     public static LoginSuccessListener instance() {
         return SpringContext.getBean(LoginSuccessListener.class);
     }

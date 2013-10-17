@@ -53,7 +53,7 @@ public class TimeSheetPeriod extends AbstractEntity {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public Date getStartDate() {
         return startDate;
     }

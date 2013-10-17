@@ -17,6 +17,7 @@ import org.dozer.Mapper;
  * @author anuyalamanchili
  */
 public class ContactMapper {
+
     /**
      *
      * @param entity

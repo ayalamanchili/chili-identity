@@ -33,8 +33,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
-@Table(uniqueConstraints =
-        @UniqueConstraint(columnNames = {"name"}))
+@Table(uniqueConstraints
+        = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Client.class, fields = {"name"}, message = "{client.name.not.unique.msg}")
 public class Client extends AbstractEntity {
 
@@ -124,7 +124,6 @@ public class Client extends AbstractEntity {
 
     public void setLocations(List<Address> locations) {
         this.locations = locations;
-
 
     }
 

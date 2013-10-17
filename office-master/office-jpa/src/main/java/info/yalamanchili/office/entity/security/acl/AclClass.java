@@ -21,7 +21,7 @@ public class AclClass implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    
+
     @Column(name = "class", nullable = false, unique = true)
     private String clazz;
 
@@ -40,5 +40,5 @@ public class AclClass implements Serializable {
     public void setClazz(String clazz) {
         this.clazz = clazz;
     }
-    
+
 }

@@ -24,13 +24,13 @@ public class AdjustmentHoursDao extends CRUDDao<AdjustmentHours> {
 
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
-       public AdjustmentHoursDao() {
+
+    public AdjustmentHoursDao() {
         super(AdjustmentHours.class);
     }
 

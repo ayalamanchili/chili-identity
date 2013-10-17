@@ -32,6 +32,7 @@ public class AclResource {
     @Autowired
     protected OfficeAclService officeAclService;
 //TODO change to put
+
     @GET
     @Path("/permission/add/{className}/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

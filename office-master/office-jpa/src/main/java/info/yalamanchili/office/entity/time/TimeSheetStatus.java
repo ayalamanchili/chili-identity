@@ -12,5 +12,6 @@ package info.yalamanchili.office.entity.time;
  * @author ayalamanchili
  */
 public enum TimeSheetStatus {
-    Saved,Pending,Approved
+
+    Saved, Pending, Approved
 }

@@ -43,7 +43,7 @@ public class Post extends AbstractEntity {
     private static final long serialVersionUID = 1L;
     @Temporal(TemporalType.TIMESTAMP)
     @Field(index = Index.UN_TOKENIZED)
-    @org.hibernate.annotations.Index(name="POST_TM_STMP")
+    @org.hibernate.annotations.Index(name = "POST_TM_STMP")
     protected Date postTimeStamp;
     @NotEmpty(message = "{postContent.not.empty.msg}")
     @Lob
@@ -61,7 +61,7 @@ public class Post extends AbstractEntity {
     protected List<Post> replies;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     protected List<PostFile> postFiles;
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     protected List<PostLike> postLikes;
 
     public Date getPostTimeStamp() {

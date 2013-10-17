@@ -231,7 +231,6 @@ public class OfficeStartup {
         userPostReply1.setParentPost(userPost1);
         userPostReply1 = em.merge(userPostReply1);
 
-
         Post userPost2 = new Post();
         userPost2.setPostTimeStamp(new Date());
         userPost2.setPostContent("<h3>This is a Sample System Soft news letter</h3><b>this is my company post by admin</b>");
@@ -596,8 +595,8 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
-    
-      protected EmployeeType get1099EmployeeType() {
+
+    protected EmployeeType get1099EmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
         getEmployeeTypeQuery.setParameter("nameParam", "1099");
@@ -690,7 +689,6 @@ public class OfficeStartup {
         userEmergencyContact.addPhone(userECPhone);
         userEmergencyContact.addEmail(userECEmail);
         userEmergencyContact = em.merge(userEmergencyContact);
-
 
         EmergencyContact emergencyContact = new EmergencyContact();
         emergencyContact.setContact(userEmergencyContact);

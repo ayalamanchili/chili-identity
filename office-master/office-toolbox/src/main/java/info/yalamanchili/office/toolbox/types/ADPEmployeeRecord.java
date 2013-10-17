@@ -77,7 +77,6 @@ public class ADPEmployeeRecord {
         this.cellPhone = cellPhone;
     }
 
-   
     public String getHomePhone() {
         return homePhone;
     }

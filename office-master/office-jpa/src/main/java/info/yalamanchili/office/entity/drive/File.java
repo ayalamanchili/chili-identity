@@ -33,10 +33,10 @@ public class File extends AbstractEntity {
     protected String name;
     @NotEmpty
     protected String fileUrl;
-    @org.hibernate.annotations.Index(name="FILE_UPDT_TM_STMP")
+    @org.hibernate.annotations.Index(name = "FILE_UPDT_TM_STMP")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date updatedTs;
-    @org.hibernate.annotations.Index(name="FILE_UPDT_BY")
+    @org.hibernate.annotations.Index(name = "FILE_UPDT_BY")
     protected String updatedBy;
     @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull

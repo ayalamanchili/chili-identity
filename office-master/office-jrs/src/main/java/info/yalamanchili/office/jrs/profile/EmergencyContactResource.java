@@ -51,7 +51,7 @@ public class EmergencyContactResource extends CRUDResource<EmergencyContactDto> 
     public EmergencyContactDto read(@PathParam("id") Long id) {
         return emergencyContactService.read(id);
     }
-     
+
     @XmlRootElement
     @XmlType
     public static class EmergencyContactTable {

@@ -49,7 +49,7 @@ public class Project extends AbstractEntity {
     protected Client client;
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     protected List<StatementOfWork> SOWS;
-    
+
     public String getName() {
         return name;
     }

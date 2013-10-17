@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class PhoneTypeDao extends CRUDDao<PhoneType> {
 
-	@PersistenceContext
-	protected EntityManager em;
+    @PersistenceContext
+    protected EntityManager em;
 
-	public PhoneTypeDao() {
-		super(PhoneType.class);
-	}
+    public PhoneTypeDao() {
+        super(PhoneType.class);
+    }
 
-	@Override
-	public EntityManager getEntityManager() {
-		return em;
-	}
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
 }

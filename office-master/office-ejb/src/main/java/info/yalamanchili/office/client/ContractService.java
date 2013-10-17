@@ -99,7 +99,7 @@ public class ContractService {
     }
 
     public String generateContractorPlacementInfoReport(String format) {
-        String fileName = "contracts."+format;
+        String fileName = "contracts." + format;
         ContractTable data = getContractorPlacementInfo(0, 10000);
         try {
             ReportGenerator.generateReport(data.getEntities(), format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);

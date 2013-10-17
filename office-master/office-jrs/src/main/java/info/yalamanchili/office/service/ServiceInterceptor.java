@@ -38,10 +38,11 @@ import org.springframework.stereotype.Component;
 //have to specify the order so that this is run before the transaction advice runs to handle all possible exceptions
 @Order(100)
 public class ServiceInterceptor {
-    
+
     private static final Log log = LogFactory.getLog(ServiceInterceptor.class);
     @Autowired
     protected ServiceMessages serviceMessages;
+
     //
     @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..))")
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -89,7 +90,7 @@ public class ServiceInterceptor {
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
         }
     }
-    
+
     protected void validate(Object entity) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -99,7 +100,7 @@ public class ServiceInterceptor {
                     .toString(), "INVALID_INPUT", violation.getMessage()));
         }
     }
-    
+
     protected void checkForErrors() {
         if (serviceMessages.isNotEmpty()) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, serviceMessages.getErrors());

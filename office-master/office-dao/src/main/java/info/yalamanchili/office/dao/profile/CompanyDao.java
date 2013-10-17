@@ -10,13 +10,10 @@ package info.yalamanchili.office.dao.profile;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.Company;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
-
-
 
 import org.springframework.stereotype.Component;
 

@@ -39,7 +39,7 @@ public class BulkImport extends AbstractEntity {
     protected String name;
     protected String description;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    @org.hibernate.annotations.Index(name="IMPRT_TM_STMP")
+    @org.hibernate.annotations.Index(name = "IMPRT_TM_STMP")
     protected Date importTimeStamp;
     @NotEmpty(message = "{fileUrl.not.empty.msg}")
     protected String fileUrl;
@@ -52,7 +52,6 @@ public class BulkImport extends AbstractEntity {
     @OneToMany(mappedBy = "bulkImport", cascade = CascadeType.ALL)
     protected List<BulkImportEntity> entities;
 
-    
     public String getName() {
         return name;
     }

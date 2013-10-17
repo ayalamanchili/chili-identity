@@ -21,22 +21,22 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class User implements Serializable {
 
-   
     protected String userName;
     protected String oldPassword;
-   
+
     protected String newPassword;
     protected long empid;
 
-     @NotEmpty(message = "{username.not.empty.msg}")
-     public String getUserName() {
+    @NotEmpty(message = "{username.not.empty.msg}")
+    public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
-  @NotEmpty(message = "{oldpasswordHash.not.empty.msg}")
+
+    @NotEmpty(message = "{oldpasswordHash.not.empty.msg}")
     public String getOldPassword() {
         return oldPassword;
     }
@@ -44,12 +44,13 @@ public class User implements Serializable {
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
     }
+
     @Size(min = 6, message = "{user.newpasswordHash.length.invalid.msg}")
     @NotEmpty(message = "{newpasswordHash.not.empty.msg}")
     public String getNewPassword() {
         return newPassword;
     }
-  
+
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }

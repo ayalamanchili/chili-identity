@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class EmailTypeDao extends CRUDDao<EmailType> {
 
-	@PersistenceContext
-	protected EntityManager em;
+    @PersistenceContext
+    protected EntityManager em;
 
-	public EmailTypeDao() {
-		super(EmailType.class);
-	}
+    public EmailTypeDao() {
+        super(EmailType.class);
+    }
 
-	@Override
-	public EntityManager getEntityManager() {
-		return em;
-	}
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
 }

@@ -3,7 +3,6 @@
  */
 package info.yalamanchili.office.dao.profile;
 
-
 import info.chili.commons.BeanMapper;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -18,26 +17,27 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class EmergencyContactDao extends CRUDDao<EmergencyContact> {
-	@PersistenceContext
-	protected EntityManager em;
 
-	public EmergencyContactDao() {
-		super(EmergencyContact.class);
-	}
+    @PersistenceContext
+    protected EntityManager em;
 
-	public EmergencyContact save(EmergencyContact entity) {
-		if (entity.getId() != null) {
-			EmergencyContact updateEmergencyContact = null;
-			updateEmergencyContact = super.save(entity);
-			Contact contact = em.find(Contact.class, entity.getContact().getId());
-			updateEmergencyContact.setContact((Contact) BeanMapper.merge(entity.getContact(), contact));
-			return em.merge(updateEmergencyContact);
-		}
-		return super.save(entity);
-	}
+    public EmergencyContactDao() {
+        super(EmergencyContact.class);
+    }
 
-	@Override
-	public EntityManager getEntityManager() {
-		return em;
-	}
+    public EmergencyContact save(EmergencyContact entity) {
+        if (entity.getId() != null) {
+            EmergencyContact updateEmergencyContact = null;
+            updateEmergencyContact = super.save(entity);
+            Contact contact = em.find(Contact.class, entity.getContact().getId());
+            updateEmergencyContact.setContact((Contact) BeanMapper.merge(entity.getContact(), contact));
+            return em.merge(updateEmergencyContact);
+        }
+        return super.save(entity);
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
 }

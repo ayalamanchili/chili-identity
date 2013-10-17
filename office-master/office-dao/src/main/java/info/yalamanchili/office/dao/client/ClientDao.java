@@ -22,15 +22,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class ClientDao extends CRUDDao<Client> {
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public ClientDao() {
         super(Client.class);
     }

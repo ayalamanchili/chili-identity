@@ -112,7 +112,6 @@ public class ContractDto implements Serializable {
     protected String notes;
     protected String terminationNotice;
 
-  
     protected BillingDuration billingRateDuration;
     protected BillingDuration overTimeDuration;
     protected String visaStatus;

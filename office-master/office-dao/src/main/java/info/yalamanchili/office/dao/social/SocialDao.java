@@ -12,7 +12,6 @@ import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.social.PostFile;
 import java.util.Date;
 
-
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,7 +19,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-
 
 import org.springframework.stereotype.Component;
 
@@ -72,7 +70,7 @@ public class SocialDao {
         newcompanypost.setEmployee(securityService.getCurrentUser());
         Company company = companyDao.findByCompanyName("System Soft Technologies");
         if (company == null) {
-             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.company", "company not found");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.company", "company not found");
         }
         newcompanypost.setCompany(company);
         newcompanypost.setPostTimeStamp(new Date());

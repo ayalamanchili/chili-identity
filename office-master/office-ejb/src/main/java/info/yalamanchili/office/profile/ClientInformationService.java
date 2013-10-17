@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ClientInformationService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -51,7 +51,7 @@ public class ClientInformationService {
     protected ProfileNotificationService ProfileNotificationService;
     @Autowired
     protected ClientInformationDao clientInformationDao;
-    
+
     public void addClientInformation(Long empId, ClientInformation ci) {
         Employee emp = (Employee) em.find(Employee.class, empId);
         if (ci.getClient() != null) {
@@ -99,7 +99,7 @@ public class ClientInformationService {
         ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
         startNewClientInfoProcess(ci);
     }
-    
+
     @Async
     protected void startNewClientInfoProcess(ClientInformation ci) {
         Map<String, Object> vars = new HashMap<String, Object>();

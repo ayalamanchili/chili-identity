@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class OfficeBPMService {
-    
+
     private final static Logger logger = Logger.getLogger(OfficeBPMService.class.getName());
     @Autowired
     protected RepositoryService bpmRepositoryService;
@@ -39,7 +39,7 @@ public class OfficeBPMService {
     @Autowired
     protected RuntimeService bpmRuntimeService;
     protected HashMap<String, String> processMap = new HashMap<String, String>();
-    
+
     public void deployProcess(String processId) {
         DeploymentQuery deploymentQuery = bpmRepositoryService.createDeploymentQuery().deploymentId(processId);
         if (deploymentQuery.singleResult() == null && processMap.get(processId) != null) {
@@ -51,7 +51,7 @@ public class OfficeBPMService {
      * this is reqired since the process ids are appended with some auto generated numbers.
      * eg:overtime_hours_adjustment_process:1:6
      */
-    
+
     public String getProcessId(String processId) {
         for (ProcessDefinition process : bpmRepositoryService.createProcessDefinitionQuery().list()) {
             if (process.getId().contains(processId)) {
@@ -60,20 +60,20 @@ public class OfficeBPMService {
         }
         return null;
     }
-    
+
     public void setVariable(String executionId, String varName, Object value) {
         bpmRuntimeService.setVariable(executionId, varName, value);
     }
-    
+
     public void startProcess(String processId, Map<String, Object> variables) {
         bpmRuntimeService.startProcessInstanceByKey(processId, variables);
     }
-    
+
     public void registerProcess(String processId, String path) {
         logger.log(Level.INFO, "registering process: {0} with path {1}", new Object[]{processId, path});
         processMap.put(processId, path);
     }
-    
+
     public static OfficeBPMService instance() {
         return SpringContext.getBean(OfficeBPMService.class);
     }

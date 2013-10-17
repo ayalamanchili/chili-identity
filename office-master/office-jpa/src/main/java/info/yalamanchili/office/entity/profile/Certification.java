@@ -25,8 +25,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Audited
-@Table(uniqueConstraints =
-        @UniqueConstraint(columnNames = {"name"}))
+@Table(uniqueConstraints
+        = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Certification.class, fields = {"name"}, message = "{certification.name.not.unique.msg}")
 public class Certification extends AbstractEntity {
 

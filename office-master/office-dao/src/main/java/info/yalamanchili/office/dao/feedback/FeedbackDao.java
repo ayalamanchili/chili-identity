@@ -24,11 +24,11 @@ public class FeedbackDao extends CRUDDao<Feedback> {
 
     @PersistenceContext
     protected EntityManager em;
-    
-      public FeedbackDao() {
+
+    public FeedbackDao() {
         super(Feedback.class);
     }
-    
+
 //    @Override
 //    public Feedback save(Feedback entity)
 //    {
@@ -36,7 +36,6 @@ public class FeedbackDao extends CRUDDao<Feedback> {
 ////       entity.setSubmitteddate(new java.util.Date());
 //       return super.save(entity);
 //    }
-      
     @Override
     public EntityManager getEntityManager() {
         return em;

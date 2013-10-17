@@ -21,7 +21,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 public class EmployeeSaveDto extends Employee {
 
-   
     @XmlElement
     @Override
     public String getSsn() {

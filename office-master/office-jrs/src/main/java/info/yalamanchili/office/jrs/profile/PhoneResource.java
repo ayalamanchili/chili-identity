@@ -25,36 +25,38 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class PhoneResource extends CRUDResource<Phone> {
-	@Autowired
-	public PhoneDao phoneDao;
 
-	@Override
-	public CRUDDao getDao() {
-		return phoneDao;
-	}
+    @Autowired
+    public PhoneDao phoneDao;
 
-	@XmlRootElement
-	@XmlType
-	public static class PhoneTable {
-		protected Long size;
-		protected List<Phone> entities;
+    @Override
+    public CRUDDao getDao() {
+        return phoneDao;
+    }
 
-		public Long getSize() {
-			return size;
-		}
+    @XmlRootElement
+    @XmlType
+    public static class PhoneTable {
 
-		public void setSize(Long size) {
-			this.size = size;
-		}
+        protected Long size;
+        protected List<Phone> entities;
 
-		@XmlElement
-		public List<Phone> getEntities() {
-			return entities;
-		}
+        public Long getSize() {
+            return size;
+        }
 
-		public void setEntities(List<Phone> entities) {
-			this.entities = entities;
-		}
+        public void setSize(Long size) {
+            this.size = size;
+        }
 
-	}
+        @XmlElement
+        public List<Phone> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<Phone> entities) {
+            this.entities = entities;
+        }
+
+    }
 }

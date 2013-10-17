@@ -12,6 +12,7 @@ package info.yalamanchili.office.entity.profile;
  * @author raghu.l
  */
 public enum BillingDuration {
+
     HOUR,
     DAY,
     MONTH

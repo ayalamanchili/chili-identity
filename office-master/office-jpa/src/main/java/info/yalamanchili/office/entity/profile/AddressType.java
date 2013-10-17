@@ -6,7 +6,6 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.validation.Unique;
 import info.chili.jpa.AbstractEntity;
 
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -27,8 +26,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Audited
-@Table(uniqueConstraints =
-@UniqueConstraint(columnNames = {"addressType"}))
+@Table(uniqueConstraints
+        = @UniqueConstraint(columnNames = {"addressType"}))
 @Unique(entity = AddressType.class, fields = {"addressType"}, message = "{addresstype.name.not.unique.msg}")
 public class AddressType extends AbstractEntity {
 

@@ -46,6 +46,7 @@ public class PostLike extends AbstractEntity {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
+
     @XmlTransient
     public Post getPost() {
         return post;

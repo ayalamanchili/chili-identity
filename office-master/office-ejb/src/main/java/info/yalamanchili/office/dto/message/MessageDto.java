@@ -100,11 +100,9 @@ public class MessageDto implements Serializable {
 
         }
 
-
         Entry from = new Entry();
         from.setId(entity.getFromEmp().getEmployeeId());
         from.setValue(entity.getFromEmp().getFirstName());
-
 
         messageDto.setFrom(from);
         return messageDto;

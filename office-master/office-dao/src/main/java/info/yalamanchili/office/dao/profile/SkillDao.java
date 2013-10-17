@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author raghu
@@ -22,18 +23,17 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class SkillDao extends CRUDDao<Skill> {
-    
-    public SkillDao()
-    {
-      super(Skill.class);
-    }
-    
-   @PersistenceContext
-	protected EntityManager em;
 
-	@Override
-	public EntityManager getEntityManager() {
-		return em;
-	}
-    
+    public SkillDao() {
+        super(Skill.class);
+    }
+
+    @PersistenceContext
+    protected EntityManager em;
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
 }

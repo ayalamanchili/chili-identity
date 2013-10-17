@@ -36,22 +36,22 @@ public class ExpenseResource extends CRUDResource<Expense> {
 
     @Autowired
     public ExpenseDao expenseDao;
-     
+
     @Override
     public CRUDDao getDao() {
         return expenseDao;
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
-     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public ExpenseTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         ExpenseTable tableObj = new ExpenseTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-       
+
     @XmlRootElement
     @XmlType
     public static class ExpenseTable {
