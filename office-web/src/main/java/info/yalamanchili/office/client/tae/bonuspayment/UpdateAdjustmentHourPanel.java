@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class UpdateAdjustmentHourPanel extends UpdateComposite {
 
-    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget("Employee",true, false);
+    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget("Employee", true, false);
     private static Logger logger = Logger.getLogger(UpdateAdjustmentHourPanel.class.getName());
     protected String bonuspaymentsId;
 
@@ -47,16 +47,16 @@ public class UpdateAdjustmentHourPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override

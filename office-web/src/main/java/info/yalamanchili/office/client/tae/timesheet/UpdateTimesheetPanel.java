@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class UpdateTimesheetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateTimesheetPanel.class.getName());
-    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget("Employee",true, false);
+    SelectEmployeeWidget selectEmployeeWidget = new SelectEmployeeWidget("Employee", true, false);
     SelectTimesheetPeriodWidget selectTimesheetPeriodWidget = new SelectTimesheetPeriodWidget(true, false);
     protected String payPeriodId;
 
@@ -51,16 +51,16 @@ public class UpdateTimesheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override

@@ -82,7 +82,7 @@ public class CreateAdjustmentHoursPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget("Employee",false, true));
+        addDropDown("employee", new SelectEmployeeWidget("Employee", false, true));
         addField("paidRate", false, false, DataType.CURRENCY_FIELD);
         addField("paidHours", false, true, DataType.FLOAT_FIELD);
         addField("paidDate", false, false, DataType.DATE_FIELD);

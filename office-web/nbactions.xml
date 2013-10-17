@@ -1,80 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-        <action>
-            <actionName>CUSTOM-clean install -Pprod</actionName>
-            <displayName>clean install -Pprod</displayName>
-            <goals>
-                <goal>clean</goal>
-                <goal>install</goal>
-            </goals>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
-            <activatedProfiles>
-                <activatedProfile>prod</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
-            <actionName>CUSTOM-clean install</actionName>
-            <displayName>clean install</displayName>
-            <goals>
-                <goal>clean</goal>
-                <goal>install</goal>
-            </goals>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
-        </action>
-        <action>
-            <actionName>CUSTOM-tomcat6:run-war -Pprod</actionName>
-            <displayName>tomcat6:run-war -Pprod</displayName>
-            <goals>
-                <goal>tomcat6:run-war</goal>
-            </goals>
-            <activatedProfiles>
-                <activatedProfile>prod</activatedProfile>
-            </activatedProfiles>
-        </action>
-        <action>
-            <actionName>CUSTOM-tomcat6:run-war</actionName>
-            <displayName>tomcat6:run-war</displayName>
-            <goals>
-                <goal>tomcat6:run-war</goal>
+    <action>
+        <actionName>CUSTOM-clean install -Pprod</actionName>
+        <displayName>clean install -Pprod</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+        <activatedProfiles>
+            <activatedProfile>prod</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-clean install</actionName>
+        <displayName>clean install</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-tomcat6:run-war -Pprod</actionName>
+        <displayName>tomcat6:run-war -Pprod</displayName>
+        <goals>
+            <goal>tomcat6:run-war</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>prod</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-tomcat6:run-war</actionName>
+        <displayName>tomcat6:run-war</displayName>
+        <goals>
+            <goal>tomcat6:run-war</goal>
                 
-            </goals>
-            <properties>
-                <Env.MAVEN_OPTS>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n</Env.MAVEN_OPTS>
-            </properties>
-        </action>
-        <action>
-            <actionName>CUSTOM-cargo:deploy</actionName>
-            <displayName>cargo:deploy</displayName>
-            <goals>
-                <goal>cargo:deploy</goal>
+        </goals>
+        <properties>
+            <Env.MAVEN_OPTS>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n</Env.MAVEN_OPTS>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-cargo:deploy</actionName>
+        <displayName>cargo:deploy</displayName>
+        <goals>
+            <goal>cargo:deploy</goal>
                 
-            </goals>
-        </action>
-        <action>
-            <actionName>CUSTOM-gwt:run-codeserver</actionName>
-            <displayName>gwt:run-codeserver</displayName>
-            <goals>
-                <goal>gwt:run-codeserver</goal>
-            </goals>
-            <properties>
-                <bindAddress>9876</bindAddress>
-            </properties>
-        </action>
-        <action>
-            <actionName>CUSTOM-clean tomcat6:run-war</actionName>
-            <displayName>clean tomcat6:run-war</displayName>
-            <goals>
-                <goal>clean</goal>
-                <goal>tomcat6:run-war</goal>
-            </goals>
-            <properties>
-                <Env.MAVEN_OPTS>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n</Env.MAVEN_OPTS>
-            </properties>
-        </action>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-gwt:run-codeserver</actionName>
+        <displayName>gwt:run-codeserver</displayName>
+        <goals>
+            <goal>gwt:run-codeserver</goal>
+        </goals>
+        <properties>
+            <bindAddress>9876</bindAddress>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-clean tomcat6:run-war</actionName>
+        <displayName>clean tomcat6:run-war</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>tomcat6:run-war</goal>
+        </goals>
+        <properties>
+            <Env.MAVEN_OPTS>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n</Env.MAVEN_OPTS>
+        </properties>
+    </action>
         
         
-    </actions>
+</actions>

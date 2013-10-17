@@ -39,33 +39,33 @@ public class MultiSelectSkillWidget extends MultiSelectComposite implements Clic
     protected void loadData() {
         HttpService.HttpServiceAsync.instance().doGet(getMultiSelectUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                multiSelectBox.popuplateWidget("Skills", multiSelectBox.getMultiSelectBox(arg0));
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        multiSelectBox.popuplateWidget("Skills", multiSelectBox.getMultiSelectBox(arg0));
+                    }
+                });
     }
 
     @Override
     protected void itemsSelected(List<String> selectedIds) {
         HttpService.HttpServiceAsync.instance().doGet(getAddSkillsUrl(selectedIds), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                new ResponseStatusWidget().show("saved");
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("saved");
+                    }
+                });
     }
 
     @Override
     protected void itemsUnselected(List<String> selectedIds) {
         HttpService.HttpServiceAsync.instance().doGet(getRemoveSkillsUrl(selectedIds), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                new ResponseStatusWidget().show("saved");
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("saved");
+                    }
+                });
     }
 
     @Override

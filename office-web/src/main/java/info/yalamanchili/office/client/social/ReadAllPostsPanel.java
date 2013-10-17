@@ -42,12 +42,12 @@ public class ReadAllPostsPanel extends ALComposite implements ClickHandler {
     public void loadPosts() {
         HttpService.HttpServiceAsync.instance().doGet(getPostFeedURL(start, limit), OfficeWelcome.instance().getHeaders(),
                 true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                showPosts(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        showPosts(result);
+                    }
+                });
     }
 
     protected void showPosts(String result) {

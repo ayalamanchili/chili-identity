@@ -19,11 +19,11 @@ import info.yalamanchili.office.client.profile.emailtype.CreateEmailTypePanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
+
 /**
  *
  * @author bala
  */
-
 public class CreateTimeSheetPeriodPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.client.CreateClientPanel.class.getName());
@@ -93,6 +93,6 @@ public class CreateTimeSheetPeriodPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "timesheetperiod" ;
+        return OfficeWelcome.constants.root_url() + "timesheetperiod";
     }
 }

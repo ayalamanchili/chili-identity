@@ -22,6 +22,6 @@ public class ReadEmployeePostPanel extends ReadPostWidget {
 
     @Override
     protected void viewClicked() {
-         postBodyArea.setHeight("6em");
+        postBodyArea.setHeight("6em");
     }
 }

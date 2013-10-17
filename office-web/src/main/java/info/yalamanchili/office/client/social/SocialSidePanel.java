@@ -30,7 +30,6 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
     public SocialSidePanel() {
         init(panel);
 
-
     }
 
     @Override
@@ -68,7 +67,6 @@ public class SocialSidePanel extends ALComposite implements ClickHandler {
 //    public static boolean isCompanyFeedSelected() {
 //        return !IsEmployeeFeedSelected;
 //    } 
-
     protected void showEmployeeFeed() {
         TabPanel.instance().socialPanel.entityPanel.clear();
         TabPanel.instance().socialPanel.entityPanel.add(new EmployeeFeedHome());

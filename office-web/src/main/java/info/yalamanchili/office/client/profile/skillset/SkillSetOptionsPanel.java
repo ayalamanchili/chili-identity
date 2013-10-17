@@ -63,13 +63,13 @@ public class SkillSetOptionsPanel extends ALComposite implements ClickHandler {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             HttpService.HttpServiceAsync.instance().doGet(getSkillSetURI(),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    if (arg0 != null) {
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel((JSONObject) JSONParser.parseLenient(arg0)));
-                    }
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            if (arg0 != null) {
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateSkillSetPanel((JSONObject) JSONParser.parseLenient(arg0)));
+                            }
+                        }
+                    });
         }
     }
 

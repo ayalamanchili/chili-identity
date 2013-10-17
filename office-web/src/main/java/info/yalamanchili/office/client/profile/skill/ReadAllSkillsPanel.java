@@ -79,7 +79,6 @@ public class ReadAllSkillsPanel extends CRUDReadAllComposite {
 
         }
 
-
     }
 
     @Override

@@ -59,7 +59,7 @@ public class CreateMonthlyTimeSheetPanel extends CreateTimeSheetPanel {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget("Employee",false, true));
+        addDropDown("employee", new SelectEmployeeWidget("Employee", false, true));
         addField("adpHours", false, true, DataType.FLOAT_FIELD);
         addField("quickBooksHours", false, true, DataType.FLOAT_FIELD);
         addField("adpRate", false, false, DataType.CURRENCY_FIELD);

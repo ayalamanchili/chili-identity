@@ -123,12 +123,12 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     protected void createCompanyPostClicked(JSONObject post) {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                textArea.setText("");
-                uploadFiles(arg0);
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        textArea.setText("");
+                        uploadFiles(arg0);
+                    }
+                });
     }
 //TODO move this to abstract class
 

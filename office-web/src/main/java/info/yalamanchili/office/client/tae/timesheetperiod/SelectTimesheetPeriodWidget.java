@@ -33,11 +33,11 @@ public class SelectTimesheetPeriodWidget extends SelectComposite {
     protected void fetchDropDownData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 1000, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                processData(entityString);
-            }
-        });
+                    @Override
+                    public void onResponse(String entityString) {
+                        processData(entityString);
+                    }
+                });
     }
 
     @Override

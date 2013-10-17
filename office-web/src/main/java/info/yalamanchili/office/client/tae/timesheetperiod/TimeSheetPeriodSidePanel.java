@@ -16,20 +16,21 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import java.util.logging.Logger;
+
 /**
  *
  * @author bala
  */
-
 public class TimeSheetPeriodSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger=Logger.getLogger(info.yalamanchili.office.client.admin.client.ClientSidePanel.class.getName());
-    public FlowPanel timesheetperiodsidepanel=new FlowPanel();
-    ClickableLink createtimesheetperiodlink= new ClickableLink("Create Time Sheet Period");
-    
-     public TimeSheetPeriodSidePanel(){
+    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.client.ClientSidePanel.class.getName());
+    public FlowPanel timesheetperiodsidepanel = new FlowPanel();
+    ClickableLink createtimesheetperiodlink = new ClickableLink("Create Time Sheet Period");
+
+    public TimeSheetPeriodSidePanel() {
         init(timesheetperiodsidepanel);
     }
+
     @Override
     protected void addListeners() {
         createtimesheetperiodlink.addClickHandler(this);
@@ -37,12 +38,12 @@ public class TimeSheetPeriodSidePanel extends ALComposite implements ClickHandle
 
     @Override
     protected void configure() {
-        
+
     }
 
     @Override
     protected void addWidgets() {
-         if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.isAdmin() || Auth.isHR()) {
 //            timesheetperiodsidepanel.add(createtimesheetperiodlink);
         }
     }
@@ -54,5 +55,5 @@ public class TimeSheetPeriodSidePanel extends ALComposite implements ClickHandle
             TabPanel.instance().timePanel.entityPanel.add(new CreateTimeSheetPeriodPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
-    
+
 }

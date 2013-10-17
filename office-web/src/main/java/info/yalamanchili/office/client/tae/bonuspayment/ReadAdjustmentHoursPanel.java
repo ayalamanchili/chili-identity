@@ -71,7 +71,7 @@ public class ReadAdjustmentHoursPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget("Employee",true, false));
+        addDropDown("employee", new SelectEmployeeWidget("Employee", true, false));
         addField("paidRate", true, false, DataType.CURRENCY_FIELD);
         addField("paidHours", true, false, DataType.FLOAT_FIELD);
         addField("paidDate", true, false, DataType.DATE_FIELD);

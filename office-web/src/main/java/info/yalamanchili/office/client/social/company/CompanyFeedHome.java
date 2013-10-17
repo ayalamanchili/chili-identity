@@ -22,11 +22,11 @@ import info.yalamanchili.office.client.social.ReadAllPostsPanel;
  * @author ayalamanchili
  */
 public class CompanyFeedHome extends Composite implements ClickHandler {
-    
+
     protected FlowPanel panel = new FlowPanel();
     protected ReadAllPostsPanel companyFeed = new ReadAllPostsPanel();
     protected ClickableLink createCompanyPostL = new ClickableLink("Create System  Soft Post");
-    
+
     public CompanyFeedHome() {
         instance = this;
         initWidget(panel);
@@ -36,16 +36,16 @@ public class CompanyFeedHome extends Composite implements ClickHandler {
         }
         panel.add(companyFeed);
     }
-    
+
     public void refresh() {
         companyFeed.refresh();
     }
     private static CompanyFeedHome instance;
-    
+
     public static CompanyFeedHome instance() {
         return instance;
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (createCompanyPostL.equals(event.getSource())) {

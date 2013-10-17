@@ -34,6 +34,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.social.company.CompanyFeedHome;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 //TODO make this abstract
+
 public abstract class ReadPostWidget extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadPostWidget.class.getName());
@@ -107,7 +108,6 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
             postStatusPanel.setText(poststatus + " Posted: " + DateUtils.getFormatedDate(postTimeStamp, DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
         }
 
-
     }
 
     @Override
@@ -159,11 +159,11 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
             likeB.setVisible(false);
             HttpService.HttpServiceAsync.instance().doPut(getlikeURL(), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postCreateSuccess(arg0);
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postCreateSuccess(arg0);
+                        }
+                    });
 
         }
         if (arg0.getSource().equals(viewIcon)) {
@@ -172,11 +172,11 @@ public abstract class ReadPostWidget extends ALComposite implements ClickHandler
         if (arg0.getSource().equals(deleteLink)) {
             HttpService.HttpServiceAsync.instance().doPut(getdeleteURL(), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess(arg0);
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess(arg0);
+                        }
+                    });
         }
     }
 

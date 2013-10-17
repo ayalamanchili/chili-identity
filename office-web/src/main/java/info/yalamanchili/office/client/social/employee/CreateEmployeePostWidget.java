@@ -124,12 +124,12 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     protected void createPostClicked(JSONObject post) {
         HttpServiceAsync.instance().doPut(getURI(), post.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                createPostTextArea.setText("");
-                uploadImage(arg0);
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        createPostTextArea.setText("");
+                        uploadImage(arg0);
+                    }
+                });
     }
 
     protected void uploadImage(String postString) {
