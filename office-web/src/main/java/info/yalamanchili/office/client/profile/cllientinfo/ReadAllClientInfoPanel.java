@@ -38,11 +38,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
 
     }
 
@@ -52,9 +52,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Job Title"));
         table.setText(0, 2, getKeyValue("Client"));
         table.setText(0, 3, getKeyValue("Vendor"));
-        table.setText(0, 4, getKeyValue("ItemNumber"));
-        table.setText(0, 5, getKeyValue("BillingRate"));
-        table.setText(0, 6, getKeyValue("InvoiceFrequency"));
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            table.setText(0, 4, getKeyValue("ItemNumber"));
+            table.setText(0, 5, getKeyValue("BillingRate"));
+            table.setText(0, 6, getKeyValue("InvoiceFrequency"));
+        }
         table.setText(0, 7, getKeyValue("StartDate"));
         table.setText(0, 8, getKeyValue("EndtDate"));
     }
@@ -89,11 +91,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -125,9 +127,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
                 JSONObject vendor = entity.get("vendor").isObject();
                 table.setText(i, 3, JSONUtils.toString(vendor, "name"));
             }
-            table.setText(i, 4, JSONUtils.toString(entity, "itemNumber"));
-            table.setText(i, 5, JSONUtils.toString(entity, "billingRate"));
-            table.setText(i, 6, JSONUtils.toString(entity, "invoiceFrequency"));
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+                table.setText(i, 4, JSONUtils.toString(entity, "itemNumber"));
+                table.setText(i, 5, JSONUtils.toString(entity, "billingRate"));
+                table.setText(i, 6, JSONUtils.toString(entity, "invoiceFrequency"));
+            }
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
