@@ -4,6 +4,7 @@
 package info.yalamanchili.office.client.profile.cllientinfo;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -17,6 +18,8 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.DateField;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
@@ -44,6 +47,9 @@ public class CreateClientInfoPanel extends CreateComposite {
         initCreateComposite("ClientInfo", OfficeWelcome.constants);
     }
 
+    BooleanField endPreviousProjectFlagField;
+    DateField previousProjectEndDate;
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject clientInfo = new JSONObject();
@@ -56,6 +62,8 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
+        assignEntityValueFromField("endPreviousProject", clientInfo);
+        assignEntityValueFromField("previousProjectEndDate", clientInfo);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
             assignEntityValueFromField("payRate", clientInfo);
             assignEntityValueFromField("billingRate", clientInfo);
@@ -126,11 +134,15 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected void addListeners() {
         addClientL.addClickHandler(this);
         addVendorL.addClickHandler(this);
+        endPreviousProjectFlagField.getBox().addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
+        //assign fields
+        endPreviousProjectFlagField = (BooleanField) fields.get("endPreviousProject");
+        previousProjectEndDate = (DateField) fields.get("previousProjectEndDate");
+        previousProjectEndDate.setVisible(false);
     }
 
     @Override
@@ -151,6 +163,8 @@ public class CreateClientInfoPanel extends CreateComposite {
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD);
+        addField("previousProjectEndDate", false, false, DataType.DATE_FIELD);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
             addDropDown("recruiter", selectRecruiterWidget);
             //Billing Information
@@ -205,6 +219,9 @@ public class CreateClientInfoPanel extends CreateComposite {
         }
         if (event.getSource().equals(addVendorL)) {
             new GenericPopup(new GenericBPMStartFormPanel("Add New Vendor Request", "add_new_vendor_request_1")).show();
+        }
+        if (event.getSource().equals(endPreviousProjectFlagField.getBox())) {
+            previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
         }
         super.onClick(event);
     }

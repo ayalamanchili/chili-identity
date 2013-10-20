@@ -94,10 +94,18 @@ public class ClientInformationService {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setSubcontractorAddress(address);
         }
+        if (ci.isEndPreviousProject()) {
+            updatePreviousProjectEndDate(emp, ci);
+        }
         emp.addClientInformation(ci);
         //TODO no need for notification  integrate this to bis process
         ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
         startNewClientInfoProcess(ci);
+    }
+
+    protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
+        //TODO query for previous client information for the employee and set its end date and save it.
+        //query example http://stackoverflow.com/questions/6110048/jpql-query-using-max-on-a-date-field
     }
 
     @Async

@@ -334,7 +334,6 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public void addClientInformation(@PathParam("empId") Long empId, ClientInformation clientInformation) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
         clientInformationService.addClientInformation(empId, clientInformation);
-
     }
 
     /* Emergency Contact */

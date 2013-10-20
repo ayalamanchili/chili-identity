@@ -69,6 +69,14 @@ public class ClientInformation extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
     /**
+     * flag to indicate to end of previous project.
+     */
+    protected boolean endPreviousProject;
+    /**
+     *
+     */
+    protected Date previousProjectEndDate;
+    /**
      * Client
      */
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -295,6 +303,24 @@ public class ClientInformation extends AbstractEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Transient
+    public boolean isEndPreviousProject() {
+        return endPreviousProject;
+    }
+
+    public void setEndPreviousProject(boolean endPreviousProject) {
+        this.endPreviousProject = endPreviousProject;
+    }
+
+    @Transient
+    public Date getPreviousProjectEndDate() {
+        return previousProjectEndDate;
+    }
+
+    public void setPreviousProjectEndDate(Date previousProjectEndDate) {
+        this.previousProjectEndDate = previousProjectEndDate;
     }
 
     public Client getClient() {
