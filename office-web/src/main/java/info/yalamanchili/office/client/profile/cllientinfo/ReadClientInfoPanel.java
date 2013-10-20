@@ -60,7 +60,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("recruiter", entity, null);
@@ -123,7 +123,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", true, false, billingDuration);
             addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
-            addEnumField("overTimeDuration", true, false, billingDuration);
+            addEnumField("overTimeRateDuration", true, false, billingDuration);
             String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
             addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};

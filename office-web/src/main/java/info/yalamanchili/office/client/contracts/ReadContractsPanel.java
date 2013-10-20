@@ -52,7 +52,7 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("recruiter", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
@@ -128,7 +128,7 @@ public class ReadContractsPanel extends ReadComposite {
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
         String[] billingDuration = {"HOUR", "DAY", "MONTH"};
         addEnumField("billingRateDuration", true, false, billingDuration);
-        addEnumField("overTimeDuration", true, false, billingDuration);
+        addEnumField("overTimeRateDuration", true, false, billingDuration);
         addField("recruiter", true, false, DataType.STRING_FIELD);
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", true, false, DataType.STRING_FIELD);

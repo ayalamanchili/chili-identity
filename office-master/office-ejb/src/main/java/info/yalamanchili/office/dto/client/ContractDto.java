@@ -113,7 +113,7 @@ public class ContractDto implements Serializable {
     protected String terminationNotice;
 
     protected BillingDuration billingRateDuration;
-    protected BillingDuration overTimeDuration;
+    protected BillingDuration overTimeRateDuration;
     protected String visaStatus;
 
     public Long getId() {
@@ -128,8 +128,8 @@ public class ContractDto implements Serializable {
         this.billingRateDuration = billingRateDuration;
     }
 
-    public void setOverTimeDuration(BillingDuration overTimeDuration) {
-        this.overTimeDuration = overTimeDuration;
+    public void setOverTimeRateDuration(BillingDuration overTimeRateDuration) {
+        this.overTimeRateDuration = overTimeRateDuration;
     }
 
     public void setVisaStatus(String visaStatus) {
@@ -140,8 +140,8 @@ public class ContractDto implements Serializable {
         return billingRateDuration;
     }
 
-    public BillingDuration getOverTimeDuration() {
-        return overTimeDuration;
+    public BillingDuration getOverTimeRateDuration() {
+        return overTimeRateDuration;
     }
 
     public String getVisaStatus() {

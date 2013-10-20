@@ -145,10 +145,10 @@ public class ClientInformation extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected BillingDuration billingRateDuration;
     /**
-     * overTimeDuration
+     * overTimeRateDuration
      */
     @Enumerated(EnumType.STRING)
-    protected BillingDuration overTimeDuration;
+    protected BillingDuration overTimeRateDuration;
     /**
      * Invoice Frequency
      */
@@ -427,12 +427,12 @@ public class ClientInformation extends AbstractEntity {
         this.billingRateDuration = billingRateDuration;
     }
 
-    public BillingDuration getOverTimeDuration() {
-        return overTimeDuration;
+    public BillingDuration getOverTimeRateDuration() {
+        return overTimeRateDuration;
     }
 
-    public void setOverTimeDuration(BillingDuration overTimeDuration) {
-        this.overTimeDuration = overTimeDuration;
+    public void setOverTimeRateDuration(BillingDuration overTimeRateDuration) {
+        this.overTimeRateDuration = overTimeRateDuration;
     }
 
     public InvoiceFrequency getInvoiceFrequency() {
@@ -678,6 +678,6 @@ public class ClientInformation extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRateDuration=" + billingRateDuration + ", overTimeDuration=" + overTimeDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", recruiter=" + recruiter + ", visaStatus=" + visaStatus + ", notes=" + notes + ", comments=" + comments + ", accountVerificationDocs=" + accountVerificationDocs + ", signedCopyOfWorkOrder=" + signedCopyOfWorkOrder + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + ", joiningReport=" + joiningReport + ", logisticsPreparation=" + logisticsPreparation + ", hrOrientation=" + hrOrientation + '}';
+        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRateDuration=" + billingRateDuration + ", overTimeRateDuration=" + overTimeRateDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", recruiter=" + recruiter + ", visaStatus=" + visaStatus + ", notes=" + notes + ", comments=" + comments + ", accountVerificationDocs=" + accountVerificationDocs + ", signedCopyOfWorkOrder=" + signedCopyOfWorkOrder + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + ", joiningReport=" + joiningReport + ", logisticsPreparation=" + logisticsPreparation + ", hrOrientation=" + hrOrientation + '}';
     }
 }

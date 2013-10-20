@@ -70,7 +70,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             assignEntityValueFromField("billingRateDuration", clientInfo);
             assignEntityValueFromField("overTimePayRate", clientInfo);
             assignEntityValueFromField("overTimeBillingRate", clientInfo);
-            assignEntityValueFromField("overTimeDuration", clientInfo);
+            assignEntityValueFromField("overTimeRateDuration", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
             assignEntityValueFromField("recruiter", clientInfo);
@@ -175,7 +175,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             addEnumField("billingRateDuration", false, false, billingDuration);
             addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-            addEnumField("overTimeDuration", false, false, billingDuration);
+            addEnumField("overTimeRateDuration", false, false, billingDuration);
             String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
             addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};

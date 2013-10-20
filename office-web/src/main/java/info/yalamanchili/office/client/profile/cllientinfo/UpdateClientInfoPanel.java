@@ -55,7 +55,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
             assignEntityValueFromField("recruiter", entity);
             assignEntityValueFromField("billingRateDuration", entity);
-            assignEntityValueFromField("overTimeDuration", entity);
+            assignEntityValueFromField("overTimeRateDuration", entity);
             assignEntityValueFromField("visaStatus", entity);
             assignEntityValueFromField("joiningReport", entity);
             assignEntityValueFromField("accountVerificationDocs", entity);
@@ -133,7 +133,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignFieldValueFromEntity("recruiter", entity, null);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
             assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("overTimeDuration", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("visaStatus", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("joiningReport", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("accountVerificationDocs", entity, DataType.BOOLEAN_FIELD);
@@ -194,7 +194,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", false, false, billingDuration);
             addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
-            addEnumField("overTimeDuration", false, false, billingDuration);
+            addEnumField("overTimeRateDuration", false, false, billingDuration);
             String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
             addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
