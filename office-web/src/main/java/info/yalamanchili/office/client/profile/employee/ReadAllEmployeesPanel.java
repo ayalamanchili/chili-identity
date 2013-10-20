@@ -25,6 +25,8 @@ import com.google.gwt.user.client.Window;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -88,12 +90,26 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "sex"));
+            table.setText(i, 6, getCustomValue(entity,"sex",customValues));
             table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
             table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "name"));
         }
     }
+
+    /**
+     *
+     * map to replace read all table with custom values.
+     */
+    protected static final HashMap<String, String> customValues = new HashMap<String, String>();
+
+    static {
+        customValues.put("sex_MALE", "M");
+        customValues.put("sex_FEMALE", "M");
+        //TODO add employee type 
+    }
+
+
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
