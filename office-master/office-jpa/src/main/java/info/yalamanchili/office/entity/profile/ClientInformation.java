@@ -71,10 +71,12 @@ public class ClientInformation extends AbstractEntity {
     /**
      * flag to indicate to end of previous project.
      */
+    @Transient
     protected boolean endPreviousProject;
     /**
      *
      */
+    @Transient
     protected Date previousProjectEndDate;
     /**
      * Client
@@ -304,8 +306,7 @@ public class ClientInformation extends AbstractEntity {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
-    @Transient
+    
     public boolean isEndPreviousProject() {
         return endPreviousProject;
     }
@@ -314,7 +315,6 @@ public class ClientInformation extends AbstractEntity {
         this.endPreviousProject = endPreviousProject;
     }
 
-    @Transient
     public Date getPreviousProjectEndDate() {
         return previousProjectEndDate;
     }
