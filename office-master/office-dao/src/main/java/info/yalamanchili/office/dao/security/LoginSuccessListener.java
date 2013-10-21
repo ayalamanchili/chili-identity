@@ -24,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 //TODO move this along with SecurityService to EJB layer
 public class LoginSuccessListener {
 
-    public void onLoginSuccess(Employee emp) {
+    public void logLogin() {
+        Employee emp = SecurityService.instance().getCurrentUser();
         LoginActivity loginActivity = new LoginActivity();
         loginActivity.setName(emp.getFirstName() + " " + emp.getLastName());
         loginActivity.setEmployeeId(emp.getEmployeeId());

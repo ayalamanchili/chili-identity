@@ -6,6 +6,7 @@ package info.yalamanchili.office.service;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
+import info.yalamanchili.office.dao.security.LoginSuccessListener;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -48,6 +49,9 @@ public class ServiceInterceptor {
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
         //TODO make the excluded methods configurable
+        if(joinPoint.getSignature().toShortString().contains("login")){
+            LoginSuccessListener.instance().logLogin();
+        }
         /* skip validation for search and login methods */
         if (!joinPoint.getSignature().toShortString().contains("search") && !joinPoint.getSignature().toShortString().contains("login")) {
             for (Object arg : joinPoint.getArgs()) {

@@ -39,7 +39,6 @@ public class SecurityService {
 
         try {
             Employee emp = query.getSingleResult();
-            LoginSuccessListener.instance().onLoginSuccess(emp);
             return emp;
         } catch (NoResultException e) {
             return null;
