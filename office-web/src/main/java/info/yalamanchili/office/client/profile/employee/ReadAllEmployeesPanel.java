@@ -93,7 +93,8 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 6, getCustomValue(entity, "sex", customValues));
             table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
-            table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "name"));
+//            table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "name"));
+            table.setText(i, 9, getCustomValue(entity, "employeeType", customValues));
         }
     }
     /**
