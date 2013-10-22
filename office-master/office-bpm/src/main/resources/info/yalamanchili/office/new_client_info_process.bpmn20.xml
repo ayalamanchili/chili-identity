@@ -25,6 +25,8 @@
                 Billing Rate : #{clientInfo.billingRate}
                 PayRate      : #{clientInfo.payRate}
                 Invoice Frequency : #{clientInfo.invoiceFrequency}
+                Billing Rate Duration :#{clientInfo.billingRateDuration}
+                Consultant Job Title :#{clientInfo.consultantJobTitle}
                 Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
@@ -64,6 +66,8 @@
                 Billing Rate : #{clientInfo.billingRate}
                 PayRate      : #{clientInfo.payRate}
                 Invoice Frequency : #{clientInfo.invoiceFrequency}
+                Billing Rate Duration :#{clientInfo.billingRateDuration}
+                Consultant Job Title :#{clientInfo.consultantJobTitle}
                 Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
