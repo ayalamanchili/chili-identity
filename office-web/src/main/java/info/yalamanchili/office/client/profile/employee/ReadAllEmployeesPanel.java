@@ -106,8 +106,8 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         customValues.put("sex_MALE", "M");
         customValues.put("sex_FEMALE", "F");
         //TODO add employee type 
-        customValues.put("name_EMPLOYEE", "EMP");
-        customValues.put("name_CORPORATE_EMPLOYEE", "CORP_EMP");
+        customValues.put("name_EMPLOYEE", "EMPLOYEE");
+        customValues.put("name_CORPORATE_EMPLOYEE", "CORPORATE");
         customValues.put("name_SUB_CONTRACTOR", "SUB_CONTR");
         customValues.put("name_1099", "1099");
 
