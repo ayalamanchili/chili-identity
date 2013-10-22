@@ -52,12 +52,12 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         // TODO externalize the limit size for read all
         HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
 
     }
 
@@ -90,13 +90,12 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
-            table.setText(i, 6, getCustomValue(entity,"sex",customValues));
+            table.setText(i, 6, getCustomValue(entity, "sex", customValues));
             table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
             table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "name"));
         }
     }
-
     /**
      *
      * map to replace read all table with custom values.
@@ -105,11 +104,14 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
 
     static {
         customValues.put("sex_MALE", "M");
-        customValues.put("sex_FEMALE", "M");
+        customValues.put("sex_FEMALE", "F");
         //TODO add employee type 
+        customValues.put("EMPLOYEETYPE_EMPLOYEE", "EMP");
+        customValues.put("EMPLOYEETYPE_CORPORATE_EMPLOYEE", "CORP_EMP");
+        customValues.put("EMPLOYEETYPE_SUBCONTRACTOR", "SUB_CONTR");
+        customValues.put("EMPLOYEETYPE_1099", "1099");
+
     }
-
-
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
@@ -135,11 +137,11 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Employee details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postDeleteSuccess();
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postDeleteSuccess();
+                }
+            });
         }
     }
 
