@@ -27,6 +27,7 @@ import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -105,7 +106,16 @@ public class ClientInformationService {
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
         //TODO query for previous client information for the employee and set its end date and save it.
-        //query example http://stackoverflow.com/questions/6110048/jpql-query-using-max-on-a-date-field
+        
+        ClientInformation previousClientInformation = null;
+        Query query = em.createQuery("from ClientInformation where employee =:emp order by startDate desc");
+        query.setParameter("emp", ci.getEmployee());
+        if (query.getResultList().size() > 0) {
+            previousClientInformation = (ClientInformation) query.getResultList().get(0);
+            previousClientInformation.setEndDate(ci.getPreviousProjectEndDate());
+            em.merge(previousClientInformation);
+        
+          }
     }
 
     @Async
