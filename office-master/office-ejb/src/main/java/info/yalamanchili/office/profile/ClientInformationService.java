@@ -105,11 +105,9 @@ public class ClientInformationService {
     }
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
-        //TODO query for previous client information for the employee and set its end date and save it.
-        
         ClientInformation previousClientInformation = null;
         Query query = em.createQuery("from ClientInformation where employee =:emp order by startDate desc");
-        query.setParameter("emp", ci.getEmployee());
+        query.setParameter("emp", emp);
         if (query.getResultList().size() > 0) {
             previousClientInformation = (ClientInformation) query.getResultList().get(0);
             previousClientInformation.setEndDate(ci.getPreviousProjectEndDate());
