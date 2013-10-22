@@ -93,8 +93,7 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 6, getCustomValue(entity, "sex", customValues));
             table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
-//            table.setText(i, 9, JSONUtils.toString(entity.get("employeeType"), "name"));
-            table.setText(i, 9, getCustomValue(entity, "employeeType", customValues));
+            table.setText(i, 9, getCustomValue(entity.get("employeeType"), "name", customValues));
         }
     }
     /**
@@ -107,10 +106,10 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         customValues.put("sex_MALE", "M");
         customValues.put("sex_FEMALE", "F");
         //TODO add employee type 
-        customValues.put("EMPLOYEETYPE_EMPLOYEE", "EMP");
-        customValues.put("EMPLOYEETYPE_CORPORATE_EMPLOYEE", "CORP_EMP");
-        customValues.put("EMPLOYEETYPE_SUBCONTRACTOR", "SUB_CONTR");
-        customValues.put("EMPLOYEETYPE_1099", "1099");
+        customValues.put("name_EMPLOYEE", "EMP");
+        customValues.put("name_CORPORATE_EMPLOYEE", "CORP_EMP");
+        customValues.put("name_SUB_CONTRACTOR", "SUB_CONTR");
+        customValues.put("name_1099", "1099");
 
     }
 
