@@ -40,12 +40,10 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     protected void configureCreateButton() {
-        createButton.setVisible(true);
+        createButton.setVisible(false);
     }
 
     @Override
     protected void createButtonClicked() {
-//        CreateClientInfoPopupPanel createPanel = new CreateClientInfoPopupPanel(CreateComposite.CreateCompositeType.ADD);;
-//        new GenericPopup(createPanel).show();
     }
 }
