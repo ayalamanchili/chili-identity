@@ -20,13 +20,13 @@
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee     : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Consultant Job Title :#{clientInfo.consultantJobTitle}
                 Client       : #{clientInfo.client.name}
                 Vendor       : #{clientInfo.vendor.name}
                 Billing Rate : #{clientInfo.billingRate}
                 PayRate      : #{clientInfo.payRate}
-                Invoice Frequency : #{clientInfo.invoiceFrequency}
                 Billing Rate Duration :#{clientInfo.billingRateDuration}
-                Consultant Job Title :#{clientInfo.consultantJobTitle}
+                Invoice Frequency : #{clientInfo.invoiceFrequency}
                 Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
@@ -61,13 +61,13 @@
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee     : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Consultant Job Title :#{clientInfo.consultantJobTitle}
                 Client       : #{clientInfo.client.name}
                 Vendor       : #{clientInfo.vendor.name}
                 Billing Rate : #{clientInfo.billingRate}
                 PayRate      : #{clientInfo.payRate}
-                Invoice Frequency : #{clientInfo.invoiceFrequency}
                 Billing Rate Duration :#{clientInfo.billingRateDuration}
-                Consultant Job Title :#{clientInfo.consultantJobTitle}
+                Invoice Frequency : #{clientInfo.invoiceFrequency}
                 Notes        : #{clientInfo.notes}    
             </documentation>
             <extensionElements>
