@@ -280,6 +280,20 @@ public class Contact extends AbstractEntity {
         }
         return null;
     }
+
+    public String details() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(this.getFirstName()).append(" ").append(this.getLastName()).append("</br>");
+        for (Phone p : this.getPhones()) {
+            sb.append("Phone: ").append(p.getPhoneNumber()).append(" ext: ").append(p.getExtension());
+            sb.append("</br>");
+        }
+        for (Email email : this.getEmails()) {
+            sb.append("Email: ").append(email.getEmail());
+            sb.append("</br>");
+        }
+        return sb.toString();
+    }
     //TODO add helpers for getPrimary ReportsTo
 
     @Override

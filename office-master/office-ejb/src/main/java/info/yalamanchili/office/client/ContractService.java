@@ -73,16 +73,16 @@ public class ContractService {
                 dto.setRecruiter(ci.getRecruiter().getFirstName() + " " + ci.getRecruiter().getLastName());
             }
             if (ci.getClientContact() != null) {
-                dto.setClientContact(ci.getClientContact().getFirstName() + " " + ci.getClientContact().getLastName());
+                dto.setClientContact(ci.getClientContact().details());
             }
             if (ci.getVendorContact() != null) {
-                dto.setVendorContact(ci.getVendorContact().getFirstName() + " " + ci.getVendorContact().getLastName());
+                dto.setVendorContact(ci.getVendorContact().details());
             }
             if (ci.getClientLocation() != null) {
-                dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getState());
+                dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
             }
             if (ci.getVendorLocation() != null) {
-                dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getState());
+                dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getCity() + " " + ci.getClientLocation().getState());
             }
 
             if (ci.getSubcontractor() != null) {
@@ -90,7 +90,7 @@ public class ContractService {
             }
 
             if (ci.getSubcontractorContact() != null) {
-                dto.setSubContractorContactName(ci.getSubcontractorContact().getFirstName() + " " + ci.getSubcontractorContact().getLastName());
+                dto.setSubContractorContactName(ci.getSubcontractorContact().details());
             }
             //etc
             table.getEntities().add(dto);
