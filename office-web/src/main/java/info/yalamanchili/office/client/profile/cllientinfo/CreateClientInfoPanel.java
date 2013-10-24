@@ -62,10 +62,10 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
-         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-        assignEntityValueFromField("endPreviousProject", clientInfo);
-        assignEntityValueFromField("previousProjectEndDate", clientInfo);
-         }
+        if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
+            assignEntityValueFromField("endPreviousProject", clientInfo);
+            assignEntityValueFromField("previousProjectEndDate", clientInfo);
+        }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
             assignEntityValueFromField("payRate", clientInfo);
             assignEntityValueFromField("billingRate", clientInfo);
@@ -136,17 +136,17 @@ public class CreateClientInfoPanel extends CreateComposite {
     protected void addListeners() {
         addClientL.addClickHandler(this);
         addVendorL.addClickHandler(this);
-        endPreviousProjectFlagField.getBox().addClickHandler(this);
+        if (endPreviousProjectFlagField != null) {
+            endPreviousProjectFlagField.getBox().addClickHandler(this);
+        }
     }
 
     @Override
     protected void configure() {
-        //assign fields
         endPreviousProjectFlagField = (BooleanField) fields.get("endPreviousProject");
         previousProjectEndDate = (DateField) fields.get("previousProjectEndDate");
-        if(ReadAllClientInfoPanel.instance().numberOfRecords > 0)
-        {
-        previousProjectEndDate.setVisible(false);
+        if (previousProjectEndDate != null) {
+            previousProjectEndDate.setVisible(false);
         }
     }
 
@@ -168,10 +168,10 @@ public class CreateClientInfoPanel extends CreateComposite {
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-        addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD);
-        addField("previousProjectEndDate", false, false, DataType.DATE_FIELD);
-         }
+        if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
+            addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD);
+            addField("previousProjectEndDate", false, false, DataType.DATE_FIELD);
+        }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
             addDropDown("recruiter", selectRecruiterWidget);
             //Billing Information
@@ -227,11 +227,11 @@ public class CreateClientInfoPanel extends CreateComposite {
         if (event.getSource().equals(addVendorL)) {
             new GenericPopup(new GenericBPMStartFormPanel("Add New Vendor Request", "add_new_vendor_request_1")).show();
         }
-        
-        if ((event.getSource().equals(endPreviousProjectFlagField.getBox())) && (ReadAllClientInfoPanel.instance().numberOfRecords > 0)) {
+
+        if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
             previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
         }
-          
+
         super.onClick(event);
     }
 
