@@ -17,8 +17,10 @@ import info.chili.service.jrs.types.EntityAuditDataTbl;
 import info.yalamanchili.office.dto.audit.LoginActivityDto;
 import info.yalamanchili.office.dto.audit.LoginActivityDto.LoginActivityTable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
@@ -71,29 +73,53 @@ public class AuditService {
         try {
             entityCls = Class.forName(className);
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("Invalid Class Name");
+            throw new RuntimeException("Invalid Class Name", ex);
         }
+        Map<String, Object> previousValuesMap = null;
         for (Number revNumber : getAuditReader().getRevisions(entityCls, id)) {
             Entries auditData = new Entries();
             AuditRevisionEntity revEntity = getAuditReader().findRevision(AuditRevisionEntity.class, revNumber);
             auditData.addEntry(new Entry("UPDATED-BY", revEntity.getUpdatedUserId()));
             auditData.addEntry(new Entry("UPDATED-AT", revEntity.getUpdatedTimeStamp().toString()));
-
             Object entity = getAuditReader().find(entityCls, id, revNumber);
-            Map<String, Object> valuesMap = ReflectionUtils.getFieldsDataFromEntity(entity, entityCls);
+            Map<String, Object> valuesMap = ReflectionUtils.getFieldsDataFromEntity(entity, entityCls, true);
             for (Map.Entry<String, Object> entry : valuesMap.entrySet()) {
-                Entry e = new Entry();
+               if(entry.getKey().equals("id") || entry.getKey().equals("version")){
+                   continue;
+               }
+               Entry e = new Entry();
                 e.setId(entry.getKey());
-                if (entry.getValue() == null) {
-                    e.setValue("");
-                } else {
+                if (entry.getValue() != null) {
                     e.setValue(entry.getValue().toString());
+                    checkForChanges(entry, e, previousValuesMap);
+                } else {
+                    e.setValue("");
                 }
                 auditData.addEntry(e);
             }
             table.addAuditData(auditData);
+            previousValuesMap = valuesMap;
         }
         return table;
+    }
+
+
+    protected void checkForChanges(Map.Entry<String, Object> entry, info.chili.service.jrs.types.Entry e, Map<String, Object> previousValuesMap) {
+        if (null != previousValuesMap) {
+            if (previousValuesMap.get(entry.getKey()) == null && entry.getValue() != null) {
+                highLightChanges(e);
+            }
+            if (previousValuesMap.get(entry.getKey()) != null && entry.getValue() == null) {
+                highLightChanges(e);
+            }
+            if (previousValuesMap.get(entry.getKey()) != null && entry.getValue() != null && !previousValuesMap.get(entry.getKey()).toString().equals(entry.getValue().toString())) {
+                highLightChanges(e);
+            }
+        }
+    }
+
+    protected void highLightChanges(info.chili.service.jrs.types.Entry e) {
+        e.setValue("<font style=\"BACKGROUND-COLOR: yellow\">" + e.getValue() + "</font>");
     }
 
     public static AuditService instance() {
