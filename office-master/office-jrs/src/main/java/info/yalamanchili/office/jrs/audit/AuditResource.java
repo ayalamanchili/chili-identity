@@ -7,14 +7,17 @@
  */
 package info.yalamanchili.office.jrs.audit;
 
-import info.yalamanchili.office.audit.AuditService;
+import info.chili.audit.AuditService;
+import info.yalamanchili.office.audit.OfficeAuditService;
 import info.chili.service.jrs.types.EntityAuditDataTbl;
 import info.yalamanchili.office.dto.audit.LoginActivityDto.LoginActivityTable;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +37,12 @@ public class AuditResource {
     @GET
     @Path("/resent_loginactivity/{start}/{limit}")
     public LoginActivityTable getRecentLoginActivity(@PathParam("start") int start, @PathParam("limit") int limit) {
-        return AuditService.instance().getLoginActivity(start, limit);
+        return OfficeAuditService.instance().getLoginActivity(start, limit);
     }
 
     @GET
     @Path("/changes/{entityClass}/{id}")
-    public EntityAuditDataTbl getChangesForEntity(@PathParam("entityClass") String entityClass, @PathParam("id") Long id) {
-        return AuditService.instance().getRecentChanges(entityClass, id);
+    public EntityAuditDataTbl getChangesForEntity(@PathParam("entityClass") String entityClass, @PathParam("id") Long id,@QueryParam("ingoreField") List<String> ingoreFields) {
+        return AuditService.instance().getRecentChanges(entityClass, id,ingoreFields);
     }
 }

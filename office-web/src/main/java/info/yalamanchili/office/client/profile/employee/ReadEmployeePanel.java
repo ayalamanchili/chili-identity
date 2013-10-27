@@ -11,7 +11,6 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import java.util.logging.Logger;

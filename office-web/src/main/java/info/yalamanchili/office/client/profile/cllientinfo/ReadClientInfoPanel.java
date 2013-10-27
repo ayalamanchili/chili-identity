@@ -184,4 +184,14 @@ public class ReadClientInfoPanel extends ReadComposite {
                     }
                 });
     }
+
+    @Override
+    protected boolean enableAudit() {
+        return true;
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.ClientInformation" + "/" + getEntityId();
+    }
 }
