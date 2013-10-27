@@ -209,7 +209,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     @Override
     public void showEntity() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(entityId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadEmployeePanel(getEntityId()));
     }
 
     protected String getPreferencesURI() {
