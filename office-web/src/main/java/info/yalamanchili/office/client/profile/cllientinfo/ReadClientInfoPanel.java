@@ -187,7 +187,7 @@ public class ReadClientInfoPanel extends ReadComposite {
 
     @Override
     protected boolean enableAudit() {
-        return true;
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP);
     }
 
     @Override

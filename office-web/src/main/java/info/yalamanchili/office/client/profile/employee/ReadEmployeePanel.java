@@ -12,28 +12,29 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import java.util.logging.Logger;
 
 public class ReadEmployeePanel extends ReadComposite {
-
+    
     private static Logger logger = Logger.getLogger(ReadEmployeePanel.class.getName());
     private static ReadEmployeePanel instance;
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(true, false);
-
+    
     public static ReadEmployeePanel instance() {
         return instance;
     }
-
+    
     public ReadEmployeePanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "Employee", OfficeWelcome.constants);
     }
-
+    
     public ReadEmployeePanel(String id) {
         initReadComposite(id, "Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -45,9 +46,9 @@ public class ReadEmployeePanel extends ReadComposite {
                         populateFieldsFromEntity(entity);
                     }
                 });
-
+        
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
@@ -68,17 +69,17 @@ public class ReadEmployeePanel extends ReadComposite {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
         addDropDown("employeeType", employeeSelectWidget);
@@ -100,22 +101,22 @@ public class ReadEmployeePanel extends ReadComposite {
             addField("status", true, false, DataType.BOOLEAN_FIELD);
         }
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/" + entityId;
     }
-
+    
     @Override
     protected boolean enableAudit() {
-        return true;
+        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
     }
-
+    
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Employee" + "/" + getEntityId();
