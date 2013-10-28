@@ -54,7 +54,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (checkPermission()) {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
@@ -72,7 +72,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
             assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
             assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.isSubContractor(getEmployee())) {
                 assignFieldValueFromEntity("subcontractor", entity, null);
                 assignFieldValueFromEntity("subcontractorContact", entity, null);
                 assignFieldValueFromEntity("subcontractorAddress", entity, null);
@@ -83,7 +83,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
                 assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
             }
-            if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.is1099(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
                 assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
@@ -93,6 +93,14 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
+    }
+
+    protected boolean checkPermission() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP);
+    }
+
+    protected JSONObject getEmployee() {
+        return TreeEmployeePanel.instance().getEntity();
     }
 
     @Override
@@ -115,7 +123,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false));
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (checkPermission()) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", true, false, DataType.STRING_FIELD);
             addField("payRate", true, false, DataType.CURRENCY_FIELD);
@@ -129,7 +137,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
             addDropDown("recruiter", selectRecruiterWidget);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.isSubContractor(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(true, false));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(true, false));
@@ -142,7 +150,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD);
                 addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD);
             }
-            if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+            if (Auth.is1099(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Information"));
                 addField("payRate1099", true, false, DataType.CURRENCY_FIELD);
                 addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD);

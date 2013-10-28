@@ -10,6 +10,9 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
  *
@@ -27,15 +30,9 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
     }
 
     @Override
-    public void updateClicked(String entityId) {
-//        UpdateClientInfoPopupPanel updateReportsToPanel = new UpdateClientInfoPopupPanel(getEntity(entityId));
-//        new GenericPopup(updateReportsToPanel).show();
-    }
-
-    @Override
-    public void postDeleteSuccess() {
-//        new ResponseStatusWidget().show("Successfully Deleted Reports To Information");
-//        ProfileHome.instance().refreshClientInformation();
+    public void viewClicked(String entityId) {
+        ReadClientInfoPopupPanel readClientInfoPanel = new ReadClientInfoPopupPanel(OfficeWelcome.instance().employee);
+        new GenericPopup(readClientInfoPanel).show();
     }
 
     @Override
@@ -45,5 +42,9 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     protected void createButtonClicked() {
+    }
+
+    protected boolean checkPermission() {
+        return true;
     }
 }
