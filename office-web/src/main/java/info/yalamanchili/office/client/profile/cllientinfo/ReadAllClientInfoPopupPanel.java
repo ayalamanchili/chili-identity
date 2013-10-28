@@ -11,8 +11,6 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
  *
@@ -31,7 +29,7 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
 
     @Override
     public void viewClicked(String entityId) {
-        ReadClientInfoPopupPanel readClientInfoPanel = new ReadClientInfoPopupPanel(OfficeWelcome.instance().employee);
+        ReadClientInfoPopupPanel readClientInfoPanel = new ReadClientInfoPopupPanel(getEntity(entityId));
         new GenericPopup(readClientInfoPanel).show();
     }
 
