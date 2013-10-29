@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
 
 -->
- 
 <definitions
     xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
     targetNamespace="http://www.bpmnwithactiviti.org"

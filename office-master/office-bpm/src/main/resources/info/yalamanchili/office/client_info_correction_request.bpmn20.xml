@@ -1,43 +1,32 @@
-<?xml version="1.0" encoding="windows-1252"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
 
 -->
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
-
-
 <definitions
     xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
     targetNamespace="http://www.bpmnwithactiviti.org"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
  
-    <process id="add_new_skill_request">
-        <startEvent id="addNewSkillStart">
+    <process id="client_info_correction_request">
+        <startEvent id="clientInfoCorrectionStart">
             <extensionElements>
-                <activiti:formProperty id="skillName" 
-                                       name="Skill Name"
+                <activiti:formProperty id="correctionDetails" 
+                                       name="Correction Details"
                                        required="true"
                                        type="string">
                 </activiti:formProperty>
-                <activiti:formProperty id="skillDescription" 
-                                       name="Skill Description"
-                                       required="false" 
-                                       type="string" />
             </extensionElements>
         </startEvent>
-        <sequenceFlow id="flow1" sourceRef="addNewSkillStart" targetRef="addNewSkillTask" />
-        <userTask id="addNewSkillTask" 
-                  name="Add new Skill request" 
-                  activiti:candidateGroups="ROLE_RECRUITER,ROLE_ADMIN">
+        <sequenceFlow id="flow1" sourceRef="clientInfoCorrectionStart" targetRef="clientInfoCorrectionTask" />
+        <userTask id="clientInfoCorrectionTask" 
+                  name="Client information correction Task" 
+                  activiti:candidateGroups="ROLE_TIME,ROLE_RECRUITER,ROLE_RELATIONSHIP">
             <documentation>
-                Add Skill Information:
-                Skill Name: ${skillName} 
-                Skill Description: ${skillDescription}
+                Correct Client Information:
+                Details : ${correctionDetails} 
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -55,11 +44,11 @@ and open the template in the editor.
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="flow3" sourceRef="addNewSkillTask" targetRef="addSkillEnd" />
+        <sequenceFlow id="flow3" sourceRef="clientInfoCorrectionTask" targetRef="clientInfoCorrectionTaskEnd" />
         <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="addNewSkillTask">
+                       attachedToRef="clientInfoCorrectionTask">
             <timerEventDefinition> 
                 <timeDuration>PT168H</timeDuration> 
             </timerEventDefinition>
@@ -72,6 +61,6 @@ and open the template in the editor.
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         <!-- end-->
-        <endEvent id="addSkillEnd" />
+        <endEvent id="clientInfoCorrectionTaskEnd" />
     </process>
 </definitions>
