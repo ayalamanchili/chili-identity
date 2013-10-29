@@ -1,5 +1,5 @@
 /**
- * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 package info.yalamanchili.office.integration.profile;
 
