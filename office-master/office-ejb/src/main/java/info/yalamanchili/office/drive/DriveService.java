@@ -67,12 +67,8 @@ public class DriveService {
 
     public FileTable getFiles(Long folderId, Integer start, Integer limit) {
         FileTable fileTable = new FileTable();
-        Folder folder = folderDao.findById(folderId);
-        if (folder == null) {
-            return fileTable;
-        }
         List<FileDto> files = new ArrayList<FileDto>();
-        for (File file : folder.getFiles()) {
+        for (File file : folderDao.getFilesInFolder(folderId, start, limit)) {
             files.add(FileDto.map(mapper, file));
         }
         fileTable.setEntities(files);
