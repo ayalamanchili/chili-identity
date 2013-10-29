@@ -34,23 +34,8 @@ public class SearchDrivePanel extends SearchComposite {
     }
 
     @Override
-    protected void populateSearchSuggestBox() {
-        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                loadSearchSuggestions(values.values());
-            }
-        });
-    }
-
-    private String getnameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "drive/searchdrive/0/1000?column=id&column=name";
-    }
-
-    @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getFileNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
@@ -101,9 +86,24 @@ public class SearchDrivePanel extends SearchComposite {
 
     @Override
     protected void postSearchSuccess(JSONArray result) {
-        logger.info("ddddd" + result);
         TabPanel.instance().drivePanel.entityPanel.clear();
         TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(result));
+    }
+
+    @Override
+    protected void populateSearchSuggestBox() {
+        HttpService.HttpServiceAsync.instance().doGet(getFileNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info("ddd"+entityString);
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                loadSearchSuggestions(values.values());
+            }
+        });
+    }
+
+    protected String getFileNameDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "drive/dropdown/0/10000?column=id&column=name";
     }
 
     @Override

@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.drive;
 
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.drive.DriveService;
 import info.yalamanchili.office.dto.drive.FileDto;
 import info.yalamanchili.office.dto.drive.FileDto.FileTable;
@@ -17,6 +18,7 @@ import info.yalamanchili.office.entity.drive.File;
 import info.yalamanchili.office.jrs.FileResource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -29,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -75,11 +78,10 @@ public class DriveResource {
     }
 
     @GET
-    @Path("/rename-folder/{folderId}/{{folderName}")
+    @Path("/rename-folder/{folderId}/{folderName}")
     public void renameFolder(@PathParam("folderId") Long folderId, @PathParam("folderName") String folderName) {
         //TODO driveservice
     }
-    
 
     @PUT
     @Path("/files/delete/{id}")
@@ -122,5 +124,18 @@ public class DriveResource {
             files.add(info.yalamanchili.office.dto.drive.FileDto.map(mapper, (File) fileObj));
         }
         return files;
+    }
+
+    @GET
+    @Path("/dropdown/{start}/{limit}")
+    @Transactional(propagation = Propagation.NEVER)
+    public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        List<Entry> result = new ArrayList<Entry>();
+        Map<String, String> values = FileDao.instance().getEntityStringMapByParams(start, limit, columns.toArray(new String[columns.size()]));
+        for (String key : values.keySet()) {
+            result.add(new Entry(key, values.get(key)));
+        }
+        return result;
     }
 }
