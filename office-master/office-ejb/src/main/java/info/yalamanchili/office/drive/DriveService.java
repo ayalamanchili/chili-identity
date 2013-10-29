@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.drive.Folder;
 import java.util.ArrayList;
 import org.dozer.Mapper;
 import java.util.List;
+import javax.ws.rs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -56,6 +57,12 @@ public class DriveService {
     public String updateFile(FileDto fileDto) {
         File file = mapper.map(fileDto, File.class);
         return FileDao.instance().save(file).getId().toString();
+    }
+
+    public void renameFolder(Long folderId, String folderName) {
+        //TODO find folder by id see above addFileMethod for example
+        //TODO set folder's new name 
+        //TODO save the folder with folder dao.
     }
 
     public FileTable getFiles(Long folderId, Integer start, Integer limit) {

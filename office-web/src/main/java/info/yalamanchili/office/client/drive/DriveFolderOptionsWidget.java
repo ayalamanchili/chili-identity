@@ -29,6 +29,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     protected FlowPanel panel = new FlowPanel();
     FolderMenuLabel createFolderL = new FolderMenuLabel("Add Sub Folder");
     FolderMenuLabel createFileL = new FolderMenuLabel("Add File");
+    //Add rename options here
     FolderMenuLabel deleteFolderL = new FolderMenuLabel("Delete Sub Folder");
 
     public DriveFolderOptionsWidget() {
@@ -65,6 +66,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
         if (event.getSource().equals(deleteFolderL)) {
             deleteFolderLinkClicked();
         }
+        //TODO add condition for rename folder created
     }
 
     protected void newFolderLinkClicked() {
@@ -73,6 +75,10 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
 
     protected void newFileLinkClicked() {
         new GenericPopup(new CreateFilePanel()).show();
+    }
+
+    protected void renameFolderClicked() {
+        new GenericPopup(new RenameFolderWidget()).show();
     }
 
     protected void deleteFolderLinkClicked() {

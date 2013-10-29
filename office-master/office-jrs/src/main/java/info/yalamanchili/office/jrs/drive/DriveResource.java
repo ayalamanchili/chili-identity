@@ -74,6 +74,13 @@ public class DriveResource {
         return driveService.updateFile(file);
     }
 
+    @GET
+    @Path("/rename-folder/{folderId}/{{folderName}")
+    public void renameFolder(@PathParam("folderId") Long folderId, @PathParam("folderName") String folderName) {
+        //TODO driveservice
+    }
+    
+
     @PUT
     @Path("/files/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
