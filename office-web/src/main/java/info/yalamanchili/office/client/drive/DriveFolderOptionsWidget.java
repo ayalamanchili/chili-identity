@@ -30,6 +30,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     FolderMenuLabel createFolderL = new FolderMenuLabel("Add Sub Folder");
     FolderMenuLabel createFileL = new FolderMenuLabel("Add File");
     //Add rename options here
+    FolderMenuLabel renameFoldeerL = new FolderMenuLabel("Rename Folder");
     FolderMenuLabel deleteFolderL = new FolderMenuLabel("Delete Sub Folder");
 
     public DriveFolderOptionsWidget() {
@@ -40,6 +41,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     protected void addListeners() {
         createFolderL.addClickHandler(this);
         createFileL.addClickHandler(this);
+        renameFoldeerL.addClickHandler(this);
         deleteFolderL.addClickHandler(this);
     }
 
@@ -51,6 +53,7 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
     protected void addWidgets() {
         panel.add(createFolderL);
         panel.add(createFileL);
+        panel.add(renameFoldeerL);
         panel.add(deleteFolderL);
     }
 
@@ -67,6 +70,9 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
             deleteFolderLinkClicked();
         }
         //TODO add condition for rename folder created
+        if (event.getSource().equals(renameFoldeerL)) {
+            renameFolderClicked();
+        }
     }
 
     protected void newFolderLinkClicked() {
@@ -85,12 +91,12 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
         if (Window.confirm("Are you sure? Folder and all files in this folder will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            new ResponseStatusWidget().show("Successfully Deleted Folder");
-                            DriveTreePanel.instance().refresh();
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    new ResponseStatusWidget().show("Successfully Deleted Folder");
+                    DriveTreePanel.instance().refresh();
+                }
+            });
         }
     }
 
