@@ -45,44 +45,45 @@ import org.springframework.transaction.annotation.Transactional;
 @Produces("application/json")
 @Consumes("application/json")
 public class DriveResource {
-
+    
     @Autowired
     protected DriveService driveService;
     @Autowired
     private Mapper mapper;
-
+    
     @Path("/tree")
     @GET
     public FolderDto getDriveFolder() {
         return driveService.getDriveFolderTree();
     }
-
+    
     @PUT
     @Path("/addfolder/{parentFolderId}")
     public void addFolder(@PathParam("parentFolderId") Long parentFolderId, FolderDto folder) {
         driveService.addFolder(parentFolderId, folder);
     }
-
+    
     @PUT
     @Path("/addfile/{folderId}")
     @Produces("application/text")
     public String addFile(@PathParam("folderId") Long folderId, FileDto file) {
         return driveService.addFile(folderId, file);
     }
-
+    
     @PUT
     @Path("/update-file")
     @Produces("application/text")
     public String updateFile(FileDto file) {
         return driveService.updateFile(file);
     }
-
+    
     @GET
     @Path("/rename-folder/{folderId}/{folderName}")
     public void renameFolder(@PathParam("folderId") Long folderId, @PathParam("folderName") String folderName) {
         //TODO driveservice
+        driveService.renameFolder(folderId, folderName);
     }
-
+    
     @PUT
     @Path("/files/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
@@ -91,20 +92,20 @@ public class DriveResource {
         FileDao.instance().delete(id);
         FileResource.instance().deleteFile(file.getFileUrl(), file.getId().toString());
     }
-
+    
     @PUT
     @Path("/folder/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
     public void deletefolder(@PathParam("id") Long id) {
         FolderDao.instance().delete(id);
     }
-
+    
     @GET
     @Path("/files/{folderId}/{start}/{limit}")
     public FileTable getFiles(@PathParam("folderId") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         return driveService.getFiles(id, start, limit);
     }
-
+    
     @GET
     @Path("/searchdrive/{start}/{limit}")
     public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
@@ -115,7 +116,7 @@ public class DriveResource {
         }
         return files;
     }
-
+    
     @PUT
     @Path("/searchdrive/{start}/{limit}")
     public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(File entity, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -125,7 +126,7 @@ public class DriveResource {
         }
         return files;
     }
-
+    
     @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
