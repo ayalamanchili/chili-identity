@@ -59,12 +59,8 @@ public class DriveService {
     }
 
     public void renameFolder(Long folderId, String folderName) {
-        //TODO find folder by id see above addFileMethod for example
-        Folder parentFolderId = folderDao.findById(folderId);
-        //TODO set folder's new name 
-        Folder folder = mapper.map(folderName, Folder.class);
-        //TODO save the folder with folder dao.
-        folder.setParent(parentFolderId);
+        Folder folder = folderDao.findById(folderId);
+        folder.setName(folderName);
         folderDao.save(folder);
     }
 
