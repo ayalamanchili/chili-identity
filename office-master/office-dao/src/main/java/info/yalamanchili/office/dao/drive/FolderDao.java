@@ -42,8 +42,13 @@ public class FolderDao extends CRUDDao<Folder> {
         TypedQuery<File> query = em.createQuery("from " + File.class.getCanonicalName() + " where folder.id=:folderIdParam", File.class);
         query.setParameter("folderIdParam", folderId);
         query.setFirstResult(start);
-        query.setMaxResults(limit);
         return query.getResultList();
+    }
+
+    public Long getFilesSizeInFolder(Long folderId) {
+        TypedQuery<Long> query = em.createQuery("select count(*) from " + File.class.getCanonicalName() + " where folder.id=:folderIdParam", Long.class);
+        query.setParameter("folderIdParam", folderId);
+        return query.getSingleResult();
     }
 
     @Override

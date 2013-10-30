@@ -71,7 +71,7 @@ public class DriveService {
             files.add(FileDto.map(mapper, file));
         }
         fileTable.setEntities(files);
-        fileTable.setSize(Long.valueOf(files.size()));
+        fileTable.setSize(folderDao.getFilesSizeInFolder(folderId));
         return fileTable;
     }
 }
