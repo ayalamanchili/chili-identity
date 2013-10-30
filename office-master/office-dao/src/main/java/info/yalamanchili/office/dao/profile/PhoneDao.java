@@ -14,9 +14,9 @@ import javax.persistence.PersistenceContext;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 @Scope("prototype")
 public class PhoneDao extends CRUDDao<Phone> {
 

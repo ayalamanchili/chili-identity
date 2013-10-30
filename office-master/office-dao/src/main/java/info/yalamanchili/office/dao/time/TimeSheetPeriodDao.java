@@ -16,14 +16,14 @@ import info.yalamanchili.office.entity.time.TimeSheetPeriod;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author bala
  */
-@Component
+@Repository
 @Scope("prototype")
 public class TimeSheetPeriodDao extends CRUDDao<TimeSheetPeriod> {
 

@@ -12,7 +12,6 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
@@ -24,13 +23,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Prashanthi
  */
-@Component
+@Repository
 @Scope("prototype")
 public class TimeSheetDao extends CRUDDao<TimeSheet> {
 

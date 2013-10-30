@@ -14,13 +14,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author raghu
  */
-@Component
+@Repository
 @Scope("prototype")
 public class SkillDao extends CRUDDao<Skill> {
 

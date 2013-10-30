@@ -15,13 +15,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author ayalamanchili
  */
-@Component
+@Repository
 @Scope("prototype")
 public class CompanyDao extends CRUDDao<Company> {
 

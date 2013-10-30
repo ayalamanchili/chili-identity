@@ -12,14 +12,14 @@ import info.yalamanchili.office.dao.audit.LoginActivityDao;
 import info.yalamanchili.office.entity.audit.LoginActivity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author anuyalamanchili
  */
-@Component
+@Repository
 @Transactional
 //TODO move this along with SecurityService to EJB layer
 public class LoginSuccessListener {

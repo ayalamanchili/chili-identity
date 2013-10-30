@@ -13,13 +13,13 @@ import info.yalamanchili.office.entity.company.CompanyContactType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author ayalamanchili
  */
-@Component
+@Repository
 @Scope("prototype")
 public class CompanyContactTypeDao extends CRUDDao<CompanyContactType> {
 

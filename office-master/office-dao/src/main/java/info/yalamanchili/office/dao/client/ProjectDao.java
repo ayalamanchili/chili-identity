@@ -9,18 +9,17 @@ package info.yalamanchili.office.dao.client;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.client.Project;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author raghu
  */
-@Component
+@Repository
 @Scope("prototype")
 public class ProjectDao extends CRUDDao<Project> {
 

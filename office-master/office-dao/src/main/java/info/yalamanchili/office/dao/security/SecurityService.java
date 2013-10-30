@@ -17,9 +17,9 @@ import org.jasypt.digest.StandardStringDigester;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 @Scope("prototype")
 public class SecurityService {
 

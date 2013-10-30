@@ -12,13 +12,13 @@ import info.yalamanchili.office.entity.time.AdjustmentHours;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author raghu
  */
-@Component
+@Repository
 @Scope("prototype")
 public class AdjustmentHoursDao extends CRUDDao<AdjustmentHours> {
 

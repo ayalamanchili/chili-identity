@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * @todo add comment for javadoc
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  * @generated
  */
-@Component
+@Repository
 @Scope("prototype")
 public class AddressDao extends CRUDDao<Address> {
 

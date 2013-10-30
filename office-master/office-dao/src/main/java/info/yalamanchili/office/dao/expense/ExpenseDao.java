@@ -15,13 +15,13 @@ import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author raghu
  */
-@Component
+@Repository
 @Scope("prototype")
 public class ExpenseDao extends CRUDDao<Expense> {
 

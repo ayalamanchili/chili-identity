@@ -9,17 +9,16 @@ package info.yalamanchili.office.dao.bulkimport;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
-import info.yalamanchili.office.entity.client.Client;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author ayalamanchili
  */
-@Component
+@Repository
 @Scope("prototype")
 public class BulkImportDao extends CRUDDao<BulkImport> {
 

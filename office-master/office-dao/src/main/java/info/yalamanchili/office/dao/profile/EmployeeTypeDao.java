@@ -12,13 +12,13 @@ import info.yalamanchili.office.entity.profile.EmployeeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author bala
  */
-@Component
+@Repository
 @Scope("prototype")
 public class EmployeeTypeDao extends CRUDDao<EmployeeType> {
 
