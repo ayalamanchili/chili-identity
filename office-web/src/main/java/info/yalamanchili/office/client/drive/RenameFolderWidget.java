@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -26,7 +29,7 @@ public class RenameFolderWidget extends ALComposite implements ClickHandler {
     FlowPanel panel = new FlowPanel();
     StringField stringField = new StringField(OfficeWelcome.constants,
             "name", "Folder", false, false);
-    Button renameB = new Button("Rename Foler");
+    Button renameB = new Button("Rename Folder");
 
     public RenameFolderWidget() {
         init(panel);
@@ -39,7 +42,6 @@ public class RenameFolderWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-
     }
 
     @Override
@@ -53,14 +55,13 @@ public class RenameFolderWidget extends ALComposite implements ClickHandler {
         //TODO check empty string validation
         HttpService.HttpServiceAsync.instance().doGet(getRenameURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Folder Renamed");
-                        GenericPopup.instance().hide();
-                        DriveTreePanel.instance().refresh();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                new ResponseStatusWidget().show("Folder Renamed");
+                GenericPopup.instance().hide();
+                DriveTreePanel.instance().refresh();
+            }
+        });
     }
 
     protected String getRenameURI() {
