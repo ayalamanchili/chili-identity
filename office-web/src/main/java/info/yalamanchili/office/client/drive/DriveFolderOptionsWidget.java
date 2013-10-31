@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
 
 /**
  *
@@ -51,10 +52,12 @@ public class DriveFolderOptionsWidget extends ALComposite implements ClickHandle
 
     @Override
     protected void addWidgets() {
-        panel.add(createFolderL);
-        panel.add(createFileL);
-        panel.add(renameFoldeerL);
-        panel.add(deleteFolderL);
+        if (Auth.isCorporateEmployee()) {
+            panel.add(createFolderL);
+            panel.add(createFileL);
+            panel.add(renameFoldeerL);
+            panel.add(deleteFolderL);
+        }
     }
 
     @Override
