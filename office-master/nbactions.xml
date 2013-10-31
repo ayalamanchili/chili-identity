@@ -30,4 +30,14 @@
             <skipTests>true</skipTests>
         </properties>
     </action>
+    <action>
+            <actionName>CUSTOM-mvn site</actionName>
+            <displayName>mvn site</displayName>
+            <recursive>false</recursive>
+            <goals>
+                <goal>clean</goal>
+                <goal>site:site</goal>
+                
+            </goals>
+        </action>
 </actions>
