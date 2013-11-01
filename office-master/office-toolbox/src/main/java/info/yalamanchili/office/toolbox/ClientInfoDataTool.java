@@ -5,13 +5,20 @@
  */
 package info.yalamanchili.office.toolbox;
 
+import static info.yalamanchili.office.toolbox.ExcelUtils.getCellNumericValue;
+import static info.yalamanchili.office.toolbox.ExcelUtils.getCellStringOrNumericValue;
 import static info.yalamanchili.office.toolbox.ExcelUtils.getCellStringValue;
+import info.yalamanchili.office.toolbox.types.ClientInformationRecord;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.tool.hbm2x.StringUtils;
 
 /**
  *
@@ -21,10 +28,11 @@ public class ClientInfoDataTool {
 
     public static void main(String... args) {
         ClientInfoDataTool load = new ClientInfoDataTool();
-        load.loadClientInfoFromExcel();
+        System.out.println(load.loadClientInfoFromExcel());
     }
 
-    protected void loadClientInfoFromExcel() {
+    protected List<ClientInformationRecord> loadClientInfoFromExcel() {
+        List<ClientInformationRecord> records = new ArrayList<ClientInformationRecord>();
         InputStream inp;
         XSSFWorkbook workbook;
         try {
@@ -37,8 +45,27 @@ public class ClientInfoDataTool {
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
             Row record = rowIterator.next();
-            System.out.println("Item number" + getCellStringValue(record, 0));
+            ClientInformationRecord ci = new ClientInformationRecord();
+            ci.setEmployeeId(getEmployeeId(getCellStringValue(record, 25), getCellStringValue(record, 26)));
+            ci.setClientName(getCellStringValue(record, 36));
+            ci.setVendorName(getCellStringValue(record, 35));
+            ci.setItemNumber(getCellStringOrNumericValue(record, 0));
+            System.out.println(getCellStringOrNumericValue(record, 0));
+//            ci.setPayRate(new BigDecimal(getCellNumericValue(record, 1)));
+            ci.setNotes(getCellStringValue(record, 12));
+            ci.setVisaStatus(getCellStringValue(record, 11));
+            ci.setDeliveryMethod(getCellStringValue(record, 8));
+            ci.setFrequency(getCellStringValue(record, 7));
+            records.add(ci);
         }
+        return records;
+    }
+
+    protected String getEmployeeId(String firstName, String lastName) {
+        if (StringUtils.isNotEmpty(firstName) && StringUtils.isNotEmpty(lastName)) {
+            return firstName.toLowerCase().charAt(0) + lastName.toLowerCase();
+        }
+        return null;
     }
 
     protected String getDataFileUrl() {

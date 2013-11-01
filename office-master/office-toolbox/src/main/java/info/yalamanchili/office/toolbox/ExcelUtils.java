@@ -17,10 +17,16 @@ import org.apache.poi.ss.usermodel.Row;
 //TODO move to chili commons
 public class ExcelUtils {
 
-    public static String getCellStringValue(Row record, int column) {
-        if (column == 16) {
-            System.out.println(record.getCell(column).getCellType());
+    public static String getCellStringOrNumericValue(Row record, int column) {
+        if (getCellStringValue(record, column) != null) {
+            return getCellStringValue(record, column);
+        } else if (getCellNumericValue(record, column) != null) {
+            return getCellNumericValue(record, column);
         }
+        return null;
+    }
+
+    public static String getCellStringValue(Row record, int column) {
         if (record.getCell(column) != null && record.getCell(column).getCellType() == HSSFCell.CELL_TYPE_STRING && !record.getCell(column).getStringCellValue().isEmpty()) {
             return record.getCell(column).getStringCellValue();
         } else {
