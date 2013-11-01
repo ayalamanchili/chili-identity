@@ -5,13 +5,11 @@
  */
 package info.yalamanchili.office.toolbox;
 
-import static info.yalamanchili.office.toolbox.ExcelUtils.getCellNumericValue;
 import static info.yalamanchili.office.toolbox.ExcelUtils.getCellStringOrNumericValue;
 import static info.yalamanchili.office.toolbox.ExcelUtils.getCellStringValue;
 import info.yalamanchili.office.toolbox.types.ClientInformationRecord;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -49,8 +47,8 @@ public class ClientInfoDataTool {
             ci.setEmployeeId(getEmployeeId(getCellStringValue(record, 25), getCellStringValue(record, 26)));
             ci.setClientName(getCellStringValue(record, 36));
             ci.setVendorName(getCellStringValue(record, 35));
-            ci.setItemNumber(getCellStringOrNumericValue(record, 0));
-            System.out.println(getCellStringOrNumericValue(record, 0));
+            ci.setItemNumber(formatItemNumber(getCellStringOrNumericValue(record, 0)));
+            System.out.println(formatItemNumber(getCellStringOrNumericValue(record, 0)));
 //            ci.setPayRate(new BigDecimal(getCellNumericValue(record, 1)));
             ci.setNotes(getCellStringValue(record, 12));
             ci.setVisaStatus(getCellStringValue(record, 11));
@@ -59,6 +57,14 @@ public class ClientInfoDataTool {
             records.add(ci);
         }
         return records;
+    }
+
+    protected String formatItemNumber(String itemNumber) {
+        if (StringUtils.isNotEmpty(itemNumber) && itemNumber.contains(".")) {
+            return itemNumber.substring(0, itemNumber.indexOf("."));
+        } else {
+            return itemNumber;
+        }
     }
 
     protected String getEmployeeId(String firstName, String lastName) {
