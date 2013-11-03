@@ -1,9 +1,11 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package info.yalamanchili.office.toolbox.types;
 
 import java.math.BigDecimal;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
  * @author ayalamanchili
  */
 public class ClientInformationRecord {
+
     protected String employeeId;
     protected String itemNumber;
     protected String clientName;
@@ -106,7 +109,7 @@ public class ClientInformationRecord {
 
     @Override
     public String toString() {
-        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", payRate=" + payRate + ", billRateDuration=" + billRateDuration + ", frequency=" + frequency + ", deliveryMethod=" + deliveryMethod + ", visaStatus=" + visaStatus + ", notes=" + notes + '}';
+        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", payRate=" + payRate + ", billRateDuration=" + billRateDuration + ", frequency=" + frequency + ", deliveryMethod=" + deliveryMethod + ", visaStatus=" + visaStatus + ", notes=" + notes + '}' + "\n";
     }
-    
+
 }

@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.admin;
 import info.yalamanchili.office.security.SecurityUtils;
 import info.yalamanchili.office.toolbox.DataTools;
 import info.yalamanchili.office.toolbox.ADPEmployeeDataTool;
+import info.yalamanchili.office.toolbox.ClientInfoDataTool;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -87,6 +88,13 @@ public class AdminUtilsResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void syncADPEmpployeeData() {
         ADPEmployeeDataTool.instance().syncADPEmpployeeData();
+    }
+
+    @Path("sync-client-info")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void syncClientInformation() {
+        ClientInfoDataTool.instance().syncClientInformationData();
     }
 
     @Path("sync_skills_data")
