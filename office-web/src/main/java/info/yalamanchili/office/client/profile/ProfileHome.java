@@ -3,8 +3,6 @@
  */
 package info.yalamanchili.office.client.profile;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.json.client.JSONObject;
@@ -12,21 +10,15 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.composite.ALComposite;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPopupPanel;
-import info.yalamanchili.office.client.profile.employee.ReadEmployeePanel;
 
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
-import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPopupPanel;
 import info.yalamanchili.office.client.profile.certification.MuitiSelectCertificationWidget;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllEmergencyContactsPopupPanel;
-import info.yalamanchili.office.client.profile.employee.UpdateEmployeePopupPanel;
-import info.yalamanchili.office.client.profile.employee.ChangePasswordPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPopupPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPopupPanel;
 import info.yalamanchili.office.client.profile.preferences.UpdatePreferencesPanel;
@@ -35,10 +27,11 @@ import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
+import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import java.util.logging.Logger;
 
-public class ProfileHome extends ALComposite implements ClickHandler {
+public class ProfileHome extends ALComposite {
 
     private static ProfileHome instance;
 
@@ -57,8 +50,6 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     protected DisclosurePanel privacyPanel;
     protected DisclosurePanel skillSetDP;
     protected DisclosurePanel preferencesPanel;
-    protected ClickableLink updateProfile = new ClickableLink("Update Profile");
-    protected ClickableLink changePassword = new ClickableLink("Change Password");
 
     public ProfileHome() {
         instance = this;
@@ -66,14 +57,12 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     }
 
     @Override
-    protected void addListeners() {
-        updateProfile.addClickHandler(this);
-        changePassword.addClickHandler(this);
+    protected void configure() {
+        // TODO Auto-generated method stub
     }
 
     @Override
-    protected void configure() {
-        // TODO Auto-generated method stub
+    protected void addListeners() {
     }
 
     @Override
@@ -88,8 +77,6 @@ public class ProfileHome extends ALComposite implements ClickHandler {
         addSkillSetPanel();
         addPreferencesPanel();
         addPrivacyPanel();
-        panel.add(updateProfile);
-        panel.add(changePassword);
     }
     /*
      * Read Employee Panel
@@ -103,7 +90,7 @@ public class ProfileHome extends ALComposite implements ClickHandler {
             employeeePanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
                 @Override
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
-                    employeeePanel.setContent(new ReadEmployeePanel(OfficeWelcome.instance().employee));
+                    employeeePanel.setContent(new ReadEmployeePopupPanel(OfficeWelcome.instance().employee));
 
                 }
             });
@@ -346,16 +333,5 @@ public class ProfileHome extends ALComposite implements ClickHandler {
     public void refreshPrivacy() {
         privacyPanel.setOpen(false);
         privacyPanel.setOpen(true);
-    }
-
-    @Override
-    public void onClick(ClickEvent event) {
-        if (event.getSource().equals(updateProfile)) {
-            UpdateEmployeePopupPanel updatePanel = new UpdateEmployeePopupPanel(OfficeWelcome.instance().employee);
-            new GenericPopup(updatePanel).show();
-        } else if (event.getSource().equals(changePassword)) {
-            ChangePasswordPanel cngPasswordPanel = new ChangePasswordPanel(CreateComposite.CreateCompositeType.CREATE);
-            new GenericPopup(cngPasswordPanel).show();
-        }
     }
 }

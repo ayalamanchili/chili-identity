@@ -54,7 +54,7 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
-        if (Auth.isAdmin() || Auth.isHR()) {
+         if (canViewDOBField()) {
             assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         }
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
@@ -87,7 +87,7 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("middleInitial", true, false, DataType.STRING_FIELD);
         addField("lastName", true, false, DataType.STRING_FIELD);
         addField("employeeId", true, false, DataType.STRING_FIELD);
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (canViewDOBField()) {
             addField("dateOfBirth", true, false, DataType.DATE_FIELD);
         }
         String[] strs = {"MALE", "FEMALE"};
@@ -100,6 +100,10 @@ public class ReadEmployeePanel extends ReadComposite {
         if (Auth.isAdmin()) {
             addField("status", true, false, DataType.BOOLEAN_FIELD);
         }
+    }
+    
+    protected boolean canViewDOBField() {
+        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
     }
     
     @Override
