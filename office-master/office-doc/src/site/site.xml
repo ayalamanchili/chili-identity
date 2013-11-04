@@ -1,0 +1,31 @@
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<project xmlns="http://maven.apache.org/DECORATION/1.3.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
+         name="System Soft Portal">
+    
+    <bannerLeft>
+        <name>Project Name</name>
+        <src>https://yalamanchili.googlecode.com/files/sst-logo.png</src>
+        <href>https://apps.sstech.us/portal</href>
+    </bannerLeft>
+    <body>
+        <menu name="Overview">
+            <item name="Introduction" href="/office/index.html"/>
+            <item name="Home" href="/ofice/home.html"/>
+            <item name="Social" href="/office/social.html"/>
+            <item name="My Office" href="office/my-office.html"/>
+            <item name="Profile" href="/office/profile.html"/>
+            <item name="Portal Roles" href="/office/roles.html"/>
+        </menu>
+        <footer>COPYRIGHT © 2013 sstech.us - All Rights Reserved</footer>
+    </body>
+    <poweredBy>
+        <logo name="Chili" href="https://code.google.com/p/yalamanchili/"
+              img="http://maven.apache.org/images/logos/maven-feather.png"/>
+    </poweredBy>
+</project>
