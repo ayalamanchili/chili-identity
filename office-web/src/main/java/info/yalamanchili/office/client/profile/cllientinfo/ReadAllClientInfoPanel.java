@@ -58,7 +58,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
             table.setText(0, 6, getKeyValue("InvoiceFrequency"));
         }
         table.setText(0, 7, getKeyValue("StartDate"));
-        table.setText(0, 8, getKeyValue("EndtDate"));
+        table.setText(0, 8, getKeyValue("EndDate"));
     }
 
     @Override
