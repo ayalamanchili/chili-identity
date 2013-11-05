@@ -9,12 +9,12 @@ package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Path("secured/contract")
 @Component
 @Scope("request")
+@Produces("application/json")
+@Consumes("application/json")
 @Transactional
 public class ContractResource {
 
