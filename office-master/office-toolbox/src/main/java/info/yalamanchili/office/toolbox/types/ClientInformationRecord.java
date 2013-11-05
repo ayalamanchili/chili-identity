@@ -8,6 +8,9 @@
  */
 package info.yalamanchili.office.toolbox.types;
 
+import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
+import info.yalamanchili.office.entity.client.InvoiceFrequency;
+import info.yalamanchili.office.entity.profile.BillingDuration;
 import java.math.BigDecimal;
 
 /**
@@ -20,12 +23,19 @@ public class ClientInformationRecord {
     protected String itemNumber;
     protected String clientName;
     protected String vendorName;
-    protected BigDecimal payRate;
-    protected String billRateDuration;
-    protected String frequency;
-    protected String deliveryMethod;
+    protected BigDecimal billingRate;
+    protected BillingDuration billingDuration;
+    protected BigDecimal overtimePayRate;
+    protected BillingDuration overtimeBillingDuration;
+    protected InvoiceFrequency invoiceFrequency;
+    protected InvoiceDeliveryMethod invoiceDeliveryMethod;
     protected String visaStatus;
+    protected String vendorPaymentTerm;
     protected String notes;
+    protected boolean hrOrientation;
+    protected boolean logisticsPreparation;
+    protected boolean i9Filled;
+    protected boolean w4Filled;
 
     public String getEmployeeId() {
         return employeeId;
@@ -59,36 +69,52 @@ public class ClientInformationRecord {
         this.vendorName = vendorName;
     }
 
-    public BigDecimal getPayRate() {
-        return payRate;
+    public BigDecimal getBillingRate() {
+        return billingRate;
     }
 
-    public void setPayRate(BigDecimal payRate) {
-        this.payRate = payRate;
+    public void setBillingRate(BigDecimal billingRate) {
+        this.billingRate = billingRate;
     }
 
-    public String getBillRateDuration() {
-        return billRateDuration;
+    public BillingDuration getBillingDuration() {
+        return billingDuration;
     }
 
-    public void setBillRateDuration(String billRateDuration) {
-        this.billRateDuration = billRateDuration;
+    public void setBillingDuration(BillingDuration billingDuration) {
+        this.billingDuration = billingDuration;
     }
 
-    public String getFrequency() {
-        return frequency;
+    public BigDecimal getOvertimePayRate() {
+        return overtimePayRate;
     }
 
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
+    public void setOvertimePayRate(BigDecimal overtimePayRate) {
+        this.overtimePayRate = overtimePayRate;
     }
 
-    public String getDeliveryMethod() {
-        return deliveryMethod;
+    public BillingDuration getOvertimeBillingDuration() {
+        return overtimeBillingDuration;
     }
 
-    public void setDeliveryMethod(String deliveryMethod) {
-        this.deliveryMethod = deliveryMethod;
+    public void setOvertimeBillingDuration(BillingDuration overtimeBillingDuration) {
+        this.overtimeBillingDuration = overtimeBillingDuration;
+    }
+
+    public InvoiceFrequency getInvoiceFrequency() {
+        return invoiceFrequency;
+    }
+
+    public void setInvoiceFrequency(InvoiceFrequency invoiceFrequency) {
+        this.invoiceFrequency = invoiceFrequency;
+    }
+
+    public InvoiceDeliveryMethod getInvoiceDeliveryMethod() {
+        return invoiceDeliveryMethod;
+    }
+
+    public void setInvoiceDeliveryMethod(InvoiceDeliveryMethod invoiceDeliveryMethod) {
+        this.invoiceDeliveryMethod = invoiceDeliveryMethod;
     }
 
     public String getVisaStatus() {
@@ -99,6 +125,14 @@ public class ClientInformationRecord {
         this.visaStatus = visaStatus;
     }
 
+    public String getVendorPaymentTerm() {
+        return vendorPaymentTerm;
+    }
+
+    public void setVendorPaymentTerm(String vendorPaymentTerm) {
+        this.vendorPaymentTerm = vendorPaymentTerm;
+    }
+
     public String getNotes() {
         return notes;
     }
@@ -107,9 +141,40 @@ public class ClientInformationRecord {
         this.notes = notes;
     }
 
-    @Override
-    public String toString() {
-        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", payRate=" + payRate + ", billRateDuration=" + billRateDuration + ", frequency=" + frequency + ", deliveryMethod=" + deliveryMethod + ", visaStatus=" + visaStatus + ", notes=" + notes + '}' + "\n";
+    public boolean isHrOrientation() {
+        return hrOrientation;
     }
 
+    public void setHrOrientation(boolean hrOrientation) {
+        this.hrOrientation = hrOrientation;
+    }
+
+    public boolean isLogisticsPreparation() {
+        return logisticsPreparation;
+    }
+
+    public void setLogisticsPreparation(boolean logisticsPreparation) {
+        this.logisticsPreparation = logisticsPreparation;
+    }
+
+    public boolean isI9Filled() {
+        return i9Filled;
+    }
+
+    public void setI9Filled(boolean i9Filled) {
+        this.i9Filled = i9Filled;
+    }
+
+    public boolean isW4Filled() {
+        return w4Filled;
+    }
+
+    public void setW4Filled(boolean w4Filled) {
+        this.w4Filled = w4Filled;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", billingRate=" + billingRate + ", billingDuration=" + billingDuration + ", overtimePayRate=" + overtimePayRate + ", overtimeBillingDuration=" + overtimeBillingDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", visaStatus=" + visaStatus + ", vendorPaymentTerm=" + vendorPaymentTerm + ", notes=" + notes + ", hrOrientation=" + hrOrientation + ", logisticsPreparation=" + logisticsPreparation + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + '}';
+    }
 }
