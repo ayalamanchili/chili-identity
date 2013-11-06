@@ -292,7 +292,7 @@ public class ADPEmployeeDataTool {
 
     protected String getDataFileUrl() {
 //        return "C:\\Users\\ayalamanchili\\Desktop\\load.xls";
-        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
+        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xlsx";
     }
 
     public static ADPEmployeeDataTool instance() {

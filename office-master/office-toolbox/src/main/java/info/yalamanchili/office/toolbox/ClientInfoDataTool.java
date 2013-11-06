@@ -47,7 +47,7 @@ public class ClientInfoDataTool {
 
     public static void main(String... args) {
         ClientInfoDataTool load = new ClientInfoDataTool();
-        System.out.println(load.readClientInfoData());
+        load.syncClientInformationData();
     }
 
     public void syncClientInformationData() {
@@ -61,7 +61,7 @@ public class ClientInfoDataTool {
                         int similarity2 = info.chili.commons.StringUtils.stringSimilarity(ci.getClient().getName(), record.getClientName().trim());
                         if (similarity1 >= 0.10 || similarity2 > 1) {
                             log.info("processing associated::" + record.getClientName() + "------" + ci.getClient().getName());
-                            mapAndSaveClientInformationValues(ci, record);
+                            mapAndSaveClientInformationValues(ci.getId(), record);
                         } else {
                             log.info("no client information found::" + record.getClientName() + "------" + ci.getClient().getName());
                         }
@@ -71,7 +71,8 @@ public class ClientInfoDataTool {
         }
     }
 
-    protected void mapAndSaveClientInformationValues(ClientInformation ci, ClientInformationRecord record) {
+    protected void mapAndSaveClientInformationValues(Long id, ClientInformationRecord record) {
+        ClientInformation ci = ClientInformationDao.instance().findById(id);
         ci.setItemNumber(record.getItemNumber());
         ci.setBillingRate(record.getBillingRate());
         ci.setBillingRateDuration(record.getBillingDuration());
@@ -85,10 +86,12 @@ public class ClientInfoDataTool {
         ci.setI9Filled(record.isI9Filled());
         ci.setW4Filled(record.isW4Filled());
         ci.setVisaStatus(record.getVisaStatus());
-        if (ci.getNotes() != null) {
-            ci.setNotes(ci.getNotes().concat("Vendor Payment Terms:").concat(record.getVendorPaymentTerm()).concat("\n"));
-        } else {
-            ci.setNotes("Vendor Payment Terms:".concat(record.getVendorPaymentTerm()).concat("\n"));
+        if (StringUtils.isNotBlank(record.getVendorPaymentTerm())) {
+            if (ci.getNotes() != null) {
+                ci.setNotes(ci.getNotes().concat("Vendor Payment Terms:").concat(record.getVendorPaymentTerm()).concat("\n"));
+            } else {
+                ci.setNotes("Vendor Payment Terms:".concat(record.getVendorPaymentTerm()).concat("\n"));
+            }
         }
         ClientInformationDao.instance().getEntityManager().merge(ci);
     }
@@ -171,7 +174,7 @@ public class ClientInfoDataTool {
     }
 
     protected String getDataFileUrl() {
-        return "C:\\Users\\ayalamanchili\\Desktop\\BIS_DATA.xlsx";
+        return "/Users/anuyalamanchili/Desktop/BIS_DATA.xlsx";
 //        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
     }
 
