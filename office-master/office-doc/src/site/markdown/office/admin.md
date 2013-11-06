@@ -22,6 +22,7 @@ View and manage following information
 
 ##### Notification Groups
     - Grouping Employees for sending emails
+       For ex: Employees Ann,Jessica,Bari and Peter can be grouped by creating a new      Notification group. while giving a mail if you select this notification group,     mail will be send to all employees in a particular group 
     - Employees can be added/removed from a Notification Group
 
 ##### Issue Type
@@ -29,3 +30,34 @@ View and manage following information
  
  ##### Bulk Import
     - Facility to Load bunch of records from ADP/Quickbooks is provided
+    
+Update Client
+----
+![alt text](../images/update-client.png "Update Client")
+Add ClientLocation
+----
+![alt text](../images/add-clientlocation.png "Add Client Location")
+
+Update ClientContact
+----
+![alt text](../images/update-clientcontact.png "Update Client contact")
+
+Client Search
+----
+![alt text](../images/Client-search.png "Client Search")
+
+Create Notification Group
+----
+![alt text](../images/notificationgroup.png "Create Notification group") 
+
+Importing Bulk ADP records
+----
+![alt text](../images/BulkImport-ADPData.png "Importing Bulk ADP Records")
+
+
+
+
+
+
+
+
