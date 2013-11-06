@@ -14,8 +14,14 @@ package info.yalamanchili.office.entity.client;
 public enum InvoiceFrequency {
 
     WEEKLY,
+    WEEKLY_ENDING_FRIDAY,
+    WEEKLY_ENDING_SUNDAY,
+    WEEKLY_MON_TO_SUN,
     BI_WEEKLY,
     MONTHLY,
+    MONTHLY_LAST_FRIDAY,
+    MONTHLY_LAST_SATURDAY,
+    MONTHLY_FIRST_SUNDAY,
     SEMI_MONTHLY,
     NOT_REQUIRED,
 }
