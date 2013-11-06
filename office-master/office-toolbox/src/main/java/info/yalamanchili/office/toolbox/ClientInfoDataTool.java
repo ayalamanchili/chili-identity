@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.toolbox;
 
+import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -24,8 +25,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,10 +51,11 @@ public class ClientInfoDataTool {
 
     public static void main(String... args) {
         ClientInfoDataTool load = new ClientInfoDataTool();
-        load.syncClientInformationData();
+        System.out.println(load.readClientInfoData());
     }
 
     public void syncClientInformationData() {
+        Map<Long, ClientInformationRecord> data = new HashMap<Long, ClientInformationRecord>();
         for (ClientInformationRecord record : readClientInfoData()) {
             if (StringUtils.isNotEmpty(record.getEmployeeId())) {
                 Employee emp = SecurityService.instance().findEmployee(record.getEmployeeId());
@@ -61,7 +66,7 @@ public class ClientInfoDataTool {
                         int similarity2 = info.chili.commons.StringUtils.stringSimilarity(ci.getClient().getName(), record.getClientName().trim());
                         if (similarity1 >= 0.10 || similarity2 > 1) {
                             log.info("processing associated::" + record.getClientName() + "------" + ci.getClient().getName());
-                            mapAndSaveClientInformationValues(ci.getId(), record);
+                            data.put(ci.getId(), record);
                         } else {
                             log.info("no client information found::" + record.getClientName() + "------" + ci.getClient().getName());
                         }
@@ -69,31 +74,40 @@ public class ClientInfoDataTool {
                 }
             }
         }
+        mapAndSaveClientInformationValues(data);
     }
 
-    protected void mapAndSaveClientInformationValues(Long id, ClientInformationRecord record) {
-        ClientInformation ci = ClientInformationDao.instance().findById(id);
-        ci.setItemNumber(record.getItemNumber());
-        ci.setBillingRate(record.getBillingRate());
-        ci.setBillingRateDuration(record.getBillingDuration());
-        ci.setInvoiceDeliveryMethod(record.getInvoiceDeliveryMethod());
-        ci.setInvoiceFrequency(record.getInvoiceFrequency());
-        ci.setOverTimeBillingRate(record.getOvertimePayRate());
-        ci.setOverTimeRateDuration(record.getOvertimeBillingDuration());
-        ci.setNotes(record.getNotes());
-        ci.setHrOrientation(record.isHrOrientation());
-        ci.setLogisticsPreparation(record.isLogisticsPreparation());
-        ci.setI9Filled(record.isI9Filled());
-        ci.setW4Filled(record.isW4Filled());
-        ci.setVisaStatus(record.getVisaStatus());
-        if (StringUtils.isNotBlank(record.getVendorPaymentTerm())) {
-            if (ci.getNotes() != null) {
-                ci.setNotes(ci.getNotes().concat("Vendor Payment Terms:").concat(record.getVendorPaymentTerm()).concat("\n"));
-            } else {
-                ci.setNotes("Vendor Payment Terms:".concat(record.getVendorPaymentTerm()).concat("\n"));
+    protected void mapAndSaveClientInformationValues(Map<Long, ClientInformationRecord> data) {
+        for (Entry<Long, ClientInformationRecord> entry : data.entrySet()) {
+            ClientInformation ci = ClientInformationDao.instance().findById(entry.getKey());
+            if(entry.getValue().getStartDate()!=null){
+                ci.setStartDate(entry.getValue().getStartDate());
             }
+            if(entry.getValue().getEndDate()!=null){
+                ci.setEndDate(entry.getValue().getEndDate());
+            }
+            ci.setItemNumber(entry.getValue().getItemNumber());
+            ci.setBillingRate(entry.getValue().getBillingRate());
+            ci.setBillingRateDuration(entry.getValue().getBillingDuration());
+            ci.setInvoiceDeliveryMethod(entry.getValue().getInvoiceDeliveryMethod());
+            ci.setInvoiceFrequency(entry.getValue().getInvoiceFrequency());
+            ci.setOverTimeBillingRate(entry.getValue().getOvertimePayRate());
+            ci.setOverTimeRateDuration(entry.getValue().getOvertimeBillingDuration());
+            ci.setNotes(entry.getValue().getNotes());
+            ci.setHrOrientation(entry.getValue().isHrOrientation());
+            ci.setLogisticsPreparation(entry.getValue().isLogisticsPreparation());
+            ci.setI9Filled(entry.getValue().isI9Filled());
+            ci.setW4Filled(entry.getValue().isW4Filled());
+            ci.setVisaStatus(entry.getValue().getVisaStatus());
+            if (StringUtils.isNotBlank(entry.getValue().getVendorPaymentTerm())) {
+                if (ci.getNotes() != null) {
+                    ci.setNotes(ci.getNotes().concat("Vendor Payment Terms:").concat(entry.getValue().getVendorPaymentTerm()).concat("\n"));
+                } else {
+                    ci.setNotes("Vendor Payment Terms:".concat(entry.getValue().getVendorPaymentTerm()).concat("\n"));
+                }
+            }
+            ClientInformationDao.instance().getEntityManager().merge(ci);
         }
-        ClientInformationDao.instance().getEntityManager().merge(ci);
     }
 
     protected List<ClientInformationRecord> readClientInfoData() {
@@ -110,10 +124,22 @@ public class ClientInfoDataTool {
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
             Row record = rowIterator.next();
+            if (record.getRowNum() == 0) {
+                continue;
+            }
             ClientInformationRecord ci = new ClientInformationRecord();
             ci.setEmployeeId(getEmployeeId(getCellStringValue(record, 25), getCellStringValue(record, 26)));
             ci.setClientName(getCellStringValue(record, 36));
             ci.setVendorName(getCellStringValue(record, 35));
+            String startDate = getCellStringOrNumericValue(record, 37);
+
+            if (StringUtils.isNotBlank(startDate) && startDate.length() > 4) {
+                ci.setStartDate(DateUtils.parse(startDate, "dd-MMM-yyyy"));
+            }
+            String endDate = getCellStringOrNumericValue(record, 38);
+            if (StringUtils.isNotBlank(endDate) && endDate.length() > 4) {
+                ci.setEndDate(DateUtils.parse(endDate, "dd-MMM-yyyy"));
+            }
             ci.setItemNumber(convertDcimalToWhole(getCellStringOrNumericValue(record, 0)));
             String billingRate = getCellNumericValue(record, 1);
             if (billingRate != null) {
@@ -174,7 +200,7 @@ public class ClientInfoDataTool {
     }
 
     protected String getDataFileUrl() {
-        return "/Users/anuyalamanchili/Desktop/BIS_DATA.xlsx";
+        return "C:\\Users\\ayalamanchili\\Desktop\\BIS_DATA.xlsx";
 //        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
     }
 

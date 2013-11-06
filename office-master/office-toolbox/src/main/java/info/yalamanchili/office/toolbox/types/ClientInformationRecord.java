@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.BillingDuration;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  *
@@ -23,6 +24,8 @@ public class ClientInformationRecord {
     protected String itemNumber;
     protected String clientName;
     protected String vendorName;
+    protected Date startDate;
+    protected Date endDate;
     protected BigDecimal billingRate;
     protected BillingDuration billingDuration;
     protected BigDecimal overtimePayRate;
@@ -67,6 +70,22 @@ public class ClientInformationRecord {
 
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public BigDecimal getBillingRate() {
@@ -175,6 +194,7 @@ public class ClientInformationRecord {
 
     @Override
     public String toString() {
-        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", billingRate=" + billingRate + ", billingDuration=" + billingDuration + ", overtimePayRate=" + overtimePayRate + ", overtimeBillingDuration=" + overtimeBillingDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", visaStatus=" + visaStatus + ", vendorPaymentTerm=" + vendorPaymentTerm + ", notes=" + notes + ", hrOrientation=" + hrOrientation + ", logisticsPreparation=" + logisticsPreparation + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + '}';
+        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", startDate=" + startDate + ", endDate=" + endDate + ", billingRate=" + billingRate + ", billingDuration=" + billingDuration + ", overtimePayRate=" + overtimePayRate + ", overtimeBillingDuration=" + overtimeBillingDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", visaStatus=" + visaStatus + ", vendorPaymentTerm=" + vendorPaymentTerm + ", notes=" + notes + ", hrOrientation=" + hrOrientation + ", logisticsPreparation=" + logisticsPreparation + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + '}';
     }
+
 }
