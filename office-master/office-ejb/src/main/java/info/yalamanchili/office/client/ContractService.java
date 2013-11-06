@@ -82,7 +82,7 @@ public class ContractService {
                 dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
             }
             if (ci.getVendorLocation() != null) {
-                dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getCity() + " " + ci.getClientLocation().getState());
+                dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
             }
 
             if (ci.getSubcontractor() != null) {
