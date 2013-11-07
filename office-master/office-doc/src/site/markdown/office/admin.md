@@ -2,34 +2,36 @@ Admin
 =========
 View and manage following information
 
-##### Clients
+- Clients
     - Create/View/Update and delete New Client
     - Client Search based on Client Name
     - Locations can be Viewed/Added/Updated and deleted for a client
     - Contact(person) details can be Viewed/Added/Updated & deleted for a client
     
-##### Vendors
+- Vendors
     - Create/View/Update and delete New Vendor
     - Vendor Search based on Vendor Name and Vendor Type
     - Locations can be Viewed/Added/Updated and deleted for a Vendor
     - Contact(person) details can be Viewed/Added/Updated & deleted for a Vendor
     
-##### Subcontractors
+- Subcontractors
     - Create/View/Update and delete New Subcontractor
     - Subcontractor Search based on Subcontractor Name
     - Locations can be Viewed/Added/Updated and deleted for a Subcontractor
     - Contact(person) details can be Viewed/Added/Updated & deleted for a Subcontractor
 
-##### Notification Groups
+- Notification Groups
     - Grouping Employees for sending emails
        For ex: Employees Ann,Jessica,Bari and Peter can be grouped by creating a new      Notification group. while giving a mail if you select this notification group,     mail will be send to all employees in a particular group 
     - Employees can be added/removed from a Notification Group
 
-##### Issue Type
+- Issue Type
     - Issue Types can  be viewed/Created/Updated and deleted
  
- ##### Bulk Import
-    - Facility to Load bunch of records from ADP/Quickbooks is provided
+- Bulk Import
+    - Feature to bulk load External System data into portal
+    - Currently supports loading ADP and Quick Books employee hours and related data to portal
+    - Please refer to the this page for model details.
     
 Update Client
 ----
