@@ -10,6 +10,7 @@ package info.yalamanchili.office.toolbox;
 
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
@@ -201,7 +202,7 @@ public class ClientInfoDataTool {
 
     protected String getDataFileUrl() {
 //        return "/Users/anuyalamanchili/Desktop/BIS_DATA.xlsx";
-        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
+        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xlsx";
     }
 
     public static ClientInfoDataTool instance() {
