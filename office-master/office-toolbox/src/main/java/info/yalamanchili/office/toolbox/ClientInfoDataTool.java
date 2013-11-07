@@ -80,10 +80,10 @@ public class ClientInfoDataTool {
     protected void mapAndSaveClientInformationValues(Map<Long, ClientInformationRecord> data) {
         for (Entry<Long, ClientInformationRecord> entry : data.entrySet()) {
             ClientInformation ci = ClientInformationDao.instance().findById(entry.getKey());
-            if(entry.getValue().getStartDate()!=null){
+            if (entry.getValue().getStartDate() != null) {
                 ci.setStartDate(entry.getValue().getStartDate());
             }
-            if(entry.getValue().getEndDate()!=null){
+            if (entry.getValue().getEndDate() != null) {
                 ci.setEndDate(entry.getValue().getEndDate());
             }
             ci.setItemNumber(entry.getValue().getItemNumber());
@@ -200,8 +200,8 @@ public class ClientInfoDataTool {
     }
 
     protected String getDataFileUrl() {
-        return "C:\\Users\\ayalamanchili\\Desktop\\BIS_DATA.xlsx";
-//        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
+//        return "/Users/anuyalamanchili/Desktop/BIS_DATA.xlsx";
+        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xls";
     }
 
     public static ClientInfoDataTool instance() {
