@@ -35,6 +35,7 @@ public class ClientInformationRecord {
     protected String visaStatus;
     protected String vendorPaymentTerm;
     protected String notes;
+    protected boolean signedCopyOfWO;
     protected boolean hrOrientation;
     protected boolean logisticsPreparation;
     protected boolean i9Filled;
@@ -160,6 +161,14 @@ public class ClientInformationRecord {
         this.notes = notes;
     }
 
+    public boolean isSignedCopyOfWO() {
+        return signedCopyOfWO;
+    }
+
+    public void setSignedCopyOfWO(boolean signedCopyOfWO) {
+        this.signedCopyOfWO = signedCopyOfWO;
+    }
+
     public boolean isHrOrientation() {
         return hrOrientation;
     }
@@ -194,7 +203,8 @@ public class ClientInformationRecord {
 
     @Override
     public String toString() {
-        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", startDate=" + startDate + ", endDate=" + endDate + ", billingRate=" + billingRate + ", billingDuration=" + billingDuration + ", overtimePayRate=" + overtimePayRate + ", overtimeBillingDuration=" + overtimeBillingDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", visaStatus=" + visaStatus + ", vendorPaymentTerm=" + vendorPaymentTerm + ", notes=" + notes + ", hrOrientation=" + hrOrientation + ", logisticsPreparation=" + logisticsPreparation + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + '}';
+        return "ClientInformationRecord{" + "employeeId=" + employeeId + ", itemNumber=" + itemNumber + ", clientName=" + clientName + ", vendorName=" + vendorName + ", startDate=" + startDate + ", endDate=" + endDate + ", billingRate=" + billingRate + ", billingDuration=" + billingDuration + ", overtimePayRate=" + overtimePayRate + ", overtimeBillingDuration=" + overtimeBillingDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", visaStatus=" + visaStatus + ", vendorPaymentTerm=" + vendorPaymentTerm + ", notes=" + notes + ", signedCopyOfWO=" + signedCopyOfWO + ", hrOrientation=" + hrOrientation + ", logisticsPreparation=" + logisticsPreparation + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + '}';
     }
+    
 
 }
