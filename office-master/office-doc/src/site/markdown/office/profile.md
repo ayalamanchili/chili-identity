@@ -25,3 +25,13 @@ View and manage following information
 Update Profile
 ----
 ![alt text](../images/update-profile.png "Update Profile")
+
+Address
+----
+![alt text](../images/addess_profile.png "Update Profile")
+Phone
+----
+![alt text](../images/phone_profile.png "Update Profile")
+Email
+----
+![alt text](../images/email_profile.png "Update Profile")
