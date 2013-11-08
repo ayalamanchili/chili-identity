@@ -27,10 +27,12 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,7 +54,7 @@ public class ClientInfoDataTool {
 
     public static void main(String... args) {
         ClientInfoDataTool load = new ClientInfoDataTool();
-        System.out.println(load.readClientInfoData());
+        System.out.println(load.readClientInfoData().size());
     }
 
     public void syncClientInformationData() {
@@ -61,11 +63,11 @@ public class ClientInfoDataTool {
             if (StringUtils.isNotEmpty(record.getEmployeeId())) {
                 Employee emp = SecurityService.instance().findEmployee(record.getEmployeeId());
                 if (emp != null) {
-                    log.info("processing employee:" + emp.getFirstName());
                     for (ClientInformation ci : emp.getClientInformations()) {
                         double similarity1 = info.chili.commons.StringUtils.jaccardSimilarity(ci.getClient().getName(), record.getClientName().trim());
                         int similarity2 = info.chili.commons.StringUtils.stringSimilarity(ci.getClient().getName(), record.getClientName().trim());
                         if (similarity1 >= 0.10 || similarity2 > 1) {
+                            log.info("processing employee:" + emp.getFirstName());
                             log.info("processing associated::" + record.getClientName() + "------" + ci.getClient().getName());
                             data.put(ci.getId(), record);
                         } else {
@@ -95,6 +97,7 @@ public class ClientInfoDataTool {
             ci.setOverTimeBillingRate(entry.getValue().getOvertimePayRate());
             ci.setOverTimeRateDuration(entry.getValue().getOvertimeBillingDuration());
             ci.setNotes(entry.getValue().getNotes());
+            ci.setSignedCopyOfWorkOrder(entry.getValue().isSignedCopyOfWO());
             ci.setHrOrientation(entry.getValue().isHrOrientation());
             ci.setLogisticsPreparation(entry.getValue().isLogisticsPreparation());
             ci.setI9Filled(entry.getValue().isI9Filled());
@@ -157,13 +160,56 @@ public class ClientInfoDataTool {
             ci.setInvoiceDeliveryMethod((InvoiceDeliveryMethod) convertEnum(InvoiceDeliveryMethod.class, getCellStringValue(record, 8)));
             ci.setInvoiceFrequency((InvoiceFrequency) convertEnum(InvoiceFrequency.class, getCellStringValue(record, 7)));
             ci.setVendorPaymentTerm(getCellStringValue(record, 40));
+            ci.setSignedCopyOfWO(convertToBoolean(getCellStringOrNumericValue(record, 39)));
             ci.setHrOrientation(convertToBoolean(getCellStringOrNumericValue(record, 28)));
             ci.setLogisticsPreparation(convertToBoolean(getCellStringOrNumericValue(record, 29)));
             ci.setI9Filled(convertToBoolean(getCellStringOrNumericValue(record, 30)));
             ci.setW4Filled(convertToBoolean(getCellStringOrNumericValue(record, 31)));
             records.add(ci);
         }
-        return records;
+        return filterRecords(records);
+    }
+
+    protected List<ClientInformationRecord> filterRecords(List<ClientInformationRecord> records) {
+        List<ClientInformationRecord> filteredResults = new ArrayList<ClientInformationRecord>();
+        for (String empId : getUniqueEmployees(records)) {
+            if (StringUtils.isNotEmpty(empId)) {
+                List<ClientInformationRecord> matched = getMatchedRecords(empId, records);
+                if (matched.size() > 1) {
+                    System.out.println("dddd" + empId);
+                }
+                filteredResults.add(getLatestRecord(matched));
+            }
+        }
+        return filteredResults;
+    }
+
+    protected Set<String> getUniqueEmployees(List<ClientInformationRecord> records) {
+        Set<String> emps = new HashSet<String>();
+        for (ClientInformationRecord record : records) {
+            emps.add(record.getEmployeeId());
+        }
+        return emps;
+    }
+
+    protected ClientInformationRecord getLatestRecord(List<ClientInformationRecord> matches) {
+        ClientInformationRecord latest = matches.get(0);
+        for (ClientInformationRecord record : matches) {
+            if (record.getStartDate().after(latest.getStartDate())) {
+                latest = record;
+            }
+        }
+        return latest;
+    }
+
+    protected List<ClientInformationRecord> getMatchedRecords(String employeeId, List<ClientInformationRecord> records) {
+        List<ClientInformationRecord> res = new ArrayList<ClientInformationRecord>();
+        for (ClientInformationRecord record : records) {
+            if (employeeId.equals(record.getEmployeeId())) {
+                res.add(record);
+            }
+        }
+        return res;
     }
 
     protected Enum convertEnum(Class enumClass, String value) {
