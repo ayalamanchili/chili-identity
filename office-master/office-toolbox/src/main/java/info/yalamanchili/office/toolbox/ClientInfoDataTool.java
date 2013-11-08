@@ -64,8 +64,12 @@ public class ClientInfoDataTool {
                 Employee emp = SecurityService.instance().findEmployee(record.getEmployeeId());
                 if (emp != null) {
                     for (ClientInformation ci : emp.getClientInformations()) {
-                        double similarity1 = info.chili.commons.StringUtils.jaccardSimilarity(ci.getClient().getName(), record.getClientName().trim());
-                        int similarity2 = info.chili.commons.StringUtils.stringSimilarity(ci.getClient().getName(), record.getClientName().trim());
+                        double similarity1 = info.chili.commons.StringUtils.jaccardSimilarity(ci.getClient().getName().toUpperCase(), record.getClientName().toUpperCase().trim());
+                        int similarity2 = info.chili.commons.StringUtils.stringSimilarity(ci.getClient().getName().toUpperCase(), record.getClientName().toUpperCase().trim());
+                        if (emp.getEmployeeId().equals("rchandupatla")) {
+                            System.out.println("ffff" + similarity1);
+                            System.out.println("ffff" + similarity2);
+                        }
                         if (similarity1 >= 0.10 || similarity2 > 1) {
                             log.info("processing employee:" + emp.getFirstName());
                             log.info("processing associated::" + record.getClientName() + "------" + ci.getClient().getName());
@@ -77,6 +81,7 @@ public class ClientInfoDataTool {
                 }
             }
         }
+        System.out.println("asdfasdf:" + data.keySet().size());
         mapAndSaveClientInformationValues(data);
     }
 
@@ -195,8 +200,9 @@ public class ClientInfoDataTool {
     protected ClientInformationRecord getLatestRecord(List<ClientInformationRecord> matches) {
         ClientInformationRecord latest = matches.get(0);
         for (ClientInformationRecord record : matches) {
-            if (record.getStartDate().after(latest.getStartDate())) {
+            if (record.getStartDate() != null && latest.getStartDate() != null && record.getStartDate().after(latest.getStartDate())) {
                 latest = record;
+                System.out.println("dddddddd" + latest);
             }
         }
         return latest;
