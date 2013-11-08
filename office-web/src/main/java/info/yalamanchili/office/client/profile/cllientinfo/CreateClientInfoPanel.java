@@ -4,7 +4,6 @@
 package info.yalamanchili.office.client.profile.cllientinfo;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -194,8 +193,7 @@ public class CreateClientInfoPanel extends CreateComposite {
                 addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
-                String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-                addEnumField("subcontractorinvoiceFrequency", false, false, invoiceFrequencie);
+                addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names());
                 addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD);
                 addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD);
                 addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD);

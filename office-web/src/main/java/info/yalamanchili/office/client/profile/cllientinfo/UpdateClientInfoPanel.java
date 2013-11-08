@@ -195,8 +195,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addEnumField("billingRateDuration", false, false, billingDuration);
             addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
             addEnumField("overTimeRateDuration", false, false, billingDuration);
-            String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-            addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
+            addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names());
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
             addDropDown("recruiter", selectRecruiterWidget);

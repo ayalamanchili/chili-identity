@@ -132,8 +132,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             addEnumField("billingRateDuration", true, false, billingDuration);
             addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
             addEnumField("overTimeRateDuration", true, false, billingDuration);
-            String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-            addEnumField("invoiceFrequency", true, false, invoiceFrequencies);
+            addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names());
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
             addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
             addDropDown("recruiter", selectRecruiterWidget);
