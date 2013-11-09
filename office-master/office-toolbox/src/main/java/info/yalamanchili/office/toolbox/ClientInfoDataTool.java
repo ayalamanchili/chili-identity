@@ -54,7 +54,7 @@ public class ClientInfoDataTool {
 
     public static void main(String... args) {
         ClientInfoDataTool load = new ClientInfoDataTool();
-        System.out.println(load.readClientInfoData().size());
+        System.out.println(load.readClientInfoData());
     }
 
     public void syncClientInformationData() {
@@ -66,10 +66,6 @@ public class ClientInfoDataTool {
                     for (ClientInformation ci : emp.getClientInformations()) {
                         double similarity1 = info.chili.commons.StringUtils.jaccardSimilarity(ci.getClient().getName().toUpperCase(), record.getClientName().toUpperCase().trim());
                         int similarity2 = info.chili.commons.StringUtils.stringSimilarity(ci.getClient().getName().toUpperCase(), record.getClientName().toUpperCase().trim());
-                        if (emp.getEmployeeId().equals("rchandupatla")) {
-                            System.out.println("ffff" + similarity1);
-                            System.out.println("ffff" + similarity2);
-                        }
                         if (similarity1 >= 0.10 || similarity2 > 1) {
                             log.info("processing employee:" + emp.getFirstName());
                             log.info("processing associated::" + record.getClientName() + "------" + ci.getClient().getName());
@@ -253,8 +249,8 @@ public class ClientInfoDataTool {
     }
 
     protected String getDataFileUrl() {
-//        return "/Users/anuyalamanchili/Desktop/BIS_DATA.xlsx";
-        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xlsx";
+        return "/Users/anuyalamanchili/Desktop/BIS_DATA.xlsx";
+//        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xlsx";
     }
 
     public static ClientInfoDataTool instance() {
