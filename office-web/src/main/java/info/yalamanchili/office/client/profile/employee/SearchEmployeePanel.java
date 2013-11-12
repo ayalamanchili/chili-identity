@@ -53,7 +53,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
-        String[] employeeTypeStrs = {"CORPORATE_EMPLOYEE", "EMPLOYEE"};
+        String[] employeeTypeStrs = {"CORPORATE_EMPLOYEE", "EMPLOYEE", "SUB_CONTRACTOR", "1099"};
         addEnumField("employeeType", false, false, employeeTypeStrs);
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
