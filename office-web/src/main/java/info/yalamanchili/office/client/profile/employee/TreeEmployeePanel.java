@@ -61,13 +61,14 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel;
-    protected TreeActivityPanel activityTreePanel = new TreeActivityPanel(getEntityId());
+    protected TreeActivityPanel activityTreePanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
         instance = this;
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
+        activityTreePanel = new TreeActivityPanel(getEntityId());
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
