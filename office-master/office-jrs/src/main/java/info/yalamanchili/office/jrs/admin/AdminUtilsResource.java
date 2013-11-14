@@ -11,6 +11,7 @@ import info.yalamanchili.office.security.SecurityUtils;
 import info.yalamanchili.office.toolbox.DataTools;
 import info.yalamanchili.office.toolbox.ADPEmployeeDataTool;
 import info.yalamanchili.office.toolbox.ClientInfoDataTool;
+import info.yalamanchili.office.toolbox.NonEmpDataTool;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -95,6 +96,13 @@ public class AdminUtilsResource {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void syncClientInformation() {
         ClientInfoDataTool.instance().syncClientInformationData();
+    }
+
+    @Path("sync-non-emp-info")
+    @PUT
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void syncNonEmpInformation() {
+        NonEmpDataTool.instance().loadNonEmpData();
     }
 
     @Path("sync_skills_data")
