@@ -54,7 +54,7 @@ public class ProfileNotificationService {
 
     @Async
     public void sendNewUserCreatedNotification(Employee employee) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR};
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR,OfficeRoles.ROLE_RELATIONSHIP};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");

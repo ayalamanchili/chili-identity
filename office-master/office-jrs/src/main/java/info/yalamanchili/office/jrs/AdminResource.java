@@ -3,23 +3,17 @@
  */
 package info.yalamanchili.office.jrs;
 
-import info.chili.commons.EntityQueryUtils;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.EmployeeType;
-import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.profile.EmployeeService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
-import info.yalamanchili.office.security.SecurityUtils;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -105,52 +99,8 @@ public class AdminResource {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
     @CacheEvict(value = "employees", allEntries = true)
     public String createUser(EmployeeCreateDto employee) {
-        Employee emp = mapper.map(employee, Employee.class);
-        emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
-        String employeeId = generateEmployeeId(employee);
-        if (!emp.getEmployeeType().getName().equals("SUB_CONTRACTOR")) {
-            //Create CUser
-            CUser user = mapper.map(employee, CUser.class);
-            user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
-            user.setUsername(employeeId);
-            user.setEnabled(true);
-            user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_USER));
-            user = securityService.createCuser(user);
-            emp.setUser(user);
-        }
-
-        //Create employee with basic information
-        emp.setEmployeeId(employeeId);
-        Preferences prefs = new Preferences();
-        prefs.setEnableEmailNotifications(Boolean.TRUE);
-        emp.setPreferences(prefs);
-
-        //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("CORPORATE_EMPLOYEE")) {
-            officeBPMIdentityService.createUser(employeeId);
-        }
-        Email email = new Email();
-        email.setEmail(employee.getEmail());
-        email.setPrimaryEmail(true);
-        emp.addEmail(email);
-        emp = employeeDao.save(emp);
-        em.merge(emp);
-        //Email notification
-        profileNotificationService.sendNewUserCreatedNotification(emp);
-        return emp.getId().toString();
-    }
-
-    private String generateEmployeeId(EmployeeCreateDto emp) {
-        String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
-        javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
-        findUserQuery.setParameter("empIdParam", empId);
-        if (findUserQuery.getResultList().size() > 0) {
-            empId = empId + Integer.toString(emp.getDateOfBirth().getDate());
-        }
-        if (empId.contains(" ")) {
-            empId = empId.replace(" ", "_");
-        }
-        return empId;
+        EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
+        return employeeService.createUser(employee);
     }
 
     @GET

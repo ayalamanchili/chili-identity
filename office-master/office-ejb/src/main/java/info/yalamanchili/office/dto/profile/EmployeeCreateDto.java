@@ -154,4 +154,9 @@ public class EmployeeCreateDto implements Serializable {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeCreateDto{" + "firstName=" + firstName + ", lastName=" + lastName + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", email=" + email + ", employeeType=" + employeeType + '}';
+    }
 }
