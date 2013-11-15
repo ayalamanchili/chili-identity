@@ -54,7 +54,8 @@ public class EmployeeService {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         String employeeId = generateEmployeeId(employee);
-        if (!emp.getEmployeeType().getName().equals("SUB_CONTRACTOR")) {
+        String empType = emp.getEmployeeType().getName();
+        if (empType.equals("CORPORATE_EMPLOYEE") || empType.equals("EMPLOYEE")) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
             user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
@@ -82,7 +83,9 @@ public class EmployeeService {
         emp = EmployeeDao.instance().save(emp);
         em.merge(emp);
         //Email notification
-        profileNotificationService.sendNewUserCreatedNotification(emp);
+        if (empType.equals("CORPORATE_EMPLOYEE") || empType.equals("EMPLOYEE")) {
+            profileNotificationService.sendNewUserCreatedNotification(emp);
+        }
         return emp.getId().toString();
     }
 

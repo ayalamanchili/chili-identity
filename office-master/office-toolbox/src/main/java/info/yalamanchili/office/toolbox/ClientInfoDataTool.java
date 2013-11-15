@@ -10,7 +10,6 @@ package info.yalamanchili.office.toolbox;
 
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;

@@ -30,16 +30,6 @@
             <skipTests>true</skipTests>
         </properties>
     </action>
-    <action>
-            <actionName>CUSTOM-clean install -Ptest</actionName>
-            <displayName>clean install -Ptest</displayName>
-            <goals>
-                <goal>clean</goal>
-                <goal>install</goal>
-            </goals>
-            <activatedProfiles>
-                <activatedProfile>test</activatedProfile>
-            </activatedProfiles>
-        </action>
+    
     
 </actions>
