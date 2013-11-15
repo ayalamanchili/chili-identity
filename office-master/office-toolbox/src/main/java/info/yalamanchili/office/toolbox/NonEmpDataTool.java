@@ -112,6 +112,7 @@ public class NonEmpDataTool {
                     subContractor.setName(getCellStringValue(record, 14));
                     subContractor = em.merge(subContractor);
                 }
+                subContractor = em.merge(subContractor);
 
                 ClientInformation ci = new ClientInformation();
                 ci.setClient(getClient(getCellStringValue(record, 36)));
@@ -146,35 +147,34 @@ public class NonEmpDataTool {
                 ci.setI9Filled(convertToBoolean(getCellStringOrNumericValue(record, 30)));
                 ci.setW4Filled(convertToBoolean(getCellStringOrNumericValue(record, 31)));
                 for (ConstraintViolation cv : ValidationUtils.validate(ci)) {
-                    System.out.println("dddd" + cv.getInvalidValue());
-                    System.out.println("dddd" + cv.getMessage());
+                    System.out.println("-----------------validation ERROR------" + cv.getInvalidValue());
+                    System.out.println("-----------------validation MESSAGE------" + cv.getMessage());
                 }
                 if (ValidationUtils.validate(ci).size() < 1) {
                     ci = em.merge(ci);
                     EmployeeDao.instance().findById(new Long(empId)).addClientInformation(ci);
-                    em.flush();
                 }
-
             }
         }
     }
 
     protected Client getClient(String clientName) {
-        for (Client client : ClientDao.instance().search(clientName, 0, 10, true)) {
-            System.out.println("ddddddddfffff" + client.getName());
-            if (client.getName().toUpperCase().equals(clientName.trim())) {
+        for (Client client : ClientDao.instance().search(clientName.replace("'", ""), 0, 10, true)) {
+            if (client.getName().toUpperCase().equals(clientName.trim().toUpperCase())) {
                 return client;
             }
         }
+        System.out.println("------------client not found---------" + clientName);
         return null;
     }
 
     protected Vendor getVendor(String vendorName) {
-        for (Vendor vendor : VendorDao.instance().search(vendorName, 0, 10, true)) {
-            if (vendor.getName().toUpperCase().equals(vendorName.trim())) {
+        for (Vendor vendor : VendorDao.instance().search(vendorName.replace("'", ""), 0, 10, true)) {
+            if (vendor.getName().toUpperCase().equals(vendorName.trim().toUpperCase())) {
                 return vendor;
             }
         }
+        System.out.println("------------vendor not found---------" + vendorName);
         return null;
     }
 
@@ -206,7 +206,7 @@ public class NonEmpDataTool {
     }
 
     protected String getDataFileUrl() {
-        return "/Users/anuyalamanchili/Desktop/BIS_SUB_CONTRACTORS.xlsx";
+        return "C:\\Users\\ayalamanchili\\Desktop\\BIS_SUB_CONTRACTORS.xlsx";
 //        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xlsx";
     }
 
