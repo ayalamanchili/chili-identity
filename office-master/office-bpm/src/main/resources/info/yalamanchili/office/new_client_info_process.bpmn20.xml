@@ -16,7 +16,7 @@
         <!--submit User task-->
         <userTask id="newClientInfoAccountTask" 
                   name="new Client Info Accounting Department Task" 
-                  activiti:candidateGroups="ROLE_TIME">
+                  activiti:candidateGroups="ROLE_EXPENSE">
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
                 Employee     : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
