@@ -23,7 +23,7 @@
         <sequenceFlow id="flow1" sourceRef="clientInfoCorrectionStart" targetRef="clientInfoCorrectionTask" />
         <userTask id="clientInfoCorrectionTask" 
                   name="Client information correction Task" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_RECRUITER,ROLE_RELATIONSHIP">
+                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_RECRUITER,ROLE_RELATIONSHIP">
             <documentation>
                 Correct Client Information:
                 Details : ${correctionDetails} 

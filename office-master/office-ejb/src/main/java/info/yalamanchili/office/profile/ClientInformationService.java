@@ -99,8 +99,6 @@ public class ClientInformationService {
             updatePreviousProjectEndDate(emp, ci);
         }
         emp.addClientInformation(ci);
-        //TODO no need for notification  integrate this to bis process
-        ProfileNotificationService.sendClientInformationUpdatedNotification(emp);
         startNewClientInfoProcess(ci);
     }
 
@@ -196,7 +194,6 @@ public class ClientInformationService {
             ciEntity.setRecruiter(recruiter);
         }
         ciEntity = clientInformationDao.save(ciEntity);
-        ProfileNotificationService.sendClientInformationUpdatedNotification(ciEntity.getEmployee());
         return ci;
     }
 }

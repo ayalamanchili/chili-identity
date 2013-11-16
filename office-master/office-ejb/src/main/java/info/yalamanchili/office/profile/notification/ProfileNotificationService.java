@@ -54,7 +54,7 @@ public class ProfileNotificationService {
 
     @Async
     public void sendNewUserCreatedNotification(Employee employee) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR,OfficeRoles.ROLE_RELATIONSHIP};
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_RELATIONSHIP};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
@@ -85,6 +85,7 @@ public class ProfileNotificationService {
         messagingService.sendEmail(email);
     }
 
+//TODO remove not used after BIS
     @Async
     public void sendClientInformationUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
