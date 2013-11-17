@@ -12,6 +12,7 @@ import info.chili.commons.DateUtils;
 import info.chili.jpa.QueryUtils;
 import info.chili.jpa.validation.ValidationUtils;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -206,8 +207,7 @@ public class NonEmpDataTool {
     }
 
     protected String getDataFileUrl() {
-        return "C:\\Users\\ayalamanchili\\Desktop\\BIS_SUB_CONTRACTORS.xlsx";
-//        return OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "load.xlsx";
+        return OfficeServiceConfiguration.instance().getDataloadFilePath();
     }
 
     public static NonEmpDataTool instance() {
