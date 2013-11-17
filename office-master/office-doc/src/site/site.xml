@@ -20,7 +20,8 @@
             <item name="Social" href="/office/social.html"/>
             <item name="My Office" href="office/my-office.html"/>
             <item name="Profile" href="/office/profile.html"/>
-             <item name="Admin" href="/office/admin.html"/>
+            <item name="Admin" href="/office/admin.html"/>
+            <item name="New Client Information" href="/office/bpm/new-client-info-process.html"/>
             <item name="Portal Roles" href="/office/roles.html"/>
         </menu>
         <footer>COPYRIGHT © 2013 sstech.us - All Rights Reserved</footer>
