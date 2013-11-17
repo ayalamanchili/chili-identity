@@ -23,7 +23,8 @@ public class OfficeServiceConfiguration {
     ///Users/anuyalamanchili/content-management/office/
     //C://content-management//office/
     //TODO determine based on plaform
-    protected String contentManagementLocationRoot = "/Users/anuyalamanchili/content-management/office/";
+    @Value("#{officeProperties['contentManagementLocationRoot']}")
+    protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData = false;
     @Value("#{officeProperties['initTestData']}")
@@ -37,7 +38,7 @@ public class OfficeServiceConfiguration {
     protected long imageSizeLimit = 200000;
     //20MB
     protected long fileSizeLimit = 2000000;
-    
+
     protected String dataloadFilePath = contentManagementLocationRoot + "load.xlsx";
 
     public void setAdminEmail(String adminEmail) {
