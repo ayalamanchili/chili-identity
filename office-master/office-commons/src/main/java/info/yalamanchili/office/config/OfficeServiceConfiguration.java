@@ -20,9 +20,7 @@ public class OfficeServiceConfiguration {
     private final static Logger logger = Logger.getLogger(OfficeServiceConfiguration.class.getName());
     @PersistenceContext
     protected EntityManager em;
-    ///Users/anuyalamanchili/content-management/office/
-    //C://content-management//office/
-    //TODO determine based on plaform
+
     @Value("#{officeProperties['contentManagementLocationRoot']}")
     protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
