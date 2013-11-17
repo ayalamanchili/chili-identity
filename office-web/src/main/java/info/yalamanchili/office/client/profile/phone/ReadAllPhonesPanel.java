@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 
 public class ReadAllPhonesPanel extends CRUDReadAllComposite {
@@ -62,7 +63,7 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("phoneType"), "phoneType"));
-            table.setText(i, 2, JSONUtils.toString(entity, "phoneNumber"));
+            table.setText(i, 2, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
             table.setText(i, 3, JSONUtils.toString(entity, "extension"));
             table.setText(i, 4, JSONUtils.toString(entity, "countryCode"));
         }

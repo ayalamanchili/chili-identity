@@ -22,11 +22,11 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
+import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -52,12 +52,12 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         // TODO externalize the limit size for read all
         HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
 
     }
 
@@ -75,7 +75,6 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("Phone"));
         table.setText(0, 6, getKeyValue("Sex"));
         table.setText(0, 7, getKeyValue("Image"));
-//        table.setText(0, 8, getKeyValue("Start Date"));
         table.setText(0, 8, getKeyValue("Job Title"));
         table.setText(0, 9, getKeyValue("Type"));
     }
@@ -89,7 +88,7 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
-            table.setText(i, 5, JSONUtils.toString(entity, "phoneNumber"));
+            table.setText(i, 5, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
             table.setText(i, 6, getCustomValue(entity, "sex", customValues));
             table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
@@ -137,11 +136,11 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Employee details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess();
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess();
+                        }
+                    });
         }
     }
 
