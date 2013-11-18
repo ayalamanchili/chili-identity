@@ -9,8 +9,10 @@ package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
+import info.yalamanchili.office.dto.client.ContractSearchDto;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -30,6 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Consumes("application/json")
 @Transactional
 public class ContractResource {
+
+    @PUT
+    @Path("/search/{start}/{limit}")
+    public ContractTable searchContracts(ContractSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return ContractService.instance().search(dto, start, limit);
+    }
 
     @GET
     @Path("/{start}/{limit}")

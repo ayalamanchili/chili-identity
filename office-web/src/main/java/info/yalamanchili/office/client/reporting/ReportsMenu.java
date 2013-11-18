@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 
 /**
@@ -32,11 +33,12 @@ public class ReportsMenu extends Composite {
         reportsMenuBar.addStyleName("entityMenuBar");
     }
     Command ContractingMaintainenceCmd = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllContractsPanel());
-////            TabPanel.instance().getAdminPanel().sidePanelTop.add(new NotificationGroupSidePanel());
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new ContractsSidePanel());
         }
     };
 }

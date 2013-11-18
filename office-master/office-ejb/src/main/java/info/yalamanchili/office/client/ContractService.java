@@ -24,9 +24,9 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
-import javax.ws.rs.core.Response;
-//import javax.ws.rs.core.Response;
+import info.yalamanchili.office.dto.client.ContractSearchDto;
 import net.sf.jasperreports.engine.JRException;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Reporting service for Employee, client, vendor and contract related
@@ -50,7 +50,6 @@ public class ContractService {
         query.setParameter("dateParam", new Date(), TemporalType.DATE);
         query.setFirstResult(start);
         query.setMaxResults(limit);
-
         String sizeQueryStr = queryStr.replace("SELECT ci", "SELECT count(*)");
         TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
         sizeQuery.setParameter("dateParam", new Date(), TemporalType.DATE);
@@ -58,44 +57,89 @@ public class ContractService {
         ContractTable table = new ContractTable();
         table.setSize(sizeQuery.getSingleResult());
         for (ClientInformation ci : query.getResultList()) {
-            ContractDto dto = mapper.map(ci, ContractDto.class);
-            dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-            //map employee type 
-            dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
-            //TODO set client
-            if (ci.getClient() != null) {
-                dto.setClient(ci.getClient().getName());
-            }
-            if (ci.getVendor() != null) {
-                dto.setVendor(ci.getVendor().getName());
-            }
-            if (ci.getRecruiter() != null) {
-                dto.setRecruiter(ci.getRecruiter().getFirstName() + " " + ci.getRecruiter().getLastName());
-            }
-            if (ci.getClientContact() != null) {
-                dto.setClientContact(ci.getClientContact().details());
-            }
-            if (ci.getVendorContact() != null) {
-                dto.setVendorContact(ci.getVendorContact().details());
-            }
-            if (ci.getClientLocation() != null) {
-                dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
-            }
-            if (ci.getVendorLocation() != null) {
-                dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
-            }
-
-            if (ci.getSubcontractor() != null) {
-                dto.setSubContractorName(ci.getSubcontractor().getName());
-            }
-
-            if (ci.getSubcontractorContact() != null) {
-                dto.setSubContractorContactName(ci.getSubcontractorContact().details());
-            }
-            //etc
-            table.getEntities().add(dto);
+            table.getEntities().add(mapClientInformation(ci));
         }
         return table;
+    }
+
+    public ContractTable search(ContractSearchDto searchDto, int start, int limit) {
+        ContractTable table = new ContractTable();
+        String searchQuery = getSearchQuery(searchDto);
+        TypedQuery<ClientInformation> query = em.createQuery(searchQuery, ClientInformation.class);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        for (ClientInformation ci : query.getResultList()) {
+            table.getEntities().add(mapClientInformation(ci));
+        }
+        String sizeQueryStr = searchQuery.replace("SELECT ci", "SELECT count(*)");
+        if (table.getEntities().size() > 0) {
+            TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
+            table.setSize(sizeQuery.getSingleResult());
+        }
+        return table;
+    }
+
+    public static void main(String... args) {
+        ContractService s = new ContractService();
+        ContractSearchDto dto = new ContractSearchDto();
+        dto.setEmployeeFirstName("asdf");
+        dto.setItemNumber("123");
+        System.out.println("dddd" + s.getSearchQuery(dto));
+    }
+
+    protected String getSearchQuery(ContractSearchDto searchDto) {
+        //TODO should we filter search query by date like reports?
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT ci from ").append(ClientInformation.class.getCanonicalName());
+        queryStr.append(" ci where ");
+        if (StringUtils.isNotBlank(searchDto.getItemNumber())) {
+            queryStr.append("ci.itemNumber LIKE '%").append(searchDto.getItemNumber().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getEmployeeFirstName())) {
+            queryStr.append("ci.employee.firstName LIKE '%").append(searchDto.getEmployeeFirstName().trim()).append("%' ").append(" and ");
+        }
+        if (StringUtils.isNotBlank(searchDto.getEmployeeLastName())) {
+            queryStr.append("ci.employee.lastName LIKE '%").append(searchDto.getEmployeeLastName().trim()).append("%' ").append(" and ");
+        }
+        return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
+    }
+
+    protected ContractDto mapClientInformation(ClientInformation ci) {
+        ContractDto dto = mapper.map(ci, ContractDto.class);
+        dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+        //map employee type 
+        dto.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
+        //TODO set client
+        if (ci.getClient() != null) {
+            dto.setClient(ci.getClient().getName());
+        }
+        if (ci.getVendor() != null) {
+            dto.setVendor(ci.getVendor().getName());
+        }
+        if (ci.getRecruiter() != null) {
+            dto.setRecruiter(ci.getRecruiter().getFirstName() + " " + ci.getRecruiter().getLastName());
+        }
+        if (ci.getClientContact() != null) {
+            dto.setClientContact(ci.getClientContact().details());
+        }
+        if (ci.getVendorContact() != null) {
+            dto.setVendorContact(ci.getVendorContact().details());
+        }
+        if (ci.getClientLocation() != null) {
+            dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
+        }
+        if (ci.getVendorLocation() != null) {
+            dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
+        }
+
+        if (ci.getSubcontractor() != null) {
+            dto.setSubContractorName(ci.getSubcontractor().getName());
+        }
+
+        if (ci.getSubcontractorContact() != null) {
+            dto.setSubContractorContactName(ci.getSubcontractorContact().details());
+        }
+        return dto;
     }
 
     public String generateContractorPlacementInfoReport(String format) {

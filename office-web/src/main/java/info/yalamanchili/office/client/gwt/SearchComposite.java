@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * @author yalamanchili
  */
 public abstract class SearchComposite extends Composite implements ClickHandler, KeyPressHandler {
-
+    
     private Logger logger = Logger.getLogger(SearchComposite.class.getName());
     /*
      * Panels
@@ -82,11 +82,11 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected ConstantsWithLookup constants;
     protected String entityName;
     protected Map<String, Object> fields = new HashMap<String, Object>();
-
+    
     public JSONObject getEntity() {
         return entity;
     }
-
+    
     protected void init(String title, String entityName, ConstantsWithLookup constants) {
         initWidget(captionPanel);
         this.entityName = entityName;
@@ -94,6 +94,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         captionPanel.setCaptionHTML(title);
         searchTB.addStyleName("searchComposite");
         searchTB.addKeyPressHandler(this);
+        searchTB.setVisible(!disableRegularSearch());
         mainPanel.add(searchTB);
         advancedSearchDP.setContent(advancedSearchPanel);
         advancedSearchDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
@@ -122,7 +123,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         addWidgets();
         populateSearchSuggestBox();
     }
-
+    
     protected void configureReportsPanel() {
         reportsPanel.add(formatL);
         formatLB.addItem("PDF", "pdf");
@@ -135,17 +136,17 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         generateRepB.addClickHandler(this);
         reportsDP.setVisible(false);
     }
-
+    
     protected abstract void populateSearchSuggestBox();
-
+    
     protected abstract void populateAdvancedSuggestBoxes();
-
+    
     protected abstract void addListeners();
-
+    
     protected abstract void configure();
-
+    
     protected abstract void addWidgets();
-
+    
     protected String getSearchText() {
         if (searchTB.getValue() != null && searchTB.getValue().trim().length() > 0) {
             return searchTB.getValue().trim();
@@ -156,7 +157,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     /*
      * adding and getting Fields
      */
-
+    
     protected void addField(String attributeName, DataType type) {
         if (DataType.LONG_FIELD.equals(type)) {
             LongField longField = new LongField(constants,
@@ -226,19 +227,19 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             advancedSearchPanel.add(currencyField);
         }
     }
-
+    
     protected void addEnumField(String key, Boolean readOnly, Boolean isRequired, String[] values) {
         EnumField enumField = new EnumField(constants, key, entityName,
                 readOnly, isRequired, values);
         fields.put(key, enumField);
         advancedSearchPanel.add(enumField);
     }
-
+    
     protected void addDropDown(String key, SelectComposite widget) {
         fields.put(key, widget);
         advancedSearchPanel.add(widget);
     }
-
+    
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity, String propertyValue) {
         if (fields.get(fieldKey) instanceof StringField) {
             StringField field = (StringField) fields.get(fieldKey);
@@ -290,18 +291,18 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected void assignEntityValueFromField(String fieldKey, JSONObject entity) {
         assignEntityValueFromField(fieldKey, entity, fieldKey);
     }
-
+    
     protected abstract JSONObject populateEntityFromFields();
-
+    
     protected abstract void search(String searchText);
-
+    
     protected abstract void search(JSONObject entity);
-
+    
     protected void generateReport(JSONObject entity) {
         //TODO make this abstract 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(getReportURL()));
         builder.setHeader("Content-Type", "application/json");
-
+        
         try {
             builder.sendRequest(entity.toString(), new RequestCallback() {
                 @Override
@@ -312,7 +313,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
                         Window.alert("error downloading report");
                     }
                 }
-
+                
                 @Override
                 public void onError(com.google.gwt.http.client.Request request, Throwable exception) {
                     Window.alert(exception.getLocalizedMessage());
@@ -322,29 +323,34 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             Window.alert(e.getLocalizedMessage());
         }
     }
-
+    
+    protected boolean disableRegularSearch() {
+        return false;
+    }
+    
     protected boolean enableGenerateReport() {
         return false;
     }
-
+    
     protected String getReportFormat() {
         return formatLB.getValue(formatLB.getSelectedIndex());
     }
-
+    
     protected abstract void postSearchSuccess(JSONArray result);
-
+    
     protected void processSearchResult(String result) {
         clearSearch();
         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
             new ResponseStatusWidget().show("no results");
         } else {
+            //TODO use size and entities attributes
             JSONObject resObj = JSONParser.parseLenient(result).isObject();
             String key = (String) resObj.keySet().toArray()[0];
             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
             postSearchSuccess(results);
         }
     }
-
+    
     @Override
     public void onKeyPress(KeyPressEvent event) {
         int keyCode = event.getUnicodeCharCode();
@@ -356,7 +362,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             processSearch();
         }
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == searchButton) {
@@ -366,14 +372,14 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             generateReportClicked();
         }
     }
-
+    
     protected void generateReportClicked() {
         entity = populateEntityFromFields();
         if (entity.toString().length() > 3) {
             generateReport(entity);
         }
     }
-
+    
     protected void processSearch() {
         if (getSearchText() != null && getSearchText().trim().length() > 0) {
             search(getSearchText());
@@ -384,11 +390,11 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             }
         }
     }
-
+    
     public void loadSearchSuggestions(Collection<String> inputs) {
         data.addAll(inputs);
     }
-
+    
     protected void clearSearch() {
         searchTB.setText("");
         for (String fieldKey : fields.keySet()) {
@@ -422,11 +428,11 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
             }
         }
     }
-
+    
     protected abstract String getSearchURI(String searchText, Integer start, Integer limit);
-
+    
     protected abstract String getSearchURI(Integer start, Integer limit);
-
+    
     protected String getReportURL() {
         return null;
     }

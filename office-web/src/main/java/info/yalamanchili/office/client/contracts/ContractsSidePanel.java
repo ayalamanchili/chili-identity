@@ -26,26 +26,26 @@ import java.util.logging.Logger;
  * @author anuyalamanchili
  */
 public class ContractsSidePanel extends ALComposite implements ClickHandler {
-
+    
     private static Logger logger = Logger.getLogger(ContractsSidePanel.class.getName());
     protected FlowPanel panel = new FlowPanel();
     protected Button generateRepB = new Button("Generate");
     protected Label formatL = new Label("Format");
     protected ListBox formatLB = new ListBox();
-
+    
     public ContractsSidePanel() {
         init(panel);
     }
-
+    
     @Override
     protected void addListeners() {
         generateRepB.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     protected void addWidgets() {
         panel.add(formatL);
@@ -54,8 +54,9 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
         formatLB.addItem("XML", "xml");
         panel.add(formatLB);
         panel.add(generateRepB);
+        panel.add(new SearchContractsPanel());
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         HttpService.HttpServiceAsync.instance().doGet(getReportURL(), OfficeWelcome.instance().getHeaders(), true,
@@ -64,18 +65,18 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
                     public void onFailure(Throwable arg0) {
                         Window.alert(arg0.getLocalizedMessage());
                     }
-
+                    
                     @Override
                     public void onSuccess(String resp) {
                         Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + resp, "_blank", "");
                     }
                 });
     }
-
+    
     protected String getReportFormat() {
         return formatLB.getValue(formatLB.getSelectedIndex());
     }
-
+    
     protected String getReportURL() {
         return OfficeWelcome.constants.root_url() + "contract/report" + "?format=" + getReportFormat();
     }
