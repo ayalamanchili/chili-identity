@@ -49,12 +49,12 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Job Title"));
-        table.setText(0, 2, getKeyValue("Client"));
-        table.setText(0, 3, getKeyValue("Vendor"));
+        table.setText(0, 1, getKeyValue("Client"));
+        table.setText(0, 2, getKeyValue("Vendor"));
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            table.setText(0, 4, getKeyValue("ItemNumber"));
-            table.setText(0, 5, getKeyValue("BillingRate"));
+            table.setText(0, 3, getKeyValue("ItemNumber"));
+            table.setText(0, 4, getKeyValue("BillingRate"));
+             table.setText(0, 5, getKeyValue("OverTimeBillingRate"));
             table.setText(0, 6, getKeyValue("InvoiceFrequency"));
         }
         table.setText(0, 7, getKeyValue("StartDate"));
@@ -118,18 +118,19 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
-            table.setText(i, 1, JSONUtils.toString(entity, "consultantJobTitle"));
+           
             if (entity.get("client") != null) {
                 JSONObject client = entity.get("client").isObject();
-                table.setText(i, 2, JSONUtils.toString(client, "name"));
+                table.setText(i, 1, JSONUtils.toString(client, "name"));
             }
             if (entity.get("vendor") != null) {
                 JSONObject vendor = entity.get("vendor").isObject();
-                table.setText(i, 3, JSONUtils.toString(vendor, "name"));
+                table.setText(i, 2, JSONUtils.toString(vendor, "name"));
             }
             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
-                table.setText(i, 4, JSONUtils.toString(entity, "itemNumber"));
-                table.setText(i, 5, JSONUtils.toString(entity, "billingRate"));
+                table.setText(i, 3, JSONUtils.toString(entity, "itemNumber"));
+                table.setText(i, 4, JSONUtils.toString(entity, "billingRate"));
+                table.setText(i, 5, JSONUtils.toString(entity, "overTimeBillingRate"));
                 table.setText(i, 6, JSONUtils.toString(entity, "invoiceFrequency"));
             }
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
