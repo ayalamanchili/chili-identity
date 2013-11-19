@@ -44,6 +44,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component("nonEmpDataTool")
 @Transactional
+@Scope("prototype")
 public class NonEmpDataTool {
 
     private static final Log log = LogFactory.getLog(NonEmpDataTool.class);
@@ -89,6 +91,7 @@ public class NonEmpDataTool {
                 dto.setEmail(getCellStringValue(record, 41));
                 if (empType.equalsIgnoreCase("Subcontractor")) {
                     dto.setEmployeeType((EmployeeType) QueryUtils.findEntity(em, EmployeeType.class, "name", "SUB_CONTRACTOR"));
+
                 }
                 if (empType.equalsIgnoreCase("1099")) {
                     dto.setEmployeeType((EmployeeType) QueryUtils.findEntity(em, EmployeeType.class, "name", "1099"));
@@ -121,6 +124,11 @@ public class NonEmpDataTool {
                 if (subContractor != null) {
                     ci.setSubcontractor(subContractor);
                 }
+                if (empType.equalsIgnoreCase("Subcontractor")) {
+                    ci.setSubcontractorPayRate(new BigDecimal(getCellNumericValue(record, 18)));
+                    ci.setSubcontractorpaymentTerms(getCellStringValue(record, 21));
+                    ci.setSubcontractorw4Filled(convertToBoolean(getCellStringOrNumericValue(record, 23)));
+                }
                 ci.setConsultantJobTitle(getCellStringValue(record, 34));
                 String startDate = getCellStringOrNumericValue(record, 37);
                 if (StringUtils.isNotBlank(startDate) && startDate.length() > 4) {
@@ -147,6 +155,7 @@ public class NonEmpDataTool {
                 ci.setLogisticsPreparation(convertToBoolean(getCellStringOrNumericValue(record, 29)));
                 ci.setI9Filled(convertToBoolean(getCellStringOrNumericValue(record, 30)));
                 ci.setW4Filled(convertToBoolean(getCellStringOrNumericValue(record, 31)));
+
                 for (ConstraintViolation cv : ValidationUtils.validate(ci)) {
                     System.out.println("-----------------validation ERROR------" + cv.getInvalidValue());
                     System.out.println("-----------------validation MESSAGE------" + cv.getMessage());
