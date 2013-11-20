@@ -7,11 +7,13 @@
  */
 package info.yalamanchili.office.client.contracts;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -80,10 +82,12 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Employee"));
         table.setText(0, 2, getKeyValue("Client"));
         table.setText(0, 3, getKeyValue("Vendor"));
-        table.setText(0, 4, getKeyValue("ItemNumber"));
-        table.setText(0, 5, getKeyValue("BillingRate"));
-        table.setText(0, 6, getKeyValue("OverTimeBillingRate"));
-        table.setText(0, 7, getKeyValue("InvoiceFrequency"));
+        table.setText(0, 4, getKeyValue("ItemNo"));
+        table.setText(0, 5, getKeyValue("BillRate"));
+        table.setText(0, 6, getKeyValue("O.T.BillRate"));
+        table.setText(0, 7, getKeyValue("Frequency"));
+        table.setText(0, 8, getKeyValue("StartDate"));
+        table.setText(0, 9, getKeyValue("EndDate"));
 
     }
 
@@ -100,6 +104,8 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 5, JSONUtils.toString(entity, "billingRate"));
             table.setText(i, 6, JSONUtils.toString(entity, "overTimeBillingRate"));
             table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
+            table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
 
         }
     }
