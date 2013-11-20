@@ -12,6 +12,7 @@ import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import info.yalamanchili.office.client.Auth.ROLE;
 
 public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
@@ -36,7 +37,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_HR,ROLE.ROLE_TIME)) {
             panel.add(addAddressLink);
         }
 

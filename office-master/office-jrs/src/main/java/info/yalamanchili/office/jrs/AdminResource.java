@@ -96,7 +96,7 @@ public class AdminResource {
     @Path("/createuser")
     @PUT
     @Produces("application/text")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME')")
     @CacheEvict(value = "employees", allEntries = true)
     public String createUser(EmployeeCreateDto employee) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");

@@ -39,7 +39,7 @@ public class EmployeeSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP,ROLE.ROLE_TIME)) {
             employeeSidePanel.add(createEmployeeLink);
         }
         employeeSidePanel.add(new SearchEmployeePanel());

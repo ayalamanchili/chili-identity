@@ -116,7 +116,7 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.isAdmin()) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP)) {
             createOptionsWidget(OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));

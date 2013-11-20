@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth.ROLE;
 
 public class ReadAllAddressesPanel extends CRUDReadAllComposite {
 
@@ -78,7 +79,7 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.isAdmin() || Auth.isHR()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_HR,ROLE.ROLE_TIME)) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
