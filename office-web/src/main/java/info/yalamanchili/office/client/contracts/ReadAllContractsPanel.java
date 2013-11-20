@@ -78,11 +78,11 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Job Title"));
-        table.setText(0, 3, getKeyValue("Client"));
-        table.setText(0, 4, getKeyValue("Vendor"));
-        table.setText(0, 5, getKeyValue("ItemNumber"));
-        table.setText(0, 6, getKeyValue("BillingRate"));
+        table.setText(0, 2, getKeyValue("Client"));
+        table.setText(0, 3, getKeyValue("Vendor"));
+        table.setText(0, 4, getKeyValue("ItemNumber"));
+        table.setText(0, 5, getKeyValue("BillingRate"));
+        table.setText(0, 6, getKeyValue("OverTimeBillingRate"));
         table.setText(0, 7, getKeyValue("InvoiceFrequency"));
 
     }
@@ -94,11 +94,11 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
-            table.setText(i, 2, JSONUtils.toString(entity, "consultantJobTitle"));
-            table.setText(i, 3, JSONUtils.toString(entity, "client"));
-            table.setText(i, 4, JSONUtils.toString(entity, "vendor"));
-            table.setText(i, 5, JSONUtils.toString(entity, "itemNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "billingRate"));
+            table.setText(i, 2, JSONUtils.toString(entity, "client"));
+            table.setText(i, 3, JSONUtils.toString(entity, "vendor"));
+            table.setText(i, 4, JSONUtils.toString(entity, "itemNumber"));
+            table.setText(i, 5, JSONUtils.toString(entity, "billingRate"));
+            table.setText(i, 6, JSONUtils.toString(entity, "overTimeBillingRate"));
             table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
 
         }
