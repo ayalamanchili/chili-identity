@@ -25,7 +25,7 @@
         <!--Create EmployeeAddressUpdatedTask for HR Role-->
         <userTask id="updateAddressHRTask" 
                   name="Employee ${employee.firstName} ${employee.lastName} Address Updated" 
-                  activiti:candidateGroups="ROLE_HR,ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_HR,ROLE_EXPENSE,ROLE_ADMIN">
             <documentation>
                 Employee Address is updated in portal and task is created for HR group for handling immigration and related changes
             </documentation>
