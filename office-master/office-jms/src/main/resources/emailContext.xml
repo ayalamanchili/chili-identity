@@ -19,6 +19,8 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
                 <prop key="mail.smtp.auth">true</prop>
                 <prop key="mail.smtp.from">${email.from}</prop>
                 <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtps.ssl.checkserveridentity">false</prop>
+                <prop key="mail.smtps.ssl.trust">*</prop>
             </props>
         </property>
     </bean>
