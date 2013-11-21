@@ -92,7 +92,7 @@ public class ClientInformationService {
             ci.setSubcontractorContact(contact);
         }
         if (ci.getSubcontractorAddress() != null) {
-            Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
+            Address address = AddressDao.instance().findById(ci.getSubcontractorAddress().getId());
             ci.setSubcontractorAddress(address);
         }
         if (ci.isEndPreviousProject()) {
