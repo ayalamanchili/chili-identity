@@ -21,6 +21,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
                 <prop key="mail.smtp.starttls.enable">true</prop>
                 <prop key="mail.smtps.ssl.checkserveridentity">false</prop>
                 <prop key="mail.smtps.ssl.trust">*</prop>
+                <prop key="mail.debug">${email.debug}</prop>
             </props>
         </property>
     </bean>
