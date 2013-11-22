@@ -10,6 +10,8 @@ package info.yalamanchili.office.client.reporting;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
@@ -28,10 +30,12 @@ public class ReportsMenu extends Composite {
     }
 
     protected void configureReportsMenu() {
-        reportsMenuBar.addItem("Contracts", ContractingMaintainenceCmd);
-
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_EXPENSE, ROLE.ROLE_TIME, ROLE.ROLE_ACCOUNT_VIEW)) {
+            reportsMenuBar.addItem("Contracts", ContractingMaintainenceCmd);
+        }
         reportsMenuBar.addStyleName("entityMenuBar");
     }
+
     Command ContractingMaintainenceCmd = new Command() {
         @Override
         public void execute() {

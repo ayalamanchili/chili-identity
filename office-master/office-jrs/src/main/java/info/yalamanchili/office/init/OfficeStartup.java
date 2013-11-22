@@ -68,6 +68,7 @@ public class OfficeStartup {
     protected CRole payrollRole;
     protected CRole driveRole;
     protected CRole timeRole;
+    protected CRole accountViewRole;
     protected CRole relationshipRole;
     protected Employee userEmp;
     protected Employee adminEmp;
@@ -106,6 +107,7 @@ public class OfficeStartup {
         driveRole();
         timeRole();
         relationshipRole();
+        accountViewRole();
     }
 
     protected void initUsers() {
@@ -759,6 +761,14 @@ public class OfficeStartup {
             CRole role = new CRole();
             role.setRolename(OfficeRoles.ROLE_USER);
             userRole = em.merge(role);
+        }
+    }
+
+    public void accountViewRole() {
+        if (EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_ACCOUNT_VIEW) == null) {
+            CRole role = new CRole();
+            role.setRolename(OfficeRoles.ROLE_ACCOUNT_VIEW);
+            accountViewRole = em.merge(role);
         }
     }
 
