@@ -15,6 +15,7 @@ import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -101,8 +102,8 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "client"));
             table.setText(i, 3, JSONUtils.toString(entity, "vendor"));
             table.setText(i, 4, JSONUtils.toString(entity, "itemNumber"));
-            table.setText(i, 5, JSONUtils.toString(entity, "billingRate"));
-            table.setText(i, 6, JSONUtils.toString(entity, "overTimeBillingRate"));
+            table.setText(i, 5, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
+            table.setText(i, 6, FormatUtils.formarCurrency(JSONUtils.toString(entity, "overTimeBillingRate")));
             table.setText(i, 7, JSONUtils.toString(entity, "invoiceFrequency"));
             table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
