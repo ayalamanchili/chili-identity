@@ -21,4 +21,5 @@ public interface OfficeRoles {
     String ROLE_EXPENSE = "ROLE_EXPENSE";
     String ROLE_DRIVE = "ROLE_DRIVE";
     String ROLE_RELATIONSHIP = "ROLE_RELATIONSHIP";
+    String ROLE_ACCOUNT_VIEW = "ROLE_ACCOUNT_VIEW";
 }
