@@ -11,7 +11,6 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Sex;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -74,6 +73,12 @@ public class Vendor extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
 
+    /**
+     * vendor Account Payable contacts
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    protected List<Contact> acctPayContacts;
+
     public String getName() {
         return name;
     }
@@ -127,6 +132,25 @@ public class Vendor extends AbstractEntity {
             this.clients = new ArrayList<Client>();
         }
         return this.clients;
+    }
+
+    @XmlTransient
+    public List<Contact> getAcctPayContacts() {
+        if (this.acctPayContacts == null) {
+            this.acctPayContacts = new ArrayList<Contact>();
+        }
+        return this.acctPayContacts;
+    }
+
+    public void setAcctPayContacts(List<Contact> acctPayContacts) {
+        this.acctPayContacts = acctPayContacts;
+    }
+
+    public void addAcctPayContact(Contact acctPayContact) {
+        if (acctPayContact == null) {
+            return;
+        }
+        getAcctPayContacts().add(acctPayContact);
     }
 
     @XmlTransient

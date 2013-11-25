@@ -109,6 +109,13 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_VendorContact_ClientInformations")
     protected Contact vendorContact;
+
+    /**
+     * Vendor AP Contact
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_VendorAPContact_ClientInformations")
+    protected Contact vendorAPContact;
     /**
      * Vendor Location
      */
@@ -306,7 +313,7 @@ public class ClientInformation extends AbstractEntity {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
+
     public boolean isEndPreviousProject() {
         return endPreviousProject;
     }
@@ -361,6 +368,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setVendorContact(Contact vendorContact) {
         this.vendorContact = vendorContact;
+    }
+
+    public Contact getVendorAPContact() {
+        return vendorAPContact;
+    }
+
+    public void setVendorAPContact(Contact vendorAPContact) {
+        this.vendorAPContact = vendorAPContact;
     }
 
     public Address getVendorLocation() {

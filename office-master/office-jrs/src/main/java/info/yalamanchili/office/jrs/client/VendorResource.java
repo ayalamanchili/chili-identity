@@ -123,18 +123,31 @@ public class VendorResource extends CRUDResource<Vendor> {
     }
 
     @PUT
+    @Path("/acct-pay-contact/{vendorId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public void addvendorAcctPayContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
+        Vendor vendor = (Vendor) getDao().findById(vendorId);
+        Contact contact = contactService.save(dto);
+        vendor.addAcctPayContact(contact);
+    }
+
+    @PUT
     @Path("/contact/remove/{vendorId}/{contactId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void removeContact(@PathParam("vendorId") Long vendorId, @PathParam("contactId") Long contactId) {
         Vendor vendor = (Vendor) getDao().findById(vendorId);
-        if (vendor == null) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "vendorIdInvalid", "vendor not found");
-        }
         Contact contact = ContactDao.instance().findById(contactId);
-        if (contact == null) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "DELETE", "contactIdInvalid", "contact not found");
-        }
         vendor.getContacts().remove(contact);
+        ContactDao.instance().delete(contact.getId());
+    }
+
+    @PUT
+    @Path("/acct-pay-contact/remove/{vendorId}/{contactId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
+    public void removeAcctPayContact(@PathParam("vendorId") Long vendorId, @PathParam("contactId") Long contactId) {
+        Vendor vendor = (Vendor) getDao().findById(vendorId);
+        Contact contact = ContactDao.instance().findById(contactId);
+        vendor.getAcctPayContacts().remove(contact);
         ContactDao.instance().delete(contact.getId());
     }
 
@@ -152,14 +165,34 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
     public ContactDtoTable getVendorContacts(@PathParam("id") long id, @PathParam("start") int start,
             @PathParam("limit") int limit) {
+        Vendor vendor = (Vendor) getDao().findById(id);
+        return getContacts(vendor.getContacts());
+    }
+
+    /**
+     * Get Vendor Account Payable Contact
+     *
+     * @param id
+     * @param start
+     * @param limit
+     * @return
+     *
+     */
+    @GET
+    @Path("/acct-pay-contacts/{id}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_TIME','ROLE_EXPENSE','ROLE_RELATIONSHIP')")
+    public ContactDtoTable getVendorAcctPayContacts(@PathParam("id") long id, @PathParam("start") int start,
+            @PathParam("limit") int limit) {
+        Vendor vendor = (Vendor) getDao().findById(id);
+        return getContacts(vendor.getAcctPayContacts());
+    }
+
+    protected ContactDtoTable getContacts(List<Contact> contacts) {
         ContactDtoTable tableObj = new ContactDtoTable();
-        Vendor vendors = (Vendor) getDao().findById(id);
-        List<ContactDto> dtos = new ArrayList<ContactDto>();
-        for (Contact entity : vendors.getContacts()) {
-            dtos.add(ContactMapper.map(entity));
+        for (Contact entity : contacts) {
+            tableObj.getEntities().add(ContactMapper.map(entity));
         }
-        tableObj.setEntities(dtos);
-        tableObj.setSize((long) vendors.getContacts().size());
+        tableObj.setSize((long) contacts.size());
         return tableObj;
     }
 
@@ -168,8 +201,20 @@ public class VendorResource extends CRUDResource<Vendor> {
     public List<Entry> getVendorContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         Vendor vendor = VendorDao.instance().findById(id);
+        return getContactDropDown(vendor.getContacts());
+    }
+
+    @GET
+    @Path("/acct-pay-contacts/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getVendorAcctPayContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit,
+            @QueryParam("column") List<String> columns) {
+        Vendor vendor = VendorDao.instance().findById(id);
+        return getContactDropDown(vendor.getAcctPayContacts());
+    }
+
+    protected List<Entry> getContactDropDown(List<Contact> contacts) {
         List<Entry> result = new ArrayList<Entry>();
-        for (Contact contact : vendor.getContacts()) {
+        for (Contact contact : contacts) {
             Entry entry = new Entry();
             entry.setId(contact.getId().toString());
             entry.setValue(contact.getFirstName() + " " + contact.getLastName());

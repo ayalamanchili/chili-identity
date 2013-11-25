@@ -30,8 +30,9 @@ public class TreeVendorsPanel extends TreePanelComposite {
         return instance;
     }
     private static Logger logger = Logger.getLogger(TreeVendorsPanel.class.getName());
-    protected static final String VENDORLOCATION_NODE = "vendorlocation";
-    protected static final String VENDORCONTACTS_NODE = "vendorcontacts";
+    protected static final String VENDOR_LOCATION_NODE = "vendorlocation";
+    protected static final String VENDOR_CONTACTS_NODE = "vendorcontacts";
+    protected static final String VENDOR_ACCT_PAY_CONTACTS_NODE = "vendoracctpaycontacts";
 
     public TreeVendorsPanel(String entityId) {
         super(entityId);
@@ -61,21 +62,25 @@ public class TreeVendorsPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        addFirstChildLink("Locations", VENDORLOCATION_NODE);
-        addFirstChildLink("Contacts", VENDORCONTACTS_NODE);
+        addFirstChildLink("Locations", VENDOR_LOCATION_NODE);
+        addFirstChildLink("Contacts", VENDOR_CONTACTS_NODE);
     }
 
     @Override
     public void treeNodeSelected(String entityNodeKey) {
-        if (VENDORLOCATION_NODE.equals(entityNodeKey)) {
+        if (VENDOR_LOCATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(entityId));
             TabPanel.instance().adminPanel.entityPanel.add(new VendorLocationOptionsPanel());
         }
-        if (VENDORCONTACTS_NODE.equals(entityNodeKey)) {
+        if (VENDOR_CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(entityId));
             TabPanel.instance().adminPanel.entityPanel.add(new VendorContactOptionsPanel());
+        }
+        if (VENDOR_ACCT_PAY_CONTACTS_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            
         }
     }
 

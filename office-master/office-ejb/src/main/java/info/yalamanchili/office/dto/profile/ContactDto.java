@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import info.yalamanchili.office.entity.profile.Sex;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -161,6 +162,9 @@ public class ContactDto implements Serializable {
 
         @XmlElement
         public List<ContactDto> getEntities() {
+            if (this.entities == null) {
+                this.entities = new ArrayList<ContactDto>();
+            }
             return entities;
         }
 
