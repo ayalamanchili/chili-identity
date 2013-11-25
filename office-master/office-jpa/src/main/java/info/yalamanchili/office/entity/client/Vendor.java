@@ -17,6 +17,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -77,6 +78,7 @@ public class Vendor extends AbstractEntity {
      * vendor Account Payable contacts
      */
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Vendor_AcctPayContacts")
     protected List<Contact> acctPayContacts;
 
     public String getName() {

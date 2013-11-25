@@ -53,7 +53,7 @@ public class ReadAllVendorAcctPayContacts extends ReadAllContactsPanel {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
-//        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorContactPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateVendorAcctPayCntPanel(getEntity(entityId)));
     }
 
 }

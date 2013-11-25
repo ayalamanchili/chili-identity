@@ -11,8 +11,10 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.vendorcontact.ReadAllVendorAcctPayContacts;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.admin.vendorcontact.ReadAllVendorContactPanel;
+import info.yalamanchili.office.client.admin.vendorcontact.VendorAcctPayCntOptionsPanel;
 import info.yalamanchili.office.client.admin.vendorcontact.VendorContactOptionsPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.ReadAllVendorLocationPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.VendorLocationOptionsPanel;
@@ -64,6 +66,7 @@ public class TreeVendorsPanel extends TreePanelComposite {
     protected void addWidgets() {
         addFirstChildLink("Locations", VENDOR_LOCATION_NODE);
         addFirstChildLink("Contacts", VENDOR_CONTACTS_NODE);
+        addFirstChildLink("Acct Pay Contacts", VENDOR_ACCT_PAY_CONTACTS_NODE);
     }
 
     @Override
@@ -80,7 +83,8 @@ public class TreeVendorsPanel extends TreePanelComposite {
         }
         if (VENDOR_ACCT_PAY_CONTACTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
-            
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorAcctPayContacts(entityId));
+            TabPanel.instance().adminPanel.entityPanel.add(new VendorAcctPayCntOptionsPanel());
         }
     }
 
