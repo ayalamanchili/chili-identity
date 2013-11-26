@@ -33,6 +33,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ContractResource {
 
+    @GET
+    @Path("/search/{start}/{limit}")
+    public ContractTable searchContracts(@QueryParam("text") String text, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return ContractService.instance().search(text, start, limit);
+    }
+
     @PUT
     @Path("/search/{start}/{limit}")
     public ContractTable searchContracts(ContractSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {

@@ -79,6 +79,33 @@ public class ContractService {
         return table;
     }
 
+    public ContractTable search(String searchText, int start, int limit) {
+        ContractTable table = new ContractTable();
+        String searchQuery = getSearchQuery(searchText);
+        TypedQuery<ClientInformation> query = em.createQuery(searchQuery, ClientInformation.class);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        for (ClientInformation ci : query.getResultList()) {
+            table.getEntities().add(mapClientInformation(ci));
+        }
+        String sizeQueryStr = searchQuery.replace("SELECT ci", "SELECT count(*)");
+        if (table.getEntities().size() > 0) {
+            TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
+            table.setSize(sizeQuery.getSingleResult());
+        }
+        return table;
+    }
+
+    protected String getSearchQuery(String searchText) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT ci from ").append(ClientInformation.class.getCanonicalName());
+        queryStr.append(" ci where ");
+        queryStr.append("ci.employee.firstName LIKE '%").append(searchText).append("%' OR ");
+        queryStr.append("ci.employee.lastName LIKE '%").append(searchText).append("%' OR ");
+        queryStr.append("ci.itemNumber LIKE '%").append(searchText).append("%'");
+        return queryStr.toString();
+    }
+
     protected String getSearchQuery(ContractSearchDto searchDto) {
         //TODO should we filter search query by date like reports?
         StringBuilder queryStr = new StringBuilder();

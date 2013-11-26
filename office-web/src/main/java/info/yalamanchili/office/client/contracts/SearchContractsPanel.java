@@ -57,7 +57,13 @@ public class SearchContractsPanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
-
+        HttpService.HttpServiceAsync.instance().doGet(getSearchURI(searchText, 0, 50),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
@@ -79,7 +85,8 @@ public class SearchContractsPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return "";
+        return OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
+                + limit.toString() + "?text=" + searchText;
     }
 
     @Override
@@ -90,7 +97,13 @@ public class SearchContractsPanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
-
+        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                loadSearchSuggestions(values.values());
+            }
+        });
     }
 
     @Override
@@ -111,11 +124,6 @@ public class SearchContractsPanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
-    }
-
-    @Override
-    protected boolean disableRegularSearch() {
-        return true;
     }
 
     protected String getFirstNameDropDownUrl() {
