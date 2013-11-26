@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.contracts;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -17,6 +18,7 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
@@ -50,6 +52,11 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     public void viewClicked(String entityId) {
         TabPanel.instance().reportingPanel.entityPanel.clear();
         TabPanel.instance().reportingPanel.entityPanel.add(new ReadContractsPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void onReadMouseOver(int row, String id) {
+        new GenericPopup(new ReadContractsPanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
 
     @Override
@@ -119,4 +126,5 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     private String getReadAllContractsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "contract/" + start.toString() + "/" + limit.toString();
     }
+
 }
