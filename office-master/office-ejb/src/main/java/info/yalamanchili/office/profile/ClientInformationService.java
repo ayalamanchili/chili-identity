@@ -75,6 +75,10 @@ public class ClientInformationService {
             Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
             ci.setVendorContact(contact);
         }
+        if (ci.getVendorAPContact() != null) {
+            Contact contact = ContactDao.instance().findById(ci.getVendorAPContact().getId());
+            ci.setVendorAPContact(contact);
+        }
         if (ci.getVendorLocation() != null) {
             Address address = AddressDao.instance().findById(ci.getVendorLocation().getId());
             ci.setVendorLocation(address);
@@ -110,8 +114,8 @@ public class ClientInformationService {
             previousClientInformation = (ClientInformation) query.getResultList().get(0);
             previousClientInformation.setEndDate(ci.getPreviousProjectEndDate());
             em.merge(previousClientInformation);
-        
-          }
+
+        }
     }
 
     @Async
@@ -152,14 +156,21 @@ public class ClientInformationService {
         } else {
             Vendor vendor = VendorDao.instance().findById(ci.getVendor().getId());
             ciEntity.setVendor(vendor);
-            //Client Contact
+            //Vendor Contact
             if (ci.getVendorContact() == null) {
                 ciEntity.setVendorContact(null);
             } else {
                 Contact contact = ContactDao.instance().findById(ci.getVendorContact().getId());
                 ciEntity.setVendorContact(contact);
             }
-            //Client Location
+            //Vendor Acct Pay Contact
+            if (ci.getVendorAPContact() == null) {
+                ciEntity.setVendorAPContact(null);
+            } else {
+                Contact contact = ContactDao.instance().findById(ci.getVendorAPContact().getId());
+                ciEntity.setVendorAPContact(contact);
+            }
+            //Vendor Location
             if (ci.getVendorLocation() == null) {
                 ciEntity.setVendorLocation(null);
             } else {

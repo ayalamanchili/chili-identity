@@ -22,6 +22,7 @@ import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorC
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
@@ -51,6 +52,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
+        assignFieldValueFromEntity("vendorAPContact", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -120,6 +122,7 @@ public class ReadClientInfoPanel extends ReadComposite {
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false));
         addDropDown("vendor", new SelectVendorWidget(true, false));
         addDropDown("vendorContact", new SelectVendorContactWidget(true, false));
+        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, false));
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);

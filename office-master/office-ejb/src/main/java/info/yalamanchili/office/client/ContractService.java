@@ -79,14 +79,6 @@ public class ContractService {
         return table;
     }
 
-    public static void main(String... args) {
-        ContractService s = new ContractService();
-        ContractSearchDto dto = new ContractSearchDto();
-        dto.setEmployeeFirstName("asdf");
-        dto.setItemNumber("123");
-        System.out.println("dddd" + s.getSearchQuery(dto));
-    }
-
     protected String getSearchQuery(ContractSearchDto searchDto) {
         //TODO should we filter search query by date like reports?
         StringBuilder queryStr = new StringBuilder();
