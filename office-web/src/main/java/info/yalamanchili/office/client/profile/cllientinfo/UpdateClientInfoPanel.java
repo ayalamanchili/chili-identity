@@ -21,6 +21,7 @@ import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorC
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
@@ -43,6 +44,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignEntityValueFromField("clientLocation", entity);
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("vendorContact", entity);
+        assignEntityValueFromField("vendorAPContact", entity);
         assignEntityValueFromField("vendorLocation", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
@@ -120,6 +122,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorContact", entity, null);
+        assignFieldValueFromEntity("vendorAPContact", entity, null);
         assignFieldValueFromEntity("vendorLocation", entity, null);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -183,6 +186,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
         addDropDown("vendor", new SelectVendorWidget(false, false));
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
+        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);

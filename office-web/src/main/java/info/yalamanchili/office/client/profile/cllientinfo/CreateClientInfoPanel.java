@@ -31,6 +31,7 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.subcntrcontact.SelectSubcontractorContactWidget;
 import info.yalamanchili.office.client.admin.subcntrlocation.SelectSubcontractorLocationWidget;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
+import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayContact;
 import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 
@@ -39,7 +40,6 @@ public class CreateClientInfoPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
-    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false);
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
@@ -58,6 +58,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         assignEntityValueFromField("clientLocation", clientInfo);
         assignEntityValueFromField("vendor", clientInfo);
         assignEntityValueFromField("vendorContact", clientInfo);
+        assignEntityValueFromField("vendorAPContact", clientInfo);
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("startDate", clientInfo);
         assignEntityValueFromField("endDate", clientInfo);
@@ -163,6 +164,7 @@ public class CreateClientInfoPanel extends CreateComposite {
         addDropDown("vendor", new SelectVendorWidget(false, false));
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
+        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
         //Contract basic
         addField("startDate", false, true, DataType.DATE_FIELD);
@@ -172,7 +174,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
-            addDropDown("recruiter", selectRecruiterWidget);
+            addDropDown("recruiter", new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false));
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("payRate", false, false, DataType.CURRENCY_FIELD);
