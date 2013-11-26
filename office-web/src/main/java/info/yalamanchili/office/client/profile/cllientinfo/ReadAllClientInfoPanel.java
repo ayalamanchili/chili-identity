@@ -15,10 +15,13 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FormatUtils;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.contracts.ReadContractsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
@@ -81,6 +84,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void onReadMouseOver(int row, String id) {
+        new GenericPopup(new ReadClientInfoPanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
 
     public String getDeleteURL(String entityId) {
