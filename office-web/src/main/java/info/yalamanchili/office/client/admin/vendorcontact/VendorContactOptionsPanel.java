@@ -50,7 +50,7 @@ public class VendorContactOptionsPanel extends ALComposite implements ClickHandl
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addVendorContactLink)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
-            TabPanel.instance().adminPanel.entityPanel.add(new CreateVendorAcctPayCntPanel(CreateCompositeType.ADD));
+            TabPanel.instance().adminPanel.entityPanel.add(new CreateVendorContactPanel(CreateCompositeType.ADD));
         }
     }
 }
