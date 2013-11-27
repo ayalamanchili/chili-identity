@@ -23,8 +23,10 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.entity.profile.Contact;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.lang.StringUtils;
 
@@ -143,6 +145,9 @@ public class ContractService {
         }
         if (ci.getVendorContact() != null) {
             dto.setVendorContact(ci.getVendorContact().details());
+        }
+        if (ci.getVendorAPContact() != null) {
+           dto.setVendorAPContact(ci.getVendorAPContact().getFirstName() + " " + ci.getVendorAPContact().getLastName());
         }
         if (ci.getClientLocation() != null) {
             dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
