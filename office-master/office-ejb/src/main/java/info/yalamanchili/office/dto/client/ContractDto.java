@@ -66,6 +66,16 @@ public class ContractDto implements Serializable {
      * Vendor Location
      */
     protected String vendorLocation;
+    
+    protected String vendorAPContact;
+
+    public void setVendorAPContact(String vendorAPContact) {
+        this.vendorAPContact = vendorAPContact;
+    }
+
+    public String getVendorAPContact() {
+        return vendorAPContact;
+    }
     /**
      * Employee
      */
