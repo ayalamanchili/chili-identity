@@ -56,10 +56,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Client"));
         table.setText(0, 2, getKeyValue("Vendor"));
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_TIME, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            table.setText(0, 3, getKeyValue("ItemNumber"));
-            table.setText(0, 4, getKeyValue("BillingRate"));
-            table.setText(0, 5, getKeyValue("OverTimeBillingRate"));
-            table.setText(0, 6, getKeyValue("InvoiceFrequency"));
+            table.setText(0, 3, getKeyValue("ItemNo"));
+            table.setText(0, 4, getKeyValue("BillRate"));
+            table.setText(0, 5, getKeyValue("O.T.BillRate"));
+            table.setText(0, 6, getKeyValue("Frequency"));
+
         }
         table.setText(0, 7, getKeyValue("StartDate"));
         table.setText(0, 8, getKeyValue("EndDate"));
