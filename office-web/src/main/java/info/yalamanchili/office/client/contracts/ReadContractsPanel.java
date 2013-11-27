@@ -44,6 +44,7 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorContact", entity, DataType.RICH_TEXT_AREA);
+         assignFieldValueFromEntity("vendorAPContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendorLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -116,6 +117,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("clientContact", true, false, DataType.RICH_TEXT_AREA);
         addField("vendor", true, false, DataType.STRING_FIELD);
         addField("vendorContact", true, false, DataType.RICH_TEXT_AREA);
+        addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA);
         addField("vendorLocation", true, false, DataType.STRING_FIELD);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
