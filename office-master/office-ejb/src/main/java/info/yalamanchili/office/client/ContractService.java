@@ -152,7 +152,7 @@ public class ContractService {
             acctpayCnt.append(ci.getVendorAPContact().getFirstName());
             acctpayCnt.append(" ");
             acctpayCnt.append(ci.getVendorAPContact().getLastName());
-            acctpayCnt.append("\n");
+            acctpayCnt.append("<br/>");
             for (Email email : ci.getVendorAPContact().getEmails()) {
                 acctpayCnt.append(email.getEmail());
             }
