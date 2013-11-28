@@ -27,6 +27,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Email;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.lang.StringUtils;
 
@@ -147,7 +148,16 @@ public class ContractService {
             dto.setVendorContact(ci.getVendorContact().details());
         }
         if (ci.getVendorAPContact() != null) {
-           dto.setVendorAPContact(ci.getVendorAPContact().getFirstName() + " " + ci.getVendorAPContact().getLastName());
+             StringBuilder acctpayCnt = new StringBuilder();
+            acctpayCnt.append(ci.getVendorAPContact().getFirstName());
+            acctpayCnt.append(" ");
+            acctpayCnt.append(ci.getVendorAPContact().getLastName());
+            acctpayCnt.append("\n");
+            for (Email email : ci.getVendorAPContact().getEmails()) {
+                acctpayCnt.append(email.getEmail());
+            }
+            dto.setVendorAPContact(acctpayCnt.toString());
+          // dto.setVendorAPContact(ci.getVendorAPContact().getFirstName() + " " + ci.getVendorAPContact().getLastName());
         }
         if (ci.getClientLocation() != null) {
             dto.setClientLocation(ci.getClientLocation().getStreet1() + " " + ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
