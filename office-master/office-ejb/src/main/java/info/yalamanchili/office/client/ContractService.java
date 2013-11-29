@@ -28,6 +28,7 @@ import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.Phone;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.lang.StringUtils;
 
@@ -156,6 +157,12 @@ public class ContractService {
             for (Email email : ci.getVendorAPContact().getEmails()) {
                 acctpayCnt.append(email.getEmail());
             }
+             acctpayCnt.append("<br/>");
+             for (Phone phone : ci.getVendorAPContact().getPhones()) {
+                acctpayCnt.append(phone.getPhoneNumber() + " " + phone.getExtension());
+                acctpayCnt.append("; ");
+            }
+              
             dto.setVendorAPContact(acctpayCnt.toString());
           // dto.setVendorAPContact(ci.getVendorAPContact().getFirstName() + " " + ci.getVendorAPContact().getLastName());
         }
