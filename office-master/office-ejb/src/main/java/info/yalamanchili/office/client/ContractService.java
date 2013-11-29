@@ -150,19 +150,26 @@ public class ContractService {
         }
         if (ci.getVendorAPContact() != null) {
              StringBuilder acctpayCnt = new StringBuilder();
-            acctpayCnt.append(ci.getVendorAPContact().getFirstName());
+            acctpayCnt.append("Name: " + ci.getVendorAPContact().getFirstName());
             acctpayCnt.append(" ");
             acctpayCnt.append(ci.getVendorAPContact().getLastName());
             acctpayCnt.append("<br/>");
             for (Email email : ci.getVendorAPContact().getEmails()) {
-                acctpayCnt.append(email.getEmail());
+                acctpayCnt.append("Email: " + email.getEmail() + "<br/>");
             }
-             acctpayCnt.append("<br/>");
+            
              for (Phone phone : ci.getVendorAPContact().getPhones()) {
-                acctpayCnt.append(phone.getPhoneNumber() + " " + phone.getExtension());
-                acctpayCnt.append("; ");
+                if(phone.getExtension() != null)
+                {
+                   acctpayCnt.append("Phone: " + phone.getPhoneNumber() + " ext: " + phone.getExtension());
+                }
+                else
+                {
+                   acctpayCnt.append("Phone: " +phone.getPhoneNumber());
+                }
+                acctpayCnt.append("<br/>");
             }
-              
+               
             dto.setVendorAPContact(acctpayCnt.toString());
           // dto.setVendorAPContact(ci.getVendorAPContact().getFirstName() + " " + ci.getVendorAPContact().getLastName());
         }
