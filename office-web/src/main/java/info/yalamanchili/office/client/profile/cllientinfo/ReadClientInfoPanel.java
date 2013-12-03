@@ -62,6 +62,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
@@ -134,6 +135,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", true, false, billingDuration);
             addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
+            addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD);
             addEnumField("overTimeRateDuration", true, false, billingDuration);
             addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names());
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
@@ -187,12 +189,12 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override
