@@ -9,7 +9,7 @@
     targetNamespace="http://www.bpmnwithactiviti.org"
     xmlns:activiti="http://activiti.org/bpmn">
  
-    <process id="address_update_process">
+    <process id="address_update_process-v2">
  
         <startEvent id="updateAddressStart" />
         

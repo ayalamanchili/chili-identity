@@ -76,7 +76,7 @@ public class ProfileNotificationService {
 
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME};
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Address Updated");
@@ -85,22 +85,9 @@ public class ProfileNotificationService {
         messagingService.sendEmail(email);
     }
 
-//TODO remove not used after BIS
-    @Async
-    public void sendClientInformationUpdatedNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
-        Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject("Client Information Added/Updated");
-        String messageText = "Client Information For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Added/Updated";
-        email.setBody(messageText);
-        messagingService.sendEmail(email);
-
-    }
-
     @Async
     public void sendEmergencyContactUpdateNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_RECRUITER};
+        String[] roles = {OfficeRoles.ROLE_RELATIONSHIP, OfficeRoles.ROLE_HR};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Emergency Contact Addition");

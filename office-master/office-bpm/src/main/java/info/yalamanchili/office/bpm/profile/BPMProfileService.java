@@ -33,7 +33,7 @@ public class BPMProfileService {
     public void startAddressUpdatedProcess(Employee emp) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("employee", emp);
-        officeBPMService.startProcess("address_update_process", vars);
+        officeBPMService.startProcess("address_update_process-v2", vars);
     }
 
     @Async
