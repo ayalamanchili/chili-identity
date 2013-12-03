@@ -53,6 +53,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignEntityValueFromField("payRate", entity);
             assignEntityValueFromField("billingRate", entity);
             assignEntityValueFromField("overTimePayRate", entity);
+            assignEntityValueFromField("overTimeBillingRate", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
             assignEntityValueFromField("recruiter", entity);
@@ -93,16 +94,16 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
 
     }
 
@@ -131,6 +132,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("recruiter", entity, null);
@@ -198,6 +200,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", false, false, billingDuration);
             addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
+            addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
             addEnumField("overTimeRateDuration", false, false, billingDuration);
             addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names());
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
