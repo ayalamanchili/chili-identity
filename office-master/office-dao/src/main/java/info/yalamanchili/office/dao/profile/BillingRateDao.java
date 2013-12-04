@@ -23,11 +23,7 @@ public class BillingRateDao extends CRUDDao<BillingRate> {
     protected EntityManager em;
 
     public BillingRateDao() {
-        super(BillingRateDao.class);
-    }
-
-    public BillingRate save(BillingRate entity) {
-        return super.save(entity);
+        super(BillingRate.class);
     }
 
     @Override
