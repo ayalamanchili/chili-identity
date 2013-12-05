@@ -283,14 +283,14 @@ public class Contact extends AbstractEntity {
 
     public String details() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(this.getFirstName()).append(" ").append(this.getLastName()).append("</br>");
+        sb.append("Name: ").append(this.getFirstName()).append(" ").append(this.getLastName()).append("<br/>");
         for (Phone p : this.getPhones()) {
             sb.append("Phone: ").append(p.getPhoneNumber()).append(" ext: ").append(p.getExtension());
-            sb.append("</br>");
+            sb.append("<br/>");
         }
         for (Email email : this.getEmails()) {
             sb.append("Email: ").append(email.getEmail());
-            sb.append("</br>");
+            sb.append("<br/>");
         }
         return sb.toString();
     }
