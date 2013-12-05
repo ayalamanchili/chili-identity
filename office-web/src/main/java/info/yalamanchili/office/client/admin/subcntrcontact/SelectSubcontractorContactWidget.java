@@ -11,6 +11,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 
@@ -20,8 +21,8 @@ import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWi
  */
 public class SelectSubcontractorContactWidget extends SelectComposite implements GenericListener {
 
-    public SelectSubcontractorContactWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "SubcontractorContact", readOnly, isRequired);
+    public SelectSubcontractorContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "SubcontractorContact", readOnly, isRequired, alignment);
         SelectSubcontractorWidget.instance().addListner(this);
     }
 

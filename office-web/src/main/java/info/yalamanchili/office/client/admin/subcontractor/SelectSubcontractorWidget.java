@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.admin.subcontractor;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
@@ -24,8 +25,8 @@ public class SelectSubcontractorWidget extends SelectComposite {
         return instance;
     }
 
-    public SelectSubcontractorWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Subcontractor", readOnly, isRequired);
+    public SelectSubcontractorWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "Subcontractor", readOnly, isRequired, alignment);
         instance = this;
     }
 

@@ -13,6 +13,7 @@ import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
@@ -94,16 +95,16 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -218,9 +219,9 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("hrOrientation", false, false, DataType.BOOLEAN_FIELD);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
-                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
-                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
+                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
+                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false, Alignment.HORIZONTAL));
+                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
                 addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
                 String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};

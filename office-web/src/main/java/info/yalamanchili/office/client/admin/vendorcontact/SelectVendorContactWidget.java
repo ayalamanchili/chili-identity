@@ -12,6 +12,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 
 /**
@@ -19,6 +20,11 @@ import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
  * @author Prashanthi
  */
 public class SelectVendorContactWidget extends SelectComposite implements GenericListener {
+
+    public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired, alignment);
+        SelectVendorWidget.instance().addListner(this);
+    }
 
     public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired);

@@ -11,6 +11,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 
 /**
  *
@@ -22,6 +23,11 @@ public class SelectVendorWidget extends SelectComposite {
 
     public static SelectVendorWidget instance() {
         return instance;
+    }
+
+    public SelectVendorWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "Vendor", readOnly, isRequired, alignment);
+        instance = this;
     }
 
     public SelectVendorWidget(Boolean readOnly, Boolean isRequired) {

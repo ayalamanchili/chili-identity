@@ -9,6 +9,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 
@@ -17,6 +18,11 @@ import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
  * @author anuyalamanchili
  */
 public class SelectVendorAcctPayContact extends SelectComposite implements GenericListener {
+
+    public SelectVendorAcctPayContact(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "VendorAcctPayContact", readOnly, isRequired, alignment);
+        SelectVendorWidget.instance().addListner(this);
+    }
 
     public SelectVendorAcctPayContact(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "VendorAcctPayContact", readOnly, isRequired);

@@ -14,6 +14,7 @@ import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
@@ -143,9 +144,9 @@ public class ReadClientInfoPanel extends ReadComposite {
             addDropDown("recruiter", selectRecruiterWidget);
             if (Auth.isSubContractor(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-                addDropDown("subcontractor", new SelectSubcontractorWidget(true, false));
-                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(true, false));
-                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(true, false));
+                addDropDown("subcontractor", new SelectSubcontractorWidget(true, false, Alignment.HORIZONTAL));
+                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(true, false, Alignment.HORIZONTAL));
+                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(true, false, Alignment.HORIZONTAL));
                 addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD);
                 addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD);
                 String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
@@ -189,12 +190,12 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override

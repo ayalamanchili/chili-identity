@@ -19,6 +19,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DateField;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.SelectClientLocationWidget;
@@ -153,65 +154,66 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         //Basic
-        addField("consultantJobTitle", false, true, DataType.STRING_FIELD);
+        addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         //client
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
-        addDropDown("client", new SelectClientWidget(false, true));
+        addDropDown("client", new SelectClientWidget(false, true, Alignment.HORIZONTAL));
         entityFieldsPanel.add(addClientL);
-        addDropDown("clientContact", new SelectClientContactWidget(false, false));
-        addDropDown("clientLocation", new SelectClientLocationWidget(false, false));
+        addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
         //Vendor
-        addDropDown("vendor", new SelectVendorWidget(false, false));
+        addDropDown("vendor", new SelectVendorWidget(false, false, Alignment.HORIZONTAL));
         entityFieldsPanel.add(addVendorL);
-        addDropDown("vendorContact", new SelectVendorContactWidget(false, false));
-        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false));
-        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false));
+        addDropDown("vendorContact", new SelectVendorContactWidget(false, false, Alignment.HORIZONTAL));
+        addDropDown("vendorAPContact", new SelectVendorAcctPayContact(false, false, Alignment.HORIZONTAL));
+        addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, false, Alignment.HORIZONTAL));
         //Contract basic
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-            addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD);
-            addField("previousProjectEndDate", false, false, DataType.DATE_FIELD);
+            addField("endPreviousProject", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
             addDropDown("recruiter", new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false));
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
-            addField("payRate", false, false, DataType.CURRENCY_FIELD);
-            addField("billingRate", false, false, DataType.CURRENCY_FIELD);
+            addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
-            addEnumField("billingRateDuration", false, false, billingDuration);
-            addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
-            addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
-            addEnumField("overTimeRateDuration", false, false, billingDuration);
+            addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
+            addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             String[] invoiceFrequencies = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-            addEnumField("invoiceFrequency", false, false, invoiceFrequencies);
+            addEnumField("invoiceFrequency", false, false, invoiceFrequencies, Alignment.HORIZONTAL);
             String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
-            addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods);
+            addEnumField("invoiceDeliveryMethod", false, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false));
-                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false));
-                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false));
-                addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD);
-                addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD);
-                addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names());
-                addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD);
-                addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD);
-                addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD);
+                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
+                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false, Alignment.HORIZONTAL));
+                addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(false, false, Alignment.HORIZONTAL));
+                addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                addField("subcontractorpaymentTerms", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+                addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+                addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
-                addField("payRate1099", false, false, DataType.CURRENCY_FIELD);
-                addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD);
-                addField("paymentTerms1099", false, false, DataType.STRING_FIELD);
-                addEnumField("payTimeDuration1099", false, false, billingDuration);
+                addField("payRate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                addField("paymentTerms1099", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+                addEnumField("payTimeDuration1099", false, false, billingDuration, Alignment.HORIZONTAL);
             }
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-            addField("visaStatus", false, false, DataType.STRING_FIELD);
-            addField("terminationNotice", false, false, DataType.STRING_FIELD);
+            addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
+        alignFields();
     }
 
     @Override
