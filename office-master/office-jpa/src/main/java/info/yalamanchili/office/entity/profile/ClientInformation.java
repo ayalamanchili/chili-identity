@@ -282,7 +282,7 @@ public class ClientInformation extends AbstractEntity {
      /**
      * @generated
      */
-    @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     protected List<BillingRate> billingRates;
      /**
      * @generated
@@ -298,8 +298,8 @@ public class ClientInformation extends AbstractEntity {
     /**
      * @generated
      */
-    public void setBillingRates(List<BillingRate> addresss) {
-        this.billingRates = addresss;
+    public void setBillingRates(List<BillingRate> billingRates) {
+        this.billingRates = billingRates;
     }
 
     /**
