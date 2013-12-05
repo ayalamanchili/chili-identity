@@ -11,6 +11,7 @@ import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -277,6 +278,40 @@ public class ClientInformation extends AbstractEntity {
      * HR orientation
      */
     protected Boolean hrOrientation;
+    
+     /**
+     * @generated
+     */
+    @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
+    protected List<BillingRate> billingRates;
+     /**
+     * @generated
+     */
+    @XmlTransient
+    public List<BillingRate> getBillingRates() {
+        if (this.billingRates == null) {
+            this.billingRates = new ArrayList<BillingRate>();
+        }
+        return this.billingRates;
+    }
+
+    /**
+     * @generated
+     */
+    public void setBillingRates(List<BillingRate> addresss) {
+        this.billingRates = addresss;
+    }
+
+    /**
+     * @generated
+     */
+    public void addBillingRate(BillingRate entity) {
+        if (entity == null) {
+            return;
+        }
+        getBillingRates().add(entity);
+        entity.setClientinfo(this);
+    }
 
     public ClientInformation() {
         super();
