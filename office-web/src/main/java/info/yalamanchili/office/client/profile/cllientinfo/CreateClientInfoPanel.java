@@ -175,7 +175,7 @@ public class CreateClientInfoPanel extends CreateComposite {
             addField("previousProjectEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
-            addDropDown("recruiter", new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER.name(), false, false));
+            addDropDown("recruiter", new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false,Alignment.HORIZONTAL));
             //Billing Information
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);

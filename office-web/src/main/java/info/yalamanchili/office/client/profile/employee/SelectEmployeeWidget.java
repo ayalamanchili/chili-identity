@@ -11,12 +11,17 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 
 /**
  *
  * @author raghu
  */
 public class SelectEmployeeWidget extends SelectComposite {
+
+    public SelectEmployeeWidget(String name, Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, name, readOnly, isRequired, alignment);
+    }
 
     public SelectEmployeeWidget(String name, Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, name, readOnly, isRequired);

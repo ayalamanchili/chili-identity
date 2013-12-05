@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 
@@ -16,16 +17,22 @@ import info.yalamanchili.office.client.OfficeWelcome;
  */
 public class SelectEmployeeWithRoleWidget extends SelectEmployeeWidget {
 
-    protected String role;
+    protected Auth.ROLE role=Auth.ROLE.ROLE_RECRUITER;
 
-    public SelectEmployeeWithRoleWidget(String name, String role, Boolean readOnly, Boolean isRequired) {
+    public SelectEmployeeWithRoleWidget(String name, Auth.ROLE role, Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(name, readOnly, isRequired, alignment);
+        this.role = role;
+    }
+
+    public SelectEmployeeWithRoleWidget(String name, Auth.ROLE role, Boolean readOnly, Boolean isRequired) {
         super(name, readOnly, isRequired);
         this.role = role;
     }
-//FIXME role is hard coded
+    
 
+//FIXME role is hard coded
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER, start, limit, columns);
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_RECRUITER.name(), start, limit, columns);
     }
 }
