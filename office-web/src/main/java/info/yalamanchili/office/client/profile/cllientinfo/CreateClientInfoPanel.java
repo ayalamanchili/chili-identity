@@ -222,10 +222,10 @@ public class CreateClientInfoPanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("Add New Client Request", "add_new_client_request_1")).show();
+            new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1")).show();
         }
         if (event.getSource().equals(addVendorL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("Add New Vendor Request", "add_new_vendor_request_1")).show();
+            new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1")).show();
         }
 
         if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
