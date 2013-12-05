@@ -44,13 +44,15 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendor", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorContact", entity, DataType.RICH_TEXT_AREA);
-         assignFieldValueFromEntity("vendorAPContact", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("vendorAPContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("vendorLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
@@ -125,6 +127,8 @@ public class ReadContractsPanel extends ReadComposite {
         addField("itemNumber", true, false, DataType.STRING_FIELD);
         addField("payRate", true, false, DataType.CURRENCY_FIELD);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD);
+        addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
+        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD);
         addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names());
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
         addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
