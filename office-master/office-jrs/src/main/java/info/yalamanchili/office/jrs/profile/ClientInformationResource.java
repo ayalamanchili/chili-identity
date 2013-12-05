@@ -5,6 +5,7 @@ package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
@@ -50,7 +51,13 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     public ClientInformation read(@PathParam("id") Long id) {
         return (ClientInformation) getDao().findById(id);
     }
-
+    
+    @PUT
+    @Path("/update-Billing-rate/{id}")
+    public void updateBillingRate(@PathParam("id") Long id,BillingRate billingRate) {
+         clientInformationService.updateBillingRate(id, billingRate);
+    }
+ 
     @XmlRootElement
     @XmlType
     public static class ClientInformationTable {
