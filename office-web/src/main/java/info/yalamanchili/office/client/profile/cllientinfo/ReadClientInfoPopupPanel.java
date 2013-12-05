@@ -42,7 +42,7 @@ public class ReadClientInfoPopupPanel extends ReadClientInfoPanel implements Cli
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(correctClientInformationL)) {
-            new GenericPopup(new GenericBPMStartFormPanel("Correct Client Information Request", "client_info_correction_request")).show();
+            new GenericPopup(new GenericBPMStartFormPanel("CorrectClientInformationRequest", "client_info_correction_request")).show();
         }
     }
 
