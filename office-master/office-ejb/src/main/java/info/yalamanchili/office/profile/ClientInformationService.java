@@ -8,11 +8,13 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.commons.BeanMapper;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.profile.BillingRateDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -21,10 +23,12 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Query;
@@ -116,6 +120,24 @@ public class ClientInformationService {
             em.merge(previousClientInformation);
 
         }
+    }
+    
+    public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
+        ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
+        ci.setBillingRate(billingRate.getBillingRate());
+        ci.setPayRate(billingRate.getPayRate());
+        ci.setOverTimeBillingRate(billingRate.getOverTimeBillingRate());
+        ci.setOverTimePayRate(billingRate.getOverTimePayRate());
+        if(billingRate.getEffectiveDate().before(ci.getStartDate())){
+          throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before StartDate");
+        }
+        else
+        {
+            ClientInformationDao.instance().save(ci);
+            BillingRateDao.instance().save(billingRate);
+        }
+        
+        
     }
 
     @Async
