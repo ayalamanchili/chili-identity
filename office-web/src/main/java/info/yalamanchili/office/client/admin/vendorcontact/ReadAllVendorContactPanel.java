@@ -58,6 +58,7 @@ public class ReadAllVendorContactPanel extends ReadAllContactsPanel {
         new ResponseStatusWidget().show("Successfully Deleted Vendor Contact Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(parentId));
+                TabPanel.instance().adminPanel.entityPanel.add(new VendorContactOptionsPanel());
     }
 
     @Override
