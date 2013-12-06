@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 public class UpdateClientInfoPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateClientInfoPanel.class.getName());
-    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false);
+    SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
 
     public UpdateClientInfoPanel(JSONObject entity) {
         initUpdateComposite(entity, "ClientInfo", OfficeWelcome.constants);
