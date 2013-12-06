@@ -53,7 +53,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
     
     @PUT
-    @Path("/update-Billing-rate/{id}")
+    @Path("/update-billing-rate/{id}")
     public void updateBillingRate(@PathParam("id") Long id,BillingRate billingRate) {
          clientInformationService.updateBillingRate(id, billingRate);
     }
