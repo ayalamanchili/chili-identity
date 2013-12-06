@@ -48,10 +48,14 @@ public abstract class CreateContactPanel extends CreateComposite {
         JSONArray phones = new JSONArray();
         int i = 0;
         for (CreatePhonePanel createPhoneWidget : createPhoneWidgets) {
-            phones.set(i, createPhoneWidget.getPopulatedEntity());
-            i++;
+            if (createPhoneWidget.getPopulatedEntity().keySet().size() > 0) {
+                phones.set(i, createPhoneWidget.getPopulatedEntity());
+                i++;
+            }
         }
-        entity.put("phones", phones);
+        if (phones.size() > 0) {
+            entity.put("phones", phones);
+        }
         logger.info(entity.toString());
         return entity;
     }

@@ -138,6 +138,9 @@ public class ContactDto implements Serializable {
 
     @XmlElement
     public List<Phone> getPhones() {
+        if (this.phones == null) {
+            this.phones = new ArrayList<Phone>();
+        }
         return phones;
     }
 
