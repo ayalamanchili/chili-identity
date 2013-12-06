@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.contracts;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -111,60 +112,61 @@ public class ReadContractsPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", true, false, DataType.STRING_FIELD);
+        addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
-        addField("consultantJobTitle", true, false, DataType.STRING_FIELD);
-        addField("client", true, false, DataType.STRING_FIELD);
-        addField("clientLocation", true, false, DataType.STRING_FIELD);
-        addField("clientContact", true, false, DataType.RICH_TEXT_AREA);
-        addField("vendor", true, false, DataType.STRING_FIELD);
-        addField("vendorContact", true, false, DataType.RICH_TEXT_AREA);
-        addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA);
-        addField("vendorLocation", true, false, DataType.STRING_FIELD);
-        addField("startDate", true, false, DataType.DATE_FIELD);
-        addField("endDate", true, false, DataType.DATE_FIELD);
+        addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
+        addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vendorContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
+        addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
+        addField("vendorLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
-        addField("itemNumber", true, false, DataType.STRING_FIELD);
-        addField("payRate", true, false, DataType.CURRENCY_FIELD);
-        addField("billingRate", true, false, DataType.CURRENCY_FIELD);
-        addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD);
-        addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names());
+        addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         String[] invoiceDeliveryMethods = {"MANUAL", "EMAIL", "FAX"};
-        addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods);
+        addEnumField("invoiceDeliveryMethod", true, false, invoiceDeliveryMethods, Alignment.HORIZONTAL);
         String[] billingDuration = {"HOUR", "DAY", "MONTH"};
-        addEnumField("billingRateDuration", true, false, billingDuration);
-        addEnumField("overTimeRateDuration", true, false, billingDuration);
-        addField("recruiter", true, false, DataType.STRING_FIELD);
+        addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
+        addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
+        addField("recruiter", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-        addField("visaStatus", true, false, DataType.STRING_FIELD);
-        addField("joiningReport", true, false, DataType.STRING_FIELD);
-        addField("terminationNotice", true, false, DataType.STRING_FIELD);
+        addField("visaStatus", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("joiningReport", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
-        addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD);
-        addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD);
-        addField("i9Filled", true, false, DataType.BOOLEAN_FIELD);
-        addField("w4Filled", true, false, DataType.BOOLEAN_FIELD);
-        addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD);
-        addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD);
+        addField("accountVerificationDocs", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("signedCopyOfWorkOrder", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("i9Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("w4Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("logisticsPreparation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("hrOrientation", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         if (isSubContractor(entity)) {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-            addField("subContractorName", true, false, DataType.STRING_FIELD);
-            addField("subContractorContactName", true, false, DataType.STRING_FIELD);
+            addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("subContractorContactName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
-            addEnumField("subcontractorinvoiceFrequency", true, false, invoiceFrequencie);
-            addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD);
-            addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD);
-            addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD);
+            addEnumField("subcontractorinvoiceFrequency", true, false, invoiceFrequencie, Alignment.HORIZONTAL);
+            addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("subcontractorw4Filled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         }
         if (is1099(entity)) {
             entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
-            addField("payRate1099", true, false, DataType.CURRENCY_FIELD);
-            addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD);
-            addField("paymentTerms1099", true, false, DataType.STRING_FIELD);
-            addEnumField("payTimeDuration1099", true, false, billingDuration);
+            addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addEnumField("payTimeDuration1099", true, false, billingDuration, Alignment.HORIZONTAL);
         }
         addField("notes", true, false, DataType.RICH_TEXT_AREA);
+        alignFields();
     }
 
     @Override
