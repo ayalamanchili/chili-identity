@@ -51,13 +51,48 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     public ClientInformation read(@PathParam("id") Long id) {
         return (ClientInformation) getDao().findById(id);
     }
-    
+
     @PUT
     @Path("/update-billing-rate/{id}")
-    public void updateBillingRate(@PathParam("id") Long id,BillingRate billingRate) {
+    public void updateBillingRate(@PathParam("id") Long id, BillingRate billingRate) {
          clientInformationService.updateBillingRate(id, billingRate);
     }
- 
+
+    @GET
+    @Path("/billing-rates/{id}")
+    public BillingRateTable updateBillingRate(@PathParam("id") Long id) {
+        ClientInformation ci = ClientInformationDao.instance().findById(id);
+        BillingRateTable res = new BillingRateTable();
+        res.setEntities(ci.getBillingRates());
+        res.setSize(Long.valueOf(ci.getBillingRates().size()));
+        return res;
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class BillingRateTable {
+
+        protected Long size;
+        protected List<BillingRate> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<BillingRate> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<BillingRate> entities) {
+            this.entities = entities;
+        }
+    }
+
     @XmlRootElement
     @XmlType
     public static class ClientInformationTable {

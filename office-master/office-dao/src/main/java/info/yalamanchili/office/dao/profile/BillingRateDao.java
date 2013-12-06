@@ -12,11 +12,15 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author prasanthi.p
  */
+@Repository
+@Scope("prototype")
 public class BillingRateDao extends CRUDDao<BillingRate> {
 
     @PersistenceContext

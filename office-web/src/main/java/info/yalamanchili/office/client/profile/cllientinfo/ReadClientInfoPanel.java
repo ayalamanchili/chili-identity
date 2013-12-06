@@ -40,6 +40,11 @@ public class ReadClientInfoPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(ReadClientInfoPanel.class.getName());
     SelectEmployeeWithRoleWidget selectRecruiterWidget = new SelectEmployeeWithRoleWidget("Recruiter", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL);
 
+    public ReadClientInfoPanel(String id) {
+        instance = this;
+        initReadComposite(id, "ClientInfo", OfficeWelcome.constants);
+    }
+
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "ClientInfo", OfficeWelcome.constants);
@@ -97,6 +102,10 @@ public class ReadClientInfoPanel extends ReadComposite {
             assignFieldValueFromEntity("terminationNotice", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         }
+    }
+
+    protected void renderBillingRatesPanel() {
+
     }
 
     protected boolean checkPermission() {
@@ -191,12 +200,12 @@ public class ReadClientInfoPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override

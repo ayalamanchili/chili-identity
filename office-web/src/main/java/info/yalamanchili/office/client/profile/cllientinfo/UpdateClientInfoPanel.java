@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -13,7 +14,11 @@ import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
@@ -26,6 +31,7 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorAcctPayCo
 import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
 import java.util.logging.Logger;
 
 public class UpdateClientInfoPanel extends UpdateComposite {
@@ -95,16 +101,16 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -172,7 +178,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
-        // TODO Auto-generated method stub
+        updateBillingRateIcn.addClickHandler(this);
     }
 
     @Override
@@ -198,6 +204,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            renderUpdateBillingRateFieldLink();
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -241,6 +248,21 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("notes", false, false, DataType.RICH_TEXT_AREA);
         }
         alignFields();
+    }
+
+    ClickableImage updateBillingRateIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
+
+    protected void renderUpdateBillingRateFieldLink() {
+        BaseField billRateField = fields.get("billingRate");
+        billRateField.addWidgetToFieldPanel(updateBillingRateIcn);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        super.onClick(event);
+        if (event.getSource().equals(updateBillingRateIcn)) {
+            new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId())).show();
+        }
     }
 
     @Override

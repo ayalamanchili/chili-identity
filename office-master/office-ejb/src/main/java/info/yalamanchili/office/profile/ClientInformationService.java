@@ -120,10 +120,13 @@ public class ClientInformationService {
 
         }
     }
+
     /**
-     * Method used to update billing rate info on a client info to track changes with effective date
+     * Method used to update billing rate info on a client info to track changes
+     * with effective date
+     *
      * @param clientInfoId
-     * @param billingRate 
+     * @param billingRate
      */
     public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
@@ -131,17 +134,11 @@ public class ClientInformationService {
         ci.setPayRate(billingRate.getPayRate());
         ci.setOverTimeBillingRate(billingRate.getOverTimeBillingRate());
         ci.setOverTimePayRate(billingRate.getOverTimePayRate());
-        if(billingRate.getEffectiveDate().before(ci.getStartDate())){
-          throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before StartDate");
+        if (billingRate.getEffectiveDate().before(ci.getStartDate())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid Effective Date", "Effective Date can't be before Project Start Date");
         }
-        else
-        {
-            ci.addBillingRate(billingRate);
-            ClientInformationDao.instance().save(ci);
-            BillingRateDao.instance().save(billingRate);
-        }
-        
-        
+        billingRate.setClientInformation(ci);
+        BillingRateDao.instance().save(billingRate).getId().toString();
     }
 
     @Async

@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.profile.updateBillingRate;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.rpc.HttpService;
@@ -30,7 +31,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public ReadAllUpdateBillingRatePanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Update Billing Rate", OfficeWelcome.constants);
+        initTable("BillingRate", OfficeWelcome.constants);
     }
 
     @Override
@@ -51,13 +52,13 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllURL(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -86,8 +87,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     protected void addOptionsWidget(int row, JSONObject entity) {
     }
 
-    private String getReadAllURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "employee/clientinformation/update-billing-rate/" + parentId + "/" + start.toString() + "/"
-                + limit.toString();
+    private String getReadAllURL() {
+        return OfficeWelcome.constants.root_url() + "clientinformation/billing-rates/" + parentId;
     }
 }
