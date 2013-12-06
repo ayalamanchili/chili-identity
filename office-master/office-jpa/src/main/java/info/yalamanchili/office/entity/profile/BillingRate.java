@@ -28,20 +28,13 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 @Audited
-public class BillingRate extends AbstractEntity{
-    
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_ClinetInfo_BillingRate")
-    protected ClientInformation clientinfo;
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{effectiveDate.not.empty.msg}")
-    protected Date effectiveDate;
-     /**
+public class BillingRate extends AbstractEntity {
+
+    /**
      * PayRate
      */
     protected BigDecimal payRate;
-  
+
     /**
      * BillingRate
      */
@@ -54,52 +47,61 @@ public class BillingRate extends AbstractEntity{
      * over time billing rate
      */
     protected BigDecimal overTimeBillingRate;
-    
-      public void setClientinfo(ClientInformation clientinfo) {
-        this.clientinfo = clientinfo;
-    }
 
-    public void setEffectiveDate(Date effectiveDate) {
-        this.effectiveDate = effectiveDate;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_ClinetInfo_BillingRates")
+    protected ClientInformation clientInformation;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull(message = "{effectiveDate.not.empty.msg}")
+    protected Date effectiveDate;
+
+    public BigDecimal getPayRate() {
+        return payRate;
     }
 
     public void setPayRate(BigDecimal payRate) {
         this.payRate = payRate;
     }
 
-    public void setBillingRate(BigDecimal billingRate) {
-        this.billingRate = billingRate;
-    }
-
-    public void setOverTimePayRate(BigDecimal overTimePayRate) {
-        this.overTimePayRate = overTimePayRate;
-    }
-
-    public void setOverTimeBillingRate(BigDecimal overTimeBillingRate) {
-        this.overTimeBillingRate = overTimeBillingRate;
-    }
-
-    public ClientInformation getClientinfo() {
-        return clientinfo;
-    }
-
-    public Date getEffectiveDate() {
-        return effectiveDate;
-    }
-
-    public BigDecimal getPayRate() {
-        return payRate;
-    }
-
     public BigDecimal getBillingRate() {
         return billingRate;
+    }
+
+    public void setBillingRate(BigDecimal billingRate) {
+        this.billingRate = billingRate;
     }
 
     public BigDecimal getOverTimePayRate() {
         return overTimePayRate;
     }
 
+    public void setOverTimePayRate(BigDecimal overTimePayRate) {
+        this.overTimePayRate = overTimePayRate;
+    }
+
     public BigDecimal getOverTimeBillingRate() {
         return overTimeBillingRate;
     }
+
+    public void setOverTimeBillingRate(BigDecimal overTimeBillingRate) {
+        this.overTimeBillingRate = overTimeBillingRate;
+    }
+
+    public ClientInformation getClientInformation() {
+        return clientInformation;
+    }
+
+    public void setClientInformation(ClientInformation clientInformation) {
+        this.clientInformation = clientInformation;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
 }

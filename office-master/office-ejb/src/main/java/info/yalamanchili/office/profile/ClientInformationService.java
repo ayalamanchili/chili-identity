@@ -28,7 +28,6 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Query;
@@ -121,7 +120,11 @@ public class ClientInformationService {
 
         }
     }
-    
+    /**
+     * Method used to update billing rate info on a client info to track changes with effective date
+     * @param clientInfoId
+     * @param billingRate 
+     */
     public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
         ci.setBillingRate(billingRate.getBillingRate());
@@ -133,6 +136,7 @@ public class ClientInformationService {
         }
         else
         {
+            ci.addBillingRate(billingRate);
             ClientInformationDao.instance().save(ci);
             BillingRateDao.instance().save(billingRate);
         }

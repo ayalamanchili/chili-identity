@@ -150,6 +150,12 @@ public class ClientInformation extends AbstractEntity {
      */
     protected BigDecimal overTimeBillingRate;
     /**
+     * historical billing rates
+     */
+    @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
+    protected List<BillingRate> billingRates;
+
+    /**
      * billingRateDuration
      */
     @Enumerated(EnumType.STRING)
@@ -278,40 +284,6 @@ public class ClientInformation extends AbstractEntity {
      * HR orientation
      */
     protected Boolean hrOrientation;
-    
-     /**
-     * @generated
-     */
-    @OneToMany(cascade = CascadeType.ALL)
-    protected List<BillingRate> billingRates;
-     /**
-     * @generated
-     */
-    @XmlTransient
-    public List<BillingRate> getBillingRates() {
-        if (this.billingRates == null) {
-            this.billingRates = new ArrayList<BillingRate>();
-        }
-        return this.billingRates;
-    }
-
-    /**
-     * @generated
-     */
-    public void setBillingRates(List<BillingRate> billingRates) {
-        this.billingRates = billingRates;
-    }
-
-    /**
-     * @generated
-     */
-    public void addBillingRate(BillingRate entity) {
-        if (entity == null) {
-            return;
-        }
-        getBillingRates().add(entity);
-        entity.setClientinfo(this);
-    }
 
     public ClientInformation() {
         super();
@@ -451,6 +423,29 @@ public class ClientInformation extends AbstractEntity {
 
     public void setBillingRate(BigDecimal billingRate) {
         this.billingRate = billingRate;
+    }
+
+    /**
+     * @generated
+     */
+    @XmlTransient
+    public List<BillingRate> getBillingRates() {
+        if (this.billingRates == null) {
+            this.billingRates = new ArrayList<BillingRate>();
+        }
+        return this.billingRates;
+    }
+
+    public void setBillingRates(List<BillingRate> billingRates) {
+        this.billingRates = billingRates;
+    }
+
+    public void addBillingRate(BillingRate entity) {
+        if (entity == null) {
+            return;
+        }
+        getBillingRates().add(entity);
+        entity.setClientInformation(this);
     }
 
     public BigDecimal getOverTimePayRate() {
