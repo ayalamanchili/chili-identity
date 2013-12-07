@@ -79,7 +79,7 @@ public class ContactService {
             email.setEmail(dto.getEmail());
             email.setPrimaryEmail(true);
         }
-        return em.merge(entity);
+        return entity;
     }
 
     public static ContactService instance() {
