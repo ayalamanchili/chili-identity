@@ -188,6 +188,13 @@
     color: orange_dark;
     font-style: italic;
 }
+
+.crudCompositeCaptionPanel legend{
+    font-weight: bold;
+    color: orange_dark;
+    font-style: italic; 
+}
+
 legend {
     color:orange_light;
 
@@ -403,9 +410,10 @@ body{
 /*chili-gwt start*/
 .y-gwt-ClickableLink {
     padding-bottom: 5px;
-    color: blue_font;
+    color: black;
     cursor: pointer;
     cursor: hand;
+    text-shadow: 1px 1px 0px #bad3ed;
     font-family: helvetica, arial sans-serif;
     font-size: larger;
     font-style: bold;
