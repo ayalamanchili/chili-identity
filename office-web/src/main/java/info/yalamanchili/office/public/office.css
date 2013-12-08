@@ -287,8 +287,9 @@ legend {
 }
 
 .tfRequired{
-
+ color : orange_dark;
 }
+
 .y-gwt-CreateBasePanel{
     vertical-align: middle;
 }
