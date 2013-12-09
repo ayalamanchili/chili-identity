@@ -152,6 +152,17 @@ public class ProfileNotificationService {
         messagingService.sendEmail(email);
     }
 
+    @Async
+    public void sendEmployeeDeactivationNotification(Employee emp) {
+        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject("Employee Deactivated ");
+        String messageText = "Employee  " + emp.getFirstName() + "," + emp.getLastName() + " Account Is Deactivated ";
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
+    }
+
     public static ProfileNotificationService instance() {
         return SpringContext.getBean(ProfileNotificationService.class);
     }
