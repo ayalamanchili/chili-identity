@@ -30,7 +30,7 @@ public class CreateUpdateBillingRatePanel extends CreateComposite {
     public CreateUpdateBillingRatePanel(String clientInfoId) {
         super(CreateCompositeType.ADD);
         this.clientInfoId = clientInfoId;
-        initCreateComposite("Update Billing Rate", OfficeWelcome.constants);
+        initCreateComposite("UpdateBillingRate", OfficeWelcome.constants);
     }
 
     @Override
@@ -52,16 +52,16 @@ public class CreateUpdateBillingRatePanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -82,10 +82,10 @@ public class CreateUpdateBillingRatePanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("effectiveDate", false, true, DataType.DATE_FIELD);
-        addField("payRate", false, true, DataType.CURRENCY_FIELD);
+        addField("payRate", false, false, DataType.CURRENCY_FIELD);
         addField("billingRate", false, true, DataType.CURRENCY_FIELD);
-        addField("overTimePayRate", false, true, DataType.CURRENCY_FIELD);
-        addField("overTimeBillingRate", false, true, DataType.CURRENCY_FIELD);
+        addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD);
+        addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD);
     }
 
     @Override
