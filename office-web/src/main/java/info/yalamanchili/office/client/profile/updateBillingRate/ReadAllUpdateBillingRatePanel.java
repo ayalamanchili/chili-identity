@@ -54,11 +54,11 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllURL(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -77,9 +77,9 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             table.setText(i, 1, JSONUtils.toString(entity, "payRate"));
             table.setText(i, 2, JSONUtils.toString(entity, "billingRate"));
-            table.setText(i, 3, JSONUtils.toString(entity, "OverTimePayRate"));
-            table.setText(i, 4, JSONUtils.toString(entity, "OverTimeBillingRate"));
-            table.setText(i, 5, JSONUtils.toString(entity, "EffectiveDate"));
+            table.setText(i, 3, JSONUtils.toString(entity, "overTimePayRate"));
+            table.setText(i, 4, JSONUtils.toString(entity, "overTimeBillingRate"));
+            table.setText(i, 5, JSONUtils.toString(entity, "effectiveDate"));
         }
     }
 
