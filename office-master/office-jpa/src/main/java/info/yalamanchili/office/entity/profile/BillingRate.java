@@ -34,10 +34,10 @@ public class BillingRate extends AbstractEntity {
      * PayRate
      */
     protected BigDecimal payRate;
-
     /**
      * BillingRate
      */
+    @NotNull(message = "{billingRate.not.empty.msg}")
     protected BigDecimal billingRate;
     /**
      * OverTime PayRate
@@ -47,11 +47,9 @@ public class BillingRate extends AbstractEntity {
      * over time billing rate
      */
     protected BigDecimal overTimeBillingRate;
-
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClinetInfo_BillingRates")
     protected ClientInformation clientInformation;
-
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{effectiveDate.not.empty.msg}")
     protected Date effectiveDate;
@@ -103,5 +101,4 @@ public class BillingRate extends AbstractEntity {
     public void setEffectiveDate(Date effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
-
 }
