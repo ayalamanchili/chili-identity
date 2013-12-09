@@ -7,8 +7,11 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -28,6 +31,7 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWi
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
 
 /**
@@ -142,6 +146,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            renderBillingRateHistory();
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
             addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -185,6 +190,19 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("notes", true, false, DataType.RICH_TEXT_AREA);
         }
         alignFields();
+    }
+
+    protected void renderBillingRateHistory() {
+        final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        entityFieldsPanel.add(billingRatesDP);
+        billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                    billingRatesDP.setContent(
+                            new ReadAllUpdateBillingRatePanel(getEntityId()));
+
+            }
+        });
     }
 
     @Override

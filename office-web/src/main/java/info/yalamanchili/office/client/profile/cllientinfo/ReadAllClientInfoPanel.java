@@ -21,7 +21,6 @@ import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
-import info.yalamanchili.office.client.contracts.ReadContractsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite {

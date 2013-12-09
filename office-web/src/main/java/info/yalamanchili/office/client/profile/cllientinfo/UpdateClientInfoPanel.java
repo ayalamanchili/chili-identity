@@ -4,6 +4,8 @@
 package info.yalamanchili.office.client.profile.cllientinfo;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -14,6 +16,7 @@ import info.chili.gwt.rpc.HttpService;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.utils.Alignment;
@@ -32,6 +35,7 @@ import info.yalamanchili.office.client.admin.vendorcontact.SelectVendorContactWi
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
 import info.yalamanchili.office.client.profile.updateBillingRate.CreateUpdateBillingRatePanel;
+import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
 
 public class UpdateClientInfoPanel extends UpdateComposite {
@@ -101,16 +105,16 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -204,6 +208,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addField("itemNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+            renderBillingRateHistory();
             renderUpdateBillingRateFieldLink();
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
@@ -249,11 +254,25 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         }
         alignFields();
     }
+
     ClickableImage updateBillingRateIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
 
     protected void renderUpdateBillingRateFieldLink() {
         BaseField billRateField = fields.get("billingRate");
         billRateField.addWidgetToFieldPanel(updateBillingRateIcn);
+    }
+
+    protected void renderBillingRateHistory() {
+        final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        entityFieldsPanel.add(billingRatesDP);
+        billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                billingRatesDP.setContent(
+                        new ReadAllUpdateBillingRatePanel(getEntityId()));
+
+            }
+        });
     }
 
     @Override

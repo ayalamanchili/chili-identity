@@ -106,7 +106,7 @@ public class ProfileHome extends ALComposite {
      */
 
     protected void addAddressesPanel() {
-        if (panel.getWidgetIndex(phonesPanel) < 0) {
+        if (panel.getWidgetIndex(addressesPanel) < 0) {
             addressesPanel = new DisclosurePanel("Addresses");
             panel.add(addressesPanel);
             addressesPanel.addStyleName("profileHome");
