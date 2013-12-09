@@ -46,7 +46,6 @@ public class EmployeeService {
     protected EntityManager em;
     @Autowired
     protected ProfileNotificationService profileNotificationService;
-
     @Autowired
     protected Mapper mapper;
 
@@ -126,6 +125,7 @@ public class EmployeeService {
     public void deactivateUser(Long empId) {
         CUser user1 = getEmployee(empId).getUser();
         user1.setEnabled(false);
+        profileNotificationService.sendEmployeeDeactivationNotification(getEmployee(empId));
         em.merge(user1);
 
     }
