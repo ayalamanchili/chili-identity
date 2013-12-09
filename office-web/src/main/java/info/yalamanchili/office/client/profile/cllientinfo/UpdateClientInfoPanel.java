@@ -101,16 +101,16 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
 
     }
 
@@ -216,7 +216,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
             addDropDown("recruiter", selectRecruiterWidget);
             entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
             addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("joiningReport", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("joiningReport", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             entityFieldsPanel.add(getLineSeperatorTag("HR and Account Department Docs"));
             addField("accountVerificationDocs", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("signedCopyOfWorkOrder", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -249,7 +249,6 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         }
         alignFields();
     }
-
     ClickableImage updateBillingRateIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
 
     protected void renderUpdateBillingRateFieldLink() {
