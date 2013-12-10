@@ -191,15 +191,17 @@ public class ReadClientInfoPanel extends ReadComposite {
         }
         alignFields();
     }
-
+    
+//TODO use one from read ci panel
     protected void renderBillingRateHistory() {
         final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        billingRatesDP.setWidth("100%");
         entityFieldsPanel.add(billingRatesDP);
         billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
             public void onOpen(OpenEvent<DisclosurePanel> event) {
-                    billingRatesDP.setContent(
-                            new ReadAllUpdateBillingRatePanel(getEntityId()));
+                billingRatesDP.setContent(
+                        new ReadAllUpdateBillingRatePanel(getEntityId()));
 
             }
         });

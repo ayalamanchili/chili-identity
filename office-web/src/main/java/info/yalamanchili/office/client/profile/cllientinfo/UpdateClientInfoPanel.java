@@ -261,9 +261,11 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         BaseField billRateField = fields.get("billingRate");
         billRateField.addWidgetToFieldPanel(updateBillingRateIcn);
     }
-
+    
+//TODO use one from read ci panel
     protected void renderBillingRateHistory() {
         final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        billingRatesDP.setWidth("100%");
         entityFieldsPanel.add(billingRatesDP);
         billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override

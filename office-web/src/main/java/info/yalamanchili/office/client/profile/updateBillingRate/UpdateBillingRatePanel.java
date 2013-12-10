@@ -10,9 +10,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 
 /**
  *
@@ -62,7 +63,6 @@ public class UpdateBillingRatePanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Billing Rate Information");
-        GenericPopup.instance().hide();
     }
 
     @Override
