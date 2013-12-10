@@ -50,11 +50,15 @@ public abstract class UpdateContactPanel extends UpdateComposite {
         //populate phones
         JSONArray newPhones = new JSONArray();
         int i = 0;
-        for (UpdatePhonePanel createPhoneWidget : updatePhoneWidgets) {
-            newPhones.set(i, createPhoneWidget.getPopulatedEntity());
-            i++;
+        for (UpdatePhonePanel updatePhoneWidget : updatePhoneWidgets) {
+            if (updatePhoneWidget.getPopulatedEntity().keySet().size() > 0) {
+                newPhones.set(i, updatePhoneWidget.getPopulatedEntity());
+                i++;
+            }
         }
-        entity.put("phones", newPhones);
+        if (newPhones.size() > 0) {
+            entity.put("phones", newPhones);
+        }
         logger.info(entity.toString());
         return entity;
     }
