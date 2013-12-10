@@ -10,8 +10,10 @@ package info.yalamanchili.office.client.profile.updateBillingRate;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -22,15 +24,14 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class CreateUpdateBillingRatePanel extends CreateComposite {
+public class CreateUpdateBillingRatePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(CreateUpdateBillingRatePanel.class.getName());
     protected String clientInfoId;
 
-    public CreateUpdateBillingRatePanel(String clientInfoId) {
-        super(CreateCompositeType.ADD);
+    public CreateUpdateBillingRatePanel(String clientInfoId, JSONObject entity) {
         this.clientInfoId = clientInfoId;
-        initCreateComposite("UpdateBillingRate", OfficeWelcome.constants);
+        initUpdateComposite(entity, "UpdateBillingRate", OfficeWelcome.constants);
     }
 
     @Override
@@ -45,30 +46,35 @@ public class CreateUpdateBillingRatePanel extends CreateComposite {
     }
 
     @Override
-    protected void createButtonClicked() {
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("payRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("overTimePayRate", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
     }
 
     @Override
-    protected void addButtonClicked() {
+    protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
+    protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Billing Rate Info");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(clientInfoId));
+        GenericPopup.instance().hide();
     }
 
     @Override

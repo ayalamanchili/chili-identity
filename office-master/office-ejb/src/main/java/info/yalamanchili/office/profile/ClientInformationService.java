@@ -28,6 +28,7 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Query;
@@ -130,6 +131,17 @@ public class ClientInformationService {
      */
     public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
+        //Track the first change
+        if (ci.getBillingRates().isEmpty()) {
+            BillingRate firstBillingRate = new BillingRate();
+            firstBillingRate.setBillingRate(ci.getBillingRate());
+            firstBillingRate.setPayRate(ci.getPayRate());
+            firstBillingRate.setOverTimeBillingRate(ci.getOverTimeBillingRate());
+            firstBillingRate.setOverTimePayRate(ci.getOverTimePayRate());
+            firstBillingRate.setEffectiveDate(ci.getStartDate());
+            firstBillingRate.setClientInformation(ci);
+            BillingRateDao.instance().save(firstBillingRate);
+        }
         ci.setBillingRate(billingRate.getBillingRate());
         ci.setPayRate(billingRate.getPayRate());
         ci.setOverTimeBillingRate(billingRate.getOverTimeBillingRate());

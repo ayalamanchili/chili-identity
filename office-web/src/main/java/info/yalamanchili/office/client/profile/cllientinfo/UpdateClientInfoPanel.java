@@ -261,7 +261,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
         BaseField billRateField = fields.get("billingRate");
         billRateField.addWidgetToFieldPanel(updateBillingRateIcn);
     }
-    
+
 //TODO use one from read ci panel
     protected void renderBillingRateHistory() {
         final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
@@ -281,7 +281,7 @@ public class UpdateClientInfoPanel extends UpdateComposite {
     public void onClick(ClickEvent event) {
         super.onClick(event);
         if (event.getSource().equals(updateBillingRateIcn)) {
-            new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId())).show();
+            new GenericPopup(new CreateUpdateBillingRatePanel(getEntityId(), getEntity())).show();
         }
     }
 
