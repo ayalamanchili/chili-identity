@@ -10,12 +10,11 @@ package info.yalamanchili.office.client.contracts;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -108,6 +107,12 @@ public class ReadContractsPanel extends ReadComposite {
 
     @Override
     protected void configure() {
+        for(String fieldKey: fields.keySet()){
+            if(fields.get(fieldKey) instanceof RichTextField){
+                RichTextField rtf = (RichTextField) fields.get(fieldKey);
+                rtf.setHeightAndWidth("35%", "100%");
+            }
+        }
     }
 
     @Override
