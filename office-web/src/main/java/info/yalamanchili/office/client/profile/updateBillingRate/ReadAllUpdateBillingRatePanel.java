@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.updateBillingRate;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -48,6 +49,12 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
         return OfficeWelcome.constants.root_url() + "billing-rate/delete/" + entityId;
     }
 
+    public void preDelete(String entityId) {
+        if (Window.confirm("Only delete billing rate is data is entered incorrectly. Deleting will not update the existing rate.")) {
+            deleteClicked(entityId);
+        }
+    }
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -68,7 +75,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-       
+
     }
 
     @Override
