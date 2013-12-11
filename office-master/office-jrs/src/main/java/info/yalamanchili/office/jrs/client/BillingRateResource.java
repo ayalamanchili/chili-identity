@@ -44,13 +44,6 @@ public class BillingRateResource extends CRUDResource<BillingRate> {
     }
 
     @PUT
-    @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_RECRUITER')")
-    public BillingRate save(BillingRate client) {
-        return super.save(client);
-    }
-
-    @PUT
     @Path("/delete/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_RECRUITER')")
