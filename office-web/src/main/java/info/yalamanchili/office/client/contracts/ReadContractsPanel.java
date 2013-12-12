@@ -15,6 +15,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
+import info.yalamanchili.office.client.profile.updateBillingRate.ReadAllUpdateBillingRatePanel;
 import java.util.logging.Logger;
 
 /**
@@ -107,8 +108,8 @@ public class ReadContractsPanel extends ReadComposite {
 
     @Override
     protected void configure() {
-        for(String fieldKey: fields.keySet()){
-            if(fields.get(fieldKey) instanceof RichTextField){
+        for (String fieldKey : fields.keySet()) {
+            if (fields.get(fieldKey) instanceof RichTextField) {
                 RichTextField rtf = (RichTextField) fields.get(fieldKey);
                 rtf.setHeightAndWidth("35%", "100%");
             }
@@ -133,6 +134,7 @@ public class ReadContractsPanel extends ReadComposite {
         addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        new ReadAllUpdateBillingRatePanel().renderBillingRateHistory(getEntityId(), entityFieldsPanel);
         addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);

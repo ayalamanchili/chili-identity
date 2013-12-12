@@ -146,7 +146,7 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            renderBillingRateHistory();
+            new ReadAllUpdateBillingRatePanel().renderBillingRateHistory(getEntityId(), entityFieldsPanel);
             String[] billingDuration = {"HOUR", "DAY", "MONTH"};
             addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
             addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -190,21 +190,6 @@ public class ReadClientInfoPanel extends ReadComposite {
             addField("notes", true, false, DataType.RICH_TEXT_AREA);
         }
         alignFields();
-    }
-    
-//TODO use one from read ci panel
-    protected void renderBillingRateHistory() {
-        final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
-        billingRatesDP.setWidth("100%");
-        entityFieldsPanel.add(billingRatesDP);
-        billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
-            @Override
-            public void onOpen(OpenEvent<DisclosurePanel> event) {
-                billingRatesDP.setContent(
-                        new ReadAllUpdateBillingRatePanel(getEntityId()));
-
-            }
-        });
     }
 
     @Override

@@ -132,7 +132,7 @@ public class ClientInformationService {
     public void updateBillingRate(Long clientInfoId, BillingRate billingRate) {
         ClientInformation ci = ClientInformationDao.instance().findById(clientInfoId);
         //Track the first change
-        if (ci.getBillingRates().isEmpty()) {
+        if (ci.getBillingRates().isEmpty() && ci.getBillingRate() != null) {
             BillingRate firstBillingRate = new BillingRate();
             firstBillingRate.setBillingRate(ci.getBillingRate());
             firstBillingRate.setPayRate(ci.getPayRate());

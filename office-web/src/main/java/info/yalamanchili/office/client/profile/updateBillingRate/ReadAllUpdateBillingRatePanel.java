@@ -7,10 +7,14 @@
  */
 package info.yalamanchili.office.client.profile.updateBillingRate;
 
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -33,6 +37,9 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     public static ReadAllUpdateBillingRatePanel instance() {
         return instance;
+    }
+
+    public ReadAllUpdateBillingRatePanel() {
     }
 
     public ReadAllUpdateBillingRatePanel(String parentId) {
@@ -121,5 +128,22 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
 
     private String getReadAllURL() {
         return OfficeWelcome.constants.root_url() + "clientinformation/billing-rates/" + parentId;
+    }
+
+    /**
+     * common utility method
+     */
+    public void renderBillingRateHistory(final String clientInfoId, FlowPanel entityFieldsPanel) {
+        final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        billingRatesDP.setWidth("100%");
+        entityFieldsPanel.add(billingRatesDP);
+        billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                billingRatesDP.setContent(
+                        new ReadAllUpdateBillingRatePanel(clientInfoId));
+
+            }
+        });
     }
 }
