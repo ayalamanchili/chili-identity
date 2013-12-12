@@ -25,7 +25,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.ReadClientInfoPanel;
 
 /**
  *
@@ -77,7 +77,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Billing Rate Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(parentId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadClientInfoPanel(parentId));
     }
 
     @Override

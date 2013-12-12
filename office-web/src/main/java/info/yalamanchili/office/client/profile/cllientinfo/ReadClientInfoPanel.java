@@ -7,11 +7,8 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
-import com.google.gwt.event.logical.shared.OpenEvent;
-import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;

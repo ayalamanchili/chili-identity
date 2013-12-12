@@ -35,6 +35,10 @@ public class PrivacyService {
 
     protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
         Employee employee = getIdentity(joinPoint, privacyAware);
+        if (employee == null) {
+            //indicates invalid employee/identity passed aling
+            return true;
+        }
         Employee currentUser = SecurityService.instance().getCurrentUser();
         if (employee.getId().equals(currentUser.getId())) {
             return true;

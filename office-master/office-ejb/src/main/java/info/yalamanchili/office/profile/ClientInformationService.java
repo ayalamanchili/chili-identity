@@ -28,7 +28,6 @@ import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Query;
