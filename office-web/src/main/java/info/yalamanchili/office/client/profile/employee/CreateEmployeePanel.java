@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
@@ -72,20 +73,21 @@ public class CreateEmployeePanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employeeType", new SelectEmployeeTypeWidget(false, true));
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        addField("email", false, true, DataType.STRING_FIELD);
-        addField("dateOfBirth", false, true, DataType.DATE_FIELD);
+        addField("firstName", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("middleInitial", false, false, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("lastName", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("email", false, true, DataType.STRING_FIELD,Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
         String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs);
-        addField("startDate", false, false, DataType.DATE_FIELD);
-        addField("passwordHash", false, true, DataType.PASSWORD_FIELD);
-        addField("jobTitle", false, false, DataType.STRING_FIELD);
+        addEnumField("sex", false, true, strs,Alignment.HORIZONTAL);
+        addField("startDate", false, false, DataType.DATE_FIELD,Alignment.HORIZONTAL);
+        addField("passwordHash", false, true, DataType.PASSWORD_FIELD,Alignment.HORIZONTAL);
+        addField("jobTitle", false, false, DataType.STRING_FIELD,Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
-            addField("ssn", false, false, DataType.STRING_FIELD);
+            addField("ssn", false, false, DataType.STRING_FIELD,Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(empImageUploadPanel);
+        alignFields();
     }
 
     @Override
@@ -97,16 +99,16 @@ public class CreateEmployeePanel extends CreateComposite {
     public void createButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadImage(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadImage(arg0);
+            }
+        });
 
     }
 
