@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.fields.FileuploadField;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 
 public class UpdateEmployeePanel extends UpdateComposite {
 
@@ -69,17 +70,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadImage(JSONUtils.toString(entity, "id"));
+            @Override
+            public void onSuccess(String arg0) {
+                uploadImage(JSONUtils.toString(entity, "id"));
 
-                    }
-                });
+            }
+        });
 
     }
 
@@ -115,19 +116,19 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void addWidgets() {
         // same here update them
         addDropDown("employeeType", employeeSelectWidget);
-        addField("firstName", false, true, DataType.STRING_FIELD);
-        addField("middleInitial", false, false, DataType.STRING_FIELD);
-        addField("lastName", false, true, DataType.STRING_FIELD);
-        addField("dateOfBirth", false, true, DataType.DATE_FIELD);
+        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs);
-        addField("startDate", false, false, DataType.DATE_FIELD);
-        addField("jobTitle", false, true, DataType.STRING_FIELD);
+        addEnumField("sex", false, true, strs, Alignment.HORIZONTAL);
+        addField("startDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
-            addField("ssn", false, false, DataType.STRING_FIELD);
+            addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(empImageUploadPanel);
-
+        alignFields();
     }
 
     @Override
