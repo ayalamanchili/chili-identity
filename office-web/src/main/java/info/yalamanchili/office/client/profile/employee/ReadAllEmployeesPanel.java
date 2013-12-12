@@ -73,10 +73,9 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Emp Id"));
         table.setText(0, 4, getKeyValue("Email"));
         table.setText(0, 5, getKeyValue("Phone"));
-        table.setText(0, 6, getKeyValue("Sex"));
-        table.setText(0, 7, getKeyValue("Image"));
-        table.setText(0, 8, getKeyValue("Job Title"));
-        table.setText(0, 9, getKeyValue("Type"));
+        table.setText(0, 6, getKeyValue("Image"));
+        table.setText(0, 7, getKeyValue("Job Title"));
+      
     }
 
     @Override
@@ -89,10 +88,9 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
-            table.setText(i, 6, getCustomValue(entity, "sex", customValues));
-            table.setWidget(i, 7, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
-            table.setText(i, 8, JSONUtils.toString(entity, "jobTitle"));
-            table.setText(i, 9, getCustomValue(entity.get("employeeType"), "name", customValues));
+            table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
+            table.setText(i, 7, JSONUtils.toString(entity, "jobTitle"));
+//            table.setText(i, 9, getCustomValue(entity.get("employeeType"), "name", customValues));
         }
     }
     /**
