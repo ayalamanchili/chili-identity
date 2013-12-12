@@ -25,6 +25,7 @@ import com.google.gwt.user.client.Window;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth.ROLE;
 import java.util.HashMap;
 
@@ -63,6 +64,11 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
 
     public String getReadAllEmployeesURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "employee/" + start.toString() + "/" + limit.toString();
+    }
+    
+     @Override
+    protected void onReadMouseOver(int row, String id) {
+        new GenericPopup(new ReadEmployeePanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
 
     @Override
