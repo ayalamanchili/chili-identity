@@ -71,7 +71,7 @@ public class ReadContractsPanel extends ReadComposite {
         assignFieldValueFromEntity("notes", entity, DataType.RICH_TEXT_AREA);
         if (isSubContractor(entity)) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("subContractorContactName", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("subContractorContactName", entity, DataType.RICH_TEXT_AREA);
             assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("subcontractorpaymentTerms", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subcontractorw4Filled", entity, DataType.BOOLEAN_FIELD);
@@ -158,7 +158,7 @@ public class ReadContractsPanel extends ReadComposite {
         if (isSubContractor(entity)) {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("subContractorContactName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("subContractorContactName", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
             String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
             addEnumField("subcontractorinvoiceFrequency", true, false, invoiceFrequencie, Alignment.HORIZONTAL);
             addField("subcontractorpaymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
