@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.widgets.GenericPopup;
@@ -37,18 +38,18 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
         if (Auth.hasNonUserRoles()) {
             addDropDown("employeeType", employeeSelectWidget);
         }
-        addField("firstName", true, true, DataType.STRING_FIELD);
-        addField("middleInitial", true, false, DataType.STRING_FIELD);
-        addField("lastName", true, true, DataType.STRING_FIELD);
-        addField("dateOfBirth", false, true, DataType.DATE_FIELD);
+        addField("firstName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("middleInitial", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", true, true, strs);
-        addField("startDate", true, false, DataType.DATE_FIELD);
-        addField("jobTitle", false, true, DataType.STRING_FIELD);
+        addEnumField("sex", true, true, strs, Alignment.HORIZONTAL);
+        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
-            addField("ssn", false, false, DataType.STRING_FIELD);
+            addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(empImageUploadPanel);
-
+        alignFields();
     }
 }
