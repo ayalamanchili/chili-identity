@@ -9,17 +9,21 @@ package info.yalamanchili.office.dto.client;
 
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.BillingDuration;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 
 /**
  *
@@ -66,7 +70,6 @@ public class ContractDto implements Serializable {
      * Vendor Location
      */
     protected String vendorLocation;
-    
     protected String vendorAPContact;
 
     public void setVendorAPContact(String vendorAPContact) {
@@ -121,7 +124,6 @@ public class ContractDto implements Serializable {
      */
     protected String notes;
     protected String terminationNotice;
-
     protected BillingDuration billingRateDuration;
     protected BillingDuration overTimeRateDuration;
     protected String visaStatus;
@@ -438,9 +440,28 @@ public class ContractDto implements Serializable {
     public void setPayTimeDuration1099(BillingDuration payTimeDuration1099) {
         this.payTimeDuration1099 = payTimeDuration1099;
     }
-    /* Sub Contactor */
+    /* 
+     * Sub Contactor 
+     */
     protected String subContractorName;
+    /*
+     * subContractorContactName
+     */
     protected String subContractorContactName;
+    /**
+     * subcontractor Address
+     */
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @ForeignKey(name = "FK_SubCntrLocation_ClientInformations")
+    protected Address subcontractorAddress;
+    /**
+     * subcontractorPayRate
+     */
+    protected BigDecimal subcontractorPayRate;
+    /**
+     * subcontractorOvertimePayRate
+     */
+    protected BigDecimal subcontractorOvertimePayRate;
     /**
      * subcontractor Invoice Frequency
      */
@@ -506,6 +527,30 @@ public class ContractDto implements Serializable {
 
     public String getSubContractorContactName() {
         return subContractorContactName;
+    }
+
+    public Address getSubcontractorAddress() {
+        return subcontractorAddress;
+    }
+
+    public void setSubcontractorAddress(Address subcontractorAddress) {
+        this.subcontractorAddress = subcontractorAddress;
+    }
+
+    public BigDecimal getSubcontractorPayRate() {
+        return subcontractorPayRate;
+    }
+
+    public void setSubcontractorPayRate(BigDecimal subcontractorPayRate) {
+        this.subcontractorPayRate = subcontractorPayRate;
+    }
+
+    public BigDecimal getSubcontractorOvertimePayRate() {
+        return subcontractorOvertimePayRate;
+    }
+
+    public void setSubcontractorOvertimePayRate(BigDecimal subcontractorOvertimePayRate) {
+        this.subcontractorOvertimePayRate = subcontractorOvertimePayRate;
     }
 
     public String getTerminationNotice() {
