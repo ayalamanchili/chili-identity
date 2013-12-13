@@ -21,3 +21,8 @@ Employee View, Update and Delete
 Create Employee
 ----
 ![alt text](../images/createemp.png "Create Employee")
+
+Deactivate Employee
+----
+![alt text](../images/deactivate-employee.png "Deactivate Employee")
+
