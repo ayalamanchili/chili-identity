@@ -94,8 +94,8 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "privacyData"));
-            table.setText(i, 2, JSONUtils.toString(entity, "privacyMode"));
+            table.setText(i, 1, JSONUtils.formatEnumString(entity, "privacyData"));
+            table.setText(i, 2, JSONUtils.formatEnumString(entity, "privacyMode"));
         }
     }
 

@@ -99,8 +99,8 @@ public class ReadAllCommunicationActivityPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "type"));
-            table.setText(i, 2, JSONUtils.toString(entity, "mode"));
+            table.setText(i, 1, JSONUtils.formatEnumString(entity, "type"));
+            table.setText(i, 2, JSONUtils.formatEnumString(entity, "mode"));
             table.setText(i, 3, JSONUtils.toString(entity, "subject"));
             table.setText(i, 4, JSONUtils.toString(entity.get("issueType"), "name"));
             table.setText(i, 5, JSONUtils.toString(entity, "createdBy"));
