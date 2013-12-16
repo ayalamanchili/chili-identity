@@ -91,7 +91,6 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         employeeService.deactivateUser(empId);
     }
-//TODO refactor this to use securityservice
 
     @Path("/createuser")
     @PUT
@@ -121,6 +120,7 @@ public class AdminResource {
     @GET
     @Path("/role/add/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true)
     public void addUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         Employee emp = em.find(Employee.class, empId);
         for (Long roleId : ids) {
@@ -133,6 +133,7 @@ public class AdminResource {
     @GET
     @Path("/role/remove/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true)
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
         Employee emp = empDao.findById(empId);
