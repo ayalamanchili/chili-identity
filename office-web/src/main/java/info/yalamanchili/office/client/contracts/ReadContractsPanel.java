@@ -73,7 +73,7 @@ public class ReadContractsPanel extends ReadComposite {
         if (isSubContractor(entity)) {
             assignFieldValueFromEntity("subContractorName", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subContractorContactName", entity, DataType.RICH_TEXT_AREA);
-            assignFieldValueFromEntity("subcontractorAddress", entity, null);
+            assignFieldValueFromEntity("subcontractorAddress", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("subcontractorOvertimePayRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("subcontractorinvoiceFrequency", entity, DataType.ENUM_FIELD);
@@ -163,7 +163,7 @@ public class ReadContractsPanel extends ReadComposite {
             entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
             addField("subContractorName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("subContractorContactName", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
-            addDropDown("subcontractorAddress", new SelectSubcontractorLocationWidget(true, false, Alignment.HORIZONTAL));
+            addField("subcontractorAddress", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             String[] invoiceFrequencie = {"WEEKLY", "BI_WEEKLY", "MONTHLY", "SEMI_MONTHLY", "NOT_REQUIRED"};
