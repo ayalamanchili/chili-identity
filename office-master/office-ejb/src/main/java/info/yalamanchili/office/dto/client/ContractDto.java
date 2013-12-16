@@ -451,9 +451,15 @@ public class ContractDto implements Serializable {
     /**
      * subcontractor Address
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_SubCntrLocation_ClientInformations")
-    protected Address subcontractorAddress;
+    protected String subcontractorAddress;
+
+    public String getSubcontractorAddress() {
+        return subcontractorAddress;
+    }
+
+    public void setSubcontractorAddress(String subcontractorAddress) {
+        this.subcontractorAddress = subcontractorAddress;
+    }
     /**
      * subcontractorPayRate
      */
@@ -527,14 +533,6 @@ public class ContractDto implements Serializable {
 
     public String getSubContractorContactName() {
         return subContractorContactName;
-    }
-
-    public Address getSubcontractorAddress() {
-        return subcontractorAddress;
-    }
-
-    public void setSubcontractorAddress(Address subcontractorAddress) {
-        this.subcontractorAddress = subcontractorAddress;
     }
 
     public BigDecimal getSubcontractorPayRate() {
