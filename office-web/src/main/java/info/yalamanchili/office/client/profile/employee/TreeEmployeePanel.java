@@ -56,6 +56,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String PRIVACY_NODE = "privacy";
     protected static final String SKILL_SET_NODE = "skillset";
     protected static final String ACTIVITY_NODE = "activity";
+    protected static final String DOCUMENTTYPE_NODE = "documentType";
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
@@ -99,6 +100,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.hasNonUserRoles()) {
             addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
         }
+        addFirstChildLink("Document Type", DOCUMENTTYPE_NODE);
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
         }
@@ -159,30 +161,33 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (ACTIVITY_NODE.equals(entityNodeKey)) {
             //TODO
         }
+        if (DOCUMENTTYPE_NODE.equals(entityNodeKey)) {
+            //TOTDO
+        }
         if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
             if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeactivateuserURL(), null, OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String arg0) {
-                                new ResponseStatusWidget().show("Successfully deactivated User");
-                            }
-                        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Successfully deactivated User");
+                    }
+                });
             }
 
         }
         if (PREFERENCES_NODE.equals(entityNodeKey)) {
             HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
-                            if (arg0 != null && preferences != null) {
-                                TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePreferencesPanel(preferences));
-                            }
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
+                    if (arg0 != null && preferences != null) {
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePreferencesPanel(preferences));
+                    }
+                }
+            });
 
         }
         if (ROLES_NODE.equals(entityNodeKey)) {
