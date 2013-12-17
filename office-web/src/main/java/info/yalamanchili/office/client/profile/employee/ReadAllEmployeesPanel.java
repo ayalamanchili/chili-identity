@@ -65,10 +65,10 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
     public String getReadAllEmployeesURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "employee/" + start.toString() + "/" + limit.toString();
     }
-    
-     @Override
+
+    @Override
     protected void onReadMouseOver(int row, String id) {
-        new GenericPopup(new ReadEmployeePanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
+        new GenericPopup(new ReadEmployeePanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("Phone"));
         table.setText(0, 6, getKeyValue("Image"));
         table.setText(0, 7, getKeyValue("Job Title"));
-      
+
     }
 
     @Override
