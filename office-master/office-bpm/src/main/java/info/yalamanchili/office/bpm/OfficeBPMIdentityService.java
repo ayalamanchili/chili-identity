@@ -73,7 +73,7 @@ public class OfficeBPMIdentityService {
     public void syncUsersAndRoles() {
         syncRoles();
         TypedQuery<Employee> empQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:empTypeParam", Employee.class);
-        empQuery.setParameter("empTypeParam", "EMPLOYEE");
+        empQuery.setParameter("empTypeParam", "Employee");
         for (Employee emp : empQuery.getResultList()) {
             logger.log(Level.INFO, "creating activiti user:{0}", emp.getEmployeeId());
             createUser(emp.getEmployeeId());

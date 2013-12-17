@@ -33,7 +33,7 @@ public class AdhocReportingService {
         while (EmployeeDao.instance().query(start, 50).size() > 0) {
             emps = EmployeeDao.instance().query(start, 50);
             for (Employee emp : emps) {
-                if (emp.getEmployeeType().getName().equals("CORPORATE_EMPLOYEE")) {
+                if (emp.getEmployeeType().getName().equals("Corporate Employee")) {
                     emp = em.find(Employee.class, emp.getId());
                     if (emp.getPrimaryEmail() == null || emp.getAddresss().size() < 1 || emp.getEmergencyContacts().size() < 1 || emp.getPhones().size() < 1) {
                         report.append("\n");

@@ -96,24 +96,8 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 5, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
             table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             table.setText(i, 7, JSONUtils.toString(entity, "jobTitle"));
-//            table.setText(i, 9, getCustomValue(entity.get("employeeType"), "name", customValues));
+//            table.setText(i, 9, entity.get("employeeType"), "name");
         }
-    }
-    /**
-     *
-     * map to replace read all table with custom values.
-     */
-    protected static final HashMap<String, String> customValues = new HashMap<String, String>();
-
-    static {
-        customValues.put("sex_MALE", "M");
-        customValues.put("sex_FEMALE", "F");
-        //TODO add employee type 
-        customValues.put("name_EMPLOYEE", "EMPLOYEE");
-        customValues.put("name_CORPORATE_EMPLOYEE", "CORPORATE");
-        customValues.put("name_SUB_CONTRACTOR", "SUB_CONTR");
-        customValues.put("name_1099", "1099");
-
     }
 
     @Override

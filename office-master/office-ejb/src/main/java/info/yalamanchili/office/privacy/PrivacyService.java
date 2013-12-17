@@ -56,7 +56,7 @@ public class PrivacyService {
     }
 
     protected boolean canAccessPrivateData(Employee currentUser) {
-        if ("CORPORATE_EMPLOYEE".equals(currentUser.getEmployeeType().getName())) {
+        if ("Corporate Employee".equals(currentUser.getEmployeeType().getName())) {
             return true;
         } else {
             ServiceMessages.instance().addError(new info.chili.service.jrs.types.Error("privacy", "NOT_AUTHORIZED", "Data is hidden based on user privacy settings"));

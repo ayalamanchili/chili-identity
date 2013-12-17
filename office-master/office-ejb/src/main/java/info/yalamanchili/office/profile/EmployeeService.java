@@ -54,7 +54,7 @@ public class EmployeeService {
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
         String employeeId = generateEmployeeId(employee);
         String empType = emp.getEmployeeType().getName();
-        if (empType.equals("CORPORATE_EMPLOYEE") || empType.equals("EMPLOYEE")) {
+        if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
             //Create CUser
             CUser user = mapper.map(employee, CUser.class);
             user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
@@ -72,7 +72,7 @@ public class EmployeeService {
         emp.setPreferences(prefs);
 
         //Create BPM User
-        if (emp.getEmployeeType().getName().equalsIgnoreCase("CORPORATE_EMPLOYEE")) {
+        if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
         }
         Email email = new Email();
@@ -82,7 +82,7 @@ public class EmployeeService {
         emp = EmployeeDao.instance().save(emp);
         em.merge(emp);
         //Email notification
-        if (empType.equals("CORPORATE_EMPLOYEE") || empType.equals("EMPLOYEE")) {
+        if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
             profileNotificationService.sendNewUserCreatedNotification(emp);
         }
         return emp.getId().toString();

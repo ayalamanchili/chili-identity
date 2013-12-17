@@ -101,7 +101,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public Map<String, String> getCorpEntityStringMapByParams(int start, int limit, String... params) {
-        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name='CORPORATE_EMPLOYEE'", start, limit, params);
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name='Corporate Employee'", start, limit, params);
     }
 
     public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String role) {

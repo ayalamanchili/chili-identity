@@ -56,7 +56,7 @@ public class ReadAllCompanyContactPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Contact Type"));
-        table.setText(0, 2, getKeyValue("CORPORATE EMPLOYEE"));
+        table.setText(0, 2, getKeyValue("CorporateEmployee"));
     }
 
     @Override

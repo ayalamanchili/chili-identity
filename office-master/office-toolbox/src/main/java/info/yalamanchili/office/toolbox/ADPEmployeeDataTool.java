@@ -99,7 +99,7 @@ public class ADPEmployeeDataTool {
             address.setState(record.getState());
             address.setZip(record.getZip());
             address.setCountry("USA");
-            address.setAddressType((AddressType) QueryUtils.findEntity(em, AddressType.class, "addressType", "HOME"));
+            address.setAddressType((AddressType) QueryUtils.findEntity(em, AddressType.class, "addressType", "Home"));
             address.setContact(emp);
             if (ValidationUtils.validate(address).isEmpty()) {
                 logger.log(Level.INFO, "inserting address:{0}: for employee:{1}", new Object[]{address, emp.getEmployeeId()});
@@ -125,10 +125,10 @@ public class ADPEmployeeDataTool {
      */
     public void syncEmployeePhones(ADPEmployeeRecord record, Employee emp) {
         if (record.getCellPhone() != null && !phoneExists(record.getCellPhone(), emp)) {
-            insertPhone(emp, record.getCellPhone(), (PhoneType) QueryUtils.findEntity(em, PhoneType.class, "phoneType", "CELL"));
+            insertPhone(emp, record.getCellPhone(), (PhoneType) QueryUtils.findEntity(em, PhoneType.class, "phoneType", "Cell"));
         }
         if (record.getHomePhone() != null && !phoneExists(record.getHomePhone(), emp)) {
-            insertPhone(emp, record.getHomePhone(), (PhoneType) QueryUtils.findEntity(em, PhoneType.class, "phoneType", "HOME"));
+            insertPhone(emp, record.getHomePhone(), (PhoneType) QueryUtils.findEntity(em, PhoneType.class, "phoneType", "Home"));
         }
     }
 

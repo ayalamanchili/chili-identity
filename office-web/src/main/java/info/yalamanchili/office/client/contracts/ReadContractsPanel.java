@@ -91,7 +91,7 @@ public class ReadContractsPanel extends ReadComposite {
     //pleado same for 1099 
 
     protected boolean isSubContractor(JSONObject contractDto) {
-        if ((JSONUtils.toString(contractDto, "employeeType")).equals("SUB_CONTRACTOR")) {
+        if ((JSONUtils.toString(contractDto, "employeeType")).equals("Subcontractor")) {
             return true;
         } else {
             return false;

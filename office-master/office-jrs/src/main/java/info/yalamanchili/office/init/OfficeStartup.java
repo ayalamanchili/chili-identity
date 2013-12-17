@@ -439,12 +439,12 @@ public class OfficeStartup {
     protected AddressType getHomeAddressType() {
         Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
                 + " where addressType=:addressTypeParam");
-        getAddressType.setParameter("addressTypeParam", "HOME");
+        getAddressType.setParameter("addressTypeParam", "Home");
         if (getAddressType.getResultList().size() > 0) {
             return (AddressType) getAddressType.getResultList().get(0);
         } else {
             AddressType homeAddressType = new AddressType();
-            homeAddressType.setAddressType("HOME");
+            homeAddressType.setAddressType("Home");
             return em.merge(homeAddressType);
         }
     }
@@ -452,12 +452,12 @@ public class OfficeStartup {
     protected AddressType getOfficeAddressType() {
         Query getAddressType = em.createQuery("from " + AddressType.class.getCanonicalName()
                 + " where addressType=:addressTypeParam");
-        getAddressType.setParameter("addressTypeParam", "OFFICE");
+        getAddressType.setParameter("addressTypeParam", "Office");
         if (getAddressType.getResultList().size() > 0) {
             return (AddressType) getAddressType.getResultList().get(0);
         } else {
             AddressType officeAddressType = new AddressType();
-            officeAddressType.setAddressType("OFFICE");
+            officeAddressType.setAddressType("Office");
             return em.merge(officeAddressType);
         }
     }
@@ -465,12 +465,12 @@ public class OfficeStartup {
     protected EmailType getWorkEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
-        getEmailType.setParameter("emailTypeParam", "WORK");
+        getEmailType.setParameter("emailTypeParam", "Work");
         if (getEmailType.getResultList().size() > 0) {
             return (EmailType) getEmailType.getResultList().get(0);
         } else {
             EmailType homeEmailType = new EmailType();
-            homeEmailType.setEmailType("WORK");
+            homeEmailType.setEmailType("Work");
             return em.merge(homeEmailType);
         }
     }
@@ -478,12 +478,12 @@ public class OfficeStartup {
     protected EmailType getPersonalEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
-        getEmailType.setParameter("emailTypeParam", "PERSONAL");
+        getEmailType.setParameter("emailTypeParam", "Personal");
         if (getEmailType.getResultList().size() > 0) {
             return (EmailType) getEmailType.getResultList().get(0);
         } else {
             EmailType homeEmailType = new EmailType();
-            homeEmailType.setEmailType("PERSONAL");
+            homeEmailType.setEmailType("Personal");
             return em.merge(homeEmailType);
         }
     }
@@ -491,12 +491,12 @@ public class OfficeStartup {
     protected PhoneType getCellPhoneType() {
         Query getCellPhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
                 + " where phoneType=:phoneTypeParam");
-        getCellPhoneType.setParameter("phoneTypeParam", "CELL");
+        getCellPhoneType.setParameter("phoneTypeParam", "Cell");
         if (getCellPhoneType.getResultList().size() > 0) {
             return (PhoneType) getCellPhoneType.getResultList().get(0);
         } else {
             PhoneType cellPhoneType = new PhoneType();
-            cellPhoneType.setPhoneType("CELL");
+            cellPhoneType.setPhoneType("Cell");
             return em.merge(cellPhoneType);
         }
     }
@@ -504,12 +504,12 @@ public class OfficeStartup {
     protected PhoneType getHomePhoneType() {
         Query getHomePhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
                 + " where phoneType=:phoneTypeParam");
-        getHomePhoneType.setParameter("phoneTypeParam", "HOME");
+        getHomePhoneType.setParameter("phoneTypeParam", "Home");
         if (getHomePhoneType.getResultList().size() > 0) {
             return (PhoneType) getHomePhoneType.getResultList().get(0);
         } else {
             PhoneType cellPhoneType = new PhoneType();
-            cellPhoneType.setPhoneType("HOME");
+            cellPhoneType.setPhoneType("Home");
             return em.merge(cellPhoneType);
         }
     }
@@ -573,12 +573,12 @@ public class OfficeStartup {
     protected EmployeeType getCorporateEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "CORPORATE_EMPLOYEE");
+        getEmployeeTypeQuery.setParameter("nameParam", "Corporate Employee");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("CORPORATE_EMPLOYEE");
+            employeetype.setName("Corporate Employee");
             employeetype.setDescription("SSTECH Internal Employee");
             return em.merge(employeetype);
         }
@@ -587,13 +587,13 @@ public class OfficeStartup {
     protected EmployeeType getSubContractorEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "SUB_CONTRACTOR");
+        getEmployeeTypeQuery.setParameter("nameParam", "Subcontractor");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("SUB_CONTRACTOR");
-            employeetype.setDescription("SSTECH SUB_CONTRACTOR");
+            employeetype.setName("Subcontractor");
+            employeetype.setDescription("SSTECH Subcontractor");
             return em.merge(employeetype);
         }
     }
@@ -615,12 +615,12 @@ public class OfficeStartup {
     protected EmployeeType getEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "EMPLOYEE");
+        getEmployeeTypeQuery.setParameter("nameParam", "Employee");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("EMPLOYEE");
+            employeetype.setName("Employee");
             employeetype.setDescription("SSTECH Consultant Employee");
             return em.merge(employeetype);
         }

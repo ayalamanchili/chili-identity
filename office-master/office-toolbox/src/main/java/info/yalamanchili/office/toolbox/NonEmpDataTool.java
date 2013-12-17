@@ -90,7 +90,7 @@ public class NonEmpDataTool {
                 dto.setLastName(getCellStringValue(record, 26));
                 dto.setEmail(getCellStringValue(record, 41));
                 if (empType.equalsIgnoreCase("Subcontractor")) {
-                    dto.setEmployeeType((EmployeeType) QueryUtils.findEntity(em, EmployeeType.class, "name", "SUB_CONTRACTOR"));
+                    dto.setEmployeeType((EmployeeType) QueryUtils.findEntity(em, EmployeeType.class, "name", "Subcontractor"));
 
                 }
                 if (empType.equalsIgnoreCase("1099")) {

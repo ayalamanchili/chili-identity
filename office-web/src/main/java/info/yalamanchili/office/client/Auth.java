@@ -82,7 +82,7 @@ public class Auth {
     }
 
     public static boolean isCorporateEmployee() {
-        if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("CORPORATE_EMPLOYEE")) {
+        if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Corporate Employee")) {
             return true;
         } else {
             return false;
@@ -91,7 +91,7 @@ public class Auth {
 
     public static boolean isSubContractor(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
-        if (empType != null && empType.equals("SUB_CONTRACTOR")) {
+        if (empType != null && empType.equals("Subcontractor")) {
             return true;
         }
         return false;
