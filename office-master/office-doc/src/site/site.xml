@@ -26,6 +26,7 @@
             <item name="Bulkupload" href="/office/bulkupload.html"/>
             <item name="Portal Roles" href="/office/roles.html"/>
             <item name="Employee" href="/office/employee.html"/>
+            <item name="Employee Search" href="/office/employeesearch.html"/>
         </menu>
         <footer>COPYRIGHT © 2013 sstech.us - All Rights Reserved</footer>
     </body>
