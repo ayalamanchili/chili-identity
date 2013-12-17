@@ -12,6 +12,10 @@ Employee Search
     - Enter the details and click on search.
     - Advanced search is based on Name, Employee Type, Address, Company Contact, Client and Vendor Names
 
+Simple Search
+---------------
+![alt text](../images/simplesearchemp.png "Simple Search")
+
 Advanced Search
 ---------------
 ![alt text](../images/advsearchemp.png "Advanced Search")
