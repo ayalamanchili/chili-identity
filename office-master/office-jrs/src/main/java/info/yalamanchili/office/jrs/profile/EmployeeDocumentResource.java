@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author raghu.l
  */
-@Path("secured/employeedocument")
+@Path("secured/document")
 @Component
 @Transactional
 @Scope("request")
