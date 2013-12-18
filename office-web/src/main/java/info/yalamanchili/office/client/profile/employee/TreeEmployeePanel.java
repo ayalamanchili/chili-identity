@@ -100,7 +100,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.hasNonUserRoles()) {
             addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
         }
-        addFirstChildLink("Document", DOCUMENTS_NODE);
+        addFirstChildLink("Documents", DOCUMENTS_NODE);
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
         }
