@@ -11,12 +11,20 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
+import javax.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author raghu.l
  */
+@Path("secured/employeedocument")
+@Component
+@Transactional
+@Scope("request")
 public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument>{
 
     @Autowired
