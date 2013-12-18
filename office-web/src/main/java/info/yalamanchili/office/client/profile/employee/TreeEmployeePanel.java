@@ -56,7 +56,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String PRIVACY_NODE = "privacy";
     protected static final String SKILL_SET_NODE = "skillset";
     protected static final String ACTIVITY_NODE = "activity";
-    protected static final String DOCUMENTTYPE_NODE = "documentType";
+    protected static final String DOCUMENTS_NODE = "documents";
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
@@ -100,7 +100,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.hasNonUserRoles()) {
             addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
         }
-        addFirstChildLink("Document Type", DOCUMENTTYPE_NODE);
+        addFirstChildLink("Document", DOCUMENTS_NODE);
         if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
         }
@@ -161,7 +161,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (ACTIVITY_NODE.equals(entityNodeKey)) {
             //TODO
         }
-        if (DOCUMENTTYPE_NODE.equals(entityNodeKey)) {
+        if (DOCUMENTS_NODE.equals(entityNodeKey)) {
             //TOTDO
         }
         if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
