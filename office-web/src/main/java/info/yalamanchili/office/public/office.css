@@ -2,7 +2,7 @@
  * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /* defining main colors in the applciation */
-@def orange_light #f09974;
+@def orange_light #F09974;
 
 @def orange_dark #E16802;
 
@@ -50,7 +50,7 @@
 
 /*   margin-left: 105px;*/
 
-}
+
 /* TabLayout Panel */
 @sprite .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
     gwt-image: "tabButton";
@@ -142,7 +142,7 @@
     font-weight: bold;
     font-size: 11pt;
     color: blue_font;
-    text-align:center;  
+    text-align:left;  
 }
 
 .y-gwt-Table {
@@ -150,7 +150,7 @@
     font-family: helvetica, arial ;
     background-color: blue_light;
     width: 100%;
-    text-align:center;
+    text-align:left;
     /*    border: 1px;
         border-bottom-width: 5px;
         border-color: white;*/
