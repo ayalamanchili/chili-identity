@@ -99,6 +99,6 @@ public class EmployeeDocument extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "EmployeeDocumentType{" + "DocumentType=" + documentType + ", FileUrl=" + fileUrl + "UpdatedTs=" + updatedTs + ", UpdatedBy=" + updatedBy + ", Employee=" + employee + '}';
+        return "EmployeeDocument{" + "DocumentType=" + documentType + ", FileUrl=" + fileUrl + "UpdatedTs=" + updatedTs + ", UpdatedBy=" + updatedBy + ", Employee=" + employee + '}';
     }
 }
