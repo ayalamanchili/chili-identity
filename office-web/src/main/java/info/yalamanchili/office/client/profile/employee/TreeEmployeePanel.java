@@ -36,6 +36,7 @@ import info.yalamanchili.office.client.admin.activity.TreeActivityPanel;
 import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
 import info.yalamanchili.office.client.profile.empdoc.CreateEmpDocPanel;
+import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
 import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettngsPanel;
@@ -166,7 +167,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (DOCUMENTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmpDocPanel(getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
+            //TabPanel.instance().myOfficePanel.entityPanel.add(new CreateEmpDocPanel(getEntityId()));
         }
         if (DEACTIVATION_USER_NODE.equals(entityNodeKey)) {
             if (Window.confirm("Are you sure! Do you want to deactivate this Employee?")) {
