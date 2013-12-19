@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,11 +14,15 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -74,7 +81,7 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-
+     createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
     }
 
     @Override
@@ -83,11 +90,25 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
+         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
+    }
+    
+     protected String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "employee-document/delete/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
-
+        new ResponseStatusWidget().show("Successfully Deleted Emp Doc Information");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
     }
 
     @Override
