@@ -9,19 +9,30 @@ package info.yalamanchili.office.dao.profile;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author raghu.l
  */
-public class EmployeeDocumentDao extends CRUDDao<EmployeeDocument>{
+@Repository
+@Scope("prototype")
+public class EmployeeDocumentDao extends CRUDDao<EmployeeDocument> {
 
     public EmployeeDocumentDao() {
         super(EmployeeDocument.class);
     }
 
+    public List<EmployeeDocument> getDocuments(Long employeeId) {
+        TypedQuery<EmployeeDocument> query = getEntityManager().createQuery("from " + EmployeeDocument.class.getCanonicalName() + " where employee.id=:employeeIdParam", EmployeeDocument.class);
+        query.setParameter("employeeIdParam", employeeId);
+        return query.getResultList();
+    }
     @PersistenceContext
     protected EntityManager em;
 
@@ -29,5 +40,5 @@ public class EmployeeDocumentDao extends CRUDDao<EmployeeDocument>{
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

@@ -46,7 +46,7 @@ public class EmployeeDocument extends AbstractEntity {
     protected String updatedBy;
     /*Employee*/
     @ManyToOne(cascade = CascadeType.MERGE)
-    @ForeignKey(name = "FK_Employee_DOCU_TYPE")
+    @ForeignKey(name = "FK_Employee_DOC")
     protected Employee employee;
 
     public DocumentType getDocumentType() {
