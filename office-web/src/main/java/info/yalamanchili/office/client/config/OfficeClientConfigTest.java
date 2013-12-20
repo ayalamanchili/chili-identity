@@ -13,15 +13,20 @@ import info.chili.gwt.config.ClientConfig;
  *
  * @author ayalamanchili
  */
-public class OfficeClientConfigTest implements ClientConfig {
+public class OfficeClientConfigTest implements OfficeClientConfig {
 
     @Override
     public String getFileUploadUrl() {
-        return "http://yalamanchili.info:8080/office-web/office/rpc/fileService";
+        return "http://yalamanchili.info/office-web/office/rpc/fileService";
     }
 
     @Override
     public String getFileDownloadUrl() {
-        return "http://yalamanchili.info:8080/office-web/office/rpc/fileService?path=";
+        return "http://yalamanchili.info/office-web/office/rpc/fileService?path=";
+    }
+
+    @Override
+    public String getPortalDocumentationSiteUrl() {
+        return "http://yalamanchili.info/site/office/";
     }
 }

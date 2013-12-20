@@ -13,7 +13,7 @@ import info.chili.gwt.config.ClientConfig;
  *
  * @author ayalamanchili
  */
-public class OfficeClientConfigDev implements ClientConfig {
+public class OfficeClientConfigDev implements OfficeClientConfig {
 
     @Override
     public String getFileUploadUrl() {
@@ -24,5 +24,10 @@ public class OfficeClientConfigDev implements ClientConfig {
     @Override
     public String getFileDownloadUrl() {
         return "http://localhost:9090/office-web/office/rpc/fileService?path=";
+    }
+
+    @Override
+    public String getPortalDocumentationSiteUrl() {
+        return "http://localhost/site/office/";
     }
 }

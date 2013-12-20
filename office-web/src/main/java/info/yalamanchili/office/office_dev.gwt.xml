@@ -46,8 +46,12 @@
         
     <!-- enables the debug id are set elementswidgets -->
     <inherits name='com.google.gwt.user.Debug'/>
-    
+    <!-- TODO remove this-->
     <replace-with class="info.yalamanchili.office.client.config.OfficeClientConfigDev">
         <when-type-is class="info.chili.gwt.config.ClientConfig" />
+    </replace-with>
+    
+    <replace-with class="info.yalamanchili.office.client.config.OfficeClientConfigDev">
+        <when-type-is class="info.yalamanchili.office.client.config.OfficeClientConfig" />
     </replace-with>
 </module>

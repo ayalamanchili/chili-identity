@@ -18,6 +18,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
 
@@ -29,6 +30,7 @@ public class OfficeWelcome implements EntryPoint {
     public List<String> roles = new ArrayList<String>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
+    public OfficeClientConfig officeClientConfig;
 
     @Override
     public void onModuleLoad() {
@@ -81,6 +83,13 @@ public class OfficeWelcome implements EntryPoint {
             return new OfficeWelcome();
         }
         return instance;
+    }
+
+    public OfficeClientConfig getOfficeClientConfig() {
+        if (officeClientConfig == null) {
+            this.officeClientConfig = GWT.create(OfficeClientConfig.class);
+        }
+        return this.officeClientConfig;
     }
     //TODO move to server
 

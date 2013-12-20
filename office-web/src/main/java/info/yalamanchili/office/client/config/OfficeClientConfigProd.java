@@ -7,13 +7,11 @@
  */
 package info.yalamanchili.office.client.config;
 
-import info.chili.gwt.config.ClientConfig;
-
 /**
  *
  * @author ayalamanchili
  */
-public class OfficeClientConfigProd implements ClientConfig {
+public class OfficeClientConfigProd implements OfficeClientConfig {
 
     @Override
     public String getFileUploadUrl() {
@@ -23,5 +21,10 @@ public class OfficeClientConfigProd implements ClientConfig {
     @Override
     public String getFileDownloadUrl() {
         return "https://apps.sstech.us/office-web/office/rpc/fileService?path=";
+    }
+
+    @Override
+    public String getPortalDocumentationSiteUrl() {
+        return "https://apps.sstech.us/site/office/";
     }
 }

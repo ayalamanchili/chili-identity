@@ -9,17 +9,16 @@ package info.yalamanchili.office.client.help;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import fr.hd3d.html5.video.client.VideoSource;
 import fr.hd3d.html5.video.client.VideoSource.VideoType;
 import fr.hd3d.html5.video.client.VideoWidget;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -47,6 +46,7 @@ public class HelpHome extends ALComposite implements ClickHandler {
     protected final String bulkimportVideo = "bulkimport";
     protected final String accountresetVideo = "account_reset";
     protected final String defaultImage = "help/videos/default.png";
+    protected ClickableLink portalDocumentationSite = new ClickableLink("Portal Documentation");
     protected ClickableLink fullVideoL = new ClickableLink("Portal Full Demo");
     protected ClickableLink rolesVideoL = new ClickableLink("Portal Roles Demo");
     protected ClickableLink myofficeVideoL = new ClickableLink("Portal My Office Demo");
@@ -63,7 +63,8 @@ public class HelpHome extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        fullVideoL.addClickHandler(this);
+        portalDocumentationSite.addClickHandler(this);
+        portalDocumentationSite.addClickHandler(this);
         rolesVideoL.addClickHandler(this);
         myofficeVideoL.addClickHandler(this);
         adminVideoL.addClickHandler(this);
@@ -76,12 +77,12 @@ public class HelpHome extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
-        fullVideoL.addStyleName("helpVideoLink");
+        portalDocumentationSite.addStyleName("helpVideoLink");
     }
 
     @Override
     protected void addWidgets() {
-        panel.add(fullVideoL);
+        panel.add(portalDocumentationSite);
         panel.add(rolesVideoL);
         panel.add(myofficeVideoL);
         panel.add(adminVideoL);
@@ -94,12 +95,13 @@ public class HelpHome extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        logger.info("dddd" + event.getSource());
+        if (event.getSource().equals(portalDocumentationSite)) {
+            Window.open(OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl(), "", "");
+        }
         if (event.getSource().equals(fullVideoL)) {
             new GenericPopup(getFullVideoWidget()).show();
         }
         if (event.getSource().equals(rolesVideoL)) {
-            logger.info("dddaad");
             new GenericPopup(getRolesVideoWidget()).show();
         }
         if (event.getSource().equals(myofficeVideoL)) {
