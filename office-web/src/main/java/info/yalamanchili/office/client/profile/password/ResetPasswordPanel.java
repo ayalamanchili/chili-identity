@@ -8,7 +8,6 @@
 package info.yalamanchili.office.client.profile.password;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
@@ -16,7 +15,6 @@ import info.chili.gwt.fields.PasswordField;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.chili.gwt.rpc.HttpService;
 
@@ -44,31 +42,34 @@ public class ResetPasswordPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-        PasswordField newpassword = (PasswordField) fields.get("newPassword");
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-        PasswordField confirmpassword = (PasswordField) fields.get("confirmPassword");
-
-        if (newpassword.getPassword().equals(confirmpassword.getPassword())) {
-            HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                    new AsyncCallback<String>() {
-                        @Override
-                        public void onFailure(Throwable arg0) {
+                    @Override
+                    public void onSuccess(String userString) {
+                        if (userString != null && userString.trim().length() > 0) {
+                            new ResponseStatusWidget().show("Reset Password Successful");
+                        } else {
                             new ResponseStatusWidget().show("Reset Password Failed");
                         }
 
-                        @Override
-                        public void onSuccess(String userString) {
-                            if (userString != null && userString.trim().length() > 0) {
-                                new ResponseStatusWidget().show("Reset Password Successful");
-                            } else {
-                                new ResponseStatusWidget().show("Reset Password Failed");
-                            }
+                    }
+                });
+    }
 
-                        }
-                    });
-        } else {
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        PasswordField newpassword = (PasswordField) fields.get("newPassword");
+        PasswordField confirmpassword = (PasswordField) fields.get("confirmPassword");
+        if (!newpassword.getPassword().equals(confirmpassword.getPassword())) {
             new ResponseStatusWidget().show("New password and Confirm Password are not same");
+            return false;
         }
+        return true;
     }
 
     @Override
