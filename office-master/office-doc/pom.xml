@@ -29,6 +29,24 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <site>
+            <id>portal-site</id>
+            <url>dav:http://yalamanchili.info/nexus/content/sites/site/</url>
+        </site>
+        <!-- Publish the versioned releases here -->
+        <repository>
+            <id>yalamanchili.info</id>
+            <name>yalamanchili.info</name>
+            <url>http://yalamanchili.info/nexus/content/repositories/releases</url>
+        </repository>
+        <!-- Publish the versioned releases here -->
+        <snapshotRepository>
+            <id>yalamanchili.info</id>
+            <name>yalamanchili.info</name>
+            <url>http://yalamanchili.info/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
