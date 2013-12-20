@@ -28,6 +28,8 @@
             <item name="Employee" href="/office/employee.html"/>
             <item name="Employee Search" href="/office/employeesearch.html"/>
             <item name="Update Billrate" href="/office/updatebillingrate.html"/>
+            <item name="Documents" href="/office/documetns.html"/>
+            <item name="Account Reseat Task" href="/office/accountresettask.html"/>
         </menu>
         <footer>COPYRIGHT © 2013 sstech.us - All Rights Reserved</footer>
     </body>
