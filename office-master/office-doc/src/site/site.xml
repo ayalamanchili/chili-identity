@@ -19,7 +19,13 @@
             <item name="Home" href="/ofice/home.html"/>
             <item name="Social" href="/office/social.html"/>
             <item name="My Office" href="office/my-office.html"/>
-            <item name="Profile" href="/office/profile.html"/>
+            <item name="Profile" href="office/profile/profile.html" collapse="true">
+                <item name="Manage Profle" href="office/profile/profile.html"/>
+                <item name="Privacy" href="office/profile/privacy.html"/>
+                <item name="Client Information" href="office/profile/client-information.html"/>
+                <item name="SkillSet" href="office/profile/skillset.html"/>
+                <item name="Preferences" href="office/profile/preferences.html"/>
+            </item>
             <item name="Drive" href="/office/drive.html"/>
             <item name="Admin" href="/office/admin.html"/>
             <item name="New Client Information" href="/office/bpm/new-client-info-process.html"/>
