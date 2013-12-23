@@ -1,12 +1,8 @@
 Client Correction Details Process
 ===========
 
-![alt text](../images/correction-details-client.png "Client Correction Details")
+If the details are incorrect you can submit a request for updating the information
+===============
+===============
 
-Task Created Under Home Page
-----
-![alt text](../images/view-client-correction-details.png "Client Correction Details")
-
-Request Details
-----
-![alt text](../images/client-correction-teask-details.png "Client Correction Details")
+![alt text](../images/client-info-correction.png "Client Correction Details")
