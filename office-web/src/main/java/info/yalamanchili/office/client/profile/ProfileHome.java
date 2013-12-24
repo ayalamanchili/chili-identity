@@ -27,6 +27,7 @@ import info.yalamanchili.office.client.profile.skillset.CreateSkillSetPanel;
 import info.yalamanchili.office.client.profile.skillset.ReadSkillSetPopupPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
+import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPopupPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettingPopupPanel;
 import java.util.logging.Logger;
@@ -50,6 +51,7 @@ public class ProfileHome extends ALComposite {
     protected DisclosurePanel privacyPanel;
     protected DisclosurePanel skillSetDP;
     protected DisclosurePanel preferencesPanel;
+    protected DisclosurePanel documentsPanel;
 
     public ProfileHome() {
         instance = this;
@@ -75,6 +77,7 @@ public class ProfileHome extends ALComposite {
         addEmergencyContactsPanel();
         addCompanyContactsPanel();
         addSkillSetPanel();
+        addEmpDocsPanel();
         addPreferencesPanel();
         addPrivacyPanel();
     }
@@ -91,7 +94,6 @@ public class ProfileHome extends ALComposite {
                 @Override
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     employeeePanel.setContent(new ReadEmployeePopupPanel(OfficeWelcome.instance().employee));
-
                 }
             });
         }
@@ -115,7 +117,6 @@ public class ProfileHome extends ALComposite {
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     addressesPanel.setContent(
                             new ReadAllAddressesPopupPanel(OfficeWelcome.instance().employeeId));
-
                 }
             });
         }
@@ -139,7 +140,6 @@ public class ProfileHome extends ALComposite {
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     phonesPanel.setContent(
                             new ReadAllPhonesPopupPanel(OfficeWelcome.instance().employeeId));
-
                 }
             });
         }
@@ -164,7 +164,6 @@ public class ProfileHome extends ALComposite {
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     emailsPanel.setContent(
                             new ReadAllEmailsPopupPanel(OfficeWelcome.instance().employeeId));
-
                 }
             });
         }
@@ -187,7 +186,6 @@ public class ProfileHome extends ALComposite {
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 clientInfoPanel.setContent(
                         new ReadAllClientInfoPopupPanel(OfficeWelcome.instance().employeeId));
-
             }
         });
     }
@@ -209,7 +207,6 @@ public class ProfileHome extends ALComposite {
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 emergencyContactsPanel.setContent(
                         new ReadAllEmergencyContactsPopupPanel(OfficeWelcome.instance().employeeId));
-
             }
         });
     }
@@ -231,7 +228,6 @@ public class ProfileHome extends ALComposite {
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 companyContactsPanel.setContent(
                         new ReadAllCompanyContactPanel(OfficeWelcome.instance().employeeId));
-
             }
         });
     }
@@ -250,20 +246,19 @@ public class ProfileHome extends ALComposite {
                 skillSetPanel.clear();
                 HttpService.HttpServiceAsync.instance().doGet(getSkillSetUrl(OfficeWelcome.instance().employeeId), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                if (response != null && !response.isEmpty()) {
-                                    JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
-                                    skillSetPanel.add(new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
-                                    skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id"), false, false));
-                                    skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id"), false, false));
-                                } else {
-                                    TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                    skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
-                                }
-                            }
-                        });
-
+                    @Override
+                    public void onResponse(String response) {
+                        if (response != null && !response.isEmpty()) {
+                            JSONObject skillSet = (JSONObject) JSONParser.parseLenient(response);
+                            skillSetPanel.add(new ReadSkillSetPopupPanel(OfficeWelcome.instance().employeeId));
+                            skillSetPanel.add(new MultiSelectSkillWidget("Skills", JSONUtils.toString(skillSet, "id"), false, false));
+                            skillSetPanel.add(new MuitiSelectCertificationWidget("Certifications", JSONUtils.toString(skillSet, "id"), false, false));
+                        } else {
+                            TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            skillSetPanel.add(new CreateSkillSetPanel(OfficeWelcome.instance().employeeId));
+                        }
+                    }
+                });
             }
         });
     }
@@ -287,17 +282,16 @@ public class ProfileHome extends ALComposite {
             public void onOpen(OpenEvent<DisclosurePanel> event) {
                 HttpService.HttpServiceAsync.instance().doGet(getPreferencesURI(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String arg0) {
-                                JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
-                                if (arg0 != null && preferences != null) {
-                                    preferencesPanel.clear();
-                                    preferencesPanel.setContent(
-                                            new UpdatePreferencesPanel(preferences));
-                                }
-                            }
-                        });
-
+                    @Override
+                    public void onResponse(String arg0) {
+                        JSONObject preferences = JSONParser.parseLenient(arg0).isObject();
+                        if (arg0 != null && preferences != null) {
+                            preferencesPanel.clear();
+                            preferencesPanel.setContent(
+                                    new UpdatePreferencesPanel(preferences));
+                        }
+                    }
+                });
             }
         });
     }
@@ -324,7 +318,6 @@ public class ProfileHome extends ALComposite {
                 public void onOpen(OpenEvent<DisclosurePanel> event) {
                     privacyPanel.setContent(
                             new ReadAllPrivacySettingPopupPanel(OfficeWelcome.instance().employeeId));
-
                 }
             });
         }
@@ -333,5 +326,28 @@ public class ProfileHome extends ALComposite {
     public void refreshPrivacy() {
         privacyPanel.setOpen(false);
         privacyPanel.setOpen(true);
+    }
+    /*
+     * Emp Documents 
+     */
+
+    protected void addEmpDocsPanel() {
+        if (panel.getWidgetIndex(documentsPanel) < 0) {
+            documentsPanel = new DisclosurePanel("Documents");
+            panel.add(documentsPanel);
+            documentsPanel.addStyleName("profileHome");
+            documentsPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+                @Override
+                public void onOpen(OpenEvent<DisclosurePanel> event) {
+                    documentsPanel.setContent(
+                            new ReadAllEmpDocsPopupPanel(OfficeWelcome.instance().employeeId));
+                }
+            });
+        }
+    }
+
+    public void refreshEmpDocs() {
+        documentsPanel.setOpen(false);
+        documentsPanel.setOpen(true);
     }
 }
