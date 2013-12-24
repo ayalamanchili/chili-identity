@@ -6,13 +6,19 @@ package info.yalamanchili.office.service;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.LoginSuccessListener;
+import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.email.EmailService;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.activiti.engine.ActivitiException;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
@@ -49,7 +55,7 @@ public class ServiceInterceptor {
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
         //TODO make the excluded methods configurable
-        if(joinPoint.getSignature().toShortString().contains("login")){
+        if (joinPoint.getSignature().toShortString().contains("login")) {
             LoginSuccessListener.instance().logLogin();
         }
         /* skip validation for search and login methods */
@@ -66,6 +72,7 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } catch (Exception e) {
+            emailExceptionDetials(e);
             if (log.isErrorEnabled()) {
                 e.printStackTrace();
                 log.error(e);
@@ -80,16 +87,18 @@ public class ServiceInterceptor {
      * This is for handling exception from non jrs methods like notification package classes which are invoked by bpm.    */
     @AfterThrowing(pointcut = "execution(* info.yalamanchili.office..*.*(..))", throwing = "exception")
     public void catchException(JoinPoint joinPoint, Throwable exception) {
-        if (log.isErrorEnabled()) {
-            exception.printStackTrace();
-            log.error(exception);
-        }
         if (exception instanceof ServiceException) {
             ServiceException se = (ServiceException) exception;
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } else if (exception instanceof ActivitiException && exception.getCause().getCause() instanceof ServiceException) {
+            if (log.isErrorEnabled()) {
+                exception.printStackTrace();
+                log.error(exception);
+            }
+            emailExceptionDetials(exception);
             ServiceException se = (ServiceException) exception.getCause().getCause();
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
+
         } else {
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
         }
@@ -109,5 +118,23 @@ public class ServiceInterceptor {
         if (serviceMessages.isNotEmpty()) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, serviceMessages.getErrors());
         }
+    }
+
+    protected void emailExceptionDetials(Throwable e) {
+        if (!OfficeServiceConfiguration.instance().isEmailExceptionDetials()) {
+            return;
+        }
+        Email email = new Email();
+        email.addTo(OfficeServiceConfiguration.instance().getAdminEmail());
+        StringBuilder subject = new StringBuilder();
+        subject.append("Portal Error Details: Host: ");
+        try {
+            subject.append(InetAddress.getLocalHost().getHostName());
+        } catch (UnknownHostException ex) {
+            subject.append("UNKNOWN");
+        }
+        email.setSubject(subject.toString());
+        email.setBody(ExceptionUtils.getStackTrace(e));
+        EmailService.instance().sendEmail(email);
     }
 }

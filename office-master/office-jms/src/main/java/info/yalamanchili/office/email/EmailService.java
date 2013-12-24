@@ -141,4 +141,8 @@ public class EmailService {
     public void setMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
+
+    public static EmailService instance() {
+        return SpringContext.getBean(EmailService.class);
+    }
 }
