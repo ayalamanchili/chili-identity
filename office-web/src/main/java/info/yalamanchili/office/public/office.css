@@ -173,10 +173,11 @@
     -moz-transition-timing-function: linear, ease-in; 
 }
 .y-gwt-ReadAllComposite-OddRow{
+    background-color: blue_light;
 
 }
 .y-gwt-ReadAllComposite-EvenRow{
-
+background-color: blue_mid;
 }
 /*Text insiise the tabel START*/
 .readAllCompositeCaptionPanel{
