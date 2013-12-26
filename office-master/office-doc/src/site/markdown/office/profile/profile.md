@@ -40,3 +40,6 @@ Phone
 Email
 ----
 ![alt text](../../images/email_profile.png "Update Profile")
+Emergency Contacts
+----
+![alt text](../../images/emergency_contact_profile.png "Update Profile")
