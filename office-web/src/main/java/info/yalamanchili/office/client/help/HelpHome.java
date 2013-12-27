@@ -83,6 +83,7 @@ public class HelpHome extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         panel.add(portalDocumentationSite);
+        panel.add(fullVideoL);
         panel.add(rolesVideoL);
         panel.add(myofficeVideoL);
         panel.add(adminVideoL);
