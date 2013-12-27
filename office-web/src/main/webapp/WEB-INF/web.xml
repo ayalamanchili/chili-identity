@@ -36,6 +36,18 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/office/rpc/*</url-pattern>
     </servlet-mapping>
+    
+    <!--Cache control filter-->
+    <filter>
+        <filter-name>gwtCacheControlFilter</filter-name>
+        <filter-class>info.chili.gwt.server.filter.GWTCacheControlFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>gwtCacheControlFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+   
         
     <!-- Image/File Upload -->
     <servlet>
