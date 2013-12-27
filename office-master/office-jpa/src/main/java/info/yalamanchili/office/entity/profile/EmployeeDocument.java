@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -35,6 +36,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class EmployeeDocument extends AbstractEntity {
 
     /*DocumentType */
+    @NotNull(message = "{documentType.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     protected DocumentType documentType;
     /*fileurl*/
