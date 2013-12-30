@@ -1,7 +1,7 @@
 Account Reset Email Notification
 =========
 
-![alt text](../images/account-reset -process-profile.png "Account Reset")
+![alt text](../images/account-reset-process-profile.png "Account Reset")
 
 - Please make sure you try forgot password before you submit account reset request
     - in login page we have account reset details
