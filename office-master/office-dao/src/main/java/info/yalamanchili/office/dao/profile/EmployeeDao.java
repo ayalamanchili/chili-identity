@@ -27,6 +27,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
@@ -102,6 +103,12 @@ public class EmployeeDao extends CRUDDao<Employee> {
 
     public Map<String, String> getCorpEntityStringMapByParams(int start, int limit, String... params) {
         return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name='Corporate Employee'", start, limit, params);
+    }
+
+    public List<Employee> getEmployeesByType(String type) {
+        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:employeeTypeParam", Employee.class);
+        query.setParameter("employeeTypeParam", type);
+        return query.getResultList();
     }
 
     public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String role) {

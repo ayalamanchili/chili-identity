@@ -12,6 +12,7 @@ import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
@@ -35,6 +37,9 @@ import org.hibernate.search.annotations.Field;
 @Audited
 public class CorporateTimeSheet extends AbstractEntity implements Serializable {
 
+    @NotNull(message = "{hours.not.empty.msg}")
+    @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
+    protected BigDecimal hours;
     /**
      * Employee
      */
@@ -75,6 +80,17 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      */
     @Lob
     protected String notes;
+
+    public CorporateTimeSheet() {
+    }
+
+    public BigDecimal getHours() {
+        return hours;
+    }
+
+    public void setHours(BigDecimal hours) {
+        this.hours = hours;
+    }
 
     public Employee getEmployee() {
         return employee;

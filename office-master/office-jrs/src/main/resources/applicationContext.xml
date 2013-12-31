@@ -22,7 +22,7 @@
 
     <context:annotation-config />
     <context:component-scan base-package="info.chili, info.yalamanchili.office" />
-    <!-- for Async support-->
+    <!-- for Async and Scheduling support-->
     <task:annotation-driven/>
   
     <bean id="mapper" class="org.dozer.DozerBeanMapper"/>

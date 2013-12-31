@@ -9,8 +9,12 @@ package info.yalamanchili.office.Time;
 
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.EntityManager;
@@ -43,11 +47,19 @@ public class TimeJobService {
      * This will create yearly sick,vacation and personal days for corp
      * employees
      */
-    public void processYearlyLeaves() {
-
+    public void processYearlyEarnedTimeSheets() {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+            if (hasMoreThanOneYearService(emp)) {
+                //TODO create 4 sick(Sick_Earned)*dao , 4 personl(Personal_Earned), and 10 vacation(Vacation_Earned) days 
+                //TODO externalize values of days/hours
+                //4 days(32 hours) Vacation earned
+                CorporateTimeSheetDao.instance().createTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
+            }
+        }
     }
 
     protected boolean hasMoreThanOneYearService(Employee emp) {
+        //TODO possible bug for leap year???
         if (DateUtils.getNextYear(emp.getStartDate(), 1).before(new Date())) {
             return true;
         } else {
