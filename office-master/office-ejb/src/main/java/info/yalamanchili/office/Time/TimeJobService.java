@@ -53,7 +53,7 @@ public class TimeJobService {
                 //TODO create 4 sick(Sick_Earned)*dao , 4 personl(Personal_Earned), and 10 vacation(Vacation_Earned) days 
                 //TODO externalize values of days/hours
                 //4 days(32 hours) Vacation earned
-                CorporateTimeSheetDao.instance().createTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
             }
         }
     }

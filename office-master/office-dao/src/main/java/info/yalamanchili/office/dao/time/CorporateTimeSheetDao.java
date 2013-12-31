@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.dao.time;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -31,9 +33,9 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     public CorporateTimeSheetDao() {
         super(CorporateTimeSheet.class);
     }
-    
+
 //TODO make this safe operation when run multiple times
-    public void createTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
+    public void saveTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
         ts.setCategory(category);
@@ -41,6 +43,27 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         ts.setStartDate(startDate);
         ts.setEndDate(endDate);
         super.save(ts);
+    }
+
+    public CorporateTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where");
+        queryStr.append(" category=:categoryParam");
+        queryStr.append(" and startDate=:startDateParam");
+        queryStr.append(" and endDate=:endDateParam");
+        queryStr.append(" and hours=:hoursParam");
+        queryStr.append(" and employee=:empParam");
+        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery(queryStr.toString(), CorporateTimeSheet.class);
+        query.setParameter("categoryParam", category);
+        query.setParameter("startDateParam", startDate);
+        query.setParameter("endDateParam", endDate);
+        query.setParameter("hours", hours);
+        query.setParameter("empParam", emp);
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
     }
 
     @PersistenceContext
