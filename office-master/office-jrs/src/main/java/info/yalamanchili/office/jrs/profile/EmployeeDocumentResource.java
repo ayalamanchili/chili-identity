@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,9 +47,17 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
     @PUT
     @Path("/{empId}")
     @Produces("application/text")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME')")
     public String createEmployeeDocument(@PathParam("empId") Long empId, EmployeeDocument doc) {
         doc.setEmployee(EmployeeDao.instance().findById(empId));
         return employeeDocumentDao.save(doc).getId().toString();
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME')")
+    public void delete(@PathParam("id") Long id) {
+        super.delete(id);
     }
 
     @GET

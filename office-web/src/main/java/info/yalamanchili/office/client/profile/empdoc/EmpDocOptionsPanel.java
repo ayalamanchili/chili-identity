@@ -21,8 +21,9 @@ import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
  *
  * @author raghu.l
  */
-public class EmpDocOptionsPanel extends ALComposite implements ClickHandler  {
-       protected HorizontalPanel panel = new HorizontalPanel();
+public class EmpDocOptionsPanel extends ALComposite implements ClickHandler {
+
+    protected HorizontalPanel panel = new HorizontalPanel();
 
     protected ClickableLink addDocumentLink = new ClickableLink("Add Document");
 
@@ -44,13 +45,13 @@ public class EmpDocOptionsPanel extends ALComposite implements ClickHandler  {
 
     @Override
     protected void addWidgets() {
-         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_HR,ROLE.ROLE_TIME)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP)) {
             panel.add(addDocumentLink);
         }
 
     }
 
-  @Override
+    @Override
     public void onClick(ClickEvent arg0) {
         if (arg0.getSource().equals(addDocumentLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
