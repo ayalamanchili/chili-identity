@@ -121,15 +121,17 @@ public class Employee extends Contact {
     @OneToOne(cascade = CascadeType.REMOVE)
     @ForeignKey(name = "FK_Employee_CUser")
     protected CUser user;
+    //TODO make this one way from timesheet remove ref here
     /**
      * timesheets
      */
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<TimeSheet> timeSheets;
-    @OneToOne(cascade = CascadeType.ALL)
+    
     /**
      * preferences
      */
+    @OneToOne(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_Preferences_Employee")
     protected Preferences preferences;
     /**

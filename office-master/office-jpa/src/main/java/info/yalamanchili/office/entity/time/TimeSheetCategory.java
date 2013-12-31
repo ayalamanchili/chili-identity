@@ -13,5 +13,12 @@ package info.yalamanchili.office.entity.time;
  */
 public enum TimeSheetCategory {
 
-    Regular, Vacation, UnPaid, Sick
+    Regular,
+    Vacation_Earned,
+    Vacation_Spent,
+    Personal_Earned,
+    Personal_Spent,
+    Unpaid,
+    Sick_Earned,
+    Sick_Spent
 }

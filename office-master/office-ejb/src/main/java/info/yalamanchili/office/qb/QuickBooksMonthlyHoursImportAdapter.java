@@ -9,6 +9,7 @@ package info.yalamanchili.office.qb;
 
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
@@ -113,7 +114,7 @@ public class QuickBooksMonthlyHoursImportAdapter {
             int yearStart = monthStart + 3;
             Integer month = new Integer(url.substring(monthStart, monthStart + 2));
             Integer year = new Integer(url.substring(yearStart, yearStart + 4));
-            return TimeJobService.instance().getTimePeriod(year, month - 1);
+            return TimeSheetPeriodDao.instance().getTimePeriod(year, month - 1);
         } catch (Exception e) {
             BulkImportMessage msg = new BulkImportMessage();
             msg.setCode("invalid.timeperiod");
