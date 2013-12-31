@@ -31,7 +31,8 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     public CorporateTimeSheetDao() {
         super(CorporateTimeSheet.class);
     }
-
+    
+//TODO make this safe operation when run multiple times
     public void createTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);

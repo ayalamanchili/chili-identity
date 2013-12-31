@@ -40,7 +40,7 @@ public class OfficeSchedulerService {
      * runs jan 1 at 2'0 clock every year to accumulate yearly earned sick,
      * personal and vacation days
      */
-    @Scheduled(cron = "0 2 1 1 *")
+    @Scheduled(cron = "0 2 1 1 * *")
     public void runYearlyEarnedTimeSheets() {
         TimeJobService.instance().processYearlyEarnedTimeSheets();
     }
