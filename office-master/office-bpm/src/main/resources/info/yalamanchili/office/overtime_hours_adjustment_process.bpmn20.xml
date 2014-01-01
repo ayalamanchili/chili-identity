@@ -36,10 +36,10 @@
         <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overtimePayRequestEmailNotification" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
         
         <userTask id="overTimeHoursAdjustmentHoursApprovalTask" 
-                  name="Overtime Pay Rquest by: ${currentEmployee.firstName} ${currentEmployee.lastName} for: ${requestHours} hours" 
+                  name="Overtime Pay Rquest by: ${currentEmployee.firstName} ${currentEmployee.lastName} For: ${requestHours} Hours" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
             <documentation>
-                Overtime Hours Pay request by Employee
+                Overtime Hours Pay Request by Employee
             </documentation>
             <extensionElements>
                 <activiti:formProperty id="status" 
