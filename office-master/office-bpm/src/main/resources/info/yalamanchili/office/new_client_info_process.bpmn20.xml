@@ -15,7 +15,7 @@
         <sequenceFlow id="newClientInfoProcessStartToAccountTask" sourceRef="newClientInfoProcessStart" targetRef="newClientInfoAccountTask" />
         <!--submit User task-->
         <userTask id="newClientInfoAccountTask" 
-                  name="new Client Info Accounting Department Task" 
+                  name="New Client Info Accounting Department Task" 
                   activiti:candidateGroups="ROLE_EXPENSE">
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
@@ -56,7 +56,7 @@
         <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoAccountSubmit" targetRef="newClientInfoHRTask" />
         <!--submit User task-->
         <userTask id="newClientInfoHRTask" 
-                  name="new Client Info HR Department Task" 
+                  name="New Client Info HR Department Task" 
                   activiti:candidateGroups="ROLE_HR">
             <documentation>
                 New Client Information has been created with following details. Please fill the fields below to complete the task.
@@ -104,7 +104,7 @@
         <!--BulkImport Submit Service Task-->
         <serviceTask
             id="newClientInfoHRSubmit"
-            name="new Client Information HR Department Submit"
+            name="New Client Information HR Department Submit"
             activiti:class="info.yalamanchili.office.client.NewClientInfoHRSubmit">
         </serviceTask>
         <sequenceFlow id="newClientInfoHRSubmitToEnd" sourceRef="newClientInfoHRSubmit" targetRef="newClientInfoProcessEnd"/> 

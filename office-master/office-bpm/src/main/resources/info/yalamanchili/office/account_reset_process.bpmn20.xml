@@ -15,10 +15,10 @@
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="accountResetStart" targetRef="accountResetApprovalTask" />
         <userTask id="accountResetApprovalTask" 
-                  name="Account reset Task" 
+                  name="Account Reset Task" 
                   activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_ADMIN,ROLE_HR">
             <documentation>
-                Account reset Task for
+                Account Reset Task for
                 FirstName= ${account.firstName} 
                 LastName= ${account.lastName} 
                 Email= ${account.email} 

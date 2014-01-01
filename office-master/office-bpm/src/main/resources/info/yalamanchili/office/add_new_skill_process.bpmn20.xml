@@ -32,7 +32,7 @@ and open the template in the editor.
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="addNewSkillStart" targetRef="addNewSkillTask" />
         <userTask id="addNewSkillTask" 
-                  name="Add new Skill request" 
+                  name="Add New Skill Request" 
                   activiti:candidateGroups="ROLE_RECRUITER,ROLE_ADMIN">
             <documentation>
                 Add Skill Information:

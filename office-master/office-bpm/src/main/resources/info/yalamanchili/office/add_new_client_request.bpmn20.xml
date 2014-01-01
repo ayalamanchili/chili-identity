@@ -45,7 +45,7 @@
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="addNewClientStart" targetRef="addNewClientTask" />
         <userTask id="addNewClientTask" 
-                  name="Add new Client request" 
+                  name="Add New Client Request" 
                   activiti:candidateGroups="ROLE_TIME,ROLE_ADMIN">
             <documentation>
                 Add Client Information:

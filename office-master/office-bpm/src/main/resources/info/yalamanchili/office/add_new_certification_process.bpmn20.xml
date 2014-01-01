@@ -25,7 +25,7 @@
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="addNewCertificationStart" targetRef="addNewCertificationTask" />
         <userTask id="addNewCertificationTask" 
-                  name="Add new Certification request" 
+                  name="Add New Certification Request" 
                   activiti:candidateGroups="ROLE_RECRUITER,ROLE_ADMIN">
             <documentation>
                 Add Certification Information:

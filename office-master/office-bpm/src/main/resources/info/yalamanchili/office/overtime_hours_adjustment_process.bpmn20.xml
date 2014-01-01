@@ -30,7 +30,7 @@
         <!--overtime request submit eamil notification-->
         <serviceTask
             id="overtimePayRequestEmailNotification"
-            name="Overtime Pay request submited notification"
+            name="Overtime Pay Request Submited Notification"
             activiti:expression="${timeNotificationService.sendOvertimeRequestSubmitedNotification(currentEmployee)}">
         </serviceTask>
         <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overtimePayRequestEmailNotification" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
@@ -92,13 +92,13 @@
         <!-- request approved email-->
         <serviceTask
             id="overtimePayRequestApprovedNotification"
-            name="Overtime Pay request Approved notification"
+            name="Overtime Pay Request Approved Notification"
             activiti:expression="${timeNotificationService.sendOvertimeRequestApprovedNotification(currentEmployee,reason)}">
         </serviceTask>
         <!-- request denied email-->
         <serviceTask
             id="overtimePayRequestDeniedNotification"
-            name="Overtime Pay request Denied notification"
+            name="Overtime Pay Request Denied Notification"
             activiti:expression="${timeNotificationService.sendOvertimeRequestDeniedNotification(currentEmployee,reason)}">
         </serviceTask>
         <sequenceFlow id="overTimeHoursAdjustmentHoursFlow4" sourceRef="approvalGateway" targetRef="overTimeHoursAdjustmentHoursEnd" />
