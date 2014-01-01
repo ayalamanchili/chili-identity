@@ -47,11 +47,11 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     private static Logger logger = Logger.getLogger(TabPanel.class.getName());
     protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
     public EntityLayout homePanel = new EntityLayout();
-    public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
     public EntityLayout timePanel = new EntityLayout();
     public EntityLayout expensePanel = new EntityLayout();
     public EntityLayout drivePanel = new EntityLayout();
+    public EntityLayout socialPanel = new EntityLayout();
     public EntityLayout profilePanel = new EntityLayout();
     public EntityLayout adminPanel = new EntityLayout();
     public EntityLayout reportingPanel = new EntityLayout();
@@ -62,14 +62,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         initWidget(tabPanel);
         tabPanel.addStyleName("tabPanel");
         tabPanel.add(homePanel, "Home", false);
-        tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(myOfficePanel, "My Office", false);
-        tabPanel.add(timePanel, "Time", false);
+//        tabPanel.add(timePanel, "Time", false);
         //TODO under construction
 //        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
 //            tabPanel.add(expensePanel, "Expense", false);
 //        }
         tabPanel.add(drivePanel, "Drive", false);
+        tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(profilePanel, "Profile", false);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE)) {
             tabPanel.add(adminPanel, "Admin", false);
@@ -79,7 +79,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
-        tabPanel.selectTab(2);
+        tabPanel.selectTab(1);
     }
 
     @Override
