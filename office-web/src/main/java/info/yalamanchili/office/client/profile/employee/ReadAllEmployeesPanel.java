@@ -53,12 +53,12 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         // TODO externalize the limit size for read all
         HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
 
     }
 
@@ -76,11 +76,11 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("First Name"));
         table.setText(0, 2, getKeyValue("Last Name"));
-        table.setText(0, 3, getKeyValue("Emp Id"));
-        table.setText(0, 4, getKeyValue("Email"));
-        table.setText(0, 5, getKeyValue("Phone"));
+//        table.setText(0, 3, getKeyValue("Emp Id"));
+        table.setText(0, 3, getKeyValue("Email"));
+        table.setText(0, 4, getKeyValue("Phone"));
+        table.setText(0, 5, getKeyValue("Job Title"));
         table.setText(0, 6, getKeyValue("Image"));
-        table.setText(0, 7, getKeyValue("Job Title"));
 
     }
 
@@ -91,12 +91,13 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
-            table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
-            table.setText(i, 4, JSONUtils.toString(entity, "email"));
-            table.setText(i, 5, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
-            table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
-            table.setText(i, 7, JSONUtils.toString(entity, "jobTitle"));
+//            table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
+            table.setText(i, 3, JSONUtils.toString(entity, "email"));
+            table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
+            table.setText(i, 5, JSONUtils.toString(entity, "jobTitle"));
 //            table.setText(i, 9, entity.get("employeeType"), "name");
+            table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
+
         }
     }
 
@@ -124,11 +125,11 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Employee details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postDeleteSuccess();
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postDeleteSuccess();
+                }
+            });
         }
     }
 
