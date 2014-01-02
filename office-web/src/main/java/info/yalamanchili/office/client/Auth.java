@@ -10,7 +10,7 @@ public class Auth {
 
     public enum ROLE {
 
-        ROLE_USER, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME, ROLE_RELATIONSHIP,ROLE_ACCOUNT_VIEW
+        ROLE_USER, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME, ROLE_RELATIONSHIP, ROLE_ACCOUNT_VIEW
     }
 
     public static boolean isAdmin() {
@@ -103,5 +103,15 @@ public class Auth {
             return true;
         }
         return false;
+    }
+
+    public static String[] getAllRoles() {
+        String[] roles = new String[ROLE.values().length];
+        int i = 0;
+        for (ROLE role : ROLE.values()) {
+            roles[i] = role.name();
+            i++;
+        }
+        return roles;
     }
 }

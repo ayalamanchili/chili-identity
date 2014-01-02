@@ -55,6 +55,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("employeeId", DataType.STRING_FIELD);
         String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099"};
         addEnumField("employeeType", false, false, employeeTypeStrs);
+        addEnumField("role", false, false, Auth.getAllRoles());
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
         addDropDown("addressType", addressTypeWidget);
@@ -76,6 +77,16 @@ public class SearchEmployeePanel extends SearchComposite {
         assignEntityValueFromField("employeeType", employeeType, "name");
         if (employeeType.size() > 0) {
             entity.put("employeeType", employeeType);
+        }
+        //roles
+        JSONObject user = new JSONObject();
+        JSONArray roles = new JSONArray();
+        JSONObject role = new JSONObject();
+        assignEntityValueFromField("role", role, "rolename");
+        if (role.size() > 0) {
+            roles.set(0, role);
+            user.put("roles", roles);
+            entity.put("user", user);
         }
         //populate address for search
         JSONArray addresses = new JSONArray();
