@@ -101,6 +101,14 @@ public class SecurityService {
         return roles;
     }
 
+    public List<Employee> getUsersWithRoles(int start, int limit, String role) {
+        CRole crole = QueryUtils.findEntity(em, CRole.class, "rolename", role);
+        Query query = em.createNativeQuery("SELECT * from CONTACT emp INNER JOIN CUSER cuser ON cuser.userId=emp.user_userId INNER JOIN USERROLES userRoles ON userRoles.UserId=cuser.userId where userRoles.RoleId=" + crole.getRoleId(), Employee.class);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
     public static SecurityService instance() {
         return SpringContext.getBean(SecurityService.class);
     }

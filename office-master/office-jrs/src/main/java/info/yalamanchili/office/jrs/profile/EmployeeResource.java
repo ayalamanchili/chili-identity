@@ -25,6 +25,7 @@ import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
@@ -377,9 +378,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
-        List<Employee> result = null;;
+        List<Employee> result = null;
         if (entity.getCompanyContacts().size() > 0 && entity.getCompanyContacts().get(0).getContact() != null) {
             result = employeeDao.searchByCompanyContact(entity.getCompanyContacts().get(0).getContact(), start, limit);
+        } else if (entity.getUser() != null && entity.getUser().getRoles().size() > 0) {
+            result = SecurityService.instance().getUsersWithRoles(start, limit, entity.getUser().getRoles().iterator().next().getRolename());
         } else {
             result = getDao().search(mapper.map(entity, Employee.class), start, limit);
         }

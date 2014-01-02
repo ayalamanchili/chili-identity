@@ -25,7 +25,6 @@ import info.chili.gwt.rpc.HttpService;
 public class ResetPasswordPanel extends CreateComposite {
 
     public ResetPasswordPanel(CreateCompositeType type) {
-
         super(type);
         initCreateComposite("ResetPassword", OfficeWelcome.constants);
         create.setText("Reset Password");
