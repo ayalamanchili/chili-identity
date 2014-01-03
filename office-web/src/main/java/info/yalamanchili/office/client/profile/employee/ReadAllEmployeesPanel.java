@@ -59,7 +59,6 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
                 postFetchTable(result);
             }
         });
-
     }
 
     public String getReadAllEmployeesURL(Integer start, String limit) {
@@ -76,12 +75,10 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("First Name"));
         table.setText(0, 2, getKeyValue("Last Name"));
-//        table.setText(0, 3, getKeyValue("Emp Id"));
         table.setText(0, 3, getKeyValue("Email"));
         table.setText(0, 4, getKeyValue("Phone"));
         table.setText(0, 5, getKeyValue("Job Title"));
         table.setText(0, 6, getKeyValue("Image"));
-
     }
 
     @Override
@@ -91,13 +88,10 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
-//            table.setText(i, 3, JSONUtils.toString(entity, "employeeId"));
             table.setText(i, 3, JSONUtils.toString(entity, "email"));
             table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
             table.setText(i, 5, JSONUtils.toString(entity, "jobTitle"));
-//            table.setText(i, 9, entity.get("employeeType"), "name");
             table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
-
         }
     }
 
