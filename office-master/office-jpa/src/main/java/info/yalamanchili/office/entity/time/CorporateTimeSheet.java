@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -35,6 +36,7 @@ import org.hibernate.search.annotations.Field;
 @XmlType
 @Entity
 @Audited
+@XmlRootElement
 public class CorporateTimeSheet extends AbstractEntity implements Serializable {
 
     @NotNull(message = "{hours.not.empty.msg}")

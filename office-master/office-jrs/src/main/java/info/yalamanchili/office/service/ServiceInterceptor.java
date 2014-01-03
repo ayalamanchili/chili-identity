@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-@Scope("request")
+@Scope("prototype")
 //have to specify the order so that this is run before the transaction advice runs to handle all possible exceptions
 @Order(100)
 public class ServiceInterceptor {

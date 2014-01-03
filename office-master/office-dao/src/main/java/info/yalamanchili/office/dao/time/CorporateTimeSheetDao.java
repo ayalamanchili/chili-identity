@@ -58,7 +58,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         query.setParameter("categoryParam", category);
         query.setParameter("startDateParam", startDate, TemporalType.DATE);
         query.setParameter("endDateParam", endDate, TemporalType.DATE);
-        query.setParameter("hours", hours);
+        query.setParameter("hoursParam", hours);
         query.setParameter("empParam", emp);
         if (query.getResultList().size() > 0) {
             return query.getResultList().get(0);
