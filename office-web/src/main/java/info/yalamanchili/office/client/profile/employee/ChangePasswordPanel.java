@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.PasswordField;
@@ -37,7 +38,6 @@ public class ChangePasswordPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject chgpassword = new JSONObject();
-        // assignEntityValueFromField("userName", chgpassword);
         assignEntityValueFromField("oldPassword", chgpassword);
         assignEntityValueFromField("newPassword", chgpassword);
         chgpassword.put("userName", new JSONString("dummy"));
@@ -46,31 +46,33 @@ public class ChangePasswordPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
+            @Override
+            public void onSuccess(String userString) {
+                if (userString != null && userString.trim().length() > 0) {
+                    new ResponseStatusWidget().show("Change Password Successful");
+                } else {
+                    new ResponseStatusWidget().show("Change Password Failed");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
         PasswordField newpassword = (PasswordField) fields.get("newPassword");
-
         PasswordField confirmpassword = (PasswordField) fields.get("confirmPassword");
-
-        if (newpassword.getPassword().equals(confirmpassword.getPassword())) {
-            HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String userString) {
-                            if (userString != null && userString.trim().length() > 0) {
-
-                                GenericPopup.instance().hide();
-                                JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
-                                new ResponseStatusWidget().show("Change Password Successful");
-                                Window.Location.reload();
-                            } else {
-                                new ResponseStatusWidget().show("Change Password Failed");
-                            }
-
-                        }
-                    });
-        } else {
+        if (!newpassword.getPassword().equals(confirmpassword.getPassword())) {
             new ResponseStatusWidget().show("New password and Confirm Password are not same");
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -91,7 +93,6 @@ public class ChangePasswordPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-//        addField("userName", false, true, DataType.STRING_FIELD);
         addField("oldPassword", false, true, DataType.PASSWORD_FIELD);
         addField("newPassword", false, true, DataType.PASSWORD_FIELD);
         addField("confirmPassword", false, true, DataType.PASSWORD_FIELD);
