@@ -88,7 +88,6 @@ public class SocialResource {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_RECRUITER')")
     public Post createCompanyPost(Post companypost) {
         companypost = socialDao.createCompanyPost(companypost);
-//        socialnotificationservice.sendNewCompanyPostNotification(companypost);
         return companypost;
     }
 
