@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -33,15 +34,16 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         super(CorporateTimeSheet.class);
     }
 
-//TODO make this safe operation when run multiple times
     public void saveTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
-        CorporateTimeSheet ts = new CorporateTimeSheet();
-        ts.setEmployee(emp);
-        ts.setCategory(category);
-        ts.setHours(hours);
-        ts.setStartDate(startDate);
-        ts.setEndDate(endDate);
-        super.save(ts);
+        if (findTimeSheet(emp, category, hours, startDate, endDate) == null) {
+            CorporateTimeSheet ts = new CorporateTimeSheet();
+            ts.setEmployee(emp);
+            ts.setCategory(category);
+            ts.setHours(hours);
+            ts.setStartDate(startDate);
+            ts.setEndDate(endDate);
+            super.save(ts);
+        }
     }
 
     public CorporateTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
@@ -54,8 +56,8 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         queryStr.append(" and employee=:empParam");
         TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery(queryStr.toString(), CorporateTimeSheet.class);
         query.setParameter("categoryParam", category);
-        query.setParameter("startDateParam", startDate);
-        query.setParameter("endDateParam", endDate);
+        query.setParameter("startDateParam", startDate, TemporalType.DATE);
+        query.setParameter("endDateParam", endDate, TemporalType.DATE);
         query.setParameter("hours", hours);
         query.setParameter("empParam", emp);
         if (query.getResultList().size() > 0) {
