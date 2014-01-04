@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class OfficeSchedulerService {
-
+    
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public EntityManager em;
     @Autowired
@@ -40,11 +40,11 @@ public class OfficeSchedulerService {
      * runs jan 1 at 2'0 clock every year to accumulate yearly earned sick,
      * personal and vacation days
      */
-//   @Scheduled(fixedRate=5000)
+    @Scheduled(cron = "0 0 2 1 1 *")
     public void runYearlyEarnedTimeSheets() {
         TimeJobService.instance().processYearlyEarnedTimeSheets();
     }
-
+    
     @Scheduled(cron = "0 5 1 * * ?")
     public void birthdayNotification() {
         System.out.println("----------------RUNNING BIRTHDAY NOTIFICATION---------------");
@@ -52,11 +52,11 @@ public class OfficeSchedulerService {
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
         monthb = monthb + 1;
         System.out.println("month :" + monthb);
-
+        
         javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  day(dateOfBirth)=:date1 and month(dateOfBirth)=:month1 ");
         findUserQuery.setParameter("date1", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         findUserQuery.setParameter("month1", monthb);
-
+        
         List lstResult = findUserQuery.getResultList();
         Iterator itr = lstResult.iterator();
         while (itr.hasNext()) {
