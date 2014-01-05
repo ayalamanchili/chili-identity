@@ -42,7 +42,7 @@ public class BulkImportSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isPayroll()) {
+        if (Auth.isAdmin() || Auth.hasContractsRole()) {
             panel.add(createBulkImportL);
         }
     }

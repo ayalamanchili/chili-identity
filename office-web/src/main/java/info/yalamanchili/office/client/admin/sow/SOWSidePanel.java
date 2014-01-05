@@ -42,7 +42,7 @@ public class SOWSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isHR() || Auth.isPayroll()) {
+        if (Auth.isAdmin() || Auth.isHR() || Auth.hasContractsRole()) {
             sowsidepanel.add(createsowlink);
         }
     }

@@ -64,7 +64,7 @@ public class TimeSheetSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isPayroll()) {
+        if (Auth.isAdmin() || Auth.hasContractsRole()) {
             timeSheetsidepanel.add(createtimeSheetlink);
             //payperiod
             timesheetsForPeriodPanel.add(timePeriodWidget);

@@ -5,18 +5,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.tae;
+package info.yalamanchili.office.client.tae.timesheet;
 
+import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
+import info.yalamanchili.office.client.time.corp.CorporateTimeSidePanel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.tae.bonuspayment.AdjustmentHoursSidePanel;
 import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPanel;
-import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
-import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
-import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
+import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
 
@@ -24,24 +25,45 @@ import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPerio
  *
  * @author ayalamanchili
  */
-public class TAEMenu extends Composite {
+public class TimeMenu extends Composite {
 
     MenuBar tAEMenuBar = new MenuBar(false);
 
-    public TAEMenu() {
+    public TimeMenu() {
         initWidget(tAEMenuBar);
         configureTAEMenu();
     }
 
     protected void configureTAEMenu() {
-        if (Auth.isAdmin() || Auth.isPayroll()) {
-            tAEMenuBar.addItem("Time Sheets", timeSheetsMaintainenceCmd);
-            tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
-            tAEMenuBar.addItem("Adjustment Hours", bonusPaymentsMaintainenceCmd);
+        tAEMenuBar.addItem("Summary", summaryMaintainenceCmd);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_EXPENSE)) {
+            tAEMenuBar.addItem("Corporate Time", corpTimeMaintainenceCmd);
+//            tAEMenuBar.addItem("Time Sheets", timeSheetsMaintainenceCmd);
+//            tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
+//            tAEMenuBar.addItem("Adjustment Hours", bonusPaymentsMaintainenceCmd);
         }
         tAEMenuBar.addStyleName("entityMenuBar");
     }
+    Command summaryMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSidePanel());
+            TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
+        }
+    };
+    Command corpTimeMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSidePanel());
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+        }
+    };
     Command timeSheetPeriodsMaintainenceCmd = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
@@ -54,6 +76,7 @@ public class TAEMenu extends Composite {
         }
     };
     Command timeSheetsMaintainenceCmd = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
@@ -66,6 +89,7 @@ public class TAEMenu extends Composite {
         }
     };
     Command bonusPaymentsMaintainenceCmd = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();

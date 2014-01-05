@@ -13,7 +13,6 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
-import info.yalamanchili.office.client.profile.email.ReadEmailPanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -21,14 +20,13 @@ import java.util.logging.Logger;
  *
  * @author anuyalamanchili
  */
-//TODO convert to extends readcomposite
 public class EmployeeTimeSummaryPanel extends ReadComposite {
 
     protected String employeeId;
-    private static ReadEmailPanel instance;
+    private static EmployeeTimeSummaryPanel instance;
     private static Logger logger = Logger.getLogger(EmployeeTimeSummaryPanel.class.getName());
 
-    public static ReadEmailPanel instance() {
+    public static EmployeeTimeSummaryPanel instance() {
         return instance;
     }
 

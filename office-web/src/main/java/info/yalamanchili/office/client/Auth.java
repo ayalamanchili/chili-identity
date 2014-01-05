@@ -46,7 +46,7 @@ public class Auth {
         }
     }
 
-    public static boolean isPayroll() {
+    public static boolean hasContractsRole() {
         if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_TIME.name())) {
             return true;
         } else {
@@ -83,6 +83,14 @@ public class Auth {
 
     public static boolean isCorporateEmployee() {
         if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Corporate Employee")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isConsultantEmployee() {
+        if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Employee")) {
             return true;
         } else {
             return false;

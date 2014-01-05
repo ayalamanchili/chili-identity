@@ -26,7 +26,7 @@ import info.yalamanchili.office.client.help.HelpHome;
 import info.yalamanchili.office.client.home.HomeStackPanel;
 import info.yalamanchili.office.client.social.SocialMenu;
 import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
-import info.yalamanchili.office.client.tae.TAEMenu;
+import info.yalamanchili.office.client.tae.timesheet.TimeMenu;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
 import info.yalamanchili.office.client.contracts.ContractsSidePanel;
@@ -38,9 +38,7 @@ import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.message.MyMessagesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.reporting.ReportsMenu;
-import info.yalamanchili.office.client.tae.timesheet.CurrentEmployeeTimeSummaryPanel;
-import info.yalamanchili.office.client.tae.timesheet.ReadAllTimesheetPanel;
-import info.yalamanchili.office.client.tae.timesheet.TimeSheetSidePanel;
+import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
@@ -63,7 +61,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.addStyleName("tabPanel");
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(myOfficePanel, "My Office", false);
-//        tabPanel.add(timePanel, "Time", false);
+        if (Auth.isCorporateEmployee()) {
+            tabPanel.add(timePanel, "Time", false);
+        }
         //TODO under construction
 //        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
 //            tabPanel.add(expensePanel, "Expense", false);
@@ -193,13 +193,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectTimeTab() {
         timePanel.entityPanel.clear();
         timePanel.sidePanelTop.clear();
-        timePanel.entityTitlePanel.add(new TAEMenu());
-        if (Auth.hasOnlyUserRole()) {
-            timePanel.entityPanel.add(new CurrentEmployeeTimeSummaryPanel());
-        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_TIME)) {
-            timePanel.entityPanel.add(new ReadAllTimesheetPanel());
-            timePanel.sidePanelTop.add(new TimeSheetSidePanel());
-        }
+        timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
+        timePanel.entityTitlePanel.add(new TimeMenu());
     }
 
     public void selectExpenseTab() {

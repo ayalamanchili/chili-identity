@@ -42,7 +42,7 @@ public class AdjustmentHoursSidePanel extends ALComposite implements ClickHandle
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isPayroll()) {
+        if (Auth.isAdmin() || Auth.hasContractsRole()) {
             bonuspaymentsidepanel.add(createbonuspaymentslink);
         }
     }
