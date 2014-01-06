@@ -80,9 +80,9 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
     @Override
     protected String getURI() {
         if (employeeId != null) {
-            return OfficeWelcome.constants.root_url() + "timesheet/corporate-timesummary/" + employeeId;
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet/summary/" + employeeId;
         } else {
-            return OfficeWelcome.constants.root_url() + "timesheet/corporate-timesummary/currentuser";
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet/summary";
         }
     }
 }

@@ -9,7 +9,6 @@
 package info.yalamanchili.office.entity.time;
 
 import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -70,13 +69,14 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      */
     @Enumerated(EnumType.STRING)
     @Field
+    @NotNull
     protected TimeSheetCategory category;
     /**
      * TimeSeet Status
      */
     @Enumerated(EnumType.STRING)
     @Field
-    protected VersionStatus status;
+    protected TimeSheetStatus status;
     /**
      * notes
      */
@@ -126,11 +126,11 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
         this.category = category;
     }
 
-    public VersionStatus getStatus() {
+    public TimeSheetStatus getStatus() {
         return status;
     }
 
-    public void setStatus(VersionStatus status) {
+    public void setStatus(TimeSheetStatus status) {
         this.status = status;
     }
 

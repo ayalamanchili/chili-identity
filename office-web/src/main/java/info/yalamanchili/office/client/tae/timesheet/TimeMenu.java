@@ -38,9 +38,6 @@ public class TimeMenu extends Composite {
         tAEMenuBar.addItem("Summary", summaryMaintainenceCmd);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_EXPENSE)) {
             tAEMenuBar.addItem("Corporate Time", corpTimeMaintainenceCmd);
-//            tAEMenuBar.addItem("Time Sheets", timeSheetsMaintainenceCmd);
-//            tAEMenuBar.addItem("Pay Periods", timeSheetPeriodsMaintainenceCmd);
-//            tAEMenuBar.addItem("Adjustment Hours", bonusPaymentsMaintainenceCmd);
         }
         tAEMenuBar.addStyleName("entityMenuBar");
     }

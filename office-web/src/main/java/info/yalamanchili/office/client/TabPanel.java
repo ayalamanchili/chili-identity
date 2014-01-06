@@ -38,6 +38,7 @@ import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.message.MyMessagesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.reporting.ReportsMenu;
+import info.yalamanchili.office.client.time.corp.CorporateTimeSidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
@@ -193,6 +194,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectTimeTab() {
         timePanel.entityPanel.clear();
         timePanel.sidePanelTop.clear();
+        timePanel.sidePanelTop.add(new CorporateTimeSidePanel());
         timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
         timePanel.entityTitlePanel.add(new TimeMenu());
     }

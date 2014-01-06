@@ -16,7 +16,6 @@ import info.yalamanchili.office.dao.time.TimeSheetDao;
 import info.yalamanchili.office.Time.TimeService;
 import info.yalamanchili.office.bpm.time.BPMTimeService;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
-import info.yalamanchili.office.dto.time.CorporateTimeSummary;
 import info.yalamanchili.office.dto.time.TimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheet;
@@ -53,22 +52,6 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
     @Override
     public CRUDDao getDao() {
         return timeSheetDao;
-    }
-
-    //Corporate Time Management
-    @GET
-    @Path("/corporate-timesummary/currentuser")
-    public CorporateTimeSummary getCorporateTimeSummary() {
-        //TODO implement
-        return new CorporateTimeSummary();
-    }
-
-    @GET
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_HR')")
-    @Path("/corporate-timesummary/{empId}")
-    public CorporateTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
-        //TODO implement
-        return new CorporateTimeSummary();
     }
 
     @GET

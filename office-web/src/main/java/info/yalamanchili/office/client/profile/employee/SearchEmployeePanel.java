@@ -30,23 +30,29 @@ import java.util.logging.Logger;
  * @author yalamanchili
  */
 public class SearchEmployeePanel extends SearchComposite {
-
+    
     private static Logger logger = Logger.getLogger(SearchEmployeePanel.class.getName());
     protected SelectAddressTypeWidget addressTypeWidget = new SelectAddressTypeWidget(false, false);
     protected SelectCorpEmployeeWidget companyContactF = new SelectCorpEmployeeWidget(false, false);
-
+    
     public SearchEmployeePanel() {
         init("Employees Search", "Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
+    @Override
+    protected void onOpenAdvancedSearch() {
+        super.onOpenAdvancedSearch();
+        TabPanel.instance().myOfficePanel.sidePanelTop.setHeight("100%");
+    }
+   
     @Override
     protected void addWidgets() {
         addField("firstName", DataType.STRING_FIELD);
@@ -64,7 +70,7 @@ public class SearchEmployeePanel extends SearchComposite {
         addDropDown("companyContact", companyContactF);
         companyContactF.setLabelText("Company Contact");
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
@@ -128,7 +134,7 @@ public class SearchEmployeePanel extends SearchComposite {
         logger.info(entity.toString());
         return entity;
     }
-
+    
     @Override
     protected void search(String searchText) {
         if (getSearchText() != null) {
@@ -141,7 +147,7 @@ public class SearchEmployeePanel extends SearchComposite {
                     });
         }
     }
-
+    
     @Override
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 200), entity.toString(),
@@ -152,13 +158,13 @@ public class SearchEmployeePanel extends SearchComposite {
                     }
                 });
     }
-
+    
     @Override
     protected void postSearchSuccess(JSONArray results) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel(results));
     }
-
+    
     @Override
     public boolean enableGenerateReport() {
         if (Auth.hasNonUserRoles()) {
@@ -167,19 +173,19 @@ public class SearchEmployeePanel extends SearchComposite {
             return false;
         }
     }
-
+    
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
                 + limit.toString() + "/?text=" + searchText);
     }
-
+    
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
         return OfficeWelcome.constants.root_url() + "employee/searchEmployee/" + start.toString() + "/"
                 + limit.toString();
     }
-
+    
     @Override
     protected void populateSearchSuggestBox() {
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -190,7 +196,7 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-
+    
     @Override
     protected void populateAdvancedSuggestBoxes() {
         HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
@@ -218,19 +224,19 @@ public class SearchEmployeePanel extends SearchComposite {
             }
         });
     }
-
+    
     protected String getFirstNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
     }
-
+    
     protected String getLastNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=lastName";
     }
-
+    
     protected String getEmployeeIdDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=employeeId";
     }
-
+    
     @Override
     protected String getReportURL() {
         return ChiliClientConfig.instance().getFileDownloadUrl() + "employee/search_employee_report" + "&passthrough=true" + "&format=" + getReportFormat();
