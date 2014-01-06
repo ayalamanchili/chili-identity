@@ -48,16 +48,16 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -81,10 +81,12 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", new SelectEmployeeWidget("Employee", false, true));
-        addField("category", false, true, DataType.ENUM_FIELD);
+        String[] categoryStrs = {"PERSONAL_EARNED", "PERSONAL_SPENT", "REGULAR", "SICK_EARNED", "SICK_SPENT", "VACATION_EARNED", "UNPAID", "VACATION_SPENT", "VACATION_CARRYFORWARD"};
+        addEnumField("category", false, true, categoryStrs);
+        String[] statusStrs = {"APPROVED", "PENDING", "SAVED"};
+        addEnumField("status", false, true, statusStrs);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("status", false, true, DataType.FLOAT_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
