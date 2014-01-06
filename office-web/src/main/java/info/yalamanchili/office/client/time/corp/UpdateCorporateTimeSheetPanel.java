@@ -66,7 +66,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
     }
@@ -89,10 +89,12 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", new SelectEmployeeWidget("Employee", true, false));
-        addField("category", true, false, DataType.ENUM_FIELD);
+        String[] categoryStrs = {"PERSONAL_EARNED", "PERSONAL_SPENT", "REGULAR", "SICK_EARNED", "SICK_SPENT", "VACATION_EARNED", "VACATION_SPENT", "UNPAID", "VACATION_CARRYFORWARD"};
+        addEnumField("category", false, true, categoryStrs);
+        String[] statusStrs = {"APPROVED", "PENDING", "SAVED"};
+        addEnumField("status", false, true, statusStrs);
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
-        addField("status", true, false, DataType.STRING_FIELD);
         addField("hours", true, false, DataType.FLOAT_FIELD);
         addField("notes", true, false, DataType.TEXT_AREA_FIELD);
     }
