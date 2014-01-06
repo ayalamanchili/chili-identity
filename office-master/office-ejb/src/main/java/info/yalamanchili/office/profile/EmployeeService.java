@@ -14,6 +14,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.bpm.time.BPMTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
@@ -74,6 +75,7 @@ public class EmployeeService {
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
+           // BPMTimeService.instance().startNewEmpTimeProcess(emp);
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());

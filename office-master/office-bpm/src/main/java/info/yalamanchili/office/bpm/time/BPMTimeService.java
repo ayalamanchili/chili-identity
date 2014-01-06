@@ -7,11 +7,13 @@
  */
 package info.yalamanchili.office.bpm.time;
 
+import info.chili.commons.DateUtils;
 import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,17 @@ public class BPMTimeService {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("bulkImport", bulkImport);
         officeBPMService.startProcess("bulkimport_process", vars);
+    }
+
+    @Async
+    public void startNewEmpTimeProcess(Employee emp) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("employee", emp);
+        System.out.println("ddddddddddddddd" + DateUtils.getNextMonth(emp.getStartDate(), 2));
+        vars.put("twoMonthCompletionDate", DateUtils.getNextMonth(emp.getStartDate(), 2));
+        vars.put("sixMonthCompletionDate", DateUtils.getNextMonth(emp.getStartDate(), 6));
+        vars.put("oneYearCompletionDate", DateUtils.getNextYear(emp.getStartDate(), 1));
+        officeBPMService.startProcess("new_employee_time_process", vars);
     }
 
     public static BPMTimeService instance() {

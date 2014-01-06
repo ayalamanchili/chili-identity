@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="new_employee_time_process">
+        <startEvent id="newEmployeeTimeStart">
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="newEmployeeTimeStart" targetRef="twoMonthCompletionTimer" />
+        <intermediateCatchEvent id="twoMonthCompletionTimer">
+            <timerEventDefinition>
+                <timeDate>${twoMonthCompletionDate}</timeDate>
+            </timerEventDefinition>
+        </intermediateCatchEvent>
+        <sequenceFlow id="flow2" sourceRef="twoMonthCompletionTimer" targetRef="twoMonthCompletionJob" />
+        <serviceTask
+            id="twoMonthCompletionJob"
+            name="New Employee Two Month Completion Job"
+            activiti:class="info.yalamanchili.office.bpm.time.NewEmpTimeCompletionJob">
+        </serviceTask>
+        <sequenceFlow id="flow4" sourceRef="twoMonthCompletionJob" targetRef="newEmployeeTimeEnd" />
+        <!-- end-->
+        <endEvent id="newEmployeeTimeEnd" />
+    </process>
+</definitions>
