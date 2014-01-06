@@ -11,6 +11,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
+import info.yalamanchili.office.entity.privacy.PrivacyMode;
 import info.yalamanchili.office.entity.privacy.PrivacySetting;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
@@ -55,9 +56,28 @@ public class PrivacySettingDao extends CRUDDao<PrivacySetting> {
 
     @Override
     public PrivacySetting save(PrivacySetting privacySetting) {
-        Employee emp = EmployeeDao.instance().findById(privacySetting.getEmployee().getId());
-        privacySetting.setEmployee(emp);
-        return super.save(privacySetting);
+        if (PrivacyData.ALL.equals(privacySetting.getPrivacyData())) {
+            makeAllDataPrivate(privacySetting.getEmployee().getId());
+            return null;
+        } else {
+            Employee emp = EmployeeDao.instance().findById(privacySetting.getEmployee().getId());
+            privacySetting.setEmployee(emp);
+            return super.save(privacySetting);
+        }
+    }
+
+    public void makeAllDataPrivate(Long employeeId) {
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        for (PrivacyData data : PrivacyData.values()) {
+            if (PrivacyData.ALL.equals(data)) {
+                continue;
+            }
+            PrivacySetting ps = new PrivacySetting();
+            ps.setEmployee(emp);
+            ps.setPrivacyData(data);
+            ps.setPrivacyMode(PrivacyMode.PRIVATE);
+            super.save(ps);
+        }
     }
 
     @Override

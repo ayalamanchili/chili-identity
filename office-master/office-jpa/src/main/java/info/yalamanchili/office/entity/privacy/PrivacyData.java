@@ -18,5 +18,6 @@ public enum PrivacyData {
     ADDRESSES,
     EMERGENCY_CONTACTS,
     SKILL_SET,
-    CLIENT_INFORMATION
+    CLIENT_INFORMATION,
+    ALL
 }

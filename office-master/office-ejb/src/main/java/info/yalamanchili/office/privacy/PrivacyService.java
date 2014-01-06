@@ -43,14 +43,11 @@ public class PrivacyService {
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
-        if (employee != null) {
-            PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
-            if (setting != null && !PrivacyMode.PUBLIC.equals(setting.getPrivacyMode())) {
-                if (PrivacyMode.PRIVATE.equals(setting.getPrivacyMode())) {
-                    return canAccessPrivateData(currentUser);
-                }
+        PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
+        if (setting != null && !PrivacyMode.PUBLIC.equals(setting.getPrivacyMode())) {
+            if (PrivacyMode.PRIVATE.equals(setting.getPrivacyMode())) {
+                return canAccessPrivateData(currentUser);
             }
-
         }
         return true;
     }
