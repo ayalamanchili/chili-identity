@@ -72,11 +72,7 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } catch (Exception e) {
-            emailExceptionDetials(e);
-            if (log.isErrorEnabled()) {
-                e.printStackTrace();
-                log.error(e);
-            }
+            logExceptionDetials(e);
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", e.getMessage());
         }
         checkForErrors();
@@ -84,22 +80,19 @@ public class ServiceInterceptor {
     }
 
     /* 
-     * This is for handling exception from non jrs methods like notification package classes which are invoked by bpm.    */
+     * This is for handling exception from non jrs methods like bpm, notification and scheduleing    */
     @AfterThrowing(pointcut = "execution(* info.yalamanchili.office..*.*(..))", throwing = "exception")
     public void catchException(JoinPoint joinPoint, Throwable exception) {
         if (exception instanceof ServiceException) {
             ServiceException se = (ServiceException) exception;
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
-        } else if (exception instanceof ActivitiException && exception.getCause().getCause() instanceof ServiceException) {
-            if (log.isErrorEnabled()) {
-                exception.printStackTrace();
-                log.error(exception);
-            }
-            emailExceptionDetials(exception);
+        } else if (exception instanceof ActivitiException && exception.getCause() != null && exception.getCause().getCause() instanceof ServiceException) {
+            logExceptionDetials(exception);
             ServiceException se = (ServiceException) exception.getCause().getCause();
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
 
         } else {
+            logExceptionDetials(exception);
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
         }
     }
@@ -120,7 +113,11 @@ public class ServiceInterceptor {
         }
     }
 
-    protected void emailExceptionDetials(Throwable e) {
+    protected void logExceptionDetials(Throwable e) {
+        if (log.isErrorEnabled()) {
+            e.printStackTrace();
+            log.error(e);
+        }
         if (!OfficeServiceConfiguration.instance().isEmailExceptionDetials()) {
             return;
         }
