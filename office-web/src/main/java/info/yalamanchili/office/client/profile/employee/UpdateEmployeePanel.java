@@ -122,7 +122,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs, Alignment.HORIZONTAL);
-        addField("startDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
