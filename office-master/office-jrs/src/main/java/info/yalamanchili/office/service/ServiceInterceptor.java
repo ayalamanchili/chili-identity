@@ -81,6 +81,7 @@ public class ServiceInterceptor {
 
     /* 
      * This is for handling exception from non jrs methods like bpm, notification and scheduleing    */
+   
     @AfterThrowing(pointcut = "execution(* info.yalamanchili.office..*.*(..))", throwing = "exception")
     public void catchException(JoinPoint joinPoint, Throwable exception) {
         if (exception instanceof ServiceException) {
@@ -93,10 +94,13 @@ public class ServiceInterceptor {
 
         } else {
             logExceptionDetials(exception);
+             //TODO this is again intercepted by this same service interceptor to convert into 400 error
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
         }
     }
 
+    //TODO should have a catch all exception here?
+    
     protected void validate(Object entity) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
