@@ -8,14 +8,17 @@
 package info.yalamanchili.office.jrs.time;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dto.time.CorporateTimeSummary;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -49,13 +52,23 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         //TODO implement
         return new CorporateTimeSummary();
     }
-
     @Autowired
     public CorporateTimeSheetDao corporateTimeSheetDao;
 
     @Override
     public CRUDDao getDao() {
         return corporateTimeSheetDao;
+    }
+
+    @GET
+    @Path("/employee/{empId}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN''ROLE_TIME')")
+    public CorporateTimeSheetResource.CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
+        CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
+        Employee emp = EmployeeDao.instance().findById(empId);
+        tableObj.setEntities(getDao().query(start, limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
     }
 
     @XmlRootElement
