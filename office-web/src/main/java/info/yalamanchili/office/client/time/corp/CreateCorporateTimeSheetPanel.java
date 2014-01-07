@@ -81,7 +81,7 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", new SelectEmployeeWidget("Employee", false, true));
-        String[] categoryStrs = {"PERSONAL_EARNED", "PERSONAL_SPENT", "REGULAR", "SICK_EARNED", "SICK_SPENT", "VACATION_EARNED", "UNPAID", "VACATION_SPENT", "VACATION_CARRYFORWARD"};
+        String[] categoryStrs = {"REGULAR", "VACATION_EARNED", "VACATION_SPENT", "VACATION_CARRYFORWARD", "PERSONAL_EARNED", "PERSONAL_SPENT", "UNPAID", "SICK_EARNED", "SICK_SPENT"};
         addEnumField("category", false, true, categoryStrs);
         String[] statusStrs = {"APPROVED", "PENDING", "SAVED"};
         addEnumField("status", false, true, statusStrs);
