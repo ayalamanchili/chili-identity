@@ -80,7 +80,7 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("dateOfBirth", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
         String[] strs = {"MALE", "FEMALE"};
         addEnumField("sex", false, true, strs,Alignment.HORIZONTAL);
-        addField("startDate", false, false, DataType.DATE_FIELD,Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD,Alignment.HORIZONTAL);
         addField("passwordHash", false, true, DataType.PASSWORD_FIELD,Alignment.HORIZONTAL);
         addField("jobTitle", false, false, DataType.STRING_FIELD,Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
