@@ -50,8 +50,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-        })
+    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+})
 @Indexed
 @XmlRootElement
 @Entity
@@ -82,6 +82,7 @@ public class Employee extends Contact {
     /**
      * @generated
      */
+    @NotNull(message = "{startDate.not.empty.msg}")
     @Field(index = Index.UN_TOKENIZED)
     @Temporal(TemporalType.DATE)
     protected Date startDate;
@@ -127,7 +128,6 @@ public class Employee extends Contact {
      */
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     protected List<TimeSheet> timeSheets;
-    
     /**
      * preferences
      */
