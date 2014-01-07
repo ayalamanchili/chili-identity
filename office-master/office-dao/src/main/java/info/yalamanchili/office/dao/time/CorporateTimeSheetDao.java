@@ -15,8 +15,10 @@ import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
@@ -65,6 +67,20 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         } else {
             return null;
         }
+    }
+
+    public Long getTimeSheetsSizeForEmployee(Employee employee) {
+        Query query = getEntityManager().createQuery("select count(*) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+        query.setParameter("employeeParam", employee);
+        return (Long) query.getSingleResult();
+    }
+
+    public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit) {
+        Query query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+        query.setParameter("employeeParam", employee);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
     }
 
     @PersistenceContext

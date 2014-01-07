@@ -46,7 +46,6 @@ public class TimeMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSidePanel());
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
         }
     };
@@ -56,7 +55,6 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSidePanel());
-            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
         }
     };
     Command timeSheetPeriodsMaintainenceCmd = new Command() {

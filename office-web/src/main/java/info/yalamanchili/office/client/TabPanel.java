@@ -194,7 +194,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectTimeTab() {
         timePanel.entityPanel.clear();
         timePanel.sidePanelTop.clear();
-        timePanel.sidePanelTop.add(new CorporateTimeSidePanel());
         timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
         timePanel.entityTitlePanel.add(new TimeMenu());
     }

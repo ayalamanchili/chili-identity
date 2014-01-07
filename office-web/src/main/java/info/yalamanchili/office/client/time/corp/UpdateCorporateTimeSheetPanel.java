@@ -76,7 +76,6 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Corporate Time Sheet Information");
         TabPanel.instance().timePanel.entityPanel.clear();
-        TabPanel.instance().timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel());
     }
 
     @Override
