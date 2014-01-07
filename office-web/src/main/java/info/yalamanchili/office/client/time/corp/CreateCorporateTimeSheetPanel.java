@@ -15,7 +15,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 public class CreateCorporateTimeSheetPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateCorporateTimeSheetPanel.class.getName());
+
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
 
     public CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -48,16 +50,16 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -80,9 +82,8 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget("Employee", false, true));
-        String[] categoryStrs = {"REGULAR", "VACATION_EARNED", "VACATION_SPENT", "VACATION_CARRYFORWARD", "PERSONAL_EARNED", "PERSONAL_SPENT", "UNPAID", "SICK_EARNED", "SICK_SPENT"};
-        addEnumField("category", false, true, categoryStrs);
+        addDropDown("employee", employeeF);
+        addEnumField("category", false, true, TimeSheetCategory.names());
         String[] statusStrs = {"APPROVED", "PENDING", "SAVED"};
         addEnumField("status", false, true, statusStrs);
         addField("startDate", false, true, DataType.DATE_FIELD);

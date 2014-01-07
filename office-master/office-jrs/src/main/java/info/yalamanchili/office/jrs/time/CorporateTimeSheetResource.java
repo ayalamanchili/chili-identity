@@ -52,6 +52,15 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         //TODO implement
         return new CorporateTimeSummary();
     }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_HR')")
+    public CorporateTimeSheet save(CorporateTimeSheet entity) {
+        Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+        entity.setEmployee(emp);
+        return super.save(entity);
+    }
+
     @Autowired
     public CorporateTimeSheetDao corporateTimeSheetDao;
 
