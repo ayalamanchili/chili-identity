@@ -49,16 +49,16 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -92,10 +92,10 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
         addEnumField("category", false, true, TimeSheetCategory.names());
         String[] statusStrs = {"APPROVED", "PENDING", "SAVED"};
         addEnumField("status", false, true, statusStrs);
-        addField("startDate", true, false, DataType.DATE_FIELD);
-        addField("endDate", true, false, DataType.DATE_FIELD);
-        addField("hours", true, false, DataType.FLOAT_FIELD);
-        addField("notes", true, false, DataType.TEXT_AREA_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("hours", false, true, DataType.FLOAT_FIELD);
+        addField("notes", false, true, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
