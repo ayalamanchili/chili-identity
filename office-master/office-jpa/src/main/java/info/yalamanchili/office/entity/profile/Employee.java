@@ -82,7 +82,6 @@ public class Employee extends Contact {
     /**
      * @generated
      */
-    @NotNull(message = "{startDate.not.empty.msg}")
     @Field(index = Index.UN_TOKENIZED)
     @Temporal(TemporalType.DATE)
     protected Date startDate;
