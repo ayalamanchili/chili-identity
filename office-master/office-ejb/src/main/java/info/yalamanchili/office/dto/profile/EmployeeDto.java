@@ -43,7 +43,6 @@ public class EmployeeDto implements Serializable {
     @NotNull(message = "{sex.not.empty.msg}")
     protected Sex sex;
     protected String imageURL;
-    @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
     @Email(message = "Enter a valid email address ")
     @NotEmpty(message = "{email.not.empty.msg}")
