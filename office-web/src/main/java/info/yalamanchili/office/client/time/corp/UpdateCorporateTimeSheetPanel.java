@@ -16,7 +16,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +25,7 @@ import java.util.logging.Logger;
 public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateCorporateTimeSheetPanel.class.getName());
-    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(true, true);
 
     public UpdateCorporateTimeSheetPanel(JSONObject entity) {
         initUpdateComposite(entity, "CorporateTimeSheet", OfficeWelcome.constants);
@@ -35,7 +34,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity);
+        entity.put("employee", employeeF.getSelectedObject());
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
@@ -49,16 +48,16 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -90,8 +89,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void addWidgets() {
         addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
-        String[] statusStrs = {"APPROVED", "PENDING", "SAVED"};
-        addEnumField("status", false, true, statusStrs);
+        addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);

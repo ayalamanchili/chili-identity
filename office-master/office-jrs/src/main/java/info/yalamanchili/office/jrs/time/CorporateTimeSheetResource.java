@@ -16,6 +16,7 @@ import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -54,11 +55,19 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public CorporateTimeSheet save(CorporateTimeSheet entity) {
         Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
         entity.setEmployee(emp);
         return super.save(entity);
+    }
+
+    @Override
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    public void delete(@PathParam("id") Long id) {
+        super.delete(id);
     }
 
     @Autowired

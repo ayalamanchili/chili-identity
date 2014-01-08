@@ -14,7 +14,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 
 /**
  *
@@ -41,12 +41,12 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
 
@@ -71,11 +71,11 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectEmployeeWidget("Employee", true, false));
-        addField("category", true, false, DataType.ENUM_FIELD);
+        addDropDown("employee", new SelectCorpEmployeeWidget(true, false));
+        addEnumField("category", true, false, TimeSheetCategory.names());
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
-        addField("status", true, false, DataType.STRING_FIELD);
+        addEnumField("status", true, false, TimeSheetStatus.names());
         addField("hours", true, false, DataType.FLOAT_FIELD);
         addField("notes", true, false, DataType.TEXT_AREA_FIELD);
     }

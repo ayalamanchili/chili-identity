@@ -84,8 +84,7 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     protected void addWidgets() {
         addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
-        String[] statusStrs = {"APPROVED", "PENDING", "SAVED"};
-        addEnumField("status", false, true, statusStrs);
+        addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);

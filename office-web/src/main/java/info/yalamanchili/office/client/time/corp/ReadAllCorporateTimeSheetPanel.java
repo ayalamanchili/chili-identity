@@ -17,6 +17,8 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
@@ -89,6 +91,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("Hours"));
+        table.setText(0, 6, getKeyValue("Status"));
     }
 
     @Override
@@ -96,17 +99,22 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "employee"));
+            table.setText(i, 1, JSONUtils.toString(entity.get("employee"), "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "category"));
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
+            table.setText(i, 6, JSONUtils.toString(entity, "status"));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        }
     }
 
     private String getDeleteURL(String entityId) {

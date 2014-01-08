@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
@@ -94,6 +95,7 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
         this.hours = hours;
     }
 
+    @XmlElement
     public Employee getEmployee() {
         return employee;
     }
