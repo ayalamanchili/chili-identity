@@ -57,8 +57,10 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public CorporateTimeSheet save(CorporateTimeSheet entity) {
-        Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
-        entity.setEmployee(emp);
+        if (entity.getId() == null) {
+            Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+            entity.setEmployee(emp);
+        }
         return super.save(entity);
     }
 

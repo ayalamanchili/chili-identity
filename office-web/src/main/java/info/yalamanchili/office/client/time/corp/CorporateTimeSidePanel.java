@@ -72,7 +72,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             TabPanel.instance().timePanel.entityPanel.clear();
             TabPanel.instance().timePanel.entityPanel.add(new CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
         }
-        if (event.getSource().equals(showTimeSheetsForEmpB)) {
+        if (empWidget.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(empWidget.getSelectedObjectId()));
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(empWidget.getSelectedObjectId()));

@@ -33,7 +33,6 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         entity.put("employee", employeeF.getSelectedObject());
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("startDate", entity);
@@ -41,6 +40,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("notes", entity);
+        logger.info("dddd" + entity);
         return entity;
     }
 
@@ -69,6 +69,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
+        employeeF.getListBox().setEnabled(false);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
-        addField("notes", false, true, DataType.TEXT_AREA_FIELD);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
