@@ -70,13 +70,14 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    @NotNull
+    @NotNull(message = "{category.not.empty.msg}")
     protected TimeSheetCategory category;
     /**
      * TimeSeet Status
      */
     @Enumerated(EnumType.STRING)
     @Field
+    @NotNull(message = "{status.not.empty.msg}")
     protected TimeSheetStatus status;
     /**
      * notes
