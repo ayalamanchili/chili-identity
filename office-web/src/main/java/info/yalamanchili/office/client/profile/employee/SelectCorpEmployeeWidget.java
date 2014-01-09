@@ -16,7 +16,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 public class SelectCorpEmployeeWidget extends SelectEmployeeWidget {
 
     public SelectCorpEmployeeWidget(Boolean readOnly, Boolean isRequired) {
-        super("Corporate Employee", readOnly, isRequired);
+        super("CorporateEmployee", readOnly, isRequired);
     }
 
     @Override
