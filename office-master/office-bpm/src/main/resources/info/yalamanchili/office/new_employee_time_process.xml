@@ -13,7 +13,8 @@
     <process id="new_employee_time_process">
         <startEvent id="newEmployeeTimeStart">
         </startEvent>
-        <sequenceFlow id="flow1" sourceRef="newEmployeeTimeStart" targetRef="twoMonthCompletionTimer" />
+        <!-- Two Month Completion -->
+        <sequenceFlow id="flow1" sourceRef="newEmpldoyeeTimeStart" targetRef="twoMonthCompletionTimer" />
         <intermediateCatchEvent id="twoMonthCompletionTimer">
             <timerEventDefinition>
                 <timeDate>${twoMonthCompletionDate}</timeDate>
@@ -25,7 +26,33 @@
             name="New Employee Two Month Completion Job"
             activiti:class="info.yalamanchili.office.bpm.time.NewEmpTimeCompletionJob">
         </serviceTask>
-        <sequenceFlow id="flow4" sourceRef="twoMonthCompletionJob" targetRef="newEmployeeTimeEnd" />
+        <!-- Six Month Completion -->
+        <sequenceFlow id="flow3" sourceRef="twoMonthCompletionJob" targetRef="sixMonthCompletionTimer" />
+        <intermediateCatchEvent id="sixMonthCompletionTimer">
+            <timerEventDefinition>
+                <timeDate>${sixMonthCompletionDate}</timeDate>
+            </timerEventDefinition>
+        </intermediateCatchEvent>
+        <sequenceFlow id="flow4" sourceRef="sixMonthCompletionTimer" targetRef="sixMonthCompletionJob" />
+        <serviceTask
+            id="sixMonthCompletionJob"
+            name="New Employee Six Month Completion Job"
+            activiti:class="info.yalamanchili.office.bpm.time.NewEmpTimeCompletionJob">
+        </serviceTask>
+        <!-- One Year Completion -->
+        <sequenceFlow id="flow5" sourceRef="sixMonthCompletionJob" targetRef="oneYearCompletionTimer" />
+        <intermediateCatchEvent id="oneYearCompletionTimer">
+            <timerEventDefinition>
+                <timeDate>${oneYearCompletionDate}</timeDate>
+            </timerEventDefinition>
+        </intermediateCatchEvent>
+        <sequenceFlow id="flow6" sourceRef="oneYearCompletionTimer" targetRef="oneYearCompletionJob" />
+        <serviceTask
+            id="oneYearCompletionJob"
+            name="New Employee One Year Completion Job"
+            activiti:class="info.yalamanchili.office.bpm.time.NewEmpTimeCompletionJob">
+        </serviceTask>
+        <sequenceFlow id="flow7" sourceRef="oneYearCompletionJob" targetRef="newEmployeeTimeEnd" />
         <!-- end-->
         <endEvent id="newEmployeeTimeEnd" />
     </process>

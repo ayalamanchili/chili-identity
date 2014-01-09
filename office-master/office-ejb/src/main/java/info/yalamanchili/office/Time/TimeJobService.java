@@ -50,6 +50,7 @@ public class TimeJobService {
      * employees
      */
     public void processYearlyEarnedTimeSheets() {
+        //TODO also create prorate hours for emp who passed probation period
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             if (hasMoreThanOneYearService(emp)) {
                 //TODO externalize values of days/hours
@@ -60,6 +61,14 @@ public class TimeJobService {
                 //10 days(80 hours) vacation earned
                 CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
             }
+        }
+    }
+
+    protected boolean isInProbationPeriod(Employee emp) {
+        if (DateUtils.getNextMonth(emp.getStartDate(), 2).before(new Date())) {
+            return false;
+        } else {
+            return true;
         }
     }
 

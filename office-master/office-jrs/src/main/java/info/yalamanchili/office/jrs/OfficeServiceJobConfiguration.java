@@ -22,4 +22,9 @@ public class OfficeServiceJobConfiguration {
     public void syncTimeSheetPeriods() {
         TimeJobService.instance().syncTimeSheetPeriods();
     }
+
+    @ManagedOperation
+    public void processYearlyEarnedTimeSheets() {
+        TimeJobService.instance().processYearlyEarnedTimeSheets();
+    }
 }

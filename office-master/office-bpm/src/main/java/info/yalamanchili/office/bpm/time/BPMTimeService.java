@@ -55,7 +55,7 @@ public class BPMTimeService {
     public void startNewEmpTimeProcess(Employee emp) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("employee", emp);
-        System.out.println("ddddddddddddddd" + DateUtils.getNextMonth(emp.getStartDate(), 2));
+        //TODO currently the date time set to middle of day at 12.00 PM should be change to 12.00 AM (begining)
         vars.put("twoMonthCompletionDate", DateUtils.getNextMonth(emp.getStartDate(), 2));
         vars.put("sixMonthCompletionDate", DateUtils.getNextMonth(emp.getStartDate(), 6));
         vars.put("oneYearCompletionDate", DateUtils.getNextYear(emp.getStartDate(), 1));
