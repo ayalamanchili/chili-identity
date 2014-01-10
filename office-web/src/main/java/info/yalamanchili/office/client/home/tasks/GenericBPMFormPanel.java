@@ -19,6 +19,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.LongField;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -51,6 +53,16 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             if (fields.get(key) instanceof BooleanField) {
                 BooleanField booleanField = (BooleanField) fields.get(key);
                 value.put("value", new JSONString(booleanField.getValue().toString()));
+            }
+            if (fields.get(key) instanceof LongField) {
+                LongField longField = (LongField) fields.get(key);
+                value.put("value", new JSONString(longField.getLong().toString()));
+            }
+            if (fields.get(key) instanceof DateField) {
+                DateField field = (DateField) fields.get(key);
+                if (field.getDate() != null) {
+                    value.put("value", new JSONString(field.getDate().toString()));
+                }
             }
             if (fields.get(key) instanceof EnumField) {
                 EnumField enumField = (EnumField) fields.get(key);
@@ -117,7 +129,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.BOOLEAN_FIELD);
             }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("long")) {
-                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.INTEGER_FIELD);
+                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.LONG_FIELD);
             }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("date")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.DATE_FIELD);
