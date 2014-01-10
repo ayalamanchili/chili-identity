@@ -55,11 +55,11 @@ public class TimeJobService {
             if (hasMoreThanOneYearService(emp)) {
                 //TODO externalize values of days/hours
                 //4 days(32 hours) Personal earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Personal_Earned, new BigDecimal(32), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Personal_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //4 days(32 hours) Sick earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //10 days(80 hours) vacation earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
             }
         }
     }

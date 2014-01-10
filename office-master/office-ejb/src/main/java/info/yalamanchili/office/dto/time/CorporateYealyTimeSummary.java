@@ -18,16 +18,16 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType
-public class CorporateTimeSummary {
+public class CorporateYealyTimeSummary {
 
     protected BigDecimal availableSickHours;
     protected BigDecimal availablePersonalHours;
     protected BigDecimal availableVacationHours;
 
-    public CorporateTimeSummary() {
+    public CorporateYealyTimeSummary() {
     }
 
-    public CorporateTimeSummary(BigDecimal availableSickHours, BigDecimal availablePersonalHours, BigDecimal availableVacationHours) {
+    public CorporateYealyTimeSummary(BigDecimal availableSickHours, BigDecimal availablePersonalHours, BigDecimal availableVacationHours) {
         this.availableSickHours = availableSickHours;
         this.availablePersonalHours = availablePersonalHours;
         this.availableVacationHours = availableVacationHours;

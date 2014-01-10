@@ -46,7 +46,7 @@ public class NewEmpTimeCompletionJob implements JavaDelegate {
     protected void runTwoMonthCompletionJob(Employee emp, DelegateExecution execution) {
         Date startDate = emp.getStartDate();
         Date twoMonthCompletion = (Date) execution.getVariable("twoMonthCompletionDate");
-        Date endDate = DateUtils.getLastDayOfYear(twoMonthCompletion);
+        Date endDate = DateUtils.getLastDayCurrentOfYear();
         long proratedDays = DateUtils.getBetweenDay(startDate, endDate);
         BigDecimal proratedHours = DateUtils.getProratedHours(new BigDecimal("40.00"), new BigDecimal("365"), new BigDecimal(proratedDays));
         CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, proratedHours, startDate, endDate);
