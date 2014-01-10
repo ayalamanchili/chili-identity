@@ -116,6 +116,12 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("boolean")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.BOOLEAN_FIELD);
             }
+            if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("long")) {
+                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.INTEGER_FIELD);
+            }
+            if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("date")) {
+                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.DATE_FIELD);
+            }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("enum")) {
                 JSONObject type = formProperty.get("type").isObject();
                 JSONArray enumArray = JSONUtils.toJSONArray(type.get("values"));

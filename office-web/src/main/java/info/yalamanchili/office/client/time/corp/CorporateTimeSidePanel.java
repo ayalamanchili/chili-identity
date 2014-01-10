@@ -16,11 +16,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
-import info.yalamanchili.office.client.tae.timesheet.ReadAllEmployeeTimeSheets;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +32,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
     private static Logger logger = Logger.getLogger(CorporateTimeSidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
     ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
+    ClickableLink submitLeaveRequest = new ClickableLink("Submit Leave Request");
 
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
@@ -47,6 +48,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
     protected void addListeners() {
         createtimeSheetlink.addClickHandler(this);
         showTimeSheetsForEmpB.addClickHandler(this);
+        submitLeaveRequest.addClickHandler(this);
     }
 
     @Override
@@ -58,6 +60,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
     protected void addWidgets() {
         if (Auth.isAdmin() || Auth.hasContractsRole()) {
             timeSheetsidepanel.add(createtimeSheetlink);
+            timeSheetsidepanel.add(submitLeaveRequest);
             //employee
             timesheetsForEmpPanel.add(empWidget);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
@@ -76,6 +79,9 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(empWidget.getSelectedObjectId()));
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(empWidget.getSelectedObjectId()));
+        }
+        if (event.getSource().equals(submitLeaveRequest)) {
+            new GenericPopup(new GenericBPMStartFormPanel("CorpEmpLeaveRequest", "corp_emp_leave_request_process")).show();
         }
     }
 }

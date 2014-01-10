@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="corp_emp_leave_request_process">
+        <startEvent id="leaveRequestStart">
+            <extensionElements>
+                <activiti:formProperty id="startDate" 
+                                       name="StartDate"
+                                       required="true"
+                                       type="date">
+                </activiti:formProperty>
+                <activiti:formProperty id="endDate" 
+                                       name="End Date"
+                                       required="true" 
+                                       type="date" />
+                <activiti:formProperty id="hours" 
+                                       name="Hours"
+                                       required="true"
+                                       type="long">
+                </activiti:formProperty>
+                <activiti:formProperty id="category" 
+                                       name="Category"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="Sick_Spent" name="Sick"/>
+                    <activiti:value id="Personal_Spent" name="Personal"/>
+                    <activiti:value id="Vacation_Spent" name="Vacation"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements>
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="leaveRequestStart" targetRef="leaveRequestApprovalTask" />
+        <userTask id="leaveRequestApprovalTask" 
+                  name="Leave Request Approval Request">
+            <documentation>
+                Corporate Employee Leave Request
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Start Date    : #{startDate}
+                End Date      : #{endDate} 
+                Hours         : #{hours} 
+                Notes         : #{notes}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+            <potentialOwner>
+                <resourceAssignmentExpression>
+                    <formalExpression>${corpEmpLeaveRequestProcess.getLeaveRequestTaskAssignmentExp()}</formalExpression>
+                </resourceAssignmentExpression>
+            </potentialOwner>
+        </userTask>
+        <sequenceFlow id="flow3" sourceRef="leaveRequestApprovalTask" targetRef="leaveRequestEnd" />
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="leaveRequestApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- end-->
+        <endEvent id="leaveRequestEnd" />
+    </process>
+</definitions>
