@@ -22,6 +22,7 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.rpc.HttpService;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
@@ -56,7 +57,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             }
             if (fields.get(key) instanceof LongField) {
                 LongField longField = (LongField) fields.get(key);
-                value.put("value", new JSONString(longField.getLong().toString()));
+                value.put("value", new JSONString(longField.getValue()));
             }
             if (fields.get(key) instanceof DateField) {
                 DateField field = (DateField) fields.get(key);
@@ -137,10 +138,10 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("enum")) {
                 JSONObject type = formProperty.get("type").isObject();
                 JSONArray enumArray = JSONUtils.toJSONArray(type.get("values"));
-                String[] enumVals = new String[enumArray.size()];
+                HashMap<String, String> enumVals = new HashMap<String, String>();
                 for (int y = 0; y < enumArray.size(); y++) {
                     JSONObject enm = enumArray.get(y).isObject();
-                    enumVals[y] = JSONUtils.toString(enm, "id");
+                    enumVals.put(JSONUtils.toString(enm, "id"), JSONUtils.toString(enm, "value"));
                 }
                 addEnumField(JSONUtils.toString(formProperty, "id"), false, isRequired, enumVals);
             }
@@ -163,6 +164,20 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                     StringField stringField = (StringField) field;
                     if (stringField.getValue() == null || stringField.getValue().isEmpty()) {
                         stringField.setMessage("value is required");
+                        valid = false;
+                    }
+                }
+                if (field instanceof LongField) {
+                    LongField fld = (LongField) field;
+                    if (fld.getLong() == null) {
+                        fld.setMessage("value is required");
+                        valid = false;
+                    }
+                }
+                if (field instanceof DateField) {
+                    DateField fld = (DateField) field;
+                    if (fld.getDate() == null) {
+                        fld.setMessage("value is required");
                         valid = false;
                     }
                 }
