@@ -11,10 +11,12 @@ import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -25,20 +27,27 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class CompanyContactDao extends CRUDDao<CompanyContact> {
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     public CompanyContactDao() {
         super(CompanyContact.class);
     }
-
+    
     public List<CompanyContact> getEmployeeCompanyContacts(Long employeeId) {
         Query query = getEntityManager().createQuery("from " + CompanyContact.class.getCanonicalName() + "  where employee.id=:employeeIdParam", CompanyContact.class);
         query.setParameter("employeeIdParam", employeeId);
         return query.getResultList();
     }
-
+    
+    public List<CompanyContact> getCompanyContact(Employee employee, String companyContactType) {
+        TypedQuery<CompanyContact> query = em.createQuery("from " + CompanyContact.class.getCanonicalName() + " where employee=:empParam and type.name=:typeParam", CompanyContact.class);
+        query.setParameter("empParam", employee);
+        query.setParameter("typeParam", companyContactType);
+        return query.getResultList();
+    }
+    
     @Override
     public CompanyContact save(CompanyContact cnt) {
         CompanyContact entity = null;
@@ -52,12 +61,12 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
         entity.setContact(EmployeeDao.instance().findById(cnt.getContact().getId()));
         return em.merge(entity);
     }
-
+    
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-
+    
     public static CompanyContactDao instance() {
         return SpringContext.getBean(CompanyContactDao.class);
     }

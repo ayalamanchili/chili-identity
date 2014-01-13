@@ -27,7 +27,6 @@ public class GenericTaskCompleteNotification implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
-        MailUtils mailUtils = (MailUtils) SpringContext.getBean("mailUtils");
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         //
         List<String> roles = new ArrayList<String>();
@@ -42,7 +41,7 @@ public class GenericTaskCompleteNotification implements TaskListener {
             }
         }
         if (roles.size() > 0) {
-            email.setTos(mailUtils.getEmailsAddressesForRoles(roles.toArray(new String[roles.size()])));
+            email.setTos(MailUtils.instance().getEmailsAddressesForRoles(roles.toArray(new String[roles.size()])));
         }
         if (employee != null) {
             email.addTo(employee.getPrimaryEmail().getEmail());

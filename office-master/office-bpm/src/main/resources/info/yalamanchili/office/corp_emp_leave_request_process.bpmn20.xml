@@ -49,12 +49,13 @@
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Start Date    : #{startDate}
                 End Date      : #{endDate} 
+                Category      : #{category} 
                 Hours         : #{hours} 
                 Notes         : #{notes}
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"
@@ -67,27 +68,22 @@
                                        required="false" 
                                        type="string" />
             </extensionElements> 
-            <potentialOwner>
-                <resourceAssignmentExpression>
-                    <formalExpression>${corpEmpLeaveRequestProcess.getLeaveRequestTaskAssignmentExp()}</formalExpression>
-                </resourceAssignmentExpression>
-            </potentialOwner>
         </userTask>
         <sequenceFlow id="flow3" sourceRef="leaveRequestApprovalTask" targetRef="leaveRequestEnd" />
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="emailEscalationTimer"
+        <boundaryEvent id="leaveApprovalTaskEscalationTimer"
                        cancelActivity="false" 
                        attachedToRef="leaveRequestApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer" 
-                      targetRef="taskEmailEscalation" />
+        <sequenceFlow sourceRef="leaveApprovalTaskEscalationTimer" 
+                      targetRef="leaveApprovalTaskEscalation" />
         <serviceTask
-            id="taskEmailEscalation"
-            name="Task Email Escalation"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+            id="leaveApprovalTaskEscalation"
+            name="Leave Approval Task Escalation"
+            activiti:class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess">
         </serviceTask>
         <!-- end-->
         <endEvent id="leaveRequestEnd" />

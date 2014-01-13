@@ -58,9 +58,10 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
 
     @Override
     protected void addWidgets() {
+        timeSheetsidepanel.add(submitLeaveRequest);
         if (Auth.isAdmin() || Auth.hasContractsRole()) {
             timeSheetsidepanel.add(createtimeSheetlink);
-            timeSheetsidepanel.add(submitLeaveRequest);
+
             //employee
             timesheetsForEmpPanel.add(empWidget);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);

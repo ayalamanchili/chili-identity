@@ -106,14 +106,25 @@ public class OfficeBPMTaskService {
         return result;
     }
 
-    public TaskTable getTasksForAssigneeAndRoles(Employee emp, int start, int limit) {
+    /**
+     * returns all the tasks with the emp as assignee or candidate user or
+     * candidate role
+     *
+     * @param emp
+     * @param start
+     * @param limit
+     * @return
+     */
+    public TaskTable getAllTasksForUser(Employee emp, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskTable taskForAssignee = getTasksForAsignee(emp.getEmployeeId(), start, limit);
+        TaskTable taskForUser = getCandidateTasksForUser(emp.getEmployeeId(), start, limit);
 
         List<String> roles = SecurityService.instance().getUserRoles(emp);
-        TaskTable taskForRoles = getTasksForRoles(roles, start, limit);
+        TaskTable taskForRoles = getCandidateTasksForRoles(roles, start, limit);
 
         result.getEntities().addAll(taskForAssignee.getEntities());
+        result.getEntities().addAll(taskForUser.getEntities());
         result.getEntities().addAll(taskForRoles.getEntities());
         result.setSize(taskForAssignee.getSize() + taskForRoles.getSize());
         return result;
@@ -129,7 +140,17 @@ public class OfficeBPMTaskService {
         return result;
     }
 
-    public TaskTable getTasksForRoles(List<String> roles, int start, int limit) {
+    public TaskTable getCandidateTasksForUser(String user, int start, int limit) {
+        TaskTable result = new TaskTable();
+        TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateUser(user);
+        for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {
+            result.getEntities().add(mapper.map(bpmTask, Task.class));
+        }
+        result.setSize(query.count());
+        return result;
+    }
+
+    public TaskTable getCandidateTasksForRoles(List<String> roles, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles);
         for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {

@@ -8,6 +8,7 @@
 package info.yalamanchili.office.email;
 
 import info.chili.security.domain.CUser;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -58,5 +59,9 @@ public class MailUtils {
         }
         logger.info("emails:" + emails);
         return emails;
+    }
+
+    public static MailUtils instance() {
+        return SpringContext.getBean(MailUtils.class);
     }
 }
