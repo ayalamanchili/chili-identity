@@ -8,10 +8,14 @@
  */
 package info.yalamanchili.office.bpm.time;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.bpm.BPMUtils;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
@@ -52,11 +56,16 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     }
 
     protected void validateLeaveRequest(DelegateTask task) {
-
     }
 
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
-        
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        Email email = new Email();
+        email.setTos(BPMUtils.getCandidateEmails(task));
+        email.setSubject("Task Created:" + task.getName());
+        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + task.getName() + " \n Description:" + task.getDescription();
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
     }
 
     protected void assignTask(DelegateTask task) {
@@ -90,7 +99,6 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestApproved(DelegateTask task) {
-
     }
 
     /**
@@ -99,7 +107,6 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestRejected(DelegateTask task) {
-
     }
 
     /**
@@ -113,6 +120,5 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     }
 
     protected void leaveRequestEscationTask(DelegateExecution execution) {
-
     }
 }
