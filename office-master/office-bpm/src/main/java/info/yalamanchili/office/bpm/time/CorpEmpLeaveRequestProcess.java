@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
-    
+
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -46,10 +46,19 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestTaskCreated(DelegateTask task) {
+        validateLeaveRequest(task);
         assignTask(task);
-        //TODO send notification email
+        sendLeaveRequestCreatedNotification(task);
     }
-    
+
+    protected void validateLeaveRequest(DelegateTask task) {
+
+    }
+
+    protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
+        
+    }
+
     protected void assignTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
@@ -81,7 +90,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestApproved(DelegateTask task) {
-        
+
     }
 
     /**
@@ -90,16 +99,20 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestRejected(DelegateTask task) {
-        
+
     }
 
     /**
-     * Escalation Task
+     * Leave Request Escalation Task
      *
      * @param execution
      */
     @Override
     public void execute(DelegateExecution execution) {
-        
+        leaveRequestEscationTask(execution);
+    }
+
+    protected void leaveRequestEscationTask(DelegateExecution execution) {
+
     }
 }
