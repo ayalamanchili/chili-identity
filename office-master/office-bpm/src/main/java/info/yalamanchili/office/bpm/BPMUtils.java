@@ -6,7 +6,6 @@
 package info.yalamanchili.office.bpm;
 
 import info.yalamanchili.office.email.MailUtils;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,10 +35,6 @@ public class BPMUtils {
         }
         if (roles.size() > 0) {
             emails.addAll(MailUtils.instance().getEmailsAddressesForRoles(roles.toArray(new String[roles.size()])));
-        }
-        Employee employee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
-        if (employee != null) {
-            emails.add(employee.getPrimaryEmail().getEmail());
         }
         return emails;
     }
