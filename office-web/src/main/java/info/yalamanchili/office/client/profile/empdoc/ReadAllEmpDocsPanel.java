@@ -8,15 +8,19 @@
  */
 package info.yalamanchili.office.client.profile.empdoc;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Image;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -32,16 +36,16 @@ import java.util.logging.Logger;
  * @author anuyalamanchili
  */
 public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllEmpDocsPanel.class.getName());
     public static ReadAllEmpDocsPanel instance;
-    
+
     public ReadAllEmpDocsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("EmployeeDocument", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllFilesURL(parentId, start, OfficeWelcome.constants.tableSize()),
@@ -52,12 +56,12 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     public String getReadAllFilesURL(String employeeId, Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "employee-document/" + employeeId + "/" + start + "/" + limit;
-        
+
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -66,7 +70,7 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Updated Time Stamp"));
         table.setText(0, 4, getKeyValue("Updated By"));
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -80,18 +84,18 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "updatedBy"));
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.DELETE, row, JSONUtils.toString(entity, "id"));
         }
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -102,11 +106,11 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-    
+
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "employee-document/delete/" + entityId;
     }
-    
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Emp Doc Information");
@@ -114,9 +118,19 @@ public class ReadAllEmpDocsPanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmpDocsPanel(TreeEmployeePanel.instance().getEntityId()));
         TabPanel.instance().myOfficePanel.entityPanel.add(new EmpDocOptionsPanel());
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
-        
+
+    }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "documetns.html";
     }
 }

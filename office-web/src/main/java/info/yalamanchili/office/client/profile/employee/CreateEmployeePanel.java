@@ -3,8 +3,6 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -18,10 +16,7 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
@@ -143,7 +138,7 @@ public class CreateEmployeePanel extends CreateComposite {
 
     @Override
     protected String getDocumentationLink() {
-        return "https://apps.sstech.us/site/office/employee.html";
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "employee.html";
     }
 
     @Override

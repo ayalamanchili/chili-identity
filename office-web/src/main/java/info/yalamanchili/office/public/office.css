@@ -187,20 +187,15 @@
 .readAllCompositeCaptionPanel legend {
     font-weight: bold;
     color: orange_dark;
+    font-size: medium;
     font-style: italic;
 }
 
 .crudCompositeCaptionPanel legend{
     font-weight: bold;
     color: orange_dark;
+    font-size: medium;
     font-style: italic; 
-}
-.gwt-Label.documentationLink {
-    width: 100%;
-    text-decoration: underline;
-    text-align: center;
-    background: lightgray;
-    align-content: center;
 }
 legend {
     color:orange_light;
