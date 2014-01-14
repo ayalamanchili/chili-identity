@@ -55,7 +55,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
     }
 
     @Override
-    protected void onReadMouseOver(int row, String id) {
+    protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadContractsPanel(getEntity(id)), Window.getClientWidth() / 3, 0).show();
     }
 

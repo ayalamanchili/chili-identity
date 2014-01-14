@@ -53,12 +53,12 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         // TODO externalize the limit size for read all
         HttpServiceAsync.instance().doGet(getReadAllEmployeesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getReadAllEmployeesURL(Integer start, String limit) {
@@ -66,7 +66,12 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
     }
 
     @Override
-    protected void onReadMouseOver(int row, String id) {
+    protected boolean enableQuickView() {
+        return true;
+    }
+
+    @Override
+    protected void onQuickView(int row, String id) {
         new GenericPopup(new ReadEmployeePanel(JSONUtils.toString(getEntity(id), "id")), Window.getClientWidth() / 3, 0).show();
     }
 
@@ -119,11 +124,11 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Employee details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess();
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess();
+                        }
+                    });
         }
     }
 

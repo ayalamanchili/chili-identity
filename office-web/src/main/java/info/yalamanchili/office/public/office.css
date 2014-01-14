@@ -177,7 +177,7 @@
 
 }
 .y-gwt-ReadAllComposite-EvenRow{
-background-color: blue_mid;
+    background-color: blue_mid;
 }
 /*Text insiise the tabel START*/
 .readAllCompositeCaptionPanel{
@@ -195,7 +195,13 @@ background-color: blue_mid;
     color: orange_dark;
     font-style: italic; 
 }
-
+.gwt-Label.documentationLink {
+    width: 100%;
+    text-decoration: underline;
+    text-align: center;
+    background: lightgray;
+    align-content: center;
+}
 legend {
     color:orange_light;
 
@@ -288,7 +294,7 @@ legend {
 }
 
 .tfRequired{
- color : orange_dark;
+    color : orange_dark;
 }
 
 .y-gwt-CreateBasePanel{

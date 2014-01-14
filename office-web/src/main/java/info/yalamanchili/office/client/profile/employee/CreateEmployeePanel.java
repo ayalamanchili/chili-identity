@@ -18,9 +18,8 @@ import java.util.logging.Logger;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Frame;
-import info.chili.gwt.crud.CRUDComposite;
+import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
@@ -130,30 +129,6 @@ public class CreateEmployeePanel extends CreateComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
 
-    }
-//TODO move to super class
-
-    @Override
-    protected void configureDocumentationLink() {
-        if (showDocumentationLink()) {
-            final Anchor docLink = new Anchor("Documentation");
-            docLink.addStyleName("documentationLink");
-            entityFieldsPanel.add(docLink);
-            docLink.addClickHandler(new ClickHandler() {
-
-                @Override
-                public void onClick(ClickEvent event) {
-                    Frame frame = new Frame(getDocumentationLink());
-                    Integer width = (Window.getClientWidth() * 2) / 3;
-                    Integer height = (Window.getClientHeight() * 2) / 3;
-                    frame.setHeight(height + "px");
-                    frame.setWidth(width + "px");
-                    frame.addStyleName("documentationFrame");
-                    new GenericPopup(frame, docLink.getAbsoluteLeft() + (docLink.getOffsetWidth() * 3), docLink.getAbsoluteTop() + docLink.getOffsetHeight()).show();
-                }
-            });
-
-        }
     }
 
     @Override
