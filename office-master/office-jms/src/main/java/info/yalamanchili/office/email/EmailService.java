@@ -110,7 +110,7 @@ public class EmailService {
         }
         return result;
     }
-
+    
     protected boolean notificationsEnabled(String emailAddress) {
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {

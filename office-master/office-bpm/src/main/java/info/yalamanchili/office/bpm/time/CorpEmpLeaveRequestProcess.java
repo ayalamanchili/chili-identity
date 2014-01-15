@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
-    
+
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -54,14 +54,14 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         assignTask(task);
         sendLeaveRequestCreatedNotification(task);
     }
-    
+
     protected void validateLeaveRequest(DelegateTask task) {
     }
-    
+
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
         sendLeaveRequestStatusNotification("Submitted", task);
     }
-    
+
     protected void assignTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
@@ -104,14 +104,14 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     protected void leaveRequestRejected(DelegateTask task) {
         sendLeaveRequestStatusNotification("Rejected", task);
     }
-    
+
     protected void sendLeaveRequestStatusNotification(String status, DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(task));
         email.setSubject("Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName());
-        String messageText = "Name: " + task.getName() + " \n Description:" + task.getDescription() + " \n Task Notes:" + task.getVariable("taskNotes");
+        String messageText = "Name: " + task.getName() + " \n Description: " + task.getDescription() + " \n Task Notes: " + task.getVariable("taskNotes");
         email.setBody(messageText);
         //TODO add reamining leaves for employee details
         messagingService.sendEmail(email);
@@ -126,7 +126,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     public void execute(DelegateExecution execution) {
         leaveRequestEscationTask(execution);
     }
-    
+
     protected void leaveRequestEscationTask(DelegateExecution execution) {
     }
 }
