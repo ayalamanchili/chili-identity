@@ -23,7 +23,7 @@ public class OfficeServiceConfiguration {
     protected EntityManager em;
 
     @Value("#{officeProperties['contentManagementLocationRoot']}")
-    protected String contentManagementLocationRoot = "/Users/anuyalamanchili/content-management/office/";
+    protected String contentManagementLocationRoot = "C://content-management//office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData = false;
     @Value("#{officeProperties['initTestData']}")
