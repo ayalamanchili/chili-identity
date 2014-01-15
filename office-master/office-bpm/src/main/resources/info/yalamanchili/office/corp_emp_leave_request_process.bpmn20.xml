@@ -63,7 +63,7 @@
                     <activiti:value id="approved" name="approved"/>
                     <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
-                <activiti:formProperty id="notes" 
+                <activiti:formProperty id="taskNotes" 
                                        name="Notes"
                                        required="false" 
                                        type="string" />
