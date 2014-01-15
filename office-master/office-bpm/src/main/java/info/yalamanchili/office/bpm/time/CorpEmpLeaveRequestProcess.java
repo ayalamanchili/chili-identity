@@ -62,8 +62,8 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(task));
-        email.setSubject("Task Created:" + task.getName());
-        String messageText = "Task is Created. Please complete.\n Details: \n Name: " + task.getName() + " \n Description:" + task.getDescription();
+        email.setSubject("Leave Request For:" + task.getName());
+        String messageText = "Leave request is created. Please take action on this before 48 hours of receiving this email: \n Name: " + task.getName() + " \n Description:" + task.getDescription();
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
@@ -99,6 +99,27 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestApproved(DelegateTask task) {
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        Email email = new Email();
+        email.setTos(BPMUtils.getCandidateEmails(task));
+        email.setSubject("Leave Request For:" + task.getName());
+        String subjectText = "Task Complete:" + task.getName();
+        String messageText = "Task Complete.  Details: \n Name: " + task.getName() + " \n Description:" + task.getDescription();
+        //task statuss
+        String status = (String) task.getExecution().getVariable("status");
+        if (status != null) {
+            subjectText = subjectText.concat(" Status:" + status.toUpperCase());
+            messageText = messageText.concat(" \n Status:" + status.toUpperCase());
+        }
+        //task notes
+        String notes = (String) task.getExecution().getVariable("notes");
+        if (notes != null) {
+            subjectText = subjectText.concat(" Notes:" + notes);
+            messageText = messageText.concat(" \n Notes:" + notes);
+        }
+        email.setSubject(subjectText);
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
     }
 
     /**
@@ -107,6 +128,27 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestRejected(DelegateTask task) {
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        Email email = new Email();
+        email.setTos(BPMUtils.getCandidateEmails(task));
+        email.setSubject("Leave Request For:" + task.getName());
+        String subjectText = "Task Complete:" + task.getName();
+        String messageText = "Task Complete.  Details: \n Name: " + task.getName() + " \n Description:" + task.getDescription();
+        //task statuss
+        String status = (String) task.getExecution().getVariable("status");
+        if (status != null) {
+            subjectText = subjectText.concat(" Status:" + status.toUpperCase());
+            messageText = messageText.concat(" \n Status:" + status.toUpperCase());
+        }
+        //task notes
+        String notes = (String) task.getExecution().getVariable("notes");
+        if (notes != null) {
+            subjectText = subjectText.concat(" Notes:" + notes);
+            messageText = messageText.concat(" \n Notes:" + notes);
+        }
+        email.setSubject(subjectText);
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
     }
 
     /**
