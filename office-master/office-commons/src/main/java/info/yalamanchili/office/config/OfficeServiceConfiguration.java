@@ -23,7 +23,7 @@ public class OfficeServiceConfiguration {
     protected EntityManager em;
 
     @Value("#{officeProperties['contentManagementLocationRoot']}")
-    protected String contentManagementLocationRoot = "C://content-management//office/";
+    protected String contentManagementLocationRoot = "/Users/anuyalamanchili/content-management/office/";
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData = false;
     @Value("#{officeProperties['initTestData']}")
@@ -36,9 +36,9 @@ public class OfficeServiceConfiguration {
     @Value("#{officeProperties['emailExceptionDetials']}")
     protected Boolean emailExceptionDetials = true;
     //2MB
-    protected long imageSizeLimit = 200000;
+    protected long imageSizeLimit = 2097152;
     //20MB
-    protected long fileSizeLimit = 2000000;
+    protected long fileSizeLimit = 20971520;
 
     protected String dataloadFilePath = contentManagementLocationRoot + "load.xlsx";
 
@@ -119,6 +119,10 @@ public class OfficeServiceConfiguration {
 
     public void setFileSizeLimit(long fileSizeLimit) {
         this.fileSizeLimit = fileSizeLimit;
+    }
+
+    public String getFileSizeLimitInMB() {
+        return getFileSizeLimit() / 1048576 + "MB";
     }
 
     public String getDataloadFilePath() {

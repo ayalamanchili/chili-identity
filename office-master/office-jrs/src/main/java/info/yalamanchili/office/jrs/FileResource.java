@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs;
 
 import info.chili.commons.FileUtils;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 
@@ -144,14 +145,14 @@ public class FileResource {
 
     protected void validateFileSizeLimits(FileItem file) {
         if (FileUtils.isImage(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getImageSizeLimit()) {
-            throw new RuntimeException("Image Size exceeded please upload a smaler Image Limit:" + OfficeServiceConfiguration.instance().getImageSizeLimit() / 100000 + "MB");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "file.size.limit.exceeded", "Image Size exceeded please upload a smaler Image Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimitInMB());
         }
         if (FileUtils.isDocument(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getFileSizeLimit()) {
-            throw new RuntimeException("File Size exceeded please upload a smaler Image Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimit() / 100000 + "MB");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "file.size.limit.exceeded", "File Size exceeded please upload a smaler Image Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimitInMB());
         }
         //all others
         if (file.getSize() > OfficeServiceConfiguration.instance().getFileSizeLimit()) {
-            throw new RuntimeException("Exceeded max file size permitted by esrver Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimit() / 100000 + "MB");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "file.size.limit.exceeded", "Exceeded max file size permitted by esrver Limit:" + OfficeServiceConfiguration.instance().getFileSizeLimitInMB());
         }
     }
 
