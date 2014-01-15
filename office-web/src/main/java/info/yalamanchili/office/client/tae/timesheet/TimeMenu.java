@@ -8,7 +8,7 @@
 package info.yalamanchili.office.client.tae.timesheet;
 
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
-import info.yalamanchili.office.client.time.corp.CorporateTimeSidePanel;
+import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -46,7 +46,7 @@ public class TimeMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSidePanel());
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
         }
     };

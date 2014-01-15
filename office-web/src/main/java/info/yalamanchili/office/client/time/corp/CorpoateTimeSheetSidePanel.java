@@ -15,8 +15,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -26,9 +28,11 @@ import java.util.logging.Logger;
  */
 public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger = Logger.getLogger(CorpoateTimeSheetSidePanel.class.getName());
-    public FlowPanel corporateTimeSheetsidepanel = new FlowPanel();
+    private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
+    public FlowPanel timeSheetsidepanel = new FlowPanel();
     ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
+    ClickableLink submitLeaveRequest = new ClickableLink("Submit Leave Request");
+
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
@@ -36,28 +40,33 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
     Button showTimeSheetsForEmpB = new Button("View");
 
     public CorpoateTimeSheetSidePanel() {
-        init(corporateTimeSheetsidepanel);
+        init(timeSheetsidepanel);
     }
 
     @Override
     protected void addListeners() {
         createtimeSheetlink.addClickHandler(this);
         showTimeSheetsForEmpB.addClickHandler(this);
+        submitLeaveRequest.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        timesheetsForEmpCaptionPanel.setCaptionHTML("Corporate Time Sheet");
+        timesheetsForEmpCaptionPanel.setCaptionHTML("Time Summary");
     }
 
     @Override
     protected void addWidgets() {
-        corporateTimeSheetsidepanel.add(createtimeSheetlink);
-        //employee
-        timesheetsForEmpPanel.add(empWidget);
-        timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
-        timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
-        corporateTimeSheetsidepanel.add(timesheetsForEmpCaptionPanel);
+        timeSheetsidepanel.add(submitLeaveRequest);
+        if (Auth.isAdmin() || Auth.hasContractsRole()) {
+            timeSheetsidepanel.add(createtimeSheetlink);
+
+            //employee
+            timesheetsForEmpPanel.add(empWidget);
+            timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
+            timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
+            timeSheetsidepanel.add(timesheetsForEmpCaptionPanel);
+        }
     }
 
     @Override
@@ -70,6 +79,9 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(empWidget.getSelectedObjectId()));
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(empWidget.getSelectedObjectId()));
+        }
+        if (event.getSource().equals(submitLeaveRequest)) {
+            new GenericPopup(new GenericBPMStartFormPanel("CorpEmpLeaveRequest", "corp_emp_leave_request_process")).show();
         }
     }
 }
