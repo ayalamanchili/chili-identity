@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -56,6 +57,9 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     }
 
     protected void validateLeaveRequest(DelegateTask task) {
+        //check if employee has enough hours in the category selected.
+        //use CorporateTimeSheetDao.gethoursinCurrentyser method.
+        //dont check for unpaid.
     }
 
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
@@ -79,7 +83,11 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      */
     protected void leaveRequestTaskCompleted(DelegateTask task) {
         String status = (String) task.getExecution().getVariable("status");
-        if ("approved".equals(status)) {
+        String category = (String) task.getExecution().getVariable("category");
+        if ("approved".equals(status) && !TimeSheetCategory.Unpaid.name().equals(category)) {
+            leaveRequestApproved(task);
+        }
+        if ("approved".equals(status) && "Unpaid Leave Final Approval Task".equals(task.getName())) {
             leaveRequestApproved(task);
         }
         if ("rejected".equals(status)) {
@@ -128,5 +136,6 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     }
 
     protected void leaveRequestEscationTask(DelegateExecution execution) {
+
     }
 }

@@ -41,20 +41,20 @@ public class CorporateTimeService {
     }
 
     public BigDecimal getYearlySickBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getTimeSheetsInCurrentYear(employee, TimeSheetCategory.Sick_Earned);
-        BigDecimal spent = corporateTimeSheetDao.getTimeSheetsInCurrentYear(employee, TimeSheetCategory.Sick_Spent);
+        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned);
+        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent);
         return earned.subtract(spent);
     }
 
     public BigDecimal getYearlyPeronalBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getTimeSheetsInCurrentYear(employee, TimeSheetCategory.Personal_Earned);
-        BigDecimal spent = corporateTimeSheetDao.getTimeSheetsInCurrentYear(employee, TimeSheetCategory.Personal_Spent);
+        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Earned);
+        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Spent);
         return earned.subtract(spent);
     }
 
     public BigDecimal getYearlyVacationBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getTimeSheetsInCurrentYear(employee, TimeSheetCategory.Vacation_Earned);
-        BigDecimal spent = corporateTimeSheetDao.getTimeSheetsInCurrentYear(employee, TimeSheetCategory.Vacation_Spent);
+        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Earned);
+        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Spent);
         return earned.subtract(spent);
     }
 

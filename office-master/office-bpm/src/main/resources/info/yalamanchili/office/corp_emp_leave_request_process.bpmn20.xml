@@ -34,6 +34,7 @@
                     <activiti:value id="Sick_Spent" name="Sick"/>
                     <activiti:value id="Personal_Spent" name="Personal"/>
                     <activiti:value id="Vacation_Spent" name="Vacation"/>
+                    <activiti:value id="Unpaid" name="Unpaid"/>
                 </activiti:formProperty>
                 <activiti:formProperty id="notes" 
                                        name="Notes"
@@ -43,7 +44,7 @@
         </startEvent>
         <sequenceFlow id="flow1" sourceRef="leaveRequestStart" targetRef="leaveRequestApprovalTask" />
         <userTask id="leaveRequestApprovalTask" 
-                  name="Leave Request Approval Request">
+                  name="Leave Request Approval Task">
             <documentation>
                 Corporate Employee Leave Request
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
@@ -85,6 +86,51 @@
             name="Leave Approval Task Escalation"
             activiti:class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess">
         </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="leaveRequestApprovalTask" 
+                              targetRef="approvalGateway" />
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="unpaidFinalApprovalTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and category == 'Unpaid'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="leaveRequestEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${category != 'Unpaid'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="unpaidFinalApprovalTask" 
+                  name="Unpaid Leave Final Approval Task" 
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation>
+                Corporate Employee Unpaid Leave Final Approval Request
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Start Date    : #{startDate}
+                End Date      : #{endDate} 
+                Category      : #{category} 
+                Hours         : #{hours} 
+                Notes         : #{notes}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow sourceRef="unpaidFinalApprovalTask"  targetRef="leaveRequestEnd" />
         <!-- end-->
         <endEvent id="leaveRequestEnd" />
     </process>
