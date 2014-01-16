@@ -42,7 +42,28 @@
                                        type="string" />
             </extensionElements>
         </startEvent>
-        <sequenceFlow id="flow1" sourceRef="leaveRequestStart" targetRef="leaveRequestApprovalTask" />
+        <sequenceFlow  sourceRef="leaveRequestStart" targetRef="validateLeaveRequestTask" />
+        <serviceTask id="validateLeaveRequestTask" 
+                     name="Validate Leave Request Task" 
+                     activiti:expression="#{corpEmpLeaveRequestProcess.validateLeaveRequest(currentEmployee,category, hours)}"
+                     activiti:resultVariable="validRequest" />
+        <!--desision-->
+        <sequenceFlow sourceRef="validateLeaveRequestTask" 
+                      targetRef="validationGateway" />
+        <exclusiveGateway id="validationGateway" />
+        <sequenceFlow sourceRef="validationGateway" 
+                      targetRef="leaveRequestApprovalTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${validRequest == 'true'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="validationGateway" 
+                      targetRef="leaveRequestEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${validRequest == 'false'}
+            </conditionExpression>
+        </sequenceFlow>
+       <!-- Leave Request approval task -->
         <userTask id="leaveRequestApprovalTask" 
                   name="Leave Request Approval Task">
             <documentation>
@@ -88,7 +109,7 @@
         </serviceTask>
         <!--desision-->
         <sequenceFlow sourceRef="leaveRequestApprovalTask" 
-                              targetRef="approvalGateway" />
+                      targetRef="approvalGateway" />
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
                       targetRef="unpaidFinalApprovalTask">

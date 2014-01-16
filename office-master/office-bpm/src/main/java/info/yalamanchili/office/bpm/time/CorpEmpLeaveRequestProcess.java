@@ -52,24 +52,18 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestTaskCreated(DelegateTask task) {
-        validateLeaveRequest(task);
         assignTask(task);
         sendLeaveRequestCreatedNotification(task);
     }
 
-    protected void validateLeaveRequest(DelegateTask task) {
-        //check if employee has enough hours in the category selected.
-        Employee employee = (Employee) task.getExecution().getVariable("currentemp");
-        String category = (String) task.getExecution().getVariable("category");
-        String hours = (String) task.getExecution().getVariable("hours");
+    public String validateLeaveRequest(Employee employee,String category,String hours) {
         if (category.equals("Sick_earned")) {
-
             throw new RuntimeException("invalid time sheet");
         }
         //use CorporateTimeSheetDao.gethoursinCurrentyser method.   
         CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned);
         CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent);
-        //dont check for unpaid.
+        return "true";
     }
 
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
