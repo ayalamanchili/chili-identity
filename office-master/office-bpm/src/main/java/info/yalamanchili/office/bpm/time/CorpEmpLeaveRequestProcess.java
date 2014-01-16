@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.BPMUtils;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -58,7 +59,16 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
 
     protected void validateLeaveRequest(DelegateTask task) {
         //check if employee has enough hours in the category selected.
-        //use CorporateTimeSheetDao.gethoursinCurrentyser method.
+        Employee employee = (Employee) task.getExecution().getVariable("currentemp");
+        String category = (String) task.getExecution().getVariable("category");
+        String hours = (String) task.getExecution().getVariable("hours");
+        if (category.equals("Sick_earned")) {
+
+            throw new RuntimeException("invalid time sheet");
+        }
+        //use CorporateTimeSheetDao.gethoursinCurrentyser method.   
+        CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned);
+        CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent);
         //dont check for unpaid.
     }
 
@@ -136,6 +146,5 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     }
 
     protected void leaveRequestEscationTask(DelegateExecution execution) {
-
     }
 }
