@@ -73,11 +73,11 @@ public class ReadSkillSetPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        onLoadSuccess(response);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                onLoadSuccess(response);
+            }
+        });
 
     }
 
@@ -122,5 +122,15 @@ public class ReadSkillSetPanel extends ReadComposite {
     @Override
     public String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + empId;
+    }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "skillset.html";
     }
 }

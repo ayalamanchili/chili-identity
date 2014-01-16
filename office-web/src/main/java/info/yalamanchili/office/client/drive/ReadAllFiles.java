@@ -50,11 +50,11 @@ public class ReadAllFiles extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getreadallfilesURL(parentId, start, OfficeWelcome.constants.tableSize()),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     public String getreadallfilesURL(String folderId, Integer start, String limit) {
@@ -92,7 +92,7 @@ public class ReadAllFiles extends CRUDReadAllComposite {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
-            FileField fileField = new FileField("Download",fileURL);
+            FileField fileField = new FileField("Download", fileURL);
             table.setWidget(row, 0, fileField);
         }
     }
@@ -107,11 +107,11 @@ public class ReadAllFiles extends CRUDReadAllComposite {
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            postDeleteSuccess();
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    postDeleteSuccess();
+                }
+            });
         }
     }
 
@@ -129,5 +129,15 @@ public class ReadAllFiles extends CRUDReadAllComposite {
 
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "drive/files/delete/" + entityId;
+    }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "drive.html";
     }
 }
