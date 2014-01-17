@@ -31,7 +31,7 @@ Explain about roles
     - Starts Master data sheet Entry process
     - Permission to post company feeds in social tab.
 
-- ROle_Account_View
+- Role_Account_View
     - Only viewing contracts data in reports
 
 
