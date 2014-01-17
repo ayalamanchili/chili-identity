@@ -8,6 +8,7 @@
 package info.yalamanchili.office.bpm.types;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -23,7 +24,16 @@ public class AccountReset implements Serializable {
     protected String lastName;
     protected String email;
     protected String phoneNumber;
-    protected String dateOfBirth;
+    protected Date dateOfBirth;
+    protected Date startDate;
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -57,12 +67,11 @@ public class AccountReset implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
 }

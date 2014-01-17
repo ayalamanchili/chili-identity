@@ -24,6 +24,7 @@
                 Email= ${account.email} 
                 Phone= ${account.phoneNumber} 
                 Date of Birth= ${account.dateOfBirth} 
+                Start Date=${account.startDate}
                 Please verify if the account exists for this user
                 if exists reset the password and reject task with login details 
                 else if create the account and approve the task with login details.
