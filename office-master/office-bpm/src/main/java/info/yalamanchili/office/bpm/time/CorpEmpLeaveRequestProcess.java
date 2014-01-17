@@ -132,6 +132,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         email.setSubject("Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName());
         String messageText = "Name: " + task.getName() + " \n Description: " + task.getDescription() + " \n Task Notes: " + task.getVariable("taskNotes");
         email.setBody(messageText);
+        email.setIsHtml(Boolean.TRUE);
         //TODO add reamining leaves for employee details
         messagingService.sendEmail(email);
     }

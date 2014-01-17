@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.bpm.time;
 
-import info.chili.commons.DateUtils;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -45,12 +44,11 @@ public class CorpEmpLeaveRequestProcessBean {
         }
     }
 
-    public void saveApprovedLeaveRequest(Employee emp, String category, String hours, String startDate, String endDate, String notes) {
+    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, String startDate, String endDate, String notes) {
         BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
-        TimeSheetCategory tsCategory = TimeSheetCategory.valueOf(category);
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
-        ts.setCategory(tsCategory);
+        ts.setCategory(TimeSheetCategory.Sick_Spent);
         ts.setHours(leaveHours);
         //TODO fix
         ts.setStartDate(new Date());
