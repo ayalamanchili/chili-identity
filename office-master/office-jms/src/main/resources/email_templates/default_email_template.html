@@ -18,11 +18,14 @@
 
 
 
-            <div class="content" style="width:700px;height:350px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
+            <div class="content" style="width:700px;height:350px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-decoration:underline;text-align:center;"><div>
                     <h4>System Soft Portal Notification</h4>
                 </div>
                 <div>
-                    <div style="text-align: left;" th:utext="${email.body}"><pre></pre></div>
+                    <div th:switch="${email.isHtml}"> 
+                        <div th:case="'true'" th:text="${email.body}"></div>
+                        <p th:case="*" th:text="${email.body}"> </p>
+                    </div>
                 </div>
             </div>
 

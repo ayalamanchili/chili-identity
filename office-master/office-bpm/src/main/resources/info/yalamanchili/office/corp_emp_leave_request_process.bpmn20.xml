@@ -42,28 +42,36 @@
                                        type="string" />
             </extensionElements>
         </startEvent>
+        <!-- Validate leave Request-->
         <sequenceFlow  sourceRef="leaveRequestStart" targetRef="validateLeaveRequestTask" />
         <serviceTask id="validateLeaveRequestTask" 
                      name="Validate Leave Request Task" 
-                     activiti:expression="#{corpEmpLeaveRequestValidator.validateLeaveRequest(currentEmployee,category, hours)}"
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.validateLeaveRequest(currentEmployee,category, hours)}"
                      activiti:resultVariable="validRequest" />
         <!--desision-->
         <sequenceFlow sourceRef="validateLeaveRequestTask" 
                       targetRef="validationGateway" />
         <exclusiveGateway id="validationGateway" />
+        <!-- if valid request create user task for approval -->
         <sequenceFlow sourceRef="validationGateway" 
                       targetRef="leaveRequestApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${validRequest == true}
             </conditionExpression>
         </sequenceFlow>
+        <!-- if not valid send email about rejection -->
         <sequenceFlow sourceRef="validationGateway" 
-                      targetRef="leaveRequestEnd">
+                      targetRef="sendValidationFailedRejectionEmail">
             <conditionExpression xsi:type="tFormalExpression">
                 ${validRequest == false}
             </conditionExpression>
         </sequenceFlow>
-       <!-- Leave Request approval task -->
+        <!--send validations failed rejection email-->
+        <serviceTask id="sendValidationFailedRejectionEmail" 
+                            name="Validation Failed Rejection Email" 
+                            activiti:expression="#{corpEmpLeaveRequestProcessBean.sendValidationFailedRejectionEmail(currentEmployee)}" />
+        <sequenceFlow  sourceRef="sendValidationFailedRejectionEmail" targetRef="leaveRequestEnd" />
+        <!-- Leave Request approval task -->
         <userTask id="leaveRequestApprovalTask" 
                   name="Leave Request Approval Task">
             <documentation>
@@ -118,9 +126,9 @@
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="leaveRequestEnd">
+                      targetRef="saveApprovedLeaveRequest">
             <conditionExpression xsi:type="tFormalExpression">
-                ${category != 'Unpaid'}
+                ${status == 'approved' and category != 'Unpaid'}
             </conditionExpression>
         </sequenceFlow>
         <userTask id="unpaidFinalApprovalTask" 
@@ -151,7 +159,11 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow sourceRef="unpaidFinalApprovalTask"  targetRef="leaveRequestEnd" />
+        <sequenceFlow sourceRef="unpaidFinalApprovalTask"  targetRef="saveApprovedLeaveRequest" />
+        <serviceTask id="saveApprovedLeaveRequest" 
+                     name="Save Approved Leave Request" 
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.saveApprovedLeaveRequest(currentEmployee, category, hours, startDate, endDate, notes)}" />
+        <sequenceFlow sourceRef="saveApprovedLeaveRequest"  targetRef="leaveRequestEnd" />
         <!-- end-->
         <endEvent id="leaveRequestEnd" />
     </process>

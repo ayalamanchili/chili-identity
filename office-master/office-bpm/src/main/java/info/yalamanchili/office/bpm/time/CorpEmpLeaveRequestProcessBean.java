@@ -8,12 +8,17 @@
  */
 package info.yalamanchili.office.bpm.time;
 
+import info.chili.commons.DateUtils;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.math.BigDecimal;
+import java.util.Date;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -21,7 +26,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-public class CorpEmpLeaveRequestValidator {
+@Transactional
+public class CorpEmpLeaveRequestProcessBean {
 
     public boolean validateLeaveRequest(Employee employee, String category, String hours) {
         BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
@@ -34,8 +40,28 @@ public class CorpEmpLeaveRequestValidator {
         if (spent.add(leaveHours).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
             return true;
         } else {
-            //TODO send email 
+            //Send email about request rejection to employee
             return false;
         }
     }
+
+    public void saveApprovedLeaveRequest(Employee emp, String category, String hours, String startDate, String endDate, String notes) {
+        BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
+        TimeSheetCategory tsCategory = TimeSheetCategory.valueOf(category);
+        CorporateTimeSheet ts = new CorporateTimeSheet();
+        ts.setEmployee(emp);
+        ts.setCategory(tsCategory);
+        ts.setHours(leaveHours);
+        //TODO fix
+        ts.setStartDate(new Date());
+        ts.setEndDate(new Date());
+        ts.setNotes(notes);
+        ts.setStatus(TimeSheetStatus.Approved);
+        CorporateTimeSheetDao.instance().save(ts);
+    }
+
+    public void sendValidationFailedRejectionEmail(Employee emp) {
+//TODO send email to emp that his leave request was denied since no availabel leaves
+    }
+
 }
