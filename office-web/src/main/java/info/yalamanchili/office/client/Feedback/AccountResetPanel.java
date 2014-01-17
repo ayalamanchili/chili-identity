@@ -40,6 +40,7 @@ public class AccountResetPanel extends CreateComposite {
         assignEntityValueFromField("email", account);
         assignEntityValueFromField("phoneNumber", account);
         assignEntityValueFromField("dateOfBirth", account);
+        assignEntityValueFromField("startDate", account);
         logger.info(account.toString());
         return account;
     }
@@ -85,8 +86,9 @@ public class AccountResetPanel extends CreateComposite {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.STRING_FIELD);
-        addField("dateOfBirth", false, true, DataType.STRING_FIELD);
+        addField("phoneNumber", false, true, DataType.LONG_FIELD);
+        addField("dateOfBirth", false, true, DataType.DATE_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD);
     }
 
     @Override
@@ -101,6 +103,8 @@ public class AccountResetPanel extends CreateComposite {
         StringField emailF = (StringField) fields.get("email");
         StringField phoneNumberF = (StringField) fields.get("phoneNumber");
         StringField dateOfBirthF = (StringField) fields.get("dateOfBirth");
+        StringField startDateF = (StringField) fields.get("startDate");
+
         if (firstNameF.getValue() == null || firstNameF.getValue().isEmpty()) {
             firstNameF.setMessage("value is required");
             valid = false;
@@ -119,6 +123,10 @@ public class AccountResetPanel extends CreateComposite {
         }
         if (dateOfBirthF.getValue() == null || dateOfBirthF.getValue().isEmpty()) {
             dateOfBirthF.setMessage("value is required");
+            valid = false;
+        }
+        if (startDateF.getValue() == null || startDateF.getValue().isEmpty()) {
+            startDateF.setMessage("value is required");
             valid = false;
         }
         return valid;
