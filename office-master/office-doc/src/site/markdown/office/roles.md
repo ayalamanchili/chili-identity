@@ -43,3 +43,9 @@ Explain about roles
 - TIME
     - Corporate Employees can submit their leave requests and view their available leave hours
 
+
+Portal Roles
+===========
+
+![alt text](../images/Portal_Roles_Hierarchy.png "Portal Roles")
+
