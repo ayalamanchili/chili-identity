@@ -63,7 +63,7 @@ public class EmailService {
                 mimeMessage.setSubject(email.getSubject());
                 final Context ctx = new Context();
                 ctx.setVariable("email", email);
-                String htmlContent = templateEngine.process(email.getTemplateName(), ctx);
+                String htmlContent = templateEngine.process(getTemplateName(email), ctx);
                 message.setText(htmlContent, true);
                 processAttchments(message, email);
             }
@@ -74,6 +74,14 @@ public class EmailService {
         } catch (MailException ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
+        }
+    }
+
+    protected String getTemplateName(Email email) {
+        if (email.getTemplateName() == null && email.getIsHtml()) {
+            return "default_html_email_template.html";
+        } else {
+            return "default_email_template.html";
         }
     }
 
@@ -110,7 +118,7 @@ public class EmailService {
         }
         return result;
     }
-    
+
     protected boolean notificationsEnabled(String emailAddress) {
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {

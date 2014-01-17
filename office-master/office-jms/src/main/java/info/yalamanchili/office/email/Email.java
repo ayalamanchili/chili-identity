@@ -24,7 +24,7 @@ public class Email implements Serializable {
     protected String body;
     protected Boolean isHtml = false;
     protected Set<String> attachments;
-    protected String templateName = "default_email_template.html";
+    protected String templateName;
 
     public Email() {
     }
