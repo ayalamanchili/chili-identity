@@ -45,7 +45,7 @@
         <sequenceFlow  sourceRef="leaveRequestStart" targetRef="validateLeaveRequestTask" />
         <serviceTask id="validateLeaveRequestTask" 
                      name="Validate Leave Request Task" 
-                     activiti:expression="#{corpEmpLeaveRequestProcess.validateLeaveRequest(currentEmployee,category, hours)}"
+                     activiti:expression="#{corpEmpLeaveRequestValidator.validateLeaveRequest(currentEmployee,category, hours)}"
                      activiti:resultVariable="validRequest" />
         <!--desision-->
         <sequenceFlow sourceRef="validateLeaveRequestTask" 
@@ -54,13 +54,13 @@
         <sequenceFlow sourceRef="validationGateway" 
                       targetRef="leaveRequestApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${validRequest == 'true'}
+                ${validRequest == true}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="validationGateway" 
                       targetRef="leaveRequestEnd">
             <conditionExpression xsi:type="tFormalExpression">
-                ${validRequest == 'false'}
+                ${validRequest == false}
             </conditionExpression>
         </sequenceFlow>
        <!-- Leave Request approval task -->

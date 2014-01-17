@@ -18,6 +18,7 @@ import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.jms.MessagingService;
+import java.math.BigDecimal;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
@@ -46,6 +47,22 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         }
     }
 
+    public boolean validateLeaveRequest(Employee employee, String category, String hours) {
+        BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
+        TimeSheetCategory tsCategory = TimeSheetCategory.valueOf(category);
+        if (TimeSheetCategory.Unpaid.equals(tsCategory)) {
+            return true;
+        }
+        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(category.replace("Spent", "Earned")));
+        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, tsCategory);
+        if (spent.add(leaveHours).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
+            return true;
+        } else {
+            //TODO send email 
+            return false;
+        }
+    }
+
     /**
      * Leave Request Created
      *
@@ -54,16 +71,6 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     protected void leaveRequestTaskCreated(DelegateTask task) {
         assignTask(task);
         sendLeaveRequestCreatedNotification(task);
-    }
-
-    public String validateLeaveRequest(Employee employee,String category,String hours) {
-        if (category.equals("Sick_earned")) {
-            throw new RuntimeException("invalid time sheet");
-        }
-        //use CorporateTimeSheetDao.gethoursinCurrentyser method.   
-        CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned);
-        CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent);
-        return "true";
     }
 
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
