@@ -84,7 +84,7 @@ public class NonEmpDataTool {
                 continue;
             }
             String empType = getCellStringValue(record, 24);
-            if (StringUtils.isNotBlank(empType) && (empType.equalsIgnoreCase("Subcontractor") || empType.equalsIgnoreCase("1099"))) {
+            if (StringUtils.isNotBlank(empType) && (empType.equalsIgnoreCase("Subcontractor") || empType.equalsIgnoreCase("1099 Subcontractor"))) {
                 EmployeeCreateDto dto = new EmployeeCreateDto();
                 dto.setFirstName(getCellStringValue(record, 25));
                 dto.setLastName(getCellStringValue(record, 26));
@@ -93,8 +93,8 @@ public class NonEmpDataTool {
                     dto.setEmployeeType((EmployeeType) QueryUtils.findEntity(em, EmployeeType.class, "name", "Subcontractor"));
 
                 }
-                if (empType.equalsIgnoreCase("1099")) {
-                    dto.setEmployeeType((EmployeeType) QueryUtils.findEntity(em, EmployeeType.class, "name", "1099"));
+                if (empType.equalsIgnoreCase("1099 Subcontractor")) {
+                    dto.setEmployeeType((EmployeeType) QueryUtils.findEntity(em, EmployeeType.class, "name", "1099 Subcontractor"));
                 }
                 String gender = getCellStringValue(record, 43);
                 if (StringUtils.isNotBlank(gender)) {

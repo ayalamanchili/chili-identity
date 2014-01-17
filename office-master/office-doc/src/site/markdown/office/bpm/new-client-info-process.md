@@ -10,7 +10,7 @@ Creating New Client Information Process
  - populate all the applicable fields
  - you also have a options to enter the previous project end date.
  - subcontractor
- - 1099
+ - 1099 Subcontractor
  - ![alt text](../../images/bpm/new-client-info/create-client-info-fields.png "New Client Info")
 
 

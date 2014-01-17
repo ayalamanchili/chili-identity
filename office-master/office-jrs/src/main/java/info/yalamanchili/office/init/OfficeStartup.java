@@ -601,12 +601,12 @@ public class OfficeStartup {
     protected EmployeeType get1099EmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
-        getEmployeeTypeQuery.setParameter("nameParam", "1099");
+        getEmployeeTypeQuery.setParameter("nameParam", "1099 Subcontractor");
         if (getEmployeeTypeQuery.getResultList().size() > 0) {
             return (EmployeeType) getEmployeeTypeQuery.getResultList().get(0);
         } else {
             EmployeeType employeetype = new EmployeeType();
-            employeetype.setName("1099");
+            employeetype.setName("1099 Subcontractor");
             employeetype.setDescription("SSTECH 1099");
             return em.merge(employeetype);
         }

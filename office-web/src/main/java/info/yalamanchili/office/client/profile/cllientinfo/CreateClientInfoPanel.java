@@ -202,7 +202,7 @@ public class CreateClientInfoPanel extends CreateComposite {
                 addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             }
             if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-                entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
+                entityFieldsPanel.add(getLineSeperatorTag("1099 Subcontractor Information"));
                 addField("payRate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("paymentTerms1099", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

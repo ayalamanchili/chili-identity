@@ -94,7 +94,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 assignFieldValueFromEntity("subcontractCOI", entity, DataType.BOOLEAN_FIELD);
             }
             if (Auth.is1099(getEmployee())) {
-                entityFieldsPanel.add(getLineSeperatorTag("1099 Employee Information"));
+                entityFieldsPanel.add(getLineSeperatorTag("1099 Subcontractor Information"));
                 assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("paymentTerms1099", entity, DataType.STRING_FIELD);
@@ -167,7 +167,7 @@ public class ReadClientInfoPanel extends ReadComposite {
                 addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             }
             if (Auth.is1099(getEmployee())) {
-                entityFieldsPanel.add(getLineSeperatorTag("1099 Information"));
+                entityFieldsPanel.add(getLineSeperatorTag("1099 Subcontractor"));
                 addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("paymentTerms1099", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
