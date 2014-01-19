@@ -32,6 +32,7 @@ public class GenericTaskCreateNotification implements TaskListener {
         email.setTos(BPMUtils.getCandidateEmails(delegateTask));
         email.setSubject("Task Created:" + delegateTask.getName());
         String messageText = "Task is Created. Please complete.\n Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();
+        email.setIsHtml(Boolean.TRUE);
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
