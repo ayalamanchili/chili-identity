@@ -28,30 +28,28 @@ public class AccountResetCompleteNotification implements TaskListener {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         AccountReset account = (AccountReset) delegateTask.getExecution().getVariable("account");
         Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_RELATIONSHIP));
         email.addTo(account.getEmail());
-        email.setSubject("Account Reset");
-        mailUtils.getEmailsAddressesForRoles(OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_RELATIONSHIP);
-        StringBuilder message = new StringBuilder();
-        //task statuss
         String status = (String) delegateTask.getExecution().getVariable("status");
-        if (status != null) {
-            message.append(" Status:").append(status.toUpperCase());
-        }
+        email.setSubject("Account Reset Task Completed: Status:" + status);
+        StringBuilder message = new StringBuilder();
+        message.append(" Status:").append(status.toUpperCase()).append("\n");;
         //username
         String username = (String) delegateTask.getExecution().getVariable("username");
         if (username != null) {
-            message.append(" UserName:").append(username);
+            message.append(" Username:").append(username).append("\n");;
         }
         //password
         String password = (String) delegateTask.getExecution().getVariable("password");
         if (password != null) {
-            message.append(" Password:").append(password);
+            message.append(" Password:").append(password).append("\n");;
         }
         //task notes
         String notes = (String) delegateTask.getExecution().getVariable("notes");
         if (notes != null) {
-            message.append(" Notes:").append(notes);
+            message.append(" Notes:").append(notes).append("\n");
         }
+        email.setIsHtml(Boolean.TRUE);
         email.setBody(message.toString());
         messagingService.sendEmail(email);
     }

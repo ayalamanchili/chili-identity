@@ -41,13 +41,13 @@
                 </activiti:formProperty>
                 <activiti:formProperty id="username" 
                                        name="Username"
-                                       required="false" 
+                                       required="true" 
                                        variable="username"
                                        type="string" />
                 <activiti:formProperty id="password" 
                                        name="Password"
                                        variable="password"
-                                       required="false" 
+                                       required="true" 
                                        type="string" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"

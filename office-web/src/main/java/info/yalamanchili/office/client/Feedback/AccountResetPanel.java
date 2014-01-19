@@ -10,11 +10,11 @@ package info.yalamanchili.office.client.Feedback;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
@@ -49,17 +49,17 @@ public class AccountResetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -86,7 +86,7 @@ public class AccountResetPanel extends CreateComposite {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
         addField("email", false, true, DataType.STRING_FIELD);
-        addField("phoneNumber", false, true, DataType.LONG_FIELD);
+        addField("phoneNumber", false, false, DataType.LONG_FIELD);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
     }
@@ -101,9 +101,8 @@ public class AccountResetPanel extends CreateComposite {
         StringField firstNameF = (StringField) fields.get("firstName");
         StringField lastNameF = (StringField) fields.get("lastName");
         StringField emailF = (StringField) fields.get("email");
-        StringField phoneNumberF = (StringField) fields.get("phoneNumber");
-        StringField dateOfBirthF = (StringField) fields.get("dateOfBirth");
-        StringField startDateF = (StringField) fields.get("startDate");
+        DateField dateOfBirthF = (DateField) fields.get("dateOfBirth");
+        DateField startDateF = (DateField) fields.get("startDate");
 
         if (firstNameF.getValue() == null || firstNameF.getValue().isEmpty()) {
             firstNameF.setMessage("value is required");
@@ -117,15 +116,11 @@ public class AccountResetPanel extends CreateComposite {
             emailF.setMessage("value is required");
             valid = false;
         }
-        if (phoneNumberF.getValue() == null || phoneNumberF.getValue().isEmpty()) {
-            phoneNumberF.setMessage("value is required");
-            valid = false;
-        }
-        if (dateOfBirthF.getValue() == null || dateOfBirthF.getValue().isEmpty()) {
+        if (dateOfBirthF.getDate() == null) {
             dateOfBirthF.setMessage("value is required");
             valid = false;
         }
-        if (startDateF.getValue() == null || startDateF.getValue().isEmpty()) {
+        if (startDateF.getDate() == null) {
             startDateF.setMessage("value is required");
             valid = false;
         }

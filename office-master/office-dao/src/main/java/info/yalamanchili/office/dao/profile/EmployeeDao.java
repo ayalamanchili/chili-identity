@@ -89,6 +89,16 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return query.getResultList();
     }
 
+    public Employee findByEmail(String email) {
+        TypedQuery<Employee> qry = em.createQuery("from " + Employee.class.getCanonicalName() + " emails.email=:emailParam", Employee.class);
+        qry.setParameter("emailParam", email);
+        if (qry.getResultList().size() > 0) {
+            return qry.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
     public Employee getEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
