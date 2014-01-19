@@ -18,7 +18,6 @@ import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.jms.MessagingService;
-import java.math.BigDecimal;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
@@ -47,29 +46,15 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         }
     }
 
-    public boolean validateLeaveRequest(Employee employee, String category, String hours) {
-        BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
-        TimeSheetCategory tsCategory = TimeSheetCategory.valueOf(category);
-        if (TimeSheetCategory.Unpaid.equals(tsCategory)) {
-            return true;
-        }
-        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(category.replace("Spent", "Earned")));
-        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, tsCategory);
-        if (spent.add(leaveHours).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
-            return true;
-        } else {
-            //TODO send email 
-            return false;
-        }
-    }
-
     /**
      * Leave Request Created
      *
      * @param task
      */
     protected void leaveRequestTaskCreated(DelegateTask task) {
-        assignTask(task);
+        if (task.getTaskDefinitionKey().equals("leaveRequestApprovalTask")) {
+            assignLeaveRequestTask(task);
+        }
         sendLeaveRequestCreatedNotification(task);
     }
 
@@ -77,7 +62,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         sendLeaveRequestStatusNotification("Submitted", task);
     }
 
-    protected void assignTask(DelegateTask task) {
+    protected void assignLeaveRequestTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
         if (cnts.size() > 0) {
@@ -98,7 +83,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         if ("approved".equals(status) && !TimeSheetCategory.Unpaid.name().equals(category)) {
             leaveRequestApproved(task);
         }
-        if ("approved".equals(status) && "Unpaid Leave Final Approval Task".equals(task.getName())) {
+        if ("approved".equals(status) && "unpaidLeaveFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
             leaveRequestApproved(task);
         }
         if ("rejected".equals(status)) {
@@ -129,11 +114,18 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(task));
-        email.setSubject("Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName());
-        String messageText = "Name: " + task.getName() + " \n Description: " + task.getDescription() + " \n Task Notes: " + task.getVariable("taskNotes");
-        email.setBody(messageText);
+        email.addTo(emp.getPrimaryEmail().getEmail());
+        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
+        email.setSubject(summary);
+        StringBuilder messageBuilder = new StringBuilder();
+        messageBuilder.append("Summary: " + summary + "\n");
+        messageBuilder.append("Task  Details: \n Name: " + task.getName() + "\n");
+        messageBuilder.append("Description: " + task.getDescription() + "\n");
+        messageBuilder.append("Employee Available Sick Hours     : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned) + "\n");
+        messageBuilder.append("Employee Available Personal Hours : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned) + "\n");
+        messageBuilder.append("Employee Available Vacation Hours     : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned) + " \n");
+        email.setBody(messageBuilder.toString());
         email.setIsHtml(Boolean.TRUE);
-        //TODO add reamining leaves for employee details
         messagingService.sendEmail(email);
     }
 

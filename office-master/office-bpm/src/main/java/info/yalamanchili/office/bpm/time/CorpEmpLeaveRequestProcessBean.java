@@ -8,11 +8,14 @@
  */
 package info.yalamanchili.office.bpm.time;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
+import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.springframework.context.annotation.Scope;
@@ -39,12 +42,21 @@ public class CorpEmpLeaveRequestProcessBean {
         if (spent.add(leaveHours).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
             return true;
         } else {
-            //Send email about request rejection to employee
+            sendLeaveRequestRejectedEmail(employee, category, hours);
             return false;
         }
     }
 
-    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, String startDate, String endDate, String notes) {
+    protected void sendLeaveRequestRejectedEmail(Employee employee, String category, String hours) {
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        Email email = new Email();
+        email.addTo(employee.getPrimaryEmail().getEmail());
+        email.setSubject("Leave Request Rejected");
+        email.setBody("Your leave request has been rejected due to insufficient leaves");
+        messagingService.sendEmail(email);
+    }
+
+    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, String startDate, String endDate, String... notes) {
         BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
@@ -53,13 +65,16 @@ public class CorpEmpLeaveRequestProcessBean {
         //TODO fix
         ts.setStartDate(new Date());
         ts.setEndDate(new Date());
-        ts.setNotes(notes);
+        StringBuilder notesBuilder = new StringBuilder();
+        for (String note : notes) {
+            if (note != null && !note.isEmpty()) {
+                notesBuilder.append(note);
+                notesBuilder.append("in");
+            }
+        }
+        ts.setNotes(notesBuilder.toString());
         ts.setStatus(TimeSheetStatus.Approved);
         CorporateTimeSheetDao.instance().save(ts);
-    }
-
-    public void sendValidationFailedRejectionEmail(Employee emp) {
-//TODO send email to emp that his leave request was denied since no availabel leaves
     }
 
 }

@@ -36,7 +36,7 @@
                     <activiti:value id="Vacation_Spent" name="Vacation"/>
                     <activiti:value id="Unpaid" name="Unpaid"/>
                 </activiti:formProperty>
-                <activiti:formProperty id="notes" 
+                <activiti:formProperty id="leaveRequestNotes" 
                                        name="Notes"
                                        required="false" 
                                        type="string" />
@@ -68,8 +68,8 @@
         </sequenceFlow>
         <!--send validations failed rejection email-->
         <serviceTask id="sendValidationFailedRejectionEmail" 
-                            name="Validation Failed Rejection Email" 
-                            activiti:expression="#{corpEmpLeaveRequestProcessBean.sendValidationFailedRejectionEmail(currentEmployee)}" />
+                     name="Validation Failed Rejection Email" 
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.sendValidationFailedRejectionEmail(currentEmployee)}" />
         <sequenceFlow  sourceRef="sendValidationFailedRejectionEmail" targetRef="leaveRequestEnd" />
         <!-- Leave Request approval task -->
         <userTask id="leaveRequestApprovalTask" 
@@ -81,7 +81,7 @@
                 End Date      : #{endDate} 
                 Category      : #{category} 
                 Hours         : #{hours} 
-                Notes         : #{notes}
+                Notes         : #{leaveRequestNotes}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
@@ -93,7 +93,7 @@
                     <activiti:value id="approved" name="approved"/>
                     <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
-                <activiti:formProperty id="taskNotes" 
+                <activiti:formProperty id="leaveRequestApprovalTaskNotes" 
                                        name="Notes"
                                        required="false" 
                                        type="string" />
@@ -120,7 +120,7 @@
                       targetRef="approvalGateway" />
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="unpaidFinalApprovalTask">
+                      targetRef="unpaidLeaveFinalApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved' and category == 'Unpaid'}
             </conditionExpression>
@@ -131,17 +131,24 @@
                 ${status == 'approved' and category != 'Unpaid'}
             </conditionExpression>
         </sequenceFlow>
-        <userTask id="unpaidFinalApprovalTask" 
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="leaveRequestEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="unpaidLeaveFinalApprovalTask" 
                   name="Unpaid Leave Final Approval Task" 
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Corporate Employee Unpaid Leave Final Approval Request
-                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Start Date    : #{startDate}
-                End Date      : #{endDate} 
-                Category      : #{category} 
-                Hours         : #{hours} 
-                Notes         : #{notes}
+                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Start Date          : #{startDate}
+                End Date            : #{endDate} 
+                Category            : #{category} 
+                Hours               : #{hours} 
+                Notes               : #{leaveRequestNotes}
+                Approval Task Notes : #{leaveRequestApprovalTaskNotes}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
@@ -153,16 +160,40 @@
                     <activiti:value id="approved" name="approved"/>
                     <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
-                <activiti:formProperty id="notes" 
+                <activiti:formProperty id="unpaidLeaveFinalApprovalNotes" 
                                        name="Notes"
-                                       required="true" 
+                                       required="false" 
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow sourceRef="unpaidFinalApprovalTask"  targetRef="saveApprovedLeaveRequest" />
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="unpaidLeaveFinalApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="unpaidLeaveFinalApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="unpaidLeaveFinalApprovalTaskEscalationTimer" 
+                             targetRef="leaveApprovalTaskEscalation" />
+        <sequenceFlow sourceRef="unpaidLeaveFinalApprovalTask" 
+                      targetRef="unpaidLeaveFinalApprovalGateway" />
+        <exclusiveGateway id="unpaidLeaveFinalApprovalGateway" />
+        <sequenceFlow sourceRef="unpaidLeaveFinalApprovalGateway" 
+                      targetRef="saveApprovedLeaveRequest">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="unpaidLeaveFinalApprovalGateway" 
+                      targetRef="leaveRequestEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
         <serviceTask id="saveApprovedLeaveRequest" 
                      name="Save Approved Leave Request" 
-                     activiti:expression="#{corpEmpLeaveRequestProcessBean.saveApprovedLeaveRequest(currentEmployee, category, hours, startDate, endDate, notes)}" />
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.saveApprovedLeaveRequest(currentEmployee, category, hours, startDate, endDate, leaveRequestApprovalTaskNotes, unpaidLeaveFinalApprovalNotes)}" />
         <sequenceFlow sourceRef="saveApprovedLeaveRequest"  targetRef="leaveRequestEnd" />
         <!-- end-->
         <endEvent id="leaveRequestEnd" />
