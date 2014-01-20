@@ -8,11 +8,12 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.yalamanchili.office.entity.profile.Employee;
-import javax.validation.constraints.Size;
+import java.util.Date;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -20,6 +21,18 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlRootElement
 public class EmployeeSaveDto extends Employee {
+
+    @Temporal(TemporalType.DATE)
+    @NotNull(message = "{startDate.not.empty.msg}")
+    @Override
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    @Override
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
     @XmlElement
     @Override
