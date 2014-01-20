@@ -21,6 +21,15 @@ public class Auth {
         }
     }
 
+    public static boolean isEmployee(JSONObject emp) {
+        String employeeType = JSONUtils.toString(emp.get("employeeType"), "name");
+        if (employeeType.equals("Employee") || employeeType.equals("Corporate Employee")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean isHR() {
         if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_HR.name())) {
             return true;

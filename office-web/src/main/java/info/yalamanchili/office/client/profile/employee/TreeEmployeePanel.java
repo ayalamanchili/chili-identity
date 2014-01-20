@@ -35,7 +35,6 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.activity.TreeActivityPanel;
 import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
-import info.yalamanchili.office.client.profile.empdoc.CreateEmpDocPanel;
 import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
 import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
@@ -98,6 +97,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
+        if (!Auth.isEmployee(entity)) {
+            return;
+        }
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
         addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
         if (Auth.hasNonUserRoles()) {
