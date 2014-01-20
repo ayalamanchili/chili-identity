@@ -7,10 +7,12 @@
  */
 package info.yalamanchili.office.bpm;
 
+import info.chili.commons.DateUtils;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.dao.security.SecurityService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,17 +64,24 @@ public class OfficeBPMFormService {
     }
 //TODO do we really need this can we just use start process
 
-    public void submitStartForm(String processId, List<Entry> request) {
-        Map<String, Object> vars = new HashMap<String, Object>();
-        if (request != null) {
-            for (Entry entry : request) {
-                vars.put(entry.getId(), entry.getValue());
-            }
-        }
+    public void submitStartForm(String processId, List<FormProperty> properties) {
+        Map<String, Object> vars = convertFormProperties(properties);
         vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
         if (processId == null) {
             throw new RuntimeException("invalid process id");
         }
         OfficeBPMService.instance().startProcess(processId, vars);
+    }
+
+    protected Map<String, Object> convertFormProperties(List<FormProperty> properties) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        for (FormProperty property : properties) {
+//            if (property.getType().getName().equals("date") && property.getValue() != null && !property.getValue().isEmpty()) {
+//                vars.put(property.getId(), DateUtils.parse(property.getValue(), "dd-MMM-yyyy"));
+//            } else {
+            vars.put(property.getId(), property.getValue());
+//            }
+        }
+        return vars;
     }
 }

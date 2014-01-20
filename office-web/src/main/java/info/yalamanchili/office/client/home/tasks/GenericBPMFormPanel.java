@@ -45,24 +45,29 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         int i = 0;
         for (String key : fields.keySet()) {
             JSONObject value = new JSONObject();
+            JSONObject type = new JSONObject();
             value.put("id", new JSONString(key));
             //TODO currently support string and enum fields
             if (fields.get(key) instanceof StringField) {
                 StringField stringField = (StringField) fields.get(key);
                 value.put("value", new JSONString(stringField.getValue()));
+                type.put("name", new JSONString("string"));
             }
             if (fields.get(key) instanceof BooleanField) {
                 BooleanField booleanField = (BooleanField) fields.get(key);
                 value.put("value", new JSONString(booleanField.getValue().toString()));
+                type.put("name", new JSONString("boolean"));
             }
             if (fields.get(key) instanceof LongField) {
                 LongField longField = (LongField) fields.get(key);
                 value.put("value", new JSONString(longField.getValue()));
+                type.put("name", new JSONString("long"));
             }
             if (fields.get(key) instanceof DateField) {
                 DateField field = (DateField) fields.get(key);
                 if (field.getDate() != null) {
                     value.put("value", new JSONString(field.getDate().toString()));
+                    type.put("name", new JSONString("date"));
                 }
             }
             if (fields.get(key) instanceof EnumField) {
@@ -70,7 +75,9 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                 if (enumField.getValue() != null) {
                     value.put("value", new JSONString(enumField.getValue()));
                 }
+                type.put("name", new JSONString("enum"));
             }
+            value.put("type", type);
             vars.set(i, value);
             i++;
         }

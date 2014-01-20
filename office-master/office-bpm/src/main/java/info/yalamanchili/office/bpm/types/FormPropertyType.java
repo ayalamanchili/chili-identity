@@ -9,11 +9,14 @@ package info.yalamanchili.office.bpm.types;
 
 import info.chili.service.jrs.types.Entry;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author ayalamanchili
  */
+@XmlType
 public class FormPropertyType {
 
     protected String name;

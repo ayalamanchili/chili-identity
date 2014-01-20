@@ -13,6 +13,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Comment;
 import info.yalamanchili.office.bpm.types.Comment.CommentTable;
+import info.yalamanchili.office.bpm.types.FormProperties;
 import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.HistoricTask;
 import info.yalamanchili.office.bpm.types.Task;
@@ -143,8 +144,8 @@ public class BPMResource {
 
     @PUT
     @Path("/submit_start_form/{processId}")
-    public void submitStartForm(@PathParam("processId") String processId, Entries vars) {
-        officeBPMFormService.submitStartForm(processId, vars.getEntries());
+    public void submitStartForm(@PathParam("processId") String processId, FormProperties properties) {
+        officeBPMFormService.submitStartForm(processId, properties.getEntries());
     }
     /*
      * process management
