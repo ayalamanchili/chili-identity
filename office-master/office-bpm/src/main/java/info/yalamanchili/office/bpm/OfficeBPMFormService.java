@@ -76,11 +76,12 @@ public class OfficeBPMFormService {
     protected Map<String, Object> convertFormProperties(List<FormProperty> properties) {
         Map<String, Object> vars = new HashMap<String, Object>();
         for (FormProperty property : properties) {
-//            if (property.getType().getName().equals("date") && property.getValue() != null && !property.getValue().isEmpty()) {
-//                vars.put(property.getId(), DateUtils.parse(property.getValue(), "dd-MMM-yyyy"));
-//            } else {
-            vars.put(property.getId(), property.getValue());
-//            }
+            if (property.getType().getName().equals("date") && property.getValue() != null && !property.getValue().isEmpty()) {
+                //TODO fix the date formatting
+                vars.put(property.getId(), DateUtils.parse(property.getValue().replace("GMT-500 ", ""), "EEE MMM dd HH:mm:ss yyyy"));
+            } else {
+                vars.put(property.getId(), property.getValue());
+            }
         }
         return vars;
     }

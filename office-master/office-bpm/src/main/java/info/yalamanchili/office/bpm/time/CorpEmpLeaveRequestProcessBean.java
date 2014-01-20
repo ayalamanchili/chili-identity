@@ -56,15 +56,15 @@ public class CorpEmpLeaveRequestProcessBean {
         messagingService.sendEmail(email);
     }
 
-    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, String startDate, String endDate, String... notes) {
+    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, Date startDate, Date endDate, String... notes) {
         BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
-        ts.setCategory(TimeSheetCategory.Sick_Spent);
+        ts.setCategory(categorys);
         ts.setHours(leaveHours);
         //TODO fix
-        ts.setStartDate(new Date());
-        ts.setEndDate(new Date());
+        ts.setStartDate(startDate);
+        ts.setEndDate(endDate);
         StringBuilder notesBuilder = new StringBuilder();
         for (String note : notes) {
             if (note != null && !note.isEmpty()) {
