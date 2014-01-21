@@ -104,7 +104,6 @@ public class EmployeeService {
     }
 
     public CUser changePassword(Long empId, User user) {
-        //TODO check existing password
         CUser user1 = getEmployee(empId).getUser();
         String oldpswd = SecurityUtils.encodePassword(user.getOldPassword(), null);
         if (oldpswd.equals(user1.getPasswordHash())) {

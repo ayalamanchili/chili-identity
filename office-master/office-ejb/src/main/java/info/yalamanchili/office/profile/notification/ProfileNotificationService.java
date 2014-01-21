@@ -95,6 +95,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
+//TODO remove not needed.
 
     @Async
     public void sendForgotPasswordNotification(Employee emp, String tempPassword) {
@@ -119,8 +120,9 @@ public class ProfileNotificationService {
         }
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
-        email.setSubject("Employee Reset Password");
-        email.setBody("username of the employee id : " + emp.getEmployeeId() + "  and reset password is:" + resetPassword);
+        email.setIsHtml(Boolean.TRUE);
+        email.setSubject("Employee Password Reset");
+        email.setBody("Your password has been reset \n Username: " + emp.getEmployeeId() + " \n password:" + resetPassword + "\n please change your password after you login from your profile");
         messagingService.sendEmail(email);
     }
 
@@ -135,7 +137,7 @@ public class ProfileNotificationService {
         email.setIsHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendNewMessageNotification(Message msg) {
         Email email = new Email();

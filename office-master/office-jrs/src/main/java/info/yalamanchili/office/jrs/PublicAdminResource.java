@@ -61,8 +61,6 @@ public class PublicAdminResource {
         user.setUserName(empId.toString());
         user.setNewPassword(tempPassword);
         employeeService.resetPassword(emp.getId(), user);
-
-        ProfileNotificationService.instance().sendForgotPasswordNotification(emp, tempPassword);
     }
 
     @Path("/account_reset")
