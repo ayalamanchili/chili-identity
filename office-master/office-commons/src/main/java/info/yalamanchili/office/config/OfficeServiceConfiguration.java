@@ -40,6 +40,8 @@ public class OfficeServiceConfiguration {
     //20MB
     protected long fileSizeLimit = 20971520;
 
+    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi";
+
     protected String dataloadFilePath = contentManagementLocationRoot + "load.xlsx";
 
     public void setAdminEmail(String adminEmail) {
@@ -49,6 +51,15 @@ public class OfficeServiceConfiguration {
     @ManagedAttribute
     public String getAdminEmail() {
         return adminEmail;
+    }
+
+    @ManagedAttribute
+    public String getErrorLogsEmailList() {
+        return errorLogsEmailList;
+    }
+
+    public void setErrorLogsEmailList(String errorLogsEmailList) {
+        this.errorLogsEmailList = errorLogsEmailList;
     }
 
     @ManagedAttribute
