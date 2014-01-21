@@ -28,7 +28,7 @@ public class AccountResetCompleteNotification implements TaskListener {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         AccountReset account = (AccountReset) delegateTask.getExecution().getVariable("account");
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_RELATIONSHIP));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_RELATIONSHIP));
         email.addTo(account.getEmail());
         String status = (String) delegateTask.getExecution().getVariable("status");
         email.setSubject("Account Reset Task Completed: Status:" + status);
