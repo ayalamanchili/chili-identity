@@ -12,7 +12,6 @@ import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.dao.security.SecurityService;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +77,7 @@ public class OfficeBPMFormService {
         for (FormProperty property : properties) {
             if (property.getType().getName().equals("date") && property.getValue() != null && !property.getValue().isEmpty()) {
                 //TODO fix the date formatting
-                vars.put(property.getId(), DateUtils.parse(property.getValue().replace("GMT-500 ", ""), "EEE MMM dd HH:mm:ss yyyy"));
+                vars.put(property.getId(), DateUtils.removeTimeZoneCodeFromDate(property.getValue(), "EEE MMM dd HH:mm:ss yyyy"));
             } else {
                 vars.put(property.getId(), property.getValue());
             }
