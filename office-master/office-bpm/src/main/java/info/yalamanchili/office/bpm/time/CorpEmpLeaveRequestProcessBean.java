@@ -60,7 +60,7 @@ public class CorpEmpLeaveRequestProcessBean {
         BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
-        ts.setCategory(categorys);
+        ts.setCategory(category);
         ts.setHours(leaveHours);
         //TODO fix
         ts.setStartDate(startDate);
