@@ -90,6 +90,14 @@ public class Auth {
         }
     }
 
+    public static boolean isCorporateEmployee(JSONObject employee) {
+        if (JSONUtils.toString(employee.get("employeeType"), "name").equals("Corporate Employee")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean isCorporateEmployee() {
         if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Corporate Employee")) {
             return true;

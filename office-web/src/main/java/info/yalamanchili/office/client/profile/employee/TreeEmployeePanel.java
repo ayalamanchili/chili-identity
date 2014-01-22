@@ -97,24 +97,25 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Phones", PHONE_NODE);
         addFirstChildLink("Client Information", REPORTS_TO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
-        if (!Auth.isEmployee(entity)) {
-            return;
-        }
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
-        addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
+        if (Auth.isEmployee(entity)) {
+            addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
+        }
         if (Auth.hasNonUserRoles()) {
             addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
         }
         addFirstChildLink("Documents", DOCUMENTS_NODE);
-        if (Auth.isAdmin()) {
+        if (Auth.isAdmin() && Auth.isCorporateEmployee(entity)) {
             addFirstChildLink("Roles", ROLES_NODE);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addFirstChildLink("Preferences", PREFERENCES_NODE);
         }
         addFirstChildLink("Privacy", PRIVACY_NODE);
-        if (Auth.isAdmin()) {
+        if (Auth.isAdmin() && Auth.isEmployee(entity)) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
         this.rootItem.setState(true);
