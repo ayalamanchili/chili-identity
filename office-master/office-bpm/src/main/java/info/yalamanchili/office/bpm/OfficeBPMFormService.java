@@ -77,7 +77,7 @@ public class OfficeBPMFormService {
         for (FormProperty property : properties) {
             if (property.getType().getName().equals("date") && property.getValue() != null && !property.getValue().isEmpty()) {
                 //TODO fix the date formatting
-                vars.put(property.getId(), DateUtils.removeTimeZoneCodeFromDate(property.getValue(), "EEE MMM dd HH:mm:ss yyyy"));
+                vars.put(property.getId(), DateUtils.parse(DateUtils.removeTimeZoneCodeFromDate(property.getValue()), "EEE MMM dd HH:mm:ss yyyy"));
             } else {
                 vars.put(property.getId(), property.getValue());
             }
