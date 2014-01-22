@@ -49,7 +49,7 @@ public class AccountResetCompleteNotification implements TaskListener {
         if (notes != null) {
             message.append(" Notes:").append(notes).append("\n");
         }
-        email.setIsHtml(Boolean.TRUE);
+        email.setHtml(Boolean.TRUE);
         email.setBody(message.toString());
         messagingService.sendEmail(email);
     }

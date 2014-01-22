@@ -33,14 +33,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class ProfileNotificationService {
-
+    
     @Autowired
     protected MailUtils mailUtils;
     @Autowired
     protected MessagingService messagingService;
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public EntityManager em;
-
+    
     @Async
     public void skillSetUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_RECRUITER};
@@ -51,7 +51,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-
+    
     @Async
     public void sendNewUserCreatedNotification(Employee employee) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_RELATIONSHIP};
@@ -73,7 +73,7 @@ public class ProfileNotificationService {
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
-
+    
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE};
@@ -84,7 +84,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-
+    
     @Async
     public void sendEmergencyContactUpdateNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_RELATIONSHIP, OfficeRoles.ROLE_HR};
@@ -110,7 +110,7 @@ public class ProfileNotificationService {
         email.setBody("you temp password is:" + tempPassword);
         messagingService.sendEmail(email);
     }
-
+    
     @Async
     public void sendResetPasswordNotification(Employee emp, String resetPassword) {
         Email email = new Email();
@@ -120,12 +120,12 @@ public class ProfileNotificationService {
         }
         tos.add(emp.getPrimaryEmail().getEmail());
         email.setTos(tos);
-        email.setIsHtml(Boolean.TRUE);
+        email.setHtml(Boolean.TRUE);
         email.setSubject("Employee Password Reset");
         email.setBody("Your password has been reset \n Username: " + emp.getEmployeeId() + " \n password:" + resetPassword + "\n please change your password after you login from your profile");
         messagingService.sendEmail(email);
     }
-
+    
     @Async
     public void feedBackNotification(Feedback fb, String username) {
         Email email = new Email();
@@ -134,10 +134,10 @@ public class ProfileNotificationService {
         email.setTos(tos);
         email.setSubject("Employee Feedback from " + username);
         email.setBody(fb.getFeedbackmsg());
-        email.setIsHtml(Boolean.TRUE);
+        email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-
+    
     @Async
     public void sendNewMessageNotification(Message msg) {
         Email email = new Email();
@@ -148,10 +148,11 @@ public class ProfileNotificationService {
         email.setTos(tos);
         email.setSubject("Portal Message: " + msg.getSubject() + " :From:" + msg.getFromEmp().getFirstName() + "," + msg.getFromEmp().getFirstName());
         email.setBody(msg.getMessage());
-        email.setIsHtml(true);
+        email.setHtml(true);
+        email.setRichText(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-
+    
     @Async
     public void sendEmployeeDeactivationNotification(Employee emp) {
         String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE};
@@ -162,7 +163,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-
+    
     public static ProfileNotificationService instance() {
         return SpringContext.getBean(ProfileNotificationService.class);
     }

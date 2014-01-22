@@ -125,7 +125,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         messageBuilder.append("Employee Available Personal Hours : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned) + "\n");
         messageBuilder.append("Employee Available Vacation Hours     : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned) + " \n");
         email.setBody(messageBuilder.toString());
-        email.setIsHtml(Boolean.TRUE);
+        email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
 

@@ -61,6 +61,12 @@
             <artifactId>thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
         </dependency>
+        <!-- Clean up email html for rich text -->
+        <dependency>
+            <groupId>jtidy</groupId>
+            <artifactId>jtidy</artifactId>
+            <version>r938</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>

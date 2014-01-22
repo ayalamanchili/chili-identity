@@ -11,7 +11,10 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -36,6 +39,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring3.SpringTemplateEngine;
+import org.w3c.tidy.Tidy;
 
 /**
  *
@@ -55,16 +59,13 @@ public class EmailService {
         if (tos.length < 1) {
             return;
         }
-        final SpringTemplateEngine templateEngine = (SpringTemplateEngine) SpringContext.getBean("templateEngine");
+
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
                 mimeMessage.setRecipients(Message.RecipientType.BCC, tos);
                 mimeMessage.setSubject(email.getSubject());
-                final Context ctx = new Context();
-                ctx.setVariable("email", email);
-                String htmlContent = templateEngine.process(getTemplateName(email), ctx);
-                message.setText(htmlContent, true);
+                message.setText(processEmailBodyFromTemplate(email), true);
                 processAttchments(message, email);
             }
         };
@@ -77,12 +78,45 @@ public class EmailService {
         }
     }
 
+    protected String processEmailBodyFromTemplate(Email email) {
+        final SpringTemplateEngine templateEngine = (SpringTemplateEngine) SpringContext.getBean("templateEngine");
+        final Context ctx = new Context();
+        ctx.setVariable("email", email);
+        cleanEmailHtmlBody(email);
+        return templateEngine.process(getTemplateName(email), ctx);
+    }
+
     protected String getTemplateName(Email email) {
-        if (email.getTemplateName() == null && email.getIsHtml()) {
+        if (email.getTemplateName() != null) {
+            return email.getTemplateName();
+        }
+        if (email.isRichText()) {
+            return "rich_text_email_template.html";
+        } else if (email.isHtml()) {
             return "default_html_email_template.html";
         } else {
             return "default_email_template.html";
         }
+    }
+
+    protected void cleanEmailHtmlBody(Email email) {
+        if (email.isRichText()) {
+            try {
+                email.setBody(cleanData(email.getBody()));
+            } catch (UnsupportedEncodingException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    protected String cleanData(String data) throws UnsupportedEncodingException {
+        Tidy tidy = new Tidy();
+        tidy.setPrintBodyOnly(true);
+        tidy.setXmlOut(true);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes("UTF-8"));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        tidy.parseDOM(inputStream, outputStream);
+        return outputStream.toString("UTF-8");
     }
 
     protected void processAttchments(MimeMessageHelper message, Email email) throws MessagingException {

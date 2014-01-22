@@ -22,7 +22,8 @@ public class Email implements Serializable {
     protected Set<String> bccs;
     protected String subject;
     protected String body;
-    protected Boolean isHtml = false;
+    protected Boolean html = false;
+    protected Boolean richText = false;
     protected Set<String> attachments;
     protected String templateName;
 
@@ -83,12 +84,20 @@ public class Email implements Serializable {
         this.body = body;
     }
 
-    public Boolean getIsHtml() {
-        return isHtml;
+    public Boolean isHtml() {
+        return html;
     }
 
-    public void setIsHtml(Boolean isHtml) {
-        this.isHtml = isHtml;
+    public void setHtml(Boolean html) {
+        this.html = html;
+    }
+
+    public Boolean isRichText() {
+        return richText;
+    }
+
+    public void setRichText(Boolean richText) {
+        this.richText = richText;
     }
 
     public Set<String> getAttachments() {
@@ -121,6 +130,6 @@ public class Email implements Serializable {
 
     @Override
     public String toString() {
-        return "Email{" + "tos=" + tos + ", ccs=" + ccs + ", bccs=" + bccs + ", subject=" + subject + ", body=" + body + ", isHtml=" + isHtml + ", attachments=" + attachments + ", templateName=" + templateName + '}';
+        return "Email{" + "tos=" + tos + ", ccs=" + ccs + ", bccs=" + bccs + ", subject=" + subject + ", body=" + body + ", isHtml=" + html + ", attachments=" + attachments + ", templateName=" + templateName + '}';
     }
 }

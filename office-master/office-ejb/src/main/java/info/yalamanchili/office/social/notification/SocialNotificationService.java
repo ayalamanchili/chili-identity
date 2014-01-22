@@ -38,7 +38,7 @@ public class SocialNotificationService {
     public void sendNewCompanyPostNotification(Post post) {
         String[] roles = {OfficeRoles.ROLE_USER, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_ADMIN};
         Email email = new Email();
-        email.setIsHtml(true);
+        email.setHtml(true);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New Post in company feed");
         email.setBody(post.getPostContent());

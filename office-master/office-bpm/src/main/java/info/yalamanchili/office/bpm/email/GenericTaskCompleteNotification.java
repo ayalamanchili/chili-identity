@@ -45,7 +45,7 @@ public class GenericTaskCompleteNotification implements TaskListener {
             subjectText = subjectText.concat(" Notes:" + notes);
             messageText = messageText.concat(" \n Notes:" + notes);
         }
-        email.setIsHtml(Boolean.TRUE);
+        email.setHtml(Boolean.TRUE);
         email.setSubject(subjectText);
         email.setBody(messageText);
         messagingService.sendEmail(email);
