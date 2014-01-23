@@ -109,9 +109,10 @@ public class EmergencyContactService {
             ecEntity.getContact().getPhones().get(0).setExtension(ec.getExtension());
         }
         em.merge(ecEntity);
-        if (!ecEntity.getEmployee().getEmployeeType().getName().equals("Corporate Employee")) {
-            profileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
-        }
+// removing notification for emergency notification
+//        if (!ecEntity.getEmployee().getEmployeeType().getName().equals("Corporate Employee")) {
+//            profileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
+//        }
         return ec;
     }
 
