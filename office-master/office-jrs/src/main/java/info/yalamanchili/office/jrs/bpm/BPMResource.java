@@ -99,6 +99,12 @@ public class BPMResource {
     }
 
     @GET
+    @Path("/alltasks/{start}/{limit}")
+    public TaskTable getTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
+        return officeBPMTaskService.getAllTasks(start, limit);
+    }
+
+    @GET
     @Path("/tasks/currentuser/{start}/{limit}")
     public TaskTable getMyTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
         return officeBPMTaskService.getAllTasksForUser(SecurityService.instance().getCurrentUser(), start, limit);

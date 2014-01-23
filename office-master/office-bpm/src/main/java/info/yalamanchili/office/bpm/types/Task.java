@@ -8,9 +8,9 @@
 package info.yalamanchili.office.bpm.types;
 
 import info.chili.spring.SpringContext;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -112,12 +112,34 @@ public class Task {
         return task;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Task other = (Task) obj;
+        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+
     @XmlRootElement
     @XmlType
     public static class TaskTable {
 
         protected Long size;
-        protected List<Task> entities;
+        protected Set<Task> entities;
 
         public Long getSize() {
             return size;
@@ -128,15 +150,16 @@ public class Task {
         }
 
         @XmlElement
-        public List<Task> getEntities() {
+        public Set<Task> getEntities() {
             if (this.entities == null) {
-                this.entities = new ArrayList<Task>();
+                this.entities = new HashSet<Task>();
             }
             return entities;
         }
 
-        public void setEntities(List<Task> entities) {
+        public void setEntities(Set<Task> entities) {
             this.entities = entities;
         }
     }
+    
 }

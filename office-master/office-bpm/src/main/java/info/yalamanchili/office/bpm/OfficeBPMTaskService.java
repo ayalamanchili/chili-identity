@@ -130,6 +130,16 @@ public class OfficeBPMTaskService {
         return result;
     }
 
+    public TaskTable getAllTasks(int start, int limit) {
+        TaskTable result = new TaskTable();
+        TaskQuery query = bpmTaskService.createTaskQuery();
+        for (org.activiti.engine.task.Task bpmTask : query.listPage(start, limit)) {
+            result.getEntities().add(mapper.map(bpmTask, Task.class));
+        }
+        result.setSize(query.count());
+        return result;
+    }
+
     public TaskTable getTasksForAsignee(String assignee, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee);
