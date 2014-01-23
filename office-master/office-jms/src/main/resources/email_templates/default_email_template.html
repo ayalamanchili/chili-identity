@@ -22,7 +22,7 @@
                     <h4>System Soft Portal Notification</h4>
                 </div>
                 <div>
-                    <div th:switch="${email.isHtml}"> 
+                    <div th:switch="${email.isHtml()}"> 
                         <div th:case="'true'" th:text="${email.body}"></div>
                         <p th:case="*" th:text="${email.body}"> </p>
                     </div>
