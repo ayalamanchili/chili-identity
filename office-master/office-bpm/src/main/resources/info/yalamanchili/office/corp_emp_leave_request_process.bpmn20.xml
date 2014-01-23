@@ -193,7 +193,7 @@
         </sequenceFlow>
         <serviceTask id="saveApprovedLeaveRequest" 
                      name="Save Approved Leave Request" 
-                     activiti:expression="#{corpEmpLeaveRequestProcessBean.saveApprovedLeaveRequest(currentEmployee, category, hours, startDate, endDate, leaveRequestApprovalTaskNotes, unpaidLeaveFinalApprovalNotes)}" />
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.saveApprovedLeaveRequest(currentEmployee, category, hours, startDate, endDate, leaveRequestApprovalTaskNotes)}" />
         <sequenceFlow sourceRef="saveApprovedLeaveRequest"  targetRef="leaveRequestEnd" />
         <!-- end-->
         <endEvent id="leaveRequestEnd" />

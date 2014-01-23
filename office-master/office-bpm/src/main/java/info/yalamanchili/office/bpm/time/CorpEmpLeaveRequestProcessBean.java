@@ -56,7 +56,7 @@ public class CorpEmpLeaveRequestProcessBean {
         messagingService.sendEmail(email);
     }
 
-    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, Date startDate, Date endDate, String... notes) {
+    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, Date startDate, Date endDate, String leaveRequestApprovalTaskNotes) {
         BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
@@ -65,14 +65,7 @@ public class CorpEmpLeaveRequestProcessBean {
         //TODO fix
         ts.setStartDate(startDate);
         ts.setEndDate(endDate);
-        StringBuilder notesBuilder = new StringBuilder();
-        for (String note : notes) {
-            if (note != null && !note.isEmpty()) {
-                notesBuilder.append(note);
-                notesBuilder.append("in");
-            }
-        }
-        ts.setNotes(notesBuilder.toString());
+        ts.setNotes(leaveRequestApprovalTaskNotes);
         ts.setStatus(TimeSheetStatus.Approved);
         CorporateTimeSheetDao.instance().save(ts);
     }
