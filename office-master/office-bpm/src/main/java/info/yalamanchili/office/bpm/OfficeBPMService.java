@@ -46,6 +46,22 @@ public class OfficeBPMService {
             bpmRepositoryService.createDeployment().addClasspathResource(processMap.get(processId)).deploy();
         }
     }
+
+    public void deleteProcess(String processId) {
+        bpmRepositoryService.deleteDeployment(processId,true);
+    }
+
+    public String getDeployedProcessInfo() {
+        StringBuilder info = new StringBuilder();
+        for (ProcessDefinition process : bpmRepositoryService.createProcessDefinitionQuery().list()) {
+            info.append("name--------").append(process.getName()).append("\n");
+            info.append("processId--------" + process.getId()).append("\n");
+            info.append("deploymentID--------" + process.getDeploymentId()).append("\n");
+            info.append("Key--------" + process.getKey()).append("\n");
+            info.append("Key--------" + process.getVersion()).append("\n");
+        }
+        return info.toString();
+    }
     /*
      * this is reqired since the process ids are appended with some auto generated numbers.
      * eg:overtime_hours_adjustment_process:1:6

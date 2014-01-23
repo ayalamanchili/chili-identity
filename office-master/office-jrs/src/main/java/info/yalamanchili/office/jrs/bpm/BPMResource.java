@@ -158,9 +158,21 @@ public class BPMResource {
     }
 
     @GET
+    @Path("/deployed-process-info")
+    public String getDeployedProcessInfo() {
+        return OfficeBPMService.instance().getDeployedProcessInfo();
+    }
+
+    @GET
     @Path("/deployprocess/{processId}")
     public void deployProcess(@PathParam("processId") String processId) {
         OfficeBPMService.instance().deployProcess(processId);
+    }
+
+    @GET
+    @Path("/deleteprocess/{processId}")
+    public void deleteProcess(@PathParam("processId") String processId) {
+        OfficeBPMService.instance().deleteProcess(processId);
     }
 
     protected Map<String, Object> getCurrentUserMap() {
