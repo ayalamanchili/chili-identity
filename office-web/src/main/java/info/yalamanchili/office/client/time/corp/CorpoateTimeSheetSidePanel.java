@@ -31,7 +31,6 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
     ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
-    ClickableLink submitLeaveRequest = new ClickableLink("Submit Leave Request");
 
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
@@ -47,7 +46,6 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
     protected void addListeners() {
         createtimeSheetlink.addClickHandler(this);
         showTimeSheetsForEmpB.addClickHandler(this);
-        submitLeaveRequest.addClickHandler(this);
     }
 
     @Override
@@ -57,7 +55,6 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
 
     @Override
     protected void addWidgets() {
-        timeSheetsidepanel.add(submitLeaveRequest);
         if (Auth.isAdmin() || Auth.hasContractsRole()) {
             timeSheetsidepanel.add(createtimeSheetlink);
 
@@ -79,9 +76,6 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(empWidget.getSelectedObjectId()));
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(empWidget.getSelectedObjectId()));
-        }
-        if (event.getSource().equals(submitLeaveRequest)) {
-            new GenericPopup(new GenericBPMStartFormPanel("CorpEmpLeaveRequest", "corp_emp_leave_request_process")).show();
         }
     }
 }
