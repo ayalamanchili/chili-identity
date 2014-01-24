@@ -119,6 +119,6 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
 
     @Override
     protected String getDocumentationLink() {
-        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "privacy.html";
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "profile/privacy.html";
     }
 }

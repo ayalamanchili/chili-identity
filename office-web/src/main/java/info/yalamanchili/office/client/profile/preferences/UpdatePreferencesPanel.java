@@ -100,6 +100,6 @@ public class UpdatePreferencesPanel extends UpdateComposite {
 
     @Override
     protected String getDocumentationLink() {
-        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "preferences.html";
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "profile/preferences.html";
     }
 }

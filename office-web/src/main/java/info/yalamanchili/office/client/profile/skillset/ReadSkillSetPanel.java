@@ -131,6 +131,6 @@ public class ReadSkillSetPanel extends ReadComposite {
 
     @Override
     protected String getDocumentationLink() {
-        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "skillset.html";
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "profile/skillset.html";
     }
 }
