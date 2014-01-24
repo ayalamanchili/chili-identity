@@ -42,7 +42,7 @@ public class UpdateCompanyContactPanel extends UpdateComposite {
         entity.put("contact", employeeF.getSelectedObject());
         JSONObject emp = new JSONObject();
         emp.put("id", new JSONString(TreeEmployeePanel.instance().getEntityId()));
-        entity.put("corporateEmployee", emp);
+        entity.put("employee", emp);
         logger.info(entity.toString());
         return entity;
     }

@@ -33,7 +33,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        entity.put("corporateEmployee", employeeF.getSelectedObject());
+        entity.put("employee", employeeF.getSelectedObject());
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
@@ -62,7 +62,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("corporateEmployee", entity, null);
+        assignFieldValueFromEntity("employee", entity, null);
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -88,7 +88,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("corporateEmployee", employeeF);
+        addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
         addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);

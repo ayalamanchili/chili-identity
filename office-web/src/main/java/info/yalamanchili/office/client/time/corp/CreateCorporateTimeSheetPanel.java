@@ -36,7 +36,7 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("corporateEmployee", entity);
+        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
@@ -82,7 +82,7 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("corporateEmployee", employeeF);
+        addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
         addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
