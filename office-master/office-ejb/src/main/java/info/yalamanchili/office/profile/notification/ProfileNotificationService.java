@@ -85,16 +85,6 @@ public class ProfileNotificationService {
         messagingService.sendEmail(email);
     }
     
-    @Async
-    public void sendEmergencyContactUpdateNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_RELATIONSHIP, OfficeRoles.ROLE_HR};
-        Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject("Emergency Contact Addition");
-        String messageText = "Emergency Contact For The Employee " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated";
-        email.setBody(messageText);
-        messagingService.sendEmail(email);
-    }
 //TODO remove not needed.
 
     @Async
