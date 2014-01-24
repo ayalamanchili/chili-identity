@@ -73,7 +73,7 @@ public class EmergencyContactService {
         emergencyCnt.setContact(contact);
         emergencyCnt.setEmployee(emp);
         em.merge(emergencyCnt);
-        profileNotificationService.sendEmergencyContactUpdateNotification(emp);
+     
     }
 
     public info.yalamanchili.office.dto.profile.EmergencyContactDto update(info.yalamanchili.office.dto.profile.EmergencyContactDto ec) {
@@ -109,10 +109,6 @@ public class EmergencyContactService {
             ecEntity.getContact().getPhones().get(0).setExtension(ec.getExtension());
         }
         em.merge(ecEntity);
-// removing notification for emergency notification
-//        if (!ecEntity.getEmployee().getEmployeeType().getName().equals("Corporate Employee")) {
-//            profileNotificationService.sendEmergencyContactUpdateNotification(ecEntity.getEmployee());
-//        }
         return ec;
     }
 
