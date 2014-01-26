@@ -50,8 +50,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-})
+            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+        })
 @Indexed
 @XmlRootElement
 @Entity
@@ -362,6 +362,15 @@ public class Employee extends Contact {
 
     public void setSsnHash(String ssnHash) {
         this.ssnHash = ssnHash;
+    }
+
+    @Transient
+    public boolean isActive() {
+        if (this.getUser() != null && !this.getUser().isEnabled()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @PrePersist

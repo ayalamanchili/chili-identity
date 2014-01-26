@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -30,13 +31,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.w3c.tidy.Tidy;
@@ -46,6 +47,7 @@ import org.w3c.tidy.Tidy;
  * @author yalamanchili
  */
 @Component
+@Transactional
 public class EmailService {
 
     private static Logger logger = Logger.getLogger(EmailService.class.getName());
@@ -135,8 +137,7 @@ public class EmailService {
             try {
                 address = new InternetAddress(emailAddress);
             } catch (AddressException ex) {
-                // simply log it and go on...
-                System.err.println(ex.getMessage());
+                logger.log(Level.WARNING, ex.getMessage());
             }
             addresses.add(address);
         }
@@ -145,9 +146,20 @@ public class EmailService {
 
     protected Set<String> filterEmails(Set<String> emails) {
         Set<String> result = new HashSet<String>();
-        for (String email : emails) {
-            if (notificationsEnabled(email)) {
-                result.add(email);
+        if (OfficeServiceConfiguration.instance().isFilterEmails()) {
+            String s = OfficeServiceConfiguration.instance().getFilteredEmailsList();
+            System.out.println("dddd" + s);
+            Set<String> whiteListEmails = OfficeServiceConfiguration.instance().getFilteredEmailsAsSet();
+            for (String email : emails) {
+                if (whiteListEmails.contains(email)) {
+                    result.add(email);
+                }
+            }
+        } else {
+            for (String email : emails) {
+                if (notificationsEnabled(email)) {
+                    result.add(email);
+                }
             }
         }
         return result;
@@ -157,7 +169,7 @@ public class EmailService {
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {
             Employee emp = (Employee) findEmail(emailAddress).getContact();
-            em.refresh(emp.getPreferences());
+            //TODO check active?
             if (!emp.getPreferences().getEnableEmailNotifications()) {
                 return false;
             }
@@ -165,7 +177,7 @@ public class EmailService {
         return true;
     }
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     protected EntityManager em;
 
 //TODO update to return just emp preferecnes

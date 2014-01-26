@@ -5,6 +5,9 @@ package info.yalamanchili.office.config;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheManager;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,27 +24,65 @@ public class OfficeServiceConfiguration {
     private final static Logger logger = Logger.getLogger(OfficeServiceConfiguration.class.getName());
     @PersistenceContext
     protected EntityManager em;
-
+    /**
+     * location where the application files/images are stored
+     */
     @Value("#{officeProperties['contentManagementLocationRoot']}")
     protected String contentManagementLocationRoot = "C://content-management//office/";
+    /**
+     *
+     */
     @Value("#{officeProperties['initRefData']}")
     protected Boolean initRefData = false;
+    /**
+     * creates testing data on server startup
+     */
     @Value("#{officeProperties['initTestData']}")
     protected Boolean initTestData = false;
+    /**
+     *
+     */
     @Value("#{officeProperties['enableLoginInterceptor']}")
     protected Boolean enableLoginInterceptor = false;
+    /**
+     * enable and disable sending emails from application
+     */
     @Value("#{officeProperties['isSendMail']}")
     protected Boolean isSendMail = true;
+    /**
+     * Used to filter emails that are being sent by application:eg: when testing
+     * in production
+     */
+    @Value("#{officeProperties['filterEmails']}")
+    protected Boolean filterEmails = true;
+    /**
+     * admin email used to send feedback
+     */
     protected String adminEmail = "yphanikumar@gmail.com";
+    /**
+     * enable sending exception detiais via email
+     */
     @Value("#{officeProperties['emailExceptionDetials']}")
     protected Boolean emailExceptionDetials = true;
-    //2MB
+    /**
+     * Max image Size 2MB
+     */
     protected long imageSizeLimit = 2097152;
-    //20MB
+    /**
+     * Max file size 20 MB
+     */
     protected long fileSizeLimit = 20971520;
-
-    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi";
-
+    /**
+     * List of emails to send error logs
+     */
+    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,raghu.l@sstech.us";
+    /**
+     * list of white listed emails addresses that can receive emails
+     */
+    protected String filteredEmailsList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,raghu.l@sstech.mobi";
+    /**
+     * file path used by data loader tool
+     */
     protected String dataloadFilePath = contentManagementLocationRoot + "load.xlsx";
 
     public void setAdminEmail(String adminEmail) {
@@ -51,15 +92,6 @@ public class OfficeServiceConfiguration {
     @ManagedAttribute
     public String getAdminEmail() {
         return adminEmail;
-    }
-
-    @ManagedAttribute
-    public String getErrorLogsEmailList() {
-        return errorLogsEmailList;
-    }
-
-    public void setErrorLogsEmailList(String errorLogsEmailList) {
-        this.errorLogsEmailList = errorLogsEmailList;
     }
 
     @ManagedAttribute
@@ -120,6 +152,15 @@ public class OfficeServiceConfiguration {
         return imageSizeLimit;
     }
 
+    @ManagedAttribute
+    public Boolean isFilterEmails() {
+        return filterEmails;
+    }
+
+    public void setFilterEmails(Boolean filterEmails) {
+        this.filterEmails = filterEmails;
+    }
+
     public void setImageSizeLimit(long imageSizeLimit) {
         this.imageSizeLimit = imageSizeLimit;
     }
@@ -134,6 +175,34 @@ public class OfficeServiceConfiguration {
 
     public String getFileSizeLimitInMB() {
         return getFileSizeLimit() / 1048576 + "MB";
+    }
+
+    @ManagedAttribute
+    public String getErrorLogsEmailList() {
+        return errorLogsEmailList;
+    }
+
+    public void setErrorLogsEmailList(String errorLogsEmailList) {
+        this.errorLogsEmailList = errorLogsEmailList;
+    }
+
+    public Set<String> getErrorLogsEmailsAsSet() {
+        String[] emails = OfficeServiceConfiguration.instance().getErrorLogsEmailList().split(",");
+        return new HashSet<String>(Arrays.asList(emails));
+    }
+
+    @ManagedAttribute
+    public String getFilteredEmailsList() {
+        return filteredEmailsList;
+    }
+
+    public Set<String> getFilteredEmailsAsSet() {
+        String[] emails = OfficeServiceConfiguration.instance().getFilteredEmailsList().split(",");
+        return new HashSet<String>(Arrays.asList(emails));
+    }
+
+    public void setFilteredEmailsList(String filteredEmailsList) {
+        this.filteredEmailsList = filteredEmailsList;
     }
 
     public String getDataloadFilePath() {

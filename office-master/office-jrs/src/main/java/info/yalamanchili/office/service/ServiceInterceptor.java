@@ -10,6 +10,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.LoginSuccessListener;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.EmailService;
+import info.yalamanchili.office.jms.MessagingService;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -126,8 +127,7 @@ public class ServiceInterceptor {
             return;
         }
         Email email = new Email();
-        String[] emails = OfficeServiceConfiguration.instance().getErrorLogsEmailList().split(",");
-        email.setTos(new HashSet<String>(Arrays.asList(emails)));
+        email.setTos(OfficeServiceConfiguration.instance().getErrorLogsEmailsAsSet());
         StringBuilder subject = new StringBuilder();
         subject.append("Portal Error Details: Host: ");
         try {
@@ -137,6 +137,6 @@ public class ServiceInterceptor {
         }
         email.setSubject(subject.toString());
         email.setBody(ExceptionUtils.getStackTrace(e));
-        EmailService.instance().sendEmail(email);
+        MessagingService.instance().sendEmail(email);
     }
 }

@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.jms;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.email.Email;
 import javax.jms.Destination;
@@ -36,5 +37,9 @@ public class MessagingService {
                 }
             });
         }
+    }
+    
+    public static MessagingService instance(){
+        return SpringContext.getBean(MessagingService.class);
     }
 }
