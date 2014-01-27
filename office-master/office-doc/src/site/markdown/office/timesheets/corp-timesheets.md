@@ -9,10 +9,13 @@ On Jan 01 every year all the employees who have completed 1 year with SSTECH wil
 - 5 days (40 hours) sick   
 
 to their account.
-### View Timesheets Summary
+### View Timesheet Summary 
+- By default when Corporate Employee clicks on Time Tab available Sick,Personal and Vacation Hours are displayed
+
 TODO add navigation and image
 
-### Submiting Leave Request.
+### Submitting Leave Request.
+- In Time tab, click on 'Submit Leave request' link which pop ups a leave request window. Fill the details and submit.
 
 TODO add steps with navigation and images
 
