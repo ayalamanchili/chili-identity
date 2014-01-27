@@ -13,6 +13,7 @@ import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.QueryUtils;
 import info.chili.security.domain.CRole;
+import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -56,6 +57,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
             Employee updatedEmployee = null;
             updatedEmployee = super.save(entity);
             updatedEmployee.setEmployeeType(em.find(EmployeeType.class, entity.getEmployeeType().getId()));
+            syncEmployeeTypeChange(updatedEmployee);
             return em.merge(updatedEmployee);
         }
         return super.save(entity);
@@ -65,6 +67,12 @@ public class EmployeeDao extends CRUDDao<Employee> {
     protected void updateSSN(Employee entity) {
         if (SecurityUtils.OBFUSCATED_STR.equals(entity.getSsn()) && null != entity.getId()) {
             entity.setSsn(findById(entity.getId()).getSsn());
+        }
+    }
+
+    protected void syncEmployeeTypeChange(Employee emp) {
+        if ("Corporate Employee".equals(emp.getEmployeeType().getName())) {
+            OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
         }
     }
 
@@ -149,5 +157,4 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return SpringContext.getBean(EmployeeDao.class);
     }
 
-  
 }

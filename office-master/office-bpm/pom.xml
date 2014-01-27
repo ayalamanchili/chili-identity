@@ -16,26 +16,6 @@
             <artifactId>office-dao</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.activiti</groupId> 					
-            <artifactId>activiti-engine</artifactId> 				
-            <version>${activiti-version}</version> 				
-        </dependency>
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring</artifactId>
-            <version>${activiti-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.2.132</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>1.8.3</version>
-        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -79,6 +59,5 @@
         <url>http://yalamanchili.info/projects/office/trunk/office-bpm</url>
     </scm> 
     <properties>
-        <activiti-version>5.10</activiti-version>
     </properties>
 </project>

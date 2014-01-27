@@ -150,6 +150,27 @@
             <artifactId>spring-security-acl</artifactId>
             <version>${spring.security.version}</version>
         </dependency>
+        <!--Activiti BPM-->
+        <dependency>
+            <groupId>org.activiti</groupId> 					
+            <artifactId>activiti-engine</artifactId> 				
+            <version>${activiti-version}</version> 				
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring</artifactId>
+            <version>${activiti-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.2.132</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.8.3</version>
+        </dependency>
         <!-- JASYPT-->
         <dependency>
             <groupId>org.jasypt</groupId>
@@ -361,7 +382,7 @@
     <properties>
         <office.version>1.1-SNAPSHOT</office.version>
         <chili.version>1.2-SNAPSHOT</chili.version>
-        <arquillian.version>1.0.0.Alpha4</arquillian.version>
+        <activiti-version>5.10</activiti-version>
         <jersey.version>1.8</jersey.version>
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.1.RELEASE</spring.security.version>
