@@ -25,4 +25,9 @@ public class HttpServiceImpl extends AbstractHttpService {
     protected String getLoginPath() {
         return officeWebConfiguration.getOfficeServicesContextRootBase() + "admin/login";
     }
+
+    @Override
+    protected String getPublicUrlPath() {
+        return "/public/";
+    }
 }
