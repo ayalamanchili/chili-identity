@@ -54,7 +54,7 @@ public class OfficeServiceConfiguration {
      * in production
      */
     @Value("#{officeProperties['filterEmails']}")
-    protected Boolean filterEmails = true;
+    protected Boolean filterEmails = false;
     /**
      * admin email used to send feedback
      */
