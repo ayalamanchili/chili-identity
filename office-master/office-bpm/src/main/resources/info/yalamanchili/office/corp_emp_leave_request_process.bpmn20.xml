@@ -69,7 +69,7 @@
         <!--send validations failed rejection email-->
         <serviceTask id="sendValidationFailedRejectionEmail" 
                      name="Validation Failed Rejection Email" 
-                     activiti:expression="#{corpEmpLeaveRequestProcessBean.sendValidationFailedRejectionEmail(currentEmployee)}" />
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.sendLeaveRequestRejectedEmail(currentEmployee)}" />
         <sequenceFlow  sourceRef="sendValidationFailedRejectionEmail" targetRef="leaveRequestEnd" />
         <!-- Leave Request approval task -->
         <userTask id="leaveRequestApprovalTask" 

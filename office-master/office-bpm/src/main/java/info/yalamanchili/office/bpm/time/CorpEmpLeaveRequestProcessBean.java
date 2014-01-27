@@ -42,12 +42,11 @@ public class CorpEmpLeaveRequestProcessBean {
         if (spent.add(leaveHours).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
             return true;
         } else {
-            sendLeaveRequestRejectedEmail(employee, category, hours);
             return false;
         }
     }
 
-    protected void sendLeaveRequestRejectedEmail(Employee employee, String category, String hours) {
+    public void sendLeaveRequestRejectedEmail(Employee employee) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.addTo(employee.getPrimaryEmail().getEmail());
