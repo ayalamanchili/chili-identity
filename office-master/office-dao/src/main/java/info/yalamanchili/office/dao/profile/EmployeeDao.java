@@ -31,6 +31,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -111,12 +113,18 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
     }
 
-    public Map<String, String> getCorpEntityStringMapByParams(int start, int limit, String... params) {
-        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where employeeType.name='Corporate Employee'", start, limit, params);
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Override
+    public Map<String, String> getEntityStringMapByParams(int start, int limit, String... params) {
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true", start, limit, params);
+    }
+
+    public Map<String, String> getCorpEemployeeStringMapByParams(int start, int limit, String... params) {
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true and employeeType.name='Corporate Employee'", start, limit, params);
     }
 
     public List<Employee> getEmployeesByType(String type) {
-        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:employeeTypeParam", Employee.class);
+        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where user.enabled=true and employeeType.name=:employeeTypeParam", Employee.class);
         query.setParameter("employeeTypeParam", type);
         return query.getResultList();
     }
@@ -124,7 +132,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String role) {
         Map<String, String> res = new HashMap<String, String>();
         CRole crole = QueryUtils.findEntity(getEntityManager(), CRole.class, "rolename", role);
-        Query q = getEntityManager().createNativeQuery("SELECT emp.id, emp.firstName,emp.lastName from CONTACT emp INNER JOIN CUSER cuser ON cuser.userId=emp.user_userId INNER JOIN USERROLES userRoles ON userRoles.UserId=cuser.userId where userRoles.RoleId=" + crole.getRoleId());
+        Query q = getEntityManager().createNativeQuery("SELECT emp.id, emp.firstName,emp.lastName from CONTACT emp INNER JOIN CUSER cuser ON cuser.userId=emp.user_userId INNER JOIN USERROLES userRoles ON userRoles.UserId=cuser.userId where cuser.enabled= TRUE and userRoles.RoleId=" + crole.getRoleId());
         for (Object obj : q.getResultList()) {
             Object[] selects = (Object[]) obj;
             res.put(selects[0].toString(), selects[1].toString() + " " + selects[2].toString());
@@ -140,4 +148,6 @@ public class EmployeeDao extends CRUDDao<Employee> {
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }
+
+  
 }

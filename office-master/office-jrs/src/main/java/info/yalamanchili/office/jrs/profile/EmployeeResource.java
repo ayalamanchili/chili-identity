@@ -147,14 +147,14 @@ public class EmployeeResource extends CRUDResource<Employee> {
             @QueryParam("column") List<String> columns) {
         return super.getDropDown(start, limit, columns);
     }
-
+//TODO make this generic
     @GET
     @Path("/corpemployees/dropdown/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getCropEmployeesDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         List<Entry> result = new ArrayList<Entry>();
-        Map<String, String> values = EmployeeDao.instance().getCorpEntityStringMapByParams(start, limit, columns.toArray(new String[columns.size()]));
+        Map<String, String> values = EmployeeDao.instance().getCorpEemployeeStringMapByParams(start, limit, columns.toArray(new String[columns.size()]));
         for (String key : values.keySet()) {
             result.add(new Entry(key, values.get(key)));
         }

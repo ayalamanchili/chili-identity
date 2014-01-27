@@ -87,6 +87,7 @@ public class AdminResource {
     @Path("/deactivateuser/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CacheEvict(value = "employees", allEntries = true)
     public void deactivateuser(@PathParam("empId") Long empId) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         employeeService.deactivateUser(empId);
