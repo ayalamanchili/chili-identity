@@ -1,8 +1,3 @@
-TODO profile
-TODO addresses
-TODO email
-TODO phones
-TODO emergency contacts
 Profile
 =========
 View and manage following information

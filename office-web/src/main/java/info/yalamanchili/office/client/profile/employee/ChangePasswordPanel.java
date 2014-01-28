@@ -8,19 +8,16 @@
 package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.PasswordField;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.widgets.GenericPopup;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.PasswordField;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.JSONUtils;
 
 /**
  *
@@ -48,20 +45,28 @@ public class ChangePasswordPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String userString) {
-                if (userString != null && userString.trim().length() > 0) {
-                    new ResponseStatusWidget().show("Change Password Successful");
-                } else {
-                    new ResponseStatusWidget().show("Change Password Failed");
+                    @Override
+                    public void onSuccess(String userString) {
+                        if (userString != null && userString.trim().length() > 0) {
+                            new ResponseStatusWidget().show("Change Password Successful");
+                            Timer t = new Timer() {
+                                @Override
+                                public void run() {
+                                    Window.Location.reload();
+                                }
+                            };
+                            t.schedule(3000);
+                        } else {
+                            new ResponseStatusWidget().show("Change Password Failed");
+                        }
+                    }
                 }
-            }
-        });
+        );
     }
 
     @Override
