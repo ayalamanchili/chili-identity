@@ -10,6 +10,7 @@ package info.yalamanchili.office.profile.notification;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.Feedback.Feedback;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -102,7 +104,9 @@ public class ProfileNotificationService {
     }
     
     @Async
+    @Transactional(readOnly = true)
     public void sendResetPasswordNotification(Employee emp, String resetPassword) {
+        emp= EmployeeDao.instance().findById(emp.getId());
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
         if (emp.getPrimaryEmail() == null) {
