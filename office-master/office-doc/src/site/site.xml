@@ -44,13 +44,11 @@
             <item name="Adminstration" href="/office/admin.html" collapse="true">
                 <item name="Bulkupload" href="/office/bulkupload.html"/>
             </item>
-            <!--
              <item name="Leave Processes" href="/office/timesheets/corp-timesheets.html" collapse="true">
                 <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
                 <item name="Timesheet Process" href="/office/timesheets/corp-timesheet-process.html"/>
                 <item name="Corp Timesheet" href="/office/timesheets/corp-timesheets.html"/>
             </item>
-            -->
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
                 <item name="Employee Address updated" href="/office/bpm/address-updated-process.html"/>
                 <item name="New Client request" href="/office/bpm/client-request-process.html"/>
