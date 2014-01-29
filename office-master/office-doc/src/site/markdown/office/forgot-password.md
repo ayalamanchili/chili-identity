@@ -2,7 +2,7 @@ Forgot Password
 =========
 
 - Click forgot/reset password link on the top right corner.
-- Enter the employee id and an email will be sent with temporary password to email account on file.
+- Enter the employee id and click on send password.Temporary password will be sent to your primary email id mentioned in Portal.
 - Employee id=first letter of “first name” followed by last name.
 - eg: David Johnson--> djohnson
 - A email with temporary password will be sent to your primary email on file.
