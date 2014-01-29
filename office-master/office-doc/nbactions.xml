@@ -8,4 +8,11 @@
                 <goal>site:site</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-pdf</actionName>
+            <displayName>pdf</displayName>
+            <goals>
+                <goal>pdf:pdf</goal>
+            </goals>
+        </action>
     </actions>
