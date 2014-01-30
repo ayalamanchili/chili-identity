@@ -19,6 +19,14 @@ TODO add navigation and image
 
 TODO add steps with navigation and images
 
+View Time Sheet Summary
+----
+![alt text](../../images/corporateemployee-avalablehours-time.png "Time")
+
+Submitting Leave Request.
+----
+![alt text](../../images/corporatetime-summary-time.png "Time")
+
 
 
 

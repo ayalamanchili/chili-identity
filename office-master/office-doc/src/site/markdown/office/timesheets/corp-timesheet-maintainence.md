@@ -20,4 +20,6 @@ Regular,
     Sick_Earned - 4(days) Sick leaves are earned by an employee for a calendar year,
     Sick_Spent - These are the sick leaves spent by an employee in current calendar year;
 
- 
+Creating Corporate Employee Time Sheet
+----
+![alt text](../../images/createcorporate-timesheet-time.png "Time")
