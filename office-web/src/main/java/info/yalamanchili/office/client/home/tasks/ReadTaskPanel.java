@@ -38,6 +38,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(ReadTaskPanel.class.getName());
     protected JSONObject task;
     protected String taskId;
+    protected boolean completedTask;
     //Panels and widgets
     protected CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
@@ -54,12 +55,15 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     Button completeB = new Button("Complete");
     Button deleteB = new Button("Delete");
 
-    public ReadTaskPanel(JSONObject task) {
+    public ReadTaskPanel(JSONObject task, boolean completedTask) {
         this.task = task;
         this.taskId = JSONUtils.toString(task, "id");
+        this.completedTask = completedTask;
         init(captionPanel);
         populateValuesAndRenderButtons();
-        populateTaskForm();
+        if (!completedTask) {
+            populateTaskForm();
+        }
     }
 
     private void populateValuesAndRenderButtons() {

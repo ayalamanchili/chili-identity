@@ -90,7 +90,11 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().getHomePanel().entityPanel.clear();
-        TabPanel.instance().getHomePanel().entityPanel.add(new ReadTaskPanel(getEntity(entityId)));
+        if (url != null && url.contains("history")) {
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadTaskPanel(getEntity(entityId), true));
+        } else {
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadTaskPanel(getEntity(entityId), false));
+        }
     }
 
     @Override

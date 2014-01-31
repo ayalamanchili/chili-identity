@@ -46,8 +46,8 @@ public class GenericBPMTaskFormPanel extends GenericBPMFormPanel {
         TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
     }
 
-    protected String getTaskFormPropertiesURL(String processId) {
-        return OfficeWelcome.constants.root_url() + "bpm/task_form_properties/" + processId;
+    protected String getTaskFormPropertiesURL(String taskId) {
+        return OfficeWelcome.constants.root_url() + "bpm/task_form_properties/" + taskId;
     }
 
     @Override
