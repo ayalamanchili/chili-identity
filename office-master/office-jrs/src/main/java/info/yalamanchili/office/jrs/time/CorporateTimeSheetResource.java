@@ -12,11 +12,14 @@ import info.yalamanchili.office.Time.CorporateTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
+import info.yalamanchili.office.bpm.time.CorpEmpLeaveRequest;
 import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -52,6 +55,12 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @Path("/summary/{empId}")
     public CorporateYealyTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
         return CorporateTimeService.instance().getYearlySummary(EmployeeDao.instance().findById(empId));
+    }
+
+    @PUT
+    @Path("/submit-leave-request")
+    public void submitLeaveRequest(CorpEmpLeaveRequest request) {
+        CorporateTimeService.instance().submitLeaveRequest(request);
     }
 
     @Override

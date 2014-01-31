@@ -78,9 +78,9 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestTaskCompleted(DelegateTask task) {
+        CorpEmpLeaveRequest request=(CorpEmpLeaveRequest) task.getExecution().getVariable("request");
         String status = (String) task.getExecution().getVariable("status");
-        String category = (String) task.getExecution().getVariable("category");
-        if ("approved".equals(status) && !TimeSheetCategory.Unpaid.name().equals(category)) {
+        if ("approved".equals(status) && !TimeSheetCategory.Unpaid.equals(request.getCategory())) {
             leaveRequestApproved(task);
         }
         if ("approved".equals(status) && "unpaidLeaveFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
@@ -118,12 +118,12 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
         email.setSubject(summary);
         StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder.append("Summary: " + summary + "\n");
-        messageBuilder.append("Task  Details: \n Name: " + task.getName() + "\n");
-        messageBuilder.append("Description: " + task.getDescription() + "\n");
-        messageBuilder.append("Employee Available Sick Hours     : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned) + "\n");
-        messageBuilder.append("Employee Available Personal Hours : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned) + "\n");
-        messageBuilder.append("Employee Available Vacation Hours     : " + CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned) + " \n");
+        messageBuilder.append("Summary: ").append(summary).append("\n");
+        messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
+        messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
+        messageBuilder.append("Employee Available Sick Hours     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned)).append("\n");
+        messageBuilder.append("Employee Available Personal Hours : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned)).append("\n");
+        messageBuilder.append("Employee Available Vacation Hours     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned)).append(" \n");
         email.setBody(messageBuilder.toString());
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);

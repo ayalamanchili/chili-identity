@@ -18,6 +18,7 @@ import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
+import static org.apache.camel.util.Time.hours;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,15 +32,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CorpEmpLeaveRequestProcessBean {
 
-    public boolean validateLeaveRequest(Employee employee, String category, String hours) {
-        BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
-        TimeSheetCategory tsCategory = TimeSheetCategory.valueOf(category);
-        if (TimeSheetCategory.Unpaid.equals(tsCategory)) {
+    public boolean validateLeaveRequest(Employee employee, CorpEmpLeaveRequest request) {
+        if (TimeSheetCategory.Unpaid.equals(request.getCategory())) {
             return true;
         }
-        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(category.replace("Spent", "Earned")));
-        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, tsCategory);
-        if (spent.add(leaveHours).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
+        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(request.getCategory().name().replace("Spent", "Earned")));
+        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, request.getCategory());
+        if (spent.add(request.getHorus()).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
             return true;
         } else {
             return false;
@@ -55,15 +54,14 @@ public class CorpEmpLeaveRequestProcessBean {
         messagingService.sendEmail(email);
     }
 
-    public void saveApprovedLeaveRequest(Employee emp, TimeSheetCategory category, String hours, Date startDate, Date endDate, String leaveRequestApprovalTaskNotes) {
-        BigDecimal leaveHours = BigDecimal.valueOf(Long.valueOf(hours));
+    public void saveApprovedLeaveRequest(Employee emp, CorpEmpLeaveRequest request, String leaveRequestApprovalTaskNotes) {
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
-        ts.setCategory(category);
-        ts.setHours(leaveHours);
+        ts.setCategory(request.getCategory());
+        ts.setHours(request.getHorus());
         //TODO fix
-        ts.setStartDate(startDate);
-        ts.setEndDate(endDate);
+        ts.setStartDate(request.getStartDate());
+        ts.setEndDate(request.getEndDate());
         ts.setNotes(leaveRequestApprovalTaskNotes);
         ts.setStatus(TimeSheetStatus.Approved);
         CorporateTimeSheetDao.instance().save(ts);
