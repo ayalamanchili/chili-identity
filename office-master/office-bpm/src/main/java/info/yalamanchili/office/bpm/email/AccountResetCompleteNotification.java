@@ -8,7 +8,7 @@
 package info.yalamanchili.office.bpm.email;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.types.AccountReset;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
@@ -28,7 +28,7 @@ public class AccountResetCompleteNotification implements TaskListener {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         AccountReset account = (AccountReset) delegateTask.getExecution().getVariable("account");
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_RELATIONSHIP));
+        email.setTos(mailUtils.getEmailsAddressesForRoles(OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_RELATIONSHIP.name()));
         email.addTo(account.getEmail());
         String status = (String) delegateTask.getExecution().getVariable("status");
         email.setSubject("Account Reset Task Completed: Status:" + status);

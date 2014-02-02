@@ -8,12 +8,11 @@
 package info.yalamanchili.office.Time.notification;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -41,10 +40,7 @@ public class TimeNotificationService {
 
     @Async
     public void sendOvertimeRequestSubmitedNotification(Employee emp) {
-        //send email to roles ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN
-        //subject "Overtime Pay request submited for [add employee name]"
-        //body "overtime Pay request submited for empleyee name  please go to my tasks to complete the task to approve or deny.
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_EXPENSE};
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_TIME.name(), OfficeRole.ROLE_EXPENSE.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Overtime Pay request submited for" + emp.getFirstName() + " " + emp.getLastName());
@@ -55,11 +51,7 @@ public class TimeNotificationService {
 
     @Async
     public void sendOvertimeRequestApprovedNotification(Employee emp, String reason) {
-        //send email to roles ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN
-        //subject "Overtime Pay request was approved]"
-        //new line
-        //reason is: reason
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_TIME, OfficeRoles.ROLE_EXPENSE};
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_TIME.name(), OfficeRole.ROLE_EXPENSE.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         Set<String> tos = new HashSet<String>();
@@ -72,11 +64,6 @@ public class TimeNotificationService {
 
     @Async
     public void sendOvertimeRequestDeniedNotification(Employee emp, String reason) {
-        //send email to just employee email
-        //subject "Your Overtime Pay request was denied"
-        //body "overtime Pay request submited was denied
-        //ne line
-        //reason is: reason
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
         tos.add(emp.getPrimaryEmail().getEmail());

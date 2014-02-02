@@ -7,15 +7,12 @@
  */
 package info.yalamanchili.office.social.notification;
 
-import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostFile;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
@@ -36,7 +33,7 @@ public class SocialNotificationService {
 
     @Async
     public void sendNewCompanyPostNotification(Post post) {
-        String[] roles = {OfficeRoles.ROLE_USER, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_ADMIN};
+        String[] roles = {OfficeRole.ROLE_USER.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_ADMIN.name()};
         Email email = new Email();
         email.setHtml(true);
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));

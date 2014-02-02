@@ -9,7 +9,7 @@ package info.yalamanchili.office.profile.notification;
 
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
@@ -35,17 +35,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class ProfileNotificationService {
-    
+
     @Autowired
     protected MailUtils mailUtils;
     @Autowired
     protected MessagingService messagingService;
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public EntityManager em;
-    
+
     @Async
     public void skillSetUpdatedNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_RECRUITER};
+        String[] roles = {OfficeRole.ROLE_RECRUITER.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Skillset Updated");
@@ -53,10 +53,10 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendNewUserCreatedNotification(Employee employee) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_RELATIONSHIP};
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_RELATIONSHIP.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("New System Soft Office User Created");
@@ -75,10 +75,10 @@ public class ProfileNotificationService {
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
-    
+
     @Async
     public void sendEmployeeAddressUpdatedNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE};
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_EXPENSE.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Address Updated");
@@ -86,9 +86,8 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
-//TODO remove not needed.
 
+//TODO remove not needed.
     @Async
     public void sendForgotPasswordNotification(Employee emp, String tempPassword) {
         Email email = new Email();
@@ -102,11 +101,11 @@ public class ProfileNotificationService {
         email.setBody("you temp password is:" + tempPassword);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     @Transactional(readOnly = true)
     public void sendResetPasswordNotification(Employee emp, String resetPassword) {
-        emp= EmployeeDao.instance().findById(emp.getId());
+        emp = EmployeeDao.instance().findById(emp.getId());
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
         if (emp.getPrimaryEmail() == null) {
@@ -119,7 +118,7 @@ public class ProfileNotificationService {
         email.setBody("Your password has been reset \n Username: " + emp.getEmployeeId() + " \n password:" + resetPassword + "\n please change your password after you login from your profile");
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void feedBackNotification(Feedback fb, String username) {
         Email email = new Email();
@@ -131,7 +130,7 @@ public class ProfileNotificationService {
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendNewMessageNotification(Message msg) {
         Email email = new Email();
@@ -146,10 +145,10 @@ public class ProfileNotificationService {
         email.setRichText(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
-    
+
     @Async
     public void sendEmployeeDeactivationNotification(Employee emp) {
-        String[] roles = {OfficeRoles.ROLE_ADMIN, OfficeRoles.ROLE_HR, OfficeRoles.ROLE_EXPENSE};
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_EXPENSE.name()};
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         email.setSubject("Employee Deactivated ");
@@ -157,7 +156,7 @@ public class ProfileNotificationService {
         email.setBody(messageText);
         messagingService.sendEmail(email);
     }
-    
+
     public static ProfileNotificationService instance() {
         return SpringContext.getBean(ProfileNotificationService.class);
     }

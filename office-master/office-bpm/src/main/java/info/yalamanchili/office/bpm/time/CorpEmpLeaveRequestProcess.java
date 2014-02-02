@@ -9,7 +9,7 @@
 package info.yalamanchili.office.bpm.time;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.BPMUtils;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
@@ -68,7 +68,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         if (cnts.size() > 0) {
             task.setAssignee(cnts.get(0).getContact().getEmployeeId());
         } else {
-            task.addCandidateGroup(OfficeRoles.ROLE_HR);
+            task.addCandidateGroup(OfficeRole.ROLE_HR.name());
         }
     }
 
@@ -78,7 +78,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestTaskCompleted(DelegateTask task) {
-        CorpEmpLeaveRequest request=(CorpEmpLeaveRequest) task.getExecution().getVariable("request");
+        CorpEmpLeaveRequest request = (CorpEmpLeaveRequest) task.getExecution().getVariable("request");
         String status = (String) task.getExecution().getVariable("status");
         if ("approved".equals(status) && !TimeSheetCategory.Unpaid.equals(request.getCategory())) {
             leaveRequestApproved(task);

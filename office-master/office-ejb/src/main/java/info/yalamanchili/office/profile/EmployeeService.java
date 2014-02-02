@@ -12,9 +12,8 @@ import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
-import info.yalamanchili.office.bpm.time.BPMTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
@@ -61,7 +60,7 @@ public class EmployeeService {
             user.setPasswordHash(SecurityUtils.encodePassword(user.getPasswordHash(), null));
             user.setUsername(employeeId);
             user.setEnabled(true);
-            user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRoles.ROLE_USER));
+            user.addRole((CRole) EntityQueryUtils.findEntity(em, CRole.class, "rolename", OfficeRole.ROLE_USER.name()));
             user = SecurityService.instance().createCuser(user);
             emp.setUser(user);
         }
@@ -75,7 +74,7 @@ public class EmployeeService {
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
-           // BPMTimeService.instance().startNewEmpTimeProcess(emp);
+            // BPMTimeService.instance().startNewEmpTimeProcess(emp);
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());

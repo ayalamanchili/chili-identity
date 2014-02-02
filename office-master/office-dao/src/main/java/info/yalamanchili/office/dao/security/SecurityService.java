@@ -4,9 +4,11 @@
 package info.yalamanchili.office.dao.security;
 
 import info.chili.jpa.QueryUtils;
+import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
@@ -107,6 +109,16 @@ public class SecurityService {
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
+    }
+
+    public void syncOfficeRoles() {
+        for (OfficeRole role : OfficeRole.values()) {
+            CRoleDao.instance().createRole(role.name());
+        }
+    }
+
+    public CRole getRole(OfficeRole role) {
+        return QueryUtils.findEntity(em, CRole.class, "rolename", role.name());
     }
 
     public static SecurityService instance() {
