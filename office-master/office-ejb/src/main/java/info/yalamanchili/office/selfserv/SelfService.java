@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,10 +8,17 @@
  */
 package info.yalamanchili.office.selfserv;
 
+import info.chili.security.dao.CRoleDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketStatus;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +39,33 @@ public class SelfService {
     @PersistenceContext
     protected EntityManager em;
 
-    public void createServiceTicket(ServiceTicket ticket) {
-        //TODO start process to create user task
-        //TODO set dept 
-        //TODO set task id
+    public void createServiceTicket(Long empId, ServiceTicket ticket) {
+        ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(getDepartmentToAssign(ticket).name()));
         ticket.setStatus(TicketStatus.Open);
-        em.persist(ticket);
+        ticket.setEmployee(EmployeeDao.instance().findById(empId));
+        ticket.setCreatedTimeStamp(new Date());
+        ticket = em.merge(ticket);
+        startServiceTicketTask(ticket);
+        em.merge(ticket);
+    }
+
+    protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {
+        switch (ticket.getType()) {
+            case Immigration:
+                return OfficeRole.ROLE_HR;
+            case Billing:
+                return OfficeRole.ROLE_TIME;
+            default:
+                return OfficeRole.ROLE_RELATIONSHIP;
+        }
+
+    }
+
+    protected void startServiceTicketTask(ServiceTicket ticket) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("ticket", ticket);
+        String processId = OfficeBPMService.instance().startProcess("service_ticket_process", vars);
+        ticket.setBpmProcessId(processId);
     }
 
     public static SelfService instance() {

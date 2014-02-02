@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,6 +13,7 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
+import info.yalamanchili.office.selfserv.SelfService;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -33,9 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class SelfServiceResource {
 
     @PUT
-    @Path("/create-ticket")
-    public void createServiceTicket(ServiceTicket ticket) {
-
+    @Path("/create-ticket/{empid}")
+    public void createServiceTicket(@PathParam("empid") long empid, ServiceTicket ticket) {
+        SelfService.instance().createServiceTicket(empid, ticket);
     }
 
     @GET

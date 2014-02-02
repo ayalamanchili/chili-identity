@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="service_ticket_process">
+ 
+        <startEvent id="serviceTicketCreated" />
+        
+        <sequenceFlow sourceRef="serviceTicketCreated" targetRef="serviceTicketTask" />
+        
+        <!--Service ticket task created-->
+        <userTask id="serviceTicketTask" 
+                  name="Service Ticket Created By : ${ticket.employee.firstName} ${ticket.employee.lastName}"
+                  activiti:candidateGroups="${ticket.departmentAssigned.rolename}">
+            <documentation>
+                Service Ticket Created By : #{ticket.employee.firstName} #{ticket.employee.lastName}
+                Ticket Details            
+                Subject     : #{ticket.subject}
+                Notes       : #{ticket.description}
+                Type        : #{ticket.type}
+                Created     : #{ticket.createdTimeStamp}
+                Department  : #{ticket.departmentAssigned.rolename}
+                Assigned To : #{ticket.assignedTo}
+                
+            </documentation>
+        </userTask>
+        <sequenceFlow sourceRef="serviceTicketTask" targetRef="serviceTicketEnd" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="serviceTicketTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- process end-->
+        <endEvent id="serviceTicketEnd" />
+ 
+    </process>
+ 
+</definitions>

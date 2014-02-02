@@ -76,6 +76,7 @@ public class ServiceTicket extends AbstractEntity {
      * employee in the dept who is working/assigned on the ticket
      */
     @OneToOne
+    @NotNull
     protected Employee assignedTo;
     /**
      * employee who created the ticket
@@ -83,8 +84,10 @@ public class ServiceTicket extends AbstractEntity {
     @ManyToOne
     @ForeignKey(name = "FK_Employee_SRV_TKTS")
     protected Employee employee;
-
-    protected String bpmTask;
+    /**
+     * BPM create service ticket processId
+     */
+    protected String bpmProcessId;
     /**
      * Ticket comments
      */
@@ -161,12 +164,12 @@ public class ServiceTicket extends AbstractEntity {
         this.employee = employee;
     }
 
-    public String getBpmTask() {
-        return bpmTask;
+    public String getBpmProcessId() {
+        return bpmProcessId;
     }
 
-    public void setBpmTask(String bpmTask) {
-        this.bpmTask = bpmTask;
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @XmlTransient

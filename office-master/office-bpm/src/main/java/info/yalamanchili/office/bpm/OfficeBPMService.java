@@ -18,6 +18,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.DeploymentQuery;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,17 +49,17 @@ public class OfficeBPMService {
     }
 
     public void deleteProcess(String processId) {
-        bpmRepositoryService.deleteDeployment(processId,true);
+        bpmRepositoryService.deleteDeployment(processId, true);
     }
 
     public String getDeployedProcessInfo() {
         StringBuilder info = new StringBuilder();
         for (ProcessDefinition process : bpmRepositoryService.createProcessDefinitionQuery().list()) {
             info.append("name--------").append(process.getName()).append("\n");
-            info.append("processId--------" + process.getId()).append("\n");
-            info.append("deploymentID--------" + process.getDeploymentId()).append("\n");
-            info.append("Key--------" + process.getKey()).append("\n");
-            info.append("Key--------" + process.getVersion()).append("\n");
+            info.append("processId--------").append(process.getId()).append("\n");
+            info.append("deploymentID--------").append(process.getDeploymentId()).append("\n");
+            info.append("Key--------").append(process.getKey()).append("\n");
+            info.append("Key--------").append(process.getVersion()).append("\n");
         }
         return info.toString();
     }
@@ -80,8 +81,9 @@ public class OfficeBPMService {
         bpmRuntimeService.setVariable(executionId, varName, value);
     }
 
-    public void startProcess(String processId, Map<String, Object> variables) {
-        bpmRuntimeService.startProcessInstanceByKey(processId, variables);
+    public String startProcess(String processKey, Map<String, Object> variables) {
+        ProcessInstance processInstance = bpmRuntimeService.startProcessInstanceByKey(processKey, variables);
+        return processInstance.getProcessInstanceId();
     }
 
     public void registerProcess(String processId, String path) {

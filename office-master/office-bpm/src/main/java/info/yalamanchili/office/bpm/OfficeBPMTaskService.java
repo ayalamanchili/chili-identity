@@ -17,6 +17,7 @@ import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
+import static org.codehaus.groovy.runtime.DefaultGroovyStaticMethods.start;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -78,6 +80,24 @@ public class OfficeBPMTaskService {
     public void deleteTask(String taskId) {
         bpmTaskService.deleteTask(taskId);
         bpmTaskService.addComment(taskId, taskId, taskId);
+    }
+
+    public Task getTaskForId(String taskId) {
+        org.activiti.engine.task.Task bpmTask = bpmTaskService.createTaskQuery().taskId(taskId).singleResult();
+        if (bpmTask != null) {
+            return mapper.map(bpmTask, Task.class);
+        } else {
+            return null;
+        }
+    }
+
+    public List<Task> getTasksForProcessId(String processId) {
+        List<Task> result = new ArrayList<Task>();
+        TaskQuery query = bpmTaskService.createTaskQuery().processDefinitionId(processId);
+        for (org.activiti.engine.task.Task bpmTask : query.list()) {
+            result.add(mapper.map(bpmTask, Task.class));
+        }
+        return result;
     }
 
     public void addComment(String taskId, String comment) {
