@@ -12,9 +12,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
-import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import java.util.logging.Logger;
 
 /**
@@ -48,7 +48,7 @@ public class CorporateTimeSummarySidePanel extends ALComposite implements ClickH
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(submitLeaveRequest)) {
-            new GenericPopup(new GenericBPMStartFormPanel("CorpEmpLeaveRequest", "corp_emp_leave_request_process")).show();
+            new GenericPopup(new CorpoEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
         }
     }
 }

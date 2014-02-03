@@ -90,7 +90,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void addWidgets() {
         addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
-        addEnumField("status", false, true, TimeSheetStatus.names());
+        addEnumField("status", false, false, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
