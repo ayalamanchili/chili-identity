@@ -12,6 +12,8 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -23,9 +25,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class CorpEmpLeaveRequest implements Serializable {
 
+    @Future(message = "{startDate.future.msg}")
     protected Date startDate;
     protected Date endDate;
-    protected BigDecimal horus;
+    @NotNull(message = "{hours.not.null.msg}")
+    protected BigDecimal hours;
     protected TimeSheetCategory category;
     protected String leaveRequestNotes;
 
@@ -45,12 +49,12 @@ public class CorpEmpLeaveRequest implements Serializable {
         this.endDate = endDate;
     }
 
-    public BigDecimal getHorus() {
-        return horus;
+    public BigDecimal getHours() {
+        return hours;
     }
 
-    public void setHorus(BigDecimal horus) {
-        this.horus = horus;
+    public void setHours(BigDecimal hours) {
+        this.hours = hours;
     }
 
     public TimeSheetCategory getCategory() {
@@ -68,7 +72,4 @@ public class CorpEmpLeaveRequest implements Serializable {
     public void setLeaveRequestNotes(String leaveRequestNotes) {
         this.leaveRequestNotes = leaveRequestNotes;
     }
-    
-    
-    
 }

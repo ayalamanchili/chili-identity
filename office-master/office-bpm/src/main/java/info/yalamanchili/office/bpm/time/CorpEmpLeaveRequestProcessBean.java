@@ -17,8 +17,6 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
-import java.util.Date;
-import static org.apache.camel.util.Time.hours;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +36,7 @@ public class CorpEmpLeaveRequestProcessBean {
         }
         BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(request.getCategory().name().replace("Spent", "Earned")));
         BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, request.getCategory());
-        if (spent.add(request.getHorus()).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
+        if (spent.add(request.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
             return true;
         } else {
             return false;
@@ -58,7 +56,7 @@ public class CorpEmpLeaveRequestProcessBean {
         CorporateTimeSheet ts = new CorporateTimeSheet();
         ts.setEmployee(emp);
         ts.setCategory(request.getCategory());
-        ts.setHours(request.getHorus());
+        ts.setHours(request.getHours());
         //TODO fix
         ts.setStartDate(request.getStartDate());
         ts.setEndDate(request.getEndDate());
@@ -66,5 +64,4 @@ public class CorpEmpLeaveRequestProcessBean {
         ts.setStatus(TimeSheetStatus.Approved);
         CorporateTimeSheetDao.instance().save(ts);
     }
-
 }
