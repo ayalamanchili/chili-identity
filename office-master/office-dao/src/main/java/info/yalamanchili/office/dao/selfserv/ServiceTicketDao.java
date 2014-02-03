@@ -13,6 +13,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
+import info.yalamanchili.office.entity.selfserv.TicketComment;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,6 +34,10 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     }
 
     public Long getTicketsSize(Employee emp, int start, int limit) {
+        return null;
+    }
+
+    public List<TicketComment> getCommentsForTicket(Long ticketId) {
         return null;
     }
 

@@ -13,8 +13,11 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
+import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.entity.selfserv.TicketStatus;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,13 +35,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class SelfService {
-
+    
     @Autowired
     protected ServiceTicketDao serviceTicketDao;
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     public void createServiceTicket(Long empId, ServiceTicket ticket) {
         ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(getDepartmentToAssign(ticket).name()));
         ticket.setStatus(TicketStatus.Open);
@@ -48,7 +51,15 @@ public class SelfService {
         startServiceTicketTask(ticket);
         em.merge(ticket);
     }
-
+    
+    public void addTicketComment(Long ticketId, TicketComment comment) {
+        Employee emp = SecurityService.instance().getCurrentUser();
+        comment.setCreatedBy(emp.getFirstName() + " " + emp.getLastName());
+        comment.setCreatedTimeStamp(new Date());
+        comment.setTicket(ServiceTicketDao.instance().findById(ticketId));
+        em.persist(comment);
+    }
+    
     protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {
         switch (ticket.getType()) {
             case Immigration:
@@ -58,16 +69,16 @@ public class SelfService {
             default:
                 return OfficeRole.ROLE_RELATIONSHIP;
         }
-
+        
     }
-
+    
     protected void startServiceTicketTask(ServiceTicket ticket) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("ticket", ticket);
         String processId = OfficeBPMService.instance().startProcess("service_ticket_process", vars);
         ticket.setBpmProcessId(processId);
     }
-
+    
     public static SelfService instance() {
         return SpringContext.getBean(SelfService.class);
     }

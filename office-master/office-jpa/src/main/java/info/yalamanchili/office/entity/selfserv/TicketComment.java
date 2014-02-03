@@ -9,6 +9,7 @@
 package info.yalamanchili.office.entity.selfserv;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -52,6 +53,7 @@ public class TicketComment extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_SRV_TKT_CMTS")
     protected ServiceTicket ticket;
+
 
     /**
      * -------------------Getters and Setters

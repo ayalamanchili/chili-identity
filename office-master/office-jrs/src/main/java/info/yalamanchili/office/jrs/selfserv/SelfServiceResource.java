@@ -13,6 +13,7 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
+import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.selfserv.SelfService;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -63,6 +64,19 @@ public class SelfServiceResource {
         tableObj.setEntities(ServiceTicketDao.instance().getTickets(emp, start, limit));
         tableObj.setSize(ServiceTicketDao.instance().getTicketsSize(emp, start, limit));
         return tableObj;
+    }
+
+    //------Service Ticket--------
+    @PUT
+    @Path("/add-comment/{ticketId}")
+    public void addTicketComment(@PathParam("ticketId") long ticketId,TicketComment comment) {
+        SelfService.instance().addTicketComment(ticketId, comment);
+    }
+
+    @GET
+    @Path("/ticket/comments/{ticketId}/{start}/{limit}")
+    public List<TicketComment> getCommentsForTicket(@PathParam("ticketId") long ticketId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return ServiceTicketDao.instance().getCommentsForTicket(ticketId);
     }
 
     @XmlRootElement
