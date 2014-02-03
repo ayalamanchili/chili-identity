@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.selfserv.TicketComment;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -30,21 +31,27 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
 
     public List<ServiceTicket> getTickets(Employee emp, int start, int limit) {
         //TODO order by created date
-        return null;
+        Query query = getEntityManager().createQuery("from " + ServiceTicket.class.getCanonicalName() + " st where st.employee.emp=:employeeParam order by st.updatedTimeStamp DESC", ServiceTicket.class);
+        query.setParameter("employeeParam", emp);
+        return query.getResultList();
     }
 
     public Long getTicketsSize(Employee emp, int start, int limit) {
-        return null;
+        Query query = getEntityManager().createQuery("select count (*) from " + ServiceTicket.class.getCanonicalName() + " st where st.employee.emp=:employeeParam", Long.class);
+        query.setParameter("employeeParam", emp);
+        return (Long) query.getSingleResult();
+
     }
 
     public List<TicketComment> getCommentsForTicket(Long ticketId) {
-        return null;
+        Query query = getEntityManager().createQuery("select count (*) from " + TicketComment.class.getCanonicalName() + " tc where tc.ticketId.id=:ticketIdParam", Long.class);
+        query.setParameter("ticketIdParam", ticketId);
+        return query.getResultList();
     }
 
     public ServiceTicketDao() {
         super(EmployeeDocument.class);
     }
-
     @PersistenceContext
     protected EntityManager em;
 
