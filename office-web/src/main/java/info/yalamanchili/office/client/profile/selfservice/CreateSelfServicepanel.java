@@ -1,4 +1,4 @@
-
+/**
  * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /*
@@ -73,6 +73,7 @@ public class CreateSelfServicepanel extends CreateComposite{
     protected void addWidgets() {
         addField("subject", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
+        addEnumField("type", false, true, TicketType.names());
     }
 
     @Override
