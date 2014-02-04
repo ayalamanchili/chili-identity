@@ -47,11 +47,11 @@
             <documentation>
                 Corporate Employee Leave Request
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Start Date    : #{startDate}
-                End Date      : #{endDate} 
-                Category      : #{category} 
-                Hours         : #{hours} 
-                Notes         : #{leaveRequestNotes}
+                Start Date    : #{request.startDate}
+                End Date      : #{request.endDate} 
+                Category      : #{request.category} 
+                Hours         : #{request.hours} 
+                Notes         : #{request.leaveRequestNotes}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
@@ -92,13 +92,13 @@
         <sequenceFlow sourceRef="approvalGateway" 
                       targetRef="unpaidLeaveFinalApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and category == 'Unpaid'}
+                ${status == 'approved' and request.category == 'Unpaid'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="approvalGateway" 
                       targetRef="saveApprovedLeaveRequest">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and category != 'Unpaid'}
+                ${status == 'approved' and request.category != 'Unpaid'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="approvalGateway" 
@@ -113,11 +113,11 @@
             <documentation>
                 Corporate Employee Unpaid Leave Final Approval Request
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Start Date          : #{startDate}
-                End Date            : #{endDate} 
-                Category            : #{category} 
-                Hours               : #{hours} 
-                Notes               : #{leaveRequestNotes}
+                Start Date          : #{request.startDate}
+                End Date            : #{request.endDate} 
+                Category            : #{request.category} 
+                Hours               : #{request.hours} 
+                Notes               : #{request.leaveRequestNotes}
                 Approval Task Notes : #{leaveRequestApprovalTaskNotes}
             </documentation>
             <extensionElements>

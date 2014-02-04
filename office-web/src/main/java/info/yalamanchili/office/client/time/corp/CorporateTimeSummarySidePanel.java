@@ -48,7 +48,7 @@ public class CorporateTimeSummarySidePanel extends ALComposite implements ClickH
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(submitLeaveRequest)) {
-            new GenericPopup(new CorpoEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
+            new GenericPopup(new CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
         }
     }
 }
