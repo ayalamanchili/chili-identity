@@ -11,9 +11,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.DateField;
-import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -49,17 +46,17 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -92,34 +89,6 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-    }
-
-    @Override
-    protected boolean processClientSideValidations(JSONObject entity) {
-        boolean valid = true;
-        DateField startDateF = (DateField) fields.get("startDate");
-        DateField endDateF = (DateField) fields.get("endDate");
-        FloatField hoursF = (FloatField) fields.get("hours");
-        EnumField categiryF = (EnumField) fields.get("category");
-
-        if (hoursF.getValue() == null || hoursF.getValue().isEmpty()) {
-            hoursF.setMessage("value is required");
-            valid = false;
-        }
-        if (categiryF.getValue() == null) {
-            categiryF.setMessage("value is required");
-            valid = false;
-        }
-
-        if (endDateF.getDate() == null) {
-            endDateF.setMessage("value is required");
-            valid = false;
-        }
-        if (startDateF.getDate() == null) {
-            startDateF.setMessage("value is required");
-            valid = false;
-        }
-        return valid;
     }
 
     @Override
