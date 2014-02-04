@@ -25,11 +25,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class CorpEmpLeaveRequest implements Serializable {
 
-    @Future(message = "{startDate.future.msg}")
+    @NotNull(message = "{corpemp.leave.request.startDate.not.null.msg}")
+    @Future(message = "{corpemp.leave.request.startDate.future.msg}")
     protected Date startDate;
+    @NotNull(message = "{corpemp.leave.request.endDate.not.null.msg}")
+    @Future(message = "{corpemp.leave.request.endDate.future.msg}")
     protected Date endDate;
-    @NotNull(message = "{hours.not.null.msg}")
+    @NotNull(message = "{corpemp.leave.request.hours.not.null.msg}")
     protected BigDecimal hours;
+    @NotNull(message = "{corpemp.leave.request.category.not.null.msg}")
     protected TimeSheetCategory category;
     protected String leaveRequestNotes;
 
