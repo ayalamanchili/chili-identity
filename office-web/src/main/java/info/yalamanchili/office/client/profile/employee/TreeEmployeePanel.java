@@ -57,21 +57,21 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String COMPANY_CONTACT_NODE = "companyContact";
     protected static final String PRIVACY_NODE = "privacy";
     protected static final String SKILL_SET_NODE = "skillset";
-    protected static final String ACTIVITY_NODE = "activity";
+    protected static final String Self_Service_NODE = "selfService";
     protected static final String DOCUMENTS_NODE = "documents";
     protected static final String PREFERENCES_NODE = "preferences";
     protected static final String ROLES_NODE = "roles";
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel;
-    protected TreeActivityPanel activityTreePanel;
+    protected TreeActivityPanel selfServiceTreePanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
         instance = this;
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
-        activityTreePanel = new TreeActivityPanel(getEntityId());
+        selfServiceTreePanel = new TreeActivityPanel(getEntityId());
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -102,7 +102,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetTreePanel);
         }
         if (Auth.hasNonUserRoles()) {
-            addFirstChildLink("Activity", ACTIVITY_NODE, activityTreePanel);
+            addFirstChildLink("Self Service", Self_Service_NODE, selfServiceTreePanel);
         }
         addFirstChildLink("Documents", DOCUMENTS_NODE);
         if (Auth.isAdmin() && Auth.isCorporateEmployee(entity)) {
@@ -164,7 +164,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             skillSetTreePanel.loadEntity();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(getEntityId()));
         }
-        if (ACTIVITY_NODE.equals(entityNodeKey)) {
+        if (Self_Service_NODE.equals(entityNodeKey)) {
             //TODO
         }
         if (DOCUMENTS_NODE.equals(entityNodeKey)) {
@@ -211,8 +211,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (skillSetTreePanel != null) {
             skillSetTreePanel.treeNodeSelected(entityNodeKey);
         }
-        if (activityTreePanel != null) {
-            activityTreePanel.treeNodeSelected(entityNodeKey);
+        if (selfServiceTreePanel != null) {
+            selfServiceTreePanel.treeNodeSelected(entityNodeKey);
         }
 
     }
