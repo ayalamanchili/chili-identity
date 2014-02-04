@@ -31,7 +31,7 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
 
     public List<ServiceTicket> getTickets(Employee emp, int start, int limit) {
         //TODO order by created date
-        Query query = getEntityManager().createQuery("from " + ServiceTicket.class.getCanonicalName() + " st where st.employee.emp=:employeeParam order by st.updatedTimeStamp DESC", ServiceTicket.class);
+        Query query = getEntityManager().createQuery("from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam order by st.updatedTimeStamp DESC", ServiceTicket.class);
         query.setParameter("employeeParam", emp);
         return query.getResultList();
     }
@@ -44,7 +44,7 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     }
 
     public List<TicketComment> getCommentsForTicket(Long ticketId) {
-        Query query = getEntityManager().createQuery("select count (*) from " + TicketComment.class.getCanonicalName() + " tc where tc.ticketId.id=:ticketIdParam", Long.class);
+        Query query = getEntityManager().createQuery(" from " + TicketComment.class.getCanonicalName() + " tc where tc.ticketId.id=:ticketIdParam", TicketComment.class);
         query.setParameter("ticketIdParam", ticketId);
         return query.getResultList();
     }
