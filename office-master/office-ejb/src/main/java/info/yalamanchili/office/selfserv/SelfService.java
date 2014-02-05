@@ -54,9 +54,39 @@ public class SelfService {
         return em.merge(ticket).getId().toString();
     }
 
-    public void resolveTicket(Long ticketId) {
+    public void updateTicket(Long ticketId, TicketStatus status, TicketComment comment) {
         ServiceTicket ticket = serviceTicketDao.findById(ticketId);
-        ticket.setStatus(TicketStatus.Resolved);
+        ticket.setStatus(status);
+        addTicketComment(ticketId, comment);
+        switch (status) {
+            case Resolved:
+                resolveTicket(ticket);
+            case InProgres:
+                claimTicket(ticket);
+            case Rejected:
+                claimTicket(ticket);
+            case ReOpened:
+                reopenTicket(ticket);
+        }
+
+    }
+
+    protected void reopenTicket(ServiceTicket ticket) {
+        //TODO
+    }
+
+    protected void rejectTicket(ServiceTicket ticket) {
+        //TODO
+    }
+
+    protected void claimTicket(ServiceTicket ticket) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        for (Task task : taskService.getTasksForProcessId(ticket.getBpmProcessId())) {
+            taskService.claimTask(task.getId(), SecurityService.instance().getCurrentUserId());
+        }
+    }
+
+    protected void resolveTicket(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         for (Task task : taskService.getTasksForProcessId(ticket.getBpmProcessId())) {
             taskService.completeTask(task.getId(), null);
@@ -64,11 +94,17 @@ public class SelfService {
     }
 
     public void addTicketComment(Long ticketId, TicketComment comment) {
-        Employee emp = SecurityService.instance().getCurrentUser();
-        comment.setCreatedBy(emp.getFirstName() + " " + emp.getLastName());
-        comment.setCreatedTimeStamp(new Date());
-        comment.setTicket(ServiceTicketDao.instance().findById(ticketId));
-        em.persist(comment);
+        comment = serviceTicketDao.addTicketComment(ticketId, comment);
+        sendTicketCommentNotification(comment);
+        //TODO add comment to bpm task
+    }
+
+    protected void sendTicketCommentNotification(TicketComment comment) {
+
+        //TODO send email to comment.getTicket().getEmp and subject as comment content
+        //to employee 
+        //subject :comment added
+        //body: comment description
     }
 
     protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {

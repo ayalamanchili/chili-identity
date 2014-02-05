@@ -10,9 +10,11 @@ package info.yalamanchili.office.dao.selfserv;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,10 +50,18 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
         return query.getResultList();
     }
 
+    public TicketComment addTicketComment(Long ticketId, TicketComment comment) {
+        Employee emp = SecurityService.instance().getCurrentUser();
+        comment.setCreatedBy(emp.getFirstName() + " " + emp.getLastName());
+        comment.setCreatedTimeStamp(new Date());
+        comment.setTicket(ServiceTicketDao.instance().findById(ticketId));
+        return em.merge(comment);
+    }
+
     public ServiceTicketDao() {
         super(ServiceTicket.class);
     }
-    
+
     @PersistenceContext
     protected EntityManager em;
 

@@ -14,6 +14,7 @@ import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
+import info.yalamanchili.office.entity.selfserv.TicketStatus;
 import info.yalamanchili.office.selfserv.SelfService;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -36,19 +37,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class SelfServiceResource {
-    
+
     @PUT
     @Path("/create-ticket/{empid}")
     public String createServiceTicket(@PathParam("empid") long empid, ServiceTicket ticket) {
-       return  SelfService.instance().createServiceTicket(empid, ticket);
+        return SelfService.instance().createServiceTicket(empid, ticket);
     }
-    
+
     @PUT
-    @Path("/resolve-ticket/{ticketId}")
-    public void resolveTicket(@PathParam("ticketId") long ticketId) {
-        SelfService.instance().resolveTicket(ticketId);
+    @Path("/update-ticket/{status}/{ticketId}")
+    public void updateTicket(@PathParam("ticketId") long ticketId, @PathParam("status") TicketStatus status, TicketComment comment) {
+        SelfService.instance().updateTicket(ticketId, status, comment);
     }
-    
+
     @GET
     @Path("/tickets/{empid}/{start}/{limit}")
     //TODO add roles check
@@ -57,14 +58,14 @@ public class SelfServiceResource {
         Employee emp = EmployeeDao.instance().findById(empid);
         return getTicketsTable(emp, start, limit);
     }
-    
+
     @GET
     @Path("/tickets/currentuser/{start}/{limit}")
     public ServiceTicketTable getTickets(@PathParam("start") int start,
             @PathParam("limit") int limit) {
         return getTicketsTable(SecurityService.instance().getCurrentUser(), start, limit);
     }
-    
+
     protected ServiceTicketTable getTicketsTable(Employee emp, int start, int limit) {
         ServiceTicketTable tableObj = new ServiceTicketTable();
         tableObj.setEntities(ServiceTicketDao.instance().getTickets(emp, start, limit));
@@ -78,33 +79,33 @@ public class SelfServiceResource {
     public void addTicketComment(@PathParam("ticketId") long ticketId, TicketComment comment) {
         SelfService.instance().addTicketComment(ticketId, comment);
     }
-    
+
     @GET
     @Path("/ticket/comments/{ticketId}/{start}/{limit}")
     public List<TicketComment> getCommentsForTicket(@PathParam("ticketId") long ticketId, @PathParam("start") int start, @PathParam("limit") int limit) {
         return ServiceTicketDao.instance().getCommentsForTicket(ticketId);
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class ServiceTicketTable {
-        
+
         protected Long size;
         protected List<ServiceTicket> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<ServiceTicket> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<ServiceTicket> entities) {
             this.entities = entities;
         }
