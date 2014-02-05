@@ -10,7 +10,6 @@ package info.yalamanchili.office.client.profile.selfservice;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
 
@@ -19,11 +18,11 @@ import java.util.logging.Logger;
  *
  * @author raghu.l
  */
-public class CreateSelfServicepanel extends CreateComposite{
+public class CreateSelfServicePanel extends CreateComposite{
 
-      private static Logger logger = Logger.getLogger(CreateSelfServicepanel.class.getName());
+      private static Logger logger = Logger.getLogger(CreateSelfServicePanel.class.getName());
 
-    public CreateSelfServicepanel(CreateComposite.CreateCompositeType type) {
+    public CreateSelfServicePanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("SelfService", OfficeWelcome.constants);
     }

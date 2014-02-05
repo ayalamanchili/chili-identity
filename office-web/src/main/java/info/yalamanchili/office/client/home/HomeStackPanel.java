@@ -16,43 +16,46 @@ import info.yalamanchili.office.client.home.audit.AuditStackPanelWidget;
 import info.yalamanchili.office.client.home.message.MessageStackPanelWidget;
 import info.yalamanchili.office.client.home.tasks.TasksStackPanelWidget;
 import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
+import info.yalamanchili.office.client.profile.selfservice.SelfServiceStackPanel;
 
 /**
  *
  * @author yphanikumar
  */
 public class HomeStackPanel extends ALComposite implements ClickHandler {
-
+    
     protected StackPanel panel = new StackPanel();
+    SelfServiceStackPanel selfServStackPanel = new SelfServiceStackPanel();
     TasksStackPanelWidget taskStackPanel = new TasksStackPanelWidget();
     MessageStackPanelWidget msgStackPanel = new MessageStackPanelWidget();
     TODOStackPanelWidget todoStackPanel = new TODOStackPanelWidget();
     AuditStackPanelWidget auditStackPanelWidget = new AuditStackPanelWidget();
-
+    
     public HomeStackPanel() {
         init(panel);
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     protected void addWidgets() {
         if (Auth.isCorporateEmployee()) {
             panel.add(taskStackPanel, "Tasks");
         }
+        panel.add(selfServStackPanel,"Self Service");
         panel.add(msgStackPanel, "Messages");
         if (Auth.isCorporateEmployee()) {
             panel.add(auditStackPanelWidget, "Audit");
         }
         panel.add(todoStackPanel, "TODO's");
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
     }
