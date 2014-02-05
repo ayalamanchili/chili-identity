@@ -17,10 +17,13 @@ import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
+import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.entity.selfserv.TicketStatus;
+import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +43,9 @@ public class SelfService {
 
     @Autowired
     protected ServiceTicketDao serviceTicketDao;
-
+    protected MessagingService messagingService;
+    @Autowired
+    protected MailUtils mailUtils;
     @PersistenceContext
     protected EntityManager em;
 
@@ -105,6 +110,13 @@ public class SelfService {
         //to employee 
         //subject :comment added
         //body: comment description
+        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_TIME.name(), OfficeRole.ROLE_RELATIONSHIP.name()};
+        Email email = new Email();
+        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+        email.setSubject("Comment Added" + comment.getTicket().getEmployee());
+        String messageText = "comment description";
+        email.setBody(messageText);
+        messagingService.sendEmail(email);
     }
 
     protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {
