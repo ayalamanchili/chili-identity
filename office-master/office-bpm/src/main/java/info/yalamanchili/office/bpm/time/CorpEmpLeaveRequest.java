@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +33,7 @@ public class CorpEmpLeaveRequest implements Serializable {
     @Future(message = "{corpemp.leave.request.endDate.future.msg}")
     protected Date endDate;
     @NotNull(message = "{corpemp.leave.request.hours.not.null.msg}")
+    @DecimalMin("1")
     protected BigDecimal hours;
     @NotNull(message = "{corpemp.leave.request.category.not.null.msg}")
     protected TimeSheetCategory category;
