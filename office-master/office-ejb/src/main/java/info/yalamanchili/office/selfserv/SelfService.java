@@ -26,7 +26,10 @@ import info.yalamanchili.office.entity.selfserv.TicketStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +46,7 @@ public class SelfService {
 
     @Autowired
     protected ServiceTicketDao serviceTicketDao;
-    protected MessagingService messagingService;
-    @Autowired
-    protected MailUtils mailUtils;
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -86,15 +87,21 @@ public class SelfService {
 
     protected void claimTicket(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
-        for (Task task : taskService.getTasksForProcessId(ticket.getBpmProcessId())) {
-            taskService.claimTask(task.getId(), SecurityService.instance().getCurrentUserId());
-        }
+        taskService.claimTask(getTaskForTicket(ticket).getId(), SecurityService.instance().getCurrentUserId());
     }
 
     protected void resolveTicket(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
-        for (Task task : taskService.getTasksForProcessId(ticket.getBpmProcessId())) {
-            taskService.completeTask(task.getId(), null);
+        taskService.completeTask(getTaskForTicket(ticket).getId(), null);
+    }
+
+    protected Task getTaskForTicket(ServiceTicket ticket) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        List<Task> tasks = taskService.getTasksForProcessId(ticket.getBpmProcessId());
+        if (tasks.size() > 0) {
+            return tasks.get(0);
+        } else {
+            return null;
         }
     }
 
@@ -102,21 +109,31 @@ public class SelfService {
         comment = serviceTicketDao.addTicketComment(ticketId, comment);
         sendTicketCommentNotification(comment);
         //TODO add comment to bpm task
+        OfficeBPMTaskService.instance().addComment(null, null);
     }
 
     protected void sendTicketCommentNotification(TicketComment comment) {
-
-        //TODO send email to comment.getTicket().getEmp and subject as comment content
-        //to employee 
-        //subject :comment added
-        //body: comment description
-        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_TIME.name(), OfficeRole.ROLE_RELATIONSHIP.name()};
         Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject("Comment Added" + comment.getTicket().getEmployee());
-        String messageText = "comment description";
-        email.setBody(messageText);
-        messagingService.sendEmail(email);
+        email.setTos(getTicketNotificationGroup(comment));
+        email.setSubject("Comment Added for Ticket: " + comment.getTicket().getSubject());
+        email.setBody(comment.getComment());
+        MessagingService.instance().sendEmail(email);
+    }
+
+    protected Set<String> getTicketNotificationGroup(TicketComment comment) {
+        Set<String> notificationGroup = new HashSet<String>();
+        //employee who created the ticket;
+        Employee emp = comment.getTicket().getEmployee();
+        notificationGroup.add(emp.getPrimaryEmail().getEmail());
+        // Role to which the ticket is assigned to 
+        String role = comment.getTicket().getDepartmentAssigned().getRolename();
+        notificationGroup.addAll(MailUtils.instance().getEmailsAddressesForRoles(role));
+        //assigned to emp email
+        if (comment.getTicket().getAssignedTo() != null) {
+            notificationGroup.add(comment.getTicket().getAssignedTo().getPrimaryEmail().getEmail());
+        }
+        //TODO get audited data emails also?
+        return notificationGroup;
     }
 
     protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {
@@ -128,7 +145,6 @@ public class SelfService {
             default:
                 return OfficeRole.ROLE_RELATIONSHIP;
         }
-
     }
 
     protected void startServiceTicketTask(ServiceTicket ticket) {
