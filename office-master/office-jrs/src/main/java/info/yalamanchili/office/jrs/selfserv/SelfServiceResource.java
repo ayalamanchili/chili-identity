@@ -36,13 +36,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class SelfServiceResource {
-
+    
     @PUT
     @Path("/create-ticket/{empid}")
-    public void createServiceTicket(@PathParam("empid") long empid, ServiceTicket ticket) {
-        SelfService.instance().createServiceTicket(empid, ticket);
+    public String createServiceTicket(@PathParam("empid") long empid, ServiceTicket ticket) {
+       return  SelfService.instance().createServiceTicket(empid, ticket);
     }
-
+    
+    @PUT
+    @Path("/resolve-ticket/{ticketId}")
+    public void resolveTicket(@PathParam("ticketId") long ticketId) {
+        SelfService.instance().resolveTicket(ticketId);
+    }
+    
     @GET
     @Path("/tickets/{empid}/{start}/{limit}")
     //TODO add roles check
@@ -51,14 +57,14 @@ public class SelfServiceResource {
         Employee emp = EmployeeDao.instance().findById(empid);
         return getTicketsTable(emp, start, limit);
     }
-
+    
     @GET
     @Path("/tickets/currentuser/{start}/{limit}")
     public ServiceTicketTable getTickets(@PathParam("start") int start,
             @PathParam("limit") int limit) {
         return getTicketsTable(SecurityService.instance().getCurrentUser(), start, limit);
     }
-
+    
     protected ServiceTicketTable getTicketsTable(Employee emp, int start, int limit) {
         ServiceTicketTable tableObj = new ServiceTicketTable();
         tableObj.setEntities(ServiceTicketDao.instance().getTickets(emp, start, limit));
@@ -69,36 +75,36 @@ public class SelfServiceResource {
     //------Service Ticket--------
     @PUT
     @Path("/add-comment/{ticketId}")
-    public void addTicketComment(@PathParam("ticketId") long ticketId,TicketComment comment) {
+    public void addTicketComment(@PathParam("ticketId") long ticketId, TicketComment comment) {
         SelfService.instance().addTicketComment(ticketId, comment);
     }
-
+    
     @GET
     @Path("/ticket/comments/{ticketId}/{start}/{limit}")
     public List<TicketComment> getCommentsForTicket(@PathParam("ticketId") long ticketId, @PathParam("start") int start, @PathParam("limit") int limit) {
         return ServiceTicketDao.instance().getCommentsForTicket(ticketId);
     }
-
+    
     @XmlRootElement
     @XmlType
     public static class ServiceTicketTable {
-
+        
         protected Long size;
         protected List<ServiceTicket> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<ServiceTicket> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<ServiceTicket> entities) {
             this.entities = entities;
         }

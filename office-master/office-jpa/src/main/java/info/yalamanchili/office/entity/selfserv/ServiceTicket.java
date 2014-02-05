@@ -76,7 +76,7 @@ public class ServiceTicket extends AbstractEntity {
      * employee in the dept who is working/assigned on the ticket
      */
     @OneToOne
-    @NotNull
+    @ForeignKey(name = "FK_SRV_TKT_ASSIGN_TO")
     protected Employee assignedTo;
     /**
      * employee who created the ticket

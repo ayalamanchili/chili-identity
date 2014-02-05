@@ -12,6 +12,8 @@ import info.chili.security.dao.CRoleDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
@@ -35,23 +37,32 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class SelfService {
-    
+
     @Autowired
     protected ServiceTicketDao serviceTicketDao;
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
-    public void createServiceTicket(Long empId, ServiceTicket ticket) {
+
+    public String createServiceTicket(Long empId, ServiceTicket ticket) {
         ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(getDepartmentToAssign(ticket).name()));
         ticket.setStatus(TicketStatus.Open);
         ticket.setEmployee(EmployeeDao.instance().findById(empId));
         ticket.setCreatedTimeStamp(new Date());
         ticket = em.merge(ticket);
         startServiceTicketTask(ticket);
-        em.merge(ticket);
+        return em.merge(ticket).getId().toString();
     }
-    
+
+    public void resolveTicket(Long ticketId) {
+        ServiceTicket ticket = serviceTicketDao.findById(ticketId);
+        ticket.setStatus(TicketStatus.Resolved);
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        for (Task task : taskService.getTasksForProcessId(ticket.getBpmProcessId())) {
+            taskService.completeTask(task.getId(), null);
+        }
+    }
+
     public void addTicketComment(Long ticketId, TicketComment comment) {
         Employee emp = SecurityService.instance().getCurrentUser();
         comment.setCreatedBy(emp.getFirstName() + " " + emp.getLastName());
@@ -59,7 +70,7 @@ public class SelfService {
         comment.setTicket(ServiceTicketDao.instance().findById(ticketId));
         em.persist(comment);
     }
-    
+
     protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {
         switch (ticket.getType()) {
             case Immigration:
@@ -69,16 +80,16 @@ public class SelfService {
             default:
                 return OfficeRole.ROLE_RELATIONSHIP;
         }
-        
+
     }
-    
+
     protected void startServiceTicketTask(ServiceTicket ticket) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("ticket", ticket);
         String processId = OfficeBPMService.instance().startProcess("service_ticket_process", vars);
         ticket.setBpmProcessId(processId);
     }
-    
+
     public static SelfService instance() {
         return SpringContext.getBean(SelfService.class);
     }

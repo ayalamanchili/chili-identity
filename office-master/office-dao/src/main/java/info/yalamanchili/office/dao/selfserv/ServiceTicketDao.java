@@ -11,7 +11,6 @@ package info.yalamanchili.office.dao.selfserv;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
 import java.util.List;
@@ -31,13 +30,13 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
 
     public List<ServiceTicket> getTickets(Employee emp, int start, int limit) {
         //TODO order by created date
-        Query query = getEntityManager().createQuery("from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam order by st.updatedTimeStamp DESC", ServiceTicket.class);
+        Query query = getEntityManager().createQuery("from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam order by st.createdTimeStamp DESC", ServiceTicket.class);
         query.setParameter("employeeParam", emp);
         return query.getResultList();
     }
 
     public Long getTicketsSize(Employee emp, int start, int limit) {
-        Query query = getEntityManager().createQuery("select count (*) from " + ServiceTicket.class.getCanonicalName() + " st where st.employee.emp=:employeeParam", Long.class);
+        Query query = getEntityManager().createQuery("select count (*) from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam", Long.class);
         query.setParameter("employeeParam", emp);
         return (Long) query.getSingleResult();
 
@@ -50,8 +49,9 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     }
 
     public ServiceTicketDao() {
-        super(EmployeeDocument.class);
+        super(ServiceTicket.class);
     }
+    
     @PersistenceContext
     protected EntityManager em;
 

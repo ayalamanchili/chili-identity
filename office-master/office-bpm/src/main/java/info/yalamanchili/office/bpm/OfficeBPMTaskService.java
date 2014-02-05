@@ -28,7 +28,6 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
-import static org.codehaus.groovy.runtime.DefaultGroovyStaticMethods.start;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -93,7 +92,7 @@ public class OfficeBPMTaskService {
 
     public List<Task> getTasksForProcessId(String processId) {
         List<Task> result = new ArrayList<Task>();
-        TaskQuery query = bpmTaskService.createTaskQuery().processDefinitionId(processId);
+        TaskQuery query = bpmTaskService.createTaskQuery().processInstanceId(processId);
         for (org.activiti.engine.task.Task bpmTask : query.list()) {
             result.add(mapper.map(bpmTask, Task.class));
         }
