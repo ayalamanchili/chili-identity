@@ -42,7 +42,7 @@ public class CreateTicketCommentPanel extends ALComposite implements ClickHandle
 
     @Override
     protected void configure() {
-
+        commentF.setHeight("6em");
     }
 
     @Override

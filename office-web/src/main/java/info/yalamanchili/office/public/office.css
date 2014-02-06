@@ -717,4 +717,9 @@ body{
 }
 /* Drive Styling End */
 
+/*serf service*/
+.readTicketComment{
+    background-color: lightgray;
+}
+
 
