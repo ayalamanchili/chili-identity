@@ -108,8 +108,7 @@ public class SelfService {
     public void addTicketComment(Long ticketId, TicketComment comment) {
         comment = serviceTicketDao.addTicketComment(ticketId, comment);
         sendTicketCommentNotification(comment);
-        //TODO add comment to bpm task
-        OfficeBPMTaskService.instance().addComment(null, null);
+        OfficeBPMTaskService.instance().addComment(getTaskForTicket(comment.getTicket()).getId(), comment.getComment());
     }
 
     protected void sendTicketCommentNotification(TicketComment comment) {
