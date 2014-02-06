@@ -50,10 +50,10 @@ public class SelfService {
     @PersistenceContext
     protected EntityManager em;
 
-    public String createServiceTicket(Long empId, ServiceTicket ticket) {
+    public String createServiceTicket(Employee emp, ServiceTicket ticket) {
         ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(getDepartmentToAssign(ticket).name()));
         ticket.setStatus(TicketStatus.Open);
-        ticket.setEmployee(EmployeeDao.instance().findById(empId));
+        ticket.setEmployee(emp);
         ticket.setCreatedTimeStamp(new Date());
         ticket = em.merge(ticket);
         startServiceTicketTask(ticket);

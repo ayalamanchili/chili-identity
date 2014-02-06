@@ -7,32 +7,39 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
  *
  * @author prasanthi.p
  */
-public class ReadSelfServicePanel extends ReadComposite {
+public class ReadServiceTicketPanel extends ReadComposite implements ClickHandler {
 
-    private static ReadSelfServicePanel instance;
+    protected ClickableLink resolveTicket = new ClickableLink("Resolve Ticket");
+    protected ClickableLink startTicket = new ClickableLink("Start Work");
+    protected ClickableLink rejectTicket = new ClickableLink("Reject Ticket");
 
-    public static ReadSelfServicePanel instance() {
+    private static ReadServiceTicketPanel instance;
+
+    public static ReadServiceTicketPanel instance() {
         return instance;
     }
 
-    public ReadSelfServicePanel(JSONObject entity) {
+    public ReadServiceTicketPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "SelfService", OfficeWelcome.constants);
     }
 
-    public ReadSelfServicePanel(String id) {
+    public ReadServiceTicketPanel(String id) {
         initReadComposite(id, "SelfService", OfficeWelcome.constants);
     }
 
@@ -40,12 +47,13 @@ public class ReadSelfServicePanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
+        entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
     }
 
     @Override
@@ -57,6 +65,9 @@ public class ReadSelfServicePanel extends ReadComposite {
 
     @Override
     protected void addListeners() {
+        startTicket.addClickHandler(this);
+        resolveTicket.addClickHandler(this);
+        rejectTicket.addClickHandler(this);
     }
 
     @Override
@@ -65,9 +76,12 @@ public class ReadSelfServicePanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("subject", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
-        addEnumField("type", false, true, TicketType.names());
+        entityFieldsPanel.add(startTicket);
+        entityFieldsPanel.add(resolveTicket);
+        entityFieldsPanel.add(rejectTicket);
+        addField("subject", true, true, DataType.STRING_FIELD);
+        addField("description", true, false, DataType.STRING_FIELD);
+        addEnumField("type", true, true, TicketType.names());
     }
 
     @Override
@@ -77,5 +91,10 @@ public class ReadSelfServicePanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "selfservice/" + entityId;
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+
     }
 }

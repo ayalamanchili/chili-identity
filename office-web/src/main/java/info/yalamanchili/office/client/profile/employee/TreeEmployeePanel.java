@@ -38,8 +38,7 @@ import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
 import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettngsPanel;
-import info.yalamanchili.office.client.profile.selfservice.ReadAllSelfServicePanel;
-import info.yalamanchili.office.client.profile.selfservice.ReadSelfServicePanel;
+import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import java.util.logging.Logger;
 
 public class TreeEmployeePanel extends TreePanelComposite {
@@ -166,7 +165,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (SELF_SERVICE_NODE.equals(entityNodeKey)) {
             //TODO ADD READ ALL Serviceticketspanel
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSelfServicePanel(getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel(getEntityId()));
         }
         if (DOCUMENTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();

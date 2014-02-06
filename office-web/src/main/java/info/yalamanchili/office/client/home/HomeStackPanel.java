@@ -18,7 +18,7 @@ import info.yalamanchili.office.client.home.audit.AuditStackPanelWidget;
 import info.yalamanchili.office.client.home.message.MessageStackPanelWidget;
 import info.yalamanchili.office.client.home.tasks.TasksStackPanelWidget;
 import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
-import info.yalamanchili.office.client.profile.selfservice.CreateSelfServicePanel;
+import info.yalamanchili.office.client.profile.selfservice.CreateServiceTicketPanel;
 import info.yalamanchili.office.client.profile.selfservice.SelfServiceStackPanel;
 
 /**
@@ -64,7 +64,7 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(selfServStackPanel)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateSelfServicePanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateServiceTicketPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

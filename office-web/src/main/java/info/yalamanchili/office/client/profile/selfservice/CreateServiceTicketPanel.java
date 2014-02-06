@@ -15,18 +15,17 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author raghu.l
  */
-public class CreateSelfServicePanel extends CreateComposite {
+public class CreateServiceTicketPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(CreateSelfServicePanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreateServiceTicketPanel.class.getName());
 
-    public CreateSelfServicePanel(CreateComposite.CreateCompositeType type) {
+    public CreateServiceTicketPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("SelfService", OfficeWelcome.constants);
     }
@@ -44,16 +43,16 @@ public class CreateSelfServicePanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -64,7 +63,7 @@ public class CreateSelfServicePanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added SelfServiceTask");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSelfServicePanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
         TabPanel.instance().myOfficePanel.entityPanel.add(new SelfServiceStackPanel());
     }
 
@@ -89,6 +88,6 @@ public class CreateSelfServicePanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "selfservice/" + TreeEmployeePanel.instance().getEntityId();
+        return OfficeWelcome.constants.root_url() + "selfservice/create-ticket/currentuser";
     }
 }

@@ -7,57 +7,52 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author prasanthi.p
  */
-public class ReadAllSelfServicePanel extends CRUDReadAllComposite {
+public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllSelfServicePanel.class.getName());
-    public static ReadAllSelfServicePanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllServiceTicketsPanel.class.getName());
+    public static ReadAllServiceTicketsPanel instance;
 
-    public ReadAllSelfServicePanel(String employeeId) {
+    public ReadAllServiceTicketsPanel(String employeeId) {
         instance = this;
         this.parentId = employeeId;
+        initTable("SelfService", OfficeWelcome.constants);
+    }
+
+    public ReadAllServiceTicketsPanel() {
+        instance = this;
         initTable("SelfService", OfficeWelcome.constants);
     }
 
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSelfServicePanel(entityId));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadServiceTicketPanel(entityId));
     }
 
     @Override
     public void deleteClicked(String entityId) {
-        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+
     }
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted SelfService Data");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSelfServicePanel(parentId));
+
     }
 
     @Override
@@ -68,11 +63,11 @@ public class ReadAllSelfServicePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllSelfServiceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -96,14 +91,14 @@ public class ReadAllSelfServicePanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_DELETE, row, JSONUtils.toString(entity, "id"));
-    }
-
-    private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "selfservice/delete/" + entityId;
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
     }
 
     private String getReadAllSelfServiceURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "selfservice/" + parentId + "/" + start.toString() + "/" + limit.toString();
+        if (this.parentId == null) {
+            return OfficeWelcome.constants.root_url() + "selfservice/tickets/currentuser/" + start.toString() + "/" + limit.toString();
+        } else {
+            return OfficeWelcome.constants.root_url() + "selfservice/tickets/" + TreeEmployeePanel.instance().getEntityId() + "/" + start.toString() + "/" + limit.toString();
+        }
     }
 }

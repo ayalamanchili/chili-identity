@@ -41,13 +41,25 @@ public class SelfServiceResource {
     @PUT
     @Path("/create-ticket/{empid}")
     public String createServiceTicket(@PathParam("empid") long empid, ServiceTicket ticket) {
-        return SelfService.instance().createServiceTicket(empid, ticket);
+        return SelfService.instance().createServiceTicket(EmployeeDao.instance().findById(empid), ticket);
+    }
+
+    @PUT
+    @Path("/create-ticket/currentuser")
+    public String createServiceTicket(ServiceTicket ticket) {
+        return SelfService.instance().createServiceTicket(SecurityService.instance().getCurrentUser(), ticket);
     }
 
     @PUT
     @Path("/update-ticket/{status}/{ticketId}")
     public void updateTicket(@PathParam("ticketId") long ticketId, @PathParam("status") TicketStatus status, TicketComment comment) {
         SelfService.instance().updateTicket(ticketId, status, comment);
+    }
+
+    @GET
+    @Path("/{ticketId}")
+    public ServiceTicket viewServiceTicket(@PathParam("ticketId") long ticketId) {
+        return ServiceTicketDao.instance().findById(ticketId);
     }
 
     @GET
