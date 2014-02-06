@@ -41,8 +41,13 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadServiceTicketPanel(entityId));
+        if (this.parentId == null) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadServiceTicketPanel(entityId));
+        } else {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadServiceTicketPanel(entityId));
+        }
     }
 
     @Override
