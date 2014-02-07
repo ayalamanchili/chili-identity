@@ -22,33 +22,33 @@ import info.yalamanchili.office.client.TabPanel;
  * @author anuyalamanchili
  */
 public class SelfServiceStackPanel extends ALComposite implements ClickHandler {
-    
+
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink myTickets = new ClickableLink("My Tickets");
     protected ClickableLink createServiceTicket = new ClickableLink("Open Ticket");
-    
+
     public SelfServiceStackPanel() {
         init(panel);
     }
-    
+
     @Override
     protected void addListeners() {
         myTickets.addClickHandler(this);
         createServiceTicket.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         mainPanel.add(myTickets);
         mainPanel.add(createServiceTicket);
         panel.add(mainPanel);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(myTickets)) {
@@ -60,4 +60,5 @@ public class SelfServiceStackPanel extends ALComposite implements ClickHandler {
             TabPanel.instance().getHomePanel().entityPanel.add(new CreateServiceTicketPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
+
 }

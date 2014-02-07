@@ -11,12 +11,16 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.Button;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,10 +28,11 @@ import info.yalamanchili.office.client.OfficeWelcome;
  */
 public class ReadServiceTicketPanel extends ReadComposite implements ClickHandler {
 
+    private static Logger logger = Logger.getLogger(ReadServiceTicketPanel.class.getName());
     protected ClickableLink resolveTicket = new ClickableLink("Resolve Ticket");
     protected ClickableLink startTicket = new ClickableLink("Start Work");
     protected ClickableLink rejectTicket = new ClickableLink("Reject Ticket");
-
+    protected Button updateB = new Button("Update Status");
     private static ReadServiceTicketPanel instance;
 
     public static ReadServiceTicketPanel instance() {
@@ -65,9 +70,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
 
     @Override
     protected void addListeners() {
-        startTicket.addClickHandler(this);
-        resolveTicket.addClickHandler(this);
-        rejectTicket.addClickHandler(this);
+        updateB.addClickHandler(this);
     }
 
     @Override
@@ -76,12 +79,11 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
 
     @Override
     protected void addWidgets() {
-        entityFieldsPanel.add(startTicket);
-        entityFieldsPanel.add(resolveTicket);
-        entityFieldsPanel.add(rejectTicket);
         addField("subject", true, true, DataType.STRING_FIELD);
         addField("description", true, false, DataType.STRING_FIELD);
         addEnumField("type", true, true, TicketType.names());
+        addEnumField("status", false, true, TicketStatus.names());
+        entityFieldsPanel.add(updateB);
     }
 
     @Override
@@ -95,6 +97,56 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
 
     @Override
     public void onClick(ClickEvent event) {
+        if (event.getSource().equals(updateB)) {
+            EnumField statusF = (EnumField) fields.get("status");
+            updateStatus(statusF.getValue());
+            if (TicketStatus.InProgres.name().endsWith(statusF.getValue())) {
+                ticketInProgress();
+            }
+            if (TicketStatus.Rejected.name().endsWith(statusF.getValue())) {
+                ticketRejected();
+            }
+            if (TicketStatus.Resolved.name().endsWith(statusF.getValue())) {
+                ticketResolved();
+            }
+        }
+    }
 
+    protected void ticketInProgress() {
+        logger.info("asdf");
+    }
+
+    protected void ticketRejected() {
+        logger.info("asdf");
+    }
+
+    protected void ticketResolved() {
+        logger.info("asdf");
+    }
+
+    protected void updateStatus(String status) {
+        if(processClientSideValidations()){
+        HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(status), CreateTicketCommentPanel.instance().getComment().toString(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Updated Service Ticket");
+                    }
+                });
+        }
+    }
+
+    protected String getUpdateURI(String status) {
+        return OfficeWelcome.constants.root_url() + "selfservice/update-ticket/" + status + "/" + getEntityId();
+    }
+
+    protected boolean processClientSideValidations() {
+        boolean valid = true;
+        if (CreateTicketCommentPanel.instance().getCommentText().isEmpty()) {
+            new ResponseStatusWidget().show("Please enter a Comment");
+            return false;
+        }
+        return valid;
     }
 }

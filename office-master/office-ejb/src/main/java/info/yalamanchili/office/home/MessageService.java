@@ -54,9 +54,9 @@ public class MessageService {
         newMessage.setMessageTs(new Date());
         newMessage.setFromEmp(SecurityService.instance().getCurrentUser());
         for (Entry emp : messageDto.getTos()) {
-            Employee toEmployee = EmployeeDao.instance().getEmployeWithEmpId(emp.getId());
+            Employee toEmployee = EmployeeDao.instance().findEmployeWithEmpId(emp.getId());
             if (toEmployee != null) {
-                newMessage.addTo(EmployeeDao.instance().getEmployeWithEmpId(emp.getId()));
+                newMessage.addTo(EmployeeDao.instance().findEmployeWithEmpId(emp.getId()));
             } else {
                 NotificationGroup group = NotificationGroupDao.instance().findByName(emp.getId());
                 if (group != null) {

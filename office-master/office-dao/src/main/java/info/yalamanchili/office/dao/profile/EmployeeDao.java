@@ -109,7 +109,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
     }
 
-    public Employee getEmployeWithEmpId(String empId) {
+    public Employee findEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
         getEmployeQ.setParameter("empIdParam", empId);
         try {

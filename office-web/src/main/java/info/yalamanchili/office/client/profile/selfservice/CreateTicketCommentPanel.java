@@ -8,7 +8,6 @@ package info.yalamanchili.office.client.profile.selfservice;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -25,12 +24,18 @@ import info.yalamanchili.office.client.OfficeWelcome;
  */
 public class CreateTicketCommentPanel extends ALComposite implements ClickHandler {
 
+    private static CreateTicketCommentPanel instance;
+
+    public static CreateTicketCommentPanel instance() {
+        return instance;
+    }
     protected String ticketId;
     protected FlowPanel panel = new FlowPanel();
     protected RichTextArea commentF = new RichTextArea();
     Button addCommentB = new Button("Add Comment");
 
     public CreateTicketCommentPanel(String ticketId) {
+        instance = this;
         init(panel);
         this.ticketId = ticketId;
     }
@@ -59,9 +64,7 @@ public class CreateTicketCommentPanel extends ALComposite implements ClickHandle
     }
 
     protected void addComment() {
-        JSONObject comment = new JSONObject();
-        comment.put("comment", new JSONString(commentF.getHTML()));
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), comment.toString(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), getComment().toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -71,8 +74,19 @@ public class CreateTicketCommentPanel extends ALComposite implements ClickHandle
                 });
     }
 
+    public JSONObject getComment() {
+        JSONObject comment = new JSONObject();
+        comment.put("comment", new JSONString(commentF.getHTML()));
+        return comment;
+    }
+
+    public String getCommentText() {
+        return commentF.getHTML();
+    }
+
     protected void clear() {
         commentF.setHTML("");
+        instance = null;
     }
 
     protected String getURI() {

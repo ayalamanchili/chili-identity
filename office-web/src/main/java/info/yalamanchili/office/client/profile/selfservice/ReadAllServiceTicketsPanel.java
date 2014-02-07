@@ -81,6 +81,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Subject"));
         table.setText(0, 2, getKeyValue("Description"));
         table.setText(0, 3, getKeyValue("Type"));
+        table.setText(0, 4, getKeyValue("Status"));
     }
 
     @Override
@@ -91,6 +92,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.formatEnumString(entity, "subject"));
             table.setText(i, 2, JSONUtils.formatEnumString(entity, "description"));
             table.setText(i, 3, JSONUtils.toString(entity, "type"));
+            table.setText(i, 4, JSONUtils.toString(entity, "status"));
         }
     }
 

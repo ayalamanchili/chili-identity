@@ -51,7 +51,7 @@ public class PublicAdminResource {
     @PreAuthorize("permitAll")
     public void forgotPasswordReset(@PathParam("empId") String empId) {
 
-        Employee emp = EmployeeDao.instance().getEmployeWithEmpId(empId);
+        Employee emp = EmployeeDao.instance().findEmployeWithEmpId(empId);
         if (emp == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "Invalid EmployeeId, Please submit AccountReset form located at the bottom");
         }

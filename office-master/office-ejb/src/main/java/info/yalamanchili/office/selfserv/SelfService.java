@@ -74,7 +74,7 @@ public class SelfService {
             case ReOpened:
                 reopenTicket(ticket);
         }
-
+        serviceTicketDao.save(ticket);
     }
 
     protected void reopenTicket(ServiceTicket ticket) {
@@ -112,9 +112,10 @@ public class SelfService {
     }
 
     protected void sendTicketCommentNotification(TicketComment comment) {
+        Employee commentAuthor = SecurityService.instance().getCurrentUser();
         Email email = new Email();
         email.setTos(getTicketNotificationGroup(comment));
-        email.setSubject("Comment Added for Ticket: " + comment.getTicket().getSubject());
+        email.setSubject(commentAuthor.getFirstName() + " " + commentAuthor.getLastName() + " added a comment for Ticket: " + comment.getTicket().getSubject());
         email.setBody(comment.getComment());
         MessagingService.instance().sendEmail(email);
     }

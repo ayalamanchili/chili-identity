@@ -374,6 +374,10 @@ legend {
 @sprite .imageField-Image{
     gwt-image: "homeButton";
 }
+.horizontalAignment{
+    float: left;
+    padding : 2px;
+}
 /*image field css end*/
 .y-gwt-treePanelComposite-Node
 {

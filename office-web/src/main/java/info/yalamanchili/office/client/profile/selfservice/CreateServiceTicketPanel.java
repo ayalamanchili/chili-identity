@@ -61,7 +61,7 @@ public class CreateServiceTicketPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Added SelfServiceTask");
+        new ResponseStatusWidget().show("Submitted Service Ticket");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
         TabPanel.instance().myOfficePanel.entityPanel.add(new SelfServiceStackPanel());
