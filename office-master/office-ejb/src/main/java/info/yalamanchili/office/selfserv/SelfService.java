@@ -67,7 +67,7 @@ public class SelfService {
         switch (status) {
             case Resolved:
                 resolveTicket(ticket);
-            case InProgres:
+            case InProgress:
                 claimTicket(ticket);
             case Rejected:
                 claimTicket(ticket);

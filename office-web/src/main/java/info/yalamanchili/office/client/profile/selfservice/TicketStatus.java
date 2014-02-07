@@ -18,7 +18,7 @@ public enum TicketStatus {
 
     Open,
     ReOpened,
-    InProgres,
+    InProgress,
     Rejected,
     Resolved;
 
@@ -36,9 +36,9 @@ public enum TicketStatus {
         roles.add(status.name());
         switch (status) {
             case Open:
-                roles.add(TicketStatus.InProgres.name());
+                roles.add(TicketStatus.InProgress.name());
                 break;
-            case InProgres:
+            case InProgress:
                 roles.add(TicketStatus.Rejected.name());
                 roles.add(TicketStatus.Resolved.name());
                 break;

@@ -16,7 +16,7 @@ package info.yalamanchili.office.entity.selfserv;
 public enum TicketStatus {
     Open,
     ReOpened,
-    InProgres,
+    InProgress,
     Rejected,
     Resolved,
 }

@@ -103,7 +103,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(updateB)) {
             updateStatus(statusF.getValue());
-            if (TicketStatus.InProgres.name().endsWith(statusF.getValue())) {
+            if (TicketStatus.InProgress.name().endsWith(statusF.getValue())) {
                 ticketInProgress();
             }
             if (TicketStatus.Rejected.name().endsWith(statusF.getValue())) {
