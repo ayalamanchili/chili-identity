@@ -44,7 +44,7 @@
             <item name="Adminstration" href="/office/admin.html" collapse="true">
                 <item name="Bulkupload" href="/office/bulkupload.html"/>
             </item>
-             <item name="Leave Processes" href="/office/timesheets/corp-timesheets.html" collapse="true">
+            <item name="Leave Processes" href="/office/timesheets/corp-timesheets.html" collapse="true">
                 <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
                 <item name="Timesheet Process" href="/office/timesheets/corp-timesheet-process.html"/>
                 <item name="Corp Timesheet" href="/office/timesheets/corp-timesheets.html"/>
@@ -60,6 +60,7 @@
                 <item name="Account Reset" href="/office/accountresettask.html"/>
                 <item name="Forgot Password" href="/office/forgot-password.html"/>
             </item>
+            <item name="SelfService" href="/office/selfservice/selfservice.html"/>
         </menu>
         <footer>COPYRIGHT © 2012-2014 sstech.us - All Rights Reserved</footer>
     </body>
