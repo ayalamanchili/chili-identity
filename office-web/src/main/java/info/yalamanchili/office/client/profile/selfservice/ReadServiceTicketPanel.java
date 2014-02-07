@@ -52,12 +52,12 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
         entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
     }
 
@@ -82,7 +82,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         addField("subject", true, true, DataType.STRING_FIELD);
         addField("description", true, false, DataType.STRING_FIELD);
         addEnumField("type", true, true, TicketType.names());
-        addEnumField("status", false, true, TicketStatus.names());
+        addEnumField("status", false, false, TicketStatus.names());
         entityFieldsPanel.add(updateB);
     }
 
@@ -125,15 +125,14 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     }
 
     protected void updateStatus(String status) {
-        if(processClientSideValidations()){
-        HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(status), CreateTicketCommentPanel.instance().getComment().toString(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Updated Service Ticket");
-                    }
-                });
+        if (processClientSideValidations()) {
+            HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(status), CreateTicketCommentPanel.instance().getComment().toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String arg0) {
+                    new ResponseStatusWidget().show("Updated Service Ticket");
+                }
+            });
         }
     }
 
