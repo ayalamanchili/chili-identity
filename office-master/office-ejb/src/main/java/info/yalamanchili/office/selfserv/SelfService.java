@@ -14,7 +14,6 @@ import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.email.Email;
@@ -67,30 +66,43 @@ public class SelfService {
         switch (status) {
             case Resolved:
                 resolveTicket(ticket);
+                break;
             case InProgress:
                 claimTicket(ticket);
+                break;
             case Rejected:
-                claimTicket(ticket);
+                rejectTicket(ticket);
+                break;
             case ReOpened:
                 reopenTicket(ticket);
+                break;
         }
         serviceTicketDao.save(ticket);
+        sendTicketUpdatedNotification(comment);
     }
 
     protected void reopenTicket(ServiceTicket ticket) {
-        //TODO
+        startServiceTicketTask(ticket);
     }
 
     protected void rejectTicket(ServiceTicket ticket) {
-        //TODO
+        completeTask(ticket);
     }
 
     protected void claimTicket(ServiceTicket ticket) {
-        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
-        taskService.claimTask(getTaskForTicket(ticket).getId(), SecurityService.instance().getCurrentUserId());
+        claimTask(ticket);
     }
 
     protected void resolveTicket(ServiceTicket ticket) {
+        completeTask(ticket);
+    }
+
+    protected void claimTask(ServiceTicket ticket) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        taskService.claimTask(getTaskForTicket(ticket).getId(), null);
+    }
+
+    protected void completeTask(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         taskService.completeTask(getTaskForTicket(ticket).getId(), null);
     }
@@ -107,16 +119,21 @@ public class SelfService {
 
     public void addTicketComment(Long ticketId, TicketComment comment) {
         comment = serviceTicketDao.addTicketComment(ticketId, comment);
-        sendTicketCommentNotification(comment);
+        sendTicketUpdatedNotification(comment);
         OfficeBPMTaskService.instance().addComment(getTaskForTicket(comment.getTicket()).getId(), comment.getComment());
     }
 
-    protected void sendTicketCommentNotification(TicketComment comment) {
+    protected void sendTicketUpdatedNotification(TicketComment comment) {
         Employee commentAuthor = SecurityService.instance().getCurrentUser();
         Email email = new Email();
         email.setTos(getTicketNotificationGroup(comment));
-        email.setSubject(commentAuthor.getFirstName() + " " + commentAuthor.getLastName() + " added a comment for Ticket: " + comment.getTicket().getSubject());
-        email.setBody(comment.getComment());
+        StringBuilder subject = new StringBuilder();
+        subject.append(commentAuthor.getFirstName()).append(" ").append(commentAuthor.getLastName()).append(" updated ticket:").append(comment.getTicket().getSubject()).append(" to: ").append(comment.getTicket().getStatus().name());
+        email.setSubject(subject.toString());
+        StringBuilder body = new StringBuilder();
+        body.append("Status:").append(comment.getTicket().getStatus().name()).append("\n");
+        body.append("Comment:").append(comment.getComment()).append("\n");
+        email.setBody(body.toString());
         MessagingService.instance().sendEmail(email);
     }
 
@@ -136,6 +153,7 @@ public class SelfService {
         return notificationGroup;
     }
 
+//TODO externalize
     protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {
         switch (ticket.getType()) {
             case Immigration:

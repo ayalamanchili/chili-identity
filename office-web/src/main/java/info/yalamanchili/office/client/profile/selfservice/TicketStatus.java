@@ -49,6 +49,9 @@ public enum TicketStatus {
             case Resolved:
                 roles.add(TicketStatus.ReOpened.name());
                 break;
+            case ReOpened:
+                roles.add(TicketStatus.InProgress.name());
+                break;
         }
         return roles.toArray(new String[roles.size()]);
     }

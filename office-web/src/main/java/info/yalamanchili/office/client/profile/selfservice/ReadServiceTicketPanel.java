@@ -20,6 +20,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
 
@@ -150,5 +151,15 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
             return false;
         }
         return valid;
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return Auth.isCorporateEmployee();
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.selfserv.ServiceTicket" + "/" + getEntityId();
     }
 }
