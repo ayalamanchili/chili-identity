@@ -17,6 +17,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -34,6 +35,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     protected ClickableLink rejectTicket = new ClickableLink("Reject Ticket");
     protected Button updateB = new Button("Update Status");
     private static ReadServiceTicketPanel instance;
+    protected EnumField statusF;
 
     public static ReadServiceTicketPanel instance() {
         return instance;
@@ -52,12 +54,12 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
         entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
     }
 
@@ -66,6 +68,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         assignFieldValueFromEntity("subject", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
+        statusF.setValues(TicketStatus.validStatusFor(TicketStatus.valueOf(JSONUtils.toString(entity, "status"))));
     }
 
     @Override
@@ -83,6 +86,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         addField("description", true, false, DataType.STRING_FIELD);
         addEnumField("type", true, true, TicketType.names());
         addEnumField("status", false, false, TicketStatus.names());
+        statusF = (EnumField) fields.get("status");
         entityFieldsPanel.add(updateB);
     }
 
@@ -98,7 +102,6 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(updateB)) {
-            EnumField statusF = (EnumField) fields.get("status");
             updateStatus(statusF.getValue());
             if (TicketStatus.InProgres.name().endsWith(statusF.getValue())) {
                 ticketInProgress();
@@ -113,26 +116,26 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     }
 
     protected void ticketInProgress() {
-        logger.info("asdf");
+
     }
 
     protected void ticketRejected() {
-        logger.info("asdf");
+
     }
 
     protected void ticketResolved() {
-        logger.info("asdf");
+
     }
 
     protected void updateStatus(String status) {
         if (processClientSideValidations()) {
             HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(status), CreateTicketCommentPanel.instance().getComment().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    new ResponseStatusWidget().show("Updated Service Ticket");
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            new ResponseStatusWidget().show("Updated Service Ticket");
+                        }
+                    });
         }
     }
 

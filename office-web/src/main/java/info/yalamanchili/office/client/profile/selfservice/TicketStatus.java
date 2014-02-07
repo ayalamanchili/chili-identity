@@ -7,18 +7,22 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author raghu.l
  */
 public enum TicketStatus {
+
     Open,
     ReOpened,
     InProgres,
     Rejected,
     Resolved;
-    
-     public static String[] names() {
+
+    public static String[] names() {
         TicketStatus[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
@@ -26,5 +30,27 @@ public enum TicketStatus {
         }
         return names;
     }
-    
+
+    public static String[] validStatusFor(TicketStatus status) {
+        List<String> roles = new ArrayList<String>();
+        roles.add(status.name());
+        switch (status) {
+            case Open:
+                roles.add(TicketStatus.InProgres.name());
+                break;
+            case InProgres:
+                roles.add(TicketStatus.Rejected.name());
+                roles.add(TicketStatus.Resolved.name());
+                break;
+            case Rejected:
+                roles.add(TicketStatus.ReOpened.name());
+                roles.add(TicketStatus.Resolved.name());
+                break;
+            case Resolved:
+                roles.add(TicketStatus.ReOpened.name());
+                break;
+        }
+        return roles.toArray(new String[roles.size()]);
+    }
+
 }
