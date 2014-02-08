@@ -45,7 +45,7 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     }
 
     public List<TicketComment> getCommentsForTicket(Long ticketId) {
-        Query query = getEntityManager().createQuery(" from " + TicketComment.class.getCanonicalName() + " tc where tc.ticket.id=:ticketIdParam", TicketComment.class);
+        Query query = getEntityManager().createQuery(" from " + TicketComment.class.getCanonicalName() + " tc where tc.ticket.id=:ticketIdParam order by tc.createdTimeStamp DESC", TicketComment.class);
         query.setParameter("ticketIdParam", ticketId);
         return query.getResultList();
     }

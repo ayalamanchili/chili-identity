@@ -78,7 +78,6 @@ public class SelfService {
                 break;
         }
         serviceTicketDao.save(ticket);
-        sendTicketUpdatedNotification(comment);
     }
 
     protected void reopenTicket(ServiceTicket ticket) {
@@ -120,7 +119,10 @@ public class SelfService {
     public void addTicketComment(Long ticketId, TicketComment comment) {
         comment = serviceTicketDao.addTicketComment(ticketId, comment);
         sendTicketUpdatedNotification(comment);
-        OfficeBPMTaskService.instance().addComment(getTaskForTicket(comment.getTicket()).getId(), comment.getComment());
+        Task task = getTaskForTicket(comment.getTicket());
+        if (task != null) {
+            OfficeBPMTaskService.instance().addComment(getTaskForTicket(comment.getTicket()).getId(), comment.getComment());
+        }
     }
 
     protected void sendTicketUpdatedNotification(TicketComment comment) {
@@ -128,12 +130,13 @@ public class SelfService {
         Email email = new Email();
         email.setTos(getTicketNotificationGroup(comment));
         StringBuilder subject = new StringBuilder();
-        subject.append(commentAuthor.getFirstName()).append(" ").append(commentAuthor.getLastName()).append(" updated ticket:").append(comment.getTicket().getSubject()).append(" to: ").append(comment.getTicket().getStatus().name());
+        subject.append(commentAuthor.getFirstName()).append(" ").append(commentAuthor.getLastName()).append(" updated ticket:").append(comment.getTicket().getSubject());
         email.setSubject(subject.toString());
         StringBuilder body = new StringBuilder();
-        body.append("Status:").append(comment.getTicket().getStatus().name()).append("\n");
-        body.append("Comment:").append(comment.getComment()).append("\n");
+        body.append("Status: ").append(comment.getTicket().getStatus().name()).append("\n");
+        body.append("Comment: ").append(comment.getComment()).append("\n");
         email.setBody(body.toString());
+        email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);
     }
 

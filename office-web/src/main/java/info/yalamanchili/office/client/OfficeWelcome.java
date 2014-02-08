@@ -67,6 +67,14 @@ public class OfficeWelcome implements EntryPoint {
         SessionTimeoutMonitor.get().initialize();
     }
 
+    public String getCurrentUserName() {
+        return JSONUtils.toString(employee, "firstName") + " " + JSONUtils.toString(employee, "lastName");
+    }
+
+    public String getCurrentUserEmpId() {
+        return employeeId;
+    }
+
     protected void initUserRoles(JSONObject employee) {
         JSONObject user = employee.get("user").isObject();
         logger.info(user.toString());

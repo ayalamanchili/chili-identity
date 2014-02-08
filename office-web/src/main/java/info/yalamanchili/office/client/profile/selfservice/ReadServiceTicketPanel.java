@@ -104,28 +104,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(updateB)) {
             updateStatus(statusF.getValue());
-            if (TicketStatus.InProgress.name().endsWith(statusF.getValue())) {
-                ticketInProgress();
-            }
-            if (TicketStatus.Rejected.name().endsWith(statusF.getValue())) {
-                ticketRejected();
-            }
-            if (TicketStatus.Resolved.name().endsWith(statusF.getValue())) {
-                ticketResolved();
-            }
         }
-    }
-
-    protected void ticketInProgress() {
-
-    }
-
-    protected void ticketRejected() {
-
-    }
-
-    protected void ticketResolved() {
-
     }
 
     protected void updateStatus(String status) {
@@ -135,6 +114,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
                         @Override
                         public void onResponse(String arg0) {
                             new ResponseStatusWidget().show("Updated Service Ticket");
+                            CreateTicketCommentPanel.instance().clear();
                         }
                     });
         }

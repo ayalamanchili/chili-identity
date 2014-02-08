@@ -67,12 +67,15 @@ public class CreateTicketCommentPanel extends ALComposite implements ClickHandle
     }
 
     protected void addComment() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), getComment().toString(), OfficeWelcome.instance().getHeaders(), true,
+        final JSONObject comment = getComment();
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), comment.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("Comment Added");
                         clear();
+                        comment.put("createdBy", new JSONString(OfficeWelcome.instance().getCurrentUserName()));
+                        ReadAllTicketComments.instance().addComment(comment);
                     }
                 });
     }
@@ -87,9 +90,8 @@ public class CreateTicketCommentPanel extends ALComposite implements ClickHandle
         return commentF.getHTML();
     }
 
-    protected void clear() {
+    public void clear() {
         commentF.setHTML("");
-        instance = null;
     }
 
     protected String getURI() {
