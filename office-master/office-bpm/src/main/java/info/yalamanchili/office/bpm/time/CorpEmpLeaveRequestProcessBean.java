@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CorpEmpLeaveRequestProcessBean {
 
     public boolean validateLeaveRequest(Employee employee, CorpEmpLeaveRequest request) {
-        if (TimeSheetCategory.Unpaid.equals(request.getCategory())) {
+        if (TimeSheetCategory.Unpaid.equals(request.getCategory()) || TimeSheetCategory.JuryDuty.equals(request.getCategory())) {
             return true;
         }
         BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(request.getCategory().name().replace("Spent", "Earned")));

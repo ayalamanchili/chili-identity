@@ -100,7 +100,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public Employee findByEmail(String email) {
-        TypedQuery<Employee> qry = em.createQuery("from " + Employee.class.getCanonicalName() + " emails.email=:emailParam", Employee.class);
+        TypedQuery<Employee> qry = em.createQuery("from " + Employee.class.getCanonicalName() + " emails.email=:emailParam and user.enabled=true", Employee.class);
         qry.setParameter("emailParam", email);
         if (qry.getResultList().size() > 0) {
             return qry.getResultList().get(0);
@@ -110,7 +110,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public Employee findEmployeWithEmpId(String empId) {
-        Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam");
+        Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam and emp.user.enabled=true");
         getEmployeQ.setParameter("empIdParam", empId);
         try {
             return (Employee) getEmployeQ.getSingleResult();
