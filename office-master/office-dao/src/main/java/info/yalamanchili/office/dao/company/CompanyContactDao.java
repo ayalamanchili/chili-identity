@@ -42,7 +42,7 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
     }
     
     public List<CompanyContact> getCompanyContact(Employee employee, String companyContactType) {
-        TypedQuery<CompanyContact> query = em.createQuery("from " + CompanyContact.class.getCanonicalName() + " where employee=:empParam and type.name=:typeParam", CompanyContact.class);
+        TypedQuery<CompanyContact> query = em.createQuery("from " + CompanyContact.class.getCanonicalName() + " where employee=:empParam and type.name=:typeParam and user.enabled=true", CompanyContact.class);
         query.setParameter("empParam", employee);
         query.setParameter("typeParam", companyContactType);
         return query.getResultList();
