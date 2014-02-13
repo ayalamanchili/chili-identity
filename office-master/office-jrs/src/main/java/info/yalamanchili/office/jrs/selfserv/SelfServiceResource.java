@@ -52,8 +52,8 @@ public class SelfServiceResource {
 
     @PUT
     @Path("/update-ticket/{status}/{ticketId}")
-    public void updateTicket(@PathParam("ticketId") long ticketId, @PathParam("status") TicketStatus status, TicketComment comment) {
-        SelfService.instance().updateTicket(ticketId, status, comment);
+    public void updateTicket(@PathParam("ticketId") long ticketId, @PathParam("status") TicketStatus status, @PathParam("role") String role, TicketComment comment) {
+        SelfService.instance().updateTicket(ticketId, role, status, comment);
     }
 
     @GET

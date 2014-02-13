@@ -30,6 +30,10 @@
                 Assigned To : #{ticket.assignedTo}
                 Please go to My Office --> Employees --> Search --> Employee Tree --> SelfService to process the ticket.
             </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements>             
         </userTask>
         <sequenceFlow sourceRef="serviceTicketTask" targetRef="serviceTicketEnd" />
         <!-- Task escalation email after 7 days-->
