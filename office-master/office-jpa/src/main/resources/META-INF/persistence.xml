@@ -75,7 +75,6 @@
             <property name="hibernate.hbm2ddl.auto" value="${db.hbm2ddl}"/>
             <!-- Hibernate Search -->
             <property name="hibernate.search.default.directory_provider" value="org.hibernate.search.store.FSDirectoryProvider"/>
-            ${db.hbm2ddl}
             <property name="hibernate.search.default.indexBase" value="c:/office/lucene/indexes"/>
             <!-- Hibernate Envers-->
             <property name="hibernate.ejb.event.post-insert" value="org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener"/>
