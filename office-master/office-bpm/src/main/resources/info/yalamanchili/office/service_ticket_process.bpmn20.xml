@@ -26,8 +26,6 @@
                 Notes       : #{ticket.description}
                 Type        : #{ticket.type}
                 Created     : #{ticket.createdTimeStamp}
-                Department  : #{ticket.departmentAssigned.rolename}
-                Assigned To : #{ticket.assignedTo}
                 Please go to My Office --> Employees --> Search --> Employee Tree --> SelfService to process the ticket.
             </documentation>
             <extensionElements>

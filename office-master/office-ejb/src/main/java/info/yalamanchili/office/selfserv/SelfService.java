@@ -82,11 +82,14 @@ public class SelfService {
         }
         //Dept assigned to 
         if (servTicket.getDepartmentAssigned() != null && CRoleDao.instance().findById(servTicket.getDepartmentAssigned().getRoleId()) != null) {
+            updateTaskAssignedToDepartment(ticket, ticket.getDepartmentAssigned().getRolename(), CRoleDao.instance().findById(servTicket.getDepartmentAssigned().getRoleId()).getRolename());
             ticket.setDepartmentAssigned(CRoleDao.instance().findById(servTicket.getDepartmentAssigned().getRoleId()));
         }
         //Assigned to
-        if (ticket.getAssignedTo() != null) {
-            ticket.setAssignedTo(EmployeeDao.instance().findById(ticket.getAssignedTo().getId()));
+        if (servTicket.getAssignedTo() != null) {
+            Employee assignedTo = EmployeeDao.instance().findById(servTicket.getAssignedTo().getId());
+            OfficeBPMTaskService.instance().claimTask(getTaskForTicket(ticket).getId(), assignedTo.getEmployeeId());
+            ticket.setAssignedTo(assignedTo);
         }
         addTicketComment(servTicket.getId(), servTicket.getComments().get(0));
         serviceTicketDao.save(ticket);
@@ -109,9 +112,14 @@ public class SelfService {
     }
 
     protected void claimTask(ServiceTicket ticket) {
-        ticket.setAssignedTo(SecurityService.instance().getCurrentUser());
+        Employee emp = SecurityService.instance().getCurrentUser();
+        ticket.setAssignedTo(emp);
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
-        taskService.claimTask(getTaskForTicket(ticket).getId(), null);
+        taskService.claimTask(getTaskForTicket(ticket).getId(), emp.getEmployeeId());
+    }
+
+    protected void updateTaskAssignedToDepartment(ServiceTicket ticket, String oldDepartment, String newDepartment) {
+        OfficeBPMTaskService.instance().setCandidateGroup(getTaskForTicket(ticket).getId(), oldDepartment, newDepartment);
     }
 
     protected void completeTask(ServiceTicket ticket) {

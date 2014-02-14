@@ -90,6 +90,11 @@ public class OfficeBPMTaskService {
         }
     }
 
+    public void setCandidateGroup(String taskId, String oldGroupId, String newGroupId) {
+        bpmTaskService.deleteCandidateGroup(taskId, oldGroupId);
+        bpmTaskService.addCandidateGroup(taskId, newGroupId);
+    }
+
     public List<Task> getTasksForProcessId(String processId) {
         List<Task> result = new ArrayList<Task>();
         TaskQuery query = bpmTaskService.createTaskQuery().processInstanceId(processId);
