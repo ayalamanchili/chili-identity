@@ -14,8 +14,8 @@ import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
-import info.yalamanchili.office.entity.selfserv.TicketStatus;
 import info.yalamanchili.office.selfserv.SelfService;
+import info.yalamanchili.office.selfserv.ServiceTicketUpdateDto;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -24,6 +24,8 @@ import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,10 +52,13 @@ public class SelfServiceResource {
         return SelfService.instance().createServiceTicket(SecurityService.instance().getCurrentUser(), ticket);
     }
 
+    @Autowired
+    protected Mapper mapper;
+
     @PUT
-    @Path("/update-ticket/{status}/{ticketId}")
-    public void updateTicket(@PathParam("ticketId") long ticketId, @PathParam("status") TicketStatus status, @PathParam("role") String role, TicketComment comment) {
-        SelfService.instance().updateTicket(ticketId, role, status, comment);
+    @Path("/update-ticket")
+    public void updateTicket(ServiceTicketUpdateDto servTicket) {
+        SelfService.instance().updateTicket(mapper.map(servTicket, ServiceTicket.class));
     }
 
     @GET

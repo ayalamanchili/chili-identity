@@ -27,7 +27,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth.ROLE;
-import java.util.HashMap;
 
 /**
  *

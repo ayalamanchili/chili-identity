@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -137,7 +138,7 @@ public class ServiceTicket extends AbstractEntity {
         this.createdTimeStamp = createdTimeStamp;
     }
 
-    @XmlTransient
+    @XmlElement
     public CRole getDepartmentAssigned() {
         return departmentAssigned;
     }
@@ -146,7 +147,7 @@ public class ServiceTicket extends AbstractEntity {
         this.departmentAssigned = departmentAssigned;
     }
 
-    @XmlTransient
+    @XmlElement
     public Employee getAssignedTo() {
         return assignedTo;
     }

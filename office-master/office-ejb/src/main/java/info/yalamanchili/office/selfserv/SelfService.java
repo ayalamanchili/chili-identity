@@ -14,6 +14,7 @@ import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.email.Email;
@@ -42,13 +43,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class SelfService {
-    
+
     @Autowired
     protected ServiceTicketDao serviceTicketDao;
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     public String createServiceTicket(Employee emp, ServiceTicket ticket) {
         ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(getDepartmentToAssign(ticket).name()));
         ticket.setStatus(TicketStatus.Open);
@@ -58,57 +59,66 @@ public class SelfService {
         startServiceTicketTask(ticket);
         return em.merge(ticket).getId().toString();
     }
-    
-    public void updateTicket(Long ticketId, String role, TicketStatus status, TicketComment comment) {
-        ServiceTicket ticket = serviceTicketDao.findById(ticketId);
-        ticket.setStatus(status);
-        if (role != null && CRoleDao.instance().findRoleByName(role) != null) {
-            ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(role));
+
+    public void updateTicket(ServiceTicket servTicket) {
+        ServiceTicket ticket = serviceTicketDao.findById(servTicket.getId());
+        //Status
+        if (servTicket.getStatus() != null) {
+            ticket.setStatus(servTicket.getStatus());
+            switch (servTicket.getStatus()) {
+                case Resolved:
+                    resolveTicket(ticket);
+                    break;
+                case InProgress:
+                    claimTicket(ticket);
+                    break;
+                case Rejected:
+                    rejectTicket(ticket);
+                    break;
+                case ReOpened:
+                    reopenTicket(ticket);
+                    break;
+            }
         }
-        addTicketComment(ticketId, comment);
-        switch (status) {
-            case Resolved:
-                resolveTicket(ticket);
-                break;
-            case InProgress:
-                claimTicket(ticket);
-                break;
-            case Rejected:
-                rejectTicket(ticket);
-                break;
-            case ReOpened:
-                reopenTicket(ticket);
-                break;
+        //Dept assigned to 
+        if (servTicket.getDepartmentAssigned() != null && CRoleDao.instance().findById(servTicket.getDepartmentAssigned().getRoleId()) != null) {
+            ticket.setDepartmentAssigned(CRoleDao.instance().findById(servTicket.getDepartmentAssigned().getRoleId()));
         }
+        //Assigned to
+        if (ticket.getAssignedTo() != null) {
+            ticket.setAssignedTo(EmployeeDao.instance().findById(ticket.getAssignedTo().getId()));
+        }
+        addTicketComment(servTicket.getId(), servTicket.getComments().get(0));
         serviceTicketDao.save(ticket);
     }
-    
+
     protected void reopenTicket(ServiceTicket ticket) {
         startServiceTicketTask(ticket);
     }
-    
+
     protected void rejectTicket(ServiceTicket ticket) {
         completeTask(ticket);
     }
-    
+
     protected void claimTicket(ServiceTicket ticket) {
         claimTask(ticket);
     }
-    
+
     protected void resolveTicket(ServiceTicket ticket) {
         completeTask(ticket);
     }
-    
+
     protected void claimTask(ServiceTicket ticket) {
+        ticket.setAssignedTo(SecurityService.instance().getCurrentUser());
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         taskService.claimTask(getTaskForTicket(ticket).getId(), null);
     }
-    
+
     protected void completeTask(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         taskService.completeTask(getTaskForTicket(ticket).getId(), null);
     }
-    
+
     protected Task getTaskForTicket(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         List<Task> tasks = taskService.getTasksForProcessId(ticket.getBpmProcessId());
@@ -118,7 +128,7 @@ public class SelfService {
             return null;
         }
     }
-    
+
     public void addTicketComment(Long ticketId, TicketComment comment) {
         comment = serviceTicketDao.addTicketComment(ticketId, comment);
         sendTicketUpdatedNotification(comment);
@@ -127,7 +137,7 @@ public class SelfService {
             OfficeBPMTaskService.instance().addComment(getTaskForTicket(comment.getTicket()).getId(), comment.getComment());
         }
     }
-    
+
     protected void sendTicketUpdatedNotification(TicketComment comment) {
         Employee commentAuthor = SecurityService.instance().getCurrentUser();
         Email email = new Email();
@@ -142,7 +152,7 @@ public class SelfService {
         email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);
     }
-    
+
     protected Set<String> getTicketNotificationGroup(TicketComment comment) {
         Set<String> notificationGroup = new HashSet<String>();
         //employee who created the ticket;
@@ -170,14 +180,14 @@ public class SelfService {
                 return OfficeRole.ROLE_RELATIONSHIP;
         }
     }
-    
+
     protected void startServiceTicketTask(ServiceTicket ticket) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("ticket", ticket);
         String processId = OfficeBPMService.instance().startProcess("service_ticket_process", vars);
         ticket.setBpmProcessId(processId);
     }
-    
+
     public static SelfService instance() {
         return SpringContext.getBean(SelfService.class);
     }

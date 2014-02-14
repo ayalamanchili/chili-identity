@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.profile.selfservice;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
@@ -22,6 +23,8 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import info.yalamanchili.office.client.security.SelectRoleWidget;
 import java.util.logging.Logger;
 
 /**
@@ -34,6 +37,8 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     protected ClickableLink resolveTicket = new ClickableLink("Resolve Ticket");
     protected ClickableLink startTicket = new ClickableLink("Start Work");
     protected ClickableLink rejectTicket = new ClickableLink("Reject Ticket");
+    protected SelectRoleWidget roleWidget = new SelectRoleWidget(false, true);
+    protected SelectCorpEmployeeWidget assignedToF = new SelectCorpEmployeeWidget(false, false);
     protected Button updateB = new Button("Update Status");
     private static ReadServiceTicketPanel instance;
     protected EnumField statusF;
@@ -48,6 +53,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     }
 
     public ReadServiceTicketPanel(String id) {
+        instance = this;
         initReadComposite(id, "SelfService", OfficeWelcome.constants);
     }
 
@@ -62,6 +68,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
                     }
                 });
         entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
+        assignedToF.setReadOnly(false);
     }
 
     @Override
@@ -69,7 +76,30 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         assignFieldValueFromEntity("subject", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("assignedTo", entity, null);
+        roleWidget.setSelectedValue(entity.get("departmentAssigned").isObject(), "roleId");
         statusF.setValues(TicketStatus.validStatusFor(TicketStatus.valueOf(JSONUtils.toString(entity, "status"))));
+    }
+
+    protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("subject", entity);
+        assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("type", entity);
+        statusF.getValue();
+        assignEntityValueFromField("status", entity);
+        //assigned to dept
+        JSONObject assignedToDept = new JSONObject();
+        assignedToDept.put("roleId", roleWidget.getSelectedObject().get("id"));
+        assignedToDept.put("rolename", roleWidget.getSelectedObject().get("value"));
+        entity.put("departmentAssigned", assignedToDept);
+        //Assigned to 
+        entity.put("assignedTo", assignedToF.getSelectedObject());
+        //comment
+        JSONArray comments = new JSONArray();
+        comments.set(0, CreateTicketCommentPanel.instance().getComment());
+        entity.put("comments", comments);
+        logger.info("dddd" + entity.toString());
+        return entity;
     }
 
     @Override
@@ -87,6 +117,8 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         addField("description", true, false, DataType.STRING_FIELD);
         addEnumField("type", true, true, TicketType.names());
         addEnumField("status", false, false, TicketStatus.names());
+        addDropDown("rolename", roleWidget);
+        addDropDown("assignedTo", assignedToF);
         statusF = (EnumField) fields.get("status");
         entityFieldsPanel.add(updateB);
     }
@@ -109,7 +141,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
 
     protected void updateStatus(String status) {
         if (processClientSideValidations()) {
-            HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(status), CreateTicketCommentPanel.instance().getComment().toString(), OfficeWelcome.instance().getHeaders(), true,
+            HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(), populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String arg0) {
@@ -120,8 +152,8 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         }
     }
 
-    protected String getUpdateURI(String status) {
-        return OfficeWelcome.constants.root_url() + "selfservice/update-ticket/" + status + "/" + getEntityId();
+    protected String getUpdateURI() {
+        return OfficeWelcome.constants.root_url() + "selfservice/update-ticket";
     }
 
     protected boolean processClientSideValidations() {

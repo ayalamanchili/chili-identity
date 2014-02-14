@@ -8,8 +8,8 @@ package info.yalamanchili.office.client.security;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,18 +17,24 @@ import info.yalamanchili.office.client.OfficeWelcome;
  */
 public class SelectRoleWidget extends SelectComposite {
 
+    private static Logger logger = Logger.getLogger(SelectRoleWidget.class.getName());
+
     public SelectRoleWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "Role", readOnly, isRequired);
     }
 
+    @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "rolename"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "roleId", "rolename"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String entityString) {
                         processData(entityString);
+                        //TODO this should not be needed
+                        listBox.setEnabled(true);
                     }
                 });
+
     }
 
     @Override
@@ -38,6 +44,5 @@ public class SelectRoleWidget extends SelectComposite {
 
     @Override
     protected void validate() {
-        clearMessage();
     }
 }
