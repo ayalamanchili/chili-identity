@@ -5,7 +5,7 @@
  */
 package info.yalamanchili.office.client.security;
 
-import info.chili.gwt.callback.ALAsyncCallback;Ø
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
