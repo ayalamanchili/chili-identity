@@ -53,7 +53,7 @@ public class OfficeSpringConfiguration {
         return rmiRegistryFactoryBean;
     }
 
-    @Bean
+//    @Bean
     public ConnectorServerFactoryBean connectorServerFactoryBean() {
         ConnectorServerFactoryBean connectorServerFactoryBean = new ConnectorServerFactoryBean();
         try {

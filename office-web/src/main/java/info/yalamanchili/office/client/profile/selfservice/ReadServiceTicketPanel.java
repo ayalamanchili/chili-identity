@@ -24,7 +24,9 @@ import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.security.SelectRoleWidget;
 import java.util.logging.Logger;
 
@@ -39,7 +41,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     protected ClickableLink startTicket = new ClickableLink("Start Work");
     protected ClickableLink rejectTicket = new ClickableLink("Reject Ticket");
     protected SelectRoleWidget roleWidget = new SelectRoleWidget(false, true);
-    protected SelectCorpEmployeeWidget assignedToF = new SelectCorpEmployeeWidget("AssignedTo",false, false);
+    protected SelectCorpEmployeeWidget assignedToF = new SelectCorpEmployeeWidget("AssignedTo", false, false);
     protected Button updateB = new Button("Update");
     private static ReadServiceTicketPanel instance;
     protected EnumField statusF;
@@ -75,7 +77,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("subject", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("description", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("assignedTo", entity, null);
         roleWidget.setSelectedValue(entity.get("departmentAssigned").isObject(), "roleId");
@@ -86,7 +88,6 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         assignEntityValueFromField("subject", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("type", entity);
-        statusF.getValue();
         assignEntityValueFromField("status", entity);
         //assigned to dept
         JSONObject assignedToDept = new JSONObject();
@@ -117,7 +118,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     @Override
     protected void addWidgets() {
         addField("subject", true, true, DataType.STRING_FIELD);
-        addField("description", true, false, DataType.STRING_FIELD);
+        addField("description", true, false, DataType.RICH_TEXT_AREA);
         addEnumField("type", true, true, TicketType.names());
         addEnumField("status", false, false, TicketStatus.names());
         addDropDown("departmentAssigned", roleWidget);
@@ -150,7 +151,14 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
                         @Override
                         public void onResponse(String arg0) {
                             new ResponseStatusWidget().show("Updated Service Ticket");
-                            CreateTicketCommentPanel.instance().clear();
+                            if (TabPanel.instance().myOfficePanel.isVisible()) {
+                                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel(TreeEmployeePanel.instance().getEntityId()));
+                            }
+                            if (TabPanel.instance().homePanel.isVisible()) {
+                                TabPanel.instance().homePanel.entityPanel.clear();
+                                TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel(TreeEmployeePanel.instance().getEntityId()));
+                            }
                         }
                     });
         }

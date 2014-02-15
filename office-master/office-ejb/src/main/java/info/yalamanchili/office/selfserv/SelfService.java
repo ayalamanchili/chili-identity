@@ -88,7 +88,10 @@ public class SelfService {
         //Assigned to
         if (servTicket.getAssignedTo() != null) {
             Employee assignedTo = EmployeeDao.instance().findById(servTicket.getAssignedTo().getId());
-            OfficeBPMTaskService.instance().claimTask(getTaskForTicket(ticket).getId(), assignedTo.getEmployeeId());
+            Task task = getTaskForTicket(ticket);
+            if (task != null) {
+                OfficeBPMTaskService.instance().claimTask(task.getId(), assignedTo.getEmployeeId());
+            }
             ticket.setAssignedTo(assignedTo);
         }
         addTicketComment(servTicket.getId(), servTicket.getComments().get(0));
@@ -115,16 +118,25 @@ public class SelfService {
         Employee emp = SecurityService.instance().getCurrentUser();
         ticket.setAssignedTo(emp);
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
-        taskService.claimTask(getTaskForTicket(ticket).getId(), emp.getEmployeeId());
+        Task task = getTaskForTicket(ticket);
+        if (task != null) {
+            taskService.claimTask(task.getId(), emp.getEmployeeId());
+        }
     }
 
     protected void updateTaskAssignedToDepartment(ServiceTicket ticket, String oldDepartment, String newDepartment) {
-        OfficeBPMTaskService.instance().setCandidateGroup(getTaskForTicket(ticket).getId(), oldDepartment, newDepartment);
+        Task task = getTaskForTicket(ticket);
+        if (task != null) {
+            OfficeBPMTaskService.instance().setCandidateGroup(task.getId(), oldDepartment, newDepartment);
+        }
     }
 
     protected void completeTask(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
-        taskService.completeTask(getTaskForTicket(ticket).getId(), null);
+        Task task = getTaskForTicket(ticket);
+        if (task != null) {
+            taskService.completeTask(task.getId(), null);
+        }
     }
 
     protected Task getTaskForTicket(ServiceTicket ticket) {
@@ -142,7 +154,7 @@ public class SelfService {
         sendTicketUpdatedNotification(comment);
         Task task = getTaskForTicket(comment.getTicket());
         if (task != null) {
-            OfficeBPMTaskService.instance().addComment(getTaskForTicket(comment.getTicket()).getId(), comment.getComment());
+            OfficeBPMTaskService.instance().addComment(task.getId(), comment.getComment());
         }
     }
 

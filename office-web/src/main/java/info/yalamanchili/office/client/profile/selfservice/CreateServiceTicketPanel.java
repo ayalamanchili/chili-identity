@@ -62,9 +62,8 @@ public class CreateServiceTicketPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Submitted Service Ticket");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
-        TabPanel.instance().myOfficePanel.entityPanel.add(new SelfServiceStackPanel());
+        TabPanel.instance().homePanel.entityPanel.clear();
+        TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
     }
 
     @Override
@@ -78,7 +77,7 @@ public class CreateServiceTicketPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("subject", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
+        addField("description", false, false, DataType.RICH_TEXT_AREA);
         addEnumField("type", false, true, TicketType.names());
     }
 

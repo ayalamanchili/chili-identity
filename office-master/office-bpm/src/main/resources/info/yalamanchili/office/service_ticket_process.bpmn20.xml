@@ -17,7 +17,7 @@
         
         <!--Service ticket task created-->
         <userTask id="serviceTicketTask" 
-                  name="Service Ticket Created By : ${ticket.employee.firstName} ${ticket.employee.lastName}"
+                  name="Service Ticket For: ${ticket.subject} By : ${ticket.employee.firstName} ${ticket.employee.lastName}"
                   activiti:candidateGroups="${ticket.departmentAssigned.rolename}">
             <documentation>
                 Service Ticket Created By : #{ticket.employee.firstName} #{ticket.employee.lastName}
@@ -30,7 +30,7 @@
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.selfserv.ServiceTaskCompleteListener" />
             </extensionElements>             
         </userTask>
         <sequenceFlow sourceRef="serviceTicketTask" targetRef="serviceTicketEnd" />
