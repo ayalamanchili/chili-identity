@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
+import info.yalamanchili.office.client.Auth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,12 @@ public enum TicketStatus {
     public static String[] validStatusFor(TicketStatus status) {
         List<String> roles = new ArrayList<String>();
         roles.add(status.name());
+        if (Auth.isConsultantEmployee()) {
+            if (TicketStatus.Rejected.equals(status) || TicketStatus.Resolved.equals(status)) {
+                roles.add(TicketStatus.ReOpened.name());
+            }
+            return roles.toArray(new String[roles.size()]);
+        }
         switch (status) {
             case Open:
                 roles.add(TicketStatus.InProgress.name());

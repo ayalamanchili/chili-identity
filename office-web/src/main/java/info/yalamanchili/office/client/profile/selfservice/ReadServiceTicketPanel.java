@@ -45,14 +45,10 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     protected Button updateB = new Button("Update");
     private static ReadServiceTicketPanel instance;
     protected EnumField statusF;
+    protected boolean readOnly = false;
 
     public static ReadServiceTicketPanel instance() {
         return instance;
-    }
-
-    public ReadServiceTicketPanel(JSONObject entity) {
-        instance = this;
-        initReadComposite(entity, "SelfService", OfficeWelcome.constants);
     }
 
     public ReadServiceTicketPanel(String id) {
@@ -71,7 +67,11 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
                     }
                 });
         entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
-        assignedToF.setReadOnly(false);
+        if (Auth.isConsultantEmployee()) {
+            readOnly = true;
+        }
+        assignedToF.setReadOnly(readOnly);
+        roleWidget.setReadOnly(readOnly);
     }
 
     @Override
@@ -140,11 +140,11 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(updateB)) {
-            updateStatus(statusF.getValue());
+            update(statusF.getValue());
         }
     }
 
-    protected void updateStatus(String status) {
+    protected void update(String status) {
         if (processClientSideValidations()) {
             HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(), populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {

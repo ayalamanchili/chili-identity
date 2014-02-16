@@ -19,9 +19,9 @@
         <userTask id="serviceTicketTask" 
                   name="Service Ticket For: ${ticket.subject} By : ${ticket.employee.firstName} ${ticket.employee.lastName}"
                   activiti:candidateGroups="${ticket.departmentAssigned.rolename}">
-            <documentation>
-                Service Ticket Created By : #{ticket.employee.firstName} #{ticket.employee.lastName}
-                Ticket Details            
+            <documentation> 
+                Ticket Details 
+                Created By  : #{ticket.employee.firstName} #{ticket.employee.lastName}           
                 Subject     : #{ticket.subject}
                 Notes       : #{ticket.description}
                 Type        : #{ticket.type}

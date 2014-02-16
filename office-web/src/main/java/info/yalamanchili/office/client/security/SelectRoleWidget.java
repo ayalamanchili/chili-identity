@@ -30,8 +30,6 @@ public class SelectRoleWidget extends SelectComposite {
                     @Override
                     public void onResponse(String entityString) {
                         processData(entityString);
-                        //TODO this should not be needed
-                        listBox.setEnabled(true);
                     }
                 });
 

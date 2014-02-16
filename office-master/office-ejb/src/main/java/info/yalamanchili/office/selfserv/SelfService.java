@@ -204,6 +204,7 @@ public class SelfService {
     protected void startServiceTicketTask(ServiceTicket ticket) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("ticket", ticket);
+        vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
         String processId = OfficeBPMService.instance().startProcess("service_ticket_process", vars);
         ticket.setBpmProcessId(processId);
     }
