@@ -22,7 +22,8 @@ public enum TimeSheetCategory {
     Personal_Spent,
     Unpaid,
     Sick_Earned,
-    Sick_Spent;
+    Sick_Spent,
+    JuryDuty;
 
     public static String[] names() {
         TimeSheetCategory[] values = values();
