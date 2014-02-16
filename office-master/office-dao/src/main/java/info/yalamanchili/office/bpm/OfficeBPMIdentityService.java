@@ -116,6 +116,10 @@ public class OfficeBPMIdentityService {
             return null;
         }
     }
+    
+    public void deleteUser(String userId){
+        bpmIdentityService.deleteUser(userId);
+    }
 
     public static OfficeBPMIdentityService instance() {
         return SpringContext.getBean(OfficeBPMIdentityService.class);

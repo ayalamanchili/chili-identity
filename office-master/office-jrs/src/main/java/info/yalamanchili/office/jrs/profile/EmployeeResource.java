@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TechnologyGroupDao;
@@ -26,7 +27,6 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
 import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
@@ -38,7 +38,6 @@ import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.profile.EmergencyContactService;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -61,7 +60,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -135,6 +133,8 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
+        Employee emp = EmployeeDao.instance().findById(id);
+        OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());
         super.delete(id);
     }
 
@@ -148,6 +148,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
         return super.getDropDown(start, limit, columns);
     }
 //TODO make this generic
+
     @GET
     @Path("/corpemployees/dropdown/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
