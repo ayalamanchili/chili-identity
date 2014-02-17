@@ -38,6 +38,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
         initTable("CorporateTimeSheet", OfficeWelcome.constants);
     }
 
+    public ReadAllCorporateTimeSheetPanel() {
+        instance = this;
+        initTable("CorporateTimeSheet", OfficeWelcome.constants);
+    }
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().timePanel.entityPanel.clear();
@@ -80,7 +85,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "corporate-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString();
+        if (parentId == null) {
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet/currentuser/" + start.toString() + "/" + limit.toString();
+        } else {
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString();
+        }
     }
 
     @Override

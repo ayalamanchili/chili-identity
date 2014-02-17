@@ -83,7 +83,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
-        addEnumField("category", false, true, TimeSheetCategory.names());
+        addEnumField("category", false, true, LeaveRequestTimeCategory.names());
         addField("leaveRequestNotes", false, false, DataType.STRING_FIELD);
     }
 

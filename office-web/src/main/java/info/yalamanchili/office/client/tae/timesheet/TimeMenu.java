@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPa
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
 import info.yalamanchili.office.client.time.corp.CorpoateTimeSheetSidePanel;
+import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 
 /**
  *
@@ -48,6 +49,7 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
         }
     };
     Command corpTimeMaintainenceCmd = new Command() {

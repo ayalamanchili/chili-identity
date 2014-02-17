@@ -35,12 +35,12 @@ import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
-import info.yalamanchili.office.client.home.message.MyMessagesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.reporting.ReportsMenu;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
+import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
@@ -197,6 +197,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         timePanel.sidePanelTop.clear();
         timePanel.sidePanelTop.add(new CorporateTimeSummarySidePanel());
         timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
+        timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel());
         timePanel.entityTitlePanel.add(new TimeMenu());
     }
 

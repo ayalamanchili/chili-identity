@@ -92,9 +92,19 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_HR')")
-    public CorporateTimeSheetResource.CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
+    public CorporateTimeSheetResource.CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
         Employee emp = EmployeeDao.instance().findById(empId);
+        tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
+        tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
+        return tableObj;
+    }
+
+    @GET
+    @Path("/currentuser/{start}/{limit}")
+    public CorporateTimeSheetResource.CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("start") int start, @PathParam("limit") int limit) {
+        CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
+        Employee emp = SecurityService.instance().getCurrentUser();
         tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
         tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
         return tableObj;
