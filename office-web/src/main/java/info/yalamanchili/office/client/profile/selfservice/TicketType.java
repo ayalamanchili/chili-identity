@@ -17,11 +17,11 @@ public enum TicketType {
     Tax,
     Payroll,
     Immigration,
-    HeatlthInsurance,
+    HealthInsurance,
     Network,
     Other;
-    
-      public static String[] names() {
+
+    public static String[] names() {
         TicketType[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
