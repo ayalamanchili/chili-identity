@@ -19,13 +19,14 @@ public class OfficeRoles {
 
         ROLE_USER,
         ROLE_ADMIN,
-        ROLE_HR,
+        ROLE_HR,    
         ROLE_RECRUITER,
         ROLE_TIME, // Contracts?
         ROLE_EXPENSE,// Accounts?
         ROLE_DRIVE,
         ROLE_RELATIONSHIP,
-        ROLE_ACCOUNT_VIEW
-
+        ROLE_ACCOUNT_VIEW,
+        //NEW _ROLES
+        ROLE_HR_ADMINSTRATION
     }
 }

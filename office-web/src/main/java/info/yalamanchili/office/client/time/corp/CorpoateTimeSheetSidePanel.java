@@ -15,10 +15,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -55,7 +54,7 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.hasContractsRole()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             timeSheetsidepanel.add(createtimeSheetlink);
 
             //employee

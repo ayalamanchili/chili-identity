@@ -40,7 +40,6 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("notes", entity);
-        logger.info("dddd" + entity);
         return entity;
     }
 

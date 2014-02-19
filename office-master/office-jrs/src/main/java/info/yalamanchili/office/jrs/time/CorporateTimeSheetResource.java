@@ -17,14 +17,11 @@ import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.jrs.CRUDResource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -51,7 +48,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @GET
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     @Path("/summary/{empId}")
     public CorporateYealyTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
         return CorporateTimeService.instance().getYearlySummary(EmployeeDao.instance().findById(empId));
@@ -64,7 +61,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public CorporateTimeSheet save(CorporateTimeSheet entity) {
         if (entity.getId() == null) {
             Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
@@ -76,7 +73,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @Override
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
@@ -91,7 +88,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_HR')")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public CorporateTimeSheetResource.CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
         Employee emp = EmployeeDao.instance().findById(empId);
