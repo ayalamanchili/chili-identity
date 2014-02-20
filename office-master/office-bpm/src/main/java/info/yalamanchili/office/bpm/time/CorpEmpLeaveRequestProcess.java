@@ -122,7 +122,11 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
         messageBuilder.append("Employee Available Sick Hours     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned)).append("\n");
         messageBuilder.append("Employee Available Personal Hours : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned)).append("\n");
-        messageBuilder.append("Employee Available Vacation Hours     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned)).append(" \n");
+
+        Employee taskActionUser = (Employee) task.getExecution().getVariable("taskActionUser");
+        if (taskActionUser != null) {
+            messageBuilder.append("Task Updated By : ").append(taskActionUser.getFirstName() + " " + taskActionUser.getLastName());
+        }
         email.setBody(messageBuilder.toString());
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);

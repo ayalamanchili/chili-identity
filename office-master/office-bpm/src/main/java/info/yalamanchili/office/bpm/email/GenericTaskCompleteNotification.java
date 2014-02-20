@@ -45,6 +45,10 @@ public class GenericTaskCompleteNotification implements TaskListener {
             subjectText = subjectText.concat(" Notes:" + notes);
             messageText = messageText.concat(" \n Notes:" + notes);
         }
+        Employee taskActionUser = (Employee) delegateTask.getExecution().getVariable("taskActionUser");
+        if (taskActionUser != null) {
+            messageText = messageText.concat(" \n Task Updated By:" + taskActionUser.getFirstName() + " " + taskActionUser.getLastName());
+        }
         email.setHtml(Boolean.TRUE);
         email.setSubject(subjectText);
         email.setBody(messageText);

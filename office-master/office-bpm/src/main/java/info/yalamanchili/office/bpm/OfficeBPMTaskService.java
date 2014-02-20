@@ -73,6 +73,7 @@ public class OfficeBPMTaskService {
                 vars.put(entry.getId(), entry.getValue());
             }
         }
+        vars.put("taskActionUser", SecurityService.instance().getCurrentUser());
         bpmTaskService.complete(taskId, vars);
     }
 
