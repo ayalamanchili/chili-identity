@@ -9,13 +9,16 @@
 package info.yalamanchili.office.reports.recruiting;
 
 import info.chili.commons.ReflectionUtils;
+import info.chili.commons.SearchUtils;
 import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.SkillSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,11 @@ public class RecruitingReportsService {
     @Autowired
     protected Mapper mapper;
 
+    public List<EmployeeDto> search(String text) {
+        Query searchQ = em.createQuery(SearchUtils.getSearchQueryString(SkillSet.class, text));
+        return searchQ.getResultList();
+    }
+
     public List<EmployeeDto> searchSkillSet(SkillSetSearchDto searchDto) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
         TypedQuery<Employee> query = em.createQuery(getSearchSkillSetQueryString(searchDto), Employee.class);
@@ -51,10 +59,13 @@ public class RecruitingReportsService {
         for (Entry<String, String> entry : SkillSetSearchDto.properties.entrySet()) {
             if (ReflectionUtils.callGetter(searchDto, entry.getKey()) != null) {
                 sb.append("and ");
-                sb.append("skillSet.").append(entry.getValue()).append(" like '%").append(ReflectionUtils.callGetter(searchDto, entry.getKey())).append("%'");
+                sb.append("skillSet.").append(entry.getValue()).append(" like '%").append(ReflectionUtils.callGetter(searchDto, entry.getKey()).toString().trim()).append("%'");
             }
         }
-        System.out.println("dddddd"+sb.toString());
         return sb.toString();
+    }
+
+    protected boolean disableRegularSearch() {
+        return true;
     }
 }

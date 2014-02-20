@@ -37,7 +37,7 @@ import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
-import info.yalamanchili.office.client.reporting.ReportsMenu;
+import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
