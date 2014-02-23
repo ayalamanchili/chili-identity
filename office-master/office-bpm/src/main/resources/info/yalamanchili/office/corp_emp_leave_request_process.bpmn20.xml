@@ -43,7 +43,7 @@
         <sequenceFlow  sourceRef="sendValidationFailedRejectionEmail" targetRef="leaveRequestEnd" />
         <!-- Leave Request approval task -->
         <userTask id="leaveRequestApprovalTask" 
-                  name="Leave Request Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+                  name="Leave Request Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Corporate Employee Leave Request
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}

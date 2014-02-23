@@ -14,12 +14,11 @@ package info.yalamanchili.office;
  */
 public class OfficeRoles {
 
-    
     public enum OfficeRole {
 
         ROLE_USER,
         ROLE_ADMIN,
-        ROLE_HR,    
+        ROLE_HR,
         ROLE_RECRUITER,
         ROLE_TIME, // Contracts?
         ROLE_EXPENSE,// Accounts?
@@ -27,6 +26,7 @@ public class OfficeRoles {
         ROLE_RELATIONSHIP,
         ROLE_ACCOUNT_VIEW,
         //NEW _ROLES
-        ROLE_HR_ADMINSTRATION
+        ROLE_HR_ADMINSTRATION,
+        ROLE_PAYROLL_AND_BENIFITS,
     }
 }

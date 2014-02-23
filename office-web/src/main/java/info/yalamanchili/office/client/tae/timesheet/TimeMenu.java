@@ -19,6 +19,9 @@ import info.yalamanchili.office.client.tae.bonuspayment.AdjustmentHoursSidePanel
 import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
+import info.yalamanchili.office.client.time.consultant.ConsultantTimeSheetSidePanel;
+import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
+import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import info.yalamanchili.office.client.time.corp.CorpoateTimeSheetSidePanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 
@@ -40,6 +43,9 @@ public class TimeMenu extends Composite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             tAEMenuBar.addItem("Corporate Time", corpTimeMaintainenceCmd);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_RELATIONSHIP)) {
+            tAEMenuBar.addItem("Consultant Time", consultantTimeMaintainenceCmd);
+        }
         tAEMenuBar.addStyleName("entityMenuBar");
     }
     Command summaryMaintainenceCmd = new Command() {
@@ -47,9 +53,14 @@ public class TimeMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
-            TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
-            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+            if (Auth.isCorporateEmployee()) {
+                TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+            } else {
+                TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
+            }
         }
     };
     Command corpTimeMaintainenceCmd = new Command() {
@@ -58,6 +69,15 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.add(new CorpoateTimeSheetSidePanel());
+        }
+    };
+
+    Command consultantTimeMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSheetSidePanel());
         }
     };
     Command timeSheetPeriodsMaintainenceCmd = new Command() {

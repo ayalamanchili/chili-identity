@@ -1,0 +1,121 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.jrs.time;
+
+import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.Time.ConsultantTimeService;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
+import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.jrs.CRUDResource;
+import java.util.List;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author ayalamanchili
+ */
+@Path("secured/consultant-timesheet")
+@Component
+@Transactional
+@Scope("request")
+public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeSheet> {
+
+    @PUT
+    @Path("/submit-leave-request")
+    public void submitLeaveRequest(ConsultantTimeSheet request) {
+        ConsultantTimeService.instance().submitLeaveRequest(request);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
+    public ConsultantTimeSheet save(ConsultantTimeSheet entity) {
+        if (entity.getId() == null) {
+            Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+            entity.setEmployee(emp);
+        }
+        return super.save(entity);
+    }
+
+    @Override
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
+    public void delete(@PathParam("id") Long id) {
+        super.delete(id);
+    }
+
+    @GET
+    @Path("/employee/{empId}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
+    public ConsultantTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        ConsultantTimeSheetTable tableObj = new ConsultantTimeSheetTable();
+        Employee emp = EmployeeDao.instance().findById(empId);
+        tableObj.setEntities(consultantTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
+        tableObj.setSize(consultantTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
+        return tableObj;
+    }
+
+    @GET
+    @Path("/currentuser/{start}/{limit}")
+    public ConsultantTimeSheetTable getCorporateTimeSheet(@PathParam("start") int start, @PathParam("limit") int limit) {
+        ConsultantTimeSheetTable tableObj = new ConsultantTimeSheetTable();
+        Employee emp = SecurityService.instance().getCurrentUser();
+        tableObj.setEntities(consultantTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
+        tableObj.setSize(consultantTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
+        return tableObj;
+    }
+
+    @Autowired
+    public ConsultantTimeSheetDao consultantTimeSheetDao;
+
+    @Override
+    public CRUDDao getDao() {
+        return consultantTimeSheetDao;
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class ConsultantTimeSheetTable {
+
+        protected Long size;
+        protected List<ConsultantTimeSheet> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<ConsultantTimeSheet> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<ConsultantTimeSheet> entities) {
+            this.entities = entities;
+        }
+    }
+}

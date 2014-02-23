@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.http.client.URL;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
@@ -25,6 +26,6 @@ public class SelectCorpEmployeeWidget extends SelectEmployeeWidget {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "employee/corpemployees/dropdown", start, limit, columns);
+        return URL.encode(super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown", start, limit, columns).concat("employee-type=Corporate Employee"));
     }
 }

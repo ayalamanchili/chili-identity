@@ -7,6 +7,8 @@
  */
 package info.yalamanchili.office.client.time.corp;
 
+import info.yalamanchili.office.client.time.TimeSheetStatus;
+import info.yalamanchili.office.client.time.TimeSheetCategory;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;

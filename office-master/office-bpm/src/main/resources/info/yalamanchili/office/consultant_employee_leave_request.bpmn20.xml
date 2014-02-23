@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="consultant_emp_leave_request_process">
+        <startEvent id="consultantEmpLeaveRequestStart">
+        </startEvent>
+        <sequenceFlow  sourceRef="consultantEmpLeaveRequestStart" targetRef="consultantEmpLeaveRequestTask" />
+        <userTask id="consultantEmpLeaveRequestTask" 
+                  name="Leave Request Approval Task For ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_PAYROLL_AND_BENIFITS">
+            <documentation>
+                Consultant Employee Leave Request
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Start Date    : #{leaveRequest.startDate}
+                End Date      : #{leaveRequest.endDate} 
+                Category      : #{leaveRequest.category} 
+                Hours         : #{leaveRequest.hours} 
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow  sourceRef="consultantEmpLeaveRequestTask" targetRef="consultantEmpLeaveRequestEnd" />
+        <!-- Task escalation email after 2 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="consultantEmpLeaveRequestTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- end-->
+        <endEvent id="consultantEmpLeaveRequestEnd" />
+    </process>
+</definitions>

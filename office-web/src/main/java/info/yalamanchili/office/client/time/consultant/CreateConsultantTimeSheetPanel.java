@@ -1,14 +1,10 @@
-/**
- * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.time.corp;
+package info.yalamanchili.office.client.time.consultant;
 
-import info.yalamanchili.office.client.time.TimeSheetStatus;
-import info.yalamanchili.office.client.time.TimeSheetCategory;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
@@ -17,22 +13,24 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import info.yalamanchili.office.client.time.TimeSheetCategory;
+import info.yalamanchili.office.client.time.TimeSheetStatus;
 import java.util.logging.Logger;
 
 /**
  *
- * @author prasanthi.p
+ * @author ayalamanchili
  */
-public class CreateCorporateTimeSheetPanel extends CreateComposite {
+public class CreateConsultantTimeSheetPanel extends CreateComposite {
 
-    private static Logger logger = Logger.getLogger(CreateCorporateTimeSheetPanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreateConsultantTimeSheetPanel.class.getName());
 
-    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
+    SelectEmployeeWidget employeeF = new SelectEmployeeWidget("Employee", false, true);
 
-    public CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType type) {
+    public CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("CorporateTimeSheet", OfficeWelcome.constants);
+        initCreateComposite("ConsultantTimeSheet", OfficeWelcome.constants);
     }
 
     @Override
@@ -44,7 +42,6 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
-        assignEntityValueFromField("notes", entity);
         return entity;
     }
 
@@ -90,7 +87,6 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -99,6 +95,6 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "corporate-timesheet";
+        return OfficeWelcome.constants.root_url() + "consultant-timesheet";
     }
 }

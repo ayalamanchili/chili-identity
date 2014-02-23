@@ -38,6 +38,8 @@ import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.reports.ReportsMenu;
+import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
+import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
@@ -63,25 +65,31 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.addStyleName("tabPanel");
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(myOfficePanel, "My Office", false);
-        if (Auth.isCorporateEmployee()) {
-            tabPanel.add(timePanel, "Time", false);
-        }
+        tabPanel.add(timePanel, "Time", false);
         //TODO under construction
 //        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
 //            tabPanel.add(expensePanel, "Expense", false);
 //        }
-        tabPanel.add(drivePanel, "Drive", false);
-        tabPanel.add(socialPanel, "Social", false);
-        tabPanel.add(profilePanel, "Profile", false);
+        tabPanel.add(drivePanel,
+                "Drive", false);
+        tabPanel.add(socialPanel,
+                "Social", false);
+        tabPanel.add(profilePanel,
+                "Profile", false);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE)) {
             tabPanel.add(adminPanel, "Admin", false);
         }
+
         if (Auth.isCorporateEmployee()) {
             tabPanel.add(reportingPanel, "Reports", false);
         }
-        tabPanel.add(helpPanel, "Help", false);
-        tabPanel.addSelectionHandler(this);
-        tabPanel.selectTab(1);
+
+        tabPanel.add(helpPanel,
+                "Help", false);
+        tabPanel.addSelectionHandler(
+                this);
+        tabPanel.selectTab(
+                1);
     }
 
     @Override
@@ -195,9 +203,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectTimeTab() {
         timePanel.entityPanel.clear();
         timePanel.sidePanelTop.clear();
-        timePanel.sidePanelTop.add(new CorporateTimeSummarySidePanel());
-        timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
-        timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+        if (Auth.isCorporateEmployee()) {
+            timePanel.sidePanelTop.add(new CorporateTimeSummarySidePanel());
+            timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
+            timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+        } else {
+            timePanel.sidePanelTop.add(new ConsultantTimeSummarySidePanel());
+            timePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
+        }
         timePanel.entityTitlePanel.add(new TimeMenu());
     }
 
