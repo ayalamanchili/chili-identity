@@ -33,11 +33,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
-    
+
     public CorporateTimeSheetDao() {
         super(CorporateTimeSheet.class);
     }
-    
+
     public void saveTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         if (findTimeSheet(emp, category, hours, startDate, endDate) == null) {
             CorporateTimeSheet ts = new CorporateTimeSheet();
@@ -50,7 +50,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             super.save(ts);
         }
     }
-    
+
     public CorporateTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where");
@@ -71,13 +71,13 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             return null;
         }
     }
-    
+
     public Long getTimeSheetsSizeForEmployee(Employee employee) {
         Query query = getEntityManager().createQuery("select count(*) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
         query.setParameter("employeeParam", employee);
         return (Long) query.getSingleResult();
     }
-    
+
     public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit) {
         Query query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
         query.setParameter("employeeParam", employee);
@@ -85,11 +85,12 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-    
-    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category) {
-        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
+
+    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category, TimeSheetStatus status) {
+        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and status=:statusParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
         query.setParameter("employeeParam", employee);
         query.setParameter("categoryParam", category);
+        query.setParameter("statusParam", status);
         query.setParameter("startDateParam", DateUtils.getFirstDayOfCurrentYear(), TemporalType.DATE);
         query.setParameter("endDateParam", DateUtils.getLastDayCurrentOfYear(), TemporalType.DATE);
         if (query.getSingleResult() != null) {
@@ -98,15 +99,15 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             return BigDecimal.ZERO;
         }
     }
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public static CorporateTimeSheetDao instance() {
         return SpringContext.getBean(CorporateTimeSheetDao.class);
     }

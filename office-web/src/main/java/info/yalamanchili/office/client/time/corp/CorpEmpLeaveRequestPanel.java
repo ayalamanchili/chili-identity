@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.time.corp;
 
 import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -16,6 +17,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.time.TimeSheetStatus;
 import java.util.logging.Logger;
 
 /**
@@ -33,31 +35,33 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject submitLeave = new JSONObject();
-        assignEntityValueFromField("startDate", submitLeave);
-        assignEntityValueFromField("endDate", submitLeave);
-        assignEntityValueFromField("hours", submitLeave);
-        assignEntityValueFromField("category", submitLeave);
-        assignEntityValueFromField("leaveRequestNotes", submitLeave);
-        logger.info(submitLeave.toString());
-        return submitLeave;
+        JSONObject entity = new JSONObject();
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("hours", entity);
+        assignEntityValueFromField("category", entity);
+        assignEntityValueFromField("notes", entity);
+        entity.put("status", new JSONString(TimeSheetStatus.Pending.name()));
+        entity.put("employee", new JSONObject());
+        logger.info(entity.toString());
+        return entity;
     }
 
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -85,7 +89,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names());
-        addField("leaveRequestNotes", false, false, DataType.STRING_FIELD);
+        addField("notes", false, false, DataType.STRING_FIELD);
     }
 
     @Override

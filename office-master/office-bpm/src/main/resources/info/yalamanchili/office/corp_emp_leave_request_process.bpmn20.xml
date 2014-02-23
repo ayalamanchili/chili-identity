@@ -16,7 +16,7 @@
         <sequenceFlow  sourceRef="leaveRequestStart" targetRef="validateLeaveRequestTask" />
         <serviceTask id="validateLeaveRequestTask" 
                      name="Validate Leave Request Task" 
-                     activiti:expression="#{corpEmpLeaveRequestProcessBean.validateLeaveRequest(currentEmployee,request)}"
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.validateLeaveRequest(currentEmployee,entity)}"
                      activiti:resultVariable="validRequest" />
         <!--desision-->
         <sequenceFlow sourceRef="validateLeaveRequestTask" 
@@ -47,11 +47,11 @@
             <documentation>
                 Corporate Employee Leave Request
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Start Date    : #{request.startDate}
-                End Date      : #{request.endDate} 
-                Category      : #{request.category} 
-                Hours         : #{request.hours} 
-                Notes         : #{request.leaveRequestNotes}
+                Start Date    : #{entity.startDate}
+                End Date      : #{entity.endDate} 
+                Category      : #{entity.category} 
+                Hours         : #{entity.hours} 
+                Notes         : #{entity.notes}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
@@ -92,13 +92,13 @@
         <sequenceFlow sourceRef="approvalGateway" 
                       targetRef="unpaidLeaveFinalApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and request.category == 'Unpaid'}
+                ${status == 'approved' and entity.category == 'Unpaid'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="approvalGateway" 
                       targetRef="saveApprovedLeaveRequest">
             <conditionExpression xsi:type="tFormalExpression">
-                ${status == 'approved' and request.category != 'Unpaid'}
+                ${status == 'approved' and entity.category != 'Unpaid'}
             </conditionExpression>
         </sequenceFlow>
         <sequenceFlow sourceRef="approvalGateway" 
@@ -113,11 +113,11 @@
             <documentation>
                 Corporate Employee Unpaid Leave Final Approval Request
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Start Date          : #{request.startDate}
-                End Date            : #{request.endDate} 
-                Category            : #{request.category} 
-                Hours               : #{request.hours} 
-                Notes               : #{request.leaveRequestNotes}
+                Start Date          : #{entity.startDate}
+                End Date            : #{entity.endDate} 
+                Category            : #{entity.category} 
+                Hours               : #{entity.hours} 
+                Notes               : #{entity.notes}
                 Approval Task Notes : #{leaveRequestApprovalTaskNotes}
             </documentation>
             <extensionElements>
@@ -145,7 +145,7 @@
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="unpaidLeaveFinalApprovalTaskEscalationTimer" 
-                             targetRef="leaveApprovalTaskEscalation" />
+                      targetRef="leaveApprovalTaskEscalation" />
         <sequenceFlow sourceRef="unpaidLeaveFinalApprovalTask" 
                       targetRef="unpaidLeaveFinalApprovalGateway" />
         <exclusiveGateway id="unpaidLeaveFinalApprovalGateway" />
@@ -163,7 +163,7 @@
         </sequenceFlow>
         <serviceTask id="saveApprovedLeaveRequest" 
                      name="Save Approved Leave Request" 
-                     activiti:expression="#{corpEmpLeaveRequestProcessBean.saveApprovedLeaveRequest(currentEmployee, request, leaveRequestApprovalTaskNotes)}" />
+                     activiti:expression="#{corpEmpLeaveRequestProcessBean.saveApprovedLeaveRequest(execution, leaveRequestApprovalTaskNotes)}" />
         <sequenceFlow sourceRef="saveApprovedLeaveRequest"  targetRef="leaveRequestEnd" />
         <!-- end-->
         <endEvent id="leaveRequestEnd" />

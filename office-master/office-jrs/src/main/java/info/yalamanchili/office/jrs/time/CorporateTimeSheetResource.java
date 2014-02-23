@@ -12,7 +12,6 @@ import info.yalamanchili.office.Time.CorporateTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
-import info.yalamanchili.office.bpm.time.CorpEmpLeaveRequest;
 import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -56,8 +55,8 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @PUT
     @Path("/submit-leave-request")
-    public void submitLeaveRequest(CorpEmpLeaveRequest request) {
-        CorporateTimeService.instance().submitLeaveRequest(request);
+    public void submitLeaveRequest(CorporateTimeSheet entity) {
+        CorporateTimeService.instance().submitLeaveRequest(entity);
     }
 
     @Override

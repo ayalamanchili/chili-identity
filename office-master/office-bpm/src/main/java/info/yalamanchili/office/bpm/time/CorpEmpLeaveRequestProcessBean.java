@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
+import org.activiti.engine.delegate.DelegateExecution;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +31,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CorpEmpLeaveRequestProcessBean {
 
-    public boolean validateLeaveRequest(Employee employee, CorpEmpLeaveRequest request) {
-        if (TimeSheetCategory.Unpaid.equals(request.getCategory()) || TimeSheetCategory.JuryDuty.equals(request.getCategory())) {
+    public boolean validateLeaveRequest(Employee employee, CorporateTimeSheet entity) {
+        if (TimeSheetCategory.Unpaid.equals(entity.getCategory()) || TimeSheetCategory.JuryDuty.equals(entity.getCategory())) {
             return true;
         }
-        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(request.getCategory().name().replace("Spent", "Earned")));
-        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, request.getCategory());
-        if (spent.add(request.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
+        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved);
+        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, entity.getCategory(), TimeSheetStatus.Approved);
+        if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
             return true;
         } else {
             return false;
@@ -52,16 +53,10 @@ public class CorpEmpLeaveRequestProcessBean {
         messagingService.sendEmail(email);
     }
 
-    public void saveApprovedLeaveRequest(Employee emp, CorpEmpLeaveRequest request, String leaveRequestApprovalTaskNotes) {
-        CorporateTimeSheet ts = new CorporateTimeSheet();
-        ts.setEmployee(emp);
-        ts.setCategory(request.getCategory());
-        ts.setHours(request.getHours());
-        //TODO fix
-        ts.setStartDate(request.getStartDate());
-        ts.setEndDate(request.getEndDate());
-        ts.setNotes(leaveRequestApprovalTaskNotes);
+    public void saveApprovedLeaveRequest(DelegateExecution execution, String leaveRequestApprovalTaskNotes) {
+        CorporateTimeSheet ts = (CorporateTimeSheet) execution.getVariable("entity");
         ts.setStatus(TimeSheetStatus.Approved);
+        //TODO append approved task notes
         CorporateTimeSheetDao.instance().save(ts);
     }
 }

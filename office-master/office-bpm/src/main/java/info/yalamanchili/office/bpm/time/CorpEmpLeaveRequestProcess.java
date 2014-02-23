@@ -16,7 +16,9 @@ import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -52,10 +54,19 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestTaskCreated(DelegateTask task) {
+        saveLeaveRequest(task);
         if (task.getTaskDefinitionKey().equals("leaveRequestApprovalTask")) {
             assignLeaveRequestTask(task);
         }
         sendLeaveRequestCreatedNotification(task);
+    }
+
+    protected void saveLeaveRequest(DelegateTask task) {
+        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        ts.setStatus(TimeSheetStatus.Pending);
+        ts.setEmployee(emp);
+        task.getExecution().setVariable("entity", CorporateTimeSheetDao.instance().save(ts));
     }
 
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
@@ -77,7 +88,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestTaskCompleted(DelegateTask task) {
-        CorpEmpLeaveRequest request = (CorpEmpLeaveRequest) task.getExecution().getVariable("request");
+        CorporateTimeSheet request = (CorporateTimeSheet) task.getExecution().getVariable("entity");
         String status = (String) task.getExecution().getVariable("status");
         if ("approved".equals(status) && !TimeSheetCategory.Unpaid.equals(request.getCategory())) {
             leaveRequestApproved(task);
@@ -105,6 +116,9 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestRejected(DelegateTask task) {
+        CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        ts.setStatus(TimeSheetStatus.Rejected);
+        CorporateTimeSheetDao.instance().save(ts);
         sendLeaveRequestStatusNotification("Rejected", task);
     }
 
@@ -120,12 +134,12 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         messageBuilder.append("Summary: ").append(summary).append("\n");
         messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
         messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
-        messageBuilder.append("Employee Available Sick Hours     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned)).append("\n");
-        messageBuilder.append("Employee Available Personal Hours : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned)).append("\n");
+        messageBuilder.append("Employee Available Sick Hours     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved)).append("\n");
+        messageBuilder.append("Employee Available Personal Hours : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved)).append("\n");
 
         Employee taskActionUser = (Employee) task.getExecution().getVariable("taskActionUser");
         if (taskActionUser != null) {
-            messageBuilder.append("Task Updated By : ").append(taskActionUser.getFirstName() + " " + taskActionUser.getLastName());
+            messageBuilder.append("Task Updated By : ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName()).append("\n");
         }
         email.setBody(messageBuilder.toString());
         email.setHtml(Boolean.TRUE);

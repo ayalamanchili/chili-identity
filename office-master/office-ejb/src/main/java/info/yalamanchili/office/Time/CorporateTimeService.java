@@ -11,11 +11,12 @@ package info.yalamanchili.office.Time;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
-import info.yalamanchili.office.bpm.time.CorpEmpLeaveRequest;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +35,9 @@ public class CorporateTimeService {
     @Autowired
     protected CorporateTimeSheetDao corporateTimeSheetDao;
 
-    public void submitLeaveRequest(CorpEmpLeaveRequest request) {
+    public void submitLeaveRequest(CorporateTimeSheet entity) {
         Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put("request", request);
+        vars.put("entity", entity);
         vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
     }
@@ -50,20 +51,20 @@ public class CorporateTimeService {
     }
 
     public BigDecimal getYearlySickBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned);
-        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent);
+        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved);
+        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent, TimeSheetStatus.Approved);
         return earned.subtract(spent);
     }
 
     public BigDecimal getYearlyPeronalBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Earned);
-        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Spent);
+        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved);
+        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved);
         return earned.subtract(spent);
     }
 
     public BigDecimal getYearlyVacationBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Earned);
-        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Spent);
+        BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved);
+        BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved);
         return earned.subtract(spent);
     }
 

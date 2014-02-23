@@ -39,7 +39,7 @@ import org.hibernate.search.annotations.Field;
 @XmlRootElement
 public class CorporateTimeSheet extends AbstractEntity implements Serializable {
 
-    @NotNull(message = "{hours.not.empty.msg}")
+    @NotNull(message = "{corp.ts.hours.not.empty.msg}")
     @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal hours;
     /**
@@ -47,14 +47,14 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Emp_CorpTimeSheets")
-    @NotNull(message = "{employee.not.empty.msg}")
+    @NotNull(message = "{corp.ts.employee.not.empty.msg}")
     protected Employee employee;
     /**
      * start date Only populated if the dates differ from time sheet period
      * start and end dates and this has the highest precedence
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{startDate.not.empty.msg}")
+    @NotNull(message = "{corp.ts.startDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "TME_SHT_STRT_DT")
     protected Date startDate;
     /**
@@ -62,7 +62,7 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      * and end dates and this has the highest precedence
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{endDate.not.empty.msg}")
+    @NotNull(message = "{corp.ts.endDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "TME_SHT_END_DT")
     protected Date endDate;
     /**
@@ -70,13 +70,14 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    @NotNull(message = "{category.not.empty.msg}")
+    @NotNull(message = "{corp.ts.category.not.empty.msg}")
     protected TimeSheetCategory category;
     /**
      * TimeSeet Status
      */
     @Enumerated(EnumType.STRING)
     @Field
+    @NotNull
     protected TimeSheetStatus status;
     /**
      * notes
