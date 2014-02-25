@@ -15,6 +15,7 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +27,7 @@ public class CorporateTimeSummarySidePanel extends ALComposite implements ClickH
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
     ClickableLink submitLeaveRequest = new ClickableLink("Submit Leave Request");
+    ClickableLink correctLeaveRequest = new ClickableLink("Cancel/Update Leave Request");
 
     public CorporateTimeSummarySidePanel() {
         init(timeSheetsidepanel);
@@ -34,6 +36,7 @@ public class CorporateTimeSummarySidePanel extends ALComposite implements ClickH
     @Override
     protected void addListeners() {
         submitLeaveRequest.addClickHandler(this);
+        correctLeaveRequest.addClickHandler(this);
     }
 
     @Override
@@ -43,12 +46,16 @@ public class CorporateTimeSummarySidePanel extends ALComposite implements ClickH
     @Override
     protected void addWidgets() {
         timeSheetsidepanel.add(submitLeaveRequest);
+        timeSheetsidepanel.add(correctLeaveRequest);
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(submitLeaveRequest)) {
             new GenericPopup(new CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
+        }
+        if (event.getSource().equals(correctLeaveRequest)) {
+            new GenericPopup(new GenericBPMStartFormPanel("CorrectLeaveRequest", "corp_emp_leave_correction_request")).show();
         }
     }
 }
