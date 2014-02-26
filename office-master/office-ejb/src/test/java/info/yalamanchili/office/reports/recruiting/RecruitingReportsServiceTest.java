@@ -20,7 +20,7 @@ public class RecruitingReportsServiceTest {
     public RecruitingReportsServiceTest() {
     }
 
-    @Test
+//    @Test
     public void testGetSearchSkillSetQueryString() {
         System.out.println("getSearchSkillSetQueryString");
         SkillSetSearchDto searchDto = new SkillSetSearchDto();
