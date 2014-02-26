@@ -1,13 +1,12 @@
 Cancel/Update Leave Request
 ==========
 
-**(Time --> Summary--> Cancel/Update Leave Request)**
+**(Time --> Summary--> Cancel Request)**
 
->- a employee can submit a request for correction or updating or cancel existing leave request with details.
->- a email notification and a task get sent to Reports_To manger and HR_Administration team
->- they can reject the request if not approved or delete /update time-sheet if approved.
+>- a employee can cancel leave request.
+>- a email notification notification will be sent to Manager and HR Team.
 
 
 Creating Cancel/Update Leave Request
 -----
-![alt text](../../images/timesheets/leave-cancel-update-request.png "Time")
+![alt text](../../images/timesheets/leave-request-cancel.png "Time")

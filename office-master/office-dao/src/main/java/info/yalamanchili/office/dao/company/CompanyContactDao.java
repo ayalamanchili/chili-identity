@@ -27,27 +27,36 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class CompanyContactDao extends CRUDDao<CompanyContact> {
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     public CompanyContactDao() {
         super(CompanyContact.class);
     }
-    
+
     public List<CompanyContact> getEmployeeCompanyContacts(Long employeeId) {
         Query query = getEntityManager().createQuery("from " + CompanyContact.class.getCanonicalName() + "  where employee.id=:employeeIdParam", CompanyContact.class);
         query.setParameter("employeeIdParam", employeeId);
         return query.getResultList();
     }
-    
+
     public List<CompanyContact> getCompanyContact(Employee employee, String companyContactType) {
         TypedQuery<CompanyContact> query = em.createQuery("from " + CompanyContact.class.getCanonicalName() + " where employee=:empParam and type.name=:typeParam and contact.user.enabled=true", CompanyContact.class);
         query.setParameter("empParam", employee);
         query.setParameter("typeParam", companyContactType);
         return query.getResultList();
     }
-    
+
+    public Employee getReportsToContactForEmployee(Employee emp) {
+        List<CompanyContact> contacts = getCompanyContact(emp, "Reports_To");
+        if (contacts.size() > 0) {
+            return contacts.get(0).getContact();
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public CompanyContact save(CompanyContact cnt) {
         CompanyContact entity = null;
@@ -61,12 +70,12 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
         entity.setContact(EmployeeDao.instance().findById(cnt.getContact().getId()));
         return em.merge(entity);
     }
-    
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public static CompanyContactDao instance() {
         return SpringContext.getBean(CompanyContactDao.class);
     }

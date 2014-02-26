@@ -17,7 +17,8 @@ public enum TimeSheetStatus {
     Saved,
     Pending,
     Approved,
-    Rejected;
+    Rejected,
+    Canceled;
 
     public static String[] names() {
         TimeSheetStatus[] values = values();

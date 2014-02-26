@@ -15,6 +15,8 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 
@@ -89,5 +91,15 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-timesheet/" + entityId;
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.time.CorporateTimeSheet" + "/" + getEntityId();
     }
 }

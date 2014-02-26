@@ -7,15 +7,19 @@
  */
 package info.yalamanchili.office.client.time.corp;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
@@ -27,7 +31,7 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
+public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadAllCorporateTimeSheetPanel.class.getName());
     public static ReadAllCorporateTimeSheetPanel instance;
@@ -101,6 +105,9 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("Hours"));
         table.setText(0, 6, getKeyValue("Status"));
+        if (parentId == null) {
+            table.setText(0, 7, getKeyValue("More"));
+        }
     }
 
     @Override
@@ -114,6 +121,12 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
             table.setText(i, 6, JSONUtils.toString(entity, "status"));
+            if (parentId == null) {
+                ClickableLink cancelL = new ClickableLink("Cancel Request");
+                cancelL.setTitle(JSONUtils.toString(entity, "id"));
+                cancelL.addClickHandler(this);
+                table.setWidget(i, 7, cancelL);
+            }
         }
     }
 
@@ -128,5 +141,36 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite {
 
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/delete/" + entityId;
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource() instanceof ClickableLink) {
+            ClickableLink cancelL = (ClickableLink) event.getSource();
+            cancelLeaveRequest(cancelL.getTitle());
+        } else {
+            super.onClick(event);
+        }
+    }
+
+    protected void cancelLeaveRequest(String requestId) {
+        if (Window.confirm("Are you sure? You want to cancel the Leave Request")) {
+            HttpService.HttpServiceAsync.instance().doGet(getCancelLeaveRequestUrl(requestId), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Leave request has been canceled");
+                            TabPanel.instance().getTimePanel().entityPanel.clear();
+                            TabPanel.instance().getTimePanel().sidePanelTop.clear();
+                            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
+                            TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
+                            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+                        }
+                    });
+        }
+    }
+
+    protected String getCancelLeaveRequestUrl(String requestId) {
+        return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/cancel-leave-request/" + requestId;
     }
 }

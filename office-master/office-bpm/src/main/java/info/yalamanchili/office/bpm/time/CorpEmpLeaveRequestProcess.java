@@ -64,6 +64,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     protected void saveLeaveRequest(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        ts.setBpmProcessId(task.getExecution().getProcessInstanceId());
         ts.setStatus(TimeSheetStatus.Pending);
         ts.setEmployee(emp);
         task.getExecution().setVariable("entity", CorporateTimeSheetDao.instance().save(ts));

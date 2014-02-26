@@ -84,6 +84,10 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      */
     @Lob
     protected String notes;
+    /**
+     * BPM process Id associated with the request
+     */
+    protected String bpmProcessId;
 
     public CorporateTimeSheet() {
     }
@@ -143,6 +147,14 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @Override

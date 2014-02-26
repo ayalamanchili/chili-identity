@@ -59,6 +59,12 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         CorporateTimeService.instance().submitLeaveRequest(entity);
     }
 
+    @GET
+    @Path("/cancel-leave-request/{timesheetId}")
+    public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId) {
+        CorporateTimeService.instance().cancelLeaveRequest(timesheetId);
+    }
+
     @Override
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public CorporateTimeSheet save(CorporateTimeSheet entity) {

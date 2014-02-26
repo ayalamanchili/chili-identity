@@ -6,7 +6,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package info.yalamanchili.office.entity.time;
 
 import info.chili.jpa.AbstractEntity;
@@ -50,12 +49,12 @@ public class ConsultantTimeSheet extends AbstractEntity implements Serializable 
     @ForeignKey(name = "FK_Emp_ConsultantTimeSheets")
     @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
-   
+
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "TME_SHT_STRT_DT")
     protected Date startDate;
-   
+
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{endDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "TME_SHT_END_DT")
@@ -78,6 +77,11 @@ public class ConsultantTimeSheet extends AbstractEntity implements Serializable 
      */
     @Lob
     protected String notes;
+
+    /**
+     * BPM process Id associated with the request
+     */
+    protected String bpmProcessId;
 
     public ConsultantTimeSheet() {
     }
@@ -137,6 +141,14 @@ public class ConsultantTimeSheet extends AbstractEntity implements Serializable 
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @Override

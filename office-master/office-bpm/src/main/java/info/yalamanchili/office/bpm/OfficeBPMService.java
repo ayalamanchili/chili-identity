@@ -52,6 +52,10 @@ public class OfficeBPMService {
         bpmRepositoryService.deleteDeployment(processId, true);
     }
 
+    public void deleteProcessInstance(String processInstanceId) {
+        bpmRuntimeService.deleteProcessInstance(processInstanceId, "user cancled");
+    }
+
     public String getDeployedProcessInfo() {
         StringBuilder info = new StringBuilder();
         for (ProcessDefinition process : bpmRepositoryService.createProcessDefinitionQuery().list()) {

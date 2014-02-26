@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.bpm;
 
+import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
 import java.util.ArrayList;
@@ -22,6 +23,20 @@ import org.activiti.engine.task.IdentityLink;
  * @author anuyalamanchili
  */
 public class BPMUtils {
+
+    public List<Task> getTasksforProcessid(String processId) {
+        return OfficeBPMTaskService.instance().getTasksForProcessId(processId);
+    }
+
+    public Task getTaskForProcessId(String processId) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        List<Task> tasks = taskService.getTasksForProcessId(processId);
+        if (tasks.size() > 0) {
+            return tasks.get(0);
+        } else {
+            return null;
+        }
+    }
 
     public static Set<String> getCandidateEmails(DelegateTask delegateTask) {
         Set<String> emails = new HashSet<String>();
