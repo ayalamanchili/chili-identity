@@ -48,6 +48,8 @@
                 <item name="Timesheet Process" href="/office/timesheets/corp-timesheet-process.html"/>
                 <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
                 <item name="Leaves Accumulation" href="/office/timesheets/leaves-accumulation.html"/>
+                <item name="Leaves Cancellation" href="/office/timesheets/leave-cancel-process.html"/>
+                <item name="Leaves for consultant" href="/office/timesheets/consultant-leave-request.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
                 <item name="Employee Address updated" href="/office/bpm/address-updated-process.html"/>
