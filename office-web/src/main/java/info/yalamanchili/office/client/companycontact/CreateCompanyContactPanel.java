@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 public class CreateCompanyContactPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateCompanyContactPanel.class.getName());
-    SelectCompanyContactTypeWidget contactTypeF = new SelectCompanyContactTypeWidget(false, false);
-    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, false);
+    SelectCompanyContactTypeWidget contactTypeF = new SelectCompanyContactTypeWidget(false, true);
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
 
     public CreateCompanyContactPanel(CreateComposite.CreateCompositeType type) {
         super(type);

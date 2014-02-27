@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 public class UpdateCompanyContactPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdatePhonePanel.class.getName());
-    SelectCompanyContactTypeWidget contactTypeF = new SelectCompanyContactTypeWidget(false, false);
-    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, false);
+    SelectCompanyContactTypeWidget contactTypeF = new SelectCompanyContactTypeWidget(false, true);
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
 
     public UpdateCompanyContactPanel(JSONObject entity) {
         initUpdateComposite(entity, "CompanyContact", OfficeWelcome.constants);
