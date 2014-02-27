@@ -49,16 +49,16 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -91,7 +91,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     protected void addWidgets() {
         addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
-        addEnumField("status", false, false, TimeSheetStatus.names());
+        addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);

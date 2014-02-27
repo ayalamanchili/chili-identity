@@ -77,7 +77,7 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    @NotNull
+    @NotNull(message = "{corp.ts.status.not.empty.msg}")
     protected TimeSheetStatus status;
     /**
      * notes

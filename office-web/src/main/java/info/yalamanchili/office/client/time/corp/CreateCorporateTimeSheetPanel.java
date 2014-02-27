@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 public class CreateCorporateTimeSheetPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateCorporateTimeSheetPanel.class.getName());
-
     SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
 
     public CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType type) {
@@ -52,16 +51,16 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -86,7 +85,7 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     protected void addWidgets() {
         addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
-        addEnumField("status", false, false, TimeSheetStatus.names());
+        addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
