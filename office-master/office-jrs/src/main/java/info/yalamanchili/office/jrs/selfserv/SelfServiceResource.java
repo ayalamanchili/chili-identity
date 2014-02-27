@@ -17,10 +17,12 @@ import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.selfserv.SelfService;
 import info.yalamanchili.office.selfserv.ServiceTicketUpdateDto;
 import java.util.List;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -35,6 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ayalamanchili
  */
 @Path("secured/selfservice")
+@Produces("application/json")
+@Consumes("application/json")
 @Component
 @Transactional
 @Scope("request")
