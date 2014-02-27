@@ -5,15 +5,11 @@ Consultant Time Sheet
 
 >- This is support for Consultant employee submit leave request.
 >- Consultant employee logs into portal and submits leave request with details
->- A task get sent to Reports_To manger and HR_Administration team AND Payroll and Benefits AND ENGAGEMENT_TEAM
+>- A task get sent to Payroll and Benefits Team AND ENGAGEMENT_TEAM
 >- Once the task is approved the request is saved for records
 
 
-Enter Time Sheet For Consultant Employee
------
-![alt text](../../images/timesheets/Enter-Time-sheet-for-consultant.png "Time")
-
-**(Login as user  Time --> Summary--> Submit Leave Request)**
+**(Login   Time --> Summary--> Submit Leave Request)**
 
 Leave Request For Consultant Employee
 -----
