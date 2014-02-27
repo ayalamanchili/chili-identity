@@ -36,7 +36,7 @@ public class MailUtils {
     protected EntityManager em;
 
     public Employee findEmployee(String employeeId) {
-        TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
+        TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where user.enabled=true and employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", employeeId);
         if (getUserQuery.getResultList().size() > 0) {
             return getUserQuery.getResultList().get(0);
@@ -47,7 +47,7 @@ public class MailUtils {
 
     public Set<String> getEmailsAddressesForRoles(String... roles) {
         Set<String> emails = new HashSet<String>();
-        Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where role.rolename in (:roles)", CUser.class);
+        Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where user.enabled=true and role.rolename in (:roles)", CUser.class);
         getUsersInRoleQuery.setParameter("roles", Arrays.asList(roles));
         List<CUser> users = getUsersInRoleQuery.getResultList();
         //TODO improve the query into a single query
