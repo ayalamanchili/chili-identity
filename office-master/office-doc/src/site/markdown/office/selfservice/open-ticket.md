@@ -11,25 +11,19 @@ Open Ticket
 
 Open Ticket
 ---------------
+**goto home tab>>- select self service>>-select open ticket**
 ![alt text](../../images/selfservice/open-service-ticket.png "Self Service")
 
 Add Comment
 ---------------
+**After create the new self service ticket**
+**goto Employee>>-Select employee view>>- select tree employee >>-under tree employee select self service >>-click View Self Service>>- Add a comment**
+
 ![alt text](../../images/selfservice/add-ticket-comment.png "Self Service")
 
 Re Open Ticket
 ---------------
+**After rejected or resolved  self service ticket only we can re open the ticket **
+**Employee>>-Select employee view>>- select tree employee >>-under tree employee select self service >>-click View Self Service>>- Select status and re opened**
+
 ![alt text](../../images/selfservice/re-open-ticket.png "Self Service")
-
-
-
-
-
-
-
- 
-
-
-
-
-
