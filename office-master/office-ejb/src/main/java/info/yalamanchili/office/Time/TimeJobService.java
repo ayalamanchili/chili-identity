@@ -65,6 +65,7 @@ public class TimeJobService {
     }
 
     protected boolean isInProbationPeriod(Employee emp) {
+        //TODO check for null start date
         if (DateUtils.getNextMonth(emp.getStartDate(), 2).before(new Date())) {
             return false;
         } else {
@@ -74,7 +75,7 @@ public class TimeJobService {
 
     protected boolean hasMoreThanOneYearService(Employee emp) {
         //TODO possible bug for leap year???
-        if (DateUtils.getNextYear(emp.getStartDate(), 1).before(new Date())) {
+        if (emp.getStartDate() != null && DateUtils.getNextYear(emp.getStartDate(), 1).before(new Date())) {
             return true;
         } else {
             return false;
