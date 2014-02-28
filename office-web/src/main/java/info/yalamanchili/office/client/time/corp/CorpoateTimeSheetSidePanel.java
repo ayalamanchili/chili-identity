@@ -14,11 +14,16 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import info.yalamanchili.office.client.profile.selfservice.ReadServiceTicketPanel;
+import info.yalamanchili.office.client.time.TimeSheetCategory;
+import info.yalamanchili.office.client.time.TimeSheetStatus;
 import java.util.logging.Logger;
 
 /**
@@ -35,9 +40,22 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
     SelectCorpEmployeeWidget empWidget = new SelectCorpEmployeeWidget(false, false);
+    //category
+    EnumField categoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
+            false, false, TimeSheetCategory.names());
+    //status
+    EnumField statusField = new EnumField(OfficeWelcome.constants, "status", "CorporateTimeSheet",
+            false, false, TimeSheetStatus.names());
     Button showTimeSheetsForEmpB = new Button("View");
 
+    protected static CorpoateTimeSheetSidePanel instance;
+
+    public static CorpoateTimeSheetSidePanel instance() {
+        return instance;
+    }
+
     public CorpoateTimeSheetSidePanel() {
+        instance = this;
         init(timeSheetsidepanel);
     }
 
@@ -59,6 +77,8 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
 
             //employee
             timesheetsForEmpPanel.add(empWidget);
+            timesheetsForEmpPanel.add(categoryField);
+            timesheetsForEmpPanel.add(statusField);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
             timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
             timeSheetsidepanel.add(timesheetsForEmpCaptionPanel);

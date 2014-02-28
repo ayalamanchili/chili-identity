@@ -15,12 +15,15 @@ import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -94,21 +97,22 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
-    public CorporateTimeSheetResource.CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
-        CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
+    public CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
-        tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
-        tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
-        return tableObj;
+        return getCorporateTimeSheets(emp, status, category, start, limit);
     }
 
     @GET
     @Path("/currentuser/{start}/{limit}")
-    public CorporateTimeSheetResource.CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("start") int start, @PathParam("limit") int limit) {
-        CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
+    public CorporateTimeSheetTable getCorporateTimeSheet(@QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = SecurityService.instance().getCurrentUser();
-        tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
-        tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
+        return getCorporateTimeSheets(emp, status, category, start, limit);
+    }
+
+    protected CorporateTimeSheetTable getCorporateTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
+        CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
+        tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(employee, status, category, start, limit));
+        tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(employee, status, category));
         return tableObj;
     }
 

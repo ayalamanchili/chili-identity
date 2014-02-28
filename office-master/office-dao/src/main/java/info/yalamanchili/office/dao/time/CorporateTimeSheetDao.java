@@ -72,18 +72,44 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
     }
 
-    public Long getTimeSheetsSizeForEmployee(Employee employee) {
-        Query query = getEntityManager().createQuery("select count(*) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+    public Long getTimeSheetsSizeForEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
+        String queryStr = "select count(*) " + getTimeSheetsForEmployeeQuery(employee, status, category);
+        Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
+        if (queryStr.contains("statusParam")) {
+            query.setParameter("statusParam", status);
+        }
+        if (queryStr.contains("categoryParam")) {
+            query.setParameter("categoryParam", category);
+        }
         return (Long) query.getSingleResult();
     }
 
-    public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit) {
-        Query query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+    public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
+        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category);
+        Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
+        if (queryStr.contains("statusParam")) {
+            query.setParameter("statusParam", status);
+        }
+        if (queryStr.contains("categoryParam")) {
+            query.setParameter("categoryParam", category);
+        }
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
+    }
+
+    protected String getTimeSheetsForEmployeeQuery(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where employee=:employeeParam");
+        if (status != null) {
+            queryStr.append(" and status=:statusParam ");
+        }
+        if (category != null) {
+            queryStr.append(" and category=:categoryParam");
+        }
+        return queryStr.toString();
     }
 
     public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category, TimeSheetStatus status) {

@@ -89,10 +89,17 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
+        String queryStr = "?";
+        if (CorpoateTimeSheetSidePanel.instance != null && CorpoateTimeSheetSidePanel.instance.categoryField.getValue() != null) {
+            queryStr = queryStr + "&category=" + CorpoateTimeSheetSidePanel.instance.categoryField.getValue();
+        }
+        if (CorpoateTimeSheetSidePanel.instance != null && CorpoateTimeSheetSidePanel.instance.statusField.getValue() != null) {
+            queryStr = queryStr + "&status=" + CorpoateTimeSheetSidePanel.instance.statusField.getValue();
+        }
         if (parentId == null) {
-            return OfficeWelcome.constants.root_url() + "corporate-timesheet/currentuser/" + start.toString() + "/" + limit.toString();
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet/currentuser/" + start.toString() + "/" + limit.toString() + queryStr;
         } else {
-            return OfficeWelcome.constants.root_url() + "corporate-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString();
+            return OfficeWelcome.constants.root_url() + "corporate-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString() + queryStr;
         }
     }
 
