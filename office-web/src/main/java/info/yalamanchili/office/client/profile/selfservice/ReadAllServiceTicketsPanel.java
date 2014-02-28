@@ -24,21 +24,21 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllServiceTicketsPanel.class.getName());
     public static ReadAllServiceTicketsPanel instance;
-    
+
     public ReadAllServiceTicketsPanel(String employeeId) {
         instance = this;
         this.parentId = employeeId;
         initTable("SelfService", OfficeWelcome.constants);
     }
-    
+
     public ReadAllServiceTicketsPanel() {
         instance = this;
         initTable("SelfService", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         if (this.parentId == null) {
@@ -49,32 +49,30 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadServiceTicketPanel(entityId));
         }
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
-        
     }
-    
+
     @Override
     public void postDeleteSuccess() {
-        
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllSelfServiceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -84,8 +82,10 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("Status"));
         table.setText(0, 5, getKeyValue("Department"));
         table.setText(0, 6, getKeyValue("Assigned To"));
+        table.setText(0, 7, getKeyValue("CreatedTimeStamp"));
+
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         logger.info("Ddd" + entities);
@@ -100,14 +100,15 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             if (entity.get("assignedTo") != null) {
                 table.setText(i, 6, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
             }
+            table.setText(i, 7, JSONUtils.toString(entity, "createdTimeStamp"));
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
     }
-    
+
     private String getReadAllSelfServiceURL(Integer start, String limit) {
         if (this.parentId == null) {
             return OfficeWelcome.constants.root_url() + "selfservice/tickets/currentuser/" + start.toString() + "/" + limit.toString();
