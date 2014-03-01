@@ -43,6 +43,7 @@ import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeShee
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
+import info.yalamanchili.office.client.time.corp.ReadCurrentCorpLeavesPanel;
 
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
@@ -207,6 +208,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             timePanel.sidePanelTop.add(new CorporateTimeSummarySidePanel());
             timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
             timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+            timePanel.entityPanel.add(new ReadCurrentCorpLeavesPanel());
         } else {
             timePanel.sidePanelTop.add(new ConsultantTimeSummarySidePanel());
             timePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel());

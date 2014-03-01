@@ -7,6 +7,9 @@
  */
 package info.yalamanchili.office.entity.time;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author ayalamanchili
@@ -22,5 +25,15 @@ public enum TimeSheetCategory {
     Unpaid,
     Sick_Earned,
     Sick_Spent,
-    JuryDuty
+    JuryDuty;
+
+    public static List<TimeSheetCategory> getLeaveSpentCategories() {
+        List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();
+        res.add(Vacation_Spent);
+        res.add(Sick_Spent);
+        res.add(Personal_Spent);
+        res.add(Unpaid);
+        res.add(JuryDuty);
+        return res;
+    }
 }

@@ -24,6 +24,7 @@ import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySide
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import info.yalamanchili.office.client.time.corp.CorpoateTimeSheetSidePanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
+import info.yalamanchili.office.client.time.corp.ReadCurrentCorpLeavesPanel;
 
 /**
  *
@@ -57,6 +58,7 @@ public class TimeMenu extends Composite {
                 TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
             } else {
                 TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());

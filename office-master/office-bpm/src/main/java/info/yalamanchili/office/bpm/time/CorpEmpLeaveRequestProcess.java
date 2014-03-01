@@ -13,6 +13,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.BPMUtils;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.company.CompanyContact;
@@ -112,11 +113,11 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      */
     protected void leaveRequestApproved(DelegateTask task) {
         CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
-        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        if (emp.getEmployeeId().equals(ts.getEmployee().getEmployeeId())) {
+        Employee currentUser = SecurityService.instance().getCurrentUser();
+        if (currentUser.getEmployeeId().equals(ts.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.timesheet", "You cannot approve your timesheet");
         }
-        if (CorpEmpLeaveRequestProcessBean.instance().validateLeaveRequest(emp, ts)) {
+        if (CorpEmpLeaveRequestProcessBean.instance().validateLeaveRequest(currentUser, ts)) {
             sendLeaveRequestStatusNotification("Approved", task);
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.enough.leaves", "No Enought leaves for employee. Please verify time summary and reject the task");

@@ -14,7 +14,7 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao.CorporateTimeSheetTable;
 import info.yalamanchili.office.dao.time.SearchCorporateTimeSheetDto;
-import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
+import info.yalamanchili.office.dto.time.CorporateTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -44,13 +44,19 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/summary")
-    public CorporateYealyTimeSummary getCorporateTimeSummary() {
+    public CorporateTimeSummary getCorporateTimeSummary() {
         return CorporateTimeService.instance().getYearlySummary(SecurityService.instance().getCurrentUser());
     }
 
     @GET
+    @Path("/current-leaves")
+    public List<CorporateTimeSheet> currentLeaves() {
+        return corporateTimeSheetDao.getCurrentCompanyLeaves();
+    }
+
+    @GET
     @Path("/summary/{empId}")
-    public CorporateYealyTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
+    public CorporateTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
         CorporateTimeService.instance().checkAccessToEmployeeTime(emp);
         return CorporateTimeService.instance().getYearlySummary(emp);

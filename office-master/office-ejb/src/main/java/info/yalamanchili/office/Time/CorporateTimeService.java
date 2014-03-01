@@ -16,7 +16,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
+import info.yalamanchili.office.dto.time.CorporateTimeSummary;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -27,6 +27,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -91,8 +92,8 @@ public class CorporateTimeService {
         MessagingService.instance().sendEmail(email);
     }
 
-    public CorporateYealyTimeSummary getYearlySummary(Employee employee) {
-        CorporateYealyTimeSummary summary = new CorporateYealyTimeSummary();
+    public CorporateTimeSummary getYearlySummary(Employee employee) {
+        CorporateTimeSummary summary = new CorporateTimeSummary();
         summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
         summary.setAvailableSickHours(getYearlySickBalance(employee));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee));
