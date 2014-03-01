@@ -52,6 +52,10 @@
                 Category      : #{entity.category} 
                 Hours         : #{entity.hours} 
                 Notes         : #{entity.notes}
+                Vacation Available when request submitted : #{summary.availableVacationHours}
+                Personal Available when request submitted : #{summary.availablePersonalHours}
+                Sick Available when request submitted     : #{summary.availableSickHours}
+                Please view Employee Time Summary under-->Time-->Corporate Time before taking action
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />

@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.bpm.time;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.BPMUtils;
@@ -20,6 +21,7 @@ import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.Date;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
@@ -67,6 +69,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         ts.setBpmProcessId(task.getExecution().getProcessInstanceId());
         ts.setStatus(TimeSheetStatus.Pending);
         ts.setEmployee(emp);
+        ts.setCreatedTimeStamp(new Date());
         task.getExecution().setVariable("entity", CorporateTimeSheetDao.instance().save(ts));
     }
 
@@ -108,7 +111,16 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestApproved(DelegateTask task) {
-        sendLeaveRequestStatusNotification("Approved", task);
+        CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        if (emp.getEmployeeId().equals(ts.getEmployee().getEmployeeId())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.timesheet", "You cannot approve your timesheet");
+        }
+        if (CorpEmpLeaveRequestProcessBean.instance().validateLeaveRequest(emp, ts)) {
+            sendLeaveRequestStatusNotification("Approved", task);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.enough.leaves", "No Enought leaves for employee. Please verify time summary and reject the task");
+        }
     }
 
     /**
@@ -135,9 +147,9 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         messageBuilder.append("Summary: ").append(summary).append("\n");
         messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
         messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
-        messageBuilder.append("Employee Available Vacation Hours : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved)).append("\n");
-        messageBuilder.append("Employee Available Sick Hours     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved)).append("\n");
-        messageBuilder.append("Employee Available Personal Hours : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved)).append("\n");
+//        messageBuilder.append("Employee Available Vacation Hours as of now : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved)).append("\n");
+//        messageBuilder.append("Employee Available Sick Hours as of now     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved)).append("\n");
+//        messageBuilder.append("Employee Available Personal Hours as of now : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved)).append("\n");
 
         Employee taskActionUser = (Employee) task.getExecution().getVariable("taskActionUser");
         if (taskActionUser != null) {

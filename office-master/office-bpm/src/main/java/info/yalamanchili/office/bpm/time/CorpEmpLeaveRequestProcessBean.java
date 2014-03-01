@@ -37,7 +37,7 @@ public class CorpEmpLeaveRequestProcessBean {
         }
         BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved);
         BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, entity.getCategory(), TimeSheetStatus.Approved);
-        if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) < 0) {
+        if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) <= 0) {
             return true;
         } else {
             return false;
@@ -58,5 +58,9 @@ public class CorpEmpLeaveRequestProcessBean {
         ts.setStatus(TimeSheetStatus.Approved);
         //TODO append approved task notes
         CorporateTimeSheetDao.instance().save(ts);
+    }
+
+    public static CorpEmpLeaveRequestProcessBean instance() {
+        return SpringContext.getBean(CorpEmpLeaveRequestProcessBean.class);
     }
 }

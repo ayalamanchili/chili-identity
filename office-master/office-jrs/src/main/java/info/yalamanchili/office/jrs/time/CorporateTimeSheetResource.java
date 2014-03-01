@@ -12,6 +12,8 @@ import info.yalamanchili.office.Time.CorporateTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
+import info.yalamanchili.office.dao.time.CorporateTimeSheetDao.CorporateTimeSheetTable;
+import info.yalamanchili.office.dao.time.SearchCorporateTimeSheetDto;
 import info.yalamanchili.office.dto.time.CorporateYealyTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -24,9 +26,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,10 +49,11 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @GET
-    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     @Path("/summary/{empId}")
     public CorporateYealyTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
-        return CorporateTimeService.instance().getYearlySummary(EmployeeDao.instance().findById(empId));
+        Employee emp = EmployeeDao.instance().findById(empId);
+        CorporateTimeService.instance().checkAccessToEmployeeTime(emp);
+        return CorporateTimeService.instance().getYearlySummary(emp);
     }
 
     @PUT
@@ -96,9 +96,9 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
+        CorporateTimeService.instance().checkAccessToEmployeeTime(emp);
         return getCorporateTimeSheets(emp, status, category, start, limit);
     }
 
@@ -109,35 +109,17 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         return getCorporateTimeSheets(emp, status, category, start, limit);
     }
 
+    @PUT
+    @Path("/report/{start}/{limit}")
+    public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return corporateTimeSheetDao.getReport(dto, start, limit);
+    }
+
     protected CorporateTimeSheetTable getCorporateTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
-        CorporateTimeSheetResource.CorporateTimeSheetTable tableObj = new CorporateTimeSheetResource.CorporateTimeSheetTable();
+        CorporateTimeSheetTable tableObj = new CorporateTimeSheetTable();
         tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(employee, status, category, start, limit));
         tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(employee, status, category));
         return tableObj;
     }
 
-    @XmlRootElement
-    @XmlType
-    public static class CorporateTimeSheetTable {
-
-        protected Long size;
-        protected List<CorporateTimeSheet> entities;
-
-        public Long getSize() {
-            return size;
-        }
-
-        public void setSize(Long size) {
-            this.size = size;
-        }
-
-        @XmlElement
-        public List<CorporateTimeSheet> getEntities() {
-            return entities;
-        }
-
-        public void setEntities(List<CorporateTimeSheet> entities) {
-            this.entities = entities;
-        }
-    }
 }

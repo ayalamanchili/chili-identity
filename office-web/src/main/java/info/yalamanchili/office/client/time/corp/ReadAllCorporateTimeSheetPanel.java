@@ -25,6 +25,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import static info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel.instance;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +46,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     public ReadAllCorporateTimeSheetPanel() {
         instance = this;
         initTable("CorporateTimeSheet", OfficeWelcome.constants);
+    }
+
+    public ReadAllCorporateTimeSheetPanel(JSONArray array) {
+        instance = this;
+        initTable("CorporateTimeSheet", array, OfficeWelcome.constants);
     }
 
     @Override
@@ -83,6 +89,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        logger.info("ddddd"+result);
                         postFetchTable(result);
                     }
                 });

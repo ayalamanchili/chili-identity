@@ -16,6 +16,7 @@ import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,6 +24,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -86,7 +90,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
-        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category);
+        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category) + " order by startDate DESC ";
         Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
         if (queryStr.contains("statusParam")) {
@@ -126,6 +130,39 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
     }
 
+    public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, int start, int limit) {
+        String queryStr = getReportQueryString(dto);
+        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery(queryStr, CorporateTimeSheet.class);
+        query = (TypedQuery<CorporateTimeSheet>) getReportQueryWithParams(queryStr, query, dto);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    protected Query getReportQueryWithParams(String qryStr, Query query, SearchCorporateTimeSheetDto dto) {
+        query.setParameter("statusParam", TimeSheetStatus.Approved);
+        if (qryStr.contains("startDateParam")) {
+            query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
+        }
+        if (qryStr.contains("endDateParam")) {
+            query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
+        }
+        return query;
+    }
+
+    protected String getReportQueryString(SearchCorporateTimeSheetDto dto) {
+        StringBuilder reportQueryBuilder = new StringBuilder();
+        reportQueryBuilder.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where status=:statusParam ");
+        if (dto.getStartDate() != null) {
+            reportQueryBuilder.append(" and startDate>=:startDateParam ");
+        }
+        if (dto.getEndDate() != null) {
+            reportQueryBuilder.append(" and endDate<=:endDateParam ");
+        }
+        reportQueryBuilder.append(" order by startDate DESC ");
+        return reportQueryBuilder.toString();
+    }
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -136,5 +173,30 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
 
     public static CorporateTimeSheetDao instance() {
         return SpringContext.getBean(CorporateTimeSheetDao.class);
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class CorporateTimeSheetTable {
+
+        protected Long size;
+        protected List<CorporateTimeSheet> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<CorporateTimeSheet> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<CorporateTimeSheet> entities) {
+            this.entities = entities;
+        }
     }
 }

@@ -88,7 +88,16 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
      * BPM process Id associated with the request
      */
     protected String bpmProcessId;
+    /**
+     * created Time Stamp
+     */
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @org.hibernate.annotations.Index(name = "CRP_TS_CRT_TS_STMP")
+    protected Date createdTimeStamp;
 
+    /**
+     *
+     */
     public CorporateTimeSheet() {
     }
 
@@ -155,6 +164,14 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    public Date getCreatedTimeStamp() {
+        return createdTimeStamp;
+    }
+
+    public void setCreatedTimeStamp(Date createdTimeStamp) {
+        this.createdTimeStamp = createdTimeStamp;
     }
 
     @Override

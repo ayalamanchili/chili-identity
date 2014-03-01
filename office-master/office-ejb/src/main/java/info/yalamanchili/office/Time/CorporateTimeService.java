@@ -10,7 +10,6 @@ package info.yalamanchili.office.Time;
 
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -47,7 +46,9 @@ public class CorporateTimeService {
     public void submitLeaveRequest(CorporateTimeSheet entity) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
-        vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
+        Employee emp = SecurityService.instance().getCurrentUser();
+        vars.put("currentEmployee", emp);
+        vars.put("summary", getYearlySummary(emp));
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
     }
 
@@ -96,6 +97,21 @@ public class CorporateTimeService {
         summary.setAvailableSickHours(getYearlySickBalance(employee));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee));
         return summary;
+    }
+
+    public void checkAccessToEmployeeTime(Employee emp) {
+        Employee currentUser = SecurityService.instance().getCurrentUser();
+        if (emp.getEmployeeId().equals(currentUser.getEmployeeId())) {
+            return;
+        }
+        Employee reportsToEmp = CompanyContactDao.instance().getReportsToContactForEmployee(emp);
+        if (reportsToEmp != null && currentUser.getEmployeeId().equals(reportsToEmp.getEmployeeId())) {
+            return;
+        }
+        if (SecurityService.instance().hasRole(OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
+            return;
+        }
+        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have  permission to view this information");
     }
 
     public BigDecimal getYearlySickBalance(Employee employee) {

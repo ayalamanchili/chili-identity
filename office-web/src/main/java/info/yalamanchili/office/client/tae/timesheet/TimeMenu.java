@@ -40,7 +40,7 @@ public class TimeMenu extends Composite {
 
     protected void configureTAEMenu() {
         tAEMenuBar.addItem("Summary", summaryMaintainenceCmd);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.isCorporateEmployee()) {
             tAEMenuBar.addItem("Corporate Time", corpTimeMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_RELATIONSHIP)) {

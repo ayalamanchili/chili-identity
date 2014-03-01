@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.dto.time;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType
-public class CorporateYealyTimeSummary {
+public class CorporateYealyTimeSummary implements Serializable{
 
     protected BigDecimal availableSickHours;
     protected BigDecimal availablePersonalHours;
