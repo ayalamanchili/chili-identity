@@ -145,7 +145,7 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
                             String key = (String) resObj.keySet().toArray()[0];
                             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
                             TabPanel.instance().getTimePanel().entityPanel.clear();
-                            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(results));
+                            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel("Time Sheet Report Results", results));
                         }
 
                     }

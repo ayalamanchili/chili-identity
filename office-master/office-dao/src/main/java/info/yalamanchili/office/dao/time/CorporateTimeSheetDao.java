@@ -131,7 +131,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public List<CorporateTimeSheet> getCurrentCompanyLeaves() {
-        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where status=:statusParam and category IN (:categoryParam) and ((startDate between :dateRangeStartParam and :dateRangeEndParam) or (endDate between :dateRangeStartParam and :dateRangeEndParam))", CorporateTimeSheet.class);
+        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where status=:statusParam and category IN (:categoryParam) and ((startDate <=:dateRangeEndParam ) and (endDate >=:dateRangeStartParam))", CorporateTimeSheet.class);
         query.setParameter("statusParam", TimeSheetStatus.Approved);
         query.setParameter("categoryParam", TimeSheetCategory.getLeaveSpentCategories());
         query.setParameter("dateRangeStartParam", DateUtils.getNextDay(new Date(), -1), TemporalType.DATE);

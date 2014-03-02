@@ -72,7 +72,7 @@ public class OfficeWelcome implements EntryPoint {
     }
 
     public String getCurrentUserEmpId() {
-        return employeeId;
+        return JSONUtils.toString(employee, "employeeId");
     }
 
     protected void initUserRoles(JSONObject employee) {

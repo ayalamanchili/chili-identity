@@ -39,17 +39,12 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     public ReadAllCorporateTimeSheetPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("CorporateTimeSheet", OfficeWelcome.constants);
+        initTable("Corporate Time Sheets", OfficeWelcome.constants);
     }
 
     public ReadAllCorporateTimeSheetPanel() {
         instance = this;
-        initTable("CorporateTimeSheet", OfficeWelcome.constants);
-    }
-
-    public ReadAllCorporateTimeSheetPanel(JSONArray array) {
-        instance = this;
-        initTable("CorporateTimeSheet", array, OfficeWelcome.constants);
+        initTable("My Time Sheets", OfficeWelcome.constants);
     }
 
     public ReadAllCorporateTimeSheetPanel(String title, JSONArray array) {
@@ -138,7 +133,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
             table.setText(i, 6, JSONUtils.toString(entity, "status"));
-            if (parentId == null) {
+            if (isMyTimeSheet(entity)) {
                 ClickableLink cancelL = new ClickableLink("Cancel Request");
                 cancelL.setTitle(JSONUtils.toString(entity, "id"));
                 cancelL.addClickHandler(this);
@@ -147,9 +142,19 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         }
     }
 
+    protected boolean isMyTimeSheet(JSONObject entity) {
+//        logger.info("asdf" + entity);
+        logger.info("aaaa" + OfficeWelcome.instance().getCurrentUserEmpId());
+        logger.info("aaaa" + JSONUtils.toString(entity.get("employee").isObject(), "employeeId"));
+        if (OfficeWelcome.instance().getCurrentUserEmpId().equals(JSONUtils.toString(entity.get("employee").isObject(), "employeeId"))) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
