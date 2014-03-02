@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.time.corp;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.HasDirection;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -16,6 +17,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -39,7 +41,7 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHandler {
+public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
@@ -49,10 +51,8 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
     SelectCorpEmployeeWidget empWidget = new SelectCorpEmployeeWidget(false, false);
-    //category
     EnumField categoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
             false, false, TimeSheetCategory.names());
-    //status
     EnumField statusField = new EnumField(OfficeWelcome.constants, "status", "CorporateTimeSheet",
             false, false, TimeSheetStatus.names());
     Button showTimeSheetsForEmpB = new Button("View");
@@ -63,15 +63,18 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
             "startDate", "CorporateTimeSheet", false, true);
     DateField endDateF = new DateField(OfficeWelcome.constants,
             "endDate", "CorporateTimeSheet", false, true);
+    EnumField roleF = new EnumField(OfficeWelcome.constants, "role", "Employee",
+            false, false, Auth.getAllRoles());
+    ClickableLink clearReportsL = new ClickableLink("clear");
     Button viewReportsB = new Button("View");
 
-    protected static CorpoateTimeSheetSidePanel instance;
+    protected static CorpoateTimeSidePanel instance;
 
-    public static CorpoateTimeSheetSidePanel instance() {
+    public static CorpoateTimeSidePanel instance() {
         return instance;
     }
 
-    public CorpoateTimeSheetSidePanel() {
+    public CorpoateTimeSidePanel() {
         instance = this;
         init(timeSheetsidepanel);
     }
@@ -81,6 +84,7 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
         createtimeSheetlink.addClickHandler(this);
         showTimeSheetsForEmpB.addClickHandler(this);
         viewReportsB.addClickHandler(this);
+        clearReportsL.addClickHandler(this);
     }
 
     @Override
@@ -107,7 +111,9 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
             //reports panel
             reportsPanel.add(startDateF);
             reportsPanel.add(endDateF);
+            reportsPanel.add(roleF);
             reportsPanel.add(viewReportsB);
+//            reportsPanel.add(clearReportsL);
             reportsCaptionPanel.setContentWidget(reportsPanel);
             timeSheetsidepanel.add(reportsCaptionPanel);
         }
@@ -127,12 +133,34 @@ public class CorpoateTimeSheetSidePanel extends ALComposite implements ClickHand
         if (event.getSource().equals(viewReportsB)) {
             showReport();
         }
+        if (event.getSource().equals(clearReportsL)) {
+            clearReportsField();
+        }
+    }
+
+    protected void clearReportsField() {
+        startDateF.setValue("");
+        endDateF.setValue("");
+        roleF.setSelectedIndex(0);
+        TabPanel.instance().getTimePanel().entityPanel.clear();
     }
 
     protected void showReport() {
         JSONObject search = new JSONObject();
-        search.put("startDate", new JSONString(DateUtils.toDateString(startDateF.getDate())));
-        search.put("endDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
+        if ((startDateF.getDate() == null && endDateF.getDate() != null) || (startDateF.getDate() != null && endDateF.getDate() == null)) {
+            startDateF.setMessage("required");
+            endDateF.setMessage("required");
+            return;
+        }
+        if (startDateF.getDate() != null) {
+            search.put("startDate", new JSONString(DateUtils.toDateString(startDateF.getDate())));
+        }
+        if (endDateF.getDate() != null) {
+            search.put("endDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
+        }
+        if (roleF.getValue() != null) {
+            search.put("role", new JSONString(roleF.getValue()));
+        }
         HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override

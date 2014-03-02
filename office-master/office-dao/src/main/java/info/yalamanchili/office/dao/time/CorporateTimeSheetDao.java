@@ -11,12 +11,12 @@ package info.yalamanchili.office.dao.time;
 import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -156,6 +156,10 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         if (qryStr.contains("endDateParam")) {
             query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
         }
+        if (qryStr.contains("empsWithRoleParam")) {
+            List<Employee> emps = SecurityService.instance().getUsersWithRoles(0, 2000, dto.getRole().name());
+            query.setParameter("empsWithRoleParam", emps);
+        }
         return query;
     }
 
@@ -167,6 +171,9 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
         if (dto.getEndDate() != null) {
             reportQueryBuilder.append(" and endDate<=:endDateParam ");
+        }
+        if (dto.getRole() != null) {
+            reportQueryBuilder.append(" and employee in (:empsWithRoleParam) ");
         }
         reportQueryBuilder.append(" order by startDate DESC ");
         return reportQueryBuilder.toString();

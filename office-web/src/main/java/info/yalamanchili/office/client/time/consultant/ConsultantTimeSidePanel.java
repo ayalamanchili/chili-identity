@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class ConsultantTimeSheetSidePanel extends ALComposite implements ClickHandler {
+public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel panel = new FlowPanel();
@@ -39,7 +39,7 @@ public class ConsultantTimeSheetSidePanel extends ALComposite implements ClickHa
     SelectConsultantEmployeeWidget empWidget = new SelectConsultantEmployeeWidget("Employee", false, false);
     Button showTimeSheetsForEmpB = new Button("View");
 
-    public ConsultantTimeSheetSidePanel() {
+    public ConsultantTimeSidePanel() {
         init(panel);
     }
 

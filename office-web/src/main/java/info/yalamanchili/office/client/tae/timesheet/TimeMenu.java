@@ -19,10 +19,10 @@ import info.yalamanchili.office.client.tae.bonuspayment.AdjustmentHoursSidePanel
 import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
-import info.yalamanchili.office.client.time.consultant.ConsultantTimeSheetSidePanel;
+import info.yalamanchili.office.client.time.consultant.ConsultantTimeSidePanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
-import info.yalamanchili.office.client.time.corp.CorpoateTimeSheetSidePanel;
+import info.yalamanchili.office.client.time.corp.CorpoateTimeSidePanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
 import info.yalamanchili.office.client.time.corp.ReadCurrentCorpLeavesPanel;
 
@@ -70,7 +70,7 @@ public class TimeMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorpoateTimeSheetSidePanel());
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new CorpoateTimeSidePanel());
         }
     };
 
@@ -79,7 +79,7 @@ public class TimeMenu extends Composite {
         public void execute() {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
-            TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSheetSidePanel());
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSidePanel());
         }
     };
     Command timeSheetPeriodsMaintainenceCmd = new Command() {

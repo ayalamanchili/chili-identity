@@ -95,11 +95,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
         String queryStr = "?";
-        if (CorpoateTimeSheetSidePanel.instance != null && CorpoateTimeSheetSidePanel.instance.categoryField.getValue() != null) {
-            queryStr = queryStr + "&category=" + CorpoateTimeSheetSidePanel.instance.categoryField.getValue();
+        if (CorpoateTimeSidePanel.instance != null && CorpoateTimeSidePanel.instance.categoryField.getValue() != null) {
+            queryStr = queryStr + "&category=" + CorpoateTimeSidePanel.instance.categoryField.getValue();
         }
-        if (CorpoateTimeSheetSidePanel.instance != null && CorpoateTimeSheetSidePanel.instance.statusField.getValue() != null) {
-            queryStr = queryStr + "&status=" + CorpoateTimeSheetSidePanel.instance.statusField.getValue();
+        if (CorpoateTimeSidePanel.instance != null && CorpoateTimeSidePanel.instance.statusField.getValue() != null) {
+            queryStr = queryStr + "&status=" + CorpoateTimeSidePanel.instance.statusField.getValue();
         }
         if (parentId == null) {
             return OfficeWelcome.constants.root_url() + "corporate-timesheet/currentuser/" + start.toString() + "/" + limit.toString() + queryStr;
@@ -143,9 +143,6 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     }
 
     protected boolean isMyTimeSheet(JSONObject entity) {
-//        logger.info("asdf" + entity);
-        logger.info("aaaa" + OfficeWelcome.instance().getCurrentUserEmpId());
-        logger.info("aaaa" + JSONUtils.toString(entity.get("employee").isObject(), "employeeId"));
         if (OfficeWelcome.instance().getCurrentUserEmpId().equals(JSONUtils.toString(entity.get("employee").isObject(), "employeeId"))) {
             return true;
         }
