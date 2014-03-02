@@ -55,7 +55,9 @@
                 Vacation Available when request submitted : #{summary.availableVacationHours}
                 Personal Available when request submitted : #{summary.availablePersonalHours}
                 Sick Available when request submitted     : #{summary.availableSickHours}
-                Please view Employee Time Summary under-->Time-->Corporate Time before taking action
+                
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/timesheets/approving-timesheets.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />

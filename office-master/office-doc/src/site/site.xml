@@ -47,6 +47,7 @@
             <item name="Time" href="/office/timesheets/submit-leave-request.html" collapse="true">
                 <item name="Submit Leave Request" href="/office/timesheets/submit-leave-request.html"/>
                 <item name="Leaves Cancellation" href="/office/timesheets/leave-cancel-process.html"/>
+                <item name="Approving Time Sheets" href="/office/timesheets/approving-timesheets.html"/>
                 <item name="Timesheet Process" href="/office/timesheets/corp-timesheet-process.html"/>
                 <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
                 <item name="Leaves Accumulation" href="/office/timesheets/leaves-accumulation.html"/>

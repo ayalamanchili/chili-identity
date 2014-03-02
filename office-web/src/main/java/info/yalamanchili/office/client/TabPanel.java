@@ -178,10 +178,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         homePanel.sidePanelTop.clear();
         homePanel.sidePanelBottom.clear();
         homePanel.sidePanelTop.add(new HomeStackPanel());
-        if (Auth.hasOnlyUserRole()) {
-            homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
-        } else {
+        if (Auth.isCorporateEmployee()) {
             homePanel.entityPanel.add(new ReadAllTasks());
+        } else {
+            homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
         }
     }
 

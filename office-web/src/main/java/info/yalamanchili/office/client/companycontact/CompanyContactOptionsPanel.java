@@ -44,7 +44,7 @@ public class CompanyContactOptionsPanel extends ALComposite implements ClickHand
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP,ROLE.ROLE_HR_ADMINSTRATION)) {
             panel.add(addCompanyCntLink);
         }
     }

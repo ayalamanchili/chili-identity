@@ -52,7 +52,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String ADDRESS_NODE = "address";
     protected static final String EMAIL_NODE = "email";
     protected static final String PHONE_NODE = "phone";
-    protected static final String REPORTS_TO_NODE = "clientInfo";
+    protected static final String CLIENT_INFO_NODE = "clientInfo";
     protected static final String EMERGENCY_CONTACT_NODE = "emergencyContact";
     protected static final String COMPANY_CONTACT_NODE = "companyContact";
     protected static final String PRIVACY_NODE = "privacy";
@@ -93,7 +93,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Addresses", ADDRESS_NODE);
         addFirstChildLink("Emails", EMAIL_NODE);
         addFirstChildLink("Phones", PHONE_NODE);
-        addFirstChildLink("Client Information", REPORTS_TO_NODE);
+        addFirstChildLink("Client Information", CLIENT_INFO_NODE);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
         if (Auth.isEmployee(entity)) {
@@ -136,7 +136,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new PhoneOptionsPanel());
         }
-        if (REPORTS_TO_NODE.equals(entityNodeKey)) {
+        if (CLIENT_INFO_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());

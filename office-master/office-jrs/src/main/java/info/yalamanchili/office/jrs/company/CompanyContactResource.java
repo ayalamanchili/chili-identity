@@ -52,7 +52,7 @@ public class CompanyContactResource extends CRUDResource<CompanyContact> {
     }
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_HR_ADMINSTRATION')")
     @Override
     public CompanyContact save(CompanyContact entity) {
         return companyContactDao.save(entity);

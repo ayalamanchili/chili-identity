@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
@@ -31,12 +30,12 @@ public class ReadCurrentCorpLeavesPanel extends Composite {
                     @Override
                     public void onResponse(String result) {
                         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            new ResponseStatusWidget().show("no results");
+                            panel.add(new ReadAllCorporateTimeSheetPanel("Employees on Leave", new JSONArray()));
                         } else {
                             JSONObject resObj = JSONParser.parseLenient(result).isObject();
                             String key = (String) resObj.keySet().toArray()[0];
                             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            panel.add(new ReadAllCorporateTimeSheetPanel("Employees on Leave",results));
+                            panel.add(new ReadAllCorporateTimeSheetPanel("Employees on Leave", results));
                         }
                     }
                 });

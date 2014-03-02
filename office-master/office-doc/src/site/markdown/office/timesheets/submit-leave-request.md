@@ -7,9 +7,14 @@ Submitting Leave Request.
 - If the Leave Category is Unpaid then there it will need a additional approval by admin.
 - If your Company Contacts under your profile does not reflect **Reports_To**  information please [open a Self Service ticket](../../office/selfservice/open-ticket.html "Open Ticket") with "Other" as category.
 
-
+Submit Leave Request
+----
 ![alt text](../../images/timesheets/corp-emp-submit-leave-request.png "Time")
 
+My Time Sheets and Summary
+----
 ![alt text](../../images/timesheets/approved-leave-request-summary.png "Time")
 
+My Reports To Contact
+----
 ![alt text](../../images/timesheets/reports-to-contact.png "Time")
