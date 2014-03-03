@@ -18,6 +18,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -56,28 +57,34 @@ public class PrivacySettingDao extends CRUDDao<PrivacySetting> {
 
     @Override
     public PrivacySetting save(PrivacySetting privacySetting) {
+        Employee emp = EmployeeDao.instance().findById(privacySetting.getEmployee().getId());
         if (PrivacyData.ALL.equals(privacySetting.getPrivacyData())) {
-            makeAllDataPrivate(privacySetting.getEmployee().getId());
+            makeAllDataPrivate(emp);
             return null;
         } else {
-            Employee emp = EmployeeDao.instance().findById(privacySetting.getEmployee().getId());
-            privacySetting.setEmployee(emp);
-            return super.save(privacySetting);
+            return savePrivacySetting(emp, privacySetting.getPrivacyData());
         }
     }
 
-    public void makeAllDataPrivate(Long employeeId) {
-        Employee emp = EmployeeDao.instance().findById(employeeId);
+    public void makeAllDataPrivate(Employee emp) {
         for (PrivacyData data : PrivacyData.values()) {
             if (PrivacyData.ALL.equals(data)) {
                 continue;
             }
-            PrivacySetting ps = new PrivacySetting();
-            ps.setEmployee(emp);
-            ps.setPrivacyData(data);
-            ps.setPrivacyMode(PrivacyMode.PRIVATE);
-            super.save(ps);
+            savePrivacySetting(emp, data);
         }
+    }
+
+    protected PrivacySetting savePrivacySetting(Employee emp, PrivacyData privacyData) {
+        PrivacySetting ps = getPrivacySettingsForData(emp, privacyData);
+        if (ps == null) {
+            ps = new PrivacySetting();
+            ps.setEmployee(emp);
+            ps.setPrivacyData(privacyData);
+            ps.setPrivacyMode(PrivacyMode.PRIVATE);
+            ps = super.save(ps);
+        }
+        return ps;
     }
 
     @Override
