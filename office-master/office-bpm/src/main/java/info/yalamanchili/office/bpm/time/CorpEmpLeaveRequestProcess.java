@@ -117,10 +117,10 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         if (currentUser.getEmployeeId().equals(ts.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.timesheet", "You cannot approve your timesheet");
         }
-        if (CorpEmpLeaveRequestProcessBean.instance().validateLeaveRequest(currentUser, ts)) {
+        if (CorpEmpLeaveRequestProcessBean.instance().validateLeaveRequest(ts.getEmployee(), ts)) {
             sendLeaveRequestStatusNotification("Approved", task);
         } else {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.enough.leaves", "No Enought leaves for employee. Please verify time summary and reject the task");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.enough.leaves", "No Enough leaves for employee. Please verify time summary and reject the task");
         }
     }
 
