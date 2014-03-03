@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs;
 
 import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
 
@@ -26,5 +27,10 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void processYearlyEarnedTimeSheets() {
         TimeJobService.instance().processYearlyEarnedTimeSheets();
+    }
+
+    @ManagedOperation
+    public void syncNotificationGroupsForRoles() {
+        NotificationGroupDao.instance().syncNotificationGroupsForRoles();
     }
 }

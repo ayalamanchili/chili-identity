@@ -27,6 +27,7 @@ import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.activity.IssueType;
 import info.yalamanchili.office.entity.client.Client;
@@ -86,6 +87,7 @@ public class OfficeStartup {
         //Run sync tasks
 //        TimeJobService.instance().syncTimeSheetPeriods();
         OfficeBPMIdentityService.instance().syncUsersAndRoles();
+//        NotificationGroupDao.instance().syncNotificationGroupsForRoles();
     }
 
     protected void initUsers() {
