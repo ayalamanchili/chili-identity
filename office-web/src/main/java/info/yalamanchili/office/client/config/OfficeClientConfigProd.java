@@ -7,11 +7,21 @@
  */
 package info.yalamanchili.office.client.config;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.TimeZone;
+import com.google.gwt.i18n.client.constants.TimeZoneConstants;
+
 /**
  *
  * @author ayalamanchili
  */
 public class OfficeClientConfigProd implements OfficeClientConfig {
+
+    TimeZoneConstants tzConstants;
+
+    public OfficeClientConfigProd() {
+        tzConstants = (TimeZoneConstants) GWT.create(TimeZoneConstants.class);
+    }
 
     @Override
     public String getFileUploadUrl() {
@@ -26,5 +36,10 @@ public class OfficeClientConfigProd implements OfficeClientConfig {
     @Override
     public String getPortalDocumentationSiteUrl() {
         return "https://apps.sstech.us/site/office/";
+    }
+
+    @Override
+    public TimeZone getTimeZone() {
+        return TimeZone.createTimeZone(tzConstants.americaNewYork());
     }
 }

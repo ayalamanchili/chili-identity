@@ -7,13 +7,21 @@
  */
 package info.yalamanchili.office.client.config;
 
-import info.chili.gwt.config.ClientConfig;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.TimeZone;
+import com.google.gwt.i18n.client.constants.TimeZoneConstants;
 
 /**
  *
  * @author ayalamanchili
  */
 public class OfficeClientConfigTest implements OfficeClientConfig {
+
+    TimeZoneConstants tzConstants;
+
+    public OfficeClientConfigTest() {
+        tzConstants = (TimeZoneConstants) GWT.create(TimeZoneConstants.class);
+    }
 
     @Override
     public String getFileUploadUrl() {
@@ -28,5 +36,10 @@ public class OfficeClientConfigTest implements OfficeClientConfig {
     @Override
     public String getPortalDocumentationSiteUrl() {
         return "http://yalamanchili.info/site/office/";
+    }
+
+    @Override
+    public TimeZone getTimeZone() {
+        return TimeZone.createTimeZone(tzConstants.asiaCalcutta());
     }
 }
