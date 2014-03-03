@@ -114,7 +114,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     protected void configure() {
         nameF.setEnabled(false);
         descriptionF.setEnabled(false);
-        descriptionF.setVisibleLines(5);
+        descriptionF.setVisibleLines(10);
         nameF.setWidth("100%");
         descriptionF.setWidth("100%");
     }
