@@ -28,7 +28,7 @@ public class SelectRoleWidget extends SelectComposite {
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "roleId", "rolename"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 100, "roleId", "rolename"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String entityString) {
