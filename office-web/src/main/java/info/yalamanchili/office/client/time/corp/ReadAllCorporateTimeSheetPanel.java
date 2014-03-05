@@ -14,9 +14,11 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -120,6 +122,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         if (parentId == null) {
             table.setText(0, 7, getKeyValue("More"));
         }
+        table.setText(0, 8, getKeyValue("Print"));
     }
 
     @Override
@@ -139,6 +142,8 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
                 cancelL.addClickHandler(this);
                 table.setWidget(i, 7, cancelL);
             }
+            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
+            table.setWidget(i, 8, reportL);
         }
     }
 

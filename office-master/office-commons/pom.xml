@@ -16,6 +16,23 @@
             <artifactId>office-jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Thymeleaf email templating-->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring3</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+        <!-- Clean up email html for rich text -->
+        <dependency>
+            <groupId>jtidy</groupId>
+            <artifactId>jtidy</artifactId>
+            <version>r938</version>
+        </dependency> 
     </dependencies>
     <build>
         <resources>
@@ -56,6 +73,7 @@
     </profiles>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <thymeleaf.version>2.0.13</thymeleaf.version>
     </properties>
     <scm>
         <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-commons</connection>

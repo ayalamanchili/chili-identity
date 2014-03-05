@@ -25,7 +25,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -119,6 +121,13 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @Path("/report/{start}/{limit}")
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         return corporateTimeSheetDao.getReport(dto, start, limit);
+    }
+
+    @GET
+    @Path("/report")
+    @Produces({"application/html"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return CorporateTimeService.instance().getReport(id);
     }
 
     protected CorporateTimeSheetTable getCorporateTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {

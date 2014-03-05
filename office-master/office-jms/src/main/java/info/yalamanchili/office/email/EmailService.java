@@ -11,6 +11,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
+import info.yalamanchili.office.template.TemplateService;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -81,11 +82,10 @@ public class EmailService {
     }
 
     protected String processEmailBodyFromTemplate(Email email) {
-        final SpringTemplateEngine templateEngine = (SpringTemplateEngine) SpringContext.getBean("templateEngine");
         final Context ctx = new Context();
         ctx.setVariable("email", email);
         cleanEmailHtmlBody(email);
-        return templateEngine.process(getTemplateName(email), ctx);
+        return TemplateService.instance().processTemplate(getTemplateName(email), ctx);
     }
 
     protected String getTemplateName(Email email) {
@@ -148,7 +148,6 @@ public class EmailService {
         Set<String> result = new HashSet<String>();
         if (OfficeServiceConfiguration.instance().isFilterEmails()) {
             String s = OfficeServiceConfiguration.instance().getFilteredEmailsList();
-            System.out.println("dddd" + s);
             Set<String> whiteListEmails = OfficeServiceConfiguration.instance().getFilteredEmailsAsSet();
             for (String email : emails) {
                 if (whiteListEmails.contains(email)) {
