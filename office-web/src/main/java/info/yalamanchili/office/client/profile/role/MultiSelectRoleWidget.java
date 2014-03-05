@@ -63,7 +63,7 @@ public class MultiSelectRoleWidget extends MultiSelectComposite {
 
     @Override
     protected String getMultiSelectUrl() {
-        return OfficeWelcome.constants.root_url() + "admin/roles/" + parentId + "/0/10";
+        return OfficeWelcome.constants.root_url() + "admin/roles/" + parentId + "/0/100";
     }
 
     protected String getRemoveRolesUrl(List<String> unselectedIds) {
