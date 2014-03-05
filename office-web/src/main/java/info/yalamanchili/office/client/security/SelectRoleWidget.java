@@ -23,7 +23,7 @@ public class SelectRoleWidget extends SelectComposite {
     private static Logger logger = Logger.getLogger(SelectRoleWidget.class.getName());
 
     public SelectRoleWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Department", readOnly, isRequired);
+        super(OfficeWelcome.constants, "Role", readOnly, isRequired);
     }
 
     @Override
@@ -46,4 +46,10 @@ public class SelectRoleWidget extends SelectComposite {
     @Override
     protected void validate() {
     }
+
+    @Override
+    protected boolean useConstants() {
+        return true;
+    }
+
 }
