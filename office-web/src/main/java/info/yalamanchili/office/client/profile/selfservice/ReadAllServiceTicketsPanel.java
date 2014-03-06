@@ -66,11 +66,11 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllSelfServiceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -88,7 +88,6 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
-        logger.info("Ddd" + entities);
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
@@ -96,7 +95,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.formatEnumString(entity, "description"));
             table.setText(i, 3, JSONUtils.toString(entity, "type"));
             table.setText(i, 4, JSONUtils.toString(entity, "status"));
-            table.setText(i, 5, JSONUtils.toString(entity.get("departmentAssigned").isObject(), "rolename"));
+            setEnumColumn(i, 5, entity.get("departmentAssigned").isObject(), "role", "rolename");
             if (entity.get("assignedTo") != null) {
                 table.setText(i, 6, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
             }

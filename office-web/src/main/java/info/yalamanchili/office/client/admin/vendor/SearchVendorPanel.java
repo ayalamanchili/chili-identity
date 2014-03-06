@@ -71,8 +71,7 @@ public class SearchVendorPanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("name", DataType.STRING_FIELD);
-        String[] strs = {"TIER_ONE", "THIRD_PARTY"};
-        addEnumField("vendorType", false, false, strs);
+        addEnumField("vendorType", false, false, VendorType.names());
     }
 
     @Override
@@ -80,7 +79,6 @@ public class SearchVendorPanel extends SearchComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("vendorType", entity);
-        logger.info(entity.toString());
         return entity;
     }
 
@@ -100,8 +98,6 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected void search(JSONObject entity) {
-
-        logger.info("ggggg" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override

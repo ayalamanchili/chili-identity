@@ -18,6 +18,7 @@ import info.chili.gwt.fields.FileuploadField;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.profile.contact.Sex;
 
 public class UpdateEmployeePanel extends UpdateComposite {
 
@@ -120,8 +121,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs, Alignment.HORIZONTAL);
+        addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {

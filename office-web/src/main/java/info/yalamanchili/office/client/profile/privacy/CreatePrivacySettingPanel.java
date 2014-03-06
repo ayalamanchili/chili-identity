@@ -96,8 +96,7 @@ public class CreatePrivacySettingPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        String[] dataStrs = {"EMAILS", "PHONES", "ADDRESSES", "EMERGENCY_CONTACTS", "SKILL_SET", "CLIENT_INFORMATION", "ALL"};
-        addEnumField("privacyData", false, true, dataStrs);
+        addEnumField("privacyData", false, true, PrivacyData.names());
     }
 
     @Override

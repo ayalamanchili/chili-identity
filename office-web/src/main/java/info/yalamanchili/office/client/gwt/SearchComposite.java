@@ -41,6 +41,7 @@ import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -237,7 +238,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     }
 
     protected void addEnumField(String key, Boolean readOnly, Boolean isRequired, String[] values) {
-        EnumField enumField = new EnumField(constants, key, entityName,
+        EnumField enumField = new EnumField(OfficeWelcome.constants, key, entityName,
                 readOnly, isRequired, values);
         fields.put(key, enumField);
         advancedSearchPanel.add(enumField);

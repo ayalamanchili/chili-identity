@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import java.util.logging.Logger;
 
@@ -91,8 +92,7 @@ public class ReadEmployeePanel extends ReadComposite {
         if (canViewDOBField()) {
             addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", true, false, strs, Alignment.HORIZONTAL);
+        addEnumField("sex", true, false, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {

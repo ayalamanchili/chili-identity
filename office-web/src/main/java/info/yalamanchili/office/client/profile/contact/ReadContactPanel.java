@@ -64,8 +64,7 @@ public class ReadContactPanel extends ReadComposite {
         addField("firstName", true, true, DataType.STRING_FIELD);
         addField("middleInitial", true, false, DataType.STRING_FIELD);
         addField("lastName", true, true, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", true, false, strs);
+        addEnumField("sex", true, false, Sex.names());
         addField("email", true, false, DataType.STRING_FIELD);
     }
 

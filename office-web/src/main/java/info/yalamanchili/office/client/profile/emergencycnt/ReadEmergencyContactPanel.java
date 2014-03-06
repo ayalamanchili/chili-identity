@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
 
 /**
@@ -79,8 +80,7 @@ public class ReadEmergencyContactPanel extends ReadComposite {
         addField("firstName", true, false, DataType.STRING_FIELD);
         addField("middleInitial", true, false, DataType.STRING_FIELD);
         addField("lastName", true, false, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", true, false, strs);
+        addEnumField("sex", true, false, Sex.names());
         addField("relation", true, false, DataType.STRING_FIELD);
         addField("ecPrimary", true, false, DataType.BOOLEAN_FIELD);
         addField("email", true, false, DataType.STRING_FIELD);

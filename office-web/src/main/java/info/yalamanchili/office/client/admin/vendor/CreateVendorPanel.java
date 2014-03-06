@@ -85,8 +85,7 @@ public class CreateVendorPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
-        String[] strs = {"TIER_ONE", "THIRD_PARTY"};
-        addEnumField("vendorType", false, false, strs);
+        addEnumField("vendorType", false, false, VendorType.names());
     }
 
     @Override

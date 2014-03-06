@@ -75,7 +75,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "description"));
-            table.setText(i, 3, JSONUtils.formatEnumString(entity, "vendorType"));
+            setEnumColumn(i, 3, entity, "vendorType", "vendorType");
         }
     }
 

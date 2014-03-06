@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
+import info.yalamanchili.office.client.profile.contact.Sex;
 
 public class UpdateEmergencyContactPanel extends UpdateComposite {
 
@@ -97,8 +98,7 @@ public class UpdateEmergencyContactPanel extends UpdateComposite {
         addField("firstName", false, true, DataType.STRING_FIELD);
         addField("middleInitial", false, false, DataType.STRING_FIELD);
         addField("lastName", false, true, DataType.STRING_FIELD);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, false, strs);
+        addEnumField("sex", false, false, Sex.names());
         addField("relation", false, true, DataType.STRING_FIELD);
         addField("ecPrimary", false, false, DataType.BOOLEAN_FIELD);
         addField("email", false, false, DataType.STRING_FIELD);

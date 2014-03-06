@@ -14,6 +14,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
+import info.yalamanchili.office.client.profile.contact.Sex;
 
 /**
  *
@@ -42,8 +43,7 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
         addField("middleInitial", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", true, true, strs, Alignment.HORIZONTAL);
+        addEnumField("sex", true, true, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {

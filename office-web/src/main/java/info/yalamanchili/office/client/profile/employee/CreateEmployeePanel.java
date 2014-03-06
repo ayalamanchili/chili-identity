@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 public class CreateEmployeePanel extends CreateComposite {
@@ -78,8 +79,7 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        String[] strs = {"MALE", "FEMALE"};
-        addEnumField("sex", false, true, strs, Alignment.HORIZONTAL);
+        addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passwordHash", false, true, DataType.PASSWORD_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
