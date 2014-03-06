@@ -1,5 +1,5 @@
 Self Service
----------
+-----
 
 **Self Service** feature is a online support center aimed to resolve various requests or issues in a number of areas like
 
@@ -18,10 +18,3 @@ This feature is supported by a business process that
 
 - sends notification to all parties when a the ticket is updated.
 - sends escalation emails to appropriate departments and person when action is taken within certain time limit
-
-Open Ticket
-----------
-
-# ADD SCREEN SHOT for new ticket
-
-# ADD SCREEN SHOT for add comment on ticket
