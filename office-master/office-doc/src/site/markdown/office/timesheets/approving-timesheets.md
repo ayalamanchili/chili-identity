@@ -1,5 +1,5 @@
 Approving Time Sheets
--------- 
+-----
 
 - Once you a email/task about time sheet approval. Log into portal and navigate to Time--> Corporate Time --> select the employee from the drop down and view this availabe time summary.
 - Verify that there are enough hours available for the category requested.

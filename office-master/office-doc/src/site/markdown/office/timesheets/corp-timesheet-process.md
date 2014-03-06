@@ -1,5 +1,5 @@
 Leave request Process
--------- 
+-----
 
 - When employee submits a leave request is submitted the system performs a validation to see enough hours are available and creates a Task for Employee's Reports_To Manager and HR Admin Team. Otherwise a rejection email is sent to employee.
 - Email is then sent to Reports_To Manager and HR team about the new task.
