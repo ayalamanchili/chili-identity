@@ -18,7 +18,10 @@ public enum LeaveRequestTimeCategory {
     Personal_Spent,
     Unpaid,
     Sick_Spent,
-    JuryDuty;
+    JuryDuty,
+    Bereavement,
+    Maternity,
+    Other;
 
     public static String[] names() {
         LeaveRequestTimeCategory[] values = values();

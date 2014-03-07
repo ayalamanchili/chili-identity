@@ -25,7 +25,10 @@ public enum TimeSheetCategory {
     Unpaid,
     Sick_Earned,
     Sick_Spent,
-    JuryDuty;
+    JuryDuty,
+    Bereavement,
+    Maternity,
+    Other;
 
     public static List<TimeSheetCategory> getLeaveSpentCategories() {
         List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();

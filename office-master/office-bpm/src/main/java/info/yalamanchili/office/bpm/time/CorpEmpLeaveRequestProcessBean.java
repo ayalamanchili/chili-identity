@@ -17,6 +17,8 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -32,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CorpEmpLeaveRequestProcessBean {
 
     public boolean validateLeaveRequest(Employee employee, CorporateTimeSheet entity) {
-        if (TimeSheetCategory.Unpaid.equals(entity.getCategory()) || TimeSheetCategory.JuryDuty.equals(entity.getCategory())) {
+        if (noValidationsCategories.contains(entity.getCategory())) {
             return true;
         }
         BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved);
@@ -42,6 +44,15 @@ public class CorpEmpLeaveRequestProcessBean {
         } else {
             return false;
         }
+    }
+    protected static Set<TimeSheetCategory> noValidationsCategories = new HashSet<TimeSheetCategory>();
+
+    static {
+        noValidationsCategories.add(TimeSheetCategory.Unpaid);
+        noValidationsCategories.add(TimeSheetCategory.JuryDuty);
+        noValidationsCategories.add(TimeSheetCategory.Bereavement);
+        noValidationsCategories.add(TimeSheetCategory.Maternity);
+        noValidationsCategories.add(TimeSheetCategory.Other);
     }
 
     public void sendLeaveRequestRejectedEmail(Employee employee) {
