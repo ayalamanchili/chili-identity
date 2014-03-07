@@ -183,7 +183,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {
-                            new ResponseStatusWidget().show("Leave request has been canceled");
+                            new ResponseStatusWidget().show("Cancel request has been submitted");
                             TabPanel.instance().getTimePanel().entityPanel.clear();
                             TabPanel.instance().getTimePanel().sidePanelTop.clear();
                             TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
