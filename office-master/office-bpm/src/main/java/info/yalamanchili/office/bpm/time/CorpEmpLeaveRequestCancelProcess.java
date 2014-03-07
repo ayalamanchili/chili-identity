@@ -15,8 +15,10 @@ package info.yalamanchili.office.bpm.time;
  */
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
+import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
@@ -33,7 +35,7 @@ import org.activiti.engine.delegate.TaskListener;
  * @author ayalamanchili
  */
 public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
-
+    
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -43,12 +45,12 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
             leaveRequestCorrectionTaskCompleted(task);
         }
     }
-
+    
     protected void leaveRequestCorrectionTaskCreated(DelegateTask task) {
         assignLeaveRequestTask(task);
         new GenericTaskCreateNotification().notify(task);
     }
-
+    
     protected void leaveRequestCorrectionTaskCompleted(DelegateTask task) {
         CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
         Employee currentUser = SecurityService.instance().getCurrentUser();
@@ -61,12 +63,20 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
         }
         new GenericTaskCompleteNotification().notify(task);
     }
-
+    
     protected void leaveCancelRequestApproved(CorporateTimeSheet ts) {
         ts.setStatus(TimeSheetStatus.Canceled);
         CorporateTimeSheetDao.instance().save(ts);
+        deleteApprovalTask(ts.getBpmProcessId());
     }
-
+    
+    protected void deleteApprovalTask(String processId) {
+        OfficeBPMTaskService taskServcie = OfficeBPMTaskService.instance();
+        for (Task task : taskServcie.getTasksForProcessId(processId)) {
+            taskServcie.deleteTask(task.getId());
+        }
+    }
+    
     protected void assignLeaveRequestTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
