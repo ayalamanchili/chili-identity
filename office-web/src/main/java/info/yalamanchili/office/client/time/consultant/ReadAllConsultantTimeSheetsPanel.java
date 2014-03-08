@@ -43,7 +43,7 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
 
     public ReadAllConsultantTimeSheetsPanel() {
         instance = this;
-        initTable("CorporateTimeSheet", OfficeWelcome.constants);
+        initTable("My Time Sheets", OfficeWelcome.constants);
     }
 
     public ReadAllConsultantTimeSheetsPanel(String title, JSONArray array) {

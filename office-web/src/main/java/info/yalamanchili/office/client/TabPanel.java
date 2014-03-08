@@ -40,6 +40,7 @@ import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTickets
 import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
+import info.yalamanchili.office.client.time.consultant.ReadCurrentConsultantLeavesPanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
@@ -212,6 +213,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         } else {
             timePanel.sidePanelTop.add(new ConsultantTimeSummarySidePanel());
             timePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
+            timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());
         }
         timePanel.entityTitlePanel.add(new TimeMenu());
     }

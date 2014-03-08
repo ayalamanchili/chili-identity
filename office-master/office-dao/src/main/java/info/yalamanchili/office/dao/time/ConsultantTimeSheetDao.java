@@ -158,6 +158,15 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         return reportQueryBuilder.toString();
     }
 
+    public List<ConsultantTimeSheet> getCurrentCompanyLeaves() {
+        TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery("from " + ConsultantTimeSheet.class.getCanonicalName() + " where status=:statusParam and category IN (:categoryParam) and ((startDate <=:dateRangeEndParam ) and (endDate >=:dateRangeStartParam))", ConsultantTimeSheet.class);
+        query.setParameter("statusParam", TimeSheetStatus.Approved);
+        query.setParameter("categoryParam", TimeSheetCategory.getLeaveSpentCategories());
+        query.setParameter("dateRangeStartParam", DateUtils.getNextDay(new Date(), -30), TemporalType.DATE);
+        query.setParameter("dateRangeEndParam", DateUtils.getNextDay(new Date(), 30), TemporalType.DATE);
+        return query.getResultList();
+    }
+
     @PersistenceContext
     protected EntityManager em;
 

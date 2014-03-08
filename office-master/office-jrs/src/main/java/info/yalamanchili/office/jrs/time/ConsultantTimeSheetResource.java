@@ -62,6 +62,12 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
         return super.save(entity);
     }
 
+    @GET
+    @Path("/current-leaves")
+    public List<ConsultantTimeSheet> currentLeaves() {
+        return consultantTimeSheetDao.getCurrentCompanyLeaves();
+    }
+
     @Override
     @PUT
     @Path("/delete/{id}")

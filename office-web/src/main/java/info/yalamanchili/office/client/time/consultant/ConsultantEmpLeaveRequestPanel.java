@@ -17,6 +17,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
 import java.util.logging.Logger;
@@ -41,6 +42,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("category", entity);
+        assignEntityValueFromField("notes", entity);
         entity.put("status", new JSONString(TimeSheetStatus.Pending.name()));
         entity.put("employee", new JSONObject());
         return entity;
@@ -71,6 +73,11 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours");
         GenericPopup.instance().hide();
+        TabPanel.instance().getTimePanel().entityPanel.clear();
+        TabPanel.instance().getTimePanel().sidePanelTop.clear();
+        TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
     }
 
     @Override
@@ -88,6 +95,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names());
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
