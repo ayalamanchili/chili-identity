@@ -13,15 +13,20 @@ import info.yalamanchili.office.Time.ConsultantTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
+import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
-import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -68,22 +73,36 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
-    public ConsultantTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
-        ConsultantTimeSheetTable tableObj = new ConsultantTimeSheetTable();
+    public ConsultantTimeSheetTable getConsultantTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category) {
         Employee emp = EmployeeDao.instance().findById(empId);
-        tableObj.setEntities(consultantTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
-        tableObj.setSize(consultantTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
-        return tableObj;
+        return getConsultantTimeSheets(emp, status, category, start, limit);
     }
 
     @GET
     @Path("/currentuser/{start}/{limit}")
-    public ConsultantTimeSheetTable getCorporateTimeSheet(@PathParam("start") int start, @PathParam("limit") int limit) {
-        ConsultantTimeSheetTable tableObj = new ConsultantTimeSheetTable();
+    public ConsultantTimeSheetTable getConsultantTimeSheet(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category) {
         Employee emp = SecurityService.instance().getCurrentUser();
-        tableObj.setEntities(consultantTimeSheetDao.getTimeSheetsEmployee(emp, start, limit));
-        tableObj.setSize(consultantTimeSheetDao.getTimeSheetsSizeForEmployee(emp));
+        return getConsultantTimeSheets(emp, status, category, start, limit);
+    }
+
+    protected ConsultantTimeSheetTable getConsultantTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
+        ConsultantTimeSheetTable tableObj = new ConsultantTimeSheetTable();
+        tableObj.setEntities(consultantTimeSheetDao.getTimeSheetsEmployee(employee, category, status, start, limit));
+        tableObj.setSize(consultantTimeSheetDao.getTimeSheetsSizeForEmployee(employee, status, category));
         return tableObj;
+    }
+
+    @PUT
+    @Path("/report/{start}/{limit}")
+    public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return consultantTimeSheetDao.getReport(dto, start, limit);
+    }
+
+    @GET
+    @Path("/report")
+    @Produces({"application/html"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return ConsultantTimeService.instance().getReport(id);
     }
 
     @Autowired

@@ -72,18 +72,44 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         }
     }
 
-    public Long getTimeSheetsSizeForEmployee(Employee employee) {
-        Query query = getEntityManager().createQuery("select count(*) from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+    public Long getTimeSheetsSizeForEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
+        String queryStr = "select count(*) " + getTimeSheetsForEmployeeQuery(employee, status, category);
+        Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
+        if (queryStr.contains("statusParam")) {
+            query.setParameter("statusParam", status);
+        }
+        if (queryStr.contains("categoryParam")) {
+            query.setParameter("categoryParam", category);
+        }
         return (Long) query.getSingleResult();
     }
 
-    public List<ConsultantTimeSheet> getTimeSheetsEmployee(Employee employee, int start, int limit) {
-        Query query = getEntityManager().createQuery("from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam");
+    public List<ConsultantTimeSheet> getTimeSheetsEmployee(Employee employee, TimeSheetCategory category, TimeSheetStatus status, int start, int limit) {
+        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category) + " order by startDate DESC ";
+        Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
+        if (queryStr.contains("statusParam")) {
+            query.setParameter("statusParam", status);
+        }
+        if (queryStr.contains("categoryParam")) {
+            query.setParameter("categoryParam", category);
+        }
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
+    }
+
+    protected String getTimeSheetsForEmployeeQuery(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("from ").append(ConsultantTimeSheet.class.getCanonicalName()).append(" where employee=:employeeParam");
+        if (status != null) {
+            queryStr.append(" and status=:statusParam ");
+        }
+        if (category != null) {
+            queryStr.append(" and category=:categoryParam");
+        }
+        return queryStr.toString();
     }
 
     public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category) {
@@ -97,6 +123,39 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         } else {
             return BigDecimal.ZERO;
         }
+    }
+
+    public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, int start, int limit) {
+        String queryStr = getReportQueryString(dto);
+        TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery(queryStr, ConsultantTimeSheet.class);
+        query = (TypedQuery<ConsultantTimeSheet>) getReportQueryWithParams(queryStr, query, dto);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    protected Query getReportQueryWithParams(String qryStr, Query query, SearchConsultantTimeSheetDto dto) {
+        query.setParameter("statusParam", TimeSheetStatus.Approved);
+        if (qryStr.contains("startDateParam")) {
+            query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
+        }
+        if (qryStr.contains("endDateParam")) {
+            query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
+        }
+        return query;
+    }
+
+    protected String getReportQueryString(SearchConsultantTimeSheetDto dto) {
+        StringBuilder reportQueryBuilder = new StringBuilder();
+        reportQueryBuilder.append("from ").append(ConsultantTimeSheet.class.getCanonicalName()).append(" where status=:statusParam ");
+        if (dto.getStartDate() != null) {
+            reportQueryBuilder.append(" and startDate>=:startDateParam ");
+        }
+        if (dto.getEndDate() != null) {
+            reportQueryBuilder.append(" and endDate<=:endDateParam ");
+        }
+        reportQueryBuilder.append(" order by startDate DESC ");
+        return reportQueryBuilder.toString();
     }
 
     @PersistenceContext

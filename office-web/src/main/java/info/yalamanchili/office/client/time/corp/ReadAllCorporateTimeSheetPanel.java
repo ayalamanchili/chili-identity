@@ -119,9 +119,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("Hours"));
         table.setText(0, 6, getKeyValue("Status"));
-        if (parentId == null) {
-            table.setText(0, 7, getKeyValue("More"));
-        }
+        table.setText(0, 7, getKeyValue("More"));
         table.setText(0, 8, getKeyValue("Print"));
     }
 

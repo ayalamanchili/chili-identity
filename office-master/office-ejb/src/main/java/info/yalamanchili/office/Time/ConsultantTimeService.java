@@ -14,8 +14,11 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
+import info.yalamanchili.office.template.TemplateService;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -32,12 +35,20 @@ public class ConsultantTimeService {
     protected ConsultantTimeSheetDao consultantTimeSheetDao;
 
     public void submitLeaveRequest(ConsultantTimeSheet request) {
-        Employee emp=SecurityService.instance().getCurrentUser();
+        Employee emp = SecurityService.instance().getCurrentUser();
         request.setEmployee(emp);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("leaveRequest", request);
         vars.put("currentEmployee", emp);
         OfficeBPMService.instance().startProcess("consultant_emp_leave_request_process", vars);
+    }
+//TODO move to commons
+    public Response getReport(Long id) {
+        String report = TemplateService.instance().process("corp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
+        return Response
+                .ok(report.getBytes(), MediaType.TEXT_HTML_TYPE)
+                .header("content-disposition", "filename = timesheet.html")
+                .build();
     }
 
     public static ConsultantTimeService instance() {

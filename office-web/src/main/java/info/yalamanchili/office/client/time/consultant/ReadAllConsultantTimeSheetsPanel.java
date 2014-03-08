@@ -12,9 +12,11 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -22,7 +24,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.time.corp.ReadCorporateTimeSheetPanel;
-import info.yalamanchili.office.client.time.corp.UpdateCorporateTimeSheetPanel;
 import java.util.logging.Logger;
 
 /**
@@ -43,6 +44,11 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public ReadAllConsultantTimeSheetsPanel() {
         instance = this;
         initTable("CorporateTimeSheet", OfficeWelcome.constants);
+    }
+
+    public ReadAllConsultantTimeSheetsPanel(String title, JSONArray array) {
+        instance = this;
+        initTable(title, array, OfficeWelcome.constants);
     }
 
     @Override
@@ -86,10 +92,17 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
+        String queryStr = "?";
+        if (ConsultantTimeSidePanel.instance != null && ConsultantTimeSidePanel.instance.categoryField.getValue() != null) {
+            queryStr = queryStr + "&category=" + ConsultantTimeSidePanel.instance.categoryField.getValue();
+        }
+        if (ConsultantTimeSidePanel.instance != null && ConsultantTimeSidePanel.instance.statusField.getValue() != null) {
+            queryStr = queryStr + "&status=" + ConsultantTimeSidePanel.instance.statusField.getValue();
+        }
         if (parentId == null) {
-            return OfficeWelcome.constants.root_url() + "consultant-timesheet/currentuser/" + start.toString() + "/" + limit.toString();
+            return OfficeWelcome.constants.root_url() + "consultant-timesheet/currentuser/" + start.toString() + "/" + limit.toString() + queryStr;
         } else {
-            return OfficeWelcome.constants.root_url() + "consultant-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString();
+            return OfficeWelcome.constants.root_url() + "consultant-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString() + queryStr;
         }
     }
 
@@ -102,6 +115,7 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("Hours"));
         table.setText(0, 6, getKeyValue("Status"));
+        table.setText(0, 7, getKeyValue("More"));
     }
 
     @Override
@@ -115,6 +129,8 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
             table.setText(i, 6, JSONUtils.toString(entity, "status"));
+            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
+            table.setWidget(i, 7, reportL);
         }
     }
 

@@ -16,6 +16,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.employee.SelectConsultantEmployeeWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
@@ -28,8 +29,7 @@ import java.util.logging.Logger;
 public class CreateConsultantTimeSheetPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateConsultantTimeSheetPanel.class.getName());
-
-    SelectEmployeeWidget employeeF = new SelectEmployeeWidget("Employee", false, true);
+    SelectConsultantEmployeeWidget employeeF = new SelectConsultantEmployeeWidget("Employee", false, false);
 
     public CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -45,6 +45,7 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
+        assignEntityValueFromField("notes", entity);
         return entity;
     }
 
@@ -90,6 +91,7 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
