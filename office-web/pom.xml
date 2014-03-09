@@ -47,6 +47,7 @@
             <artifactId>guava-gwt</artifactId>
             <version>${guava.version}</version>
         </dependency>
+        <!-- needed for guava build on ubuntu -->
         <dependency>
             <groupId>net.sourceforge.findbugs</groupId>
             <artifactId>jsr305</artifactId>
