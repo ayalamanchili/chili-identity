@@ -47,6 +47,11 @@
             <artifactId>guava-gwt</artifactId>
             <version>${guava.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>1.3.2</version>
+        </dependency>
         <!--spring -->
         <dependency>
             <groupId>org.springframework</groupId>
