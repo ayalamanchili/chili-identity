@@ -107,6 +107,7 @@ public class CorporateTimeService {
         return Response
                 .ok(report.getBytes(), MediaType.TEXT_HTML_TYPE)
                 .header("content-disposition", "filename = corp-timesheet.html")
+                .header("Content-Length", report.getBytes().length)
                 .build();
     }
 
