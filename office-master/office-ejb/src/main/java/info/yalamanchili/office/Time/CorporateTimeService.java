@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.commons.FileIOUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
@@ -24,7 +25,6 @@ import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -104,10 +104,11 @@ public class CorporateTimeService {
 
     public Response getReport(Long id) {
         String report = TemplateService.instance().process("corp-timesheet.xhtml", corporateTimeSheetDao.findById(id));
+        byte[] pdf = FileIOUtils.convertToPDF(report);
         return Response
-                .ok(report.getBytes(), MediaType.TEXT_HTML_TYPE)
-                .header("content-disposition", "filename = corp-timesheet.xhtml")
-                .header("Content-Length", report.getBytes().length)
+                .ok(pdf)
+                .header("content-disposition", "filename = corp-timesheet.pdf")
+                .header("Content-Length", pdf.length)
                 .build();
     }
 

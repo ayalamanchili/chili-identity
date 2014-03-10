@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.commons.FileIOUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -17,7 +18,6 @@ import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.template.TemplateService;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -43,11 +43,14 @@ public class ConsultantTimeService {
         OfficeBPMService.instance().startProcess("consultant_emp_leave_request_process", vars);
     }
 //TODO move to commons
+
     public Response getReport(Long id) {
         String report = TemplateService.instance().process("corp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
+        byte[] pdf = FileIOUtils.convertToPDF(report);
         return Response
-                .ok(report.getBytes(), MediaType.TEXT_HTML_TYPE)
-                .header("content-disposition", "filename = timesheet.html")
+                .ok(pdf)
+                .header("content-disposition", "filename = timesheet.pdf")
+                .header("Content-Length", pdf.length)
                 .build();
     }
 

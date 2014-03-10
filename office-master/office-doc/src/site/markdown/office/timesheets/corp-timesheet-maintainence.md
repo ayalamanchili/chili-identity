@@ -14,7 +14,8 @@ Create a update timesheets manually
 
 Categories of time sheets
 ----- 
- -   Regular,
+
+ -   Regular
  -   Vacation_Earned - 10(days) Vacation leaves are earned by an employee for a calendar year. vacation carry forward leaves from previous year are also added to this
  -   Vacation_Spent - These are the vacation leaves spent by an employee in current calendar year
  -   Vacation_Carry Forward - Upto 5(days) unused vacation leaves of an employee are allowed to carry forward to next year

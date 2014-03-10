@@ -188,6 +188,18 @@
             <artifactId>DynamicJasper</artifactId>
             <version>${dynamic.jasper.version}</version>
         </dependency>
+        <!-- html to pdf-->
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>core-renderer</artifactId>
+            <version>${xhtmlrenderer.core.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
         <!--Spring Tests-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -235,7 +247,7 @@
         <module>office-jms</module>
         <module>office-dao</module>
         <module>office-ejb</module>
-       <!-- <module>office-toolbox</module>-->
+        <!-- <module>office-toolbox</module>-->
         <module>office-jrs</module>
         <!-- web -->
         <!--<module>../office-web</module> -->
@@ -386,6 +398,8 @@
         <hibernate.search.version>3.4.2.Final</hibernate.search.version>
         <jasper.version>4.5.1</jasper.version>
         <dynamic.jasper.version>4.0.0</dynamic.jasper.version>
+        <itext.version>2.0.8</itext.version>
+        <xhtmlrenderer.core.version>R8</xhtmlrenderer.core.version>
     </properties>
     <profiles>
         <profile>

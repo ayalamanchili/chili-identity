@@ -125,7 +125,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/report")
-    @Produces({"application/html"})
+    @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
         return CorporateTimeService.instance().getReport(id);
     }

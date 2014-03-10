@@ -106,7 +106,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
 
     @GET
     @Path("/report")
-    @Produces({"application/html"})
+    @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
         return ConsultantTimeService.instance().getReport(id);
     }
