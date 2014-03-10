@@ -106,7 +106,7 @@ public class CorporateTimeService {
         String report = TemplateService.instance().process("corp-timesheet.xhtml", corporateTimeSheetDao.findById(id));
         return Response
                 .ok(report.getBytes(), MediaType.TEXT_HTML_TYPE)
-                .header("content-disposition", "filename = corp-timesheet.html")
+                .header("content-disposition", "filename = corp-timesheet.xhtml")
                 .header("Content-Length", report.getBytes().length)
                 .build();
     }
