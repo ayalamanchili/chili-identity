@@ -90,7 +90,6 @@ public class ServiceInterceptor {
             ServiceException se = (ServiceException) exception;
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } else if (exception instanceof ActivitiException && exception.getCause() != null && exception.getCause().getCause() instanceof ServiceException) {
-            logExceptionDetials(exception);
             ServiceException se = (ServiceException) exception.getCause().getCause();
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
 

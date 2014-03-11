@@ -12,9 +12,8 @@ Self Service
 - Recruitment
 - etc (Other)
 
-Employees can open ticket, add comments/notes, update, view status.
-Each ticket is assigned to the related department is tracked until resolved.
-This feature is supported by a business process that
 
-- sends notification to all parties when a the ticket is updated.
-- sends escalation emails to appropriate departments and person when action is taken within certain time limit
+- Employees can open ticket, add comments/notes, update, view status.
+- Each ticket is assigned to the related department is tracked until resolved.
+- Employee Engagement Managers will Triage the ticket to resolution as needed.
+- The Module is backed by a business process engine that will send notification to all parties when a the ticket is updated  and also sends escalation emails to appropriate departments and person when action is taken within certain time limit

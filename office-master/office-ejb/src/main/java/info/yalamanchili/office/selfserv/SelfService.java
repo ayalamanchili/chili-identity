@@ -9,6 +9,7 @@
 package info.yalamanchili.office.selfserv;
 
 import info.chili.security.dao.CRoleDao;
+import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -24,6 +25,7 @@ import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.entity.selfserv.TicketStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -135,7 +137,11 @@ public class SelfService {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         Task task = getTaskForTicket(ticket);
         if (task != null) {
-            taskService.completeTask(task.getId(), null);
+            List<Entry> vars = new ArrayList<Entry>();
+            //Used to make sure that tasks is not complete from My Tasks
+            Entry entry = new Entry("check-flag", "true");
+            vars.add(entry);
+            taskService.completeTask(task.getId(), vars);
         }
     }
 
