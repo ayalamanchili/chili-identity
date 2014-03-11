@@ -77,7 +77,8 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new UpdateConsultantTimeSheetPanel(getEntity(entityId)));
     }
 
     @Override
@@ -145,5 +146,15 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
 
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "consultant-timesheet/delete/" + entityId;
+    }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/consultant-leave-request.html";
     }
 }

@@ -89,4 +89,14 @@ public class CreateServiceTicketPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "selfservice/create-ticket/currentuser";
     }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "selfservice/open-ticket.html";
+    }
 }

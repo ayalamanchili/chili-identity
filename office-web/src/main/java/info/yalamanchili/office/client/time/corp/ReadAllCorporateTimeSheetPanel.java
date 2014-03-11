@@ -195,4 +195,14 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     protected String getCancelLeaveRequestUrl(String requestId) {
         return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/cancel-leave-request/" + requestId;
     }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/submit-leave-request.html";
+    }
 }

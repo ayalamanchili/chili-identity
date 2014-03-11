@@ -1,6 +1,3 @@
-/**
- * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,7 +7,7 @@ package info.yalamanchili.office.client.time.consultant;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -25,20 +22,18 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class CreateConsultantTimeSheetPanel extends CreateComposite {
+public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(CreateConsultantTimeSheetPanel.class.getName());
-    SelectConsultantEmployeeWidget employeeF = new SelectConsultantEmployeeWidget("Employee", false, false);
+    private static Logger logger = Logger.getLogger(UpdateConsultantTimeSheetPanel.class.getName());
+    SelectConsultantEmployeeWidget employeeF = new SelectConsultantEmployeeWidget(true, true);
 
-    public CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
-        initCreateComposite("ConsultantTimeSheet", OfficeWelcome.constants);
+    public UpdateConsultantTimeSheetPanel(JSONObject entity) {
+        initUpdateComposite(entity, "ConsultantTimeSheet", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employee", entity);
+        entity.put("employee", employeeF.getSelectedObject());
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
@@ -49,9 +44,9 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
     }
 
     @Override
-    protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
@@ -59,18 +54,26 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
+                        postUpdateSuccess(arg0);
                     }
                 });
     }
 
     @Override
-    protected void addButtonClicked() {
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("employee", entity, null);
+        assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
+        employeeF.getListBox().setEnabled(false);
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Corporate Timesheet Successfully Created");
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Updated Consultant Time Sheet Information");
         TabPanel.instance().timePanel.entityPanel.clear();
     }
 
@@ -86,7 +89,7 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
     protected void addWidgets() {
         addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
-        addEnumField("status", false, false, TimeSheetStatus.names());
+        addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
