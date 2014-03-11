@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.*;
+import org.dozer.Mapper;
 import org.jasypt.digest.StandardStringDigester;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
@@ -36,14 +37,20 @@ public class SecurityService {
         return em.merge(user);
     }
 
-    public Employee login(CUser user) {
+    public EmployeeLoginDto login(CUser user) {
         TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam and emp.user.passwordHash=:passwordParam", Employee.class);
         query.setParameter("userNameParam", user.getUsername().toLowerCase());
         query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
 
         try {
+            Mapper mapper = (Mapper) SpringContext.getBean("mapper");
             Employee emp = query.getSingleResult();
-            return emp;
+            EmployeeLoginDto res = mapper.map(emp, EmployeeLoginDto.class);
+            res.setUsername(emp.getUser().getUsername());
+            for (CRole role : emp.getUser().getRoles()) {
+                res.getRoles().add(role.getRolename());
+            }
+            return res;
         } catch (NoResultException e) {
             return null;
         } catch (Exception e) {
@@ -63,19 +70,22 @@ public class SecurityService {
             return null;
         }
     }
-    
-     public boolean hasRole(String role) {
+
+    public boolean hasRole(String role) {
         SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null)
+        if (context == null) {
             return false;
+        }
 
         Authentication authentication = context.getAuthentication();
-        if (authentication == null)
+        if (authentication == null) {
             return false;
+        }
 
         for (GrantedAuthority auth : authentication.getAuthorities()) {
-            if (role.equals(auth.getAuthority()))
+            if (role.equals(auth.getAuthority())) {
                 return true;
+            }
         }
         return false;
     }

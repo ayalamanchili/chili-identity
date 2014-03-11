@@ -165,9 +165,7 @@ public class LoginPage extends Composite {
                     JSONObject user = (JSONObject) JSONParser.parseLenient(userString);
                     OfficeWelcome.instance().onMainModuleLoad(user);
                 } else {
-
                     new ResponseStatusWidget().show(getFailureMessage());
-
                 }
             }
 

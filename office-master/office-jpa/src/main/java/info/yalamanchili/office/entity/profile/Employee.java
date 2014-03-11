@@ -328,7 +328,7 @@ public class Employee extends Contact {
     }
 //TODO make this transient and get the roles from dto
 
-    @XmlElement
+    @XmlTransient
     public CUser getUser() {
         return user;
     }
