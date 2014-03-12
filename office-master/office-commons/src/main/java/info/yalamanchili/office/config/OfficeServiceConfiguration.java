@@ -75,11 +75,11 @@ public class OfficeServiceConfiguration {
     /**
      * List of emails to send error logs
      */
-    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,raghu.l@sstech.us";
+    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi";
     /**
      * list of white listed emails addresses that can receive emails
      */
-    protected String filteredEmailsList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,raghu.l@sstech.mobi";
+    protected String filteredEmailsList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,anu@yalamanchili.info";
     /**
      * file path used by data loader tool
      */
