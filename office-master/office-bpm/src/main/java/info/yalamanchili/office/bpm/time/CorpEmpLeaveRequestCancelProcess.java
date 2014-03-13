@@ -81,7 +81,7 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
         if (cnts.size() > 0) {
-            task.setAssignee(cnts.get(0).getContact().getEmployeeId());
+            task.addCandidateUser(cnts.get(0).getContact().getEmployeeId());
         }
         task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
     }
