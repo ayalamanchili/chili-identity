@@ -9,6 +9,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -68,7 +71,7 @@ public class FileResource {
             if (file.exists()) {
                 log.info("downloading---------:" + file.getPath());
                 response = Response.ok((Object) file);
-                setContentHeaders(response, file.getName());
+                setResponseHeaders(response, file);
                 return response.build();
             } else {
                 response = Response.status(Response.Status.NOT_FOUND);
@@ -106,8 +109,26 @@ public class FileResource {
         }
     }
 
+    protected void setResponseHeaders(ResponseBuilder response, File file) {
+        setContentHeaders(response, file);
+        setCacheControlHeaders(response, file);
+    }
+
+    protected void setCacheControlHeaders(ResponseBuilder response, File file) {
+        CacheControl cc = new CacheControl();
+        cc.setMaxAge(604800);
+        cc.setPrivate(false);
+        //ETag
+        final EntityTag eTag = new EntityTag(file.getName() + "_"
+                + file.lastModified());
+        response.tag(eTag);
+        response.lastModified(new Date(file.lastModified()));
+        response.cacheControl(cc);
+    }
 //TODO move to utils
-    protected void setContentHeaders(ResponseBuilder response, String fileName) {
+
+    protected void setContentHeaders(ResponseBuilder response, File file) {
+        String fileName = file.getName();
         if (info.chili.commons.FileUtils.isPDF(fileName)) {
             response.header("Content-Disposition", "filename=" + fileName);
             response.header("Content-Type", "application/pdf");
