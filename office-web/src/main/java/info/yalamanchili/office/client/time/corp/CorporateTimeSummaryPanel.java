@@ -56,6 +56,8 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("availableSickHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("availablePersonalHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("availableVacationHours", entity, DataType.FLOAT_FIELD);
@@ -71,6 +73,8 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addField("employee", true, false, DataType.STRING_FIELD);
+        addField("startDate", true, false, DataType.DATE_FIELD);
         addField("availableSickHours", true, false, DataType.FLOAT_FIELD);
         addField("availablePersonalHours", true, false, DataType.FLOAT_FIELD);
         addField("availableVacationHours", true, false, DataType.FLOAT_FIELD);

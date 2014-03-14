@@ -37,10 +37,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class CorporateTimeService {
-
+    
     @Autowired
     protected CorporateTimeSheetDao corporateTimeSheetDao;
-
+    
     public void submitLeaveRequest(CorporateTimeSheet entity) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
@@ -49,7 +49,7 @@ public class CorporateTimeService {
         vars.put("summary", getYearlySummary(emp));
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
     }
-
+    
     public void cancelLeaveRequest(Long timesheetId) {
         CorporateTimeSheet ts = corporateTimeSheetDao.findById(timesheetId);
         Map<String, Object> vars = new HashMap<String, Object>();
@@ -58,17 +58,19 @@ public class CorporateTimeService {
         vars.put("currentEmployee", emp);
         vars.put("summary", getYearlySummary(emp));
         OfficeBPMService.instance().startProcess("corp_emp_leave_cancel_request", vars);
-
+        
     }
-
+    
     public CorporateTimeSummary getYearlySummary(Employee employee) {
         CorporateTimeSummary summary = new CorporateTimeSummary();
         summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
         summary.setAvailableSickHours(getYearlySickBalance(employee));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee));
+        summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
+        summary.setStartDate(employee.getStartDate());
         return summary;
     }
-
+    
     public void checkAccessToEmployeeTime(Employee emp) {
         Employee currentUser = SecurityService.instance().getCurrentUser();
         if (emp.getEmployeeId().equals(currentUser.getEmployeeId())) {
@@ -83,25 +85,25 @@ public class CorporateTimeService {
         }
         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have  permission to view this information");
     }
-
+    
     public BigDecimal getYearlySickBalance(Employee employee) {
         BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved);
         BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent, TimeSheetStatus.Approved);
         return earned.subtract(spent);
     }
-
+    
     public BigDecimal getYearlyPeronalBalance(Employee employee) {
         BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved);
         BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved);
         return earned.subtract(spent);
     }
-
+    
     public BigDecimal getYearlyVacationBalance(Employee employee) {
         BigDecimal earned = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved);
         BigDecimal spent = corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved);
         return earned.subtract(spent);
     }
-
+    
     public Response getReport(Long id) {
         String report = TemplateService.instance().process("corp-timesheet.xhtml", corporateTimeSheetDao.findById(id));
         byte[] pdf = FileIOUtils.convertToPDF(report);
@@ -111,7 +113,7 @@ public class CorporateTimeService {
                 .header("Content-Length", pdf.length)
                 .build();
     }
-
+    
     public static CorporateTimeService instance() {
         return SpringContext.getBean(CorporateTimeService.class);
     }

@@ -71,6 +71,9 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Corporate Timesheet Successfully Created");
         TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().getTimePanel().entityPanel.clear();
+        TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeF.getSelectedObjectId()));
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeF.getSelectedObjectId()));
     }
 
     @Override

@@ -8,12 +8,9 @@
  */
 package info.yalamanchili.office.dto.time;
 
-import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -28,6 +25,8 @@ public class CorporateTimeSummary implements Serializable {
     protected BigDecimal availableSickHours;
     protected BigDecimal availablePersonalHours;
     protected BigDecimal availableVacationHours;
+    protected String employee;
+    protected Date startDate;
 
     public CorporateTimeSummary() {
     }
@@ -60,6 +59,22 @@ public class CorporateTimeSummary implements Serializable {
 
     public void setAvailableVacationHours(BigDecimal availableVacationHours) {
         this.availableVacationHours = availableVacationHours;
+    }
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
 }
