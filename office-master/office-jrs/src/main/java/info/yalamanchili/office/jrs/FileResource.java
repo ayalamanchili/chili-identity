@@ -116,6 +116,8 @@ public class FileResource {
 
     protected void setCacheControlHeaders(ResponseBuilder response, File file) {
         CacheControl cc = new CacheControl();
+        //1 week
+        //TODO externalize this
         cc.setMaxAge(604800);
         cc.setPrivate(false);
         //ETag
