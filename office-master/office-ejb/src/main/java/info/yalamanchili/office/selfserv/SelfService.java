@@ -92,7 +92,7 @@ public class SelfService {
             Employee assignedTo = EmployeeDao.instance().findById(servTicket.getAssignedTo().getId());
             Task task = getTaskForTicket(ticket);
             if (task != null) {
-                OfficeBPMTaskService.instance().claimTask(task.getId(), assignedTo.getEmployeeId());
+                OfficeBPMTaskService.instance().assignTask(task.getId(), assignedTo.getEmployeeId());
             }
             ticket.setAssignedTo(assignedTo);
         }
@@ -109,26 +109,27 @@ public class SelfService {
     }
 
     protected void claimTicket(ServiceTicket ticket) {
-        claimTask(ticket);
+        assignTask(ticket);
     }
 
     protected void resolveTicket(ServiceTicket ticket) {
         completeTask(ticket);
     }
 
-    protected void claimTask(ServiceTicket ticket) {
+    protected void assignTask(ServiceTicket ticket) {
         Employee emp = SecurityService.instance().getCurrentUser();
         ticket.setAssignedTo(emp);
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         Task task = getTaskForTicket(ticket);
         if (task != null) {
-            taskService.claimTask(task.getId(), emp.getEmployeeId());
+            taskService.assignTask(task.getId(), emp.getEmployeeId());
         }
     }
 
     protected void updateTaskAssignedToDepartment(ServiceTicket ticket, String oldDepartment, String newDepartment) {
         Task task = getTaskForTicket(ticket);
         if (task != null) {
+            //TODO send seperate notification
             OfficeBPMTaskService.instance().setCandidateGroup(task.getId(), oldDepartment, newDepartment);
         }
     }

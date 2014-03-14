@@ -57,9 +57,19 @@ public class OfficeBPMTaskService {
         bpmTaskService.saveTask(bpmTask);
         bpmTaskService.setAssignee(bpmTask.getId(), bpmTask.getAssignee());
     }
-    
+
+    /**
+     * will throw a exception if already claimed by some one else
+     *
+     * @param taskId
+     * @param userId
+     */
     public void claimTask(String taskId, String userId) {
         bpmTaskService.claim(taskId, userId);
+    }
+    
+    public void assignTask(String taskId, String userId) {
+        bpmTaskService.setAssignee(taskId, userId);
     }
     
     public void resolveTask(String taskId) {
@@ -91,11 +101,11 @@ public class OfficeBPMTaskService {
         }
     }
     
-    public void deleteAllTasksForProcessId(String processId,boolean deleteProcessInstance) {
+    public void deleteAllTasksForProcessId(String processId, boolean deleteProcessInstance) {
         for (Task task : getTasksForProcessId(processId)) {
             bpmTaskService.deleteTask(task.getId());
         }
-        if(deleteProcessInstance){
+        if (deleteProcessInstance) {
             OfficeBPMService.instance().deleteProcessInstance(processId);
         }
     }
