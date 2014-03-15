@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.mail.Address;
@@ -40,7 +41,6 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.w3c.tidy.Tidy;
 
 /**
@@ -82,10 +82,15 @@ public class EmailService {
     }
 
     protected String processEmailBodyFromTemplate(Email email) {
-        final Context ctx = new Context();
-        ctx.setVariable("email", email);
-        cleanEmailHtmlBody(email);
-        return TemplateService.instance().processTemplate(getTemplateName(email), ctx);
+        Context emailCtx = new Context();
+        Map<String, Object> ctx = email.getContext();
+        if (ctx == null) {
+            emailCtx.setVariable("email", email);
+            cleanEmailHtmlBody(email);
+        } else {
+            emailCtx.setVariables(ctx);
+        }
+        return TemplateService.instance().processTemplate(getTemplateName(email), emailCtx);
     }
 
     protected String getTemplateName(Email email) {

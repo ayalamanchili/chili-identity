@@ -9,6 +9,7 @@ package info.yalamanchili.office.email;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,6 +27,7 @@ public class Email implements Serializable {
     protected Boolean richText = false;
     protected Set<String> attachments;
     protected String templateName;
+    protected Map<String, Object> context;
 
     public Email() {
     }
@@ -126,6 +128,14 @@ public class Email implements Serializable {
 
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
+    }
+
+    public Map<String, Object> getContext() {
+        return context;
+    }
+
+    public void setContext(Map<String, Object> context) {
+        this.context = context;
     }
 
     @Override

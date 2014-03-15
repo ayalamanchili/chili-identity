@@ -7,11 +7,13 @@
  */
 package info.yalamanchili.office.client.profile.selfservice;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -99,7 +101,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             if (entity.get("assignedTo") != null) {
                 table.setText(i, 6, JSONUtils.toString(entity.get("assignedTo").isObject(), "firstName"));
             }
-            table.setText(i, 7, JSONUtils.toString(entity, "createdTimeStamp"));
+            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 

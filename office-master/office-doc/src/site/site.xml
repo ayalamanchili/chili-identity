@@ -60,16 +60,18 @@
             </item>
             <item name="Portal Roles" href="/office/roles.html"/>
             <item name="Employee Search/Reports" href="/office/employeesearch.html"/>
-            <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
-                <item name="Account Reset" href="/office/accountresettask.html"/>
-                <item name="Forgot Password" href="/office/forgot-password.html"/>
-            </item>
-            <item name="Self Service" href="/office/selfservice/open-ticket.html" collapse="true">
-                <item name="Open Ticket" href="/office/selfservice/open-ticket.html"/>
-                <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
-                <item name="Overview" href="/office/selfservice/overview.html"/>
-            </item>            
-        </menu>
-        <footer>COPYRIGHT © 2012-2014 sstech.us - All Rights Reserved</footer>
+        </menu>            
+        <item name="Self Service" href="/office/selfservice/open-ticket.html" collapse="true">
+            <item name="Open Ticket" href="/office/selfservice/open-ticket.html"/>
+            <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
+            <item name="Overview" href="/office/selfservice/overview.html"/>
+        </item>
+        <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
+            <item name="Account Reset" href="/office/accountresettask.html"/>
+            <item name="Forgot Password" href="/office/forgot-password.html"/>
+        </item>
+            
+    </menu>
+    <footer>COPYRIGHT © 2012-2014 sstech.us - All Rights Reserved</footer>
     </body>
 </project>

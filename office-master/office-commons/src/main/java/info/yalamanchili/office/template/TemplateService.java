@@ -9,6 +9,7 @@
 package info.yalamanchili.office.template;
 
 import info.chili.spring.SpringContext;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,12 @@ public class TemplateService {
     public String process(String templateName, String entityName, Object entity) {
         final Context ctx = new Context();
         ctx.setVariable(entityName, entity);
+        return templateEngine.process(templateName, ctx);
+    }
+
+    public String process(String templateName, Map<String, Object> vars) {
+        final Context ctx = new Context();
+        ctx.setVariables(vars);
         return templateEngine.process(templateName, ctx);
     }
 

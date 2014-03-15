@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.selfserv;
 
+import info.chili.audit.AuditChageDto;
+import info.chili.audit.AuditService;
 import info.chili.security.dao.CRoleDao;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
@@ -172,12 +174,42 @@ public class SelfService {
         StringBuilder subject = new StringBuilder();
         subject.append(commentAuthor.getFirstName()).append(" ").append(commentAuthor.getLastName()).append(" updated ticket:").append(comment.getTicket().getSubject());
         email.setSubject(subject.toString());
-        StringBuilder body = new StringBuilder();
-        body.append("Status: ").append(comment.getTicket().getStatus().name()).append("\n");
-        body.append("Comment: ").append(comment.getComment()).append("\n");
-        email.setBody(body.toString());
+        Map<String, Object> emailCtx = new HashMap<String, Object>();
+        emailCtx.put("currentComment", comment);
+        emailCtx.put("ticket", comment.getTicket());
+        emailCtx.put("comments", comment.getTicket().getComments());
+        emailCtx.put("changes", determineChanges(comment.getTicket()));
+        email.setTemplateName("service_ticket_template.html");
+        email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);
+    }
+
+    protected List<AuditChageDto> determineChanges(ServiceTicket ticket) {
+        List<AuditChageDto> changes = new ArrayList<AuditChageDto>();
+        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().getPreviousVersion(ServiceTicket.class, ticket.getId());
+        if (!previousVersion.getStatus().equals(ticket.getStatus())) {
+            AuditChageDto change = new AuditChageDto();
+            change.setPropertyName("Status");
+            change.setNewValue(ticket.getStatus().name());
+            change.setOldValue(previousVersion.getStatus().name());
+            changes.add(change);
+        }
+        if (!previousVersion.getDepartmentAssigned().getRolename().equals(ticket.getDepartmentAssigned().getRolename())) {
+            AuditChageDto change = new AuditChageDto();
+            change.setPropertyName("Department");
+            change.setNewValue(ticket.getDepartmentAssigned().getRolename());
+            change.setOldValue(previousVersion.getDepartmentAssigned().getRolename());
+            changes.add(change);
+        }
+        if (previousVersion.getAssignedTo() != null && !previousVersion.getAssignedTo().getEmployeeId().equals(ticket.getAssignedTo().getEmployeeId())) {
+            AuditChageDto change = new AuditChageDto();
+            change.setPropertyName("Assigned To");
+            change.setNewValue(ticket.getAssignedTo().getFirstName());
+            change.setOldValue(ticket.getAssignedTo().getLastName());
+            changes.add(change);
+        }
+        return changes;
     }
 
     protected Set<String> getTicketNotificationGroup(TicketComment comment) {
