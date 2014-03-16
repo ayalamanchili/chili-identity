@@ -189,7 +189,7 @@ public class SelfService {
 
     protected List<AuditChageDto> determineChanges(ServiceTicket ticket) {
         List<AuditChageDto> changes = new ArrayList<AuditChageDto>();
-        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().getPreviousVersion(ServiceTicket.class, ticket.getId());
+        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().getLatestVersion(ServiceTicket.class, ticket.getId());
         if (!previousVersion.getStatus().equals(ticket.getStatus())) {
             AuditChageDto change = new AuditChageDto();
             change.setPropertyName("Status");
@@ -208,7 +208,7 @@ public class SelfService {
             AuditChageDto change = new AuditChageDto();
             change.setPropertyName("Assigned To");
             change.setNewValue(ticket.getAssignedTo().getFirstName());
-            change.setOldValue(ticket.getAssignedTo().getLastName());
+            change.setOldValue(previousVersion.getAssignedTo().getFirstName());
             changes.add(change);
         }
         return changes;

@@ -70,7 +70,7 @@
                                 <td><b>Department</b></td>
                                 <td th:text="${ticketDepartment}" />
                             </tr>
-                            <tr>
+                            <tr  th:if="${ticket.assignedTo != null}" >
                                 <td><b>Assigned To</b></td>
                                 <td th:text="${ticket.assignedTo.firstName}" />
                             </tr>                            

@@ -45,6 +45,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     protected Button updateB = new Button("Update");
     private static ReadServiceTicketPanel instance;
     protected EnumField statusF;
+    protected EnumField typeF;
     protected boolean readOnly = false;
 
     public static ReadServiceTicketPanel instance() {
@@ -67,11 +68,13 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
                     }
                 });
         entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
+        //TODO this should be checking self emp
         if (Auth.isConsultantEmployee()) {
             readOnly = true;
         }
         assignedToF.setReadOnly(readOnly);
         roleWidget.setReadOnly(readOnly);
+        typeF.setReadOnly(readOnly);
     }
 
     @Override
@@ -118,12 +121,13 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     protected void addWidgets() {
         addField("subject", true, true, DataType.STRING_FIELD);
         addField("description", true, false, DataType.RICH_TEXT_AREA);
-        addEnumField("type", true, true, TicketType.names());
+        addEnumField("type", false, true, TicketType.names());
         addEnumField("status", false, false, TicketStatus.names());
         addDropDown("departmentAssigned", roleWidget);
         addDropDown("assignedTo", assignedToF);
         addField("comment", false, true, DataType.TEXT_AREA_FIELD);
         statusF = (EnumField) fields.get("status");
+        typeF = (EnumField) fields.get("type");
         entityFieldsPanel.add(updateB);
     }
 
