@@ -102,7 +102,6 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         assignEntityValueFromField("comment", comment);
         comments.set(0, comment);
         entity.put("comments", comments);
-        logger.info(("ddd" + entity));
         return entity;
     }
 
@@ -173,7 +172,11 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         TextAreaField commentF = (TextAreaField) fields.get("comment");
         if (commentF.getValue() == null || commentF.getValue().isEmpty()) {
             commentF.setMessage("Please enter a commnet about your change");
-            return false;
+            valid = false;
+        }
+        if (roleWidget.getSelectedObject() == null) {
+            roleWidget.setMessage("Please select a Department");
+            valid = false;
         }
         return valid;
     }

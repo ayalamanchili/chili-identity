@@ -13,6 +13,7 @@ import info.chili.audit.AuditService;
 import info.chili.security.dao.CRoleDao;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -177,6 +178,7 @@ public class SelfService {
         Map<String, Object> emailCtx = new HashMap<String, Object>();
         emailCtx.put("currentComment", comment);
         emailCtx.put("ticket", comment.getTicket());
+        emailCtx.put("ticketDepartment", OfficeRoles.rolesMessages.get(comment.getTicket().getDepartmentAssigned().getRolename()));
         emailCtx.put("comments", comment.getTicket().getComments());
         emailCtx.put("changes", determineChanges(comment.getTicket()));
         email.setTemplateName("service_ticket_template.html");
@@ -198,8 +200,8 @@ public class SelfService {
         if (!previousVersion.getDepartmentAssigned().getRolename().equals(ticket.getDepartmentAssigned().getRolename())) {
             AuditChageDto change = new AuditChageDto();
             change.setPropertyName("Department");
-            change.setNewValue(ticket.getDepartmentAssigned().getRolename());
-            change.setOldValue(previousVersion.getDepartmentAssigned().getRolename());
+            change.setNewValue(OfficeRoles.rolesMessages.get(ticket.getDepartmentAssigned().getRolename()));
+            change.setOldValue(OfficeRoles.rolesMessages.get(previousVersion.getDepartmentAssigned().getRolename()));
             changes.add(change);
         }
         if (previousVersion.getAssignedTo() != null && !previousVersion.getAssignedTo().getEmployeeId().equals(ticket.getAssignedTo().getEmployeeId())) {

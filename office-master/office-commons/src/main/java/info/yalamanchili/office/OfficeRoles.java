@@ -8,6 +8,9 @@
  */
 package info.yalamanchili.office;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author ayalamanchili
@@ -38,5 +41,31 @@ public class OfficeRoles {
         ROLE_CONTRACTS_ADMIN,
         ROLE_INFORMATION_TECHNOLOGY,
         ROLE_SYSTEM_AND_NETWORK_ADMIN,
+    }
+
+    public final static Map<String, String> rolesMessages = new HashMap<String, String>();
+
+    static {
+        rolesMessages.put(OfficeRole.ROLE_USER.name(), "User");
+        rolesMessages.put(OfficeRole.ROLE_ADMIN.name(), "Admin");
+        rolesMessages.put(OfficeRole.ROLE_HR.name(), "HR");
+        rolesMessages.put(OfficeRole.ROLE_RECRUITER.name(), "Recruiter");
+        rolesMessages.put(OfficeRole.ROLE_TIME.name(), "Time");
+        rolesMessages.put(OfficeRole.ROLE_EXPENSE.name(), "Expense");
+        rolesMessages.put(OfficeRole.ROLE_DRIVE.name(), "Drive");
+        rolesMessages.put(OfficeRole.ROLE_RELATIONSHIP.name(), "Engagement");
+        rolesMessages.put(OfficeRole.ROLE_ACCOUNT_VIEW.name(), "Account View");
+        rolesMessages.put(OfficeRole.ROLE_HR_ADMINSTRATION.name(), "HR Administration");
+        rolesMessages.put(OfficeRole.ROLE_H1B_IMMIGRATION.name(), "H1B Immigration");
+        rolesMessages.put(OfficeRole.ROLE_GC_IMMIGRATION.name(), "GC Immigration");
+        rolesMessages.put(OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), "Payroll and Benefits");
+        rolesMessages.put(OfficeRole.ROLE_ACCOUNTS_RECEIVABLE.name(), "Accounts Receivable");
+        rolesMessages.put(OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), "Accounts Payable");
+        rolesMessages.put(OfficeRole.ROLE_BILLING.name(), "Billing");
+        rolesMessages.put(OfficeRole.ROLE_INVOICING.name(), "Invoicing");
+        rolesMessages.put(OfficeRole.ROLE_SALES_AND_MARKETING.name(), "Sales and Marketing");
+        rolesMessages.put(OfficeRole.ROLE_CONTRACTS_ADMIN.name(), "Contracts Administration");
+        rolesMessages.put(OfficeRole.ROLE_INFORMATION_TECHNOLOGY.name(), "Information Technology");
+        rolesMessages.put(OfficeRole.ROLE_SYSTEM_AND_NETWORK_ADMIN.name(), "System and Network Administration");
     }
 }
