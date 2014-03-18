@@ -8,6 +8,7 @@
 package info.yalamanchili.office.profile;
 
 import info.yalamanchili.office.dao.profile.TodoDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Todo;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class TODOService {
     protected TodoDao todoDao;
 
     public Todo save(Todo entity) {
+        entity.setEmployee(SecurityService.instance().getCurrentUser());
         return (Todo) todoDao.save(entity);
     }
 }

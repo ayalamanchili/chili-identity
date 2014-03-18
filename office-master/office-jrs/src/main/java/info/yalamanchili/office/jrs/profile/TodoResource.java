@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.profile;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TodoDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Todo;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -47,9 +48,9 @@ public class TodoResource extends CRUDResource<Todo> {
     }
 
     @GET
-    @Path("/{employeeId}/{start}/{limit}")
-    public TodoTable table(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
-        Employee emp = EmployeeDao.instance().findById(employeeId);
+    @Path("/{start}/{limit}")
+    public TodoTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        Employee emp = SecurityService.instance().getCurrentUser();
         List<Todo> todoSettings = TodoDao.instance().getToDoSettings(emp);
         TodoResource.TodoTable tableObj = new TodoResource.TodoTable();
         tableObj.setEntities(todoSettings);
