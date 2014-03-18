@@ -42,11 +42,11 @@ public class ReadAllTodosPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllTodosPanelURL(start, "5"), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -70,11 +70,11 @@ public class ReadAllTodosPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ReadAllTodosPanel extends CRUDReadAllComposite {
         refresh();
     }
 
-    public String getReadAllTodosPanelURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "todo/" + start.toString() + "/" + limit.toString();
+    private String getReadAllTodosPanelURL(Integer start, String limit) {
+        return OfficeWelcome.constants.root_url() + "todo/" + parentId + "/" + start.toString() + "/" + limit.toString();
     }
 }
