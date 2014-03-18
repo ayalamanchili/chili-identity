@@ -138,13 +138,14 @@ public class EmailService {
     private Address[] convertToEmailAddress(Set<String> emails) {
         List<Address> addresses = new ArrayList<Address>();
         for (String emailAddress : emails) {
-            Address address = null;
+            InternetAddress address = null;
             try {
-                address = new InternetAddress(emailAddress);
+                address = new InternetAddress(emailAddress, true);
+                address.validate();
+                addresses.add(address);
             } catch (AddressException ex) {
                 logger.log(Level.WARNING, ex.getMessage());
             }
-            addresses.add(address);
         }
         return addresses.toArray(new Address[addresses.size()]);
     }
