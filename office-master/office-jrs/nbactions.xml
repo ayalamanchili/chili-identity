@@ -22,14 +22,6 @@
         </properties>
     </action>
     <action>
-        <actionName>CUSTOM-mvn clean install</actionName>
-        <displayName>mvn clean install</displayName>
-        <goals>
-            <goal>clean</goal>
-            <goal>install</goal>
-        </goals>
-    </action>
-    <action>
         <actionName>CUSTOM-mvn clean install -DskipTests -Pprod</actionName>
         <displayName>mvn clean install -DskipTests -Pprod</displayName>
         <goals>
@@ -37,11 +29,11 @@
             <goal>install</goal>
         </goals>
         <properties>
-            <skipTests>true</skipTests>
-        </properties>
+                <skipTests>true</skipTests>
+            </properties>
         <activatedProfiles>
-            <activatedProfile>prod</activatedProfile>
-        </activatedProfiles>
+                <activatedProfile>prod</activatedProfile>
+            </activatedProfiles>
     </action>
     <action>
         <actionName>CUSTOM-mvn clean install -Pprod</actionName>
@@ -59,7 +51,7 @@
         <displayName>cargo:deploy</displayName>
         <goals>
             <goal>cargo:deploy</goal>
-                
+            
         </goals>
     </action>
     <action>
@@ -67,15 +59,16 @@
         <displayName>mvn tomcat6:run -Pprod</displayName>
         <goals>
             <goal>tomcat6:run</goal>
+                
         </goals>
         <properties>
-            <Env.MAVEN_OPTS>-XX:MaxPermSize=256m -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n</Env.MAVEN_OPTS>
-            
-        </properties>
+                <Env.MAVEN_OPTS>-XX:MaxPermSize=256m -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n</Env.MAVEN_OPTS>
+            </properties>
         <activatedProfiles>
-            <activatedProfile>prod</activatedProfile>
-        </activatedProfiles>
+                <activatedProfile>prod</activatedProfile>
+            </activatedProfiles>
     </action>
+    
     
         
 </actions>
