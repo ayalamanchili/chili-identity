@@ -66,6 +66,7 @@ public class CorporateTimeService {
         summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
         summary.setAvailableSickHours(getYearlySickBalance(employee));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee));
+        summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
         return summary;

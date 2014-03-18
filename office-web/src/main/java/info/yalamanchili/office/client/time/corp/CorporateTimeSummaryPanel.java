@@ -14,6 +14,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
 
@@ -61,6 +62,8 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
         assignFieldValueFromEntity("availableSickHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("availablePersonalHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("availableVacationHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("usedUnpaidHours", entity, DataType.FLOAT_FIELD);
+
     }
 
     @Override
@@ -73,11 +76,13 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", true, false, DataType.STRING_FIELD);
-        addField("startDate", true, false, DataType.DATE_FIELD);
-        addField("availableSickHours", true, false, DataType.FLOAT_FIELD);
-        addField("availablePersonalHours", true, false, DataType.FLOAT_FIELD);
-        addField("availableVacationHours", true, false, DataType.FLOAT_FIELD);
+        addField("employee", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("availableSickHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("availablePersonalHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("availableVacationHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("usedUnpaidHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override

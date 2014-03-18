@@ -25,6 +25,7 @@ public class CorporateTimeSummary implements Serializable {
     protected BigDecimal availableSickHours;
     protected BigDecimal availablePersonalHours;
     protected BigDecimal availableVacationHours;
+    protected BigDecimal usedUnpaidHours;
     protected String employee;
     protected Date startDate;
 
@@ -59,6 +60,14 @@ public class CorporateTimeSummary implements Serializable {
 
     public void setAvailableVacationHours(BigDecimal availableVacationHours) {
         this.availableVacationHours = availableVacationHours;
+    }
+
+    public BigDecimal getUsedUnpaidHours() {
+        return usedUnpaidHours;
+    }
+
+    public void setUsedUnpaidHours(BigDecimal usedUnpaidHours) {
+        this.usedUnpaidHours = usedUnpaidHours;
     }
 
     public String getEmployee() {
