@@ -75,7 +75,7 @@ public class OfficeServiceConfiguration {
     /**
      * List of emails to send error logs
      */
-    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi";
+    protected String errorLogsEmailList = "yphanikumar@gmail.com";
     /**
      * list of white listed emails addresses that can receive emails
      */

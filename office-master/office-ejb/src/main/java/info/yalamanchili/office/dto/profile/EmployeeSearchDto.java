@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.chili.security.domain.CUser;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -41,6 +42,16 @@ public class EmployeeSearchDto extends Employee {
     @Override
     public List<Address> getAddresss() {
         return super.getAddresss();
+    }
+
+    @XmlElement
+    @Override
+    public CUser getUser() {
+        return user;
+    }
+
+    public void setUser(CUser user) {
+        this.user = user;
     }
 
     @XmlElement
