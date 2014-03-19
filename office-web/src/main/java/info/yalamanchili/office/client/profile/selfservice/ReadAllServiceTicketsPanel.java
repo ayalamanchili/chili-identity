@@ -16,6 +16,8 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
@@ -54,10 +56,24 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
 
     @Override
     public void deleteClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
+    }
+
+    protected String getDeleteURL(String entityId) {
+        return OfficeWelcome.constants.root_url() + "selfservice/delete/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully Deleted Service Ticket");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
     }
 
     @Override
@@ -107,7 +123,11 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        if (Auth.isAdmin()) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_DELETE, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        }
     }
 
     private String getReadAllSelfServiceURL(Integer start, String limit) {

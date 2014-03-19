@@ -250,6 +250,16 @@ public class SelfService {
         ticket.setBpmProcessId(processId);
     }
 
+    public void delete(Long id) {
+        ServiceTicket ticket = serviceTicketDao.findById(id);
+        Task task = getTaskForTicket(ticket);
+        if (task != null) {
+            OfficeBPMTaskService.instance().deleteTask(task.getId());
+        }
+        serviceTicketDao.delete(id);
+
+    }
+
     public static SelfService instance() {
         return SpringContext.getBean(SelfService.class);
     }

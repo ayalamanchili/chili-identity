@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +55,13 @@ public class SelfServiceResource {
     @Path("/create-ticket/currentuser")
     public String createServiceTicket(ServiceTicket ticket) {
         return SelfService.instance().createServiceTicket(SecurityService.instance().getCurrentUser(), ticket);
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void delete(@PathParam("id") Long id) {
+        SelfService.instance().delete(id);
     }
 
     @Autowired
