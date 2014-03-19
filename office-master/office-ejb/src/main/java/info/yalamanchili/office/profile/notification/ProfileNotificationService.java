@@ -66,12 +66,13 @@ public class ProfileNotificationService {
 
         // Email Intimation for User
         Email newUserEmailObj = new Email();
+        newUserEmailObj.setHtml(Boolean.TRUE);
         info.yalamanchili.office.entity.profile.Email newUserEmail = employee.getPrimaryEmail();
         Set<String> newUserEmails = new HashSet<String>();
         newUserEmails.add(newUserEmail.getEmail());
         newUserEmailObj.setTos(newUserEmails);
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
-        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + ": and You can obtain Password by contacting HR dept. Access Portal at http://apps.sstech.us/portal";
+        String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + ": \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
         newUserEmailObj.setBody(messageTextforuser);
         messagingService.sendEmail(newUserEmailObj);
     }
