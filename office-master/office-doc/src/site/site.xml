@@ -51,6 +51,7 @@
                 <item name="Timesheet Process" href="/office/timesheets/corp-timesheet-process.html"/>
                 <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
                 <item name="Leaves Accumulation" href="/office/timesheets/leaves-accumulation.html"/>
+                <item name="New Corp Employee Timesheets" href="/office/timesheets/new-corp-emp-timesheets.html"/>
                 <item name="Leaves for consultant" href="/office/timesheets/consultant-leave-request.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
@@ -59,19 +60,17 @@
                 <item name="New Vendor request" href="/office/bpm/vendor-request-process.html"/>
             </item>
             <item name="Portal Roles" href="/office/roles.html"/>
-            <item name="Employee Search/Reports" href="/office/employeesearch.html"/>
-        </menu>            
-        <item name="Self Service" href="/office/selfservice/open-ticket.html" collapse="true">
-            <item name="Open Ticket" href="/office/selfservice/open-ticket.html"/>
-            <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
-            <item name="Overview" href="/office/selfservice/overview.html"/>
-        </item>
-        <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
-            <item name="Account Reset" href="/office/accountresettask.html"/>
-            <item name="Forgot Password" href="/office/forgot-password.html"/>
-        </item>
-            
-    </menu>
-    <footer>COPYRIGHT © 2012-2014 sstech.us - All Rights Reserved</footer>
+            <item name="Employee Search/Reports" href="/office/employeesearch.html"/>           
+            <item name="Self Service" href="/office/selfservice/open-ticket.html" collapse="true">
+                <item name="Open Ticket" href="/office/selfservice/open-ticket.html"/>
+                <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
+                <item name="Overview" href="/office/selfservice/overview.html"/>
+            </item>
+            <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
+                <item name="Account Reset" href="/office/accountresettask.html"/>
+                <item name="Forgot Password" href="/office/forgot-password.html"/>
+            </item>
+        </menu>
+        <footer>COPYRIGHT © 2012-2014 sstech.us - All Rights Reserved</footer>
     </body>
 </project>
