@@ -117,6 +117,9 @@ public class EmailService {
     }
 
     protected String cleanData(String data) throws UnsupportedEncodingException {
+        if (data == null) {
+            return "";
+        }
         Tidy tidy = new Tidy();
         tidy.setPrintBodyOnly(true);
         tidy.setXmlOut(true);

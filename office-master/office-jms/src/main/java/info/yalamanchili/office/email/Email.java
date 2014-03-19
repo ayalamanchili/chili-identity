@@ -21,8 +21,8 @@ public class Email implements Serializable {
     protected Set<String> tos;
     protected Set<String> ccs;
     protected Set<String> bccs;
-    protected String subject;
-    protected String body;
+    protected String subject = "";
+    protected String body = "";
     protected Boolean html = false;
     protected Boolean richText = false;
     protected Set<String> attachments;
