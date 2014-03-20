@@ -10,6 +10,8 @@ import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
+import info.chili.gwt.config.ChiliClientConfig;
+import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
@@ -56,6 +58,7 @@ public class ProfileMenu extends Composite {
             profileMenuBar.addItem("Practice", practiceMaintainenceCmd);
             profileMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
         }
+        profileMenuBar.addItem("Information", corpEmpInfo);
         profileMenuBar.addStyleName("entityMenuBar");
     }
     Command employeeMaintainenceCmd = new Command() {
@@ -139,4 +142,13 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new TechnologyGroupSidePanel());
         }
     };
+    Command corpEmpInfo = new Command() {
+        public void execute() {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            FileField reportL = new FileField("Corporate Contacts Info", ChiliClientConfig.instance().getFileDownloadUrl() + "contact-info-reports/corp-emp-contact-info" + "&passthrough=true");
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(reportL);
+        }
+    };
+
 }

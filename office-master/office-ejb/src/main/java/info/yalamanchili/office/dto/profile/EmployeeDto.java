@@ -9,17 +9,16 @@ package info.yalamanchili.office.dto.profile;
 
 import info.chili.security.SecurityUtils;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -49,6 +48,7 @@ public class EmployeeDto implements Serializable {
     @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
     protected String phoneNumber;
+    protected String phoneNumberExt;
     protected String jobTitle;
     @NotNull(message = "{employeetype.not.null.msg}")
     protected EmployeeType employeeType;
@@ -145,6 +145,14 @@ public class EmployeeDto implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPhoneNumberExt() {
+        return phoneNumberExt;
+    }
+
+    public void setPhoneNumberExt(String phoneNumberExt) {
+        this.phoneNumberExt = phoneNumberExt;
+    }
+
     public EmployeeType getEmployeeType() {
         return employeeType;
     }
@@ -180,7 +188,9 @@ public class EmployeeDto implements Serializable {
             dto.setEmail(entity.getPrimaryEmail().getEmail());
         }
         if (entity.getPhones().size() > 0) {
-            dto.setPhoneNumber(entity.getPhones().get(0).getPhoneNumber());
+            Phone phone = entity.getPhones().get(0);
+            dto.setPhoneNumber(phone.getPhoneNumber());
+            dto.setPhoneNumberExt(phone.getExtension());
         }
         dto.setId(entity.getId());
         return dto;
