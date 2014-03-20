@@ -65,7 +65,8 @@ public class ReadAllCompanyContactPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("type"), "name"));
-            table.setText(i, 2, JSONUtils.toString(entity.get("contact"), "firstName"));
+            JSONObject contact = (JSONObject) entity.get("contact");
+            table.setText(i, 2, JSONUtils.toString(contact, "firstName") + " " + JSONUtils.toString(contact, "lastName"));
         }
     }
 

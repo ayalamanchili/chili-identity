@@ -28,21 +28,21 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
-
+    
     private static Logger logger = Logger.getLogger(ReadAllServiceTicketsPanel.class.getName());
     public static ReadAllServiceTicketsPanel instance;
-
+    
     public ReadAllServiceTicketsPanel(String employeeId) {
         instance = this;
         this.parentId = employeeId;
         initTable("SelfService", OfficeWelcome.constants);
     }
-
+    
     public ReadAllServiceTicketsPanel() {
         instance = this;
         initTable("SelfService", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void viewClicked(String entityId) {
         if (this.parentId == null) {
@@ -53,7 +53,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadServiceTicketPanel(entityId));
         }
     }
-
+    
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -64,22 +64,22 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-
+    
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.constants.root_url() + "selfservice/delete/" + entityId;
     }
-
+    
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Service Ticket");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
     }
-
+    
     @Override
     public void updateClicked(String entityId) {
     }
-
+    
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllSelfServiceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
@@ -90,7 +90,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-
+    
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -101,9 +101,9 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
         table.setText(0, 5, getKeyValue("Department"));
         table.setText(0, 6, getKeyValue("Assigned To"));
         table.setText(0, 7, getKeyValue("CreatedTimeStamp"));
-
+        
     }
-
+    
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -120,7 +120,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
-
+    
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.isAdmin()) {
@@ -129,7 +129,7 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
-
+    
     private String getReadAllSelfServiceURL(Integer start, String limit) {
         if (this.parentId == null) {
             return OfficeWelcome.constants.root_url() + "selfservice/tickets/currentuser/" + start.toString() + "/" + limit.toString();
@@ -137,12 +137,12 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
             return OfficeWelcome.constants.root_url() + "selfservice/tickets/" + TreeEmployeePanel.instance().getEntityId() + "/" + start.toString() + "/" + limit.toString();
         }
     }
-
+    
     @Override
     protected boolean showDocumentationLink() {
         return true;
     }
-
+    
     @Override
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "selfservice/open-ticket.html";

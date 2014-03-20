@@ -83,7 +83,8 @@ public class ReadAllTimesheetPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity.get("employee"), "firstName"));
+            JSONObject emp = (JSONObject) entity.get("employee");
+            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             table.setText(i, 2, JSONUtils.toString(entity, "adpHours"));
             table.setText(i, 3, JSONUtils.toString(entity, "quickBooksHours"));
             table.setText(i, 4, JSONUtils.toString(entity, "adpRate"));
