@@ -9,14 +9,22 @@ package info.yalamanchili.office.Time;
 
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
+import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
+import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
@@ -46,10 +54,41 @@ public class TimeJobService {
     }
 
     /**
+     * this method will update pending and saved time sheets to approved upon
+     * the start date equal to current date for emps who have not completed 1
+     * year.
+     *
+     */
+    public void approveNewCorpEmployeeTimeSheets() {
+        List<CorporateTimeSheet> approvedts = new ArrayList<CorporateTimeSheet>();
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+            if (emp.getStartDate() != null && new Date().before(DateUtils.getNextYear(DateUtils.getLastDayOfYear(emp.getStartDate()), 1))) {
+                for (CorporateTimeSheet ts : CorporateTimeSheetDao.instance().getTimeSheetsForEmployee(emp, TimeSheetStatus.getPendingAndSavedCategories(), TimeSheetCategory.getEarnedCategories())) {
+                    if (ts.getBpmProcessId() == null && ts.getStartDate().before(new Date())) {
+                        ts.setStatus(TimeSheetStatus.Approved);
+                        approvedts.add(CorporateTimeSheetDao.instance().save(ts));
+                    }
+                }
+            }
+        }
+        if (approvedts.size() > 0) {
+            sendApprovedTimeSheetsEmail(approvedts);
+        }
+    }
+
+    protected void sendApprovedTimeSheetsEmail(List<CorporateTimeSheet> ts) {
+        Email email = new Email();
+        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRole.ROLE_HR_ADMINSTRATION.name()));
+        email.setSubject("System Approved the following TimeSheets");
+        email.setBody(ts.toString());
+        MessagingService.instance().sendEmail(email);
+    }
+
+    /**
      * This will create yearly sick,vacation and personal days for corp
      * employees
      */
-    public void processYearlyEarnedTimeSheets() {
+    public void processCorpEmpYearlyEarnedTimeSheets() {
         //TODO also create prorate hours for emp who passed probation period
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             if (hasMoreThanOneYearService(emp)) {

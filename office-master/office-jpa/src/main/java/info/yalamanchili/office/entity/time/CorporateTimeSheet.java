@@ -176,6 +176,6 @@ public class CorporateTimeSheet extends AbstractEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "CorporateTimeSheet{" + "employee=" + employee + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category + ", status=" + status + ", notes=" + notes + '}';
+        return "CorporateTimeSheet{" + "employee=" + employee.getFirstName() + " " + employee.getLastName() + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category + ", status=" + status + ", notes=" + notes + '}';
     }
 }

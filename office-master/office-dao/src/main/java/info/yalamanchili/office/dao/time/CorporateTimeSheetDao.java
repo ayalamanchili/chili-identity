@@ -179,6 +179,14 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return reportQueryBuilder.toString();
     }
 
+    public List<CorporateTimeSheet> getTimeSheetsForEmployee(Employee employee, List<TimeSheetStatus> status, List<TimeSheetCategory> category) {
+        TypedQuery query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and status in (:statusParam) and category in (:categoryParam)", CorporateTimeSheet.class);
+        query.setParameter("employeeParam", employee);
+        query.setParameter("statusParam", status);
+        query.setParameter("categoryParam", category);
+        return query.getResultList();
+    }
+
     @PersistenceContext
     protected EntityManager em;
 

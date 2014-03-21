@@ -42,7 +42,7 @@ public class OfficeSchedulerService {
      */
     @Scheduled(cron = "0 0 2 1 1 *")
     public void runYearlyEarnedTimeSheets() {
-        TimeJobService.instance().processYearlyEarnedTimeSheets();
+        TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
     }
     
     @Scheduled(cron = "0 5 1 * * ?")

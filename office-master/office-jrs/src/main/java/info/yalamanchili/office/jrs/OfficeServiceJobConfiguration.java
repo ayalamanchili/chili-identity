@@ -26,7 +26,12 @@ public class OfficeServiceJobConfiguration {
 
     @ManagedOperation
     public void processYearlyEarnedTimeSheets() {
-        TimeJobService.instance().processYearlyEarnedTimeSheets();
+        TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
+    }
+
+    @ManagedOperation
+    public void approveNewCorpEmployeeTimeSheets() {
+        TimeJobService.instance().approveNewCorpEmployeeTimeSheets();
     }
 
     @ManagedOperation

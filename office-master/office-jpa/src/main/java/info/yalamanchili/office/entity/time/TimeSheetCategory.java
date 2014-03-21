@@ -39,4 +39,12 @@ public enum TimeSheetCategory {
         res.add(JuryDuty);
         return res;
     }
+
+    public static List<TimeSheetCategory> getEarnedCategories() {
+        List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();
+        res.add(Vacation_Earned);
+        res.add(Sick_Earned);
+        res.add(Personal_Earned);
+        return res;
+    }
 }

@@ -7,11 +7,21 @@
  */
 package info.yalamanchili.office.entity.time;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author ayalamanchili
  */
 public enum TimeSheetStatus {
 
-    Saved, Pending, Approved, Rejected, Canceled
+    Saved, Pending, Approved, Rejected, Canceled;
+
+    public static List<TimeSheetStatus> getPendingAndSavedCategories() {
+        List<TimeSheetStatus> res = new ArrayList<TimeSheetStatus>();
+        res.add(Saved);
+        res.add(Pending);
+        return res;
+    }
 }
