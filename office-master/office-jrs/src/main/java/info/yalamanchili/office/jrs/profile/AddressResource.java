@@ -54,7 +54,7 @@ public class AddressResource extends CRUDResource<Address> {
             Address savedAddress = (Address) getDao().save(address);
             Employee emp = (Employee) savedAddress.getContact();
             if (!emp.getEmployeeType().getName().equals("Corporate Employee")) {
-                BPMProfileService.instance().startAddressUpdatedProcess(emp);
+//                BPMProfileService.instance().startAddressUpdatedProcess(emp);
             }
             return savedAddress;
         }
