@@ -76,11 +76,16 @@ public class TimeJobService {
         }
     }
 
-    protected void sendApprovedTimeSheetsEmail(List<CorporateTimeSheet> ts) {
+    protected void sendApprovedTimeSheetsEmail(List<CorporateTimeSheet> timesheets) {
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRole.ROLE_HR_ADMINSTRATION.name()));
-        email.setSubject("System Approved the following TimeSheets");
-        email.setBody(ts.toString());
+        email.setSubject("System Approved the following TimeSheets for New Employees");
+        email.setHtml(Boolean.TRUE);
+        StringBuilder sb = new StringBuilder();
+        for (CorporateTimeSheet ts : timesheets) {
+            sb.append(ts.describe()).append("\n");
+        }
+        email.setBody(sb.toString());
         MessagingService.instance().sendEmail(email);
     }
 
