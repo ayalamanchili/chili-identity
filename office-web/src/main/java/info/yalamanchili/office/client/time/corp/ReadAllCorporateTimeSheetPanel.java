@@ -133,14 +133,12 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            String category = JSONUtils.toString(entity, "category");
-            table.setText(i, 2, category);
+            setEnumColumn(i, 2, entity, "category", "category");
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
-            String status = JSONUtils.toString(entity, "status");
-            table.setText(i, 6, status);
-            if (enableCancelRequest(entity, category, status)) {
+            table.setText(i, 6, JSONUtils.formatEnumString(entity, "status"));
+            if (enableCancelRequest(entity)) {
                 ClickableLink cancelL = new ClickableLink("Cancel Request");
                 cancelL.setTitle(JSONUtils.toString(entity, "id"));
                 cancelL.addClickHandler(this);
@@ -151,7 +149,9 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         }
     }
 
-    protected boolean enableCancelRequest(JSONObject entity, String category, String status) {
+    protected boolean enableCancelRequest(JSONObject entity) {
+        String status = JSONUtils.toString(entity, "status");
+        String category = JSONUtils.toString(entity, "category");
         if (isMyTimeSheet(entity) && Arrays.asList(LeaveRequestTimeCategory.names()).contains(category) && !TimeSheetStatus.Canceled.name().equals(status)) {
             return true;
         } else {

@@ -109,8 +109,8 @@ public class ReadAllServiceTicketsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.formatEnumString(entity, "subject"));
-            table.setText(i, 2, JSONUtils.formatEnumString(entity, "description"));
+            table.setText(i, 1, JSONUtils.toString(entity, "subject"));
+            table.setText(i, 2, JSONUtils.toString(entity, "description"));
             table.setText(i, 3, JSONUtils.toString(entity, "type"));
             table.setText(i, 4, JSONUtils.toString(entity, "status"));
             setEnumColumn(i, 5, entity.get("departmentAssigned").isObject(), "role", "rolename");
