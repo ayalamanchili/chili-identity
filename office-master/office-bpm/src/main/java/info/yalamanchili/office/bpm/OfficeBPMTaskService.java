@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class OfficeBPMTaskService {
-    
+
     @Autowired
     protected TaskService bpmTaskService;
     @Autowired
@@ -49,7 +49,7 @@ public class OfficeBPMTaskService {
     protected IdentityService bpmIdentityService;
     @Autowired
     protected Mapper mapper;
-    
+
     public void createTask(Task task) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.newTask();
         mapper.map(task, bpmTask);
@@ -67,15 +67,15 @@ public class OfficeBPMTaskService {
     public void claimTask(String taskId, String userId) {
         bpmTaskService.claim(taskId, userId);
     }
-    
+
     public void assignTask(String taskId, String userId) {
         bpmTaskService.setAssignee(taskId, userId);
     }
-    
+
     public void resolveTask(String taskId) {
         bpmTaskService.resolveTask(taskId);
     }
-    
+
     public void completeTask(String taskId, List<Entry> request) {
         Map<String, Object> vars = new HashMap<String, Object>();
         if (request != null) {
@@ -86,12 +86,12 @@ public class OfficeBPMTaskService {
         vars.put("taskActionUser", SecurityService.instance().getCurrentUser());
         bpmTaskService.complete(taskId, vars);
     }
-    
+
     public void deleteTask(String taskId) {
         bpmTaskService.deleteTask(taskId);
         bpmTaskService.addComment(taskId, taskId, taskId);
     }
-    
+
     public Task getTaskForId(String taskId) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.createTaskQuery().taskId(taskId).singleResult();
         if (bpmTask != null) {
@@ -100,7 +100,7 @@ public class OfficeBPMTaskService {
             return null;
         }
     }
-    
+
     public void deleteAllTasksForProcessId(String processId, boolean deleteProcessInstance) {
         for (Task task : getTasksForProcessId(processId)) {
             bpmTaskService.deleteTask(task.getId());
@@ -109,12 +109,12 @@ public class OfficeBPMTaskService {
             OfficeBPMService.instance().deleteProcessInstance(processId);
         }
     }
-    
+
     public void setCandidateGroup(String taskId, String oldGroupId, String newGroupId) {
         bpmTaskService.deleteCandidateGroup(taskId, oldGroupId);
         bpmTaskService.addCandidateGroup(taskId, newGroupId);
     }
-    
+
     public List<Task> getTasksForProcessId(String processId) {
         List<Task> result = new ArrayList<Task>();
         TaskQuery query = bpmTaskService.createTaskQuery().processInstanceId(processId);
@@ -123,12 +123,12 @@ public class OfficeBPMTaskService {
         }
         return result;
     }
-    
+
     public void addComment(String taskId, String comment) {
         bpmIdentityService.setAuthenticatedUserId(SecurityService.instance().getCurrentUserId());
         bpmTaskService.addComment(taskId, null, comment);
     }
-    
+
     public CommentTable getComments(String taskId) {
         CommentTable result = new CommentTable();
         List<org.activiti.engine.task.Comment> bpmComments = bpmTaskService.getTaskComments(taskId);
@@ -139,7 +139,7 @@ public class OfficeBPMTaskService {
         result.setSize(size.longValue());
         return result;
     }
-    
+
     public TaskTable getAllUnasigneed(int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskUnassigned();
@@ -163,17 +163,21 @@ public class OfficeBPMTaskService {
         TaskTable result = new TaskTable();
         TaskTable taskForAssignee = getTasksForAsignee(emp.getEmployeeId(), start, limit);
         TaskTable taskForUser = getCandidateTasksForUser(emp.getEmployeeId(), start, limit);
-        
+
         List<String> roles = SecurityService.instance().getUserRoles(emp);
         TaskTable taskForRoles = getCandidateTasksForRoles(roles, start, limit);
-        
+
         result.getEntities().addAll(taskForAssignee.getEntities());
         result.getEntities().addAll(taskForUser.getEntities());
         result.getEntities().addAll(taskForRoles.getEntities());
         result.setSize(taskForAssignee.getSize() + taskForRoles.getSize());
         return result;
     }
-    
+
+    public List<org.activiti.engine.task.Task> findTasksWithVariable(String variableName, Object variable) {
+        return bpmTaskService.createTaskQuery().processVariableValueEquals(variableName, variable).list();
+    }
+
     public TaskTable getAllTasks(int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery();
@@ -183,7 +187,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getTasksForAsignee(String assignee, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskAssignee(assignee);
@@ -193,7 +197,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getCandidateTasksForUser(String user, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateUser(user);
@@ -203,7 +207,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public TaskTable getCandidateTasksForRoles(List<String> roles, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateGroupIn(roles);
@@ -213,7 +217,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public HistoricTaskTable getHistoricalTasks(int start, int limit) {
         HistoricTaskTable result = new HistoricTaskTable();
         HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished();
@@ -223,7 +227,7 @@ public class OfficeBPMTaskService {
         result.setSize(query.count());
         return result;
     }
-    
+
     public static OfficeBPMTaskService instance() {
         return SpringContext.getBean(OfficeBPMTaskService.class);
     }

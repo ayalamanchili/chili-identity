@@ -27,6 +27,9 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
+import info.yalamanchili.office.client.time.TimeSheetStatus;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -130,12 +133,14 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "category"));
+            String category = JSONUtils.toString(entity, "category");
+            table.setText(i, 2, category);
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
-            table.setText(i, 6, JSONUtils.toString(entity, "status"));
-            if (isMyTimeSheet(entity)) {
+            String status = JSONUtils.toString(entity, "status");
+            table.setText(i, 6, status);
+            if (enableCancelRequest(entity, category, status)) {
                 ClickableLink cancelL = new ClickableLink("Cancel Request");
                 cancelL.setTitle(JSONUtils.toString(entity, "id"));
                 cancelL.addClickHandler(this);
@@ -143,6 +148,14 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             }
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 8, reportL);
+        }
+    }
+
+    protected boolean enableCancelRequest(JSONObject entity, String category, String status) {
+        if (isMyTimeSheet(entity) && Arrays.asList(LeaveRequestTimeCategory.names()).contains(category) && !TimeSheetStatus.Canceled.name().equals(status)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
