@@ -27,6 +27,8 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
         Object itemNumber = execution.getVariable("itemNumber");
         Object acctNotes = execution.getVariable("accountNotes");
         ClientInformation ci = (ClientInformation) execution.getVariable("clientInfo");
+        ClientInformationDao dao = ClientInformationDao.instance();
+        ci = dao.findById(ci.getId());
         if (ci != null) {
             if (itemNumber != null) {
                 ci.setItemNumber(itemNumber.toString());
@@ -42,7 +44,7 @@ public class NewClientInfoAccountSubmit implements JavaDelegate {
             if (signedWO != null) {
                 ci.setSignedCopyOfWorkOrder(Boolean.parseBoolean(signedWO.toString()));
             }
-            ClientInformationDao.instance().save(ci);
+            dao.instance().save(ci);
         }
     }
 }
