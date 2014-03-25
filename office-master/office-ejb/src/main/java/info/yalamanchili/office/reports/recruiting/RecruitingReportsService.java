@@ -40,7 +40,8 @@ public class RecruitingReportsService {
     protected Mapper mapper;
 
     public List<EmployeeDto> search(String text) {
-        Query searchQ = em.createQuery(SearchUtils.getSearchQueryString(SkillSet.class, text));
+        //TODO need to pass only necessary columns that are used for searching
+        Query searchQ = em.createQuery(SearchUtils.getSearchQueryString(SkillSet.class, text, null));
         return searchQ.getResultList();
     }
 

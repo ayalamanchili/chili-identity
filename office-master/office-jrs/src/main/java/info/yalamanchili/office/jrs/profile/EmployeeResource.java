@@ -368,9 +368,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @GET
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(@PathParam("start") int start,
-            @PathParam("limit") int limit, @QueryParam("text") String text) {
+            @PathParam("limit") int limit, @QueryParam("text") String text, @QueryParam("column") List<String> columns) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
-        for (Object empObj : getDao().search(text, start, limit, true)) {
+        for (Object empObj : getDao().search(text, start, limit, columns, true)) {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         return employees;
