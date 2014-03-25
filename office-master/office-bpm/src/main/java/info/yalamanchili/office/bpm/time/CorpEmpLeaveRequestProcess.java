@@ -146,16 +146,16 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         email.setSubject(summary);
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append("Summary: ").append(summary).append("\n");
-        messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
-        messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
-//        messageBuilder.append("Employee Available Vacation Hours as of now : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved)).append("\n");
-//        messageBuilder.append("Employee Available Sick Hours as of now     : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved)).append("\n");
-//        messageBuilder.append("Employee Available Personal Hours as of now : ").append(CorporateTimeSheetDao.instance().getHoursInCurrentYear(emp, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved)).append("\n");
-
+        String taskNotes = (String) task.getVariable("leaveRequestApprovalTaskNotes");
+        if (taskNotes != null && !taskNotes.isEmpty()) {
+            messageBuilder.append("Notes: ").append(taskNotes).append("\n");
+        }
         Employee taskActionUser = (Employee) task.getExecution().getVariable("taskActionUser");
         if (taskActionUser != null) {
             messageBuilder.append("Task Updated By : ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName()).append("\n");
         }
+        messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
+        messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
         email.setBody(messageBuilder.toString());
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
