@@ -18,6 +18,7 @@ import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,9 @@ public class OfficeBPMTaskService {
     }
 
     public List<Task> getTasksForProcessId(String processId) {
+        if (processId == null || processId.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
         List<Task> result = new ArrayList<Task>();
         TaskQuery query = bpmTaskService.createTaskQuery().processInstanceId(processId);
         for (org.activiti.engine.task.Task bpmTask : query.list()) {
