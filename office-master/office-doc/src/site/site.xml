@@ -52,6 +52,7 @@
                 <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
                 <item name="Leaves Accumulation" href="/office/timesheets/leaves-accumulation.html"/>
                 <item name="New Corp Employee Timesheets" href="/office/timesheets/new-corp-emp-timesheets.html"/>
+                <item name="Reports" href="/office/timesheets/corp-emp-reports.html"/>
                 <item name="Leaves for consultant" href="/office/timesheets/consultant-leave-request.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
