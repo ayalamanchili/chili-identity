@@ -9,12 +9,14 @@
 package info.yalamanchili.office.Time;
 
 import info.chili.commons.FileIOUtils;
+import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.time.CorporateTimeSummary;
@@ -24,6 +26,7 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +97,7 @@ public class CorporateTimeService {
         if (SecurityService.instance().hasRole(OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
             return;
         }
-        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have  permission to view this information");
+        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
     }
 
     public BigDecimal getYearlySickBalance(Employee employee) {
@@ -123,6 +126,15 @@ public class CorporateTimeService {
                 .header("content-disposition", "filename = corp-timesheet.pdf")
                 .header("Content-Length", pdf.length)
                 .build();
+    }
+
+    public Response getAllEmployeesSummaryReport() {
+        List<CorporateTimeSummary> summary = new ArrayList<CorporateTimeSummary>();
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+            summary.add(getYearlySummary(emp));
+        }
+        String report = TemplateService.instance().process("corp-emp-summary.xhtml", summary);
+        return ReportGenerator.generatePDFReportFromHtml(report);
     }
 
     public static CorporateTimeService instance() {

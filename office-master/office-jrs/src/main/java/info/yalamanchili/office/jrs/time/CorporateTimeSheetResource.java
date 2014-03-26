@@ -130,6 +130,12 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         return CorporateTimeService.instance().getReport(id);
     }
 
+    @GET
+    @Path("/all-emp-summary-report")
+    public Response getAllEmployeesSummaryReport() {
+        return CorporateTimeService.instance().getAllEmployeesSummaryReport();
+    }
+
     protected CorporateTimeSheetTable getCorporateTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
         CorporateTimeSheetTable tableObj = new CorporateTimeSheetTable();
         tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(employee, status, category, start, limit));
