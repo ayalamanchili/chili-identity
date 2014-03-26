@@ -140,15 +140,19 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, int start, int limit) {
-        String queryStr = getReportQueryString(dto);
+        List<Employee> emps = null;
+        if (dto.getRole() != null) {
+            emps = SecurityService.instance().getUsersWithRoles(0, 2000, dto.getRole().name());
+        }
+        String queryStr = getReportQueryString(dto, emps);
         TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery(queryStr, CorporateTimeSheet.class);
-        query = (TypedQuery<CorporateTimeSheet>) getReportQueryWithParams(queryStr, query, dto);
+        query = (TypedQuery<CorporateTimeSheet>) getReportQueryWithParams(queryStr, query, dto, emps);
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
     }
 
-    protected Query getReportQueryWithParams(String qryStr, Query query, SearchCorporateTimeSheetDto dto) {
+    protected Query getReportQueryWithParams(String qryStr, Query query, SearchCorporateTimeSheetDto dto, List<Employee> emps) {
         query.setParameter("statusParam", TimeSheetStatus.Approved);
         if (qryStr.contains("startDateParam")) {
             query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
@@ -157,13 +161,12 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
         }
         if (qryStr.contains("empsWithRoleParam")) {
-            List<Employee> emps = SecurityService.instance().getUsersWithRoles(0, 2000, dto.getRole().name());
             query.setParameter("empsWithRoleParam", emps);
         }
         return query;
     }
 
-    protected String getReportQueryString(SearchCorporateTimeSheetDto dto) {
+    protected String getReportQueryString(SearchCorporateTimeSheetDto dto, List<Employee> emps) {
         StringBuilder reportQueryBuilder = new StringBuilder();
         reportQueryBuilder.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where status=:statusParam ");
         if (dto.getStartDate() != null) {
@@ -172,7 +175,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         if (dto.getEndDate() != null) {
             reportQueryBuilder.append(" and endDate<=:endDateParam ");
         }
-        if (dto.getRole() != null) {
+        if (emps != null && emps.size() > 0) {
             reportQueryBuilder.append(" and employee in (:empsWithRoleParam) ");
         }
         reportQueryBuilder.append(" order by startDate DESC ");
