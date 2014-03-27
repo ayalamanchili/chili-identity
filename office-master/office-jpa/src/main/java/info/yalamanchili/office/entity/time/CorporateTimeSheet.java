@@ -20,6 +20,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
@@ -37,7 +38,10 @@ import org.hibernate.search.annotations.Field;
 @Entity
 @Audited
 @XmlRootElement
-public class CorporateTimeSheet extends AbstractEntity implements Serializable {
+public class CorporateTimeSheet extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 99991L;
 
     @NotNull(message = "{corp.ts.hours.not.empty.msg}")
     @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")

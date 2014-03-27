@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,6 +42,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class ServiceTicket extends AbstractEntity {
 
+    @Transient
+    private static final long serialVersionUID = 99993L;
     /**
      * service ticket subject/title/name
      */

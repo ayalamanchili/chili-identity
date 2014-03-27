@@ -10,7 +10,6 @@ package info.yalamanchili.office.entity.time;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -20,6 +19,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
@@ -37,7 +37,10 @@ import org.hibernate.search.annotations.Field;
 @Entity
 @Audited
 @XmlRootElement
-public class ConsultantTimeSheet extends AbstractEntity implements Serializable {
+public class ConsultantTimeSheet extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 99992L;
 
     @NotNull(message = "{hours.not.empty.msg}")
     @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")

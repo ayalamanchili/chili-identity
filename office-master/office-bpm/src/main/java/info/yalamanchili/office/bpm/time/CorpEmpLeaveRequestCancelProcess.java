@@ -52,7 +52,10 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
     }
 
     protected void leaveRequestCorrectionTaskCompleted(DelegateTask task) {
-        CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        CorporateTimeSheet ts = getTimeSheetFromTask(task);
+        if (ts == null) {
+            return;
+        }
         Employee currentUser = SecurityService.instance().getCurrentUser();
         if (ts != null) {
             if (currentUser.getEmployeeId().equals(ts.getEmployee().getEmployeeId())) {
@@ -80,6 +83,14 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
         if (tasks.size() > 0) {
             OfficeBPMTaskService.instance().deleteTask(tasks.get(0).getId());
         }
+    }
+
+    protected CorporateTimeSheet getTimeSheetFromTask(DelegateTask task) {
+        Long tsId = (Long) task.getExecution().getVariable("entityId");
+        if (tsId != null) {
+            return CorporateTimeSheetDao.instance().findById(tsId);
+        }
+        return null;
     }
 
     protected void assignLeaveRequestTask(DelegateTask task) {

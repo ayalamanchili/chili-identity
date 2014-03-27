@@ -71,7 +71,9 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         ts.setStatus(TimeSheetStatus.Pending);
         ts.setEmployee(emp);
         ts.setCreatedTimeStamp(new Date());
-        task.getExecution().setVariable("entity", CorporateTimeSheetDao.instance().save(ts));
+        ts = CorporateTimeSheetDao.instance().save(ts);
+        task.getExecution().setVariable("entity", ts);
+        task.getExecution().setVariable("entityId", ts.getId());
     }
 
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
@@ -93,7 +95,10 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestTaskCompleted(DelegateTask task) {
-        CorporateTimeSheet request = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        CorporateTimeSheet request = getTimeSheetFromTask(task);
+        if (request == null) {
+            return;
+        }
         String status = (String) task.getExecution().getVariable("status");
         if ("approved".equals(status) && !TimeSheetCategory.Unpaid.equals(request.getCategory())) {
             leaveRequestApproved(task);
@@ -106,13 +111,24 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         }
     }
 
+    protected CorporateTimeSheet getTimeSheetFromTask(DelegateTask task) {
+        Long tsId = (Long) task.getExecution().getVariable("entityId");
+        if (tsId != null) {
+            return CorporateTimeSheetDao.instance().findById(tsId);
+        }
+        return null;
+    }
+
     /**
      * Leave request Approved
      *
      * @param task
      */
     protected void leaveRequestApproved(DelegateTask task) {
-        CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        CorporateTimeSheet ts = getTimeSheetFromTask(task);
+        if (ts == null) {
+            return;
+        }
         Employee currentUser = SecurityService.instance().getCurrentUser();
         if (currentUser.getEmployeeId().equals(ts.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.timesheet", "You cannot approve your timesheet");
@@ -130,7 +146,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * @param task
      */
     protected void leaveRequestRejected(DelegateTask task) {
-        CorporateTimeSheet ts = (CorporateTimeSheet) task.getExecution().getVariable("entity");
+        CorporateTimeSheet ts = getTimeSheetFromTask(task);
         ts.setStatus(TimeSheetStatus.Rejected);
         CorporateTimeSheetDao.instance().save(ts);
         sendLeaveRequestStatusNotification("Rejected", task);

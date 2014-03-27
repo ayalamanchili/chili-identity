@@ -65,10 +65,21 @@ public class CorpEmpLeaveRequestProcessBean {
     }
 
     public void saveApprovedLeaveRequest(DelegateExecution execution, String leaveRequestApprovalTaskNotes) {
-        CorporateTimeSheet ts = (CorporateTimeSheet) execution.getVariable("entity");
+        CorporateTimeSheet ts = getTimeSheetFromExecution(execution);
+        if (ts == null) {
+            return;
+        }
         ts.setStatus(TimeSheetStatus.Approved);
         //TODO append approved task notes
         CorporateTimeSheetDao.instance().save(ts);
+    }
+
+    protected CorporateTimeSheet getTimeSheetFromExecution(DelegateExecution execution) {
+        Long tsId = (Long) execution.getVariable("entityId");
+        if (tsId != null) {
+            return CorporateTimeSheetDao.instance().findById(tsId);
+        }
+        return null;
     }
 
     public static CorpEmpLeaveRequestProcessBean instance() {
