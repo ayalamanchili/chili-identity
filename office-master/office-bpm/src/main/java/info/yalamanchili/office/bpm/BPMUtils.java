@@ -11,6 +11,7 @@ package info.yalamanchili.office.bpm;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +52,10 @@ public class BPMUtils {
                 roles.add(identityLink.getGroupId());
             }
             if (identityLink.getUserId() != null && !identityLink.getUserId().isEmpty()) {
-                emails.add(identityLink.getUserId());
+                Employee emp = MailUtils.instance().findEmployee(identityLink.getUserId());
+                if (emp != null && emp.getPrimaryEmail() != null) {
+                    emails.add(emp.getPrimaryEmail().getEmail());
+                }
             }
         }
         if (roles.size() > 0) {
