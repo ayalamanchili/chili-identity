@@ -13,6 +13,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -97,6 +98,17 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names());
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        DateField startDateF = (DateField) fields.get("startDate");
+        DateField endDateF = (DateField) fields.get("endDate");
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        return true;
     }
 
     @Override
