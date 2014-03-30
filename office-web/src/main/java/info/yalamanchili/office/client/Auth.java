@@ -22,7 +22,9 @@ public class Auth {
         ROLE_SALES_AND_MARKETING,
         ROLE_CONTRACTS_ADMIN,
         ROLE_INFORMATION_TECHNOLOGY,
-        ROLE_SYSTEM_AND_NETWORK_ADMIN
+        ROLE_SYSTEM_AND_NETWORK_ADMIN,
+        ROLE_CORPORATE_TIME_REPORTS,
+        ROLE_CONSULTANT_TIME_REPORTS,
     }
 
     public static boolean isAdmin() {

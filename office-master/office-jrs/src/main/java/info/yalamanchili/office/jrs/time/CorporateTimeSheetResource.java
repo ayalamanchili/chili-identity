@@ -119,6 +119,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @PUT
     @Path("/report/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CORPORATE_TIME_REPORTS')")
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         return corporateTimeSheetDao.getReport(dto, start, limit);
     }
@@ -132,6 +133,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/all-emp-summary-report")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CORPORATE_TIME_REPORTS')")
     public Response getAllEmployeesSummaryReport() {
         return CorporateTimeService.instance().getAllEmployeesSummaryReport();
     }

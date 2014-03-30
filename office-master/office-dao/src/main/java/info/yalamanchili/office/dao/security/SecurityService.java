@@ -71,7 +71,7 @@ public class SecurityService {
         }
     }
 
-    public boolean hasRole(String role) {
+    public boolean hasAnyRole(String... roles) {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
             return false;
@@ -83,11 +83,17 @@ public class SecurityService {
         }
 
         for (GrantedAuthority auth : authentication.getAuthorities()) {
-            if (role.equals(auth.getAuthority())) {
-                return true;
+            for (String role : roles) {
+                if (role.equals(auth.getAuthority())) {
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    public boolean hasRole(String role) {
+        return hasAnyRole(role);
     }
 
     public boolean isValidEmployeeId(String employeeId) {

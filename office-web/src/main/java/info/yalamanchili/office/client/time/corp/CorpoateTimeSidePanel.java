@@ -108,7 +108,7 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
             timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
             timeSheetsidepanel.add(timesheetsForEmpCaptionPanel);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CORPORATE_TIME_REPORTS)) {
             //reports panel
             reportsPanel.add(startDateF);
             reportsPanel.add(endDateF);

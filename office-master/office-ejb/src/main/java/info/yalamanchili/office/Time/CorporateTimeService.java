@@ -94,7 +94,7 @@ public class CorporateTimeService {
         if (reportsToEmp != null && currentUser.getEmployeeId().equals(reportsToEmp.getEmployeeId())) {
             return;
         }
-        if (SecurityService.instance().hasRole(OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
+        if (SecurityService.instance().hasAnyRole(OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_CORPORATE_TIME_REPORTS.name())) {
             return;
         }
         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
