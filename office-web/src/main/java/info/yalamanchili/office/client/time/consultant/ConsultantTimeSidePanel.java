@@ -92,7 +92,8 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP)) {
             panel.add(createtimeSheetlink);
-
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {
             //employee
             timesheetsForEmpPanel.add(empWidget);
             timesheetsForEmpPanel.add(categoryField);
@@ -100,8 +101,6 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
             timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
             panel.add(timesheetsForEmpCaptionPanel);
-        }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP)) {
             //reports panel
             reportsPanel.add(startDateF);
             reportsPanel.add(endDateF);
