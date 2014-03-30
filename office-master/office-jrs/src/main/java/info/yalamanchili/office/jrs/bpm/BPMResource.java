@@ -55,7 +55,19 @@ public class BPMResource {
     @GET
     @Path("/claimtask/{taskId}")
     public void claimTask(@PathParam("taskId") String taskId) {
-        officeBPMTaskService.claimTask(taskId, SecurityService.instance().getCurrentUserId());
+        officeBPMTaskService.acquireTask(taskId, SecurityService.instance().getCurrentUserId());
+    }
+
+    @GET
+    @Path("/release-task/{taskId}")
+    public void releaseTask(@PathParam("taskId") String taskId) {
+        officeBPMTaskService.assignTask(taskId, null);
+    }
+
+    @PUT
+    @Path("/task/assign/{taskId}/{userId}")
+    public void assignTask(@PathParam("taskId") String taskId, @PathParam("userId") String userId) {
+        officeBPMTaskService.assignTask(taskId, userId);
     }
 
     @GET
@@ -121,8 +133,32 @@ public class BPMResource {
     public void createTask(Task task) {
         officeBPMTaskService.createTask(task);
     }
-    //Comments
 
+    @PUT
+    @Path("/task/add-user/{taskId}/{userId}")
+    public void addCandidateUser(@PathParam("taskId") String taskId, @PathParam("userId") String userId) {
+        officeBPMTaskService.addCandidateUser(taskId, userId);
+    }
+
+    @PUT
+    @Path("/task/remove-user/{taskId}/{userId}")
+    public void removeCandidateUser(@PathParam("taskId") String taskId, @PathParam("userId") String userId) {
+        officeBPMTaskService.removeCandidateUser(taskId, userId);
+    }
+
+    @PUT
+    @Path("/task/add-group/{taskId}/{groupId}")
+    public void addCandidateGroup(@PathParam("taskId") String taskId, @PathParam("groupId") String groupId) {
+        officeBPMTaskService.addCandidateGroup(taskId, groupId);
+    }
+
+    @PUT
+    @Path("/task/remove-group/{taskId}/{groupId}")
+    public void removeCandidateGroup(@PathParam("taskId") String taskId, @PathParam("groupId") String groupId) {
+        officeBPMTaskService.removeCandidateGroup(taskId, groupId);
+    }
+
+    //Comments
     @GET
     @Path("task/comments/{taskId}")
     public CommentTable getComments(@PathParam("taskId") String taskId) {

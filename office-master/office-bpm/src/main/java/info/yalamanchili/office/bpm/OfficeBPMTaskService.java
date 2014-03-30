@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.bpm;
 
+import info.chili.security.dao.CRoleDao;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.types.Comment;
@@ -15,6 +16,7 @@ import info.yalamanchili.office.bpm.types.HistoricTask;
 import info.yalamanchili.office.bpm.types.HistoricTask.HistoricTaskTable;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.ArrayList;
@@ -65,12 +67,12 @@ public class OfficeBPMTaskService {
      * @param taskId
      * @param userId
      */
-    public void claimTask(String taskId, String userId) {
+    public void acquireTask(String taskId, String userId) {
         bpmTaskService.claim(taskId, userId);
     }
 
     public void assignTask(String taskId, String userId) {
-        bpmTaskService.setAssignee(taskId, userId);
+        bpmTaskService.setAssignee(taskId, EmployeeDao.instance().findById(Long.valueOf(userId)).getEmployeeId());
     }
 
     public void resolveTask(String taskId) {
@@ -114,6 +116,22 @@ public class OfficeBPMTaskService {
     public void setCandidateGroup(String taskId, String oldGroupId, String newGroupId) {
         bpmTaskService.deleteCandidateGroup(taskId, oldGroupId);
         bpmTaskService.addCandidateGroup(taskId, newGroupId);
+    }
+
+    public void addCandidateUser(String taskId, String userId) {
+        bpmTaskService.addCandidateUser(taskId, EmployeeDao.instance().findById(Long.valueOf(userId)).getEmployeeId());
+    }
+
+    public void removeCandidateUser(String taskId, String userId) {
+        bpmTaskService.deleteCandidateUser(taskId, EmployeeDao.instance().findById(Long.valueOf(userId)).getEmployeeId());
+    }
+
+    public void addCandidateGroup(String taskId, String groupId) {
+        bpmTaskService.addCandidateGroup(taskId, CRoleDao.instance().findById(Long.valueOf(groupId)).getRolename());
+    }
+
+    public void removeCandidateGroup(String taskId, String groupId) {
+        bpmTaskService.deleteCandidateGroup(taskId, CRoleDao.instance().findById(Long.valueOf(groupId)).getRolename());
     }
 
     public List<Task> getTasksForProcessId(String processId) {

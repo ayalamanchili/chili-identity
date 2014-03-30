@@ -27,6 +27,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.logging.Logger;
 
 /**
@@ -50,10 +51,13 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     DateField createTimeField = new DateField(OfficeWelcome.constants, "createdDate", "Task", true, false);
     DateField dueDateField = new DateField(OfficeWelcome.constants, "dueDate", "Task", true, false);
     //Actions
-    Button claimB = new Button("Claim");
+
     Button resolveB = new Button("Resolve");
     Button completeB = new Button("Complete");
+    Button acquireB = new Button("Acquire");
+    Button releaseB = new Button("Release");
     Button deleteB = new Button("Delete");
+    Button manageB = new Button("Manage");
 
     public ReadTaskPanel(JSONObject task, boolean completedTask) {
         this.task = task;
@@ -72,14 +76,16 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         assigneeField.setValue(JSONUtils.toString(task, "assignee"));
         createTimeField.setValue(JSONUtils.toString(task, "createTime"));
         if (JSONUtils.toString(task, "assignee").trim().length() > 0) {
-            claimB.setVisible(false);
+            acquireB.setVisible(false);
         }
         //make all button invisible if historic task
         if (task.containsKey("deleteReason")) {
-            claimB.setVisible(false);
+            acquireB.setVisible(false);
+            releaseB.setVisible(completedTask);
             resolveB.setVisible(false);
             completeB.setVisible(false);
             deleteB.setVisible(false);
+            manageB.setVisible(false);
         }
     }
 
@@ -94,7 +100,6 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     }
 
     protected void renderTaskFormPanel(String result) {
-        logger.info("dddd" + result);
         if (result != null && !result.trim().toString().equals("null")) {
             panel.add(new GenericBPMTaskFormPanel("Fill_the_form_and_complete_the_task", taskId, JSONUtils.convertFormProperties(result)));
             completeB.setVisible(false);
@@ -104,10 +109,12 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        claimB.addClickHandler(this);
         resolveB.addClickHandler(this);
         completeB.addClickHandler(this);
+        acquireB.addClickHandler(this);
+        resolveB.addClickHandler(this);
         deleteB.addClickHandler(this);
+        manageB.addClickHandler(this);
     }
 
     @Override
@@ -130,39 +137,59 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         panel.add(assigneeField);
         panel.add(createTimeField);
         panel.add(dueDateField);
-        panel.add(claimB);
         panel.add(resolveB);
         panel.add(completeB);
+        panel.add(acquireB);
+        panel.add(releaseB);
         if (Auth.isAdmin()) {
             panel.add(deleteB);
+            panel.add(manageB);
         }
         panel.add(new CommentsPanel(taskId));
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(claimB)) {
-            claimClicked();
-        }
         if (event.getSource().equals(resolveB)) {
             resolveClicked();
         }
         if (event.getSource().equals(completeB)) {
             completeClicked();
         }
+        if (event.getSource().equals(acquireB)) {
+            acquireClicked();
+        }
+        if (event.getSource().equals(releaseB)) {
+            releaseClicked();
+        }
         if (event.getSource().equals(deleteB)) {
             if (Window.confirm("Are you sure? you want to Delete")) {
                 deleteClicked();
             }
         }
+        if (event.getSource().equals(manageB)) {
+            manageClicked();
+        }
     }
 
-    protected void claimClicked() {
+    protected void acquireClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getClaimTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Task Claimed");
+                        new ResponseStatusWidget().show("Task Acquired");
+                        TabPanel.instance().getHomePanel().entityPanel.clear();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                    }
+                });
+    }
+
+    protected void releaseClicked() {
+        HttpService.HttpServiceAsync.instance().doGet(getReleaseTaskURL(taskId), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Task Released");
                         TabPanel.instance().getHomePanel().entityPanel.clear();
                         TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
@@ -205,8 +232,16 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                 });
     }
 
+    protected void manageClicked() {
+        new GenericPopup(new ManageTaskWidget(taskId)).show();
+    }
+
     protected String getClaimTaskURL(String taskId) {
         return OfficeWelcome.constants.root_url() + "bpm/claimtask/" + taskId;
+    }
+
+    protected String getReleaseTaskURL(String taskId) {
+        return OfficeWelcome.constants.root_url() + "bpm/release-task/" + taskId;
     }
 
     protected String getResolveTaskURL(String taskId) {
