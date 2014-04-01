@@ -8,6 +8,7 @@
 package info.yalamanchili.office.dao.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -41,4 +42,7 @@ public class EmployeeDocumentDao extends CRUDDao<EmployeeDocument> {
         return em;
     }
 
+    public static EmployeeDocumentDao instance() {
+        return SpringContext.getBean(EmployeeDocumentDao.class);
+    }
 }

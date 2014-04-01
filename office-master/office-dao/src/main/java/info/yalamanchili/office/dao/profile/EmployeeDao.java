@@ -14,6 +14,11 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.QueryUtils;
 import info.chili.security.domain.CRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
+import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
+import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
+import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -146,6 +151,27 @@ public class EmployeeDao extends CRUDDao<Employee> {
             res.put(selects[0].toString(), selects[1].toString() + " " + selects[2].toString());
         }
         return res;
+    }
+
+    @Override
+    public void delete(Long id) {
+        Employee emp = findById(id);
+        PrivacySettingDao.instance().deleteAll(PrivacySettingDao.instance().getPrivacySettings(emp));
+        CompanyContactDao.instance().deleteAll(CompanyContactDao.instance().getEmployeeCompanyContacts(id));
+        EmployeeDocumentDao.instance().deleteAll(EmployeeDocumentDao.instance().getDocuments(id));
+        ServiceTicketDao.instance().deleteAll(ServiceTicketDao.instance().getTickets(emp, 0, 1000));
+        ConsultantTimeSheetDao.instance().deleteAll(ConsultantTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 1000));
+        CorporateTimeSheetDao.instance().deleteAll(CorporateTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 1000));
+        /*
+         Expenses
+         AdjustmentHours
+         TimeSheet
+         */
+        try {
+            super.delete(emp);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
