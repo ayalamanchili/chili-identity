@@ -199,7 +199,7 @@ public class ProfileHome extends ALComposite {
      */
 
     protected void addEmergencyContactsPanel() {
-        emergencyContactsPanel = new DisclosurePanel("EmergencyContacts");
+        emergencyContactsPanel = new DisclosurePanel("Emergency Contacts");
         panel.add(emergencyContactsPanel);
         emergencyContactsPanel.addStyleName("profileHome");
         emergencyContactsPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
@@ -220,7 +220,7 @@ public class ProfileHome extends ALComposite {
      */
 
     protected void addCompanyContactsPanel() {
-        companyContactsPanel = new DisclosurePanel("CompanyContacts");
+        companyContactsPanel = new DisclosurePanel("Company Contacts");
         panel.add(companyContactsPanel);
         companyContactsPanel.addStyleName("profileHome");
         companyContactsPanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
@@ -235,7 +235,7 @@ public class ProfileHome extends ALComposite {
 //TODO clean up
 
     protected void addSkillSetPanel() {
-        skillSetDP = new DisclosurePanel("SkillSet");
+        skillSetDP = new DisclosurePanel("Skill Set");
         final FlowPanel skillSetPanel = new FlowPanel();
         panel.add(skillSetDP);
         skillSetDP.addStyleName("profileHome");
