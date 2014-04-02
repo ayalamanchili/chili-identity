@@ -27,7 +27,7 @@ and open the template in the editor.
         <sequenceFlow id="flow1" sourceRef="addNewPracticeStart" targetRef="addNewPracticeTask" />
         <userTask id="addNewPracticeTask" 
                   name="Add New Practice Request" 
-                  activiti:candidateGroups="ROLE_RECRUITER,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_RECRUITER">
             <documentation>
                 Add Practice Information:
                 Practice Name: ${practiceName} 

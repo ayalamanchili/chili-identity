@@ -27,7 +27,7 @@ and open the template in the editor.
         <sequenceFlow id="flow1" sourceRef="addNewTechnologyStart" targetRef="addNewTechnologyTask" />
         <userTask id="addNewTechnologyTask" 
                   name="Add New Technology Request" 
-                  activiti:candidateGroups="ROLE_RECRUITER,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_RECRUITER">
             <documentation>
                 Add Technology Group Information:
                 Technology Name: ${technologyName} 
