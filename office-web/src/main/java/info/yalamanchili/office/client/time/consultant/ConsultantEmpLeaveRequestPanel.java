@@ -33,7 +33,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
 
     public ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("ConsultantEmpLeaveRequest", OfficeWelcome.constants);
+        initCreateComposite("EmpLeaveRequest", OfficeWelcome.constants);
     }
 
     @Override

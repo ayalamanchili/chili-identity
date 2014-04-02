@@ -33,7 +33,7 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
 
     public CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("ConsultantTimeSheet", OfficeWelcome.constants);
+        initCreateComposite("EmployeeTimeSheet", OfficeWelcome.constants);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class TimeMenu extends Composite {
             tAEMenuBar.addItem("Corporate Time", corpTimeMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {
-            tAEMenuBar.addItem("Consultant Time", consultantTimeMaintainenceCmd);
+            tAEMenuBar.addItem("Employee Time", consultantTimeMaintainenceCmd);
         }
         tAEMenuBar.addStyleName("entityMenuBar");
     }

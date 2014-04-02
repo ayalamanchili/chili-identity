@@ -31,7 +31,7 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
     SelectConsultantEmployeeWidget employeeF = new SelectConsultantEmployeeWidget(true, true);
 
     public UpdateConsultantTimeSheetPanel(JSONObject entity) {
-        initUpdateComposite(entity, "ConsultantTimeSheet", OfficeWelcome.constants);
+        initUpdateComposite(entity, "EmployeeTimeSheet", OfficeWelcome.constants);
     }
 
     @Override

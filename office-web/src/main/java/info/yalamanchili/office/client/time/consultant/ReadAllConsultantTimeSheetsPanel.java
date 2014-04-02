@@ -23,7 +23,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.time.corp.ReadCorporateTimeSheetPanel;
 import java.util.logging.Logger;
 
 /**
@@ -38,7 +37,7 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public ReadAllConsultantTimeSheetsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("ConsultantTimeSheet", OfficeWelcome.constants);
+        initTable("EmployeeTimeSheet", OfficeWelcome.constants);
     }
 
     public ReadAllConsultantTimeSheetsPanel() {
@@ -61,11 +60,11 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -85,11 +84,11 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllCorporateTimeSheetsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
@@ -125,8 +124,8 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
-            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));;
-            table.setText(i, 2, JSONUtils.toString(entity, "category"));
+            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
+            setEnumColumn(i, 2, entity, "category", "category");
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));

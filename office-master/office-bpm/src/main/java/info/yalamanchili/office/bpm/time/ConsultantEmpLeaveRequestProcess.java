@@ -37,11 +37,15 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
         ts.setStatus(TimeSheetStatus.Pending);
         ts = ConsultantTimeSheetDao.instance().save(ts);
         task.getExecution().setVariable("leaveRequest", ts);
+        task.getExecution().setVariable("entityId", ts.getId());
         new GenericTaskCreateNotification().notify(task);
     }
 
     protected void leaveRequestTaskCompleted(DelegateTask task) {
-        ConsultantTimeSheet ts = (ConsultantTimeSheet) task.getExecution().getVariable("leaveRequest");
+        ConsultantTimeSheet ts = getTimeSheetFromTask(task);
+        if (ts == null) {
+            return;
+        }
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             ts.setStatus(TimeSheetStatus.Approved);
@@ -51,5 +55,13 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
         }
         ConsultantTimeSheetDao.instance().save(ts);
         new GenericTaskCompleteNotification().notify(task);
+    }
+
+    protected ConsultantTimeSheet getTimeSheetFromTask(DelegateTask task) {
+        Long tsId = (Long) task.getExecution().getVariable("entityId");
+        if (tsId != null) {
+            return ConsultantTimeSheetDao.instance().findById(tsId);
+        }
+        return null;
     }
 }

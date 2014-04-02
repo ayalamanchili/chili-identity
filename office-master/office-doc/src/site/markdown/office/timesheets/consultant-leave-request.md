@@ -1,4 +1,4 @@
-Consultant Time Sheet
+Employee Time Sheet
 -----
 
 >- This feature supports tracking Consultant Employee Leave Time Sheets
