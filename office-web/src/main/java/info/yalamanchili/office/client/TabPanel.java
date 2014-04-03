@@ -37,6 +37,7 @@ import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
+import info.yalamanchili.office.client.recruiting.RecruitingMenu;
 import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
@@ -59,6 +60,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public EntityLayout profilePanel = new EntityLayout();
     public EntityLayout adminPanel = new EntityLayout();
     public EntityLayout reportingPanel = new EntityLayout();
+    public EntityLayout recruitingPanel = new EntityLayout();
     public EntityLayout helpPanel = new EntityLayout();
 
     public TabPanel() {
@@ -72,12 +74,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 //        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
 //            tabPanel.add(expensePanel, "Expense", false);
 //        }
-        tabPanel.add(drivePanel,
-                "Drive", false);
-        tabPanel.add(socialPanel,
-                "Social", false);
-        tabPanel.add(profilePanel,
-                "Profile", false);
+        tabPanel.add(drivePanel, "Drive", false);
+        tabPanel.add(socialPanel, "Social", false);
+        tabPanel.add(profilePanel, "Profile", false);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE)) {
             tabPanel.add(adminPanel, "Admin", false);
         }
@@ -86,12 +85,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             tabPanel.add(reportingPanel, "Reports", false);
         }
 
-        tabPanel.add(helpPanel,
-                "Help", false);
-        tabPanel.addSelectionHandler(
-                this);
-        tabPanel.selectTab(
-                1);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
+            tabPanel.add(recruitingPanel, "Recruiting", false);
+
+        }
+
+        tabPanel.add(helpPanel, "Help", false);
+        tabPanel.addSelectionHandler(this);
+        tabPanel.selectTab(1);
     }
 
     @Override
@@ -156,6 +157,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             });
         }
         if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(reportingPanel)) {
+            GWT.runAsync(new RunAsyncCallback() {
+                @Override
+                public void onResponse() {
+                    selectReportingPanel();
+                }
+            });
+        }
+        if (tabPanel.getWidget(selectedTabIndex.getSelectedItem()).equals(recruitingPanel)) {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
                 public void onResponse() {
@@ -260,6 +269,14 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
     }
 
+    public void selectRecruitingPanel() {
+        recruitingPanel.entityPanel.clear();
+        recruitingPanel.sidePanelTop.clear();
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
+            recruitingPanel.entityTitlePanel.add(new RecruitingMenu());
+        }
+    }
+
     public void selectHelpTab() {
         helpPanel.entityPanel.clear();
         helpPanel.sidePanelTop.clear();
@@ -301,5 +318,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     public EntityLayout getAdminPanel() {
         return adminPanel;
+    }
+
+    public EntityLayout getRecruitingPanel() {
+        return recruitingPanel;
     }
 }
