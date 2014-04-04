@@ -156,7 +156,6 @@ public class EmailService {
     protected Set<String> filterEmails(Set<String> emails) {
         Set<String> result = new HashSet<String>();
         if (OfficeServiceConfiguration.instance().isFilterEmails()) {
-            String s = OfficeServiceConfiguration.instance().getFilteredEmailsList();
             Set<String> whiteListEmails = OfficeServiceConfiguration.instance().getFilteredEmailsAsSet();
             for (String email : emails) {
                 if (whiteListEmails.contains(email)) {
