@@ -6,7 +6,6 @@ package info.yalamanchili.office.entity.recruiting;
 
 import info.chili.jpa.AbstractEntity;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -25,7 +24,7 @@ public class SkillSetTag extends AbstractEntity {
 
     @Field
     @NotEmpty(message = "{skillsettag.name.not.empty.msg}")
-    @ManyToMany
+//    @ManyToMany
     protected String name;
 
     public String getName() {
