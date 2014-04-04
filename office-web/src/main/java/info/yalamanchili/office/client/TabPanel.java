@@ -91,7 +91,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             tabPanel.add(recruitingPanel, "Recruiting", false);
 
         }
-
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
         tabPanel.selectTab(1);
@@ -170,7 +169,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             GWT.runAsync(new RunAsyncCallback() {
                 @Override
                 public void onResponse() {
-                    selectReportingPanel();
+                    selectRecruitingPanel();
                 }
             });
         }
