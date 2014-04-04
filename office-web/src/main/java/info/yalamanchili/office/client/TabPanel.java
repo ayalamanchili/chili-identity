@@ -37,7 +37,9 @@ import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
+import info.yalamanchili.office.client.recruiting.ReadAllSkillSetTagPanel;
 import info.yalamanchili.office.client.recruiting.RecruitingMenu;
+import info.yalamanchili.office.client.recruiting.SkillSetTagSidePanel;
 import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
@@ -272,9 +274,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectRecruitingPanel() {
         recruitingPanel.entityPanel.clear();
         recruitingPanel.sidePanelTop.clear();
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
-            recruitingPanel.entityTitlePanel.add(new RecruitingMenu());
-        }
+        recruitingPanel.entityTitlePanel.add(new RecruitingMenu());
+        recruitingPanel.entityPanel.add(new ReadAllSkillSetTagPanel());
+        recruitingPanel.sidePanelTop.add(new SkillSetTagSidePanel());
+
     }
 
     public void selectHelpTab() {
