@@ -60,7 +60,7 @@ public class CreateSkillSetTagPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Added Employee SkillSetTag");
+        new ResponseStatusWidget().show("Successfully Added SkillSetTag");
         TabPanel.instance().recruitingPanel.sidePanelTop.clear();
         TabPanel.instance().recruitingPanel.sidePanelTop.add(new SkillSetTagSidePanel());
         TabPanel.instance().recruitingPanel.entityPanel.clear();

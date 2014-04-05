@@ -8,7 +8,11 @@
 package info.yalamanchili.office.entity.recruiting;
 
 import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.validation.Unique;
+import info.yalamanchili.office.entity.profile.Skill;
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
@@ -23,10 +27,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Audited
+@Table(uniqueConstraints
+        = @UniqueConstraint(columnNames = {"name"}))
+@Unique(entity = SkillSetTag.class, fields = {"name"}, message = "{skillsettag.name.not.unique.msg}")
 public class SkillSetTag extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
     @Field
+    @org.hibernate.annotations.Index(name = "SKL_TAG_NM")
     @NotEmpty(message = "{skillsettag.name.not.empty.msg}")
     protected String name;
 

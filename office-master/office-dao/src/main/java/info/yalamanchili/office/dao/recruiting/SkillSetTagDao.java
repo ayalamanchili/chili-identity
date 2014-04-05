@@ -12,6 +12,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
@@ -46,11 +47,19 @@ public class SkillSetTagDao extends CRUDDao<SkillSetTag> {
         }
     }
 
-    public void removeTag(Long skillSetId,String name) {
+    public void removeTag(Long skillSetId, String name) {
         SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
         if (tag != null) {
-             SkillSetDao.instance().findById(skillSetId).removeTag(tag);
+            SkillSetDao.instance().findById(skillSetId).removeTag(tag);
         }
+    }
+
+    public Set<SkillSetTag> getSkillSetTags() {
+        return SkillSetDao.instance().getCurrentUserSkillSet().getTags();
+    }
+
+    public Set<SkillSetTag> getSkillSetTags(Long skillSetId) {
+        return SkillSetDao.instance().findById(skillSetId).getTags();
     }
 
     @PersistenceContext

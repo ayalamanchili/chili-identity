@@ -7,13 +7,13 @@
  */
 package info.yalamanchili.office.jrs.recruiting;
 
-import info.chili.commons.EntityQueryUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.recruiting.SkillSetTagDao;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -102,6 +102,31 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
         tableObj.setSize(getDao().size());
         return tableObj;
     }
+
+    @GET
+    @Path("/tags")
+    @Transactional(readOnly = true)
+    public String getSkillSetTags() {
+        return mapTags(skillSetTagDao.getSkillSetTags());
+    }
+
+    @GET
+    @Path("/tags/{skillSetId}")
+    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
+    @Transactional(readOnly = true)
+    public String getSkillSetTags(@PathParam("skillSetId") Long skillSetId) {
+        return mapTags(skillSetTagDao.getSkillSetTags(skillSetId));
+    }
+
+    protected String mapTags(Set<SkillSetTag> tags) {
+        StringBuilder res = new StringBuilder();
+        for (SkillSetTag tag : tags) {
+            res.append(tag.getName());
+            res.append(" ");
+        }
+        return res.toString();
+    }
+
     @Autowired
     public SkillSetTagDao skillSetTagDao;
 

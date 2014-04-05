@@ -38,11 +38,15 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
 
     @Override
     protected String addTagUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + tagsF.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + tagsSB.getValue());
     }
 
     @Override
     protected String removeTagUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + tagsF.getValue());
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + tagsSB.getValue());
+    }
+
+    protected String getTagsUrl() {
+        return OfficeWelcome.constants.root_url() + "skillsettag/tags";
     }
 }

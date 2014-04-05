@@ -185,7 +185,7 @@ public class CreateMessagePanel extends CreateComposite implements KeyPressHandl
     protected String getNotoficationGroupDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "notification/dropdown/0/1000?column=id&column=name";
     }
-
+//TODO move to gwt KeyBoardUtils
     @Override
     public void onKeyPress(KeyPressEvent event) {
         int keyCode = event.getUnicodeCharCode();

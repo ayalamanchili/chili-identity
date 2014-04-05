@@ -12,7 +12,9 @@ import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
@@ -84,7 +86,7 @@ public class SkillSet extends AbstractEntity {
      */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Tags")
-    protected List<SkillSetTag> tags;
+    protected Set<SkillSetTag> tags;
 
     public SkillSet() {
     }
@@ -152,14 +154,14 @@ public class SkillSet extends AbstractEntity {
         this.technologyGroup = technologyGroup;
     }
 
-    public List<SkillSetTag> getTags() {
+    public Set<SkillSetTag> getTags() {
         if (this.tags == null) {
-            this.tags = new ArrayList<SkillSetTag>();
+            this.tags = new HashSet<SkillSetTag>();
         }
         return tags;
     }
 
-    public void setTags(List<SkillSetTag> tags) {
+    public void setTags(Set<SkillSetTag> tags) {
         this.tags = tags;
     }
 
@@ -179,6 +181,7 @@ public class SkillSet extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "SkillSet{" + "lastUpdated=" + lastUpdated + ", resumeUrl=" + resumeUrl + ", skills=" + skills + ", certifications=" + certifications + '}';
+        return "SkillSet{" + "lastUpdated=" + lastUpdated + ", resumeUrl=" + resumeUrl + ", employee=" + employee + ", practice=" + practice + ", technologyGroup=" + technologyGroup + '}';
     }
+
 }
