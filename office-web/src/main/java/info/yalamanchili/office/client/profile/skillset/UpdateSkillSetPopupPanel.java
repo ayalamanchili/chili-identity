@@ -7,12 +7,12 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 
 /**
  *
@@ -34,5 +34,15 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + OfficeWelcome.instance().employeeId;
+    }
+
+    @Override
+    protected String addTagUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + tagsF.getValue());
+    }
+
+    @Override
+    protected String removeTagUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + tagsF.getValue());
     }
 }

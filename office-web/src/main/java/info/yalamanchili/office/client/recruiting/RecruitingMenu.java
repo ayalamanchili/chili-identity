@@ -7,11 +7,17 @@
  */
 package info.yalamanchili.office.client.recruiting;
 
+import info.yalamanchili.office.client.recruiting.skillsettag.SkillSetTagSidePanel;
+import info.yalamanchili.office.client.recruiting.skillsettag.ReadAllSkillSetTagPanel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.practice.PracticeSidePanel;
+import info.yalamanchili.office.client.practice.ReadAllPracticePanel;
+import info.yalamanchili.office.client.profile.technologyGroup.ReadAllTechnologyGroupPanel;
+import info.yalamanchili.office.client.profile.technologyGroup.TechnologyGroupSidePanel;
 
 /**
  *
@@ -28,15 +34,38 @@ public class RecruitingMenu extends Composite {
 
     protected void configureRecruitingMenu() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
+            recruitingMenuBar.addItem("Practice", practiceMaintainenceCmd);
+            recruitingMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
             recruitingMenuBar.addItem("SkillSet Tags", skillSetTagsMaintainenceCmd);
         }
         recruitingMenuBar.addStyleName("entityMenuBar");
     }
     Command skillSetTagsMaintainenceCmd = new Command() {
+        @Override
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
-            TabPanel.instance().getRecruitingPanel().entityPanel.add(new SkillSetTagSidePanel());
+            TabPanel.instance().getRecruitingPanel().entityTitlePanel.add(new RecruitingMenu());
+            TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillSetTagPanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetTagSidePanel());
+        }
+    };
+    Command practiceMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllPracticePanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new PracticeSidePanel());
+        }
+    };
+    Command technologyGroupMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new TechnologyGroupSidePanel());
         }
     };
 }

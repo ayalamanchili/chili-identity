@@ -5,7 +5,7 @@ package info.yalamanchili.office.client;
 
 import com.google.gwt.core.client.GWT;
 import info.yalamanchili.office.client.profile.ProfileHome;
-import info.yalamanchili.office.client.profile.ProfileMenu;
+import info.yalamanchili.office.client.profile.MyOfficeMenu;
 import info.yalamanchili.office.client.profile.ProfileSidePanel;
 import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
@@ -37,9 +37,9 @@ import info.yalamanchili.office.client.expense.ExpensesSidePanel;
 import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
-import info.yalamanchili.office.client.recruiting.ReadAllSkillSetTagPanel;
+import info.yalamanchili.office.client.recruiting.skillsettag.ReadAllSkillSetTagPanel;
 import info.yalamanchili.office.client.recruiting.RecruitingMenu;
-import info.yalamanchili.office.client.recruiting.SkillSetTagSidePanel;
+import info.yalamanchili.office.client.recruiting.skillsettag.SkillSetTagSidePanel;
 import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
@@ -206,7 +206,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectMyOfficeTab() {
         myOfficePanel.entityPanel.clear();
         myOfficePanel.sidePanelTop.clear();
-        myOfficePanel.entityTitlePanel.add(new ProfileMenu());
+        myOfficePanel.entityTitlePanel.add(new MyOfficeMenu());
         myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
         myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
 

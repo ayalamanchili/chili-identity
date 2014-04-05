@@ -5,15 +5,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.recruiting;
+package info.yalamanchili.office.client.recruiting.skillsettag;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
@@ -39,8 +41,7 @@ public class ReadAllSkillSetTagPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().recruitingPanel.entityPanel.clear();
-        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadSkillSetTagPanel(getEntity(entityId)));
+      
     }
 
     @Override
@@ -48,11 +49,11 @@ public class ReadAllSkillSetTagPanel extends CRUDReadAllComposite {
 
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -65,7 +66,7 @@ public class ReadAllSkillSetTagPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().recruitingPanel.entityPanel.clear();
-        TabPanel.instance().recruitingPanel.entityPanel.add(new UpdateSkillSetPanel(getEntity(entityId)));
+        TabPanel.instance().recruitingPanel.entityPanel.add(new UpdateSkillSetTagPanel(getEntity(entityId)));
     }
 
     @Override
@@ -73,11 +74,11 @@ public class ReadAllSkillSetTagPanel extends CRUDReadAllComposite {
 
         HttpService.HttpServiceAsync.instance().doGet(getReadAllSkillSetTagURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
 
     }
 
@@ -98,6 +99,9 @@ public class ReadAllSkillSetTagPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        }
     }
 
     private String getDeleteURL(String entityId) {

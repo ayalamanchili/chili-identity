@@ -7,8 +7,10 @@
  */
 package info.yalamanchili.office.dao.recruiting;
 
+import info.chili.commons.EntityQueryUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +24,34 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class SkillSetTagDao extends CRUDDao<SkillSetTag> {
+
+    public void addTag(Long skillSetId, String name) {
+        SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
+        if (tag != null) {
+            SkillSetDao.instance().findById(skillSetId).addTag(tag);
+        }
+    }
+
+    public void addTag(String name) {
+        SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
+        if (tag != null) {
+            SkillSetDao.instance().getCurrentUserSkillSet().addTag(tag);
+        }
+    }
+
+    public void removeTag(String name) {
+        SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
+        if (tag != null) {
+            SkillSetDao.instance().getCurrentUserSkillSet().removeTag(tag);
+        }
+    }
+
+    public void removeTag(Long skillSetId,String name) {
+        SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
+        if (tag != null) {
+             SkillSetDao.instance().findById(skillSetId).removeTag(tag);
+        }
+    }
 
     @PersistenceContext
     protected EntityManager em;

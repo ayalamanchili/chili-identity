@@ -19,6 +19,7 @@ import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -147,7 +148,7 @@ public class OfficeBPMTaskService {
     }
 
     public void addComment(String taskId, String comment) {
-        bpmIdentityService.setAuthenticatedUserId(SecurityService.instance().getCurrentUserId());
+        bpmIdentityService.setAuthenticatedUserId( SecurityUtils.getCurrentUser());
         bpmTaskService.addComment(taskId, null, comment);
     }
 

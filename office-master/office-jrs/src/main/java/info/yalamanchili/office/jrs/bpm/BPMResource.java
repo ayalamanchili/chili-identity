@@ -20,6 +20,7 @@ import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.security.SecurityUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class BPMResource {
     @GET
     @Path("/claimtask/{taskId}")
     public void claimTask(@PathParam("taskId") String taskId) {
-        officeBPMTaskService.acquireTask(taskId, SecurityService.instance().getCurrentUserId());
+        officeBPMTaskService.acquireTask(taskId, SecurityUtils.getCurrentUser());
     }
 
     @GET

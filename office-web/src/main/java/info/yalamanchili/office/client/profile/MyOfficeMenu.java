@@ -16,8 +16,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
-import info.yalamanchili.office.client.practice.PracticeSidePanel;
-import info.yalamanchili.office.client.practice.ReadAllPracticePanel;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -30,36 +28,30 @@ import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypes
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
-import info.yalamanchili.office.client.profile.technologyGroup.ReadAllTechnologyGroupPanel;
-import info.yalamanchili.office.client.profile.technologyGroup.TechnologyGroupSidePanel;
 
-public class ProfileMenu extends Composite {
+public class MyOfficeMenu extends Composite {
 
-    MenuBar profileMenuBar = new MenuBar(false);
+    MenuBar myOfficeMenuBar = new MenuBar(false);
 
-    public ProfileMenu() {
-        initWidget(profileMenuBar);
+    public MyOfficeMenu() {
+        initWidget(myOfficeMenuBar);
         configureAdminMenu();
     }
 
     protected void configureAdminMenu() {
-        profileMenuBar.addItem("Employees", employeeMaintainenceCmd);
+        myOfficeMenuBar.addItem("Employees", employeeMaintainenceCmd);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
-            profileMenuBar.addItem("Skills", skillsMaintainenceCmd);
-            profileMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
+            myOfficeMenuBar.addItem("Skills", skillsMaintainenceCmd);
+            myOfficeMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
         }
         if (Auth.isAdmin()) {
-            profileMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
-            profileMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
-            profileMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
-            profileMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
+            myOfficeMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
+            myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
+            myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
+            myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_RECRUITER)) {
-            profileMenuBar.addItem("Practice", practiceMaintainenceCmd);
-            profileMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
-        }
-        profileMenuBar.addItem("Information", corpEmpInfo);
-        profileMenuBar.addStyleName("entityMenuBar");
+        myOfficeMenuBar.addItem("Information", corpEmpInfo);
+        myOfficeMenuBar.addStyleName("entityMenuBar");
     }
     Command employeeMaintainenceCmd = new Command() {
         public void execute() {
@@ -124,22 +116,6 @@ public class ProfileMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCompanyContactTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
-        }
-    };
-    Command practiceMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPracticePanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new PracticeSidePanel());
-        }
-    };
-    Command technologyGroupMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new TechnologyGroupSidePanel());
         }
     };
     Command corpEmpInfo = new Command() {

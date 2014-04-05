@@ -5,11 +5,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.recruiting;
+package info.yalamanchili.office.client.recruiting.skillsettag;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -21,48 +21,44 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class CreateSkillSetTagPanel extends CreateComposite {
+public class UpdateSkillSetTagPanel extends UpdateComposite {
 
-    public CreateSkillSetTagPanel(CreateCompositeType type) {
-        super(type);
-        initCreateComposite("SkillSetTag", OfficeWelcome.constants);
+    private static Logger logger = Logger.getLogger(UpdateSkillSetTagPanel.class.getName());
+
+    public UpdateSkillSetTagPanel(JSONObject entity) {
+        initUpdateComposite(entity, "SkillSetTag", OfficeWelcome.constants);
     }
-    private static Logger logger = Logger.getLogger(CreateSkillSetTagPanel.class.getName());
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
-        logger.info(entity.toString());
         return entity;
     }
 
     @Override
-    protected void createButtonClicked() {
-    }
-
-    @Override
-    protected void addButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
-
             }
 
             @Override
             public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
+                postUpdateSuccess(arg0);
             }
         });
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Added Employee SkillSetTag");
-        TabPanel.instance().recruitingPanel.sidePanelTop.clear();
-        TabPanel.instance().recruitingPanel.sidePanelTop.add(new SkillSetTagSidePanel());
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
+    }
+
+    @Override
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Updated SkillSetTag Data");
         TabPanel.instance().recruitingPanel.entityPanel.clear();
         TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillSetTagPanel());
     }
@@ -77,7 +73,7 @@ public class CreateSkillSetTagPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, false, DataType.STRING_FIELD);
+        addField("name", false, true, DataType.STRING_FIELD);
     }
 
     @Override

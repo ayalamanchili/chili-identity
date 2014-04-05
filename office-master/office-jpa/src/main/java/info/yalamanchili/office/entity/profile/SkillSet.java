@@ -9,6 +9,7 @@ package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.practice.Practice;
+import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,24 +38,53 @@ import org.hibernate.search.annotations.Indexed;
 @Audited
 public class SkillSet extends AbstractEntity {
 
+    private static final long serialVersionUID = 1L;
+    /**
+     * last updated
+     */
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @org.hibernate.annotations.Index(name = "SKL_SET_UPDT_TM_STMP")
     protected Date lastUpdated;
+    /**
+     * resume URL
+     */
     protected String resumeUrl;
+    /**
+     * Skills
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Skills")
     protected List<Skill> skills;
+    /**
+     * Certifications
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     @ForeignKey(name = "FK_SkillSet_Certifications")
     protected List<Certification> certifications;
+    /**
+     * Employee
+     */
     @OneToOne(mappedBy = "skillSet")
     private Employee employee;
+    /**
+     * Practice
+     */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Practice_SkillSets")
     private Practice practice;
+    /**
+     * Technology Group
+     */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_TechGrp_SkillSets")
     private TechnologyGroup technologyGroup;
+
+    /**
+     * Skill Set Tags
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    @ForeignKey(name = "FK_SkillSet_Tags")
+    protected List<SkillSetTag> tags;
 
     public SkillSet() {
     }
@@ -120,6 +150,25 @@ public class SkillSet extends AbstractEntity {
 
     public void setTechnologyGroup(TechnologyGroup technologyGroup) {
         this.technologyGroup = technologyGroup;
+    }
+
+    public List<SkillSetTag> getTags() {
+        if (this.tags == null) {
+            this.tags = new ArrayList<SkillSetTag>();
+        }
+        return tags;
+    }
+
+    public void setTags(List<SkillSetTag> tags) {
+        this.tags = tags;
+    }
+
+    public void addTag(SkillSetTag tag) {
+        getTags().add(tag);
+    }
+
+    public void removeTag(SkillSetTag tag) {
+        getTags().remove(tag);
     }
 
     @PrePersist

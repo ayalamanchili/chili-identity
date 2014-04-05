@@ -121,14 +121,6 @@ public class SecurityService {
         return QueryUtils.findEntity(em, Employee.class, "ssnHash", officeStringDigester.digest(ssn));
     }
 
-    public String getCurrentUserId() {
-        if (getCurrentUser() != null) {
-            return getCurrentUser().getEmployeeId();
-        } else {
-            return null;
-        }
-    }
-
     public List<String> getUserRoles(Employee employee) {
         List<String> roles = new ArrayList<String>();
         for (CRole role : employee.getUser().getRoles()) {

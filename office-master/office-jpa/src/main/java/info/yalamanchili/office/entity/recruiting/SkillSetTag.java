@@ -25,6 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class SkillSetTag extends AbstractEntity {
 
+    private static final long serialVersionUID = 1L;
     @Field
     @NotEmpty(message = "{skillsettag.name.not.empty.msg}")
     protected String name;
