@@ -46,11 +46,11 @@ public class ReadAllTechnologyGroupPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {
@@ -60,25 +60,25 @@ public class ReadAllTechnologyGroupPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Technology Group Data");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllTechnologyGroupPanel());
+        TabPanel.instance().recruitingPanel.entityPanel.clear();
+        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllTechnologyGroupPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateTechnologyGroupPanel(getEntity(entityId)));
+        TabPanel.instance().recruitingPanel.entityPanel.clear();
+        TabPanel.instance().recruitingPanel.entityPanel.add(new UpdateTechnologyGroupPanel(getEntity(entityId)));
     }
 
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllTechGroupURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     private String getReadAllTechGroupURL(Integer start, String limit) {

@@ -50,8 +50,8 @@ public class TechnologyGroupSidePanel extends ALComposite implements ClickHandle
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createTechnologyGroupLink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateTechnologyGroupPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().recruitingPanel.entityPanel.clear();
+            TabPanel.instance().recruitingPanel.entityPanel.add(new CreateTechnologyGroupPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

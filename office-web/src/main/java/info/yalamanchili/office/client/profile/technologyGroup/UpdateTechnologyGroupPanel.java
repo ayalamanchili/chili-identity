@@ -65,8 +65,8 @@ public class UpdateTechnologyGroupPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated TechnologyGroup Data");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllTechnologyGroupPanel());
+        TabPanel.instance().recruitingPanel.entityPanel.clear();
+        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllTechnologyGroupPanel());
     }
 
     @Override

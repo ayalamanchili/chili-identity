@@ -51,8 +51,8 @@ public class PracticeSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createPracticeLink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePracticePanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().recruitingPanel.entityPanel.clear();
+            TabPanel.instance().recruitingPanel.entityPanel.add(new CreatePracticePanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
