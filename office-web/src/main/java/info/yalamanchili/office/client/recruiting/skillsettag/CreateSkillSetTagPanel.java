@@ -11,10 +11,14 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -23,8 +27,10 @@ import java.util.logging.Logger;
  */
 public class CreateSkillSetTagPanel extends CreateComposite {
 
-    public CreateSkillSetTagPanel(CreateCompositeType type) {
-        super(type);
+    protected List<GenericListener> listeners = new ArrayList<GenericListener>();
+
+    public CreateSkillSetTagPanel() {
+        super(CreateCompositeType.CREATE);
         initCreateComposite("SkillSetTag", OfficeWelcome.constants);
     }
     private static Logger logger = Logger.getLogger(CreateSkillSetTagPanel.class.getName());
@@ -60,11 +66,15 @@ public class CreateSkillSetTagPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
+        GenericPopup.instance().hide();
         new ResponseStatusWidget().show("Successfully Added SkillSetTag");
         TabPanel.instance().recruitingPanel.sidePanelTop.clear();
         TabPanel.instance().recruitingPanel.sidePanelTop.add(new SkillSetTagSidePanel());
         TabPanel.instance().recruitingPanel.entityPanel.clear();
         TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillSetTagPanel());
+        for (GenericListener listner : listeners) {
+            listner.fireEvent();
+        }
     }
 
     @Override
@@ -88,4 +98,9 @@ public class CreateSkillSetTagPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "skillsettag";
     }
+
+    public void addListner(GenericListener listner) {
+        this.listeners.add(listner);
+    }
+
 }

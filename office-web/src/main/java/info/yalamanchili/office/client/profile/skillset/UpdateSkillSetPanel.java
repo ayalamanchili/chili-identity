@@ -24,7 +24,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.crud.UpdateComposite;
-import info.chili.gwt.fields.DataType;
+import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.home.tasks.GenericBPMStartFormPanel;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
+import info.yalamanchili.office.client.recruiting.skillsettag.CreateSkillSetTagPanel;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -42,8 +43,8 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHandler {
-    
+public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHandler, GenericListener {
+
     private static Logger logger = Logger.getLogger(UpdateSkillSetPanel.class.getName());
     /**
      * Practice
@@ -63,7 +64,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         public void onUploadComplete() {
             postUpdateSuccess(null);
         }
-        
+
         @Override
         public void onFileUploadError() {
             Window.alert("File Size exceeded. MaxLimit:20MB");
@@ -80,12 +81,14 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
     Button addTagB = new Button("Add Tag");
     Button removeTagB = new Button("Remove Tag");
     RichTextArea tagsTA = new RichTextArea();
-    
+    ClickableLink createTagL = new ClickableLink("Create New Tag");
+
     public UpdateSkillSetPanel(JSONObject entity) {
         initUpdateComposite(entity, "SkillSet", OfficeWelcome.constants);
-        initTags();
+        entityActionsPanel.add(tagsCP);
+        loadTagSuggestions();
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         entity.put("practice", practiceF.getSelectedObject());
@@ -95,7 +98,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         }
         return entity;
     }
-    
+
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
@@ -104,32 +107,32 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
                     public void onFailure(Throwable arg0) {
                         handleErrorResponse(arg0);
                     }
-                    
+
                     @Override
                     public void onSuccess(String arg0) {
                         uploadResume(arg0);
                     }
                 });
-        
+
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("practice", entity, null);
         assignFieldValueFromEntity("technologyGroup", entity, null);
     }
-    
+
     protected void uploadResume(String entityId) {
         resumeUploadPanel.upload(entityId.trim());
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Skill Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(TreeEmployeePanel.instance().getEntityId()));
     }
-    
+
     @Override
     protected void addListeners() {
         newPracticeL.addClickHandler(this);
@@ -137,13 +140,14 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         addTagB.addClickHandler(this);
         removeTagB.addClickHandler(this);
         tagsSB.getSuggestBox().addKeyPressHandler(this);
+        createTagL.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         tagsTA.setWidth("100%");
     }
-    
+
     @Override
     protected void addWidgets() {
         addDropDown("practice", practiceF);
@@ -153,13 +157,13 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         entityFieldsPanel.add(resumeUploadPanel);
         //Tags
         tagsPanel.add(tagsSB);
+        tagsSB.addWidgetToFieldPanel(createTagL);
         tagsPanel.add(addTagB);
         tagsPanel.add(removeTagB);
         tagsPanel.add(tagsTA);
         tagsCP.setContentWidget(tagsPanel);
-        entityActionsPanel.add(tagsCP);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         super.onClick(event);
@@ -175,10 +179,18 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         if (event.getSource().equals(removeTagB)) {
             removeTagClicked();
         }
+        if (event.getSource().equals(createTagL)) {
+            CreateSkillSetTagPanel createTagW = new CreateSkillSetTagPanel();
+            createTagW.addListner(this);
+            new GenericPopup(createTagW, createTagL.getAbsoluteLeft(), createTagL.getAbsoluteTop()).show();
+        }
     }
-    
+
     protected void addTagClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(addTagUrl(), entity.toString(),
+        if (tagsSB.getValue() == null && tagsSB.getValue().isEmpty()) {
+            return;
+        }
+        HttpService.HttpServiceAsync.instance().doPut(addTagUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -188,13 +200,16 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
                 });
         tagsSB.clearText();
     }
-    
+
     protected String addTagUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + getEntityId() + "/" + tagsSB.getValue());
     }
-    
+
     protected void removeTagClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(removeTagUrl(), entity.toString(),
+        if (tagsSB.getValue() == null && tagsSB.getValue().isEmpty()) {
+            return;
+        }
+        HttpService.HttpServiceAsync.instance().doPut(removeTagUrl(), null,
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -204,12 +219,12 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
                 });
         tagsSB.clearText();
     }
-    
+
     protected String removeTagUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + getEntityId() + "/" + tagsSB.getValue());
     }
-    
-    protected void initTags() {
+
+    protected void loadTagSuggestions() {
         HttpService.HttpServiceAsync.instance().doGet(getTagsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -221,7 +236,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         });
         loadTags();
     }
-    
+
     protected void loadTags() {
         HttpService.HttpServiceAsync.instance().doGet(getTagsUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
@@ -232,24 +247,24 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
             }
         });
     }
-    
+
     protected String getTagsUrl() {
         return OfficeWelcome.constants.root_url() + "skillsettag/tags/" + getEntityId();
     }
-    
+
     protected String getTagsDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "skillsettag/dropdown/0/1000?column=id&column=name";
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/skillset/" + TreeEmployeePanel.instance().getEntityId();
     }
-    
+
     @Override
     public void onKeyPress(KeyPressEvent event) {
         int keyCode = event.getUnicodeCharCode();
@@ -265,4 +280,9 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
             removeTagClicked();
         }
     }
+
+    public void fireEvent() {
+        loadTagSuggestions();
+    }
+
 }

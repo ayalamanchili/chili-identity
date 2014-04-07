@@ -52,7 +52,7 @@ public class SkillSetTagSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createSkillSetTagLink)) {
             TabPanel.instance().recruitingPanel.entityPanel.clear();
-            TabPanel.instance().recruitingPanel.entityPanel.add(new CreateSkillSetTagPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().recruitingPanel.entityPanel.add(new CreateSkillSetTagPanel());
         }
     }
 }
