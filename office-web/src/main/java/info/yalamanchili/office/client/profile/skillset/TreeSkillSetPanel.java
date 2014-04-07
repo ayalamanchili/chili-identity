@@ -7,10 +7,6 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -81,15 +77,7 @@ public class TreeSkillSetPanel extends TreePanelComposite {
 
     @Override
     public void loadEntity() {
-        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response != null && !response.isEmpty()) {
-                            entity = (JSONObject) JSONParser.parseLenient(response);
-                        }
-                    }
-                });
+        entity = ReadSkillSetPanel.instance().getEntity();
     }
 
     @Override

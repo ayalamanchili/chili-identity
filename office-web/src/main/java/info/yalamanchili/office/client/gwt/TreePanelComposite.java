@@ -35,7 +35,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     protected Map<String, TreePanelComposite> childTreeWidgets = new HashMap<String, TreePanelComposite>();
 
     public String getEntityId() {
-        if (entityId == null && entity != null) {
+        if (entity != null) {
             return JSONUtils.toString(entity, "id");
         }
         return entityId;
