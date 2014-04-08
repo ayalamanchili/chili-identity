@@ -39,6 +39,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @PUT
+    @Path("/create-add-tag/{skillSetId}/{tag}")
+    public void createAndAddTag(@PathParam("skillSetId") Long skillSetId, @PathParam("tag") String name) {
+        skillSetTagDao.createAndAddTag(skillSetId, name);
+    }
+
+    @PUT
     @Path("/add-tag/{tag}")
     public void addTag(@PathParam("tag") String name) {
         skillSetTagDao.addTag(name);

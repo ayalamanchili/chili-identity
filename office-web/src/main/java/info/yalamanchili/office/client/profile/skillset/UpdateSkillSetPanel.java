@@ -180,7 +180,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
             removeTagClicked();
         }
         if (event.getSource().equals(createTagL)) {
-            CreateSkillSetTagPanel createTagW = new CreateSkillSetTagPanel();
+            CreateSkillSetTagPanel createTagW = new CreateSkillSetTagPanel(getEntityId());
             createTagW.addListner(this);
             new GenericPopup(createTagW, createTagL.getAbsoluteLeft(), createTagL.getAbsoluteTop()).show();
         }
