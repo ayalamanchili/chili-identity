@@ -37,6 +37,9 @@
                 <item name="SkillSet" href="office/profile/skillset.html" collapse="true">
                     <item name="New Skill Request" href="/office/skillrequest.html"/>
                     <item name="New Certification Request" href="/office/certificationrequset.html"/>
+                    <item name="New Practice Request" href="/office/practicerequest.html"/>
+                    <item name="New TechnologyGroup Request" href="/office/technologygrouprequest.html"/>
+                    <item name="SkillSetTag " href="/office/skillsettag.html"/>                  
                 </item>
                 <item name="Preferences" href="office/profile/preferences.html"/>
             </item>
