@@ -34,6 +34,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class BulkImport extends AbstractEntity {
 
+    private static final long serialVersionUID = 1L;
+    
     @NotEmpty(message = "{name.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "BLK_IMPRT_NM")
     protected String name;

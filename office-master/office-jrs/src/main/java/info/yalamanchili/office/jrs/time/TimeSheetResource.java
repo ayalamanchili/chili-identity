@@ -94,7 +94,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN''ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME')")
     public TimeSheetResource.TimeSheetTable getTimeSheetsForEmployee(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("incluedeInactive") boolean includeInactive) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
         Employee emp = EmployeeDao.instance().findById(empId);

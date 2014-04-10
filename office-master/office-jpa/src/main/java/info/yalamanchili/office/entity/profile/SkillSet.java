@@ -85,7 +85,7 @@ public class SkillSet extends AbstractEntity {
      * Skill Set Tags
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    @ForeignKey(name = "FK_SkillSet_Tags")
+    @ForeignKey(name = "FK_SkillSet_Tag", inverseName = "FK_Tag_SkillSet")
     protected Set<SkillSetTag> tags;
 
     public SkillSet() {
