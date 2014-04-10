@@ -45,14 +45,14 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response != null && !response.isEmpty() && JSONParser.parseLenient(response).isObject() != null) {
-                            entity = (JSONObject) JSONParser.parseLenient(response);
-                            populateFieldsFromEntity(entity);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                if (response != null && !response.isEmpty() && JSONParser.parseLenient(response).isObject() != null) {
+                    entity = (JSONObject) JSONParser.parseLenient(response);
+                    populateFieldsFromEntity(entity);
+                }
+            }
+        });
     }
 
     @Override
@@ -62,7 +62,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
         assignFieldValueFromEntity("availableSickHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("availablePersonalHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("availableVacationHours", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("usedUnpaidHours", entity, DataType.FLOAT_FIELD);
+//        assignFieldValueFromEntity("usedUnpaidHours", entity, DataType.FLOAT_FIELD);
 
     }
 
@@ -81,7 +81,7 @@ public class CorporateTimeSummaryPanel extends ReadComposite {
         addField("availableSickHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("availablePersonalHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("availableVacationHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
-        addField("usedUnpaidHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+//        addField("usedUnpaidHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
