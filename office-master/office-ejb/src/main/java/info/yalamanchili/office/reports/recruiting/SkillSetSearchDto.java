@@ -26,6 +26,7 @@ public class SkillSetSearchDto implements Serializable {
     protected String technologyGroup;
     protected String skills;
     protected String certifications;
+    protected String tags;
 
     public String getPractice() {
         return practice;
@@ -58,10 +59,12 @@ public class SkillSetSearchDto implements Serializable {
     public void setCertifications(String certifications) {
         this.certifications = certifications;
     }
-    public static Map<String, String> properties = new HashMap<String, String>();
 
-    static {
-        properties.put("practice", "practice.name");
-        properties.put("technologyGroup", "technologyGroup.name");
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

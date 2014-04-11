@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
-import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.widgets.GenericPopup;
 

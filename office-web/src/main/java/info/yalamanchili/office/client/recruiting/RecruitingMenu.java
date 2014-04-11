@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.recruiting;
 
+import info.yalamanchili.office.client.recruiting.reports.SkillSetSearchPanel;
 import info.yalamanchili.office.client.recruiting.skillsettag.SkillSetTagSidePanel;
 import info.yalamanchili.office.client.recruiting.skillsettag.ReadAllSkillSetTagPanel;
 import com.google.gwt.user.client.Command;
@@ -37,6 +38,7 @@ public class RecruitingMenu extends Composite {
             recruitingMenuBar.addItem("Practice", practiceMaintainenceCmd);
             recruitingMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
             recruitingMenuBar.addItem("SkillSet Tags", skillSetTagsMaintainenceCmd);
+            recruitingMenuBar.addItem("Find Candidates", reportsCmd);
         }
         recruitingMenuBar.addStyleName("entityMenuBar");
     }
@@ -66,6 +68,15 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new TechnologyGroupSidePanel());
+        }
+    };
+
+    Command reportsCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetSearchPanel());
         }
     };
 }

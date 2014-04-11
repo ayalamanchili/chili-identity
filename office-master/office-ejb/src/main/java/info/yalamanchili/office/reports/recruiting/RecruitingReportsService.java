@@ -8,14 +8,12 @@
  */
 package info.yalamanchili.office.reports.recruiting;
 
-import info.chili.commons.ReflectionUtils;
 import info.chili.commons.SearchUtils;
 import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -56,12 +54,36 @@ public class RecruitingReportsService {
 
     public String getSearchSkillSetQueryString(SkillSetSearchDto searchDto) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select emp from SkillSet skillSet, Employee emp where skillSet.employee.id=emp.id ");
-        for (Entry<String, String> entry : SkillSetSearchDto.properties.entrySet()) {
-            if (ReflectionUtils.callGetter(searchDto, entry.getKey()) != null) {
-                sb.append("and ");
-                sb.append("skillSet.").append(entry.getValue()).append(" like '%").append(ReflectionUtils.callGetter(searchDto, entry.getKey()).toString().trim()).append("%'");
-            }
+        sb.append("select DISTINCT emp from SkillSet skillSet, Employee emp ");
+        if (searchDto.getTags() != null) {
+            sb.append(" join skillSet.tags tags ");
+        }
+        if (searchDto.getSkills() != null) {
+            sb.append(" join skillSet.skills skills ");
+        }
+        if (searchDto.getCertifications() != null) {
+            sb.append(" join skillSet.certifications certifications ");
+        }
+        sb.append("where skillSet.employee.id=emp.id ");
+        //Practice
+        if (searchDto.getPractice() != null) {
+            sb.append("and skillSet.practice.name like'%").append(searchDto.getPractice().trim()).append("%' ");
+        }
+        //Technology Group
+        if (searchDto.getTechnologyGroup() != null) {
+            sb.append("and skillSet.technologyGroup.name like'%").append(searchDto.getTechnologyGroup().trim()).append("%' ");
+        }
+        //Skills
+        if (searchDto.getSkills() != null) {
+            sb.append("and skills.name like'%").append(searchDto.getSkills().trim()).append("%' ");
+        }
+        //Certifications
+        if (searchDto.getCertifications() != null) {
+            sb.append("and certifications.name like'%").append(searchDto.getCertifications().trim()).append("%' ");
+        }
+        //Tags
+        if (searchDto.getTags() != null) {
+            sb.append("and tags.name like'%").append(searchDto.getTags().trim()).append("%' ");
         }
         return sb.toString();
     }

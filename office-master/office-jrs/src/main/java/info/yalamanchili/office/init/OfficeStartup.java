@@ -27,7 +27,6 @@ import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
-import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.activity.IssueType;
 import info.yalamanchili.office.entity.client.Client;
@@ -37,10 +36,12 @@ import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.expense.ExpenseCategory;
+import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.privacy.PrivacyMode;
 import info.yalamanchili.office.entity.privacy.PrivacySetting;
 import info.yalamanchili.office.entity.profile.Preferences;
+import info.yalamanchili.office.entity.profile.TechnologyGroup;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -384,6 +385,9 @@ public class OfficeStartup {
     }
 
     protected void initTestData() {
+        //Practice
+        getDevelopmentPractice();
+        getIBMTG();
         //Skills
         getJavaSkill();
         getDOTNETSkill();
@@ -491,6 +495,32 @@ public class OfficeStartup {
             PhoneType cellPhoneType = new PhoneType();
             cellPhoneType.setPhoneType("Home");
             return em.merge(cellPhoneType);
+        }
+    }
+
+    protected Practice getDevelopmentPractice() {
+        Query getPracticeQuery = em.createQuery("from " + Practice.class.getCanonicalName()
+                + " where name=:nameParam");
+        getPracticeQuery.setParameter("nameParam", "Application Development");
+        if (getPracticeQuery.getResultList().size() > 0) {
+            return (Practice) getPracticeQuery.getResultList().get(0);
+        } else {
+            Practice entity = new Practice();
+            entity.setName("Application Development");
+            return em.merge(entity);
+        }
+    }
+
+    protected TechnologyGroup getIBMTG() {
+        Query getQuery = em.createQuery("from " + TechnologyGroup.class.getCanonicalName()
+                + " where name=:nameParam");
+        getQuery.setParameter("nameParam", "IBM");
+        if (getQuery.getResultList().size() > 0) {
+            return (TechnologyGroup) getQuery.getResultList().get(0);
+        } else {
+            TechnologyGroup entity = new TechnologyGroup();
+            entity.setName("IBM");
+            return em.merge(entity);
         }
     }
 
