@@ -9,6 +9,7 @@ package info.yalamanchili.office.jrs.recruiting;
 
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.recruiting.SkillSetTagDao;
 import info.yalamanchili.office.entity.recruiting.SkillSetTag;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -23,6 +24,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -40,6 +43,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @PUT
     @Path("/create-add-tag/{skillSetId}/{tag}")
+    @CacheEvict(value = OfficeCacheKeys.SKILL_SET_TAG, allEntries = true)
     public void createAndAddTag(@PathParam("skillSetId") Long skillSetId, @PathParam("tag") String name) {
         skillSetTagDao.createAndAddTag(skillSetId, name);
     }
@@ -72,6 +76,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @PUT
     @Override
+    @CacheEvict(value = OfficeCacheKeys.SKILL_SET_TAG, allEntries = true)
     public SkillSetTag save(SkillSetTag entity) {
         return super.save(entity);
     }
@@ -79,6 +84,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
+    @CacheEvict(value = OfficeCacheKeys.SKILL_SET_TAG, allEntries = true)
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
@@ -94,6 +100,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
     @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
+    @Cacheable(OfficeCacheKeys.SKILL_SET_TAG)
     @Override
     public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
@@ -102,6 +109,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @GET
     @Path("/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.SKILL_SET_TAG)
     public SkillSetTagTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         SkillSetTagTable tableObj = new SkillSetTagTable();
         tableObj.setEntities(getDao().query(start, limit));

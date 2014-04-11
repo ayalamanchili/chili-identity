@@ -23,6 +23,7 @@ public interface OfficeCacheKeys {
     String TECHNOLOGY_GROUP = "technologyGroup";
     String SKILL = "skill";
     String CERTIFICATION = "certification";
+    String SKILL_SET_TAG = "skillsettag";
     String CLIENT = "client";
     String VENDOR = "vendor";
     String SUB_CONTRACTOR = "subcontractor";
