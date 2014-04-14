@@ -200,6 +200,22 @@
             <artifactId>itext</artifactId>
             <version>${itext.version}</version>
         </dependency>
+        <!-- apache POI-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>  
+            <groupId>org.apache.poi</groupId>  
+            <artifactId>poi-ooxml</artifactId>  
+            <version>${poi.version}</version>
+        </dependency> 
+        <dependency>  
+            <groupId>org.apache.poi</groupId>  
+            <artifactId>poi-scratchpad</artifactId>  
+            <version>${poi.version}</version>
+        </dependency>  
         <!--Spring Tests-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -399,6 +415,7 @@
         <jasper.version>4.5.1</jasper.version>
         <dynamic.jasper.version>4.0.0</dynamic.jasper.version>
         <itext.version>2.0.8</itext.version>
+         <poi.version>3.9</poi.version>
         <xhtmlrenderer.core.version>R8</xhtmlrenderer.core.version>
     </properties>
     <profiles>

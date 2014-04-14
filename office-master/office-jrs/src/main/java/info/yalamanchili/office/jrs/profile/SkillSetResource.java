@@ -19,6 +19,7 @@ import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.MultiSelectObj;
 import info.yalamanchili.office.privacy.PrivacyAware;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -28,6 +29,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -47,6 +51,12 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
 
     @Autowired
     public SkillSetDao skillSetDao;
+
+    @GET
+    @Path("/extract-resume/{skillSetId}")
+    public void extractResumeFileContent(@PathParam("skillSetId") Long skillSetId) {
+        skillSetDao.extractResumeContent(skillSetId);
+    }
 
     //TODO use jpa query to improve performance
     @GET
@@ -132,7 +142,41 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
         }
     }
 
+    @GET
+    @Path("/search-resumes/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<SkillSetDto> searchResumes(@QueryParam("searchText") String searchText, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
+        List<SkillSetDto> res = new ArrayList<SkillSetDto>();
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        for (SkillSet entity : skillSetDao.hibernateSearch(searchText, start, limit)) {
+            SkillSetDto dto = mapper.map(entity, SkillSetDto.class);
+            dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
+            res.add(dto);
+        }
+        return res;
+    }
+
+    @Override
     public CRUDDao getDao() {
         return skillSetDao;
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class SkillSetDto extends SkillSet {
+
+        public SkillSetDto() {
+        }
+
+        protected String employeeName;
+
+        public String getEmployeeName() {
+            return employeeName;
+        }
+
+        public void setEmployeeName(String employeeName) {
+            this.employeeName = employeeName;
+        }
+
     }
 }

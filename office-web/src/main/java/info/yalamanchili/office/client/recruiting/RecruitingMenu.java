@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.practice.PracticeSidePanel;
 import info.yalamanchili.office.client.practice.ReadAllPracticePanel;
 import info.yalamanchili.office.client.profile.technologyGroup.ReadAllTechnologyGroupPanel;
 import info.yalamanchili.office.client.profile.technologyGroup.TechnologyGroupSidePanel;
+import info.yalamanchili.office.client.recruiting.reports.ResumeSearchWidget;
 
 /**
  *
@@ -77,6 +78,8 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetSearchPanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.add(new ResumeSearchWidget());
         }
     };
 }

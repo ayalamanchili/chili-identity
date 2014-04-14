@@ -7,15 +7,20 @@
  */
 package info.yalamanchili.office.dao.profile;
 
+import info.chili.commons.FileSearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.security.SecurityUtils;
+import java.io.File;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -25,12 +30,21 @@ import org.springframework.stereotype.Repository;
 @Scope("prototype")
 public class SkillSetDao extends CRUDDao<SkillSet> {
 
+    @Async
+    @Transactional
+    public void extractResumeContent(Long skillSetId) {
+        SkillSet entity = findById(skillSetId);
+        String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + entity.getResumeUrl();
+        resumeUrl = resumeUrl.replace("entityId", entity.getId().toString());
+        File file = new File(resumeUrl);
+        String resumeContent = FileSearchUtils.extractFileContents(file);
+        entity.setResumeContent(resumeContent);
+        getEntityManager().merge(entity);
+    }
+
     public SkillSetDao() {
         super(SkillSet.class);
     }
-
-    @PersistenceContext
-    protected EntityManager em;
 
     public SkillSet getCurrentUserSkillSet() {
         TypedQuery<SkillSet> query = em.createQuery("from " + SkillSet.class.getCanonicalName() + " where employee.employeeId=:empIdParam", SkillSet.class);
@@ -41,6 +55,9 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
             return null;
         }
     }
+
+    @PersistenceContext
+    protected EntityManager em;
 
     @Override
     public EntityManager getEntityManager() {

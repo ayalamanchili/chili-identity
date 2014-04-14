@@ -18,6 +18,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -28,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -50,7 +52,14 @@ public class SkillSet extends AbstractEntity {
     /**
      * resume URL
      */
+    @Field
     protected String resumeUrl;
+    /**
+     * extracted content of resume
+     */
+    @Field
+    @Lob
+    protected String resumeContent;
     /**
      * Skills
      */
@@ -107,6 +116,16 @@ public class SkillSet extends AbstractEntity {
         this.resumeUrl = resumeUrl;
     }
 
+    @XmlTransient
+    public String getResumeContent() {
+        return resumeContent;
+    }
+
+    public void setResumeContent(String resumeContent) {
+        this.resumeContent = resumeContent;
+    }
+
+    @XmlTransient
     public List<Skill> getSkills() {
         if (this.skills == null) {
             this.skills = new ArrayList<Skill>();
@@ -118,6 +137,7 @@ public class SkillSet extends AbstractEntity {
         this.skills = skills;
     }
 
+    @XmlTransient
     public List<Certification> getCertifications() {
         if (this.certifications == null) {
             this.certifications = new ArrayList<Certification>();
@@ -154,6 +174,7 @@ public class SkillSet extends AbstractEntity {
         this.technologyGroup = technologyGroup;
     }
 
+    @XmlTransient
     public Set<SkillSetTag> getTags() {
         if (this.tags == null) {
             this.tags = new HashSet<SkillSetTag>();

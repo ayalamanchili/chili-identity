@@ -128,9 +128,23 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
 
     @Override
     protected void postUpdateSuccess(String result) {
+        extractResumeContent();
         new ResponseStatusWidget().show("Successfully Updated Employee Skill Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadSkillSetPanel(TreeEmployeePanel.instance().getEntityId()));
+    }
+
+    protected void extractResumeContent() {
+        HttpService.HttpServiceAsync.instance().doGet(getExtractResumeUrl(),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String arg0) {
+                    }
+                });
+    }
+
+    protected String getExtractResumeUrl() {
+        return OfficeWelcome.constants.root_url() + "skillset/extract-resume/" + getEntityId();
     }
 
     @Override
