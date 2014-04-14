@@ -1,11 +1,8 @@
-/**
- * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.advancerequisition;
+package info.yalamanchili.office.client.transaction;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -23,14 +20,14 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
+public class ReadAllTransactionPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllAdvanceRequisitionPanel.class.getName());
-    public static ReadAllAdvanceRequisitionPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllTransactionPanel.class.getName());
+    public static ReadAllTransactionPanel instance;
 
-    public ReadAllAdvanceRequisitionPanel() {
+    public ReadAllTransactionPanel() {
         instance = this;
-        initTable("AdvanceRequisition", OfficeWelcome.constants);
+        initTable("Transaction", OfficeWelcome.constants);
     }
 
     @Override
@@ -50,9 +47,10 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted AdvanceRequisition Information");
+        new ResponseStatusWidget().show("Successfully Deleted Transaction Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel());
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTransactionPanel());
+
     }
 
     @Override
@@ -61,7 +59,7 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getadvanceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+        HttpService.HttpServiceAsync.instance().doGet(getTransactionURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
@@ -74,12 +72,11 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Purpose"));
+        table.setText(0, 1, getKeyValue("PaymentInfo"));
         table.setText(0, 2, getKeyValue("Amount"));
-        table.setText(0, 3, getKeyValue("NeededBy"));
-        table.setText(0, 4, getKeyValue("DateRequested"));
-        table.setText(0, 5, getKeyValue("PayrollFileNumber"));
-        table.setText(0, 6, getKeyValue("transaction"));
+        table.setText(0, 3, getKeyValue("PostedDate"));
+        table.setText(0, 4, getKeyValue("TransactionType"));
+        table.setText(0, 5, getKeyValue("TransactionStatus"));
     }
 
     @Override
@@ -87,26 +84,27 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "purpose"));
+            table.setText(i, 1, JSONUtils.toString(entity, "paymentInfo"));
             table.setText(i, 2, JSONUtils.toString(entity, "amount"));
-            table.setText(i, 3, JSONUtils.toString(entity, "neededBy"));
-            table.setText(i, 4, JSONUtils.toString(entity, "dateRequested"));
-            table.setText(i, 5, JSONUtils.toString(entity, "payrollFileNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "transaction"));
+            table.setText(i, 3, JSONUtils.toString(entity, "postedDate"));
+            table.setText(i, 4, JSONUtils.toString(entity, "transactionType"));
+            table.setText(i, 5, JSONUtils.toString(entity, "transactionStatus"));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "advancerequisition/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "transaction/delete/" + entityId;
+
     }
 
-    private String getadvanceURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "advancerequisition/" + start.toString() + "/"
+    private String getTransactionURL(Integer start, String limit) {
+        return OfficeWelcome.constants.root_url() + "transaction/" + start.toString() + "/"
                 + limit.toString();
     }
 }

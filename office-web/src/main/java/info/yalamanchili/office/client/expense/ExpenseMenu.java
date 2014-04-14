@@ -14,6 +14,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
 import info.yalamanchili.office.client.expensecategory.ExpenseCategorySidePanel;
 import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
+import info.yalamanchili.office.client.transaction.ReadAllTransactionPanel;
 
 /**
  *
@@ -33,6 +34,8 @@ public class ExpenseMenu extends Composite {
         expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
         expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
         expenseMenuBar.addItem("AdvanceRequisition", expensadvancerequisitionCmd);
+        expenseMenuBar.addItem("Transaction", expensTransactionCmd);
+
 
         expenseMenuBar.addStyleName("entityMenuBar");
     }
@@ -57,6 +60,14 @@ public class ExpenseMenu extends Composite {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllAdvanceRequisitionPanel());
+//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseCategorySidePanel());
+        }
+    };
+    Command expensTransactionCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTransactionPanel());
 //            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseCategorySidePanel());
         }
     };
