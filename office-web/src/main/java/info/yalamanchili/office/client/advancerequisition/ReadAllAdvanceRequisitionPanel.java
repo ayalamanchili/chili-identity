@@ -79,7 +79,7 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("NeededBy"));
         table.setText(0, 4, getKeyValue("DateRequested"));
         table.setText(0, 5, getKeyValue("PayrollFileNumber"));
-        table.setText(0, 6, getKeyValue("transaction"));
+        table.setText(0, 6, getKeyValue("Transaction"));
     }
 
     @Override
