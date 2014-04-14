@@ -39,9 +39,7 @@ import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.practice.PracticeSidePanel;
 import info.yalamanchili.office.client.practice.ReadAllPracticePanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
-import info.yalamanchili.office.client.recruiting.skillsettag.ReadAllSkillSetTagPanel;
 import info.yalamanchili.office.client.recruiting.RecruitingMenu;
-import info.yalamanchili.office.client.recruiting.skillsettag.SkillSetTagSidePanel;
 import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
@@ -74,10 +72,10 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(myOfficePanel, "My Office", false);
         tabPanel.add(timePanel, "Time", false);
-        //TODO under construction
-//        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
-//            tabPanel.add(expensePanel, "Expense", false);
-//        }
+//        TODO under construction
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
+            tabPanel.add(expensePanel, "Expense", false);
+        }
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(profilePanel, "Profile", false);
