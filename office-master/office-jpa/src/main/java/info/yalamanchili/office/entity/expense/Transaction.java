@@ -10,33 +10,80 @@ package info.yalamanchili.office.entity.expense;
 import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 /**
  *
  * @author prasanthi.p
  */
+@Entity
+@Audited
+@XmlRootElement
+@XmlType
+@Table(name = "TransactionRec")
 public class Transaction extends AbstractEntity {
 
+    private static final long serialVersionUID = 1L;
+    /**
+     *
+     *
+     */
     @Lob
     protected String paymentInfo;
+    /**
+     *
+     */
     @NotNull(message = "{amount.not.empty.msg}")
     protected BigDecimal amount;
+    /**
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{date.not.empty.msg}")
-    protected Date date;
+    protected Date postedDate;
+    /**
+     *
+     */
     @Enumerated(EnumType.STRING)
     @Field
     protected TransactionType transactionType;
+    /**
+     *
+     */
     @Enumerated(EnumType.STRING)
     @Field
     protected TransactionStatus transactionStatus;
+    /**
+     *
+     */
+    @OneToMany(mappedBy = "parentTransaction", cascade = CascadeType.ALL)
+    protected List<Transaction> childrenTransactions;
+    /**
+     *
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ForeignKey(name = "FK_ParentTrans_Transactions")
     protected Transaction parentTransaction;
+
+    public Transaction() {
+    }
 
     public String getPaymentInfo() {
         return paymentInfo;
@@ -54,12 +101,12 @@ public class Transaction extends AbstractEntity {
         this.amount = amount;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getPostedDate() {
+        return postedDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setPostedDate(Date postedDate) {
+        this.postedDate = postedDate;
     }
 
     public TransactionType getTransactionType() {
@@ -78,6 +125,15 @@ public class Transaction extends AbstractEntity {
         this.transactionStatus = transactionStatus;
     }
 
+    @XmlTransient
+    public List<Transaction> getChildrenTransactions() {
+        return childrenTransactions;
+    }
+
+    public void setChildrenTransactions(List<Transaction> childrenTransactions) {
+        this.childrenTransactions = childrenTransactions;
+    }
+
     public Transaction getParentTransaction() {
         return parentTransaction;
     }
@@ -88,6 +144,7 @@ public class Transaction extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Expense{" + "paymentInfo=" + paymentInfo + ", amount=" + amount + ", date=" + date + ", parentTransaction=" + parentTransaction + ",transactionStatus=" + transactionStatus + ", transactionType=" + transactionType + '}';
+        return "Transaction{" + "paymentInfo=" + paymentInfo + ", amount=" + amount + ", postedDate=" + postedDate + ", transactionType=" + transactionType + ", transactionStatus=" + transactionStatus + '}';
     }
+
 }

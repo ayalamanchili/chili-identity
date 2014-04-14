@@ -10,10 +10,10 @@ package info.yalamanchili.office.entity.expense;
 import info.chili.jpa.AbstractEntity;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,28 +31,41 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class AdvanceRequisition extends AbstractEntity {
 
-    @Lob
+    private static final long serialVersionUID = 1L;
+
+    /**
+     *
+     */
     protected String purpose;
+    /**
+     *
+     */
     @NotNull(message = "{amount.not.empty.msg}")
     protected BigDecimal amount;
+    /**
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{neededBy.not.empty.msg}")
     protected Date neededBy;
+    /**
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{dateRequested.not.empty.msg}")
     protected Date dateRequested;
+    /**
+     *
+     */
     @NotEmpty(message = "{payrollFileNumbe.not.empty.msg}")
-    protected String payrollFileNumbe;
-//    @ManyToOne(cascade = CascadeType.MERGE)
-    @NotNull(message = "{transaction.not.empty.msg}")
-    protected Transaction transaction;
+    protected String payrollFileNumber;
+    /**
+     *
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    protected List<Transaction> transactions;
 
-    public Transaction getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public AdvanceRequisition() {
     }
 
     public String getPurpose() {
@@ -87,16 +100,25 @@ public class AdvanceRequisition extends AbstractEntity {
         this.dateRequested = dateRequested;
     }
 
-    public String getPayrollFileNumbe() {
-        return payrollFileNumbe;
+    public String getPayrollFileNumber() {
+        return payrollFileNumber;
     }
 
-    public void setPayrollFileNumbe(String payrollFileNumbe) {
-        this.payrollFileNumbe = payrollFileNumbe;
+    public void setPayrollFileNumber(String payrollFileNumber) {
+        this.payrollFileNumber = payrollFileNumber;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     @Override
     public String toString() {
-        return "Expense{" + "purpose=" + purpose + ", amount=" + amount + ", neededBy=" + neededBy + ", dateRequested=" + dateRequested + ",transaction=" + transaction + ", payrollFileNumbe=" + payrollFileNumbe + '}';
+        return "AdvanceRequisition{" + "purpose=" + purpose + ", amount=" + amount + ", neededBy=" + neededBy + ", dateRequested=" + dateRequested + ", payrollFileNumber=" + payrollFileNumber + '}';
     }
+
 }

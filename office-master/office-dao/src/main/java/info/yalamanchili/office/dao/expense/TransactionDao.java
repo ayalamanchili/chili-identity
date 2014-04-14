@@ -36,6 +36,6 @@ public class TransactionDao extends CRUDDao<Transaction> {
     }
 
     public static TransactionDao instance() {
-        return SpringContext.getBean(ExpenseDao.class);
+        return SpringContext.getBean(TransactionDao.class);
     }
 }

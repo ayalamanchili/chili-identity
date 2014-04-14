@@ -36,6 +36,6 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
     }
 
     public static AdvanceRequisitionDao instance() {
-        return SpringContext.getBean(ExpenseDao.class);
+        return SpringContext.getBean(AdvanceRequisitionDao.class);
     }
 }
