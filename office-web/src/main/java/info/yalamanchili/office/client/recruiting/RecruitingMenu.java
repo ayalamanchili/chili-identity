@@ -51,6 +51,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().entityTitlePanel.add(new RecruitingMenu());
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillSetTagPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetTagSidePanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
     Command practiceMaintainenceCmd = new Command() {
@@ -60,6 +61,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllPracticePanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new PracticeSidePanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
     Command technologyGroupMaintainenceCmd = new Command() {
@@ -69,6 +71,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllTechnologyGroupPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new TechnologyGroupSidePanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
 

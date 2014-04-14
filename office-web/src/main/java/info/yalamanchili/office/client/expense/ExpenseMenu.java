@@ -30,13 +30,10 @@ public class ExpenseMenu extends Composite {
     }
 
     protected void configureExpenseMenu() {
-        MenuBar menu = new MenuBar(true);
         expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
         expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
         expenseMenuBar.addItem("AdvanceRequisition", expensadvancerequisitionCmd);
         expenseMenuBar.addItem("Transaction", expensTransactionCmd);
-
-
         expenseMenuBar.addStyleName("entityMenuBar");
     }
     Command expenseMaintainenceCmd = new Command() {
