@@ -126,7 +126,6 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @GET
     @Path("/tags/{skillSetId}")
-    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
     @Transactional(readOnly = true)
     public String getSkillSetTags(@PathParam("skillSetId") Long skillSetId) {
         return mapTags(skillSetTagDao.getSkillSetTags(skillSetId));
