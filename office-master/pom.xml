@@ -145,6 +145,11 @@
             <artifactId>spring-security-acl</artifactId>
             <version>${spring.security.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <!--Activiti BPM-->
         <dependency>
             <groupId>org.activiti</groupId> 					
@@ -215,6 +220,12 @@
             <groupId>org.apache.poi</groupId>  
             <artifactId>poi-scratchpad</artifactId>  
             <version>${poi.version}</version>
+        </dependency> 
+        <!-- pdf box for pdf extraction-->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
         </dependency>  
         <!--Spring Tests-->
         <dependency>
@@ -406,6 +417,7 @@
         <office.version>1.1-SNAPSHOT</office.version>
         <chili.version>1.2-SNAPSHOT</chili.version>
         <activiti-version>5.10</activiti-version>
+        <guava.version>13.0</guava.version>
         <jersey.version>1.8</jersey.version>
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.1.RELEASE</spring.security.version>
@@ -415,7 +427,8 @@
         <jasper.version>4.5.1</jasper.version>
         <dynamic.jasper.version>4.0.0</dynamic.jasper.version>
         <itext.version>2.0.8</itext.version>
-         <poi.version>3.9</poi.version>
+        <poi.version>3.9</poi.version>
+        <pdfbox.version>1.7.0</pdfbox.version>
         <xhtmlrenderer.core.version>R8</xhtmlrenderer.core.version>
     </properties>
     <profiles>
