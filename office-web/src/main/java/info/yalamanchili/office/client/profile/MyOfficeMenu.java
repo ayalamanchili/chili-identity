@@ -13,15 +13,10 @@ import com.google.gwt.user.client.ui.MenuBar;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
-import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
-import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
-import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
-import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
 import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
 import info.yalamanchili.office.client.profile.emailtype.ReadAllEmailTypePanel;
 import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypesPanel;
@@ -40,10 +35,7 @@ public class MyOfficeMenu extends Composite {
 
     protected void configureAdminMenu() {
         myOfficeMenuBar.addItem("Employees", employeeMaintainenceCmd);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RECRUITER, ROLE.ROLE_RELATIONSHIP)) {
-            myOfficeMenuBar.addItem("Skills", skillsMaintainenceCmd);
-            myOfficeMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
-        }
+
         if (Auth.isAdmin()) {
             myOfficeMenuBar.addItem("PhoneType", phoneTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
@@ -59,23 +51,6 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeesPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
-        }
-    };
-    Command skillsMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllSkillsPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new SkillSidePanel());
-        }
-    };
-    Command certificationsMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCertificationsPanel());
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CertificationSidePanel());
         }
     };
     Command employeeTypesMaintainenceCmd = new Command() {
@@ -126,5 +101,4 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(reportL);
         }
     };
-
 }

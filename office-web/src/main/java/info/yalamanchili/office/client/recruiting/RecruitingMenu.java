@@ -17,6 +17,10 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.practice.PracticeSidePanel;
 import info.yalamanchili.office.client.practice.ReadAllPracticePanel;
+import info.yalamanchili.office.client.profile.certification.CertificationSidePanel;
+import info.yalamanchili.office.client.profile.certification.ReadAllCertificationsPanel;
+import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
+import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.profile.technologyGroup.ReadAllTechnologyGroupPanel;
 import info.yalamanchili.office.client.profile.technologyGroup.TechnologyGroupSidePanel;
 import info.yalamanchili.office.client.recruiting.reports.ResumeSearchWidget;
@@ -36,6 +40,10 @@ public class RecruitingMenu extends Composite {
 
     protected void configureRecruitingMenu() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
+//            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            recruitingMenuBar.addItem("Skills", skillsMaintainenceCmd);
+            recruitingMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
+//            }
             recruitingMenuBar.addItem("Practice", practiceMaintainenceCmd);
             recruitingMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
             recruitingMenuBar.addItem("SkillSet Tags", skillSetTagsMaintainenceCmd);
@@ -74,7 +82,6 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
         }
     };
-
     Command reportsCmd = new Command() {
         @Override
         public void execute() {
@@ -83,6 +90,23 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSetSearchPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelBottom.add(new ResumeSearchWidget());
+        }
+    };
+    Command skillsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getRecruitingPanel().clear();
+            TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillsPanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSidePanel());
+        }
+    };
+    Command certificationsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getRecruitingPanel().entityPanel.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllCertificationsPanel());
+            TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new CertificationSidePanel());
         }
     };
 }
