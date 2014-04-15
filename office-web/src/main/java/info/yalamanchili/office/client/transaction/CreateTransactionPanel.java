@@ -24,7 +24,7 @@ public class CreateTransactionPanel extends CreateComposite {
 
     public CreateTransactionPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Expenses", OfficeWelcome.constants);
+        initCreateComposite("Transaction", OfficeWelcome.constants);
     }
 
     @Override
@@ -76,13 +76,13 @@ public class CreateTransactionPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("paymentInfo", false, true, DataType.STRING_FIELD);
+        addField("paymentInfo", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addField("postedDate", false, true, DataType.DATE_FIELD);
         String[] transactionType = {"CREDIT", "DEBIT", "OTHER"};
-        addEnumField("transactionType", false, true, transactionType);
+        addEnumField("transactionType", false, false, transactionType);
         String[] transactionStatus = {"SAVED", "PENDING", "APPROVED", "COMPLETE", "CANCELED"};
-        addEnumField("transactionStatus", false, true, transactionStatus);
+        addEnumField("transactionStatus", false, false, transactionStatus);
     }
 
     @Override

@@ -77,7 +77,7 @@ public class CreateAdvanceRequisitionPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("purpose", false, true, DataType.STRING_FIELD);
+        addField("purpose", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addField("neededBy", false, true, DataType.DATE_FIELD);
         addField("dateRequested", false, true, DataType.DATE_FIELD);
