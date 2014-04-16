@@ -57,6 +57,8 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateAdvanceRequisitionPanel(getEntity(entityId)));
     }
 
     @Override
