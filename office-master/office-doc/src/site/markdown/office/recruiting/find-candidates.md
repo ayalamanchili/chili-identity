@@ -14,6 +14,7 @@ You can search based on
  - Skill Set Tag
 
 //TODO add screenshot
+![alt text](../../images/recruiting/skillbased-search.png "Advanced Search")
 
 
 Resume Search
@@ -22,3 +23,5 @@ This is a File based search that searches the contents of all employees uploaded
 
 
 //TODO add screenshot
+![alt text](../../images/recruiting/resume-search.png "Resume Search")
+
