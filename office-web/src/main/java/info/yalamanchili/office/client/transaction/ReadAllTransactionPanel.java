@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -32,6 +35,8 @@ public class ReadAllTransactionPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadTransactionPanel(getEntity(entityId)));
     }
 
     @Override
@@ -55,6 +60,8 @@ public class ReadAllTransactionPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateTransactionPanel(getEntity(entityId)));
     }
 
     @Override

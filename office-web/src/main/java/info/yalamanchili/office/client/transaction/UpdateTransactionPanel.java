@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.advancerequisition;
+package info.yalamanchili.office.client.transaction;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -21,24 +21,21 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
+public class UpdateTransactionPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(UpdateAdvanceRequisitionPanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateTransactionPanel.class.getName());
 
-    public UpdateAdvanceRequisitionPanel(JSONObject entity) {
-        initUpdateComposite(entity, "AdvanceRequisition", OfficeWelcome.constants);
+    public UpdateTransactionPanel(JSONObject entity) {
+        initUpdateComposite(entity, "Transaction", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
-        assignEntityValueFromField("purpose", entity);
+        assignEntityValueFromField("paymentInfo", entity);
         assignEntityValueFromField("amount", entity);
-        assignEntityValueFromField("neededBy", entity);
-        assignEntityValueFromField("dateRequested", entity);
-        assignEntityValueFromField("payrollFileNumber", entity);
-        assignEntityValueFromField("transactions", entity);
-        logger.info("ddd" + entity);
+        assignEntityValueFromField("postedDate", entity);
+        assignEntityValueFromField("transactionType", entity);
+        assignEntityValueFromField("transactionStatus", entity);
         return entity;
     }
 
@@ -60,19 +57,18 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("paymentInfo", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
-        assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("dateRequested", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("payrollFileNumber", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("transaction", entity);
+        assignFieldValueFromEntity("postedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("transactionType", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("transactionStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully  Updated AdvanceRequisition Information");
+        new ResponseStatusWidget().show("Successfully  Updated Transaction Information");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel());
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTransactionPanel());
     }
 
     @Override
@@ -85,12 +81,11 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("purpose", false, false, DataType.STRING_FIELD);
+        addField("paymentInfo", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
-        addField("neededBy", false, true, DataType.DATE_FIELD);
-        addField("dateRequested", false, true, DataType.DATE_FIELD);
-        addField("payrollFileNumber", false, true, DataType.STRING_FIELD);
-//        addField("transaction", false, false, DataType.ENUM_FIELD);
+        addField("postedDate", false, true, DataType.DATE_FIELD);
+        addField("transactionType", false, true, DataType.ENUM_FIELD);
+        addField("transactionStatus", false, false, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -99,6 +94,6 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "advancerequisition";
+        return OfficeWelcome.constants.root_url() + "transaction";
     }
 }

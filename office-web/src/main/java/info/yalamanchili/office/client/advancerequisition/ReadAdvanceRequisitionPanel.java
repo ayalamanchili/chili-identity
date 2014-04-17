@@ -8,54 +8,48 @@
 package info.yalamanchili.office.client.advancerequisition;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.UpdateComposite;
+import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
 /**
  *
  * @author prasanthi.p
  */
-public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
+public class ReadAdvanceRequisitionPanel extends ReadComposite {
 
-    private static Logger logger = Logger.getLogger(UpdateAdvanceRequisitionPanel.class.getName());
+    private static ReadAdvanceRequisitionPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAdvanceRequisitionPanel.class.getName());
 
-    public UpdateAdvanceRequisitionPanel(JSONObject entity) {
-        initUpdateComposite(entity, "AdvanceRequisition", OfficeWelcome.constants);
+    public static ReadAdvanceRequisitionPanel instance() {
+        return instance;
+    }
+
+    public ReadAdvanceRequisitionPanel(JSONObject entity) {
+        instance = this;
+        initReadComposite(entity, "AdvanceRequisition", OfficeWelcome.constants);
+    }
+
+    public ReadAdvanceRequisitionPanel(String id) {
+        initReadComposite(id, "AdvanceRequisition", OfficeWelcome.constants);
     }
 
     @Override
-    protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
-        assignEntityValueFromField("purpose", entity);
-        assignEntityValueFromField("amount", entity);
-        assignEntityValueFromField("neededBy", entity);
-        assignEntityValueFromField("dateRequested", entity);
-        assignEntityValueFromField("payrollFileNumber", entity);
-        assignEntityValueFromField("transactions", entity);
-        logger.info("ddd" + entity);
-        return entity;
-    }
-
-    @Override
-    protected void updateButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
-                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
             @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
+            public void onResponse(String response) {
+                logger.info("read ec6 response" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
             }
         });
+
     }
 
     @Override
@@ -66,13 +60,6 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         assignFieldValueFromEntity("dateRequested", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("payrollFileNumber", entity, DataType.STRING_FIELD);
 //        assignFieldValueFromEntity("transaction", entity);
-    }
-
-    @Override
-    protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully  Updated AdvanceRequisition Information");
-        TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel());
     }
 
     @Override
