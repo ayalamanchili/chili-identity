@@ -10,17 +10,21 @@ update your profile with the apprioriate Practice and Technology Group. If  the 
 
 //TODO add screenshot
 
+![alt text](../../images/practice-and-technology-profile.png "Practice")
+
 Skills
 -----
 Add and remove skills that pertain to your profile. If any of the skills are missing please submit a request and it will be reviewed and added, after which your will be getting a email so that you can add it to your profile.
 
 //TODO add profile skills image
+![alt text](../../images/skill-profile.png "Skills")
 
 Cerfifications
 -----
 Add and remove certifications that pertain to your profile. If any of the certification are missing please submit a request and it will be reviewed and added, after which your will be getting a email so that you can add it to your profile
 
 //TODO add profile certifications image
+![alt text](../../images/certification-profile.png "Cerfifications")
 
 Tags
 ----
@@ -28,9 +32,12 @@ you can add various search tags that pertain to your skillset eg: xml, css, Powe
 It is very important to make sure your tags are populatesd with all necessary information.
 
 // TODO add screen shot
+![alt text](../../images/skillsettag-profile.png "Tags")
+
 
 Resume
 ----
 Please make sure you have the latest version of your resume uploaded.
 There are back end recruiting processes that scan and filter your resume based on job requirments.
+![alt text](../../images/resume-profile.png "Tags")
 

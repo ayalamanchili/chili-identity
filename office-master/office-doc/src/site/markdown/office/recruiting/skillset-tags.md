@@ -5,7 +5,7 @@ Skill Set Tag
 
 Add New Skill Set Tag
 ----
-![alt text](../images/skillsettag.png "Skill Request")
+![alt text](../../images/recruiting/skillsettag.png "Skill  Set Tag Request")
 
 Update Skill Set With Tags
 ----
@@ -16,14 +16,14 @@ Update Skill Set With Tags
 
 Add Tag
 ----
-![alt text](../images/add-skillsettag-profile.png "Skill Request")
+![alt text](../../images/recruiting/add-skillsettag-profile.png "Skill Set Tag Request")
 
 Remove Tag
 ----
-![alt text](../images/remove-skillsettag-profile.png "Skill Request")
+![alt text](../../images/recruiting/remove-skillsettag-profile.png "Skill Set Tag Request")
 
 Create New Tag
 ----
-![alt text](../images/create-new-skillsettag-profile.png "Skill Request")
+![alt text](../../images/recruiting/create-new-skillsettag-profile.png "Skill Set Tag Request")
 
 
