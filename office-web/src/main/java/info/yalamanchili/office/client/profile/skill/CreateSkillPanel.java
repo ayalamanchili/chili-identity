@@ -14,9 +14,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
-import info.chili.gwt.fields.FileuploadField;
-import info.yalamanchili.office.client.profile.employee.CreateEmployeePanel;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -66,10 +63,10 @@ public class CreateSkillPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Skill Created");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new SkillSidePanel());
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSkillsPanel());
+        TabPanel.instance().recruitingPanel.sidePanelTop.clear();
+        TabPanel.instance().recruitingPanel.sidePanelTop.add(new SkillSidePanel());
+        TabPanel.instance().recruitingPanel.entityPanel.clear();
+        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillsPanel());
     }
 
     @Override

@@ -14,9 +14,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.UpdateComposite;
-import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
 import info.chili.gwt.rpc.HttpService;
-import java.util.logging.Logger;
 
 /**
  *
@@ -62,8 +60,8 @@ public class UpdateSkillPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Skill Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllSkillsPanel());
+        TabPanel.instance().recruitingPanel.entityPanel.clear();
+        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadAllSkillsPanel());
     }
 
     @Override
