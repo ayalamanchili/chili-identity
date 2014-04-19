@@ -8,7 +8,6 @@
 package info.yalamanchili.office.client.profile.skillset;
 
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 
@@ -16,6 +15,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
@@ -30,7 +30,7 @@ public class SkillSetOptionsPanel extends ALComposite implements ClickHandler {
 
     protected String employeeId;
     protected HorizontalPanel panel = new HorizontalPanel();
-    protected ClickableLink updateSkillSetL = new ClickableLink("Update");
+    protected Button updateSkillSetB = new Button("Update");
 
     public SkillSetOptionsPanel(String employeeId) {
         this.employeeId = employeeId;
@@ -40,14 +40,14 @@ public class SkillSetOptionsPanel extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_RECRUITER)) {
-            panel.add(updateSkillSetL);
+            panel.add(updateSkillSetB);
         }
 
     }
 
     @Override
     protected void addListeners() {
-        updateSkillSetL.addClickHandler(this);
+        updateSkillSetB.addClickHandler(this);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SkillSetOptionsPanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(updateSkillSetL)) {
+        if (clickEvent.getSource().equals(updateSkillSetB)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             HttpService.HttpServiceAsync.instance().doGet(getSkillSetURI(),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {

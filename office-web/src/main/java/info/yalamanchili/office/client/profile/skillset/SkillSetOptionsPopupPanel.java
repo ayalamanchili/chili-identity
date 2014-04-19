@@ -30,12 +30,12 @@ public class SkillSetOptionsPopupPanel extends SkillSetOptionsPanel {
 
     @Override
     protected void addWidgets() {
-        panel.add(updateSkillSetL);
+        panel.add(updateSkillSetB);
     }
 
     @Override
     public void onClick(ClickEvent clickEvent) {
-        if (clickEvent.getSource().equals(updateSkillSetL)) {
+        if (clickEvent.getSource().equals(updateSkillSetB)) {
             HttpService.HttpServiceAsync.instance().doGet(getSkillSetURI(),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                         @Override
