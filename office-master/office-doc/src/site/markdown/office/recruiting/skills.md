@@ -10,7 +10,7 @@ This Menu is used to maintain the master list of all the New Skills that will be
 
 Task Created Under Home Page
 ----
-![alt text](../images/recruiting/new-skill-task.png "Skill Request")
+![alt text](../../images/recruiting/new-skill-task.png "Skill Request")
 
 Request Details
 ----
