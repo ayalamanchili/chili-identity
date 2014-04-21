@@ -70,11 +70,13 @@ public class ReadTransactionPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("paymentInfo", false, true, DataType.STRING_FIELD);
-        addField("amount", false, true, DataType.CURRENCY_FIELD);
-        addField("postedDate", false, true, DataType.DATE_FIELD);
-        addField("transactionType", false, true, DataType.ENUM_FIELD);
-        addField("transactionStatus", false, false, DataType.ENUM_FIELD);
+        addField("paymentInfo", true, false, DataType.STRING_FIELD);
+        addField("amount", true, false, DataType.CURRENCY_FIELD);
+        addField("postedDate", true, false, DataType.DATE_FIELD);
+        String[] transactionType = {"CREDIT", "DEBIT", "OTHER"};
+        addEnumField("transactionType", true, false, transactionType);
+        String[] transactionStatus = {"SAVED", "PENDING", "APPROVED", "COMPLETE", "CANCELED"};
+        addEnumField("transactionStatus", true, false, transactionStatus);
     }
 
     @Override

@@ -72,12 +72,12 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("purpose", false, false, DataType.STRING_FIELD);
-        addField("amount", false, true, DataType.CURRENCY_FIELD);
-        addField("neededBy", false, true, DataType.DATE_FIELD);
-        addField("dateRequested", false, true, DataType.DATE_FIELD);
-        addField("payrollFileNumber", false, true, DataType.STRING_FIELD);
-//        addField("transaction", false, false, DataType.ENUM_FIELD);
+        addField("purpose", true, false, DataType.STRING_FIELD);
+        addField("amount", true, false, DataType.CURRENCY_FIELD);
+        addField("neededBy", true, false, DataType.DATE_FIELD);
+        addField("dateRequested", true, false, DataType.DATE_FIELD);
+        addField("payrollFileNumber", true, false, DataType.STRING_FIELD);
+//        addField("transaction", true, false, DataType.ENUM_FIELD);
     }
 
     @Override
