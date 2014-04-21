@@ -32,6 +32,16 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
 
     @Async
     @Transactional
+    public void indexAllResumes() {
+        for (SkillSet skillSet : query(0, 2000)) {
+            if (!skillSet.getResumeUrl().equalsIgnoreCase("ResumeUrl")) {
+                extractResumeContent(skillSet.getId());
+            }
+        }
+    }
+
+    @Async
+    @Transactional
     public void extractResumeContent(Long skillSetId) {
         SkillSet entity = findById(skillSetId);
         String resumeUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + entity.getResumeUrl();
