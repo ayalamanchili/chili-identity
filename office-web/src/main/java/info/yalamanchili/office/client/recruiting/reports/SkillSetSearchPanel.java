@@ -18,7 +18,9 @@ import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
+import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel;
+import info.yalamanchili.office.client.profile.technologyGroup.SelectTechnologyGroupWidget;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -29,6 +31,8 @@ import java.util.logging.Logger;
 public class SkillSetSearchPanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SkillSetSearchPanel.class.getName());
+    protected SelectPracticeWidget practiceWidget = new SelectPracticeWidget(false, false);
+    protected SelectTechnologyGroupWidget tgWidget = new SelectTechnologyGroupWidget(false, false);
 
     public SkillSetSearchPanel() {
         init("Skill Set Search", "SkillSet", OfficeWelcome.constants);
@@ -44,8 +48,8 @@ public class SkillSetSearchPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("practice", DataType.STRING_FIELD);
-        addField("technologyGroup", DataType.STRING_FIELD);
+        addDropDown("practice", practiceWidget);
+        addDropDown("technologyGroup", tgWidget);
         addField("skills", DataType.STRING_FIELD);
         addField("certifications", DataType.STRING_FIELD);
         addField("tags", DataType.STRING_FIELD);
@@ -107,22 +111,6 @@ public class SkillSetSearchPanel extends SearchComposite {
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getPracticeNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("practice");
-                sb.loadData(values.values());
-            }
-        });
-        HttpService.HttpServiceAsync.instance().doGet(getTechnologyGroupNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("technologyGroup");
-                sb.loadData(values.values());
-            }
-        });
         HttpService.HttpServiceAsync.instance().doGet(getSkillsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -147,14 +135,6 @@ public class SkillSetSearchPanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
-    }
-
-    protected String getPracticeNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "practice/dropdown/0/10000?column=id&column=name";
-    }
-
-    protected String getTechnologyGroupNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "technologyGroup/dropdown/0/10000?column=id&column=name";
     }
 
     protected String getSkillsDropDownUrl() {

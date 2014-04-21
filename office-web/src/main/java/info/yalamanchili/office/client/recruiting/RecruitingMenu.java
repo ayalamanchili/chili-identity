@@ -40,10 +40,8 @@ public class RecruitingMenu extends Composite {
 
     protected void configureRecruitingMenu() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RECRUITER)) {
-//            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_RELATIONSHIP)) {
             recruitingMenuBar.addItem("Skills", skillsMaintainenceCmd);
             recruitingMenuBar.addItem("Certifications", certificationsMaintainenceCmd);
-//            }
             recruitingMenuBar.addItem("Practice", practiceMaintainenceCmd);
             recruitingMenuBar.addItem("TechnologyGroup", technologyGroupMaintainenceCmd);
             recruitingMenuBar.addItem("SkillSet Tags", skillSetTagsMaintainenceCmd);
