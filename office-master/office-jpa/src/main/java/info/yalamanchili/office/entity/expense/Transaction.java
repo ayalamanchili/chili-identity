@@ -33,11 +33,11 @@ import org.hibernate.search.annotations.Field;
  *
  * @author prasanthi.p
  */
-@Entity
-@Audited
-@XmlRootElement
-@XmlType
-@Table(name = "TransactionRec")
+//@Entity
+//@Audited
+//@XmlRootElement
+//@XmlType
+//@Table(name = "TransactionRec")
 public class Transaction extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;

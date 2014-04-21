@@ -25,10 +25,10 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author prasanthi.p
  */
-@Entity
-@Audited
-@XmlRootElement
-@XmlType
+//@Entity
+//@Audited
+//@XmlRootElement
+//@XmlType
 public class AdvanceRequisition extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
