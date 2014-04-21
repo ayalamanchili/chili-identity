@@ -18,6 +18,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -77,7 +78,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
      */
     CaptionPanel tagsCP = new CaptionPanel("Tags");
     FlowPanel tagsPanel = new FlowPanel();
-    SuggestBox tagsSB = new SuggestBox(OfficeWelcome.constants, "name", "SkillSetTag", false, false);
+    SuggestBox tagsSB = new SuggestBox(OfficeWelcome.constants, "search", "SkillSetTag", false, false);
     Button addTagB = new Button("Add Tag");
     Button removeTagB = new Button("Remove Tag");
     RichTextArea tagsTA = new RichTextArea();
@@ -170,6 +171,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
         entityFieldsPanel.add(newTGL);
         entityFieldsPanel.add(resumeUploadPanel);
         //Tags
+        tagsPanel.add(new HTML("<h5>Add Tags that will reflect your niche skills. These are used by search engine for recruiting purposes. </br> You can create new Tags as needed.</h5>"));
         tagsPanel.add(tagsSB);
         tagsSB.addWidgetToFieldPanel(createTagL);
         tagsPanel.add(addTagB);
