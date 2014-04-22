@@ -188,7 +188,14 @@ public class SearchEmployeePanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
-        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getFirstNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
+                loadSearchSuggestions(values.values());
+            }
+        });
+        HttpService.HttpServiceAsync.instance().doGet(getLastNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
@@ -223,10 +230,6 @@ public class SearchEmployeePanel extends SearchComposite {
                 sb.loadData(values.values());
             }
         });
-    }
-
-    protected String getNameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName&column=lastName";
     }
 
     protected String getFirstNameDropDownUrl() {
