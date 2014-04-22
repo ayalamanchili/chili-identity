@@ -19,4 +19,3 @@ Practice request
 
 Practice for process task.
 ----
-![alt text](../../images/recruiting/new-practice-process-request-profile.png "Practice")

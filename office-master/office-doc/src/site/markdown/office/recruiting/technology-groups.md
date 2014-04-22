@@ -9,7 +9,6 @@ This Menu is used to maintain the master list of all the Technology group that w
 
 Process of the technology group request
 ----
-![alt text](../../images/recruiting/new-technology-process-request-profile.png "Technology Group")
 
 Task Created Under Home Page
 ----
