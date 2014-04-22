@@ -20,7 +20,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.email.ReadEmailPanel;
 import java.util.logging.Logger;
 
 /**
@@ -76,7 +75,7 @@ public class ReadAllSkillSetsPanel extends CRUDReadAllComposite {
     public void viewClicked(String entityId) {
         // TODO Auto-generated method stub
         TabPanel.instance().recruitingPanel.entityPanel.clear();
-        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadEmailPanel(getEntity(entityId)));
+        TabPanel.instance().recruitingPanel.entityPanel.add(new ReadSkillSetPanel(getEntity(entityId)));
     }
 
     @Override
