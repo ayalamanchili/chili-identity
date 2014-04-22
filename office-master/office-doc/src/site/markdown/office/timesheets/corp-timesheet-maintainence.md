@@ -3,13 +3,13 @@ Maintaining Time sheets
 (Time --> Corporate Time)
 How to view a employee's all time sheets
 -----
-- Select employee and click on view in timesheet panel to see corporate time summary of an employee.
+- Select employee and click on view in time sheet panel to see corporate time summary of an employee.
 
-Create a update timesheets manually
+Create a update time sheets manually
 -----
 - Please note creating time sheets manually must be done with caution and when there is a exception**
 
-- Click on Enter TimeSheet link in side panel by navigating to above specified navigation.
+- Click on Enter Time Sheet link in side panel by navigating to above specified navigation.
 - Select employee,fill leave details and click on create.
 
 Categories of time sheets

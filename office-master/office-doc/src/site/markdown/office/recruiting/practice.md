@@ -7,7 +7,6 @@ Create/Update/Delete Practice
 ----
 Navigation: Recruiting--> Practice.
 ![alt text](../../images/recruiting/create-update-delete-practice.png "Practice")
-//TODO add screen shot.
 
 New Practice Request
 ----
@@ -18,6 +17,6 @@ New Practice Request
 Practice request
 ----
 
-//TODO add screen shot for process task.
+Practice for process task.
 ----
 ![alt text](../../images/recruiting/new-practice-process-request-profile.png "Practice")

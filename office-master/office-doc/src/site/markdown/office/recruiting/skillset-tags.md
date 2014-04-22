@@ -11,7 +11,7 @@ Update Skill Set With Tags
 ----
 (Navigation : Profile >>> Skill Set >>> Update >>> Skill Set Tag)
 
- -  This Menu is used to maintain the all  skillset tags eg: xml, css, Power point etc.This tags are used to search a resume and
+ -  This Menu is used to maintain the all  skill set tags eg: xml, css, Power point etc.This tags are used to search a resume and
  -  that will be used by employee's when updating their profile.
  -  Here Employee can add the tag , remove the tag and create the new tag 
 

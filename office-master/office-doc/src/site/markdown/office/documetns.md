@@ -2,7 +2,7 @@ Employee Document
 ===========
 (Navigation : My Office >>> Employees >>> View/Update Employee>>> Documents)
 
-    - In Employee Document We Can Upload The i9 and Everification Forms of the Employee.
+    - In Employee Document We Can Upload The i9 and E verification  Forms of the Employee.
     - Corporate Employee Only can add and remove the documents
 
 Employee Documents
