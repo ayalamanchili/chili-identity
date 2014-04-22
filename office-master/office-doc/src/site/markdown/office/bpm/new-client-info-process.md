@@ -4,7 +4,7 @@ Creating New Client Information Process
 ![alt text](../../images/bpm/new-client-info/new_client_information.png "New Client Info")
 
 ### Step 1 Create New Client Information
- Any person from the HR, Relationship,Contracts(RIME_ROLE), Recruiter Depts can create a new client information when consultant joins a new project or change project.
+ Any person from the HR, Relationship,Contracts(RIME_ROLE), Recruiter Depts can create a new client information when employee joins a new project or change project.
  - Goto --> MyOffice tab--> search for employee
  ![alt text](../../images/bpm/new-client-info/create-client-info-link.png "New Client Info")
  - populate all the applicable fields
