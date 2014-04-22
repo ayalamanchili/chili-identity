@@ -16,6 +16,8 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.template.TemplateService;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,7 +37,6 @@ public class ContactInfoReportingService {
 
     @Autowired
     protected Mapper mapper;
-
     @PersistenceContext
     protected EntityManager em;
 
@@ -46,6 +47,8 @@ public class ContactInfoReportingService {
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
             dto.setJobTitle(emp.getJobTitle());
+
+
             if (emp.getPrimaryEmail() != null) {
                 dto.setEmail(emp.getPrimaryEmail().getEmail());
             }
@@ -56,6 +59,11 @@ public class ContactInfoReportingService {
                 }
             }
             res.add(dto);
+            Collections.sort(res, new Comparator<EmployeeDto>() {
+                public int compare(EmployeeDto dto1, EmployeeDto dto2) {
+                    return dto1.getFirstName().compareTo(dto2.getFirstName());
+                }
+            });
         }
         String report = TemplateService.instance().process("corp-emp-contact-info.xhtml", res);
         //TODO move to commons
