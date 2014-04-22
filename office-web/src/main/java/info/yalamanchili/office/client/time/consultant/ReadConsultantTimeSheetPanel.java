@@ -16,7 +16,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import info.yalamanchili.office.client.profile.employee.SelectConsultantEmployeeWidget;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
 
@@ -34,23 +34,23 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
 
     public ReadConsultantTimeSheetPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "ConsultantTimeSheet", OfficeWelcome.constants);
+        initReadComposite(entity, "EmployeeTimeSheet", OfficeWelcome.constants);
     }
 
     public ReadConsultantTimeSheetPanel(String id) {
-        initReadComposite(id, "ConsultantTimeSheet", OfficeWelcome.constants);
+        initReadComposite(id, "EmployeeTimeSheet", OfficeWelcome.constants);
     }
 
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", new SelectCorpEmployeeWidget(true, false));
+        addDropDown("employee", new SelectConsultantEmployeeWidget(true, false));
         addEnumField("category", true, false, TimeSheetCategory.names());
         addField("startDate", true, false, DataType.DATE_FIELD);
         addField("endDate", true, false, DataType.DATE_FIELD);
