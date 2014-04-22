@@ -12,6 +12,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.BPMUtils;
+import info.yalamanchili.office.bpm.EmailEscalation;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
@@ -181,12 +182,14 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
      * Leave Request Escalation Task
      *
      * @param execution
+     * @throws java.lang.Exception
      */
     @Override
-    public void execute(DelegateExecution execution) {
+    public void execute(DelegateExecution execution) throws Exception {
         leaveRequestEscationTask(execution);
     }
 
-    protected void leaveRequestEscationTask(DelegateExecution execution) {
+    protected void leaveRequestEscationTask(DelegateExecution execution) throws Exception {
+        new EmailEscalation().execute(execution);
     }
 }
