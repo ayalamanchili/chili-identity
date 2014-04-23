@@ -273,6 +273,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
     public void selectRecruitingPanel() {
         recruitingPanel.entityPanel.clear();
         recruitingPanel.sidePanelTop.clear();
+        recruitingPanel.sidePanelBottom.clear();
         recruitingPanel.entityTitlePanel.add(new RecruitingMenu());
         recruitingPanel.entityPanel.add(new ReadAllSkillsPanel());
         recruitingPanel.sidePanelTop.add(new SkillSidePanel());
