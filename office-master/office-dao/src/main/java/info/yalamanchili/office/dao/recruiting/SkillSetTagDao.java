@@ -27,7 +27,10 @@ import org.springframework.stereotype.Repository;
 public class SkillSetTagDao extends CRUDDao<SkillSetTag> {
 
     public void createAndAddTag(Long skillSetId, String name) {
-        SkillSetTag tag = new SkillSetTag();
+        SkillSetTag tag = EntityQueryUtils.findEntity(getEntityManager(), SkillSetTag.class, "name", name.trim());
+        if (tag == null) {
+            tag = new SkillSetTag();
+        }
         tag.setName(name);
         tag = save(tag);
         SkillSetDao.instance().findById(skillSetId).addTag(tag);
