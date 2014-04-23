@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -31,6 +32,8 @@ import org.hibernate.envers.Audited;
 @Audited
 public class TicketComment extends AbstractEntity {
 
+    @Transient
+    private static final long serialVersionUID = 1L;
     /**
      * Ticket comment
      */
@@ -52,7 +55,6 @@ public class TicketComment extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_SRV_TKT_CMTS")
     protected ServiceTicket ticket;
-
 
     /**
      * -------------------Getters and Setters

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -27,7 +28,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 @Entity
 public class File extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @NotEmpty(message = "{file.not.empty.msg}")
     @Index(name = "FILE_NM")
     protected String name;

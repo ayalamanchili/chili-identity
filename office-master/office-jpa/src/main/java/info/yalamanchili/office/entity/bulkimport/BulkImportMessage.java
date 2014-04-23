@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -26,7 +27,9 @@ import org.hibernate.envers.Audited;
 @XmlRootElement
 @Audited
 public class BulkImportMessage extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     protected String code;
     protected String description;
     @Enumerated(EnumType.STRING)

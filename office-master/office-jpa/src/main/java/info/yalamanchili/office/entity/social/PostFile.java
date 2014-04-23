@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -29,6 +30,9 @@ import org.hibernate.envers.Audited;
 @XmlRootElement
 @XmlType
 public class PostFile extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     protected String fileURL;
     @Enumerated(EnumType.STRING)

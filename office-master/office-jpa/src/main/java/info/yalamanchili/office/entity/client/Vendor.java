@@ -20,6 +20,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -40,7 +41,8 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Vendor.class, fields = {"name"}, message = "{vendor.name.not.unique.msg}")
 public class Vendor extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
     /**
      * name
      */

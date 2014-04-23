@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -18,7 +19,9 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class LoginActivity extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     protected String name;
     @org.hibernate.annotations.Index(name = "LOGINACT_EMPID_IDX")
     protected String employeeId;

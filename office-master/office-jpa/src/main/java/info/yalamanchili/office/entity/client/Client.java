@@ -18,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,7 +38,9 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Client.class, fields = {"name"}, message = "{client.name.not.unique.msg}")
 public class Client extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @NotEmpty(message = "{client.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "CLNT_NM")
     protected String name;

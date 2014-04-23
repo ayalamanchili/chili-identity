@@ -13,10 +13,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "acl_class")
 public class AclClass implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue

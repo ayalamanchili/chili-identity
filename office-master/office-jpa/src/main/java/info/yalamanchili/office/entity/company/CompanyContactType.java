@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
@@ -30,7 +31,9 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = CompanyContactType.class, fields = {"name"}, message = "{companycontacttype.name.not.unique.msg}")
 public class CompanyContactType extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @Field
     @NotEmpty(message = "{companycontacttype.name.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "CMP_CNT_TP_NM")

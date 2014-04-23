@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
@@ -34,7 +35,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Entity
 @Audited
 public class EmployeeDocument extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     /*DocumentType */
     @NotNull(message = "{documentType.not.empty.msg}")
     @Enumerated(EnumType.STRING)

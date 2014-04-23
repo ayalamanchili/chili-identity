@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -36,6 +37,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Audited
 public class Message extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     @Field
     @NotEmpty(message = "{subject.not.empty.msg}")

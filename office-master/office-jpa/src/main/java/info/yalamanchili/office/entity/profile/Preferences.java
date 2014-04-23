@@ -10,6 +10,7 @@ package info.yalamanchili.office.entity.profile;
 import info.chili.jpa.AbstractEntity;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.envers.Audited;
@@ -25,6 +26,9 @@ import org.hibernate.search.annotations.Indexed;
 @Audited
 public class Preferences extends AbstractEntity {
 
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     protected Boolean enableEmailNotifications = true;
     @OneToOne(mappedBy = "preferences")
     protected Employee employee;

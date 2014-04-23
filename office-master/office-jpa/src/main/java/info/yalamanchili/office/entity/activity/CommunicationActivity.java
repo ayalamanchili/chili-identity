@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -40,6 +41,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Entity
 @Audited
 public class CommunicationActivity extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{type.not.empty.msg}")

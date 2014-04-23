@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
@@ -31,7 +32,9 @@ import org.hibernate.search.annotations.Indexed;
 @Entity
 @Audited
 public class ClientInfoComment extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @Lob
     protected String comment;
     protected String createdBy;

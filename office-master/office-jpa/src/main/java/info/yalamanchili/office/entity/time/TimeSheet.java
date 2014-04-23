@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,7 +40,8 @@ import org.hibernate.search.annotations.Field;
 @XmlType
 @Audited
 public class TimeSheet extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
     /**
      * quickbooksRate
      */

@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -25,7 +26,9 @@ import org.hibernate.envers.Audited;
 @Audited
 @XmlRootElement
 public class BulkImportEntity extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @org.hibernate.annotations.Index(name = "BLK_IMPRT_ENTY_TP")
     protected String entityType;
     @org.hibernate.annotations.Index(name = "BLK_IMPRT_ENTY_ID")

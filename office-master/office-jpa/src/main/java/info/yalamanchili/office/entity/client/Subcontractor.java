@@ -17,6 +17,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -36,7 +37,9 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Subcontractor.class, fields = {"name"}, message = "{subcontractor.name.not.unique.msg}")
 public class Subcontractor extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     /**
      * sub contractor name
      */

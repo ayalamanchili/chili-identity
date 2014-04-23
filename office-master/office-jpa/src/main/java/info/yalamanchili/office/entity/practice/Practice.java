@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
@@ -30,6 +31,9 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Practice.class, fields = {"name"}, message = "{practice.name.not.unique.msg}")
 public class Practice extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     @Field
     @NotEmpty(message = "{practice.name.not.empty.msg}")

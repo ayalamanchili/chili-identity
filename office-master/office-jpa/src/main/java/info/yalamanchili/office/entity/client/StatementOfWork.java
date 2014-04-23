@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -34,7 +35,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 public class StatementOfWork extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @NotEmpty(message = "{statementofwork.not.empty.msg}")
     protected String name;
     protected String description;

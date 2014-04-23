@@ -13,6 +13,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -31,6 +32,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 public class Todo extends AbstractEntity {
 
+    @Transient
+    private static final long serialVersionUID = 1L;
     @Field
     @NotEmpty(message = "{todo.name.not.empty.msg}")
     protected String name;

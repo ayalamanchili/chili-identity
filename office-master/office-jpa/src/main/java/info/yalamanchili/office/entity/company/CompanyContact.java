@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,7 +29,9 @@ import org.hibernate.search.annotations.Indexed;
 @Entity
 @Audited
 public class CompanyContact extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_CMP_CNT_TP_CONTACTS")
     @NotNull(message = "{contacttype.not.empty.msg}")

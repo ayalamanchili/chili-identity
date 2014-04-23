@@ -14,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -28,6 +29,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @XmlRootElement
 public class Feedback extends AbstractEntity {
 
+    @Transient
+    private static final long serialVersionUID = 1L;
     @Field
     @NotEmpty(message = "{feedbackmsg.not.empty.msg}")
     @Lob

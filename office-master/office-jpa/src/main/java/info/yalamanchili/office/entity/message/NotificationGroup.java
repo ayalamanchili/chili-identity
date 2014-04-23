@@ -15,6 +15,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
@@ -35,6 +36,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Unique(entity = NotificationGroup.class, fields = {"name"}, message = "{notificationgroup.name.not.unique.msg}")
 @XmlRootElement
 public class NotificationGroup extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     @Field
     @NotEmpty(message = "{name.not.empty.msg}")

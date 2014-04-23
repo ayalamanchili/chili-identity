@@ -11,6 +11,7 @@ import info.chili.jpa.validation.Unique;
 import info.chili.jpa.AbstractEntity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
@@ -29,6 +30,9 @@ import org.hibernate.validator.constraints.NotEmpty;
         = @UniqueConstraint(columnNames = {"name"}))
 @Unique(entity = Skill.class, fields = {"name"}, message = "{skill.name.not.unique.msg}")
 public class Skill extends AbstractEntity {
+
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     @NotEmpty(message = "{skill.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "SKL_NM")

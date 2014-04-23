@@ -18,6 +18,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,7 +34,9 @@ import org.hibernate.envers.Audited;
 @XmlType
 @Audited
 public class AdjustmentHours extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     @Enumerated(EnumType.STRING)
     protected AdjustmentType adjustmentType;
     protected BigDecimal paidRate;

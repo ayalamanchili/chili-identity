@@ -14,6 +14,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
@@ -29,7 +30,9 @@ import org.hibernate.search.annotations.Indexed;
 @Entity
 @Audited
 public class BillingRate extends AbstractEntity {
-
+    @Transient
+    private static final long serialVersionUID = 1L;
+    
     /**
      * PayRate
      */
