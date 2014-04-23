@@ -16,6 +16,4 @@ New Practice Request
  - The can also be rejected which will send a rejection email to the employee including the description for rejection.
 Practice request
 ----
-
-Practice for process task.
-----
+![alt text](../../images/recruiting/practice-request-submit.png "Practice")

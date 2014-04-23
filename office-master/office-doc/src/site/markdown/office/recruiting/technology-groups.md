@@ -9,6 +9,7 @@ This Menu is used to maintain the master list of all the Technology group that w
 
 Process of the technology group request
 ----
+![alt text](../../images/recruiting/technology-group-request.png "Skill Request")
 
 Task Created Under Home Page
 ----
