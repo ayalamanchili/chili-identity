@@ -123,6 +123,6 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
 
     @Override
     protected String getDocumentationLink() {
-        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/consultant-leave-request.html";
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/employee-leave-request.html";
     }
 }
