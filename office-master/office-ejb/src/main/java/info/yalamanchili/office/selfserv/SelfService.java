@@ -237,6 +237,8 @@ public class SelfService {
                 return OfficeRole.ROLE_HR;
             case Billing:
                 return OfficeRole.ROLE_TIME;
+            case Recruiting:
+                return OfficeRole.ROLE_RECRUITER;
             default:
                 return OfficeRole.ROLE_RELATIONSHIP;
         }

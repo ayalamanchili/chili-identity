@@ -18,6 +18,7 @@ public enum TicketType {
     Payroll,
     Immigration,
     HealthInsurance,
+    Recruiting,
     Network,
     Other;
 
