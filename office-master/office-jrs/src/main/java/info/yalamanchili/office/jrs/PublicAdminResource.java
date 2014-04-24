@@ -45,12 +45,12 @@ public class PublicAdminResource {
      * to to employee primary email with password
      *
      * @param empId
+     * @return email address
      */
     @Path("/forgotpassword/{empId}")
     @GET
     @PreAuthorize("permitAll")
-    public void forgotPasswordReset(@PathParam("empId") String empId) {
-
+    public String forgotPasswordReset(@PathParam("empId") String empId) {
         Employee emp = EmployeeDao.instance().findEmployeWithEmpId(empId);
         if (emp == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employee", "Invalid EmployeeId, Please submit AccountReset form located at the bottom");
@@ -58,9 +58,10 @@ public class PublicAdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         String tempPassword = employeeService.generatepassword();
         User user = new User();
-        user.setUserName(empId.toString());
+        user.setUserName(empId);
         user.setNewPassword(tempPassword);
         employeeService.resetPassword(emp.getId(), user);
+        return emp.getPrimaryEmail().getEmail();
     }
 
     @Path("/account_reset")

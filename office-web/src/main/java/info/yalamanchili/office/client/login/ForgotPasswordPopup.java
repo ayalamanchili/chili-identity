@@ -43,7 +43,7 @@ class ForgotPasswordPopup extends Composite implements ClickHandler {
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String arg0) {
-                            new ResponseStatusWidget().show("please check your email");
+                            new ResponseStatusWidget().show("Temporary password has been send to:"+arg0);
                             GenericPopup.instance().hide();
                         }
                     });
