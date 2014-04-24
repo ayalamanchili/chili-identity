@@ -17,3 +17,9 @@ New Practice Request
 Practice request
 ----
 ![alt text](../../images/recruiting/practice-request-submit.png "Practice")
+Practice task
+----
+![alt text](../../images/recruiting/practice-task-request.png "Practice")
+Practice task process
+----
+![alt text](../../images/recruiting/practice-request-process-home.png "Practice")

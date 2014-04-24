@@ -6,7 +6,9 @@ This Menu is used to maintain the master list of all the Technology group that w
   -  At which point a Task and a Email will be sent to recruiting department
   -  Employee from recruiting dept can create the new Technology Group and approved the request so a email will be sent to employee who requested it.
   -  The can also be rejected which will send a rejection email to the employee including the description for rejection.
-
+Create/Update/Delete Technology Group
+----
+![alt text](../../images/recruiting/create-update-delete-technology-roup.png "Skill Request")
 Process of the technology group request
 ----
 ![alt text](../../images/recruiting/technology-group-request.png "Skill Request")
