@@ -1,7 +1,13 @@
 Manage Skill Set
 =======
+ - Technology Group
+ - Practice
+ - skills
+ - certifications
+ - resume 
+ - search tags
 
-manage skills, certifications, resume, search tags information. Please make sure you have this section information upto date since there are a lot of backend recruiting process that use this information for marketing job opportunities.
+Please make sure you have this section information upto date since there are a lot of backend recruiting process that uses this information for marketing job opportunities.
 
 
 Practice and Technology Group
