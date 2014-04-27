@@ -196,14 +196,8 @@
         <!-- html to pdf-->
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
-            <artifactId>core-renderer</artifactId>
-            <version>${xhtmlrenderer.core.version}</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>${itext.version}</version>
+            <artifactId>flying-saucer-pdf-itext5</artifactId>
+            <version>${flying.saucer.version}</version>
         </dependency>
         <!-- apache POI-->
         <dependency>
@@ -426,10 +420,10 @@
         <hibernate.search.version>3.4.2.Final</hibernate.search.version>
         <jasper.version>4.5.1</jasper.version>
         <dynamic.jasper.version>4.0.0</dynamic.jasper.version>
-        <itext.version>2.0.8</itext.version>
+        <itext.version>2.1.7</itext.version>
         <poi.version>3.9</poi.version>
         <pdfbox.version>1.7.0</pdfbox.version>
-        <xhtmlrenderer.core.version>R8</xhtmlrenderer.core.version>
+        <flying.saucer.version>9.0.1</flying.saucer.version>
     </properties>
     <profiles>
         <profile>
