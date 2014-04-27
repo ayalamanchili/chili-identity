@@ -95,6 +95,7 @@ public class RecruitingMenu extends Composite {
             TabPanel.instance().getRecruitingPanel().clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllSkillsPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new SkillSidePanel());
         }
@@ -103,6 +104,7 @@ public class RecruitingMenu extends Composite {
         public void execute() {
             TabPanel.instance().getRecruitingPanel().entityPanel.clear();
             TabPanel.instance().getRecruitingPanel().sidePanelTop.clear();
+            TabPanel.instance().getRecruitingPanel().sidePanelBottom.clear();
             TabPanel.instance().getRecruitingPanel().entityPanel.add(new ReadAllCertificationsPanel());
             TabPanel.instance().getRecruitingPanel().sidePanelTop.add(new CertificationSidePanel());
         }
