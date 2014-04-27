@@ -3,8 +3,8 @@
  */
 package info.yalamanchili.office.jrs.profile;
 
-import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -54,12 +54,13 @@ public class AddressResource extends CRUDResource<Address> {
             Address savedAddress = (Address) getDao().save(address);
             Employee emp = (Employee) savedAddress.getContact();
             if (!emp.getEmployeeType().getName().equals("Corporate Employee")) {
-//                BPMProfileService.instance().startAddressUpdatedProcess(emp);
+                BPMProfileService.instance().startAddressUpdatedProcess(emp);
             }
             return savedAddress;
         }
     }
 //TODO is this ever being used?
+
     @PUT
     public Address save(Address address) {
         return super.save(address);
