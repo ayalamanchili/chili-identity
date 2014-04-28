@@ -148,7 +148,7 @@ public class SkillSetResource extends CRUDResource<SkillSet> {
     public List<SkillSetDto> searchResumes(@QueryParam("searchText") String searchText, @PathParam("start") Integer start, @PathParam("limit") Integer limit) {
         List<SkillSetDto> res = new ArrayList<SkillSetDto>();
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        for (SkillSet entity : skillSetDao.hibernateSearch(searchText, start, limit)) {
+        for (SkillSet entity : skillSetDao.hibernateSearch(searchText, start, limit, "resumeContent")) {
             SkillSetDto dto = mapper.map(entity, SkillSetDto.class);
             dto.setEmployeeName(entity.getEmployee().getFirstName() + " " + entity.getEmployee().getLastName());
             res.add(dto);

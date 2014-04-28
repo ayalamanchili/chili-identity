@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.recruiting.reports;
 
+import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -66,6 +67,9 @@ public class ResumeSearchWidget extends ALComposite implements ClickHandler {
     }
 
     protected void searchClicked() {
+        if (Strings.isNullOrEmpty(searchTextSB.getValue())) {
+            return;
+        }
         HttpService.HttpServiceAsync.instance().doGet(getResumeSearchUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
