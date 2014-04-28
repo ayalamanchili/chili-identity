@@ -62,13 +62,13 @@ public class BPMResource {
     @GET
     @Path("/release-task/{taskId}")
     public void releaseTask(@PathParam("taskId") String taskId) {
-        officeBPMTaskService.assignTask(taskId, null);
+        officeBPMTaskService.releaseTask(taskId);
     }
 
     @PUT
-    @Path("/task/assign/{taskId}/{userId}")
-    public void assignTask(@PathParam("taskId") String taskId, @PathParam("userId") String userId) {
-        officeBPMTaskService.assignTask(taskId, userId);
+    @Path("/task/assign/{taskId}/{employeeId}")
+    public void assignTask(@PathParam("taskId") String taskId, @PathParam("employeeId") Long employeeId) {
+        officeBPMTaskService.assignTask(taskId, employeeId);
     }
 
     @GET

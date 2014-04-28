@@ -33,8 +33,10 @@ import static info.yalamanchili.office.toolbox.ExcelUtils.getCellStringValue;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
@@ -169,7 +171,9 @@ public class NonEmpDataTool {
     }
 
     protected Client getClient(String clientName) {
-        for (Client client : ClientDao.instance().search(clientName.replace("'", ""), 0, 10, true)) {
+        List<String> columns = new ArrayList<String>();
+        columns.add("name");
+        for (Client client : ClientDao.instance().search(clientName.replace("'", ""), 0, 10, columns, true)) {
             if (client.getName().toUpperCase().equals(clientName.trim().toUpperCase())) {
                 return client;
             }
@@ -179,7 +183,9 @@ public class NonEmpDataTool {
     }
 
     protected Vendor getVendor(String vendorName) {
-        for (Vendor vendor : VendorDao.instance().search(vendorName.replace("'", ""), 0, 10, true)) {
+        List<String> columns = new ArrayList<String>();
+        columns.add("name");
+        for (Vendor vendor : VendorDao.instance().search(vendorName.replace("'", ""), 0, 10, columns, true)) {
             if (vendor.getName().toUpperCase().equals(vendorName.trim().toUpperCase())) {
                 return vendor;
             }

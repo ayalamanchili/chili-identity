@@ -34,12 +34,27 @@
             </extensionElements>             
         </userTask>
         <sequenceFlow sourceRef="serviceTicketTask" targetRef="serviceTicketEnd" />
+        <!-- Task not claimed escalation email after 4 hours-->
+        <boundaryEvent id="taskNotClaimedEmailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="serviceTicketTask">
+            <timerEventDefinition> 
+                <timeDuration>PT2M</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="taskNotClaimedEmailEscalationTimer" 
+                      targetRef="taskNotClaimedEmailEscalation" />
+        <serviceTask
+            id="taskNotClaimedEmailEscalation"
+            name="Task not claimed email escalation"
+            activiti:class="info.yalamanchili.office.bpm.TaskNotClaimedEmailEscalation">
+        </serviceTask>
         <!-- Task escalation email after 7 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
                        attachedToRef="serviceTicketTask">
             <timerEventDefinition> 
-                <timeDuration>PT168H</timeDuration> 
+                <timeDuration>PT5M</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="emailEscalationTimer" 

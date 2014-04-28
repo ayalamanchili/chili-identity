@@ -13,7 +13,6 @@ import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;

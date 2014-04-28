@@ -72,8 +72,16 @@ public class OfficeBPMTaskService {
         bpmTaskService.claim(taskId, userId);
     }
 
-    public void assignTask(String taskId, String userId) {
-        bpmTaskService.setAssignee(taskId, EmployeeDao.instance().findById(Long.valueOf(userId)).getEmployeeId());
+    public void releaseTask(String taskId) {
+        bpmTaskService.setAssignee(taskId, null);
+    }
+
+    public void assignTask(String taskId, Long employeeId) {
+        bpmTaskService.setAssignee(taskId, EmployeeDao.instance().findById(Long.valueOf(employeeId)).getEmployeeId());
+    }
+
+    public void assignTask(String taskId, String employeeId) {
+        bpmTaskService.setAssignee(taskId, employeeId);
     }
 
     public void resolveTask(String taskId) {
@@ -148,7 +156,7 @@ public class OfficeBPMTaskService {
     }
 
     public void addComment(String taskId, String comment) {
-        bpmIdentityService.setAuthenticatedUserId( SecurityUtils.getCurrentUser());
+        bpmIdentityService.setAuthenticatedUserId(SecurityUtils.getCurrentUser());
         bpmTaskService.addComment(taskId, null, comment);
     }
 
