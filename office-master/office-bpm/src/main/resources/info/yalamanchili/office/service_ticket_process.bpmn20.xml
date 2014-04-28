@@ -39,7 +39,7 @@
                        cancelActivity="false" 
                        attachedToRef="serviceTicketTask">
             <timerEventDefinition> 
-                <timeDuration>PT2M</timeDuration> 
+                <timeDuration>PT4H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="taskNotClaimedEmailEscalationTimer" 
@@ -54,7 +54,7 @@
                        cancelActivity="false" 
                        attachedToRef="serviceTicketTask">
             <timerEventDefinition> 
-                <timeDuration>PT5M</timeDuration> 
+                 <timeDuration>PT168H</timeDuration>  
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="emailEscalationTimer" 
