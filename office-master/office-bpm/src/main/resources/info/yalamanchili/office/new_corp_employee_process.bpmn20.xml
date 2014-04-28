@@ -18,12 +18,12 @@
                   name="New Corporate Employee ${employee.firstName} ${employee.lastName} is created" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
-                New Employee Created .
-                Please Add "Reports To" Company Contact 
+                New Employee Created.
+                Please Add "Reports To" Company Contact who will be resposible for approving leave requests
                 Please create Future Time Sheets For New Corporate Employee with pending status and future start date and end of year as end date.
                 Example:  Ex :Add New Corporate Employee Time Sheets
-                For ex:  David  Johnson stats as on date 
-                two timesheets for Sick Earned and Personal Earned after 2 months of probation ie start date of 05/03/2014 
+                For ex:  David  Johnson starts as on April 28, 2014  
+                two timesheets for Sick Earned and Personal Earned should be created after 2 months of probation ie start date of June 28, 2014
                 make sure the status is pending rather than Approved.
                 once the start date of the timesheet passes the status will be changed to 
                 approved by the system after when the employee can view them as available in summary so they can apply  
