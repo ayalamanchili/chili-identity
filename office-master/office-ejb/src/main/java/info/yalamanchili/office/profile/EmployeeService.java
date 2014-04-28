@@ -80,7 +80,7 @@ public class EmployeeService {
             // BPMTimeService.instance().startNewEmpTimeProcess(emp);
             Map<String, Object> obj = new HashMap<String, Object>();
             obj.put("employee", emp);
-            OfficeBPMService.instance().startProcess(empType, obj);
+            OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
 
         }
         Email email = new Email();
