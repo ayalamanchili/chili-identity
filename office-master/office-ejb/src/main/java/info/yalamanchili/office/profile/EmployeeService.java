@@ -14,6 +14,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
@@ -24,6 +25,8 @@ import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.security.SecurityUtils;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -75,6 +78,10 @@ public class EmployeeService {
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
             // BPMTimeService.instance().startNewEmpTimeProcess(emp);
+            Map<String, Object> obj = new HashMap<String, Object>();
+            obj.put("employee", emp);
+            OfficeBPMService.instance().startProcess(empType, obj);
+
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="new_corp_employee_process">
+ 
+        <startEvent id="newCorporateEmployeeStart" />
+        <sequenceFlow id="flow1" sourceRef="newCorporateEmployeeStart" targetRef="newCorporateEmployeeHRTask" />
+        <!--Create New Corporate Employee Created Task for HR Admin Role-->
+        <userTask id="newCorporateEmployeeHRTask" 
+                  name="New Corporate Employee ${employee.firstName} ${employee.lastName} is created" 
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+            <documentation>
+                New Employee Created .
+                Please Add "Reports To" Company Contact 
+                Please create Future Time Sheets For New Corporate Employee with pending status and future start date and end of year as end date.
+                Example:  Ex :Add New Corporate Employee Time Sheets
+                For ex:  David  Johnson stats as on date 
+                two timesheets for Sick Earned and Personal Earned after 2 months of probation ie start date of 05/03/2014 
+                make sure the status is pending rather than Approved.
+                once the start date of the timesheet passes the status will be changed to 
+                approved by the system after when the employee can view them as available in summary so they can apply  
+            </documentation>
+        </userTask>
+        <sequenceFlow sourceRef="newCorporateEmployeeHRTask" targetRef="newCorporateEmployeeEnd" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="newCorporateEmployeeHRTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- process end-->
+        <endEvent id="newCorporateEmployeeEnd" />
+    </process>
+ 
+</definitions>
