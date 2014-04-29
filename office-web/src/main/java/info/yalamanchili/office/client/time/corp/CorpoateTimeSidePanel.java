@@ -63,6 +63,8 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
             "startDate", "CorporateTimeSheet", false, true);
     DateField endDateF = new DateField(OfficeWelcome.constants,
             "endDate", "CorporateTimeSheet", false, true);
+    EnumField reportCategoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
+            false, false, TimeSheetCategory.names());
     EnumField roleF = new EnumField(OfficeWelcome.constants, "role", "Employee",
             false, false, Auth.getAllRoles());
     ClickableLink clearReportsL = new ClickableLink("clear");
@@ -112,6 +114,7 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
             //reports panel
             reportsPanel.add(startDateF);
             reportsPanel.add(endDateF);
+            reportsPanel.add(reportCategoryField);
             reportsPanel.add(roleF);
             reportsPanel.add(viewReportsB);
 //            reportsPanel.add(clearReportsL);
@@ -160,13 +163,14 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
         if (endDateF.getDate() != null) {
             search.put("endDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
         }
-        if (roleF.getValue() != null) {
-            search.put("role", new JSONString(roleF.getValue()));
+        if (reportCategoryField.getValue() != null) {
+            search.put("category", new JSONString(reportCategoryField.getValue()));
         }
         HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        TabPanel.instance().getTimePanel().entityPanel.clear();
                         if (result == null || JSONParser.parseLenient(result).isObject() == null) {
                             new ResponseStatusWidget().show("no results");
                         } else {
@@ -174,7 +178,7 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
                             JSONObject resObj = JSONParser.parseLenient(result).isObject();
                             String key = (String) resObj.keySet().toArray()[0];
                             JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            TabPanel.instance().getTimePanel().entityPanel.clear();
+
                             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel("Time Sheet Report Results", results));
                         }
 

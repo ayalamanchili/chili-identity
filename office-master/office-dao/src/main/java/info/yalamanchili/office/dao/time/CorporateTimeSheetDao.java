@@ -160,6 +160,9 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         if (qryStr.contains("endDateParam")) {
             query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
         }
+        if (qryStr.contains("categoryParam")) {
+            query.setParameter("categoryParam", dto.getCategory());
+        }
         if (qryStr.contains("empsWithRoleParam")) {
             query.setParameter("empsWithRoleParam", emps);
         }
@@ -174,6 +177,9 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
         if (dto.getEndDate() != null) {
             reportQueryBuilder.append(" and endDate<=:endDateParam ");
+        }
+        if (dto.getCategory() != null) {
+            reportQueryBuilder.append(" and category =:categoryParam ");
         }
         if (emps != null && emps.size() > 0) {
             reportQueryBuilder.append(" and employee in (:empsWithRoleParam) ");
