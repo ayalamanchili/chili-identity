@@ -130,7 +130,11 @@ public class EmployeeService {
     }
 
     public void deactivateUser(Long empId) {
-        CUser user1 = getEmployee(empId).getUser();
+        Employee emp = getEmployee(empId);
+        if (!emp.isActive()) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "Employee already deactivated");
+        }
+        CUser user1 = emp.getUser();
         user1.setEnabled(false);
         profileNotificationService.sendEmployeeDeactivationNotification(getEmployee(empId));
         em.merge(user1);
