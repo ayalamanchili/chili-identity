@@ -53,9 +53,9 @@ public class ReadAllPhonesPanel extends CRUDReadAllComposite {
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Type"));
-        table.setText(0, 2, getKeyValue("PhoneNumber"));
-        table.setText(0, 3, getKeyValue("extension"));
-        table.setText(0, 4, getKeyValue("countryCode"));
+        table.setText(0, 2, getKeyValue("Phone Number"));
+        table.setText(0, 3, getKeyValue("Extension"));
+        table.setText(0, 4, getKeyValue("Country Code"));
     }
 
     @Override
