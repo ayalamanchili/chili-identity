@@ -29,14 +29,14 @@ public class CreatePrivacySettingPanel extends CreateComposite {
     public CreatePrivacySettingPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Privacy", OfficeWelcome.constants);
-        setButtonText("Make Private");
+        setButtonText("Share");
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject privacy = new JSONObject();
         assignEntityValueFromField("privacyData", privacy);
-        privacy.put("privacyMode", new JSONString("PRIVATE"));
+        privacy.put("privacyMode", new JSONString("PUBLIC"));
         JSONObject employee = new JSONObject();
         employee.put("id", new JSONString(getEmployeeId()));
         privacy.put("employee", employee);

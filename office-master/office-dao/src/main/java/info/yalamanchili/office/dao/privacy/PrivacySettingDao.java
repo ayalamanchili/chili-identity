@@ -59,14 +59,14 @@ public class PrivacySettingDao extends CRUDDao<PrivacySetting> {
     public PrivacySetting save(PrivacySetting privacySetting) {
         Employee emp = EmployeeDao.instance().findById(privacySetting.getEmployee().getId());
         if (PrivacyData.ALL.equals(privacySetting.getPrivacyData())) {
-            makeAllDataPrivate(emp);
+            makeAllDataPublic(emp);
             return null;
         } else {
             return savePrivacySetting(emp, privacySetting.getPrivacyData());
         }
     }
 
-    public void makeAllDataPrivate(Employee emp) {
+    public void makeAllDataPublic(Employee emp) {
         for (PrivacyData data : PrivacyData.values()) {
             if (PrivacyData.ALL.equals(data)) {
                 continue;
@@ -81,7 +81,7 @@ public class PrivacySettingDao extends CRUDDao<PrivacySetting> {
             ps = new PrivacySetting();
             ps.setEmployee(emp);
             ps.setPrivacyData(privacyData);
-            ps.setPrivacyMode(PrivacyMode.PRIVATE);
+            ps.setPrivacyMode(PrivacyMode.PUBLIC);
             ps = super.save(ps);
         }
         return ps;

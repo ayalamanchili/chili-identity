@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.privacy;
 
+import info.chili.service.jrs.exception.ServiceException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,12 +33,19 @@ public class PrivacyInterceptor {
     @Transactional(readOnly = true)
     public Object privacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) throws Throwable {
         Object result = null;
+        boolean validCall = PrivacyService.instance().performPrivacyCheck(joinPoint, privacyAware);
         try {
-            if (PrivacyService.instance().performPrivacyCheck(joinPoint, privacyAware)) {
+            if (validCall) {
                 result = joinPoint.proceed();
+            } else {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "privacy.voilation", "Data is hidden based on user privacy settings");
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            if (e instanceof ServiceException) {
+                throw e;
+            } else {
+                throw new RuntimeException(e);
+            }
         }
         return result;
     }

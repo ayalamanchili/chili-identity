@@ -9,6 +9,7 @@ package info.yalamanchili.office.privacy;
 
 import info.chili.commons.ReflectionUtils;
 import info.chili.service.jrs.ServiceMessages;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -36,28 +37,29 @@ public class PrivacyService {
     protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
         Employee employee = getIdentity(joinPoint, privacyAware);
         if (employee == null) {
-            //indicates invalid employee/identity passed aling
+            //indicates invalid employee/identity passed along
             return true;
         }
         Employee currentUser = SecurityService.instance().getCurrentUser();
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
-        PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
-        if (setting != null && !PrivacyMode.PUBLIC.equals(setting.getPrivacyMode())) {
-            if (PrivacyMode.PRIVATE.equals(setting.getPrivacyMode())) {
-                return canAccessPrivateData(currentUser);
-            }
+        if ("Corporate Employee".equals(currentUser.getEmployeeType().getName())) {
+            return true;
         }
-        return true;
+        PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
+        if (setting != null && PrivacyMode.PUBLIC.equals(setting.getPrivacyMode())) {
+            return true;
+        }
+        return false;
     }
 
     protected boolean canAccessPrivateData(Employee currentUser) {
         if ("Corporate Employee".equals(currentUser.getEmployeeType().getName())) {
             return true;
         } else {
-            ServiceMessages.instance().addError(new info.chili.service.jrs.types.Error("privacy", "NOT_AUTHORIZED", "Data is hidden based on user privacy settings"));
-            return false;
+            // ServiceMessages.instance().addError(new info.chili.service.jrs.types.Error("privacy", "NOT_AUTHORIZED", "Data is hidden based on user privacy settings"));
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "privacy.voilation", "Old Password Doesn't Match");
         }
 
     }

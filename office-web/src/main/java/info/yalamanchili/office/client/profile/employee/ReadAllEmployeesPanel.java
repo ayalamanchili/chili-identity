@@ -80,9 +80,15 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("First Name"));
         table.setText(0, 2, getKeyValue("Last Name"));
         table.setText(0, 3, getKeyValue("Email"));
-        table.setText(0, 4, getKeyValue("Phone"));
-        table.setText(0, 5, getKeyValue("Job Title"));
-        table.setText(0, 6, getKeyValue("Image"));
+        if (Auth.isCorporateEmployee()) {
+            table.setText(0, 4, getKeyValue("Phone"));
+            table.setText(0, 5, getKeyValue("Job Title"));
+            table.setText(0, 6, getKeyValue("Image"));
+        } else {
+            table.setText(0, 4, getKeyValue("Job Title"));
+            table.setText(0, 5, getKeyValue("Image"));
+        }
+
     }
 
     @Override
@@ -93,9 +99,14 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "firstName"));
             table.setText(i, 2, JSONUtils.toString(entity, "lastName"));
             table.setText(i, 3, JSONUtils.toString(entity, "email"));
-            table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
-            table.setText(i, 5, JSONUtils.toString(entity, "jobTitle"));
-            table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
+            if (Auth.isCorporateEmployee()) {
+                table.setText(i, 4, FormatUtils.formatPhoneNumber(JSONUtils.toString(entity, "phoneNumber")));
+                table.setText(i, 5, JSONUtils.toString(entity, "jobTitle"));
+                table.setWidget(i, 6, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
+            } else {
+                table.setText(i, 4, JSONUtils.toString(entity, "jobTitle"));
+                table.setWidget(i, 5, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
+            }
         }
     }
 

@@ -34,7 +34,7 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
         instance = this;
         this.parentId = parentId;
         initTable("Privacy", OfficeWelcome.constants);
-        mainPanel.add(new HTML("<h5>By default other employees can view your information. If you wish to secure it, Please add Privacy Data below with Private Mode</h5>"));
+        mainPanel.add(new HTML("<h5>By default your information is Private so only you can view it. If you wish to share it, Please share it by creating rules.</h5>"));
     }
 
     @Override

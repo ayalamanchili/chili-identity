@@ -64,6 +64,9 @@ public class OfficeWelcome implements EntryPoint {
                 RootLayoutPanel.get().add(rootLayout);
             }
         });
+        if(Auth.isConsultantEmployee()){
+            TabPanel.instance().tabPanel.selectTab(5);
+        }
         SessionTimeoutMonitor.get().initialize();
     }
 
