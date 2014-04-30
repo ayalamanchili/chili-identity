@@ -1,12 +1,12 @@
 Privacy
 =========
-- Employee can decide if they want to make their information public vs private with other employees.
-    - employee can add and delete the privacy data.
+- By default all your information is private.
+    - If you choose to share some of your contact information to your colleagues you would need to create a sharing rule as shown below.
     - employee can secure his data selecting the privacy data and making it Private
-    - For ex:
-    - Employee : David 
-    - David wants to hide the phone and email form others he select email and phone in privacy data and clicks "Make Private"
-    - if you wish to no longer make your data private just delete the record.
+    - For ex: User wants to share his phone number with other for networking purposes.
+    - Goto Privacy--> Create--> choose the data your want to share and click share.
+    - Please remember your primary email in portal will not be private.
+
 Privacy
 ----
 ![alt text](../../images/privacy-profile.png "Privacy")
