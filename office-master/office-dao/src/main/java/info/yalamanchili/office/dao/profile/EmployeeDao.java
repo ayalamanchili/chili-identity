@@ -169,6 +169,8 @@ public class EmployeeDao extends CRUDDao<Employee> {
          */
         try {
             super.delete(emp);
+        } catch (org.hibernate.exception.ConstraintViolationException cve) {
+            throw new RuntimeException(cve.getConstraintName(), cve);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
