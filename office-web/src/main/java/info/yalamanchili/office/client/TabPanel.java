@@ -93,7 +93,11 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         }
         tabPanel.add(helpPanel, "Help", false);
         tabPanel.addSelectionHandler(this);
-        tabPanel.selectTab(1);
+        if (Auth.isCorporateEmployee()) {
+            TabPanel.instance().tabPanel.selectTab(1);
+        } else {
+            tabPanel.selectTab(5);
+        }
     }
 
     @Override
@@ -223,7 +227,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         } else {
             timePanel.sidePanelTop.add(new ConsultantTimeSummarySidePanel());
             timePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
-            timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+//            timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());
         }
         timePanel.entityTitlePanel.add(new TimeMenu());
     }

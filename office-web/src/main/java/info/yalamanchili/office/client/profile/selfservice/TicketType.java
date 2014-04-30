@@ -13,6 +13,7 @@ package info.yalamanchili.office.client.profile.selfservice;
  */
 public enum TicketType {
 
+    HumanResource,
     Billing,
     Tax,
     Payroll,
