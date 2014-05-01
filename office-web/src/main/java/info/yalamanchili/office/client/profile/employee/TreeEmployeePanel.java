@@ -101,8 +101,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (Auth.isCorporateEmployee()) {
             addFirstChildLink("Self Service", SELF_SERVICE_NODE);
+            addFirstChildLink("Documents", DOCUMENTS_NODE);
         }
-        addFirstChildLink("Documents", DOCUMENTS_NODE);
         if (Auth.isAdmin() && Auth.isCorporateEmployee(entity)) {
             addFirstChildLink("Roles", ROLES_NODE);
         }
@@ -112,7 +112,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addFirstChildLink("Preferences", PREFERENCES_NODE);
         }
-        addFirstChildLink("Privacy", PRIVACY_NODE);
+        if (Auth.isCorporateEmployee()) {
+            addFirstChildLink("Privacy", PRIVACY_NODE);
+        }
         if (Auth.isAdmin() && Auth.isEmployee(entity)) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }

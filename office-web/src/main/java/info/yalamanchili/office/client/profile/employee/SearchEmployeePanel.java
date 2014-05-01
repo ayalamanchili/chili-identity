@@ -59,9 +59,11 @@ public class SearchEmployeePanel extends SearchComposite {
         addField("middleInitial", DataType.STRING_FIELD);
         addField("lastName", DataType.STRING_FIELD);
         addField("employeeId", DataType.STRING_FIELD);
-        String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
-        addEnumField("employeeType", false, false, employeeTypeStrs);
-        addEnumField("role", false, false, Auth.getAllRoles());
+        if (Auth.isCorporateEmployee()) {
+            String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
+            addEnumField("employeeType", false, false, employeeTypeStrs);
+            addEnumField("role", false, false, Auth.getAllRoles());
+        }
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
         addDropDown("addressType", addressTypeWidget);
@@ -78,22 +80,25 @@ public class SearchEmployeePanel extends SearchComposite {
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("employeeId", entity);
-        //employeetype
-        JSONObject employeeType = new JSONObject();
-        assignEntityValueFromField("employeeType", employeeType, "name");
-        if (employeeType.size() > 0) {
-            entity.put("employeeType", employeeType);
+        if (Auth.isCorporateEmployee()) {
+            //employeetype
+            JSONObject employeeType = new JSONObject();
+            assignEntityValueFromField("employeeType", employeeType, "name");
+            if (employeeType.size() > 0) {
+                entity.put("employeeType", employeeType);
+            }
+            //roles
+            JSONObject user = new JSONObject();
+            JSONArray roles = new JSONArray();
+            JSONObject role = new JSONObject();
+            assignEntityValueFromField("role", role, "rolename");
+            if (role.size() > 0) {
+                roles.set(0, role);
+                user.put("roles", roles);
+                entity.put("user", user);
+            }
         }
-        //roles
-        JSONObject user = new JSONObject();
-        JSONArray roles = new JSONArray();
-        JSONObject role = new JSONObject();
-        assignEntityValueFromField("role", role, "rolename");
-        if (role.size() > 0) {
-            roles.set(0, role);
-            user.put("roles", roles);
-            entity.put("user", user);
-        }
+
         //populate address for search
         JSONArray addresses = new JSONArray();
         JSONObject address = new JSONObject();
