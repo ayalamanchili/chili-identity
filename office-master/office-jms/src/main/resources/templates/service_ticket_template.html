@@ -26,24 +26,6 @@
                         <span style="font-weight: bold;" th:text="${currentComment.createdBy}"></span>
                         <span> updated the ticket with following comment: </span>
                         <span th:text="${currentComment.comment}"><u></u></span>
-                        <h3>Changes</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th><b>Field</b></th>
-                                    <th><b>New Value</b></th>
-                                    <th><b>Old Value</b></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="change : ${changes}">
-                                    <td th:text="${change.propertyName}"></td>
-                                    <td style="BACKGROUND-COLOR: yellow;" th:text="${change.newValue}"></td>
-                                    <td th:text="${change.oldValue}"></td>
-
-                                </tr>
-                            </tbody>
-                        </table> 
                         <h4> Ticket Summary </h4>
                         <table>
                             <tr>

@@ -189,28 +189,28 @@ public class SelfService {
 
     protected List<AuditChageDto> determineChanges(ServiceTicket ticket) {
         List<AuditChageDto> changes = new ArrayList<AuditChageDto>();
-        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().getLatestVersion(ServiceTicket.class, ticket.getId());
-        if (!previousVersion.getStatus().equals(ticket.getStatus())) {
-            AuditChageDto change = new AuditChageDto();
-            change.setPropertyName("Status");
-            change.setNewValue(ticket.getStatus().name());
-            change.setOldValue(previousVersion.getStatus().name());
-            changes.add(change);
-        }
-        if (!previousVersion.getDepartmentAssigned().getRolename().equals(ticket.getDepartmentAssigned().getRolename())) {
-            AuditChageDto change = new AuditChageDto();
-            change.setPropertyName("Department");
-            change.setNewValue(OfficeRoles.rolesMessages.get(ticket.getDepartmentAssigned().getRolename()));
-            change.setOldValue(OfficeRoles.rolesMessages.get(previousVersion.getDepartmentAssigned().getRolename()));
-            changes.add(change);
-        }
-        if (previousVersion.getAssignedTo() != null && !previousVersion.getAssignedTo().getEmployeeId().equals(ticket.getAssignedTo().getEmployeeId())) {
-            AuditChageDto change = new AuditChageDto();
-            change.setPropertyName("Assigned To");
-            change.setNewValue(ticket.getAssignedTo().getFirstName());
-            change.setOldValue(previousVersion.getAssignedTo().getFirstName());
-            changes.add(change);
-        }
+//        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().getLatestVersion(ServiceTicket.class, ticket.getId());
+//        if (!previousVersion.getStatus().equals(ticket.getStatus())) {
+//            AuditChageDto change = new AuditChageDto();
+//            change.setPropertyName("Status");
+//            change.setNewValue(ticket.getStatus().name());
+//            change.setOldValue(previousVersion.getStatus().name());
+//            changes.add(change);
+//        }
+//        if (!previousVersion.getDepartmentAssigned().getRolename().equals(ticket.getDepartmentAssigned().getRolename())) {
+//            AuditChageDto change = new AuditChageDto();
+//            change.setPropertyName("Department");
+//            change.setNewValue(OfficeRoles.rolesMessages.get(ticket.getDepartmentAssigned().getRolename()));
+//            change.setOldValue(OfficeRoles.rolesMessages.get(previousVersion.getDepartmentAssigned().getRolename()));
+//            changes.add(change);
+//        }
+//        if (previousVersion.getAssignedTo() != null && !previousVersion.getAssignedTo().getEmployeeId().equals(ticket.getAssignedTo().getEmployeeId())) {
+//            AuditChageDto change = new AuditChageDto();
+//            change.setPropertyName("Assigned To");
+//            change.setNewValue(ticket.getAssignedTo().getFirstName());
+//            change.setOldValue(previousVersion.getAssignedTo().getFirstName());
+//            changes.add(change);
+//        }
         return changes;
     }
 
