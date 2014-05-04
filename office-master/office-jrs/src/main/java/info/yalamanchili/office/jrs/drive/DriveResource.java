@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.drive;
 
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.drive.DriveService;
 import info.yalamanchili.office.dto.drive.FileDto;
 import info.yalamanchili.office.dto.drive.FileDto.FileTable;
@@ -28,6 +29,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -53,12 +56,14 @@ public class DriveResource {
 
     @Path("/tree")
     @GET
+    @Cacheable(OfficeCacheKeys.DRIVE)
     public FolderDto getDriveFolder() {
         return driveService.getDriveFolderTree();
     }
 
     @PUT
     @Path("/addfolder/{parentFolderId}")
+    @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public void addFolder(@PathParam("parentFolderId") Long parentFolderId, FolderDto folder) {
         driveService.addFolder(parentFolderId, folder);
     }
@@ -66,6 +71,7 @@ public class DriveResource {
     @PUT
     @Path("/addfile/{folderId}")
     @Produces("application/text")
+    @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public String addFile(@PathParam("folderId") Long folderId, FileDto file) {
         return driveService.addFile(folderId, file);
     }
@@ -73,12 +79,14 @@ public class DriveResource {
     @PUT
     @Path("/update-file")
     @Produces("application/text")
+    @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public String updateFile(FileDto file) {
         return driveService.updateFile(file);
     }
 
     @GET
     @Path("/rename-folder/{folderId}/{folderName}")
+    @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public void renameFolder(@PathParam("folderId") Long folderId, @PathParam("folderName") String folderName) {
         //TODO driveservice
         driveService.renameFolder(folderId, folderName);
@@ -87,6 +95,7 @@ public class DriveResource {
     @PUT
     @Path("/files/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
+    @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public void deletefile(@PathParam("id") Long id) {
         File file = FileDao.instance().findById(id);
         FileDao.instance().delete(id);
@@ -96,18 +105,21 @@ public class DriveResource {
     @PUT
     @Path("/folder/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
+    @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public void deletefolder(@PathParam("id") Long id) {
         FolderDao.instance().delete(id);
     }
 
     @GET
     @Path("/files/{folderId}/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.DRIVE)
     public FileTable getFiles(@PathParam("folderId") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
         return driveService.getFiles(id, start, limit);
     }
 
     @GET
     @Path("/searchdrive/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.DRIVE)
     public List<info.yalamanchili.office.dto.drive.FileDto> searchFile(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("text") String text) {
         List<info.yalamanchili.office.dto.drive.FileDto> files = new ArrayList<info.yalamanchili.office.dto.drive.FileDto>();
@@ -131,6 +143,7 @@ public class DriveResource {
     @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
+    @Cacheable(OfficeCacheKeys.DRIVE)
     public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
         List<Entry> result = new ArrayList<Entry>();

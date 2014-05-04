@@ -29,5 +29,6 @@ public interface OfficeCacheKeys {
     String SUB_CONTRACTOR = "subcontractor";
     String ISSUE_TYPE = "issuetype";
     String PRIVACY = "privacy";
+    String DRIVE = "drive";
     String ROLES = "roles";
 }
