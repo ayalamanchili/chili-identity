@@ -4,7 +4,7 @@
     <groupId>info.yalamanchili.office</groupId>
     <artifactId>office-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <name>office-master</name>
     <url>http://somecompany.com</url>
     <dependencies>
@@ -268,7 +268,7 @@
         <module>office-jms</module>
         <module>office-dao</module>
         <module>office-ejb</module>
-        <!-- <module>office-toolbox</module>-->
+        <module>office-toolbox</module>
         <module>office-jrs</module>
         <!-- web -->
         <!--<module>../office-web</module> -->
@@ -408,8 +408,8 @@
         </snapshotRepository>
     </distributionManagement>
     <properties>
-        <office.version>1.1-SNAPSHOT</office.version>
-        <chili.version>1.2-SNAPSHOT</chili.version>
+        <office.version>1.1</office.version>
+        <chili.version>1.2</chili.version>
         <activiti-version>5.10</activiti-version>
         <guava.version>13.0</guava.version>
         <jersey.version>1.8</jersey.version>

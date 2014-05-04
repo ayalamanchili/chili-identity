@@ -4,7 +4,7 @@
 
     <groupId>info.yalamanchili.office</groupId>
     <artifactId>office-qa</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <name>office-qa</name>
     <url>http://maven.apache.org</url>
@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <root.url>http://localhost:9090/office-web/office.html</root.url>
-        <chili.version>1.2-SNAPSHOT</chili.version>
+        <chili.version>1.2</chili.version>
     </properties>
 
     <dependencies>

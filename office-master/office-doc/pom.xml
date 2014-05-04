@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>info.yalamanchili.office</groupId>
     <artifactId>office-doc</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <name>office-doc</name>
     <url>http://maven.apache.org</url>
     <dependencies>
