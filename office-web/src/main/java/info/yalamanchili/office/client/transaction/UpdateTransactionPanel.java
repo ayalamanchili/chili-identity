@@ -81,11 +81,11 @@ public class UpdateTransactionPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("paymentInfo", false, true, DataType.STRING_FIELD);
+        addField("paymentInfo", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
-        addField("postedDate", false, true, DataType.DATE_FIELD);
+        addField("postedDate", false, false, DataType.DATE_FIELD);
         String[] transactionType = {"CREDIT", "DEBIT", "OTHER"};
-        addEnumField("transactionType", false, false, transactionType);
+        addEnumField("transactionType", false, true, transactionType);
         String[] transactionStatus = {"SAVED", "PENDING", "APPROVED", "COMPLETE", "CANCELED"};
         addEnumField("transactionStatus", false, false, transactionStatus);
     }
