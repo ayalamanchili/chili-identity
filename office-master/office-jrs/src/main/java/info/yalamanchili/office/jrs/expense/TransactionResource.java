@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.expense.Transaction;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -36,6 +37,13 @@ public class TransactionResource extends CRUDResource<Transaction> {
 
     @Autowired
     public TransactionDao transactionDao;
+
+    @PUT
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    public Transaction save(Transaction entity) {
+        return super.save(entity);
+    }
 
     @Override
     public CRUDDao getDao() {

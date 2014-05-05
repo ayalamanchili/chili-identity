@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -36,6 +37,7 @@ public class AdvanceRequisition extends AbstractEntity {
     /**
      *
      */
+    @NotEmpty(message = "{purpose.not.empty.msg}")
     protected String purpose;
     /**
      *
@@ -52,12 +54,10 @@ public class AdvanceRequisition extends AbstractEntity {
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{dateRequested.not.empty.msg}")
     protected Date dateRequested;
     /**
      *
      */
-    @NotEmpty(message = "{payrollFileNumbe.not.empty.msg}")
     protected String payrollFileNumber;
     /**
      *
@@ -108,6 +108,7 @@ public class AdvanceRequisition extends AbstractEntity {
         this.payrollFileNumber = payrollFileNumber;
     }
 
+    @XmlTransient
     public List<Transaction> getTransactions() {
         return transactions;
     }

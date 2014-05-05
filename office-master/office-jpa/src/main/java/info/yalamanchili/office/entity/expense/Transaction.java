@@ -56,13 +56,13 @@ public class Transaction extends AbstractEntity {
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull(message = "{date.not.empty.msg}")
     protected Date postedDate;
     /**
      *
      */
     @Enumerated(EnumType.STRING)
     @Field
+    @NotNull
     protected TransactionType transactionType;
     /**
      *

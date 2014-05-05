@@ -53,7 +53,7 @@ public class ServiceInterceptor {
     @Autowired
     protected ServiceMessages serviceMessages;
 
-    //
+    //should this ebe executed for all crud dao and resource operations
     @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..))")
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
