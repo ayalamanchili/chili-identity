@@ -81,9 +81,6 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Purpose"));
         table.setText(0, 2, getKeyValue("Amount"));
         table.setText(0, 3, getKeyValue("NeededBy"));
-        table.setText(0, 4, getKeyValue("DateRequested"));
-        table.setText(0, 5, getKeyValue("PayrollFileNumber"));
-        table.setText(0, 6, getKeyValue("Transaction"));
     }
 
     @Override
@@ -94,9 +91,6 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "purpose"));
             table.setText(i, 2, JSONUtils.toString(entity, "amount"));
             table.setText(i, 3, JSONUtils.toString(entity, "neededBy"));
-            table.setText(i, 4, JSONUtils.toString(entity, "dateRequested"));
-            table.setText(i, 5, JSONUtils.toString(entity, "payrollFileNumber"));
-            table.setText(i, 6, JSONUtils.toString(entity, "transaction"));
         }
     }
 

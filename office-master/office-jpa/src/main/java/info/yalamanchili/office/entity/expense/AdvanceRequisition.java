@@ -74,14 +74,14 @@ public class AdvanceRequisition extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    @NotNull(message = "{advancerequisition.status.not.empty.msg}")
+//    @NotNull(message = "{advancerequisition.status.not.empty.msg}")
     protected AdvanceRequisitionStatus status;
     /**
      * Employee
      */
     @ManyToOne
     @ForeignKey(name = "FK_Emp_AdvanceReqs")
-    @NotNull(message = "{advance.requisition.employee.not.empty.msg}")
+//    @NotNull(message = "{advance.requisition.employee.not.empty.msg}")
     protected Employee employee;
     /**
      *

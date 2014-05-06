@@ -57,9 +57,6 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
         assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("dateRequested", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("payrollFileNumber", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("transaction", entity);
     }
 
     @Override
@@ -75,9 +72,6 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
         addField("purpose", true, false, DataType.STRING_FIELD);
         addField("amount", true, false, DataType.CURRENCY_FIELD);
         addField("neededBy", true, false, DataType.DATE_FIELD);
-        addField("dateRequested", true, false, DataType.DATE_FIELD);
-        addField("payrollFileNumber", true, false, DataType.STRING_FIELD);
-//        addField("transaction", true, false, DataType.ENUM_FIELD);
     }
 
     @Override

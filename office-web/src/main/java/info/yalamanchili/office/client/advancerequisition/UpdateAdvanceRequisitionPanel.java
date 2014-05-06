@@ -35,9 +35,6 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         assignEntityValueFromField("purpose", entity);
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("neededBy", entity);
-        assignEntityValueFromField("dateRequested", entity);
-        assignEntityValueFromField("payrollFileNumber", entity);
-        assignEntityValueFromField("transactions", entity);
         logger.info("ddd" + entity);
         return entity;
     }
@@ -63,9 +60,6 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("dateRequested", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("payrollFileNumber", entity, DataType.STRING_FIELD);
-//        assignFieldValueFromEntity("transaction", entity);
     }
 
     @Override
@@ -88,9 +82,6 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         addField("purpose", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addField("neededBy", false, true, DataType.DATE_FIELD);
-        addField("dateRequested", false, false, DataType.DATE_FIELD);
-        addField("payrollFileNumber", false, false, DataType.STRING_FIELD);
-//        addField("transaction", false, false, DataType.ENUM_FIELD);
     }
 
     @Override

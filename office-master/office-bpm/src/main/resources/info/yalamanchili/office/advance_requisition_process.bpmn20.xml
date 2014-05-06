@@ -22,7 +22,7 @@
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Amount     : #{entity.amount}
                 Purpose    : #{entity.purpose}
-                //TODO add remaining fields
+                Needed By Date :#{entity.neededBy}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />

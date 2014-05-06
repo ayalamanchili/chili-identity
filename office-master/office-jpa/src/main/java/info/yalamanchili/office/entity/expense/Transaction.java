@@ -62,7 +62,7 @@ public class Transaction extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    @NotNull
+    @NotNull(message = "{transactionType.not.empty.msg}")
     protected TransactionType transactionType;
     /**
      *
@@ -146,5 +146,4 @@ public class Transaction extends AbstractEntity {
     public String toString() {
         return "Transaction{" + "paymentInfo=" + paymentInfo + ", amount=" + amount + ", postedDate=" + postedDate + ", transactionType=" + transactionType + ", transactionStatus=" + transactionStatus + '}';
     }
-
 }
