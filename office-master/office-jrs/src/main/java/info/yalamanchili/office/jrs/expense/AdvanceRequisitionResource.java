@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.expense;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
+import info.yalamanchili.office.expense.AdvanceRequisitionService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -37,6 +38,12 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @Autowired
     public AdvanceRequisitionDao advanceRequisitionDao;
+
+    @PUT
+    @Path("/submit-advance-requisition-request")
+    public void submitAdvanceRequisitionRequest(AdvanceRequisition entity) {
+        AdvanceRequisitionService.instance().submitAdvanceRequisition(entity);
+    }
 
     @PUT
     @Override

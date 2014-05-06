@@ -11,10 +11,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.TabPanel;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +23,7 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     private static Logger logger = Logger.getLogger(AdvanceRequisitionSidePanel.class.getName());
     public FlowPanel advanceRequisitionSidePanel = new FlowPanel();
-    ClickableLink createAdvanceRequisitionLink = new ClickableLink("Create AdvanceRequisition");
+    ClickableLink createAdvanceRequisitionLink = new ClickableLink("Submit Advance Requisition");
 
     public AdvanceRequisitionSidePanel() {
         init(advanceRequisitionSidePanel);
@@ -42,16 +40,13 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
 
     @Override
     protected void addWidgets() {
-        if (Auth.isAdmin() || Auth.isHR()) {
-            advanceRequisitionSidePanel.add(createAdvanceRequisitionLink);
-        }
+        advanceRequisitionSidePanel.add(createAdvanceRequisitionLink);
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createAdvanceRequisitionLink)) {
-            TabPanel.instance().getExpensePanel().entityPanel.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new CreateAdvanceRequisitionPanel(CreateComposite.CreateCompositeType.CREATE));
+            new GenericPopup(new AdvanceRequisitionRequestPanel()).show();
         }
     }
 }

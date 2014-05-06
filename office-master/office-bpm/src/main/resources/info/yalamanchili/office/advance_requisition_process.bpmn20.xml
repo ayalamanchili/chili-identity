@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="advance_requisition_process">
+        <startEvent id="advanceRequisitionStart"/>
+        
+        <!-- Manager approval task-->
+        <sequenceFlow  sourceRef="advanceRequisitionStart" targetRef="advanceRequisitionApprovalTask" />
+        <userTask id="advanceRequisitionApprovalTask" 
+                  name="Advance Requisition Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Employee Advance Requisition Approval Task
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Amount     : #{entity.amount}
+                Purpose    : #{entity.purpose}
+                //TODO add remaining fields
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="advanceRequisitionApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="advanceRequisitionApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="advanceRequisitionApprovalTaskEscalationTimer" 
+                      targetRef="advanceRequisitionApprovalTaskEscalation" />
+        <serviceTask
+            id="advanceRequisitionApprovalTaskEscalation"
+            name="Advance Leave Approval Task Escalation"
+            activiti:class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess">
+        </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="advanceRequisitionApprovalTask" 
+                      targetRef="approvalGateway" />
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="advanceRequisitionFinalApprovalTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="advanceRequisitionEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="advanceRequisitionFinalApprovalTask" 
+                  name="Advance Requisition Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation>
+                Advance Requisition Final Approval Task
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Amount     : #{entity.amount}
+                Purpose    : #{entity.purpose}
+                //TODO add remaining fields
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="advanceRequisitionFinalApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="advanceRequisitionFinalApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="advanceRequisitionFinalApprovalTaskEscalationTimer" 
+                      targetRef="advanceRequisitionApprovalTaskEscalation" />
+        <sequenceFlow sourceRef="advanceRequisitionFinalApprovalTask" 
+                      targetRef="advanceRequisitionEnd" />
+        <endEvent id="advanceRequisitionEnd" />
+    </process>
+</definitions>
