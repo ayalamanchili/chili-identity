@@ -14,6 +14,8 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.advancetranscation.TransactionStatus;
+import info.yalamanchili.office.client.advancetranscation.TransactionType;
 import java.util.logging.Logger;
 
 /**
@@ -73,10 +75,8 @@ public class ReadTransactionPanel extends ReadComposite {
         addField("paymentInfo", true, false, DataType.STRING_FIELD);
         addField("amount", true, false, DataType.CURRENCY_FIELD);
         addField("postedDate", true, false, DataType.DATE_FIELD);
-        String[] transactionType = {"CREDIT", "DEBIT", "OTHER"};
-        addEnumField("transactionType", true, false, transactionType);
-        String[] transactionStatus = {"SAVED", "PENDING", "APPROVED", "COMPLETE", "CANCELED"};
-        addEnumField("transactionStatus", true, false, transactionStatus);
+        addEnumField("transactionType", true, false, TransactionType.names());
+        addEnumField("transactionStatus", true, false, TransactionStatus.names());
     }
 
     @Override

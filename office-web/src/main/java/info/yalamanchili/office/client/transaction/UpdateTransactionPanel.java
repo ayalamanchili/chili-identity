@@ -15,6 +15,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.advancetranscation.TransactionStatus;
+import info.yalamanchili.office.client.advancetranscation.TransactionType;
 import java.util.logging.Logger;
 
 /**
@@ -84,10 +86,8 @@ public class UpdateTransactionPanel extends UpdateComposite {
         addField("paymentInfo", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addField("postedDate", false, false, DataType.DATE_FIELD);
-        String[] transactionType = {"CREDIT", "DEBIT", "OTHER"};
-        addEnumField("transactionType", false, true, transactionType);
-        String[] transactionStatus = {"SAVED", "PENDING", "APPROVED", "COMPLETE", "CANCELED"};
-        addEnumField("transactionStatus", false, false, transactionStatus);
+        addEnumField("transactionType", false, true, TransactionType.names());
+        addEnumField("transactionStatus", false, false, TransactionStatus.names());
     }
 
     @Override
