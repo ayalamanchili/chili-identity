@@ -7,8 +7,10 @@
  */
 package info.yalamanchili.office.bpm.email;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.types.AccountReset;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.jms.MessagingService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -32,6 +34,9 @@ public class AccountResetCompleteNotification implements TaskListener {
         message.append(" Status:").append(status.toUpperCase()).append("\n");;
         //username
         String username = (String) delegateTask.getExecution().getVariable("username");
+        if(EmployeeDao.instance().findEmployeWithEmpId(username)==null){
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.employeeid", "employee id does not exist. Please enter correct employeeId for the user to complete.");
+        }
         if (username != null) {
             message.append(" Username / EmployeeId:").append(username).append("\n");;
         }
