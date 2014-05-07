@@ -14,6 +14,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import java.util.logging.Logger;
 
 /**
@@ -57,6 +58,7 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
         assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -72,6 +74,7 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
         addField("purpose", true, false, DataType.STRING_FIELD);
         addField("amount", true, false, DataType.CURRENCY_FIELD);
         addField("neededBy", true, false, DataType.DATE_FIELD);
+        addEnumField("status", true, false, AdvanceRequisitionStatus.names());
     }
 
     @Override

@@ -15,6 +15,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import java.util.logging.Logger;
 
 /**
@@ -35,6 +36,7 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         assignEntityValueFromField("purpose", entity);
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("neededBy", entity);
+        assignEntityValueFromField("status", entity);
         logger.info("ddd" + entity);
         return entity;
     }
@@ -60,6 +62,7 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -82,6 +85,7 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         addField("purpose", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addField("neededBy", false, true, DataType.DATE_FIELD);
+        addEnumField("status", false, false, AdvanceRequisitionStatus.names());
     }
 
     @Override

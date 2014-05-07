@@ -38,7 +38,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class AdvanceRequisition extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
-
     /**
      *
      */
