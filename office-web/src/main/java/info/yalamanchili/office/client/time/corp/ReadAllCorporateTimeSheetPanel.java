@@ -22,6 +22,7 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
@@ -122,8 +123,9 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("Hours"));
         table.setText(0, 6, getKeyValue("Status"));
-        table.setText(0, 7, getKeyValue("More"));
-        table.setText(0, 8, getKeyValue("Print"));
+        table.setText(0, 7, getKeyValue("Cancel"));
+        table.setText(0, 8, getKeyValue("Cancel"));
+        table.setText(0, 9, getKeyValue("Print"));
     }
 
     @Override
@@ -144,8 +146,14 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
                 cancelL.addClickHandler(this);
                 table.setWidget(i, 7, cancelL);
             }
+            if (enableCancelRequest(entity)) {
+                ClickableLink updateL = new ClickableLink("Update Request");
+                updateL.setTitle(JSONUtils.toString(entity, "id"));
+                updateL.addClickHandler(this);
+                table.setWidget(i, 8, updateL);
+            }
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 8, reportL);
+            table.setWidget(i, 9, reportL);
         }
     }
 
@@ -182,8 +190,13 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() instanceof ClickableLink) {
-            ClickableLink cancelL = (ClickableLink) event.getSource();
-            cancelLeaveRequest(cancelL.getTitle());
+            ClickableLink link = (ClickableLink) event.getSource();
+            if (link.getText().contains("Cancel")) {
+                cancelLeaveRequest(link.getTitle());
+            }
+            if (link.getText().contains("Update")) {
+                new GenericPopup(new CorpEmpLeaveRequestUpdatePanel(getEntity(link.getTitle()))).show();
+            }
         } else {
             super.onClick(event);
         }

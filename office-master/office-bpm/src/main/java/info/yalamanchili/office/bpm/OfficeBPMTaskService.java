@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.bpm;
 
+import com.google.common.base.Strings;
 import info.chili.security.dao.CRoleDao;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
@@ -114,6 +115,9 @@ public class OfficeBPMTaskService {
     }
 
     public void deleteAllTasksForProcessId(String processId, boolean deleteProcessInstance) {
+        if (Strings.isNullOrEmpty(processId)) {
+            return;
+        }
         for (Task task : getTasksForProcessId(processId)) {
             bpmTaskService.deleteTask(task.getId());
         }

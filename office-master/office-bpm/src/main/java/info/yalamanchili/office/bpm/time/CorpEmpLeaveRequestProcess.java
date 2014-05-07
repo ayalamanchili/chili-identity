@@ -78,7 +78,12 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     }
 
     protected void sendLeaveRequestCreatedNotification(DelegateTask task) {
-        sendLeaveRequestStatusNotification("Submitted", task);
+        String status = (String) task.getExecution().getVariable("status");
+        if (status != null) {
+            sendLeaveRequestStatusNotification("Updated", task);
+        } else {
+            sendLeaveRequestStatusNotification("Submitted", task);
+        }
     }
 
     protected void assignLeaveRequestTask(DelegateTask task) {

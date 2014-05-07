@@ -70,6 +70,12 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         CorporateTimeService.instance().submitLeaveRequest(entity);
     }
 
+    @PUT
+    @Path("/update-leave-request")
+    public void updateLeaveRequest(CorporateTimeSheet entity) {
+        CorporateTimeService.instance().updateLeaveRequest(entity);
+    }
+
     @GET
     @Path("/cancel-leave-request/{timesheetId}")
     public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId) {

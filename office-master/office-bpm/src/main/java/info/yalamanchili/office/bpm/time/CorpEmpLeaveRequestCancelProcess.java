@@ -79,10 +79,7 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
 
     protected void deleteApprovalTask(String processId) {
         OfficeBPMTaskService taskServcie = OfficeBPMTaskService.instance();
-        List<Task> tasks = taskServcie.getTasksForProcessId(processId);
-        if (tasks.size() > 0) {
-            OfficeBPMTaskService.instance().deleteTask(tasks.get(0).getId());
-        }
+        taskServcie.deleteAllTasksForProcessId(processId, true);
     }
 
     protected CorporateTimeSheet getTimeSheetFromTask(DelegateTask task) {

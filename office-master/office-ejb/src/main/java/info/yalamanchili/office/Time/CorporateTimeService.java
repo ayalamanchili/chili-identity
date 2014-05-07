@@ -53,7 +53,16 @@ public class CorporateTimeService {
         Employee emp = SecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
         vars.put("summary", getYearlySummary(emp));
+        if (entity.getId() != null) {
+            vars.put("status", "update");
+        }
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
+    }
+
+    public void updateLeaveRequest(CorporateTimeSheet entity) {
+        entity.setStatus(TimeSheetStatus.Pending);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        submitLeaveRequest(entity);
     }
 
     public void cancelLeaveRequest(Long timesheetId) {
