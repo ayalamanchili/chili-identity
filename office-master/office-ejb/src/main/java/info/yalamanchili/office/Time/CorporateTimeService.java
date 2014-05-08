@@ -61,7 +61,15 @@ public class CorporateTimeService {
 
     public void updateLeaveRequest(CorporateTimeSheet entity) {
         entity.setStatus(TimeSheetStatus.Pending);
-        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        taskService.deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        //delete cancel request is exists
+        List<Task> tasks = taskService.findTasksWithVariable("entityId", entity.getId());
+        for (Task task : tasks) {
+            if (task.getTaskDefinitionKey().equals("corpEmpLeaveRequestCancelTask")) {
+                taskService.deleteTask(task.getId());
+            }
+        }
         submitLeaveRequest(entity);
     }
 

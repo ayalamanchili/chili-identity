@@ -13,6 +13,8 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import java.util.logging.Logger;
@@ -43,13 +45,13 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
 
     }
 
@@ -84,5 +86,15 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "advancerequisition";
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.expense.AdvanceRequisition" + "/" + getEntityId();
     }
 }

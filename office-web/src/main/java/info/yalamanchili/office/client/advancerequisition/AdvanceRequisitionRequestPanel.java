@@ -14,10 +14,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expense.check.CreateCheckWidget;
 import java.util.logging.Logger;
 
 /**
@@ -27,6 +29,7 @@ import java.util.logging.Logger;
 public class AdvanceRequisitionRequestPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(AdvanceRequisitionRequestPanel.class.getName());
+    CreateCheckWidget createCheckWidget = new CreateCheckWidget();
 
     public AdvanceRequisitionRequestPanel() {
         super(CreateCompositeType.CREATE);
@@ -41,6 +44,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite {
         assignEntityValueFromField("neededBy", entity);
         entity.put("status", new JSONString("Open"));
         entity.put("employee", new JSONObject());
+        entity.put("check", createCheckWidget.populateEntityFromFields());
         return entity;
     }
 
@@ -48,17 +52,17 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -84,9 +88,11 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("purpose", false, true, DataType.STRING_FIELD);
-        addField("amount", false, true, DataType.CURRENCY_FIELD);
-        addField("neededBy", false, true, DataType.DATE_FIELD);
+        addField("purpose", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("neededBy", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(createCheckWidget);
+        alignFields();
     }
 
     @Override

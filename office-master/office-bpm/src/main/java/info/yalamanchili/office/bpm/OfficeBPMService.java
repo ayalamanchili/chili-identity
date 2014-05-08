@@ -53,7 +53,11 @@ public class OfficeBPMService {
     }
 
     public void deleteProcessInstance(String processInstanceId) {
-        bpmRuntimeService.deleteProcessInstance(processInstanceId, "user cancled");
+        try {
+            bpmRuntimeService.deleteProcessInstance(processInstanceId, "user cancled");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getDeployedProcessInfo() {

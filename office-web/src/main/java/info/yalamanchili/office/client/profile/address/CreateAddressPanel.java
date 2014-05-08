@@ -12,17 +12,13 @@ import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidg
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
+import info.chili.gwt.utils.Alignment;
 
 public class CreateAddressPanel extends CreateComposite {
 
@@ -90,14 +86,15 @@ public class CreateAddressPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("street1", false, true, DataType.STRING_FIELD);
-        addField("street2", false, false, DataType.STRING_FIELD);
-        addField("city", false, true, DataType.STRING_FIELD);
-        addField("state", false, true, DataType.ENUM_FIELD);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
+        addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addDropDown("addressType", new SelectAddressTypeWidget(false, false));
+        alignFields();
     }
 
     @Override

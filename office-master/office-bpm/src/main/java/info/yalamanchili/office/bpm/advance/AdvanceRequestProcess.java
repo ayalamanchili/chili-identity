@@ -14,7 +14,9 @@ import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.AdvanceRequisitionStatus;
+import info.yalamanchili.office.entity.expense.Check;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.math.BigDecimal;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -48,7 +50,9 @@ public class AdvanceRequestProcess implements TaskListener {
         if (entity == null) {
             return;
         }
-
+        String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
+        BigDecimal approvedAmount = new BigDecimal(approvedAmountVar);
+        entity.setAmount(approvedAmount);
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(AdvanceRequisitionStatus.Approved);
@@ -64,12 +68,15 @@ public class AdvanceRequestProcess implements TaskListener {
 
     protected void saveAdvanceRequisition(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        AdvanceRequisitionDao dao = AdvanceRequisitionDao.instance();
         AdvanceRequisition entity = (AdvanceRequisition) task.getExecution().getVariable("entity");
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
         entity.setStatus(AdvanceRequisitionStatus.Pending);
         entity.setEmployee(emp);
         entity.setDateRequested(new Date());
-        entity = AdvanceRequisitionDao.instance().save(entity);
+        Check check = entity.getCheck();
+        entity = dao.save(entity);
+        Check.save(dao.getEntityManager(), check, entity);
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
     }

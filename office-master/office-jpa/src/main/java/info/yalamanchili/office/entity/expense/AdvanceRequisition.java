@@ -19,6 +19,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -42,6 +43,7 @@ public class AdvanceRequisition extends AbstractEntity {
      *
      */
     @NotEmpty(message = "{purpose.not.empty.msg}")
+    @Lob
     protected String purpose;
     /**
      *
@@ -73,14 +75,14 @@ public class AdvanceRequisition extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-//    @NotNull(message = "{advancerequisition.status.not.empty.msg}")
+    @NotNull(message = "{advancerequisition.status.not.empty.msg}")
     protected AdvanceRequisitionStatus status;
     /**
      * Employee
      */
     @ManyToOne
     @ForeignKey(name = "FK_Emp_AdvanceReqs")
-//    @NotNull(message = "{advance.requisition.employee.not.empty.msg}")
+    @NotNull(message = "{advance.requisition.employee.not.empty.msg}")
     protected Employee employee;
     /**
      *
@@ -91,6 +93,11 @@ public class AdvanceRequisition extends AbstractEntity {
      */
     @OneToOne(cascade = CascadeType.ALL)
     protected Transaction transaction;
+    /**
+     *
+     */
+    @Transient
+    protected Check check;
 
     public AdvanceRequisition() {
     }
@@ -173,6 +180,14 @@ public class AdvanceRequisition extends AbstractEntity {
 
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
+    }
+
+    public Check getCheck() {
+        return check;
+    }
+
+    public void setCheck(Check check) {
+        this.check = check;
     }
 
     @Override

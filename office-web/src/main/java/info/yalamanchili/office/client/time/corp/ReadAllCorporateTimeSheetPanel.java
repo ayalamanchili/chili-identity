@@ -146,7 +146,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
                 cancelL.addClickHandler(this);
                 table.setWidget(i, 7, cancelL);
             }
-            if (enableCancelRequest(entity)) {
+            if (enableUpdateRequest(entity)) {
                 ClickableLink updateL = new ClickableLink("Update Request");
                 updateL.setTitle(JSONUtils.toString(entity, "id"));
                 updateL.addClickHandler(this);
@@ -161,6 +161,15 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         String status = JSONUtils.toString(entity, "status");
         String category = JSONUtils.toString(entity, "category");
         if (isMyTimeSheet(entity) && Arrays.asList(LeaveRequestTimeCategory.names()).contains(category) && !TimeSheetStatus.Canceled.name().equals(status)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean enableUpdateRequest(JSONObject entity) {
+        String category = JSONUtils.toString(entity, "category");
+        if (isMyTimeSheet(entity) && Arrays.asList(LeaveRequestTimeCategory.names()).contains(category)) {
             return true;
         } else {
             return false;
