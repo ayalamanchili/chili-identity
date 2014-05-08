@@ -90,6 +90,15 @@ public class TimeJobService {
     }
 
     /**
+     *
+     */
+    public void sendUpcomingLeaveRequestsNotifications() {
+        //TODO query for all timesheets whose status is approved category equal to vacationspent
+        // for each timesheets returned from query get the employee and get the reports to contacts and send email to him 
+        
+    }
+
+    /**
      * This will create yearly sick,vacation and personal days for corp
      * employees
      */
