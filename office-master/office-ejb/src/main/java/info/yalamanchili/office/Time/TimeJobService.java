@@ -96,7 +96,7 @@ public class TimeJobService {
     public void sendUpcomingLeaveRequestsNotifications(Employee employee, List<TimeSheetStatus> status, List<TimeSheetCategory> category, List<CorporateTimeSheet> timesheets) {
         //TODO query for all timesheets whose status is approved category equal to vacationspent and start date is today
         TypedQuery query = em.createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where timesheet=:timesheetParam and status in (:statusParam) and vacationspent in (:categoryParam)", TimeSheetCategory.class);
-        query.setParameter("employeeParam", timesheets);
+        query.setParameter("timesheetParam", timesheets);
         query.setParameter("statusParam", status);
         query.setParameter("categoryParam", category);
         // for each timesheets returned from query get the employee and get the reports to contacts and send email to him 
