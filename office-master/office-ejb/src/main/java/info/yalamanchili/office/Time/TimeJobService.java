@@ -10,6 +10,7 @@ package info.yalamanchili.office.Time;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,19 +95,20 @@ public class TimeJobService {
     /**
      *
      */
-    public void sendUpcomingLeaveRequestsNotifications(Employee employee, List<TimeSheetStatus> status, List<TimeSheetCategory> category, List<CorporateTimeSheet> timesheets) {
-        //TODO query for all timesheets whose status is approved category equal to vacationspent and start date is today
-        TypedQuery query = em.createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where timesheet=:timesheetParam and status in (:statusParam) and vacationspent in (:categoryParam)", TimeSheetCategory.class);
-        query.setParameter("timesheetParam", timesheets);
-        query.setParameter("statusParam", status);
-        query.setParameter("categoryParam", category);
-        // for each timesheets returned from query get the employee and get the reports to contacts and send email to him 
-        Email email = new Email();
-        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRole.ROLE_HR_ADMINSTRATION.name()));
-        email.setSubject("Reports to manager about leave request start date for the employee");
-        String messageText = TimeSheetStatus.Approved + " " + TimeSheetCategory.Vacation_Spent + "'is added ";
-        email.setBody(messageText);
-        MessagingService.instance().sendEmail(email);
+    public void sendTodaysLeaveNotifications() {
+        TypedQuery<CorporateTimeSheet> query = em.createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where status=:statusParam and category in (:categoryParam) and startDate =:startDateParam", CorporateTimeSheet.class);
+        query.setParameter("statusParam", TimeSheetStatus.Approved);
+        query.setParameter("categoryParam", TimeSheetCategory.getLeaveSpentCategories());
+        query.setParameter("startDateParam", new Date(), TemporalType.DATE);
+        for (CorporateTimeSheet ts : query.getResultList()) {
+            Employee emp = CompanyContactDao.instance().getReportsToContactForEmployee(ts.getEmployee());
+            Email email = new Email();
+            email.addTo(emp.getPrimaryEmail().getEmail());
+            email.setSubject("Leave Remainder: " + ts.getEmployee().getFirstName() + " is on leave");
+            String messageText = "TODO add timesheet details here";
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
+        }
     }
 
     /**
