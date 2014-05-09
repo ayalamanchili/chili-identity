@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.jrs.social;
 
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.social.SocialDao;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
@@ -21,6 +22,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
@@ -46,12 +49,14 @@ public class SocialResource {
 
     @GET
     @Path("/employeefeed/{start}/{limit}")
+    @Cacheable(value = OfficeCacheKeys.SOCIAL, key = "{#root.methodName,#start,#limit}")
     public List<info.yalamanchili.office.dto.social.Post> getEmployeeFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
         return socialService.getEmployeeFeed(start, limit);
     }
 
     @GET
     @Path("/companyfeed/{start}/{limit}")
+    @Cacheable(value = OfficeCacheKeys.SOCIAL, key = "{#root.methodName,#start,#limit}")
     public List<info.yalamanchili.office.dto.social.Post> getCompanyFeed(@PathParam("start") int start, @PathParam("limit") int limit) {
         return socialService.getCompanyFeed(start, limit);
     }
@@ -59,6 +64,7 @@ public class SocialResource {
 
     @PUT
     @Path("/createpost")
+    @CacheEvict(value = OfficeCacheKeys.SOCIAL, allEntries = true)
     public Post createPost(Post post) {
         return socialDao.createPost(post);
     }
@@ -67,6 +73,7 @@ public class SocialResource {
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.SOCIAL, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         socialDao.delete(id);
     }
@@ -86,6 +93,7 @@ public class SocialResource {
     @PUT
     @Path("/createCompanyPost")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_RECRUITER')")
+    @CacheEvict(value = OfficeCacheKeys.SOCIAL, allEntries = true)
     public Post createCompanyPost(Post companypost) {
         companypost = socialDao.createCompanyPost(companypost);
         return companypost;
@@ -93,6 +101,7 @@ public class SocialResource {
 
     @PUT
     @Path("/liked/{postId}")
+    @CacheEvict(value = OfficeCacheKeys.SOCIAL, allEntries = true)
     public void liked(@PathParam("postId") Long postId) {
         socialDao.liked(postId);
     }

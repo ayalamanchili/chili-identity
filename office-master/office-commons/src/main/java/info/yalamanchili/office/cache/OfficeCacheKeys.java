@@ -30,5 +30,6 @@ public interface OfficeCacheKeys {
     String ISSUE_TYPE = "issuetype";
     String PRIVACY = "privacy";
     String DRIVE = "drive";
+    String SOCIAL = "social";
     String ROLES = "roles";
 }
