@@ -17,6 +17,8 @@
         <userTask id="newCorporateEmployeeHRTask" 
                   name="New Corporate Employee ${employee.firstName} ${employee.lastName} is created" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+            <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+            <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
             <documentation>
                 New Employee Created.
                 Please Add "Reports To" Company Contact who will be resposible for approving leave requests
