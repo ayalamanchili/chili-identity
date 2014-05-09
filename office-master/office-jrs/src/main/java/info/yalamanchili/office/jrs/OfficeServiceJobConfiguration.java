@@ -40,6 +40,11 @@ public class OfficeServiceJobConfiguration {
         NotificationGroupDao.instance().syncNotificationGroupsForRoles();
     }
 
+    @ManagedOperation
+    public void sendTodaysLeaveNotifications() {
+        TimeJobService.instance().sendTodaysLeaveNotifications();
+    }
+
     /**
      * indexes all resumes for all existing skill sets
      */
