@@ -76,7 +76,7 @@ public class AdvanceRequestProcess implements TaskListener {
         entity.setDateRequested(new Date());
         Check check = entity.getCheck();
         entity = dao.save(entity);
-        Check.save(dao.getEntityManager(), check, entity);
+        check = Check.save(dao.getEntityManager(), check, entity);
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
     }

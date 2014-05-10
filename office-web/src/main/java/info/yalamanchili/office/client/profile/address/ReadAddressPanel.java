@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import java.util.logging.Logger;
 
 /**
@@ -75,13 +76,14 @@ public class ReadAddressPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("street1", true, false, DataType.STRING_FIELD);
-        addField("street2", true, false, DataType.STRING_FIELD);
-        addField("city", true, false, DataType.STRING_FIELD);
-        addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]));
-        addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]));
-        addField("zip", true, false, DataType.LONG_FIELD);
+        addField("street1", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addDropDown("addressType", new SelectAddressTypeWidget(true, false));
+        alignFields();
     }
 
     @Override

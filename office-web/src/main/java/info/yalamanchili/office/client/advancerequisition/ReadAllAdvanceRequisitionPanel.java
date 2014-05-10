@@ -36,18 +36,18 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAdvanceRequisitionPanel(getEntity(entityId)));
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAdvanceRequisitionPanel(entityId));
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -60,19 +60,19 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new UpdateAdvanceRequisitionPanel(getEntity(entityId)));
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateAdvanceRequisitionPanel(entityId));
     }
 
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getadvanceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override

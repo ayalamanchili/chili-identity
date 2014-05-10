@@ -18,6 +18,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
+import info.chili.gwt.utils.Alignment;
 
 public class UpdateAddressPanel extends UpdateComposite {
 
@@ -94,12 +95,12 @@ public class UpdateAddressPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         // TODO Auto-generated method stub
-        addField("street1", false, true, DataType.STRING_FIELD);
-        addField("street2", false, false, DataType.STRING_FIELD);
-        addField("city", false, true, DataType.STRING_FIELD);
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
-        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
-        addField("zip", false, false, DataType.LONG_FIELD);
+        addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addDropDown("addressType", new SelectAddressTypeWidget(false, false));
     }
 

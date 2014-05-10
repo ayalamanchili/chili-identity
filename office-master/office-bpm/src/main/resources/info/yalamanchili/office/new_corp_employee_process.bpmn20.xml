@@ -17,8 +17,6 @@
         <userTask id="newCorporateEmployeeHRTask" 
                   name="New Corporate Employee ${employee.firstName} ${employee.lastName} is created" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
-            <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-            <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
             <documentation>
                 New Employee Created.
                 Please Add "Reports To" Company Contact who will be resposible for approving leave requests
@@ -30,6 +28,10 @@
                 once the start date of the timesheet passes the status will be changed to 
                 approved by the system after when the employee can view them as available in summary so they can apply  
             </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements> 
         </userTask>
         <sequenceFlow sourceRef="newCorporateEmployeeHRTask" targetRef="newCorporateEmployeeEnd" />
         <!-- Task escalation email after 7 days-->

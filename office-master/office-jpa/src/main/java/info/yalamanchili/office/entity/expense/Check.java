@@ -11,10 +11,12 @@ package info.yalamanchili.office.entity.expense;
 import info.chili.jpa.AbstractHandleEntity;
 import info.yalamanchili.office.entity.profile.Address;
 import java.math.BigDecimal;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -42,7 +44,7 @@ public class Check extends AbstractHandleEntity {
     /**
      * check Mailing Address
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     protected Address checkMalingAddress;
     /**
      * notes
@@ -70,6 +72,7 @@ public class Check extends AbstractHandleEntity {
         this.amount = amount;
     }
 
+    @XmlElement
     public Address getCheckMalingAddress() {
         return checkMalingAddress;
     }
