@@ -218,7 +218,9 @@ public class SelfService {
         Set<String> notificationGroup = new HashSet<String>();
         //employee who created the ticket;
         Employee emp = comment.getTicket().getEmployee();
-        notificationGroup.add(emp.getPrimaryEmail().getEmail());
+        if (TicketStatus.Resolved.equals(comment.getTicket().getStatus()) || TicketStatus.Rejected.equals(comment.getTicket().getStatus())) {
+            notificationGroup.add(emp.getPrimaryEmail().getEmail());
+        }
         // Role to which the ticket is assigned to 
         String role = comment.getTicket().getDepartmentAssigned().getRolename();
         notificationGroup.addAll(MailUtils.instance().getEmailsAddressesForRoles(role));
@@ -230,7 +232,7 @@ public class SelfService {
         return notificationGroup;
     }
 
-//TODO externalize
+    //TODO externalize
     protected OfficeRole getDepartmentToAssign(ServiceTicket ticket) {
         switch (ticket.getType()) {
             case Immigration:

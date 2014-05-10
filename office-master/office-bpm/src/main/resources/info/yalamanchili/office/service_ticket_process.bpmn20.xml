@@ -27,6 +27,7 @@
                 Type        : #{ticket.type}
                 Created     : #{ticket.createdTimeStamp}
                 Please go to My Office --> Employees --> Search --> Employee Tree --> SelfService to process the ticket.
+                Instructions : https://apps.sstech.us/site/office/selfservice/manage-tickets.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
