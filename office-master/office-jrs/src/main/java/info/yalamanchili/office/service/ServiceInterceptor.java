@@ -9,12 +9,9 @@ import info.chili.service.jrs.exception.ServiceException.StatusCode;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.LoginSuccessListener;
 import info.yalamanchili.office.email.Email;
-import info.yalamanchili.office.email.EmailService;
 import info.yalamanchili.office.jms.MessagingService;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.HashSet;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -54,7 +51,7 @@ public class ServiceInterceptor {
     protected ServiceMessages serviceMessages;
 
     //should this ebe executed for all crud dao and resource operations
-    @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..))")
+    @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..)) || execution(* info.chili.dao..*.*(..))")
     public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = null;
         //TODO make the excluded methods configurable
@@ -63,12 +60,7 @@ public class ServiceInterceptor {
         }
         /* skip validation for search and login methods */
         if (!joinPoint.getSignature().toShortString().contains("search") && !joinPoint.getSignature().toShortString().contains("login")) {
-            for (Object arg : joinPoint.getArgs()) {
-                if (arg != null && arg instanceof java.io.Serializable) {
-                    validate(arg);
-                }
-            }
-            checkForErrors();
+            validate(joinPoint);
         }
         try {
             result = joinPoint.proceed();
@@ -80,6 +72,15 @@ public class ServiceInterceptor {
         }
         checkForErrors();
         return result;
+    }
+
+    protected void validate(ProceedingJoinPoint joinPoint) {
+        for (Object arg : joinPoint.getArgs()) {
+            if (arg != null && arg instanceof java.io.Serializable) {
+                validate(arg);
+            }
+        }
+        checkForErrors();
     }
 
     /* 

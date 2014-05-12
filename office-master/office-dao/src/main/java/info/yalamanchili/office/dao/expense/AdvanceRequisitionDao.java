@@ -30,14 +30,16 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
     @Override
     public AdvanceRequisition findById(Long id) {
         AdvanceRequisition entity = super.findById(id);
-        entity.setCheck((Check) Check.find(em, Check.class, entity));
+        entity.setCheck((Check) CheckDao.instance().find(em, entity));
         return entity;
     }
 
     @Override
     public AdvanceRequisition save(AdvanceRequisition entity) {
-        Check.save(em, entity.getCheck(), entity);
-        return super.save(entity);
+        Check check = entity.getCheck();
+        entity = super.save(entity);
+        CheckDao.instance().save(em, check, entity);
+        return entity;
     }
 
     @Override

@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -40,11 +42,13 @@ public class Check extends AbstractHandleEntity {
     /**
      * amount
      */
+    @NotNull
     protected BigDecimal amount;
     /**
      * check Mailing Address
      */
     @OneToOne(cascade = CascadeType.ALL)
+    @Valid
     protected Address checkMalingAddress;
     /**
      * notes
