@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 public class CreateServiceTicketPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateServiceTicketPanel.class.getName());
+    RichTextField descriptionF;
 
     public CreateServiceTicketPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -72,6 +74,9 @@ public class CreateServiceTicketPanel extends CreateComposite {
 
     @Override
     protected void configure() {
+        descriptionF = (RichTextField) fields.get("description");
+        descriptionF.fieldPanel.setWidth("30%");
+        descriptionF.area.setWidth("100%");
     }
 
     @Override
