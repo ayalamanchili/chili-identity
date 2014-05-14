@@ -19,6 +19,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -42,6 +43,21 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
         query.setParameter("employeeParam", emp);
         return (Long) query.getSingleResult();
 
+    }
+
+    public List<ServiceTicket> getCandidateTickets(Employee emp, int start, int limit) {
+        TypedQuery<ServiceTicket> query = getEntityManager().createQuery("from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam OR  st.assignedTo=:employeeParam OR st.departmentAssigned.rolename in (:rolesParam) order by st.createdTimeStamp DESC", ServiceTicket.class);
+        query.setParameter("employeeParam", emp);
+        query.setParameter("rolesParam", SecurityService.instance().getUserRoles(emp));
+        return query.getResultList();
+
+    }
+
+    public Long getCandidateTicketsSize(Employee emp, int start, int limit) {
+        Query query = getEntityManager().createQuery("select count (*) from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam OR st.assignedTo=:employeeParam OR st.departmentAssigned.rolename in (:rolesParam)");
+        query.setParameter("employeeParam", emp);
+        query.setParameter("rolesParam", SecurityService.instance().getUserRoles(emp));
+       return (Long) query.getSingleResult();
     }
 
     public List<TicketComment> getCommentsForTicket(Long ticketId) {

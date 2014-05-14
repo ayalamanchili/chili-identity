@@ -43,7 +43,7 @@ public class Check extends AbstractHandleEntity {
      * amount
      */
     @NotNull
-    protected BigDecimal amount;
+    protected BigDecimal checkAmount;
     /**
      * check Mailing Address
      */
@@ -68,12 +68,12 @@ public class Check extends AbstractHandleEntity {
         this.payableTo = payableTo;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getCheckAmount() {
+        return checkAmount;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setCheckAmount(BigDecimal checkAmount) {
+        this.checkAmount = checkAmount;
     }
 
     @XmlElement

@@ -30,7 +30,7 @@ public class UpdateCheckWidget extends UpdateComposite {
     @Override
     public JSONObject populateEntityFromFields() {
         assignEntityValueFromField("payableTo", entity);
-        assignEntityValueFromField("amount", entity);
+        assignEntityValueFromField("checkAmount", entity);
         assignEntityValueFromField("notes", entity);
         if (updateAddressWidget != null) {
             entity.put("checkMalingAddress", updateAddressWidget.populateEntityFromFields());
@@ -50,7 +50,7 @@ public class UpdateCheckWidget extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("payableTo", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("checkAmount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         if (entity.containsKey("checkMalingAddress")) {
             updateAddressWidget = new UpdateAddressWidget(entity.get("checkMalingAddress").isObject());
@@ -71,7 +71,7 @@ public class UpdateCheckWidget extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("payableTo", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("amount", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("checkAmount", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }

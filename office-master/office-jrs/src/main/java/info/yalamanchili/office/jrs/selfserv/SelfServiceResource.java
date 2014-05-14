@@ -16,6 +16,7 @@ import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.selfserv.SelfService;
 import info.yalamanchili.office.selfserv.ServiceTicketUpdateDto;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -92,7 +93,12 @@ public class SelfServiceResource {
     @Path("/tickets/currentuser/{start}/{limit}")
     public ServiceTicketTable getTickets(@PathParam("start") int start,
             @PathParam("limit") int limit) {
-        return getTicketsTable(SecurityService.instance().getCurrentUser(), start, limit);
+        Employee currentUser = SecurityService.instance().getCurrentUser();
+        ServiceTicketDao dao = ServiceTicketDao.instance();
+        ServiceTicketTable table = new ServiceTicketTable();
+        table.getEntities().addAll(dao.getCandidateTickets(currentUser, start, limit));
+        table.setSize(dao.getCandidateTicketsSize(currentUser, start, limit));
+        return table;
     }
 
     protected ServiceTicketTable getTicketsTable(Employee emp, int start, int limit) {
@@ -132,6 +138,9 @@ public class SelfServiceResource {
 
         @XmlElement
         public List<ServiceTicket> getEntities() {
+            if (this.entities == null) {
+                this.entities = new ArrayList<ServiceTicket>();
+            }
             return entities;
         }
 

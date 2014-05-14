@@ -16,7 +16,6 @@ public enum TicketType {
 
     HumanResource,
     Billing,
-    Tax,
     Payroll,
     Immigration,
     Recruiting,

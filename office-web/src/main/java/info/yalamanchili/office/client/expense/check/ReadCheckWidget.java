@@ -33,7 +33,7 @@ public class ReadCheckWidget extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info(entity.toString());
         assignFieldValueFromEntity("payableTo", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
+        assignFieldValueFromEntity("checkAmount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         if (entity.containsKey("checkMalingAddress")) {
             logger.info(entity.get("checkMalingAddress").isObject().toString());
@@ -52,7 +52,7 @@ public class ReadCheckWidget extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("payableTo", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("amount", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("checkAmount", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }

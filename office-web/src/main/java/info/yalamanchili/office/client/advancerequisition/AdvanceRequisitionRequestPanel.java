@@ -19,6 +19,7 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expense.bnkacct.CreateBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.CreateCheckWidget;
 import java.util.logging.Logger;
 
@@ -30,6 +31,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(AdvanceRequisitionRequestPanel.class.getName());
     CreateCheckWidget createCheckWidget = new CreateCheckWidget();
+    CreateBankAcctWidget createBankAccountWidget = new CreateBankAcctWidget();
 
     public AdvanceRequisitionRequestPanel() {
         super(CreateCompositeType.CREATE);
@@ -45,6 +47,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite {
         entity.put("status", new JSONString("Open"));
         entity.put("employee", new JSONObject());
         entity.put("check", createCheckWidget.populateEntityFromFields());
+        entity.put("bankAccount", createBankAccountWidget.populateEntityFromFields());
         return entity;
     }
 
@@ -71,7 +74,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours");
+        new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours for Email confirmation");
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel());
         GenericPopup.instance().hide();
@@ -92,6 +95,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite {
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("neededBy", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(createCheckWidget);
+        entityFieldsPanel.add(createBankAccountWidget);
         alignFields();
     }
 

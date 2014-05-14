@@ -18,6 +18,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
+import info.yalamanchili.office.client.expense.bnkacct.UpdateBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.UpdateCheckWidget;
 import java.util.logging.Logger;
 
@@ -29,6 +30,7 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateAdvanceRequisitionPanel.class.getName());
     UpdateCheckWidget updateCheckWidget;
+    UpdateBankAcctWidget updateBankAcctWidget;
 
     public UpdateAdvanceRequisitionPanel(String entityId) {
         initUpdateComposite(entityId, "AdvanceRequisition", OfficeWelcome.constants);
@@ -42,6 +44,9 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         assignEntityValueFromField("status", entity);
         if (updateCheckWidget != null) {
             entity.put("check", updateCheckWidget.populateEntityFromFields());
+        }
+        if (updateBankAcctWidget != null) {
+            entity.put("bankAccount", updateBankAcctWidget.populateEntityFromFields());
         }
         logger.info("asdf" + entity);
         return entity;
@@ -72,6 +77,10 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         if (entity.containsKey("check")) {
             updateCheckWidget = new UpdateCheckWidget(entity.get("check").isObject());
             entityFieldsPanel.add(updateCheckWidget);
+        }
+        if (entity.containsKey("bankAccount")) {
+            updateBankAcctWidget = new UpdateBankAcctWidget(entity.get("bankAccount").isObject());
+            entityFieldsPanel.add(updateBankAcctWidget);
         }
     }
 

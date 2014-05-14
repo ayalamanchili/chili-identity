@@ -21,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
@@ -98,6 +99,11 @@ public class AdvanceRequisition extends AbstractEntity {
      */
     @Transient
     protected Check check;
+    /**
+     *
+     */
+    @Transient
+    protected BankAccount bankAccount;
 
     public AdvanceRequisition() {
     }
@@ -182,12 +188,22 @@ public class AdvanceRequisition extends AbstractEntity {
         this.transaction = transaction;
     }
 
+    @XmlElement
     public Check getCheck() {
         return check;
     }
 
     public void setCheck(Check check) {
         this.check = check;
+    }
+
+    @XmlElement
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Override

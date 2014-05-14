@@ -238,9 +238,15 @@ public class SelfService {
             case Immigration:
                 return OfficeRole.ROLE_HR;
             case Billing:
-                return OfficeRole.ROLE_TIME;
+                return OfficeRole.ROLE_BILLING;
             case Recruiting:
                 return OfficeRole.ROLE_RECRUITER;
+            case Payroll:
+                return OfficeRole.ROLE_PAYROLL_AND_BENIFITS;
+            case HealthInsurance:
+                return OfficeRole.ROLE_PAYROLL_AND_BENIFITS;
+            case Network:
+                return OfficeRole.ROLE_SYSTEM_AND_NETWORK_ADMIN;
             default:
                 return OfficeRole.ROLE_RELATIONSHIP;
         }

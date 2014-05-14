@@ -94,7 +94,7 @@ public class DriveResource {
 
     @PUT
     @Path("/files/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DRIVE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DRIVE')")
     @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public void deletefile(@PathParam("id") Long id) {
         File file = FileDao.instance().findById(id);

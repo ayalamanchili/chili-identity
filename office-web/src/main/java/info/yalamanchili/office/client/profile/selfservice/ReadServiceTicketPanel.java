@@ -160,7 +160,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
                             }
                             if (TabPanel.instance().homePanel.isVisible()) {
                                 TabPanel.instance().homePanel.entityPanel.clear();
-                                TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel(TreeEmployeePanel.instance().getEntityId()));
+                                TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
                             }
                         }
                     });

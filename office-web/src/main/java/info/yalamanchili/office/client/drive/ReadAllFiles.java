@@ -24,6 +24,7 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import java.util.logging.Logger;
 
 /**
@@ -31,37 +32,37 @@ import java.util.logging.Logger;
  * @author raghu
  */
 public class ReadAllFiles extends CRUDReadAllComposite {
-
+    
     private static Logger logger = Logger.getLogger(ReadAllFiles.class.getName());
     public static ReadAllFiles instance;
-
+    
     public ReadAllFiles(JSONArray array) {
         instance = this;
         initTable("File", array, OfficeWelcome.constants);
     }
-
+    
     public ReadAllFiles(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("Files", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getreadallfilesURL(parentId, start, OfficeWelcome.constants.tableSize()),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
-
+    
     public String getreadallfilesURL(String folderId, Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "drive/files/" + folderId + "/" + start + "/" + limit;
-
+        
     }
-
+    
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -70,7 +71,7 @@ public class ReadAllFiles extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("Updated Time Stamp"));
         table.setText(0, 4, getKeyValue("Updated By"));
     }
-
+    
     @Override
     public void fillData(JSONArray entities) {
         logger.info(entities.toString());
@@ -85,10 +86,10 @@ public class ReadAllFiles extends CRUDReadAllComposite {
             table.setText(i, 4, JSONUtils.toString(entity, "updatedBy"));
         }
     }
-
+    
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.isCorporateEmployee()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_DRIVE)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
@@ -96,46 +97,46 @@ public class ReadAllFiles extends CRUDReadAllComposite {
             table.setWidget(row, 0, fileField);
         }
     }
-
+    
     @Override
     public void viewClicked(String entityId) {
     }
-
+    
     @Override
     public void deleteClicked(String entityId) {
-
+        
         if (Window.confirm("Are you sure? All Files details will be deleted")) {
             HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String arg0) {
-                    postDeleteSuccess();
-                }
-            });
+                        @Override
+                        public void onResponse(String arg0) {
+                            postDeleteSuccess();
+                        }
+                    });
         }
     }
-
+    
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Files Information");
         TabPanel.instance().drivePanel.entityPanel.clear();
         TabPanel.instance().drivePanel.entityPanel.add(new ReadAllFiles(DriveTreePanel.instance().getSelectedNode().getEntityId()));
     }
-
+    
     @Override
     public void updateClicked(String entityId) {
         new GenericPopup(new UpdateFilePanel(getEntity(entityId))).show();
     }
-
+    
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "drive/files/delete/" + entityId;
     }
-
+    
     @Override
     protected boolean showDocumentationLink() {
         return true;
     }
-
+    
     @Override
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "drive.html";
