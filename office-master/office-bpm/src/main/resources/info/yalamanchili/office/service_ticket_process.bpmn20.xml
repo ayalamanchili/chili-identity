@@ -21,12 +21,13 @@
                   activiti:candidateGroups="${ticket.departmentAssigned.rolename}">
             <documentation> 
                 Ticket Details 
-                Created By  : #{ticket.employee.firstName} #{ticket.employee.lastName}           
+                Created By  : #{ticket.employee.firstName} #{ticket.employee.lastName} 
+                Number      : #{ticket.id}          
                 Subject     : #{ticket.subject}
                 Notes       : #{ticket.description}
                 Type        : #{ticket.type}
                 Created     : #{ticket.createdTimeStamp}
-                Please go to My Office --> Employees --> Search --> Employee Tree --> SelfService to process the ticket.
+                Please go to Home--> Self Service --> My Tickets --> View to resolve the ticket.
                 Instructions : https://apps.sstech.us/site/office/selfservice/manage-tickets.html
             </documentation>
             <extensionElements>

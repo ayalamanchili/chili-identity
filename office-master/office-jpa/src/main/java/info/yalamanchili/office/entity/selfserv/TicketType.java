@@ -15,7 +15,7 @@ package info.yalamanchili.office.entity.selfserv;
 public enum TicketType {
 
     HumanResource,
-    Billing,
+    Invoicing,
     Payroll,
     Immigration,
     Recruiting,

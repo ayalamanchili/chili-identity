@@ -237,14 +237,16 @@ public class SelfService {
         switch (ticket.getType()) {
             case Immigration:
                 return OfficeRole.ROLE_HR;
-            case Billing:
-                return OfficeRole.ROLE_BILLING;
+            case HumanResource:
+                return OfficeRole.ROLE_HR;
+            case Invoicing:
+                return OfficeRole.ROLE_INVOICING;
             case Recruiting:
                 return OfficeRole.ROLE_RECRUITER;
             case Payroll:
                 return OfficeRole.ROLE_PAYROLL_AND_BENIFITS;
             case HealthInsurance:
-                return OfficeRole.ROLE_PAYROLL_AND_BENIFITS;
+                return OfficeRole.ROLE_HR;
             case Network:
                 return OfficeRole.ROLE_SYSTEM_AND_NETWORK_ADMIN;
             default:
