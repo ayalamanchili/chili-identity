@@ -27,7 +27,11 @@
     <amq:queue id="emailQueue" physicalName="info.yalamanchili.office.email.queue" />
 
     <!-- JMS ConnectionFactory to use -->
-    <amq:connectionFactory id="jmsFactory" brokerURL="vm://localhost" />
+    <amq:connectionFactory id="jmsFactory" brokerURL="vm://localhost">
+        <amq:redeliveryPolicy>
+            <amq:redeliveryPolicy maximumRedeliveries="4" initialRedeliveryDelay="3600000" useExponentialBackOff="true" backOffMultiplier="5" />
+        </amq:redeliveryPolicy>
+    </amq:connectionFactory>
 
     <!-- Spring JMS Template -->
     <bean id="offcieJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -43,7 +47,7 @@
     </bean>
 
     <jms:listener-container container-type="default"
-                            connection-factory="jmsFactory" acknowledge="auto">
+                            connection-factory="jmsFactory" acknowledge="transacted">
         <jms:listener destination="info.yalamanchili.office.email.queue"
                       ref="emailQueueMessageListener" />
     </jms:listener-container>
