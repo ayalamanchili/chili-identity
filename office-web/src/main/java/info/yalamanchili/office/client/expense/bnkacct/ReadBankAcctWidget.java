@@ -47,11 +47,11 @@ public class ReadBankAcctWidget extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("accountFirstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("accountLastName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("bankAccountNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("accountFirstName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("accountLastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankRoutingNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("bankAccountNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
