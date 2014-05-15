@@ -10,8 +10,10 @@ package info.yalamanchili.office.jrs.expense;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
+import info.yalamanchili.office.entity.expense.Transaction;
 import info.yalamanchili.office.expense.AdvanceRequisitionService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.jrs.expense.TransactionResource.TransactionTable;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -35,28 +37,45 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition> {
-
+    
     @Autowired
     public AdvanceRequisitionDao advanceRequisitionDao;
-
+    
     @PUT
     @Path("/submit-advance-requisition-request")
     public void submitAdvanceRequisitionRequest(AdvanceRequisition entity) {
         AdvanceRequisitionService.instance().submitAdvanceRequisition(entity);
     }
-
+    
     @PUT
     @Override
     @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
     public AdvanceRequisition save(AdvanceRequisition entity) {
         return super.save(entity);
     }
-
+    
+    @PUT
+    @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    @Path("/transaction/{id}")
+    public void addTransaction(@PathParam("id") Long id, Transaction transaction) {
+        advanceRequisitionDao.addTransaction(id, transaction);
+    }
+    
+    @GET
+    @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    @Path("/transactions/{id}")
+    public TransactionTable getTransactions(@PathParam("id") Long id,@PathParam("start") int start, @PathParam("limit") int limit){
+        TransactionTable table= new TransactionTable();
+        table.setEntities(advanceRequisitionDao.getTransactions(id, start, limit));
+        table.setSize(advanceRequisitionDao.getTransactionsSize(id, start, limit));
+        return table;
+    }
+    
     @Override
     public CRUDDao getDao() {
         return advanceRequisitionDao;
     }
-
+    
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_EXPENSE')")
@@ -66,27 +85,27 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-
+    
     @XmlRootElement
     @XmlType
     public static class AdvanceRequisitionTable {
-
+        
         protected Long size;
         protected List<AdvanceRequisition> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<AdvanceRequisition> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<AdvanceRequisition> entities) {
             this.entities = entities;
         }

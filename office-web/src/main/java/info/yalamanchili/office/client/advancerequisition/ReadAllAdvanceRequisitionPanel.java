@@ -37,6 +37,8 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAdvanceRequisitionPanel(entityId));
+        TabPanel.instance().expensePanel.sidePanelTop.clear();
+        TabPanel.instance().expensePanel.sidePanelTop.add(new AdvReqTreePanel(entityId));
     }
 
     @Override
@@ -61,6 +63,8 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new UpdateAdvanceRequisitionPanel(entityId));
+        TabPanel.instance().expensePanel.sidePanelTop.clear();
+        TabPanel.instance().expensePanel.sidePanelTop.add(new AdvReqTreePanel(entityId));
     }
 
     @Override

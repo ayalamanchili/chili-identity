@@ -10,19 +10,22 @@ package info.yalamanchili.office.entity.expense;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -92,8 +95,8 @@ public class AdvanceRequisition extends AbstractEntity {
     /**
      *
      */
-    @OneToOne(cascade = CascadeType.ALL)
-    protected Transaction transaction;
+    @OneToMany(cascade = CascadeType.ALL)
+    protected List<Transaction> transactions;
     /**
      *
      */
@@ -180,12 +183,20 @@ public class AdvanceRequisition extends AbstractEntity {
         this.bpmProcessId = bpmProcessId;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    @XmlTransient
+    public List<Transaction> getTransactions() {
+        if (this.transactions == null) {
+            this.transactions = new ArrayList<Transaction>();
+        }
+        return transactions;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void addTransaction(Transaction transaction) {
+        this.getTransactions().add(transaction);
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     @XmlElement

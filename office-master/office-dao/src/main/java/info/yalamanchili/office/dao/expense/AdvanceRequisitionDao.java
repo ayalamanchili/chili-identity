@@ -12,6 +12,8 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.expense.Check;
+import info.yalamanchili.office.entity.expense.Transaction;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
@@ -48,6 +50,21 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
             BankAccountDao.instance().save(em, account, entity);
         }
         return entity;
+    }
+
+    public void addTransaction(Long id, Transaction transaction) {
+        AdvanceRequisition entity = findById(id);
+        entity.addTransaction(transaction);
+    }
+
+    public List<Transaction> getTransactions(Long id, int start, int limit) {
+        AdvanceRequisition entity = findById(id);
+        return entity.getTransactions();
+    }
+
+    public Long getTransactionsSize(Long id, int start, int limit) {
+        AdvanceRequisition entity = findById(id);
+        return (long) entity.getTransactions().size();
     }
 
     @Override
