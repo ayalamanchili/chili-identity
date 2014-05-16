@@ -59,6 +59,7 @@
                 <item name="New Corp Employee Timesheets" href="/office/timesheets/new-corp-emp-timesheets.html"/>
                 <item name="Reports" href="/office/timesheets/corp-emp-reports.html"/>
                 <item name="Leaves for Employees" href="/office/timesheets/employee-leave-request.html"/>
+                <item name="Update Leave Request" href="/office/timesheets/update-leave-request.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
                 <item name="Employee Address updated" href="/office/bpm/address-updated-process.html"/>
