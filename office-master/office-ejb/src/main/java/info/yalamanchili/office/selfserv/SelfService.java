@@ -67,6 +67,7 @@ public class SelfService {
 
     public void updateTicket(ServiceTicket servTicket) {
         ServiceTicket ticket = serviceTicketDao.findById(servTicket.getId());
+		ticket.setType(servTicket.getType());
         //Status
         if (servTicket.getStatus() != null) {
             ticket.setStatus(servTicket.getStatus());
