@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import info.chili.gwt.callback.RunAsyncCallback;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.AdminMenu;
-import info.yalamanchili.office.client.drive.DriveEntityPanel;
 import info.yalamanchili.office.client.drive.DriveTreePanel;
 import info.yalamanchili.office.client.help.HelpHome;
 import info.yalamanchili.office.client.home.HomeStackPanel;
@@ -43,7 +42,6 @@ import info.yalamanchili.office.client.recruiting.RecruitingMenu;
 import info.yalamanchili.office.client.reports.ReportsMenu;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
-import info.yalamanchili.office.client.time.consultant.ReadCurrentConsultantLeavesPanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
@@ -244,7 +242,6 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         drivePanel.entityPanel.clear();
         drivePanel.sidePanelTop.clear();
         drivePanel.sidePanelBottom.clear();
-        drivePanel.entityPanel.add(new DriveEntityPanel());
         drivePanel.sidePanelTop.add(new DriveTreePanel());
         drivePanel.sidePanelBottom.add(new SearchDrivePanel());
     }

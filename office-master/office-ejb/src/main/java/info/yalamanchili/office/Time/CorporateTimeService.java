@@ -70,6 +70,7 @@ public class CorporateTimeService {
                 taskService.deleteTask(task.getId());
             }
         }
+        corporateTimeSheetDao.save(entity);
         submitLeaveRequest(entity);
     }
 
