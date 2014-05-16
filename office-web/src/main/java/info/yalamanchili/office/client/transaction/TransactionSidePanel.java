@@ -51,7 +51,7 @@ public class TransactionSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createTransactionLink)) {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new CreateTransactionPanel(CreateComposite.CreateCompositeType.CREATE));
+//            TabPanel.instance().getExpensePanel().entityPanel.add(new CreateTransactionPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

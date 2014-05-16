@@ -55,8 +55,8 @@ public class AdvReqTreePanel extends TreePanelComposite {
     public void treeNodeSelected(String entityNodeKey) {
         if (TRANSACTIONS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
+            TabPanel.instance().expensePanel.entityPanel.add(new AddTransactionPanel("advancerequisition/transaction/" + getEntityId()));
             TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTransactionPanel());
-            TabPanel.instance().expensePanel.entityPanel.add(new AddTransactionPanel("advancerequisition/add-transaction/" + getEntityId()));
         }
     }
 

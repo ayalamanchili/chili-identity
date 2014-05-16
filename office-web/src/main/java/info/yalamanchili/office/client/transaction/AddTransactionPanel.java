@@ -68,6 +68,7 @@ public class AddTransactionPanel extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Transaction Successfully Created");
         TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new AddTransactionPanel("advancerequisition/transaction/" + getEntityId()));
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTransactionPanel());
     }
 
