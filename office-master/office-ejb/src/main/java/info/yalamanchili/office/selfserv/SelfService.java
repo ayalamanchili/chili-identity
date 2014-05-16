@@ -9,7 +9,6 @@
 package info.yalamanchili.office.selfserv;
 
 import info.chili.audit.AuditChageDto;
-import info.chili.audit.AuditService;
 import info.chili.security.dao.CRoleDao;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
@@ -67,7 +66,7 @@ public class SelfService {
 
     public void updateTicket(ServiceTicket servTicket) {
         ServiceTicket ticket = serviceTicketDao.findById(servTicket.getId());
-		ticket.setType(servTicket.getType());
+        ticket.setType(servTicket.getType());
         //Status
         if (servTicket.getStatus() != null) {
             ticket.setStatus(servTicket.getStatus());
@@ -180,7 +179,8 @@ public class SelfService {
         emailCtx.put("currentComment", comment);
         emailCtx.put("ticket", comment.getTicket());
         emailCtx.put("ticketDepartment", OfficeRoles.rolesMessages.get(comment.getTicket().getDepartmentAssigned().getRolename()));
-        emailCtx.put("comments", comment.getTicket().getComments());
+        List<TicketComment> comments = comment.getTicket().getComments();
+        emailCtx.put("comments", comments);
         emailCtx.put("changes", determineChanges(comment.getTicket()));
         email.setTemplateName("service_ticket_template.html");
         email.setContext(emailCtx);
