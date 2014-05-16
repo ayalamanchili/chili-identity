@@ -43,8 +43,6 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     public Long getTicketsSize(Employee emp, int start, int limit) {
         Query query = getEntityManager().createQuery("select count (*) from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam", Long.class);
         query.setParameter("employeeParam", emp);
-        query.setFirstResult(start);
-        query.setMaxResults(limit);
         return (Long) query.getSingleResult();
 
     }
@@ -63,8 +61,6 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
         Query query = getEntityManager().createQuery("select count (*) from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam OR st.assignedTo=:employeeParam OR st.departmentAssigned.rolename in (:rolesParam)");
         query.setParameter("employeeParam", emp);
         query.setParameter("rolesParam", SecurityService.instance().getUserRoles(emp));
-        query.setFirstResult(start);
-        query.setMaxResults(limit);
         return (Long) query.getSingleResult();
     }
 
