@@ -60,7 +60,6 @@ public class CorporateTimeService {
     }
 
     public void updateLeaveRequest(CorporateTimeSheet entity) {
-        entity.setStatus(TimeSheetStatus.Pending);
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         taskService.deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         //delete cancel request is exists
@@ -70,7 +69,6 @@ public class CorporateTimeService {
                 taskService.deleteTask(task.getId());
             }
         }
-        corporateTimeSheetDao.save(entity);
         submitLeaveRequest(entity);
     }
 

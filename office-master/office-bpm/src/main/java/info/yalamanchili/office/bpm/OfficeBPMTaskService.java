@@ -101,8 +101,10 @@ public class OfficeBPMTaskService {
     }
 
     public void deleteTask(String taskId) {
-        bpmTaskService.deleteTask(taskId);
-        bpmTaskService.addComment(taskId, taskId, taskId);
+        if (getTaskForId(taskId) != null) {
+            bpmTaskService.deleteTask(taskId);
+            bpmTaskService.addComment(taskId, taskId, taskId);
+        }
     }
 
     public Task getTaskForId(String taskId) {
@@ -119,7 +121,7 @@ public class OfficeBPMTaskService {
             return;
         }
         for (Task task : getTasksForProcessId(processId)) {
-            bpmTaskService.deleteTask(task.getId());
+            deleteTask(task.getId());
         }
         if (deleteProcessInstance) {
             OfficeBPMService.instance().deleteProcessInstance(processId);
