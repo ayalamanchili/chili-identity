@@ -51,7 +51,7 @@
             </item>
             <item name="Time" href="/office/timesheets/submit-leave-request.html" collapse="true">
                 <item name="Submit Leave Request" href="/office/timesheets/submit-leave-request.html"/>
-                <item name="Leaves Cancellation" href="/office/timesheets/leave-cancel-process.html"/>
+                <item name="Update-Cancel Leave Request" href="/office/timesheets/update-cancel-leave-request.html"/>
                 <item name="Approving Time Sheets" href="/office/timesheets/approving-timesheets.html"/>
                 <item name="Timesheet Process" href="/office/timesheets/corp-timesheet-process.html"/>
                 <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
@@ -59,7 +59,6 @@
                 <item name="New Corp Employee Timesheets" href="/office/timesheets/new-corp-emp-timesheets.html"/>
                 <item name="Reports" href="/office/timesheets/corp-emp-reports.html"/>
                 <item name="Leaves for Employees" href="/office/timesheets/employee-leave-request.html"/>
-                <item name="Update Leave Request" href="/office/timesheets/update-leave-request.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
                 <item name="Employee Address updated" href="/office/bpm/address-updated-process.html"/>
