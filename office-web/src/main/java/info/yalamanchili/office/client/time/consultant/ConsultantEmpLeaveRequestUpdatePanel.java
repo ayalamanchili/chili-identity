@@ -1,12 +1,9 @@
-/**
- * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.time.corp;
+package info.yalamanchili.office.client.time.consultant;
 
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.fields.DataType;
@@ -20,9 +17,9 @@ import info.yalamanchili.office.client.time.TimeSheetCategory;
  *
  * @author ayalamanchili
  */
-public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPanel {
+public class ConsultantEmpLeaveRequestUpdatePanel extends UpdateConsultantTimeSheetPanel {
 
-    public CorpEmpLeaveRequestUpdatePanel(JSONObject entity) {
+    public ConsultantEmpLeaveRequestUpdatePanel(JSONObject entity) {
         super(entity);
     }
 
@@ -64,12 +61,11 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
         GenericPopup.instance().hide();
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.clear();
-        TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeF.getSelectedObjectId()));
-        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeF.getSelectedObjectId()));
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeF.getSelectedObjectId()));
     }
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "corporate-timesheet/update-leave-request";
+        return OfficeWelcome.constants.root_url() + "consultant-timesheet/update-leave-request";
     }
 }

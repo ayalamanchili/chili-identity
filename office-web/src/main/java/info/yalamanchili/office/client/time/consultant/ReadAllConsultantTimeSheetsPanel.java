@@ -27,7 +27,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
-import info.yalamanchili.office.client.time.corp.CorpEmpLeaveRequestUpdatePanel;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -66,11 +65,11 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -90,11 +89,11 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllCorporateTimeSheetsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
@@ -182,7 +181,7 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
         if (event.getSource() instanceof ClickableLink) {
             ClickableLink link = (ClickableLink) event.getSource();
             if (link.getText().contains("Update")) {
-                new GenericPopup(new UpdateConsultantTimeSheetPanel(getEntity(link.getTitle()))).show();
+                new GenericPopup(new ConsultantEmpLeaveRequestUpdatePanel(getEntity(link.getTitle()))).show();
             }
         } else {
             super.onClick(event);
