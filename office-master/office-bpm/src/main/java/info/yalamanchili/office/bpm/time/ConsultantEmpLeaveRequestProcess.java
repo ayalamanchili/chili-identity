@@ -21,7 +21,7 @@ import org.activiti.engine.delegate.TaskListener;
  * @author ayalamanchili
  */
 public class ConsultantEmpLeaveRequestProcess implements TaskListener {
-
+    
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -31,16 +31,16 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
             leaveRequestTaskCompleted(task);
         }
     }
-
+    
     protected void leaveRequestTaskCreated(DelegateTask task) {
         ConsultantTimeSheet ts = (ConsultantTimeSheet) task.getExecution().getVariable("leaveRequest");
-        ts.setStatus(TimeSheetStatus.Pending);
+        ts.setBpmProcessId(task.getExecution().getProcessInstanceId());
         ts = ConsultantTimeSheetDao.instance().save(ts);
         task.getExecution().setVariable("leaveRequest", ts);
         task.getExecution().setVariable("entityId", ts.getId());
         new GenericTaskCreateNotification().notify(task);
     }
-
+    
     protected void leaveRequestTaskCompleted(DelegateTask task) {
         ConsultantTimeSheet ts = getTimeSheetFromTask(task);
         if (ts == null) {
@@ -56,7 +56,7 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
         ConsultantTimeSheetDao.instance().save(ts);
         new GenericTaskCompleteNotification().notify(task);
     }
-
+    
     protected ConsultantTimeSheet getTimeSheetFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {
