@@ -68,6 +68,12 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
         return consultantTimeSheetDao.getCurrentCompanyLeaves();
     }
 
+    @PUT
+    @Path("/update-leave-request")
+    public void updateLeaveRequest(ConsultantTimeSheet entity) {
+        ConsultantTimeService.instance().updateLeaveRequest(entity);
+    }
+
     @Override
     @PUT
     @Path("/delete/{id}")
@@ -111,7 +117,6 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     public Response getReport(@QueryParam("id") Long id) {
         return ConsultantTimeService.instance().getReport(id);
     }
-
     @Autowired
     public ConsultantTimeSheetDao consultantTimeSheetDao;
 

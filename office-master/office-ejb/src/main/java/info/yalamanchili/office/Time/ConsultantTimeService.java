@@ -11,14 +11,18 @@ package info.yalamanchili.office.Time;
 import info.chili.commons.FileIOUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
+import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.template.TemplateService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.Response;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -43,6 +47,19 @@ public class ConsultantTimeService {
         OfficeBPMService.instance().startProcess("consultant_emp_leave_request_process", vars);
     }
 //TODO move to commons
+
+    public void updateLeaveRequest(ConsultantTimeSheet entity) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        taskService.deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        //delete cancel request is exists
+        List<Task> tasks = taskService.findTasksWithVariable("entityId", entity.getId());
+        for (Task task : tasks) {
+            if (task.getTaskDefinitionKey().equals("corpEmpLeaveRequestCancelTask")) {
+                taskService.deleteTask(task.getId());
+            }
+        }
+        submitLeaveRequest(entity);
+    }
 
     public Response getReport(Long id) {
         String report = TemplateService.instance().process("corp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
