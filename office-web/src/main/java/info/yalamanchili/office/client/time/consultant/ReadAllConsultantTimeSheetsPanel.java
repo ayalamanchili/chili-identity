@@ -182,7 +182,7 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
         if (event.getSource() instanceof ClickableLink) {
             ClickableLink link = (ClickableLink) event.getSource();
             if (link.getText().contains("Update")) {
-                new GenericPopup(new CorpEmpLeaveRequestUpdatePanel(getEntity(link.getTitle()))).show();
+                new GenericPopup(new UpdateConsultantTimeSheetPanel(getEntity(link.getTitle()))).show();
             }
         } else {
             super.onClick(event);
