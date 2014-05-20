@@ -61,7 +61,7 @@ public class ConsultantEmpLeaveRequestUpdatePanel extends UpdateConsultantTimeSh
         GenericPopup.instance().hide();
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.clear();
-        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeF.getSelectedObjectId()));
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
     }
 
     @Override
