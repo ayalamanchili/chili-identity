@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -82,6 +83,17 @@ public class Transaction extends AbstractEntity {
     @ForeignKey(name = "FK_ParentTrans_Transactions")
     protected Transaction parentTransaction;
 
+    /**
+     *
+     */
+    @Transient
+    protected Check check;
+    /**
+     *
+     */
+    @Transient
+    protected BankAccount bankAccount;
+
     public Transaction() {
     }
 
@@ -140,6 +152,22 @@ public class Transaction extends AbstractEntity {
 
     public void setParentTransaction(Transaction parentTransaction) {
         this.parentTransaction = parentTransaction;
+    }
+
+    public Check getCheck() {
+        return check;
+    }
+
+    public void setCheck(Check check) {
+        this.check = check;
+    }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Override

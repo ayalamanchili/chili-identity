@@ -53,6 +53,7 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
     }
 
     public void addTransaction(Long id, Transaction transaction) {
+        transaction = TransactionDao.instance().save(transaction);
         AdvanceRequisition entity = findById(id);
         entity.addTransaction(transaction);
     }

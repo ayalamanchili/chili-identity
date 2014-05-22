@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.ReadCheckWidget;
+import info.yalamanchili.office.client.expense.check.ReadCheckWidget.ReadCheckWidgetType;
 import java.util.logging.Logger;
 
 /**
@@ -65,7 +66,7 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
         assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         if (entity.containsKey("check")) {
-            entityFieldsPanel.add(new ReadCheckWidget(entity.get("check").isObject()));
+            entityFieldsPanel.add(new ReadCheckWidget(ReadCheckWidgetType.CHECK_MAILING_INFO, entity.get("check").isObject()));
         }
         if (entity.containsKey("bankAccount")) {
             entityFieldsPanel.add(new ReadBankAcctWidget(entity.get("bankAccount").isObject()));

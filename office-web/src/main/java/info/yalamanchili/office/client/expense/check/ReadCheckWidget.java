@@ -24,7 +24,14 @@ public class ReadCheckWidget extends ReadComposite {
 
     private static Logger logger = Logger.getLogger(ReadCheckWidget.class.getName());
 
-    public ReadCheckWidget(JSONObject entity) {
+    public enum ReadCheckWidgetType {
+
+        CHECK_MAILING_INFO, CHECK_PAYMENT_INFO
+    }
+    ReadCheckWidgetType type;
+
+    public ReadCheckWidget(ReadCheckWidgetType type, JSONObject entity) {
+        this.type = type;
         initReadComposite(entity, "Check", OfficeWelcome.constants);
     }
 
@@ -37,6 +44,13 @@ public class ReadCheckWidget extends ReadComposite {
         logger.info(entity.toString());
         assignFieldValueFromEntity("payableTo", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("checkAmount", entity, DataType.CURRENCY_FIELD);
+        assignEntityValueFromField("checkDate", entity);
+        if (ReadCheckWidgetType.CHECK_PAYMENT_INFO.equals(type)) {
+            assignEntityValueFromField("bankName", entity);
+            assignEntityValueFromField("bankRoutingNumber", entity);
+            assignEntityValueFromField("bankAccountNumber", entity);
+            assignEntityValueFromField("checkNumber", entity);
+        }
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         if (entity.containsKey("checkMalingAddress")) {
             logger.info(entity.get("checkMalingAddress").isObject().toString());
@@ -56,6 +70,13 @@ public class ReadCheckWidget extends ReadComposite {
     protected void addWidgets() {
         addField("payableTo", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("checkAmount", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("checkDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        if (ReadCheckWidgetType.CHECK_PAYMENT_INFO.equals(type)) {
+            addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("bankAccountNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("checkNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        }
         addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }

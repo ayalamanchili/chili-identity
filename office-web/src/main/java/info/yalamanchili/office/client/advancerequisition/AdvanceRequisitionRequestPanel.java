@@ -25,6 +25,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expense.bnkacct.CreateBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.CreateCheckWidget;
+import info.yalamanchili.office.client.expense.check.CreateCheckWidget.CreateCheckWidgetType;
 import java.util.logging.Logger;
 
 /**
@@ -34,7 +35,7 @@ import java.util.logging.Logger;
 public class AdvanceRequisitionRequestPanel extends CreateComposite implements ClickHandler {
     
     private static Logger logger = Logger.getLogger(AdvanceRequisitionRequestPanel.class.getName());
-    CreateCheckWidget createCheckWidget = new CreateCheckWidget();
+    CreateCheckWidget createCheckWidget = new CreateCheckWidget(CreateCheckWidgetType.CHECK_MAILING_INFO);
     CreateBankAcctWidget createBankAccountWidget = new CreateBankAcctWidget();
     RadioButton passCheckInfo = new RadioButton("payment", "Add Check Information");
     RadioButton passBankAcctInfo = new RadioButton("payment", "Add Bank Account Information");
@@ -147,7 +148,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
             entityFieldsPanel.remove(createBankAccountWidget);
         }
         if (!createCheckWidget.isAttached()) {
-            createCheckWidget = new CreateCheckWidget();
+            createCheckWidget = new CreateCheckWidget(CreateCheckWidgetType.CHECK_MAILING_INFO);
             entityFieldsPanel.add(createCheckWidget);
         }
     }

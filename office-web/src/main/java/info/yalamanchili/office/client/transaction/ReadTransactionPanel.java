@@ -16,6 +16,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.advancetranscation.TransactionStatus;
 import info.yalamanchili.office.client.advancetranscation.TransactionType;
+import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
+import info.yalamanchili.office.client.expense.check.ReadCheckWidget;
 import java.util.logging.Logger;
 
 /**
@@ -44,13 +46,13 @@ public class ReadTransactionPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
@@ -60,6 +62,12 @@ public class ReadTransactionPanel extends ReadComposite {
         assignFieldValueFromEntity("postedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("transactionType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("transactionStatus", entity, DataType.ENUM_FIELD);
+        if (entity.containsKey("check")) {
+            entityFieldsPanel.add(new ReadCheckWidget(ReadCheckWidget.ReadCheckWidgetType.CHECK_PAYMENT_INFO, entity.get("check").isObject()));
+        }
+        if (entity.containsKey("bankAccount")) {
+            entityFieldsPanel.add(new ReadBankAcctWidget(entity.get("bankAccount").isObject()));
+        }
     }
 
     @Override

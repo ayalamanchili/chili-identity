@@ -9,6 +9,9 @@ package info.yalamanchili.office.dao.expense;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.entity.expense.AdvanceRequisition;
+import info.yalamanchili.office.entity.expense.BankAccount;
+import info.yalamanchili.office.entity.expense.Check;
 import info.yalamanchili.office.entity.expense.Transaction;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +28,28 @@ public class TransactionDao extends CRUDDao<Transaction> {
 
     @PersistenceContext
     protected EntityManager em;
+
+    @Override
+    public Transaction findById(Long id) {
+        Transaction entity = super.findById(id);
+        entity.setCheck(CheckDao.instance().find(em, entity));
+        entity.setBankAccount(BankAccountDao.instance().find(em, entity));
+        return entity;
+    }
+
+    @Override
+    public Transaction save(Transaction entity) {
+        Check check = entity.getCheck();
+        BankAccount account = entity.getBankAccount();
+        entity = super.save(entity);
+        if (check != null) {
+            CheckDao.instance().save(em, check, entity);
+        }
+        if (account != null) {
+            BankAccountDao.instance().save(em, account, entity);
+        }
+        return entity;
+    }
 
     @Override
     public EntityManager getEntityManager() {

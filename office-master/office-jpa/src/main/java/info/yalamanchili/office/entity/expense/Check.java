@@ -11,11 +11,13 @@ package info.yalamanchili.office.entity.expense;
 import info.chili.jpa.AbstractHandleEntity;
 import info.yalamanchili.office.entity.profile.Address;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
@@ -44,6 +46,27 @@ public class Check extends AbstractHandleEntity {
      */
     @NotNull
     protected BigDecimal checkAmount;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date checkDate;
+    /**
+     *
+     */
+    protected String bankRoutingNumber;
+    /**
+     *
+     */
+    protected String bankAccountNumber;
+    /**
+     *
+     */
+    protected String checkNumber;
+    /**
+     *
+     */
+    protected String bankName;
     /**
      * check Mailing Address
      */
@@ -74,6 +97,46 @@ public class Check extends AbstractHandleEntity {
 
     public void setCheckAmount(BigDecimal checkAmount) {
         this.checkAmount = checkAmount;
+    }
+
+    public Date getCheckDate() {
+        return checkDate;
+    }
+
+    public void setCheckDate(Date checkDate) {
+        this.checkDate = checkDate;
+    }
+
+    public String getBankRoutingNumber() {
+        return bankRoutingNumber;
+    }
+
+    public void setBankRoutingNumber(String bankRoutingNumber) {
+        this.bankRoutingNumber = bankRoutingNumber;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public String getCheckNumber() {
+        return checkNumber;
+    }
+
+    public void setCheckNumber(String checkNumber) {
+        this.checkNumber = checkNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
     @XmlElement

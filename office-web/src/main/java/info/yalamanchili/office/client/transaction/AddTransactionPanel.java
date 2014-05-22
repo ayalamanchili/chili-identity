@@ -8,8 +8,11 @@
  */
 package info.yalamanchili.office.client.transaction;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -18,15 +21,22 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancetranscation.TransactionStatus;
 import info.yalamanchili.office.client.advancetranscation.TransactionType;
+import info.yalamanchili.office.client.expense.bnkacct.CreateBankAcctWidget;
+import info.yalamanchili.office.client.expense.check.CreateCheckWidget;
 import java.util.logging.Logger;
 
 /**
  *
  * @author anuyalamanchili
  */
-public class AddTransactionPanel extends CreateComposite {
+public class AddTransactionPanel extends CreateComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(AddTransactionPanel.class.getName());
+    CreateCheckWidget createCheckWidget = new CreateCheckWidget(CreateCheckWidget.CreateCheckWidgetType.CHECK_MAILING_INFO);
+    CreateBankAcctWidget createBankAccountWidget = new CreateBankAcctWidget();
+    RadioButton passCheckInfo = new RadioButton("payment", "Add Check Information");
+    RadioButton passBankAcctInfo = new RadioButton("payment", "Add Bank Account Information");
+
     protected String path;
 
     public AddTransactionPanel(String path) {
@@ -43,6 +53,12 @@ public class AddTransactionPanel extends CreateComposite {
         assignEntityValueFromField("postedDate", entity);
         assignEntityValueFromField("transactionType", entity);
         assignEntityValueFromField("transactionStatus", entity);
+        if (passCheckInfo.getValue()) {
+            entity.put("check", createCheckWidget.populateEntityFromFields());
+        }
+        if (passBankAcctInfo.getValue()) {
+            entity.put("bankAccount", createBankAccountWidget.populateEntityFromFields());
+        }
         logger.info("ddd" + entity);
         return entity;
     }
@@ -88,6 +104,9 @@ public class AddTransactionPanel extends CreateComposite {
         addField("paymentInfo", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addField("postedDate", false, false, DataType.DATE_FIELD);
+        entityFieldsPanel.add(passBankAcctInfo);
+        entityFieldsPanel.add(passCheckInfo);
+        addBankAcctInformationWidget();
         addEnumField("transactionType", false, true, TransactionType.names());
         addEnumField("transactionStatus", false, false, TransactionStatus.names());
     }
@@ -99,5 +118,36 @@ public class AddTransactionPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + path;
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(passBankAcctInfo)) {
+            addBankAcctInformationWidget();
+        } else if (event.getSource().equals(passCheckInfo)) {
+            addCheckInformationWidget();
+        } else {
+            super.onClick(event);
+        }
+    }
+
+    protected void addCheckInformationWidget() {
+        if (createBankAccountWidget.isAttached()) {
+            entityFieldsPanel.remove(createBankAccountWidget);
+        }
+        if (!createCheckWidget.isAttached()) {
+            createCheckWidget = new CreateCheckWidget(CreateCheckWidget.CreateCheckWidgetType.CHECK_PAYMENT_INFO);
+            entityFieldsPanel.add(createCheckWidget);
+        }
+    }
+
+    protected void addBankAcctInformationWidget() {
+        if (createCheckWidget.isAttached()) {
+            entityFieldsPanel.remove(createCheckWidget);
+        }
+        if (!createBankAccountWidget.isAttached()) {
+            createBankAccountWidget = new CreateBankAcctWidget();
+            entityFieldsPanel.add(createBankAccountWidget);
+        }
     }
 }

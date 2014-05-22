@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import info.yalamanchili.office.client.expense.bnkacct.UpdateBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.UpdateCheckWidget;
+import info.yalamanchili.office.client.expense.check.UpdateCheckWidget.UpdateCheckWidgetType;
 import java.util.logging.Logger;
 
 /**
@@ -75,7 +76,7 @@ public class UpdateAdvanceRequisitionPanel extends UpdateComposite {
         assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         if (entity.containsKey("check")) {
-            updateCheckWidget = new UpdateCheckWidget(entity.get("check").isObject());
+            updateCheckWidget = new UpdateCheckWidget(UpdateCheckWidgetType.CHECK_MAILING_INFO,entity.get("check").isObject());
             entityFieldsPanel.add(updateCheckWidget);
         }
         if (entity.containsKey("bankAccount")) {

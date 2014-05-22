@@ -22,11 +22,19 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class CreateCheckWidget extends CreateComposite {
- private static Logger logger = Logger.getLogger(CreateCheckWidget.class.getName());
+
+    private static Logger logger = Logger.getLogger(CreateCheckWidget.class.getName());
+
+    public enum CreateCheckWidgetType {
+
+        CHECK_MAILING_INFO, CHECK_PAYMENT_INFO
+    }
+    CreateCheckWidgetType type;
     CreateAddressWidget createAddressWidget = new CreateAddressWidget();
 
-    public CreateCheckWidget() {
+    public CreateCheckWidget(CreateCheckWidgetType type) {
         super(CreateCompositeType.CREATE);
+        this.type = type;
         initCreateComposite("Check", OfficeWelcome.constants);
         create.setVisible(false);
     }
@@ -36,6 +44,13 @@ public class CreateCheckWidget extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("payableTo", entity);
         assignEntityValueFromField("checkAmount", entity);
+        assignEntityValueFromField("checkDate", entity);
+        if (CreateCheckWidgetType.CHECK_PAYMENT_INFO.equals(type)) {
+            assignEntityValueFromField("bankName", entity);
+            assignEntityValueFromField("bankRoutingNumber", entity);
+            assignEntityValueFromField("bankAccountNumber", entity);
+            assignEntityValueFromField("checkNumber", entity);
+        }
         assignEntityValueFromField("notes", entity);
         entity.put("checkMalingAddress", createAddressWidget.populateEntityFromFields());
         entity.put("targetEntityName", new JSONString("targetEntityName"));
@@ -71,6 +86,13 @@ public class CreateCheckWidget extends CreateComposite {
     protected void addWidgets() {
         addField("payableTo", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("checkAmount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("checkDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        if (CreateCheckWidgetType.CHECK_PAYMENT_INFO.equals(type)) {
+            addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("bankRoutingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("bankAccountNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("checkNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        }
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(createAddressWidget);
         alignFields();

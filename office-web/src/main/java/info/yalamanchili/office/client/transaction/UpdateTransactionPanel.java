@@ -17,6 +17,8 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancetranscation.TransactionStatus;
 import info.yalamanchili.office.client.advancetranscation.TransactionType;
+import info.yalamanchili.office.client.expense.bnkacct.UpdateBankAcctWidget;
+import info.yalamanchili.office.client.expense.check.UpdateCheckWidget;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +28,9 @@ import java.util.logging.Logger;
 public class UpdateTransactionPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateTransactionPanel.class.getName());
+    
+    UpdateCheckWidget updateCheckWidget;
+    UpdateBankAcctWidget updateBankAcctWidget;
 
     public UpdateTransactionPanel(JSONObject entity) {
         initUpdateComposite(entity, "Transaction", OfficeWelcome.constants);
@@ -38,6 +43,12 @@ public class UpdateTransactionPanel extends UpdateComposite {
         assignEntityValueFromField("postedDate", entity);
         assignEntityValueFromField("transactionType", entity);
         assignEntityValueFromField("transactionStatus", entity);
+        if (updateCheckWidget != null) {
+            entity.put("check", updateCheckWidget.populateEntityFromFields());
+        }
+        if (updateBankAcctWidget != null) {
+            entity.put("bankAccount", updateBankAcctWidget.populateEntityFromFields());
+        }
         return entity;
     }
 
@@ -64,6 +75,14 @@ public class UpdateTransactionPanel extends UpdateComposite {
         assignFieldValueFromEntity("postedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("transactionType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("transactionStatus", entity, DataType.ENUM_FIELD);
+        if (entity.containsKey("check")) {
+            updateCheckWidget = new UpdateCheckWidget(UpdateCheckWidget.UpdateCheckWidgetType.CHECK_PAYMENT_INFO,entity.get("check").isObject());
+            entityFieldsPanel.add(updateCheckWidget);
+        }
+        if (entity.containsKey("bankAccount")) {
+            updateBankAcctWidget = new UpdateBankAcctWidget(entity.get("bankAccount").isObject());
+            entityFieldsPanel.add(updateBankAcctWidget);
+        }
     }
 
     @Override
