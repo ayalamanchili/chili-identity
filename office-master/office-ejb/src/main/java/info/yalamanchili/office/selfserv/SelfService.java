@@ -27,6 +27,9 @@ import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
 import info.yalamanchili.office.entity.selfserv.TicketStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,11 +37,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.w3c.tidy.Tidy;
 
 /**
  *
@@ -47,23 +53,41 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class SelfService {
-
+    
     @Autowired
     protected ServiceTicketDao serviceTicketDao;
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     public String createServiceTicket(Employee emp, ServiceTicket ticket) {
         ticket.setDepartmentAssigned(CRoleDao.instance().findRoleByName(getDepartmentToAssign(ticket).name()));
         ticket.setStatus(TicketStatus.Open);
         ticket.setEmployee(emp);
         ticket.setCreatedTimeStamp(new Date());
+        try {
+            ticket.setDescription(cleanData(ticket.getDescription()));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(SelfService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ticket = em.merge(ticket);
         startServiceTicketTask(ticket);
         return em.merge(ticket).getId().toString();
     }
 
+    protected String cleanData(String data) throws UnsupportedEncodingException {
+        if (data == null) {
+            return "";
+        }
+        Tidy tidy = new Tidy();
+        tidy.setPrintBodyOnly(true);
+        tidy.setXmlOut(true);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes("UTF-8"));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        tidy.parseDOM(inputStream, outputStream);
+        return outputStream.toString("UTF-8");
+    }
+    
     public void updateTicket(ServiceTicket servTicket) {
         ServiceTicket ticket = serviceTicketDao.findById(servTicket.getId());
         ticket.setType(servTicket.getType());
@@ -102,23 +126,23 @@ public class SelfService {
         addTicketComment(servTicket.getId(), servTicket.getComments().get(0));
         serviceTicketDao.save(ticket);
     }
-
+    
     protected void reopenTicket(ServiceTicket ticket) {
         startServiceTicketTask(ticket);
     }
-
+    
     protected void rejectTicket(ServiceTicket ticket) {
         completeTask(ticket);
     }
-
+    
     protected void claimTicket(ServiceTicket ticket) {
         assignTask(ticket);
     }
-
+    
     protected void resolveTicket(ServiceTicket ticket) {
         completeTask(ticket);
     }
-
+    
     protected void assignTask(ServiceTicket ticket) {
         Employee emp = SecurityService.instance().getCurrentUser();
         ticket.setAssignedTo(emp);
@@ -128,7 +152,7 @@ public class SelfService {
             taskService.assignTask(task.getId(), emp.getEmployeeId());
         }
     }
-
+    
     protected void updateTaskAssignedToDepartment(ServiceTicket ticket, String oldDepartment, String newDepartment) {
         Task task = getTaskForTicket(ticket);
         if (task != null) {
@@ -136,7 +160,7 @@ public class SelfService {
             OfficeBPMTaskService.instance().setCandidateGroup(task.getId(), oldDepartment, newDepartment);
         }
     }
-
+    
     protected void completeTask(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         Task task = getTaskForTicket(ticket);
@@ -148,7 +172,7 @@ public class SelfService {
             taskService.completeTask(task.getId(), vars);
         }
     }
-
+    
     protected Task getTaskForTicket(ServiceTicket ticket) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         List<Task> tasks = taskService.getTasksForProcessId(ticket.getBpmProcessId());
@@ -158,7 +182,7 @@ public class SelfService {
             return null;
         }
     }
-
+    
     public void addTicketComment(Long ticketId, TicketComment comment) {
         comment = serviceTicketDao.addTicketComment(ticketId, comment);
         sendTicketUpdatedNotification(comment);
@@ -167,7 +191,7 @@ public class SelfService {
             OfficeBPMTaskService.instance().addComment(task.getId(), comment.getComment());
         }
     }
-
+    
     protected void sendTicketUpdatedNotification(TicketComment comment) {
         Employee commentAuthor = SecurityService.instance().getCurrentUser();
         Email email = new Email();
@@ -179,7 +203,8 @@ public class SelfService {
         emailCtx.put("currentComment", comment);
         emailCtx.put("ticket", comment.getTicket());
         emailCtx.put("ticketDepartment", OfficeRoles.rolesMessages.get(comment.getTicket().getDepartmentAssigned().getRolename()));
-        List<TicketComment> comments = comment.getTicket().getComments();
+        List<TicketComment> comments = new ArrayList<TicketComment>();
+        comments.addAll(comment.getTicket().getComments());
         emailCtx.put("comments", comments);
         emailCtx.put("changes", determineChanges(comment.getTicket()));
         email.setTemplateName("service_ticket_template.html");
@@ -187,7 +212,7 @@ public class SelfService {
         email.setHtml(Boolean.TRUE);
         MessagingService.instance().sendEmail(email);
     }
-
+    
     protected List<AuditChageDto> determineChanges(ServiceTicket ticket) {
         List<AuditChageDto> changes = new ArrayList<AuditChageDto>();
 //        ServiceTicket previousVersion = (ServiceTicket) AuditService.instance().getLatestVersion(ServiceTicket.class, ticket.getId());
@@ -214,7 +239,7 @@ public class SelfService {
 //        }
         return changes;
     }
-
+    
     protected Set<String> getTicketNotificationGroup(TicketComment comment) {
         Set<String> notificationGroup = new HashSet<String>();
         //employee who created the ticket;
@@ -254,7 +279,7 @@ public class SelfService {
                 return OfficeRole.ROLE_RELATIONSHIP;
         }
     }
-
+    
     protected void startServiceTicketTask(ServiceTicket ticket) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("ticket", ticket);
@@ -262,7 +287,7 @@ public class SelfService {
         String processId = OfficeBPMService.instance().startProcess("service_ticket_process", vars);
         ticket.setBpmProcessId(processId);
     }
-
+    
     public void delete(Long id) {
         ServiceTicket ticket = serviceTicketDao.findById(id);
         Task task = getTaskForTicket(ticket);
@@ -270,9 +295,9 @@ public class SelfService {
             OfficeBPMTaskService.instance().deleteTask(task.getId());
         }
         serviceTicketDao.delete(id);
-
+        
     }
-
+    
     public static SelfService instance() {
         return SpringContext.getBean(SelfService.class);
     }

@@ -18,7 +18,7 @@
                   name="Leave Request Approval Task For ${currentEmployee.firstName} ${currentEmployee.lastName}" 
                   activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
-                Consultant Employee Leave Request
+                Employee Leave Request
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Start Date    : #{leaveRequest.startDate}
                 End Date      : #{leaveRequest.endDate} 

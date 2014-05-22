@@ -60,7 +60,7 @@ public class TimeMenu extends Composite {
                 TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
-            } else {
+            } else if(Auth.isConsultantEmployee()) {
                 TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
               //  TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());

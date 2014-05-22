@@ -222,7 +222,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             timePanel.entityPanel.add(new CorporateTimeSummaryPanel());
             timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel());
             timePanel.entityPanel.add(new ReadCurrentCorpLeavesPanel());
-        } else {
+        } else if (Auth.isConsultantEmployee()) {
             timePanel.sidePanelTop.add(new ConsultantTimeSummarySidePanel());
             timePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
 //            timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());

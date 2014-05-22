@@ -25,9 +25,10 @@
         <!--Create EmployeeAddressUpdatedTask for HR Role-->
         <userTask id="updateAddressHRTask" 
                   name="Employee ${employee.firstName} ${employee.lastName} Address Updated" 
-                  activiti:candidateGroups="ROLE_HR,ROLE_EXPENSE,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_HR,ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
-                Employee Address is updated in portal and task is created for HR group for handling immigration and related changes
+                Employee Address is updated in portal please update in other systems as applicable. Eg: ADP, CITS, Immigration Docs, etc...
+                Once completed please complete the task.
             </documentation>
         </userTask>
         <sequenceFlow sourceRef="updateAddressHRTask" targetRef="updateAddressEnd" />

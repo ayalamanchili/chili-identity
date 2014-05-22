@@ -80,6 +80,7 @@ public class SocialResource {
 
     @PUT
     @Path("/addreply/{parentPostId}")
+    @CacheEvict(value = OfficeCacheKeys.SOCIAL, allEntries = true)
     public Post addReply(@PathParam("parentPostId") Long parentPostId, Post reply) {
         return socialDao.addReply(parentPostId, reply);
     }
