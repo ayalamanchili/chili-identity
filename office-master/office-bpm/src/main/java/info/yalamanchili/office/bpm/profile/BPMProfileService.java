@@ -10,6 +10,7 @@ package info.yalamanchili.office.bpm.profile;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.types.AccountReset;
+import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +30,12 @@ public class BPMProfileService {
     @Autowired
     protected OfficeBPMService officeBPMService;
 
-    @Async
-    public void startAddressUpdatedProcess(Employee emp) {
+    public void startAddressUpdatedProcess(Address address, Employee emp, String changeNotes) {
         Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put("employee", emp);
-        officeBPMService.startProcess("address_update_process-v2", vars);
+        vars.put("entity", address);
+        vars.put("employeeName", emp.getFirstName() + " " + emp.getLastName());
+        vars.put("changeNotes", changeNotes);
+        officeBPMService.startProcess("address_update_process-v3", vars);
     }
 
     @Async

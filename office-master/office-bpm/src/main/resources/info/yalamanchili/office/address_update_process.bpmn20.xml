@@ -9,45 +9,94 @@
     targetNamespace="http://www.bpmnwithactiviti.org"
     xmlns:activiti="http://activiti.org/bpmn">
  
-    <process id="address_update_process-v2">
+    <process id="address_update_process-v3">
  
         <startEvent id="updateAddressStart" />
+        <sequenceFlow sourceRef="updateAddressStart" targetRef="updateAddressPayrollTask" />
         
-        <sequenceFlow id="flow1" sourceRef="updateAddressStart" targetRef="addressUpdatedEmail" />
-        <!-- Send Address Updated Email notification -->
-        <serviceTask
-            id="addressUpdatedEmail"
-            name="Employee Address Updated"
-            activiti:expression="${profileNotificationService.sendEmployeeAddressUpdatedNotification(employee)}">
-        </serviceTask>
-        
-        <sequenceFlow id="createHRTaskFlow" sourceRef="addressUpdatedEmail" targetRef="updateAddressHRTask" />
-        <!--Create EmployeeAddressUpdatedTask for HR Role-->
-        <userTask id="updateAddressHRTask" 
-                  name="Employee ${employee.firstName} ${employee.lastName} Address Updated" 
-                  activiti:candidateGroups="ROLE_HR,ROLE_PAYROLL_AND_BENIFITS">
+        <!--Address Updates Task for Payroll Dept-->
+        <userTask id="updateAddressPayrollTask" 
+                  name="Address Updated Payroll Dept Task for ${employeeName}" 
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
-                Employee Address is updated in portal please update in other systems as applicable. Eg: ADP, CITS, Immigration Docs, etc...
-                Once completed please complete the task.
+                Employee Address is updated in portal.
+                1) please update in other systems as applicable. Eg: ADP, BIS, etc...
+                2) complete this task once done.
+                
+                Address Change Notes From Employee  : ${changeNotes} 
+                Street1                             : ${entity.street1}
+                Street2                             : ${entity.street2}
+                City                                : ${entity.city}
+                State                               : ${entity.state}
+                Zip                                 : ${entity.zip} 
+                More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
             </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements>             
         </userTask>
         <sequenceFlow sourceRef="updateAddressHRTask" targetRef="updateAddressEnd" />
         <!-- Task escalation email after 7 days-->
-        <boundaryEvent id="emailEscalationTimer"
+        <boundaryEvent id="payrollTaskEmailEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="updateAddressHRTask">
+                       attachedToRef="updateAddressPayrollTask">
             <timerEventDefinition> 
                 <timeDuration>PT168H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer" 
-                      targetRef="taskEmailEscalation" />
+        <sequenceFlow sourceRef="payrollTaskEmailEscalationTimer" 
+                      targetRef="payrollTaskEmailEscalation" />
         <serviceTask
-            id="taskEmailEscalation"
+            id="payrollTaskEmailEscalation"
             name="Task Email Escalation"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
-        <!-- process end-->
+        </serviceTask>        
+
+       <sequenceFlow sourceRef="updateAddressStart" targetRef="updateAddressHRTask" />
+        
+        <!--Address Updates Task for Payroll Dept-->
+        <userTask id="updateAddressHRTask" 
+                  name="Address Updated - HR Dept Task for ${employeeName}" 
+                  activiti:candidateGroups="ROLE_HR">
+            <documentation>
+                Employee Address is updated in portal.
+                please update all Immigration and Related systems as applicable
+                Change Notes From Employee  : ${changeNotes} 
+                Employee Address is updated in portal.
+                1) please update all Immigration, CITS and Related systems as applicable
+                2) complete this task once done.
+                
+                Address Change Notes From Employee  : ${changeNotes} 
+                Street1                             : ${entity.street1}
+                Street2                             : ${entity.street2}
+                City                                : ${entity.city}
+                State                               : ${entity.state}
+                Zip                                 : ${entity.zip} 
+                More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements>             
+        </userTask>
+        <sequenceFlow sourceRef="updateAddressHRTask" targetRef="updateAddressEnd" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="hrTaskEmailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="updateAddressPayrollTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="hrTaskEmailEscalationTimer" 
+                      targetRef="hrTaskEmailEscalation" />
+        <serviceTask
+            id="hrTaskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>   
+        
         <endEvent id="updateAddressEnd" />
  
     </process>

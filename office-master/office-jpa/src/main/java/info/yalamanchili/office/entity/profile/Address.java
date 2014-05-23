@@ -86,6 +86,14 @@ public class Address extends AbstractEntity {
     /**
      * @generated
      */
+    @Transient
+    protected boolean notifyChange;
+    /**
+     *
+     */
+    @Transient
+    protected String changeNotes;
+
     /**
      * @generated
      */
@@ -205,6 +213,22 @@ public class Address extends AbstractEntity {
      */
     public void setAddressType(AddressType addressType) {
         this.addressType = addressType;
+    }
+
+    public boolean isNotifyChange() {
+        return notifyChange;
+    }
+
+    public void setNotifyChange(boolean notifyChange) {
+        this.notifyChange = notifyChange;
+    }
+
+    public String getChangeNotes() {
+        return changeNotes;
+    }
+
+    public void setChangeNotes(String changeNotes) {
+        this.changeNotes = changeNotes;
     }
 
     @Override

@@ -40,6 +40,8 @@ public class CreateAddressPanel extends CreateComposite {
         assignEntityValueFromField("country", entity);
         assignEntityValueFromField("zip", entity);
         assignEntityValueFromField("addressType", entity);
+        assignEntityValueFromField("notifyChange", entity);
+        assignEntityValueFromField("changeNotes", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -94,7 +96,8 @@ public class CreateAddressPanel extends CreateComposite {
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addDropDown("addressType", new SelectAddressTypeWidget(false, false));
-        alignFields();
+        addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
+        addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
     }
 
     @Override

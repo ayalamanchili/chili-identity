@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -47,23 +48,18 @@ public class AddressResource extends CRUDResource<Address> {
 
     @PUT
     @Path("/employee")
-    public Address saveemployeeaddress(Address address) {
-        if (address.getId() == null) {
-            return save(address);
-        } else {
-            Address savedAddress = (Address) getDao().save(address);
-            Employee emp = (Employee) savedAddress.getContact();
-            if (!emp.getEmployeeType().getName().equals("Corporate Employee")) {
-                BPMProfileService.instance().startAddressUpdatedProcess(emp);
-            }
-            return savedAddress;
-        }
+    public Address saveEmployeeAddress(Address entity) {
+        processAddressUpdateNotification(entity, null);
+        return save(entity);
     }
-//TODO is this ever being used?
 
-    @PUT
-    public Address save(Address address) {
-        return super.save(address);
+    public void processAddressUpdateNotification(Address entity, Employee emp) {
+        if (emp == null) {
+            emp = EmployeeDao.instance().findById(entity.getContact().getId());
+        }
+        if (emp.getEmployeeType().getName().equals("Employee") && entity.isNotifyChange()) {
+            BPMProfileService.instance().startAddressUpdatedProcess(entity, emp, entity.getChangeNotes());
+        }
     }
 
     @PUT
@@ -71,6 +67,10 @@ public class AddressResource extends CRUDResource<Address> {
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
+    }
+
+    public static AddressResource instance() {
+        return SpringContext.getBean(AddressResource.class);
     }
 
     @XmlRootElement

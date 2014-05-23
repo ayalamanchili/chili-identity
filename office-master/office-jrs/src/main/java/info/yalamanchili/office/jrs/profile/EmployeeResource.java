@@ -26,7 +26,6 @@ import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
-import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
@@ -193,6 +192,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/address/{empId}")
     public void addAddress(@PathParam("empId") Long empId, Address address) {
         Employee emp = (Employee) getDao().findById(empId);
+        AddressResource.instance().processAddressUpdateNotification(address, emp);
         if (address.getAddressType() != null) {
             AddressType addressType = getDao().getEntityManager().find(AddressType.class,
                     address.getAddressType().getId());

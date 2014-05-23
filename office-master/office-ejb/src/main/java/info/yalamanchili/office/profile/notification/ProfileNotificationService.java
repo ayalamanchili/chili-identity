@@ -77,18 +77,6 @@ public class ProfileNotificationService {
         messagingService.sendEmail(newUserEmailObj);
     }
 
-    @Async
-    public void sendEmployeeAddressUpdatedNotification(Employee emp) {
-        String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_EXPENSE.name()};
-        Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        email.setSubject("Employee Address Updated");
-        String messageText = "Address For " + emp.getFirstName() + "," + emp.getLastName() + " Is Updated \n please update in other systems as applicable. Eg: ADP, CITS, Immigration Docs, etc... \n"
-                + "                Once completed please complete the task.";
-        email.setBody(messageText);
-        messagingService.sendEmail(email);
-    }
-
 //TODO remove not needed.
     @Async
     public void sendForgotPasswordNotification(Employee emp, String tempPassword) {

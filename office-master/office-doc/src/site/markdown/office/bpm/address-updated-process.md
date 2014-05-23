@@ -1,7 +1,14 @@
 Address Update Process
-=========
+-------
 
-- Employee Address is updated in portal and task is created for HR group for handling immigration and related changes
-- (Navigation : My Office >>> Employees>>> View/update Employee >>> Address >>> Update)
+- When a Employee Address is updated in portal tasks are created for
+* Payroll and Benifits Department for updating ADP, BIS, SMS etc.
+* HR and Immigration Department to handle all Immigration related changes.
 
-![alt text](../../images/bpm/new-client-info/address-update-process.png "Address Update Process")
+What should be done?
+------
+ - coordinate and update the change of address if necessary in other systems like ADP, Immigration, BIS and complete them
+ - Once all necessary changes are complete you can go to Portal--> Home--> My Tasks and Complete the Task.
+ 
+
+![alt text](../../images/bpm/address-update-process.png "Address Update Process")
