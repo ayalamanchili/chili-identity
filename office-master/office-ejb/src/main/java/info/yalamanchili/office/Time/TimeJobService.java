@@ -105,7 +105,8 @@ public class TimeJobService {
             Email email = new Email();
             email.addTo(emp.getPrimaryEmail().getEmail());
             email.setSubject("Leave Remainder: " + ts.getEmployee().getFirstName() + " is on leave");
-            String messageText = "TODO add timesheet details here";
+//            String messageText = "TODO add timesheet details here";
+            String messageText = "Time Sheet Hours" + ts.getHours() + ", Category" + ts.getCategory() + ", StartDate" + ts.getStartDate() + ", EndDate" + ts.getEndDate() + " details ";
             email.setBody(messageText);
             MessagingService.instance().sendEmail(email);
         }
