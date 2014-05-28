@@ -79,6 +79,7 @@ public class DriveResource {
     @PUT
     @Path("/update-file")
     @Produces("application/text")
+    @PreAuthorize("hasAnyRole('ROLE_DRIVE')")
     @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public String updateFile(FileDto file) {
         return driveService.updateFile(file);
@@ -94,7 +95,7 @@ public class DriveResource {
 
     @PUT
     @Path("/files/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DRIVE')")
+    @PreAuthorize("hasAnyRole('ROLE_DRIVE')")
     @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public void deletefile(@PathParam("id") Long id) {
         File file = FileDao.instance().findById(id);
