@@ -17,5 +17,6 @@ public enum AdvanceRequisitionStatus {
     Open,
     Pending,
     Approved,
+    Completed,
     Rejected,
 }

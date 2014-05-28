@@ -11,10 +11,10 @@ package info.yalamanchili.office.bpm.advance;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.AdvanceRequisitionStatus;
-import info.yalamanchili.office.entity.expense.Check;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -59,8 +59,12 @@ public class AdvanceRequestProcess implements TaskListener {
         } else {
             entity.setStatus(AdvanceRequisitionStatus.Rejected);
         }
+        if (task.getTaskDefinitionKey().equals("advanceRequisitionPaymentDispatchTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
+            entity.setStatus(AdvanceRequisitionStatus.Completed);
+        }
         AdvanceRequisitionDao.instance().save(entity);
-        if (task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
+        if (task.getTaskDefinitionKey().equals("advanceRequisitionFinalApprovalTaskEscalationTimer") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())
+                || task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
             return;
         }
         new GenericTaskCompleteNotification().notify(task);
@@ -81,8 +85,11 @@ public class AdvanceRequestProcess implements TaskListener {
 
     protected void assignAdvanceRequisitionTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        //TODO
-        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_EXPENSE.name());
+        if (emp.getEmployeeType().equals("Employee")) {
+            task.addCandidateUser(CompanyContactDao.instance().getReportsToContactForEmployee(emp).getEmployeeId());
+        }else{
+            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
+        }
     }
 
     protected AdvanceRequisition getRequestFromTask(DelegateTask task) {

@@ -98,6 +98,7 @@ public class CreateAddressPanel extends CreateComposite {
         addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
         addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
+        alignFields();
     }
 
     @Override

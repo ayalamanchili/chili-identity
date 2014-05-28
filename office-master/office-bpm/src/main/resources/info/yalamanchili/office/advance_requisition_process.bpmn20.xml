@@ -54,11 +54,7 @@
         </boundaryEvent>
         <sequenceFlow sourceRef="advanceRequisitionApprovalTaskEscalationTimer" 
                       targetRef="advanceRequisitionApprovalTaskEscalation" />
-        <serviceTask
-            id="advanceRequisitionApprovalTaskEscalation"
-            name="Advance Leave Approval Task Escalation"
-            activiti:class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess">
-        </serviceTask>
+        <serviceTask id="advanceRequisitionApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
         <sequenceFlow sourceRef="advanceRequisitionApprovalTask" 
                       targetRef="approvalGateway" />
@@ -89,9 +85,9 @@
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
                 <activiti:formProperty id="approvedAmount" 
-                                                       name="Approved Amount"
-                                                       required="true" 
-                                                       type="long" />
+                                       name="Approved Amount"
+                                       required="true" 
+                                       type="long" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"
@@ -114,8 +110,41 @@
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="advanceRequisitionFinalApprovalTaskEscalationTimer" 
-                      targetRef="advanceRequisitionApprovalTaskEscalation" />
+                      targetRef="advanceRequisitionFinalApprovalTaskEscalation" />
+        <serviceTask id="advanceRequisitionFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
         <sequenceFlow sourceRef="advanceRequisitionFinalApprovalTask" 
+                      targetRef="finalApprovalTaskGateway" />
+        <exclusiveGateway id="finalApprovalTaskGateway" />
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="advanceRequisitionPaymentDispatchTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="advanceRequisitionEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="advanceRequisitionPaymentDispatchTask" 
+                  name="Advance Requisition Payment Dispatch Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
+            <documentation>
+                Advance Requisition Payment Dispatch Task
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Amount     : #{entity.amount}
+                Purpose    : #{entity.purpose}
+                Needed By Date :#{entity.neededBy}
+                Please enter the form of payment information and complete the task.
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+            </extensionElements> 
+        </userTask>        
+        <sequenceFlow sourceRef="advanceRequisitionPaymentDispatchTask" 
                       targetRef="advanceRequisitionEnd" />
         <endEvent id="advanceRequisitionEnd" />
     </process>
