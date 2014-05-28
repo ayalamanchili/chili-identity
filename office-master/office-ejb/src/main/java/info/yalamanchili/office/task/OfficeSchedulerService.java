@@ -54,6 +54,14 @@ public class OfficeSchedulerService {
     }
 
     /**
+     * runs every night at 1.07 AM
+     */
+    @Scheduled(cron = "0 7 1 * * ?")
+    public void sendTodaysLeaveNotifications() {
+        TimeJobService.instance().sendTodaysLeaveNotifications();
+    }
+
+    /**
      * runs every night at 1.10 AM
      */
     @Scheduled(cron = "0 10 1 * * ?")
