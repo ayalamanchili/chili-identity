@@ -26,7 +26,8 @@
                   activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_RECRUITER,ROLE_RELATIONSHIP">
             <documentation>
                 Correct Client Information:
-                Details : ${correctionDetails} 
+                Employee : ${currentEmployee.firstName} ${currentEmployee.lastName}
+                Details  : ${correctionDetails} 
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />

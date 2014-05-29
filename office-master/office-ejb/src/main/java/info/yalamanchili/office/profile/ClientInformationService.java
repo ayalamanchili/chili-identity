@@ -106,7 +106,7 @@ public class ClientInformationService {
             updatePreviousProjectEndDate(emp, ci);
         }
         emp.addClientInformation(ci);
-        startNewClientInfoProcess(ci);
+//        startNewClientInfoProcess(ci);
     }
 
     protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
