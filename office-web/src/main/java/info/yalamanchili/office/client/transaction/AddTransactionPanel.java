@@ -87,12 +87,14 @@ public class AddTransactionPanel extends CreateComposite implements ClickHandler
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Transaction Successfully Created");
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new AddTransactionPanel("advancerequisition/transaction/" + getEntityId()));
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllTransactionPanel());
+        TabPanel.instance().expensePanel.entityPanel.add(new TransactionOptionsWidget("advancerequisition/transaction/" + getEntityId()));
     }
 
     @Override
     protected void addListeners() {
+        passBankAcctInfo.addClickHandler(this);
+        passCheckInfo.addClickHandler(this);
     }
 
     @Override
@@ -104,11 +106,10 @@ public class AddTransactionPanel extends CreateComposite implements ClickHandler
         addField("paymentInfo", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.CURRENCY_FIELD);
         addField("postedDate", false, false, DataType.DATE_FIELD);
-        entityFieldsPanel.add(passBankAcctInfo);
-        entityFieldsPanel.add(passCheckInfo);
-        addBankAcctInformationWidget();
         addEnumField("transactionType", false, true, TransactionType.names());
         addEnumField("transactionStatus", false, false, TransactionStatus.names());
+        entityFieldsPanel.add(passBankAcctInfo);
+        entityFieldsPanel.add(passCheckInfo);
     }
 
     @Override

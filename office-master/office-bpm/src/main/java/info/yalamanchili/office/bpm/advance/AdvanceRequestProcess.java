@@ -8,11 +8,13 @@
  */
 package info.yalamanchili.office.bpm.advance;
 
+import com.google.common.base.Strings;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.AdvanceRequisitionStatus;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -50,9 +52,14 @@ public class AdvanceRequestProcess implements TaskListener {
         if (entity == null) {
             return;
         }
+        //Amount
         String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
         BigDecimal approvedAmount = new BigDecimal(approvedAmountVar);
         entity.setAmount(approvedAmount);
+        //Notes
+        String notes = (String) task.getExecution().getVariable("notes");
+        CommentDao.instance().addComment(notes, entity);
+        //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(AdvanceRequisitionStatus.Approved);
@@ -63,7 +70,7 @@ public class AdvanceRequestProcess implements TaskListener {
             entity.setStatus(AdvanceRequisitionStatus.Completed);
         }
         AdvanceRequisitionDao.instance().save(entity);
-        if (task.getTaskDefinitionKey().equals("advanceRequisitionFinalApprovalTaskEscalationTimer") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())
+        if (task.getTaskDefinitionKey().equals("advanceRequisitionFinalApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())
                 || task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
             return;
         }
@@ -87,7 +94,7 @@ public class AdvanceRequestProcess implements TaskListener {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         if (emp.getEmployeeType().equals("Employee")) {
             task.addCandidateUser(CompanyContactDao.instance().getReportsToContactForEmployee(emp).getEmployeeId());
-        }else{
+        } else {
             task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
         }
     }

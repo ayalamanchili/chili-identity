@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStat
 import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.ReadCheckWidget;
 import info.yalamanchili.office.client.expense.check.ReadCheckWidget.ReadCheckWidgetType;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -51,12 +52,16 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        logger.info("read ec6 response" + response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        populateComments();
                     }
                 });
 
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.AdvanceRequisition"));
     }
 
     @Override

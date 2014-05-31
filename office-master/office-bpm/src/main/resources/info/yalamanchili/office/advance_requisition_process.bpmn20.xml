@@ -142,6 +142,10 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
             </extensionElements> 
         </userTask>        
         <sequenceFlow sourceRef="advanceRequisitionPaymentDispatchTask" 

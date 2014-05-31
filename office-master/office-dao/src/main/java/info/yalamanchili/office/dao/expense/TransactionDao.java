@@ -32,8 +32,8 @@ public class TransactionDao extends CRUDDao<Transaction> {
     @Override
     public Transaction findById(Long id) {
         Transaction entity = super.findById(id);
-        entity.setCheck(CheckDao.instance().find(em, entity));
-        entity.setBankAccount(BankAccountDao.instance().find(em, entity));
+        entity.setCheck(CheckDao.instance().find(entity));
+        entity.setBankAccount(BankAccountDao.instance().find(entity));
         return entity;
     }
 
@@ -43,10 +43,10 @@ public class TransactionDao extends CRUDDao<Transaction> {
         BankAccount account = entity.getBankAccount();
         entity = super.save(entity);
         if (check != null) {
-            CheckDao.instance().save(em, check, entity);
+            CheckDao.instance().save(check, entity);
         }
         if (account != null) {
-            BankAccountDao.instance().save(em, account, entity);
+            BankAccountDao.instance().save(account, entity);
         }
         return entity;
     }

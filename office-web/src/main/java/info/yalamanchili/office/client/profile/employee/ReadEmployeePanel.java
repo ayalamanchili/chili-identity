@@ -19,40 +19,41 @@ import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWi
 import java.util.logging.Logger;
 
 public class ReadEmployeePanel extends ReadComposite {
-
+    
     private static Logger logger = Logger.getLogger(ReadEmployeePanel.class.getName());
     private static ReadEmployeePanel instance;
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(true, false);
-
+    
     public static ReadEmployeePanel instance() {
         return instance;
     }
-
+    
     public ReadEmployeePanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "Employee", OfficeWelcome.constants);
     }
-
+    
     public ReadEmployeePanel(String id) {
         initReadComposite(id, "Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("this is the response from the server" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
-
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("this is the response from the server" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
+        
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("ddd" + entity);
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -71,17 +72,17 @@ public class ReadEmployeePanel extends ReadComposite {
             assignFieldValueFromEntity("status", entity, DataType.BOOLEAN_FIELD);
         }
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
         addDropDown("employeeType", employeeSelectWidget);
@@ -103,26 +104,26 @@ public class ReadEmployeePanel extends ReadComposite {
         }
         alignFields();
     }
-
+    
     protected boolean canViewDOBField() {
         return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/" + entityId;
     }
-
+    
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
     }
-
+    
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Employee" + "/" + getEntityId();

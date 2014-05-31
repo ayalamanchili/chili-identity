@@ -28,7 +28,6 @@ import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.entity.activity.IssueType;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
@@ -403,10 +402,6 @@ public class OfficeStartup {
         //TAE
         techSysClient();
 
-        //issue type
-        getTimeSheetCategory();
-        getAccountsCategory();
-
         Folder hrFolder = new Folder();
         hrFolder.setName("HR");
         hrFolder.setParent(driveFolder);
@@ -657,30 +652,6 @@ public class OfficeStartup {
             return em.merge(employeetype);
         } else {
             return perdiemCategory;
-        }
-    }
-
-    protected IssueType getTimeSheetCategory() {
-        IssueType timeSheetCategory = QueryUtils.findEntity(em, IssueType.class, "name", "Time Sheets");
-        if (timeSheetCategory == null) {
-            IssueType issueType = new IssueType();
-            issueType.setName("Time Sheets");
-            issueType.setDescription("Time Sheet of the Employee ");
-            return em.merge(issueType);
-        } else {
-            return timeSheetCategory;
-        }
-    }
-
-    protected IssueType getAccountsCategory() {
-        IssueType accountsCategory = QueryUtils.findEntity(em, IssueType.class, "name", "Accounts");
-        if (accountsCategory == null) {
-            IssueType issueType = new IssueType();
-            issueType.setName("Accounts");
-            issueType.setDescription("Accounts of the Employee ");
-            return em.merge(issueType);
-        } else {
-            return accountsCategory;
         }
     }
 
