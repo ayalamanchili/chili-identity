@@ -39,7 +39,9 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAdvanceRequisitionPanel(entityId));
         TabPanel.instance().expensePanel.sidePanelTop.clear();
-        TabPanel.instance().expensePanel.sidePanelTop.add(new AdvReqTreePanel(entityId));
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
+            TabPanel.instance().expensePanel.sidePanelTop.add(new AdvReqTreePanel(entityId));
+        }
     }
 
     @Override

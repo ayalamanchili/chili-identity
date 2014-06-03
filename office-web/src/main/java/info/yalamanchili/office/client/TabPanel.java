@@ -73,9 +73,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(myOfficePanel, "My Office", false);
         tabPanel.add(timePanel, "Time", false);
 //        TODO under construction
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
-            tabPanel.add(expensePanel, "Expense", false);
-        }
+//        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
+        tabPanel.add(expensePanel, "Expense", false);
+//        }
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(profilePanel, "Profile", false);
@@ -96,7 +96,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         if (Auth.isCorporateEmployee()) {
             TabPanel.instance().tabPanel.selectTab(1);
         } else {
-            tabPanel.selectTab(5);
+            tabPanel.selectTab(6);
         }
     }
 
