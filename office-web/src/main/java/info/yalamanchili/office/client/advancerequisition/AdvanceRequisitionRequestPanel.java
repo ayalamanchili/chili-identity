@@ -39,7 +39,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
     CreateBankAcctWidget createBankAccountWidget = new CreateBankAcctWidget();
     RadioButton passCheckInfo = new RadioButton("payment", "Add Check Information");
     RadioButton passBankAcctInfo = new RadioButton("payment", "Add Bank Account Information");
-    HTML tac = new HTML("<h6> " + OfficeWelcome.instance().getCurrentUserName() + " hereby certify that I am solely responsible \n"
+    HTML tac = new HTML("<h6> I " + OfficeWelcome.instance().getCurrentUserName() + " hereby certify that I am solely responsible \n"
             + "for repayment of the above requested advance amount, to System Soft Technologies,as \n"
             + "per agreed terms & conditions or on-demand. </h6>");
     

@@ -28,6 +28,8 @@ import info.yalamanchili.office.client.social.employee.EmployeeFeedHome;
 import info.yalamanchili.office.client.tae.timesheet.TimeMenu;
 import info.yalamanchili.office.client.admin.client.ClientSidePanel;
 import info.yalamanchili.office.client.admin.client.ReadAllClientsPanel;
+import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
+import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
 import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
@@ -234,8 +236,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         expensePanel.entityPanel.clear();
         expensePanel.sidePanelTop.clear();
         expensePanel.entityTitlePanel.add(new ExpenseMenu());
-        expensePanel.entityPanel.add(new ReadAllExpensesPanel());
-        expensePanel.sidePanelTop.add(new ExpensesSidePanel());
+        TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllAdvanceRequisitionPanel());
+        TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
     }
 
     public void selectDriveTab() {

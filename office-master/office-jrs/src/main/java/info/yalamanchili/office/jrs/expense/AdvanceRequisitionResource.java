@@ -49,20 +49,20 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     
     @PUT
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_PAYROLL_AND_BENIFITS',ROLE_ACCOUNTS_PAYABLE)")
     public AdvanceRequisition save(AdvanceRequisition entity) {
         return super.save(entity);
     }
     
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_PAYROLL_AND_BENIFITS',ROLE_ACCOUNTS_PAYABLE)")
     @Path("/transaction/{id}")
     public void addTransaction(@PathParam("id") Long id, Transaction transaction) {
         advanceRequisitionDao.addTransaction(id, transaction);
     }
     
     @GET
-    @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
+    @PreAuthorize("hasAnyRole('ROLE_PAYROLL_AND_BENIFITS',ROLE_ACCOUNTS_PAYABLE)")
     @Path("/transactions/{id}")
     public TransactionTable getTransactions(@PathParam("id") Long id,@PathParam("start") int start, @PathParam("limit") int limit){
         TransactionTable table= new TransactionTable();
@@ -78,7 +78,6 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_EXPENSE')")
     public AdvanceRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
         tableObj.setEntities(getDao().query(start, limit));

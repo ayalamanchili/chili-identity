@@ -32,10 +32,10 @@ public class ExpenseMenu extends Composite {
     }
 
     protected void configureExpenseMenu() {
-        expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
-        expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
+//        expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
+//        expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
         expenseMenuBar.addItem("AdvanceRequisition", expensadvancerequisitionCmd);
-        expenseMenuBar.addItem("Transaction", expensTransactionCmd);
+//        expenseMenuBar.addItem("Transaction", expensTransactionCmd);
         expenseMenuBar.addStyleName("entityMenuBar");
     }
     Command expenseMaintainenceCmd = new Command() {
