@@ -72,6 +72,7 @@
                 <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
                 <item name="Overview" href="/office/selfservice/overview.html"/>
             </item>
+            <item name="Advance Requisition" href="/office/advance.html"/>
             <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
                 <item name="Account Reset" href="/office/accountresettask.html"/>
                 <item name="Forgot Password" href="/office/forgot-password.html"/>
