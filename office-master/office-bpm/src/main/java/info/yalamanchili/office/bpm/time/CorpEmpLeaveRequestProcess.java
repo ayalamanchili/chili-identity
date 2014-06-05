@@ -9,11 +9,13 @@
 package info.yalamanchili.office.bpm.time;
 
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.BPMUtils;
 import info.yalamanchili.office.bpm.EmailEscalation;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
@@ -161,9 +163,15 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
 
     protected void sendLeaveRequestStatusNotification(String status, DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(task));
+        if (notifyEmployees != null) {
+            for (Entry e : notifyEmployees) {
+                email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());
+            }
+        }
         email.addTo(emp.getPrimaryEmail().getEmail());
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
         email.setSubject(summary);

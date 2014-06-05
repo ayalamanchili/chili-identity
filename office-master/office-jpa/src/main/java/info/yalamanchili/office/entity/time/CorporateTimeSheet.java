@@ -9,10 +9,11 @@
 package info.yalamanchili.office.entity.time;
 
 import info.chili.jpa.AbstractEntity;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -98,6 +99,11 @@ public class CorporateTimeSheet extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @org.hibernate.annotations.Index(name = "CRP_TS_CRT_TS_STMP")
     protected Date createdTimeStamp;
+    /**
+     *
+     */
+    @Transient
+    protected List<Entry> notifyEmployees;
 
     /**
      *
@@ -176,6 +182,15 @@ public class CorporateTimeSheet extends AbstractEntity {
 
     public void setCreatedTimeStamp(Date createdTimeStamp) {
         this.createdTimeStamp = createdTimeStamp;
+    }
+
+    @XmlElement
+    public List<Entry> getNotifyEmployees() {
+        return notifyEmployees;
+    }
+
+    public void setNotifyEmployees(List<Entry> notifyEmployees) {
+        this.notifyEmployees = notifyEmployees;
     }
 
     @Override

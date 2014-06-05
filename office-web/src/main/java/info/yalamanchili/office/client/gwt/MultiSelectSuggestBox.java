@@ -75,7 +75,7 @@ public abstract class MultiSelectSuggestBox extends ALComposite implements KeyPr
 
     protected void addTo() {
         if (suggestionsBox.getValue() != null && !suggestionsBox.getValue().trim().isEmpty()) {
-            valuesTA.setValue(valuesTA.getValue() + " " + suggestionsBox.getValue());
+            valuesTA.setValue(valuesTA.getValue() + " " + suggestionsBox.getKey());
             suggestionsBox.setValue("");
         }
     }

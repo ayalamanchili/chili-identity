@@ -36,7 +36,6 @@ public class CreateMessagePanel extends CreateComposite {
             HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String entityString) {
-                    logger.info(entityString);
                     Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                     if (values != null) {
                         suggestionsBox.loadData(values);
@@ -46,10 +45,9 @@ public class CreateMessagePanel extends CreateComposite {
             HttpService.HttpServiceAsync.instance().doGet(getNotoficationGroupDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                 @Override
                 public void onResponse(String entityString) {
-                    logger.info(entityString);
-                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                    Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
                     if (values != null) {
-                        suggestionsBox.loadData(values);
+                        suggestionsBox.loadData(values.values());
                     }
                 }
             });

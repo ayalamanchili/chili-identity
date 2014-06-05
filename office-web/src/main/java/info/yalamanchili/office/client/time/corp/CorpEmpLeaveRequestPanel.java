@@ -7,19 +7,24 @@
  */
 package info.yalamanchili.office.client.time.corp;
 
+import com.google.gwt.json.client.JSONArray;
 import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +50,10 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         assignEntityValueFromField("notes", entity);
         entity.put("status", new JSONString(TimeSheetStatus.Pending.name()));
         entity.put("employee", new JSONObject());
+        JSONArray notifyEmployeesList = employeesSB.getValues();
+        if (notifyEmployeesList.size() > 0) {
+            entity.put("notifyEmployees", notifyEmployeesList);
+        }
         logger.info(entity.toString());
         return entity;
     }
@@ -98,6 +107,8 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names());
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+        entityFieldsPanel.add(getLineSeperatorTag("Add team members to be notified"));
+        entityFieldsPanel.add(employeesSB);
     }
 
     @Override
@@ -118,5 +129,25 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-timesheet/submit-leave-request";
+    }
+
+    MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
+        @Override
+        public void initTosSuggesBox() {
+            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String entityString) {
+                    logger.info(entityString);
+                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                    if (values != null) {
+                        suggestionsBox.loadData(values);
+                    }
+                }
+            });
+        }
+    };
+
+    protected String getEmployeeIdsDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
     }
 }

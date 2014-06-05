@@ -11,6 +11,7 @@ package info.yalamanchili.office.Time;
 import info.chili.commons.FileIOUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -28,8 +29,10 @@ import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.ws.rs.core.Response;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +59,7 @@ public class CorporateTimeService {
         if (entity.getId() != null) {
             vars.put("status", "update");
         }
+        vars.put("notifyEmployees", entity.getNotifyEmployees());
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
     }
 
