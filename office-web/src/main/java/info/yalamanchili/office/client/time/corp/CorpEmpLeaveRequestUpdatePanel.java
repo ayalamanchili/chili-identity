@@ -8,13 +8,19 @@
  */
 package info.yalamanchili.office.client.time.corp;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
+import java.util.Map;
 
 /**
  *
@@ -34,6 +40,10 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("notes", entity);
+        JSONArray notifyEmployeesList = employeesSB.getValues();
+        if (notifyEmployeesList.size() > 0) {
+            entity.put("notifyEmployees", notifyEmployeesList);
+        }
         return entity;
     }
 
@@ -71,5 +81,24 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-timesheet/update-leave-request";
+    }
+
+    MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
+        @Override
+        public void initTosSuggesBox() {
+            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String entityString) {
+                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                    if (values != null) {
+                        suggestionsBox.loadData(values);
+                    }
+                }
+            });
+        }
+    };
+
+    protected String getEmployeeIdsDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
     }
 }

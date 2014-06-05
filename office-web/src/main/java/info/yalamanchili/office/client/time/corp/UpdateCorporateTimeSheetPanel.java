@@ -47,10 +47,6 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("notes", entity);
-        JSONArray notifyEmployeesList = employeesSB.getValues();
-        if (notifyEmployeesList.size() > 0) {
-            entity.put("notifyEmployees", notifyEmployeesList);
-        }
         return entity;
     }
 
@@ -117,25 +113,5 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-timesheet";
-    }
-
-    MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
-        @Override
-        public void initTosSuggesBox() {
-            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String entityString) {
-                    logger.info(entityString);
-                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-                    if (values != null) {
-                        suggestionsBox.loadData(values);
-                    }
-                }
-            });
-        }
-    };
-
-    protected String getEmployeeIdsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
     }
 }

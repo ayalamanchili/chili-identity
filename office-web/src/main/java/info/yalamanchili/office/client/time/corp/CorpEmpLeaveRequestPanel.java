@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.time.corp;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
 import com.google.gwt.json.client.JSONObject;
@@ -148,6 +149,6 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     };
 
     protected String getEmployeeIdsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 }
