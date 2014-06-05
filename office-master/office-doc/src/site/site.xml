@@ -72,8 +72,9 @@
                 <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
                 <item name="Overview" href="/office/selfservice/overview.html"/>
             </item>
-            <item name="Expense" href="/office/advance.html">
-                <item name="Advance Requisition" href="/office/advance.html"/>
+            <item name="Expense" href="/office/expense/advance.html" collapse="true">
+                <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
+                <item name="Advance Requisition Process" href="/office/expense/advancerequestprocess.html"/>
             </item>
             <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
                 <item name="Account Reset" href="/office/accountresettask.html"/>

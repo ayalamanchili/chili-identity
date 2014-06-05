@@ -10,12 +10,8 @@ Submit Advance Requisition
 
 Advance Requisition
 ----
-![alt text](../images/advance-form.png "Advance Requisition")
+![alt text](../../images/expense/advance-form.png "Advance Requisition")
 
-Advance Requisition  Add Bank Information 
+Advance Requisition  Request
 ----
-![alt text](../images/submit-advance-request-form.png "Advance Requisition")
-
-Advance Requisition  Add Check Information 
-----
-![alt text](../images/add-check-information.png "Advance Requisition")
+![alt text](../../images/expense/submit-advance-request-form.png "Advance Requisition")
