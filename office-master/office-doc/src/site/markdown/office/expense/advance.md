@@ -1,17 +1,16 @@
-Submit Advance Requisition
+How to submit Advance Requisition Request
 ==========
- - Employees logs in Portal and submits the Advance Request Form with Details
- - A Task is created for Admin and payroll and benefits dept for approval.
- - Admin and payroll and benefits dept can update the amount or other details and approve it.
- - if Approved the new task will be sent to "Account Payable Dept"
- - Then Account team can validate enter payment information and complete it and email notification will be sent to employee.
- - If it is rejected a Denied  email will be sent to employee with description.
- - For Corporate Employee advance tasks should go to  reports to manager   
-
-Advance Requisition
-----
-![alt text](../../images/expense/advance-form.png "Advance Requisition")
+ - Login to Portal
+ - Navigate to Expense --> Advance Requisition --> Submit Advance Requisition 
+ - Enter the basic information along with how you intend the receive the payment like via check or bank account.
+ - Once submitted it will send to the appropriate department for approval and you will receive a email about the final decision.
 
 Advance Requisition  Request
 ----
 ![alt text](../../images/expense/submit-advance-request-form.png "Advance Requisition")
+
+Advance Requisition Process
+----
+![alt text](../../images/expense/advance-form.png "Advance Requisition")
+
+
