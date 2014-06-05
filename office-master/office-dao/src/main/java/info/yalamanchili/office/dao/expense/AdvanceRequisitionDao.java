@@ -37,6 +37,9 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
     @Override
     public AdvanceRequisition findById(Long id) {
         AdvanceRequisition entity = super.findById(id);
+        if (entity == null) {
+            return null;
+        }
         entity.setCheck(CheckDao.instance().find(entity));
         entity.setBankAccount(BankAccountDao.instance().find(entity));
         return entity;

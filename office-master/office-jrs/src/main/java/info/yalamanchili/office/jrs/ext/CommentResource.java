@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
+//TODO create abstractREsource for ext
 public class CommentResource {
 
     @Autowired
