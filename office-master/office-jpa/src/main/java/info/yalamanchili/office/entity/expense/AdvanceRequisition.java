@@ -107,6 +107,17 @@ public class AdvanceRequisition extends AbstractEntity {
      */
     @Transient
     protected BankAccount bankAccount;
+    /**
+     *
+     */
+    @Transient
+    protected String repaymentMonths;
+
+    /**
+     *
+     */
+    @Transient
+    protected String repaymentNotes;
 
     public AdvanceRequisition() {
     }
@@ -215,6 +226,22 @@ public class AdvanceRequisition extends AbstractEntity {
 
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public String getRepaymentMonths() {
+        return repaymentMonths;
+    }
+
+    public void setRepaymentMonths(String repaymentMonths) {
+        this.repaymentMonths = repaymentMonths;
+    }
+
+    public String getRepaymentNotes() {
+        return repaymentNotes;
+    }
+
+    public void setRepaymentNotes(String repaymentNotes) {
+        this.repaymentNotes = repaymentNotes;
     }
 
     @Override

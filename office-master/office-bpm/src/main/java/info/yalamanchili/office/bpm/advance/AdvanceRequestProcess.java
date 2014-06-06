@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.bpm.advance;
 
-import com.google.common.base.Strings;
 import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
@@ -87,11 +86,13 @@ public class AdvanceRequestProcess implements TaskListener {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         AdvanceRequisitionDao dao = AdvanceRequisitionDao.instance();
         AdvanceRequisition entity = (AdvanceRequisition) task.getExecution().getVariable("entity");
+        String repaymentCmt = "Repayment Months:" + entity.getRepaymentMonths() + "Repayment Notes:" + entity.getRepaymentNotes();
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
         entity.setStatus(AdvanceRequisitionStatus.Pending);
         entity.setEmployee(emp);
         entity.setDateRequested(new Date());
         entity = dao.save(entity);
+        CommentDao.instance().addComment(repaymentCmt, entity);
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
     }

@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class AdvanceRequisitionRequestPanel extends CreateComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(AdvanceRequisitionRequestPanel.class.getName());
     CreateCheckWidget createCheckWidget = new CreateCheckWidget(CreateCheckWidgetType.CHECK_MAILING_INFO);
     CreateBankAcctWidget createBankAccountWidget = new CreateBankAcctWidget();
@@ -42,20 +42,22 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
     HTML tac = new HTML("<h6> I " + OfficeWelcome.instance().getCurrentUserName() + " hereby certify that I am solely responsible \n"
             + "for repayment of the above requested advance amount, to System Soft Technologies,as \n"
             + "per agreed terms & conditions or on-demand. </h6>");
-    
+
     public AdvanceRequisitionRequestPanel() {
         super(CreateCompositeType.CREATE);
         initCreateComposite("AdvanceRequisition", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("purpose", entity);
         assignEntityValueFromField("amount", entity);
         assignEntityValueFromField("neededBy", entity);
-        entity.put("status", new JSONString("Open"));
         entity.put("employee", new JSONObject());
+        entity.put("status", new JSONString("Open"));
+        assignEntityValueFromField("repaymentMonths", entity);
+        assignEntityValueFromField("repaymentNotes", entity);
         if (passCheckInfo.getValue()) {
             entity.put("check", createCheckWidget.populateEntityFromFields());
         }
@@ -64,7 +66,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
         }
         return entity;
     }
-    
+
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
@@ -74,18 +76,18 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
                         logger.info(arg0.getMessage());
                         handleErrorResponse(arg0);
                     }
-                    
+
                     @Override
                     public void onSuccess(String arg0) {
                         postCreateSuccess(arg0);
                     }
                 });
     }
-    
+
     @Override
     protected void addButtonClicked() {
     }
-    
+
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours for Email confirmation");
@@ -93,45 +95,50 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAllAdvanceRequisitionPanel());
         GenericPopup.instance().hide();
     }
-    
+
     @Override
     protected void addListeners() {
         passBankAcctInfo.addClickHandler(this);
         passCheckInfo.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         setButtonText("Submit");
         passBankAcctInfo.setValue(true);
     }
-    
+
     @Override
     protected void addWidgets() {
+        entityFieldsPanel.add(getLineSeperatorTag("Advance Requisition Information"));
         addField("purpose", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("neededBy", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Repayment Information"));
+        addField("repaymentPeriod", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("repaymentNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Receive Payment Information"));
         entityFieldsPanel.add(passBankAcctInfo);
         entityFieldsPanel.add(passCheckInfo);
         addBankAcctInformationWidget();
         entityFieldsPanel.add(tac);
         alignFields();
     }
-    
+
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         return true;
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "advancerequisition/submit-advance-requisition-request";
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(passBankAcctInfo)) {
@@ -142,7 +149,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
             super.onClick(event);
         }
     }
-    
+
     protected void addCheckInformationWidget() {
         if (createBankAccountWidget.isAttached()) {
             entityFieldsPanel.remove(createBankAccountWidget);
@@ -152,7 +159,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
             entityFieldsPanel.add(createCheckWidget);
         }
     }
-    
+
     protected void addBankAcctInformationWidget() {
         if (createCheckWidget.isAttached()) {
             entityFieldsPanel.remove(createCheckWidget);
