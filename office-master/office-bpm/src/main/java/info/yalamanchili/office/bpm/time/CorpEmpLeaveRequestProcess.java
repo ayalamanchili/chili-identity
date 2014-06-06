@@ -83,6 +83,8 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         String status = (String) task.getExecution().getVariable("status");
         if (status != null) {
             sendLeaveRequestStatusNotification("Updated", task);
+//            sendNotifyEmplyeeNotification("Updated", task)
+
         } else {
             sendLeaveRequestStatusNotification("Submitted", task);
         }
@@ -192,7 +194,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         messagingService.sendEmail(email);
     }
 
-    protected void sendNotifyEmplyeeNotification(String status, DelegateTask task) {
+    protected void sendNotifyEmplyeeNotification(CorporateTimeSheet timesheet, String status, DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
         Email email = new Email();
@@ -203,10 +205,10 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
             }
         }
         email.addTo(emp.getPrimaryEmail().getEmail());
-        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
+        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName() + " " + timesheet.getEndDate() + " " + timesheet.getStartDate();
         email.setSubject(summary);
     }
-    
+
     /**
      * Leave Request Escalation Task
      *
