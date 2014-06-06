@@ -115,7 +115,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
         addField("amount", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("neededBy", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Repayment Information"));
-        addField("repaymentPeriod", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("repaymentMonths", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("repaymentNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Receive Payment Information"));
         entityFieldsPanel.add(passBankAcctInfo);

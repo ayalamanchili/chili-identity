@@ -165,15 +165,10 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
 
     protected void sendLeaveRequestStatusNotification(String status, DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
+        sendNotifyEmplyeeNotification(status, task);
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(task));
-        if (notifyEmployees != null) {
-            for (Entry e : notifyEmployees) {
-                email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());
-            }
-        }
         email.addTo(emp.getPrimaryEmail().getEmail());
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
         email.setSubject(summary);
@@ -194,19 +189,21 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         messagingService.sendEmail(email);
     }
 
-    protected void sendNotifyEmplyeeNotification(CorporateTimeSheet timesheet, String status, DelegateTask task) {
-        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+    protected void sendNotifyEmplyeeNotification(String status, DelegateTask task) {
         List<Entry> notifyEmployees = (List<Entry>) task.getExecution().getVariable("notifyEmployees");
         Email email = new Email();
-        email.setTos(BPMUtils.getCandidateEmails(task));
         if (notifyEmployees != null) {
             for (Entry e : notifyEmployees) {
                 email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());
             }
         }
-        email.addTo(emp.getPrimaryEmail().getEmail());
-        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName() + " " + timesheet.getEndDate() + " " + timesheet.getStartDate();
+        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        CorporateTimeSheet ts = getTimeSheetFromTask(task);
+        String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName() + " : Start Date " + ts.getStartDate() + " End Date " + ts.getEndDate();
         email.setSubject(summary);
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        email.setHtml(Boolean.TRUE);
+        messagingService.sendEmail(email);
     }
 
     /**
