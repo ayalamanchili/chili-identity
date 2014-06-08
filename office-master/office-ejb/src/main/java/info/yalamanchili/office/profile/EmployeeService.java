@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class EmployeeService {
-
+    
     private final static Logger logger = Logger.getLogger(EmployeeService.class.getName());
     //TODO remove extended
     @PersistenceContext
@@ -51,7 +51,7 @@ public class EmployeeService {
     protected ProfileNotificationService profileNotificationService;
     @Autowired
     protected Mapper mapper;
-
+    
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
@@ -81,7 +81,7 @@ public class EmployeeService {
             Map<String, Object> obj = new HashMap<String, Object>();
             obj.put("employee", emp);
             OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
-
+            
         }
         Email email = new Email();
         email.setEmail(employee.getEmail());
@@ -95,7 +95,7 @@ public class EmployeeService {
         }
         return emp.getId().toString();
     }
-
+    
     private String generateEmployeeId(EmployeeCreateDto emp) {
         String empId = emp.getFirstName().toLowerCase().charAt(0) + emp.getLastName().toLowerCase();
         javax.persistence.Query findUserQuery = em.createQuery("from Employee where employeeId=:empIdParam");
@@ -108,7 +108,7 @@ public class EmployeeService {
         }
         return empId;
     }
-
+    
     public CUser changePassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         String oldpswd = SecurityUtils.encodePassword(user.getOldPassword(), null);
@@ -118,29 +118,30 @@ public class EmployeeService {
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.password", "Old Password Doesn't Match");
         }
-
+        
     }
-
+    
     public CUser resetPassword(Long empId, User user) {
         CUser user1 = getEmployee(empId).getUser();
         user1.setPasswordHash(SecurityUtils.encodePassword(user.getNewPassword(), null));
         profileNotificationService.sendResetPasswordNotification(getEmployee(empId), user.getNewPassword());
         return em.merge(user1);
-
+        
     }
-
+    
     public void deactivateUser(Long empId) {
         Employee emp = getEmployee(empId);
         if (!emp.isActive()) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.request", "Employee already deactivated");
         }
+        OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
         CUser user1 = emp.getUser();
         user1.setEnabled(false);
         profileNotificationService.sendEmployeeDeactivationNotification(getEmployee(empId));
         em.merge(user1);
-
+        
     }
-
+    
     public String generatepassword() {
         final int PASSWORD_LENGTH = 6;
         StringBuilder sb = new StringBuilder();
@@ -149,7 +150,7 @@ public class EmployeeService {
         }
         return sb.toString();
     }
-
+    
     private Employee getEmployee(Long empId) {
         Employee employee = em.find(Employee.class, empId);
         if (employee == null) {
@@ -159,7 +160,7 @@ public class EmployeeService {
             return employee;
         }
     }
-
+    
     public static EmployeeService instance() {
         return SpringContext.getBean(EmployeeService.class);
     }
