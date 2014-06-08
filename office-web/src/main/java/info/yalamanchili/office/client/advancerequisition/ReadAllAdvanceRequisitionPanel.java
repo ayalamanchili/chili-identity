@@ -28,9 +28,16 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllAdvanceRequisitionPanel.class.getName());
     public static ReadAllAdvanceRequisitionPanel instance;
+    protected String url;
 
     public ReadAllAdvanceRequisitionPanel() {
         instance = this;
+        initTable("AdvanceRequisition", OfficeWelcome.constants);
+    }
+
+    public ReadAllAdvanceRequisitionPanel(String url) {
+        instance = this;
+        this.url = url;
         initTable("AdvanceRequisition", OfficeWelcome.constants);
     }
 
@@ -39,7 +46,7 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         TabPanel.instance().expensePanel.entityPanel.clear();
         TabPanel.instance().expensePanel.entityPanel.add(new ReadAdvanceRequisitionPanel(entityId));
         TabPanel.instance().expensePanel.sidePanelTop.clear();
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
             TabPanel.instance().expensePanel.sidePanelTop.add(new AdvReqTreePanel(entityId));
         }
     }
@@ -117,6 +124,9 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     }
 
     private String getadvanceURL(Integer start, String limit) {
+        if (url != null) {
+            return url;
+        }
         return OfficeWelcome.constants.root_url() + "advancerequisition/" + start.toString() + "/"
                 + limit.toString();
     }

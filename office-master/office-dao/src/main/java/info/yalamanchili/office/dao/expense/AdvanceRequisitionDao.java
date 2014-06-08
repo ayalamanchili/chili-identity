@@ -19,6 +19,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +66,7 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
         if (SecurityService.instance().hasAnyRole(OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name())) {
             return queryAll(start, limit);
         } else {
-            return queryForEmployee(start, limit);
+            return queryForEmployee(SecurityService.instance().getCurrentUser().getId(), start, limit);
         }
     }
 
@@ -76,12 +77,18 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
         return findAllQuery.getResultList();
     }
 
-    protected List<AdvanceRequisition> queryForEmployee(int start, int limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee=:employeeParam order by dateRequested DESC", entityCls);
-        findAllQuery.setParameter("employeeParam", SecurityService.instance().getCurrentUser());
+    public List<AdvanceRequisition> queryForEmployee(Long employeeId, int start, int limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
+        findAllQuery.setParameter("employeeIdParam", employeeId);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
+    }
+
+    public Long queryForEmployeeSize(Long employeeId) {
+        TypedQuery<Long> findAllQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam", Long.class);
+        findAllQuery.setParameter("employeeIdParam", employeeId);
+        return findAllQuery.getSingleResult();
     }
 
     public void addTransaction(Long id, Transaction transaction) {
