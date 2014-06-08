@@ -7,12 +7,12 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.profile.address.CreateAddressPanel.CreateAddressPanelType;
 
 public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
@@ -37,7 +37,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_HR,ROLE.ROLE_TIME)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME)) {
             panel.add(addAddressLink);
         }
 
@@ -47,7 +47,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent arg0) {
         if (arg0.getSource().equals(addAddressLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateCompositeType.ADD));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.ALL_WITH_NOTIFY));
         }
     }
 }

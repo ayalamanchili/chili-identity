@@ -12,11 +12,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -39,6 +41,7 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
     CreateBankAcctWidget createBankAccountWidget = new CreateBankAcctWidget();
     RadioButton passCheckInfo = new RadioButton("payment", "Add Check Information");
     RadioButton passBankAcctInfo = new RadioButton("payment", "Add Bank Account Information");
+    RadioButton useCurrentPayrollInfo = new RadioButton("payment", "Use Current Payroll Information");
     HTML tac = new HTML("<h6> I " + OfficeWelcome.instance().getCurrentUserName() + " hereby certify that I am solely responsible \n"
             + "for repayment of the above requested advance amount, to System Soft Technologies,as \n"
             + "per agreed terms & conditions or on-demand. </h6>");
@@ -100,12 +103,12 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
     protected void addListeners() {
         passBankAcctInfo.addClickHandler(this);
         passCheckInfo.addClickHandler(this);
+        useCurrentPayrollInfo.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         setButtonText("Submit");
-        passBankAcctInfo.setValue(true);
     }
 
     @Override
@@ -120,13 +123,21 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
         entityFieldsPanel.add(getLineSeperatorTag("Receive Payment Information"));
         entityFieldsPanel.add(passBankAcctInfo);
         entityFieldsPanel.add(passCheckInfo);
-        addBankAcctInformationWidget();
+        entityFieldsPanel.add(useCurrentPayrollInfo);
         entityFieldsPanel.add(tac);
         alignFields();
     }
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
+        IntegerField repaymentMonths = (IntegerField) fields.get("repaymentMonths");
+        if (repaymentMonths.getInteger() == null) {
+            repaymentMonths.setMessage("Value is required");
+        }
+        if (!passBankAcctInfo.getValue() && !passCheckInfo.getValue() && !useCurrentPayrollInfo.getValue()) {
+            Window.alert("choose a Receive Payment Information");
+            return false;
+        }
         return true;
     }
 
@@ -150,6 +161,10 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
         }
     }
 
+    protected void addPayCurrentPaymentInfo() {
+
+    }
+
     protected void addCheckInformationWidget() {
         if (createBankAccountWidget.isAttached()) {
             entityFieldsPanel.remove(createBankAccountWidget);
@@ -168,5 +183,15 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
             createBankAccountWidget = new CreateBankAcctWidget();
             entityFieldsPanel.add(createBankAccountWidget);
         }
+    }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "expense/advance.html";
     }
 }

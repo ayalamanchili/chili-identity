@@ -16,8 +16,8 @@ import com.google.gwt.json.client.JSONObject;
  */
 public class UpdateAddressWidget extends UpdateAddressPanel {
 
-    public UpdateAddressWidget(JSONObject entity) {
-        super(entity);
+    public UpdateAddressWidget(JSONObject entity, UpdateAddressPanelType type) {
+        super(entity, type);
         update.setVisible(false);
     }
 

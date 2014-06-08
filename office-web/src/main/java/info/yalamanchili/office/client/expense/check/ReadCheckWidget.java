@@ -68,8 +68,8 @@ public class ReadCheckWidget extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("payableTo", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("checkAmount", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("payableTo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("checkAmount", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         addField("checkDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (ReadCheckWidgetType.CHECK_PAYMENT_INFO.equals(type)) {
             addField("bankName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

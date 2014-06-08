@@ -24,8 +24,15 @@ public class CreateAddressPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateAddressPanel.class.getName());
 
-    public CreateAddressPanel(CreateCompositeType type) {
-        super(type);
+    public enum CreateAddressPanelType {
+
+        ALL, MIN, ALL_WITH_NOTIFY
+    }
+    CreateAddressPanelType type;
+
+    public CreateAddressPanel(CreateAddressPanelType type) {
+        super(CreateCompositeType.CREATE);
+        this.type = type;
         initCreateComposite("Address", OfficeWelcome.constants);
     }
 
@@ -39,9 +46,13 @@ public class CreateAddressPanel extends CreateComposite {
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
         assignEntityValueFromField("zip", entity);
-        assignEntityValueFromField("addressType", entity);
-        assignEntityValueFromField("notifyChange", entity);
-        assignEntityValueFromField("changeNotes", entity);
+        if (CreateAddressPanelType.ALL.equals(type)) {
+            assignEntityValueFromField("addressType", entity);
+        }
+        if (CreateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+            assignEntityValueFromField("notifyChange", entity);
+            assignEntityValueFromField("changeNotes", entity);
+        }
         logger.info(entity.toString());
         return entity;
     }
@@ -95,9 +106,13 @@ public class CreateAddressPanel extends CreateComposite {
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
-        addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
-        addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
+        if (CreateAddressPanelType.ALL.equals(type)) {
+            addDropDown("addressType", new SelectAddressTypeWidget(false, false));
+        }
+        if (CreateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+            addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
+            addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
+        }
         alignFields();
     }
 

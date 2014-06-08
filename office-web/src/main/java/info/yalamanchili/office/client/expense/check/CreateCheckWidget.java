@@ -14,6 +14,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class CreateCheckWidget extends CreateComposite {
         CHECK_MAILING_INFO, CHECK_PAYMENT_INFO
     }
     CreateCheckWidgetType type;
-    CreateAddressWidget createAddressWidget = new CreateAddressWidget();
+    CreateAddressWidget createAddressWidget = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
 
     public CreateCheckWidget(CreateCheckWidgetType type) {
         super(CreateCompositeType.CREATE);

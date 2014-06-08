@@ -29,12 +29,19 @@ public class ReadAddressPanel extends ReadComposite {
     private static ReadAddressPanel instance;
     private static Logger logger = Logger.getLogger(ReadAddressPanel.class.getName());
 
+    public enum ReadAddressPanelType {
+
+        ALL, MIN
+    }
+    ReadAddressPanelType type;
+
     public static ReadAddressPanel instance() {
         return instance;
     }
 
     public ReadAddressPanel(JSONObject entity) {
         instance = this;
+        this.type = type;
         initReadComposite(entity, "Address", OfficeWelcome.constants);
     }
 
@@ -63,7 +70,9 @@ public class ReadAddressPanel extends ReadComposite {
         assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("addressType", entity, null);
+        if (ReadAddressPanelType.ALL.equals(type)) {
+            assignFieldValueFromEntity("addressType", entity, null);
+        }
     }
 
     @Override
@@ -82,7 +91,9 @@ public class ReadAddressPanel extends ReadComposite {
         addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addDropDown("addressType", new SelectAddressTypeWidget(true, false));
+        if (ReadAddressPanelType.ALL.equals(type)) {
+            addDropDown("addressType", new SelectAddressTypeWidget(true, false));
+        }
         alignFields();
     }
 

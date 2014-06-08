@@ -23,9 +23,15 @@ import info.chili.gwt.utils.Alignment;
 public class UpdateAddressPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateAddressPanel.class.getName());
-    SelectAddressTypeWidget AddressTypeF = new SelectAddressTypeWidget(false, false);
 
-    public UpdateAddressPanel(JSONObject entity) {
+    public enum UpdateAddressPanelType {
+
+        ALL, MIN, ALL_WITH_NOTIFY
+    }
+    UpdateAddressPanelType type;
+
+    public UpdateAddressPanel(JSONObject entity, UpdateAddressPanelType type) {
+        this.type = type;
         initUpdateComposite(entity, "Address", OfficeWelcome.constants);
 
     }
@@ -39,9 +45,13 @@ public class UpdateAddressPanel extends UpdateComposite {
         assignEntityValueFromField("state", entity);
         assignEntityValueFromField("country", entity);
         assignEntityValueFromField("zip", entity);
-        assignEntityValueFromField("addressType", entity);
-        assignEntityValueFromField("notifyChange", entity);
-        assignEntityValueFromField("changeNotes", entity);
+        if (UpdateAddressPanelType.ALL.equals(type)) {
+            assignEntityValueFromField("addressType", entity);
+        }
+        if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+            assignEntityValueFromField("notifyChange", entity);
+            assignEntityValueFromField("changeNotes", entity);
+        }
         logger.info(entity.toString());
         return entity;
     }
@@ -81,7 +91,9 @@ public class UpdateAddressPanel extends UpdateComposite {
         assignFieldValueFromEntity("state", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("zip", entity, DataType.LONG_FIELD);
-        assignFieldValueFromEntity("addressType", entity, null);
+        if (UpdateAddressPanelType.ALL.equals(type)) {
+            assignFieldValueFromEntity("addressType", entity, null);
+        }
     }
 
     @Override
@@ -103,9 +115,13 @@ public class UpdateAddressPanel extends UpdateComposite {
         addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("zip", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addDropDown("addressType", new SelectAddressTypeWidget(false, false));
-        addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
-        addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
+        if (UpdateAddressPanelType.ALL.equals(type)) {
+            addDropDown("addressType", new SelectAddressTypeWidget(false, false));
+        }
+        if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+            addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
+            addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
+        }
     }
 
     @Override

@@ -19,7 +19,7 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  */
 public class CreateAddressPopupPanel extends CreateAddressPanel {
 
-    public CreateAddressPopupPanel(CreateComposite.CreateCompositeType type) {
+    public CreateAddressPopupPanel(CreateAddressPanelType type) {
         super(type);
     }
 

@@ -16,8 +16,8 @@ import com.google.gwt.json.client.JSONObject;
  */
 public class CreateAddressWidget extends CreateAddressPanel {
 
-    public CreateAddressWidget() {
-        super(CreateCompositeType.CREATE);
+    public CreateAddressWidget(CreateAddressPanelType type) {
+        super(type);
         create.setVisible(false);
     }
 

@@ -101,4 +101,15 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     protected String getEmployeeIdsDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
     }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/update-cancel-leave-request.html";
+    }
+
 }

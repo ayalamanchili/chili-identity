@@ -28,7 +28,7 @@ public class CreateSubcontractorLocationPanel extends CreateAddressPanel {
     private static Logger logger = Logger.getLogger(CreateSubcontractorLocationPanel.class.getName());
 
     public CreateSubcontractorLocationPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
+        super(CreateAddressPanelType.ALL);
     }
 
     @Override

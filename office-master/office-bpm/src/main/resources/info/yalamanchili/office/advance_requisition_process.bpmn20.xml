@@ -23,6 +23,8 @@
                 Amount     : #{entity.amount}
                 Purpose    : #{entity.purpose}
                 Needed By Date :#{entity.neededBy}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/advancerequestprocess.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />

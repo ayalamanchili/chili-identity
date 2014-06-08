@@ -105,7 +105,7 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS,Auth.ROLE.ROLE_ACCOUNTS_PAYABLE)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));

@@ -7,20 +7,29 @@ Advance Request Process
  - The approved amount can be update during this process.
  - Once the final approval is completed a Task for Accounts Payable Dept is created for Payment Dispatch.
  - Accounts Payable team can validate enter payment information and complete it and email notification will be sent to employee
- - If it is rejected a Denied  email will be sent to employee with description.
+ - If it is rejected a denial  email will be sent to employee with description.
 
-Advance Requisition  Approved 
+Advance Requisition Process
+----
+![alt text](../../images/expense/advance-form.png "Advance Requisition")
+
+ - Initial Approval for Payroll or Reports To Manager
+
+Advance Requisition Initial Approval
 ----
 ![alt text](../../images/expense/advancerequest-task.png "Advance Requisition")
+![alt text](../../images/expense/advancerequest-task-1.png "Advance Requisition")
 
-- Payroll and benefits and admin dep can approve the final task
+ - Final Approval Task is created for Admin
 
-Advance Requisition Final Request
+Advance Requisition Final Approval
 ----
 ![alt text](../../images/expense/final-approval-task.png "Advance Requisition")
 
-- Accounts payable dep will approve the Final dispatch task
+ - Payment Dispatch task will be created for Accounts Payable Department.
+ - Once completed a email is sent to employee about with information.
 
 Advance Requisition Final Dispatch Request
 ----
-![alt text](../../images/expense/final-dispatch-task.png "Advance Requisition")
+![alt text](../../images/expense/payment-dispatch-task.png "Advance Requisition")
+![alt text](../../images/expense/payment-dispatch-task-1.png "Advance Requisition")

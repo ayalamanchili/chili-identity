@@ -28,8 +28,7 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel {
     private static Logger logger = Logger.getLogger(CreateVendorLocationsPanel.class.getName());
 
     public CreateVendorLocationsPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
-//         initCreateComposite("VendorLocation", OfficeWelcome.constants);
+        super(CreateAddressPanelType.ALL);
     }
 
     @Override

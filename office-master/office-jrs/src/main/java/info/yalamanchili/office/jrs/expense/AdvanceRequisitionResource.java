@@ -49,7 +49,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     
     @PUT
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_PAYROLL_AND_BENIFITS',ROLE_ACCOUNTS_PAYABLE)")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public AdvanceRequisition save(AdvanceRequisition entity) {
         return super.save(entity);
     }

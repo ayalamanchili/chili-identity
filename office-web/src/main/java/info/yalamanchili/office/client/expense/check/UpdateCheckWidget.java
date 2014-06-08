@@ -13,6 +13,7 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
 import info.yalamanchili.office.client.profile.address.UpdateAddressWidget;
 import java.util.logging.Logger;
 
@@ -78,7 +79,7 @@ public class UpdateCheckWidget extends UpdateComposite {
         }
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         if (entity.containsKey("checkMalingAddress")) {
-            updateAddressWidget = new UpdateAddressWidget(entity.get("checkMalingAddress").isObject());
+            updateAddressWidget = new UpdateAddressWidget(entity.get("checkMalingAddress").isObject(), UpdateAddressPanel.UpdateAddressPanelType.MIN);
             entityFieldsPanel.add(updateAddressWidget);
         }
     }

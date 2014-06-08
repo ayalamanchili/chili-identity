@@ -18,8 +18,8 @@ import info.yalamanchili.office.client.profile.ProfileHome;
  */
 public class UpdateAddressPopupPanel extends UpdateAddressPanel {
 
-    public UpdateAddressPopupPanel(JSONObject entity) {
-        super(entity);
+    public UpdateAddressPopupPanel(JSONObject entity, UpdateAddressPanelType type) {
+        super(entity, type);
     }
 
     @Override

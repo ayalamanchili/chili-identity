@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.profile.address.UpdateAddressPanel.UpdateAddressPanelType;
 
 public class ReadAllAddressesPanel extends CRUDReadAllComposite {
 
@@ -79,7 +80,7 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME,ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP)) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -117,7 +118,7 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressPanel(getEntity(entityId), UpdateAddressPanelType.ALL_WITH_NOTIFY));
 
     }
 

@@ -151,4 +151,14 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     protected String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=employeeId&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/submit-leave-request.html";
+    }
 }
