@@ -21,6 +21,7 @@ import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.ReadCheckWidget;
 import info.yalamanchili.office.client.expense.check.ReadCheckWidget.ReadCheckWidgetType;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -31,6 +32,7 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
 
     private static ReadAdvanceRequisitionPanel instance;
     private static Logger logger = Logger.getLogger(ReadAdvanceRequisitionPanel.class.getName());
+    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
 
     public static ReadAdvanceRequisitionPanel instance() {
         return instance;
@@ -50,13 +52,13 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                        populateComments();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+                populateComments();
+            }
+        });
 
     }
 
@@ -66,6 +68,7 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("employee", entity, null);
         assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.CURRENCY_FIELD);
         assignFieldValueFromEntity("neededBy", entity, DataType.DATE_FIELD);
@@ -88,6 +91,7 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("employee", selectEmployeeWidgetF);
         addField("purpose", true, false, DataType.STRING_FIELD);
         addField("amount", true, false, DataType.CURRENCY_FIELD);
         addField("neededBy", true, false, DataType.DATE_FIELD);

@@ -55,11 +55,11 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -81,21 +81,22 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getadvanceURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Purpose"));
-        table.setText(0, 2, getKeyValue("Amount"));
-        table.setText(0, 3, getKeyValue("NeededBy"));
-        table.setText(0, 4, getKeyValue("Status"));
+        table.setText(0, 1, getKeyValue("Employee"));
+        table.setText(0, 2, getKeyValue("Purpose"));
+        table.setText(0, 3, getKeyValue("Amount"));
+        table.setText(0, 4, getKeyValue("NeededBy"));
+        table.setText(0, 5, getKeyValue("Status"));
     }
 
     @Override
@@ -103,10 +104,12 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "purpose"));
-            table.setText(i, 2, JSONUtils.toString(entity, "amount"));
-            table.setText(i, 3, JSONUtils.toString(entity, "neededBy"));
-            table.setText(i, 4, JSONUtils.formatEnumString(entity, "status"));
+            JSONObject emp = (JSONObject) entity.get("employee");
+            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
+            table.setText(i, 2, JSONUtils.toString(entity, "purpose"));
+            table.setText(i, 3, JSONUtils.toString(entity, "amount"));
+            table.setText(i, 4, JSONUtils.toString(entity, "neededBy"));
+            table.setText(i, 5, JSONUtils.formatEnumString(entity, "status"));
         }
     }
 
