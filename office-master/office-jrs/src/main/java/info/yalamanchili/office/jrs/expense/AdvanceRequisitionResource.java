@@ -90,6 +90,13 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
         return tableObj;
     }
 
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void delete(@PathParam("id") Long id) {
+        AdvanceRequisitionService.instance().delete(id);
+    }
+
     @Override
     public CRUDDao getDao() {
         return advanceRequisitionDao;
