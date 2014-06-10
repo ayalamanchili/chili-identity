@@ -5,8 +5,10 @@ package info.yalamanchili.office.config;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheManager;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -84,6 +86,10 @@ public class OfficeServiceConfiguration {
      * file path used by data loader tool
      */
     protected String dataloadFilePath = contentManagementLocationRoot + "load.xlsx";
+    /**
+     *
+     */
+    protected String allowedFileExtensions = "doc,docx,rtf,txt,ppt,pptx,xls,xlsx,pdf,png,jpg,jpeg,bmp,gif,htm,html";
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
@@ -211,6 +217,20 @@ public class OfficeServiceConfiguration {
 
     public void setDataloadFilePath(String dataloadFilePath) {
         this.dataloadFilePath = dataloadFilePath;
+    }
+
+    public List<String> getAllowedFileExtensionsAsList() {
+        String[] exts = getAllowedFileExtensions().split(",");
+        return new ArrayList<String>(Arrays.asList(exts));
+    }
+
+    @ManagedOperation
+    public String getAllowedFileExtensions() {
+        return allowedFileExtensions;
+    }
+
+    public void setAllowedFileExtensions(String allowedFileExtensions) {
+        this.allowedFileExtensions = allowedFileExtensions;
     }
 
     @ManagedOperation

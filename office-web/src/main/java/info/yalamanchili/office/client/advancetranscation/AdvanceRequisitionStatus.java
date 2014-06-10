@@ -16,7 +16,8 @@ public enum AdvanceRequisitionStatus {
     Open,
     Pending,
     Approved,
-    Rejected;
+    Rejected,
+    Completed;
 
     public static String[] names() {
         AdvanceRequisitionStatus[] values = values();

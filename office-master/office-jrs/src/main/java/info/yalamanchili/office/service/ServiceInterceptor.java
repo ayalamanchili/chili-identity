@@ -67,7 +67,7 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } catch (Exception e) {
-            logExceptionDetials(e);
+            LoggingUtil.logExceptionDetials(e);
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", e.getMessage());
         }
         checkForErrors();
@@ -95,7 +95,7 @@ public class ServiceInterceptor {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
 
         } else {
-            logExceptionDetials(exception);
+            LoggingUtil.logExceptionDetials(exception);
             //TODO this is again intercepted by this same service interceptor to convert into 400 error
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
         }
@@ -116,27 +116,5 @@ public class ServiceInterceptor {
         if (serviceMessages.isNotEmpty()) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, serviceMessages.getErrors());
         }
-    }
-
-    protected void logExceptionDetials(Throwable e) {
-        if (log.isErrorEnabled()) {
-            e.printStackTrace();
-            log.error(e);
-        }
-        if (!OfficeServiceConfiguration.instance().isEmailExceptionDetials()) {
-            return;
-        }
-        Email email = new Email();
-        email.setTos(OfficeServiceConfiguration.instance().getErrorLogsEmailsAsSet());
-        StringBuilder subject = new StringBuilder();
-        subject.append("Portal Error Details: Host: ");
-        try {
-            subject.append(InetAddress.getLocalHost().getHostName());
-        } catch (UnknownHostException ex) {
-            subject.append("UNKNOWN");
-        }
-        email.setSubject(subject.toString());
-        email.setBody(ExceptionUtils.getStackTrace(e));
-        MessagingService.instance().sendEmail(email);
     }
 }
