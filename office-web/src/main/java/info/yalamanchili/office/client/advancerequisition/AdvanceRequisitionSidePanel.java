@@ -51,10 +51,10 @@ public class AdvanceRequisitionSidePanel extends ALComposite implements ClickHan
     @Override
     protected void addWidgets() {
         advanceRequisitionSidePanel.add(createAdvanceRequisitionLink);
+        advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
+
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ACCOUNTS_PAYABLE)) {
             advanceRequisitionSidePanel.add(Utils.getLineSeperatorTag("Search"));
-        }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ACCOUNTS_PAYABLE)) {
             advanceRequisitionSidePanel.add(empWidget);
             advanceRequisitionSidePanel.add(viewB);
         }
