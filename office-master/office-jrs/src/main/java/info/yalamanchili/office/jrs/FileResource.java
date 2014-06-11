@@ -152,7 +152,7 @@ public class FileResource {
         } catch (IntrusionException ex) {
             return buildResponse(Response.Status.BAD_REQUEST, "Invalid File Upload", ex);
         } catch (ValidationException ex) {
-            return buildResponse(Response.Status.BAD_REQUEST, "Invalid File Upload", ex);
+            return buildResponse(Response.Status.BAD_REQUEST, "File Size Exceeded or Invalid File Extension", ex);
         } catch (IOException ex) {
             return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Error Uploading File", ex);
         }
