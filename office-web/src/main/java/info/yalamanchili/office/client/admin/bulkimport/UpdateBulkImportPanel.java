@@ -29,7 +29,7 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     public static Logger loggar = Logger.getLogger(UpdateBulkImportPanel.class.getName());
     FileuploadField bulkImportUploadPanel = new FileuploadField(OfficeWelcome.constants, "BulkImport", "fileUrl", "BulkImport/fileUrl", false) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postUpdateSuccess(null);
         }
     };

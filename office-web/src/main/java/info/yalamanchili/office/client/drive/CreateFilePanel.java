@@ -29,13 +29,8 @@ public class CreateFilePanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateFilePanel.class.getName());
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "File", "fileUrl", "File/fileUrl", true) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postCreateSuccess(null);
-        }
-
-        @Override
-        public void onFileUploadError() {
-            Window.alert("File Size exceeded MaxLimit:20MB");
         }
     };
 

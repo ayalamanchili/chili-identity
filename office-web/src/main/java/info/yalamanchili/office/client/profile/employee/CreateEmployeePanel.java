@@ -26,13 +26,8 @@ public class CreateEmployeePanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postCreateSuccess(null);
-        }
-
-        @Override
-        public void onFileUploadError() {
-            Window.alert("Image Size exceeded please upload a smaler Image MaxLimit:2MB");
         }
     };
 

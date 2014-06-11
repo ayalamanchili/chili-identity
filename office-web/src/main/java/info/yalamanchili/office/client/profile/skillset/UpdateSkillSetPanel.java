@@ -62,13 +62,8 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
      */
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postUpdateSuccess(null);
-        }
-
-        @Override
-        public void onFileUploadError() {
-            Window.alert("File Size exceeded. MaxLimit:20MB");
         }
     };
 

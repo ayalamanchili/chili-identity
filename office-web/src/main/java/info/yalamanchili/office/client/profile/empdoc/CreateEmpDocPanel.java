@@ -29,7 +29,7 @@ public class CreateEmpDocPanel extends CreateComposite {
 
     FileuploadField documentUploadPanel = new FileuploadField(OfficeWelcome.constants, "EmployeeDocument", "fileUrl", "EmployeeDocument/fileUrl", true) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postCreateSuccess(null);
         }
     };

@@ -31,13 +31,8 @@ public class CreateBulkImportPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreateBulkImportPanel.class.getName());
     FileuploadField bulkImportUploadPanel = new FileuploadField(OfficeWelcome.constants, "BulkImport", "fileUrl", "BulkImport/fileUrl", false) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postCreateSuccess(null);
-        }
-
-        @Override
-        public void onFileUploadError() {
-            Window.alert("File Size exceeded MaxLimit:20MB");
         }
     };
 

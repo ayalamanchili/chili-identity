@@ -32,7 +32,6 @@ import info.chili.gwt.widgets.RichTextToolBar;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.utils.Utils;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import info.chili.gwt.rpc.HttpService;
@@ -54,13 +53,8 @@ public class CreateCompanyPostWidget extends ALComposite implements ClickHandler
     Image fileUploadIcon = new Image(OfficeImages.INSTANCE.fileAttachmentIcon());
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "", "PostFile/fileURL", false) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postCreateSuccess(null);
-        }
-
-        @Override
-        public void onFileUploadError() {
-            Window.alert("File Size exceeded. Image MaxLimit:2MB File MaxLimit:20MB");
         }
     };
 

@@ -30,7 +30,7 @@ public class CreateSkillSetPanel extends CreateComposite {
     SelectTechnologyGroupWidget technologyGroupF = new SelectTechnologyGroupWidget(false, false);
     FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants, "SkillSet", "resumeUrl", "SkillSet/resumeUrl", true) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postCreateSuccess(null);
         }
     };

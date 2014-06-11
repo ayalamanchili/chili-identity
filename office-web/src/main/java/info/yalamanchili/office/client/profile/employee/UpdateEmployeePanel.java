@@ -25,13 +25,8 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postUpdateSuccess(null);
-        }
-
-        @Override
-        public void onFileUploadError() {
-            Window.alert("Image Size exceeded please upload a smaler Image Limit:2MB");
         }
     };
 

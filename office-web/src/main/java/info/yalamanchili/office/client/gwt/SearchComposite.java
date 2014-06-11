@@ -218,7 +218,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         if (DataType.IMAGE_FIELD.equals(type)) {
             FileuploadField fileUploadPanel = new FileuploadField(constants, attributeName, entityName, "name", false) {
                 @Override
-                public void onUploadComplete() {
+                public void onUploadComplete(String res) {
                 }
             };
             advancedSearchPanel.add(fileUploadPanel);

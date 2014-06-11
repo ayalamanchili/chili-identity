@@ -4,7 +4,6 @@
 package info.yalamanchili.office.jrs;
 
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
 import info.chili.commons.FileUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
@@ -14,8 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -35,11 +32,9 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.owasp.esapi.ValidationErrorList;
 import org.owasp.esapi.Validator;
 import org.owasp.esapi.errors.IntrusionException;
 import org.owasp.esapi.errors.ValidationException;
-import org.owasp.esapi.reference.DefaultValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -60,8 +55,7 @@ public class FileResource {
     @Path("/upload")
     public Response uploadFile(@Context HttpServletRequest request) {
         log.info("---------------uploading file-----------------");
-        processFileUpload(request);
-        return Response.ok().build();
+        return processFileUpload(request);
     }
 
     @GET
@@ -149,50 +143,59 @@ public class FileResource {
         response.header("Content-Length", fileName);
     }
 
-    protected void validateFileUpload(FileItem item) {
+    protected Response validateFileUpload(FileItem item) {
         try {
             Validator validator = (Validator) SpringContext.getBean("securityValidator");
             File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName() + item.getName());
-            validator.assertValidFileUpload(file.getName(), file.getParentFile().getCanonicalPath(), file.getName(), file.getParentFile(), ByteStreams.toByteArray(item.getInputStream()), getFileUpload(item), OfficeServiceConfiguration.instance().getAllowedFileExtensionsAsList(), true);
+            validator.assertValidFileUpload(file.getName(), file.getParentFile().getCanonicalPath(), file.getName(), file.getParentFile(), ByteStreams.toByteArray(item.getInputStream()), getFileUploadSize(item), OfficeServiceConfiguration.instance().getAllowedFileExtensionsAsList(), true);
             //TODO provide more detail
         } catch (IntrusionException ex) {
-            LoggingUtil.logExceptionDetials(ex);
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.file.upload", "Invalid File Upload");
+            return buildResponse(Response.Status.BAD_REQUEST, "Invalid File Upload", ex);
         } catch (ValidationException ex) {
-            LoggingUtil.logExceptionDetials(ex);
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.file.upload", "Invalid File Upload");
+            return buildResponse(Response.Status.BAD_REQUEST, "Invalid File Upload", ex);
         } catch (IOException ex) {
-            LoggingUtil.logExceptionDetials(ex);
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.file.upload", "Invalid File Upload");
+            return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Error Uploading File", ex);
         }
+        return null;
     }
 
-    protected void processFileUpload(HttpServletRequest request) {
+    protected Response processFileUpload(HttpServletRequest request) {
         FileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
         List<FileItem> items = null;
         try {
             items = upload.parseRequest(request);
         } catch (FileUploadException e) {
-            throw new RuntimeException("Error on File upload", e);
+            LoggingUtil.logExceptionDetials(e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error Uploading File").build();
         }
         for (FileItem item : items) {
             if (item.isFormField() || item.getName() == null || item.getName().trim().equals("")) {
                 continue;
             }
-            validateFileUpload(item);
+            Response res = validateFileUpload(item);
+            if (res != null) {
+                return res;
+            }
             File file = new File(officeServiceConfiguration.getContentManagementLocationRoot() + item.getFieldName()
                     + item.getName());
             try {
                 log.info("----------writing image to-----------:" + file.getAbsolutePath());
                 item.write(file);
             } catch (Exception e) {
-                throw new RuntimeException("Error saving File:" + file + ": to disk.", e);
+                return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Error Uploading File", e);
             }
         }
+        return Response.ok().build();
     }
 
-    protected int getFileUpload(FileItem file) {
+    protected Response buildResponse(Response.Status status, String errorMsg, Exception e) {
+        LoggingUtil.logExceptionDetials(e);
+        errorMsg = "Error: " + errorMsg;
+        return Response.status(status).entity(errorMsg).header("Content-Type", "text/html").header("Content-Length", errorMsg.length()).build();
+    }
+
+    protected int getFileUploadSize(FileItem file) {
         if (FileUtils.isImage(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getImageSizeLimit()) {
             return (int) OfficeServiceConfiguration.instance().getImageSizeLimit();
         } else if (FileUtils.isDocument(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getFileSizeLimit()) {

@@ -50,13 +50,8 @@ public class CreateEmployeePostWidget extends ALComposite implements ClickHandle
     Image fileUploadIcon = new Image(OfficeImages.INSTANCE.fileAttachmentIcon());
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "PostFile", "", "PostFile/fileURL", false, true) {
         @Override
-        public void onUploadComplete() {
+        public void onUploadComplete(String res) {
             postCreateSuccess(null);
-        }
-
-        @Override
-        public void onFileUploadError() {
-            Window.alert("File Size exceeded. Image MaxLimit:2MB File MaxLimit:20MB");
         }
     };
 
