@@ -159,7 +159,6 @@ public class ServiceTicket extends AbstractEntity {
         this.assignedTo = assignedTo;
     }
 
-    @XmlTransient
     public Employee getEmployee() {
         return employee;
     }
