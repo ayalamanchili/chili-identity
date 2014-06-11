@@ -26,6 +26,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.security.SelectRoleWidget;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     protected ClickableLink rejectTicket = new ClickableLink("Reject Ticket");
     protected SelectRoleWidget roleWidget = new SelectRoleWidget(false, true);
     protected SelectCorpEmployeeWidget assignedToF = new SelectCorpEmployeeWidget("AssignedTo", false, false);
+    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
     protected Button updateB = new Button("Update");
     private static ReadServiceTicketPanel instance;
     protected EnumField statusF;
@@ -61,12 +63,12 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
         entityFieldsPanel.add(new ReadAllTicketComments(getEntityId()));
         //TODO this should be checking self emp
         if (Auth.isConsultantEmployee()) {
@@ -79,6 +81,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("employee", entity, null);
         assignFieldValueFromEntity("subject", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
@@ -88,6 +91,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
     }
 
     protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("subject", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("type", entity);
@@ -119,6 +123,7 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
 
     @Override
     protected void addWidgets() {
+        addDropDown("employee", selectEmployeeWidgetF);
         addField("subject", true, true, DataType.STRING_FIELD);
         addField("description", true, false, DataType.RICH_TEXT_AREA);
         addEnumField("type", false, true, TicketType.names());
@@ -151,19 +156,19 @@ public class ReadServiceTicketPanel extends ReadComposite implements ClickHandle
         if (processClientSideValidations()) {
             HttpService.HttpServiceAsync.instance().doPut(getUpdateURI(), populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String arg0) {
-                            new ResponseStatusWidget().show("Updated Service Ticket");
-                            if (TabPanel.instance().myOfficePanel.isVisible()) {
-                                TabPanel.instance().myOfficePanel.entityPanel.clear();
-                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel(TreeEmployeePanel.instance().getEntityId()));
-                            }
-                            if (TabPanel.instance().homePanel.isVisible()) {
-                                TabPanel.instance().homePanel.entityPanel.clear();
-                                TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
-                            }
-                        }
-                    });
+                @Override
+                public void onResponse(String arg0) {
+                    new ResponseStatusWidget().show("Updated Service Ticket");
+                    if (TabPanel.instance().myOfficePanel.isVisible()) {
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllServiceTicketsPanel(TreeEmployeePanel.instance().getEntityId()));
+                    }
+                    if (TabPanel.instance().homePanel.isVisible()) {
+                        TabPanel.instance().homePanel.entityPanel.clear();
+                        TabPanel.instance().homePanel.entityPanel.add(new ReadAllServiceTicketsPanel());
+                    }
+                }
+            });
         }
     }
 
