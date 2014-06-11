@@ -9,6 +9,7 @@ import info.yalamanchili.office.entity.Company;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -29,10 +30,12 @@ public class EmployeeReports extends AbstractEntity {
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date reportStartDate;
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date reportEndDate;
     /**
      *
@@ -54,6 +57,7 @@ public class EmployeeReports extends AbstractEntity {
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
     /**
      *
