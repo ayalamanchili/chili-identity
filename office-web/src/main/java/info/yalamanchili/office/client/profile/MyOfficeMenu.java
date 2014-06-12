@@ -23,6 +23,8 @@ import info.yalamanchili.office.client.profile.employeetype.ReadAllEmployeeTypes
 import info.yalamanchili.office.client.profile.employeetype.EmployeeTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.PhoneTypeSidePanel;
 import info.yalamanchili.office.client.profile.phonetype.ReadAllPhoneTypePanel;
+import info.yalamanchili.office.client.profile.statusreport.ReadAllStatusReportPanel;
+import info.yalamanchili.office.client.profile.statusreport.StatusReportSidePanel;
 
 public class MyOfficeMenu extends Composite {
 
@@ -41,6 +43,7 @@ public class MyOfficeMenu extends Composite {
             myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
+            myOfficeMenuBar.addItem("Status Report", statusReportMaintainenceCmd);
         }
         myOfficeMenuBar.addItem("Information", corpEmpInfo);
         myOfficeMenuBar.addStyleName("entityMenuBar");
@@ -91,6 +94,14 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllCompanyContactTypePanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new CompanyContactTypeSidePanel());
+        }
+    };
+    Command statusReportMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllStatusReportPanel());
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new StatusReportSidePanel());
         }
     };
     Command corpEmpInfo = new Command() {
