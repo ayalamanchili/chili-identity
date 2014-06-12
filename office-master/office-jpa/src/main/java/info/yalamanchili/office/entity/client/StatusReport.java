@@ -8,16 +8,27 @@
 package info.yalamanchili.office.entity.client;
 
 import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -35,17 +46,20 @@ public class StatusReport extends AbstractEntity {
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
     protected Date reportStartDate;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
     protected Date reportEndDate;
     /**
      *
      */
-    @ManyToOne
-    protected Company company;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    protected ProjectStatus status;
     /**
      *
      */
@@ -58,7 +72,8 @@ public class StatusReport extends AbstractEntity {
      *
      */
     @Lob
-    protected String statusReport;
+    @NotEmpty
+    protected String report;
     /**
      *
      */
@@ -68,7 +83,16 @@ public class StatusReport extends AbstractEntity {
      *
      */
     @ManyToOne
+    @ForeignKey(name = "FK_PROJECT_STATUS_RPTS")
+    @NotNull
     protected Project project;
+
+    /**
+     * employee
+     */
+    @ManyToOne
+    @ForeignKey(name = "FK_CLNT_INFO_SRV_TKTS")
+    protected ClientInformation clientInformation;
 
     public Date getReportStartDate() {
         return reportStartDate;
@@ -86,12 +110,12 @@ public class StatusReport extends AbstractEntity {
         this.reportEndDate = reportEndDate;
     }
 
-    public Company getCompany() {
-        return company;
+    public ProjectStatus getStatus() {
+        return status;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setStatus(ProjectStatus status) {
+        this.status = status;
     }
 
     public String getPreparedBy() {
@@ -110,12 +134,12 @@ public class StatusReport extends AbstractEntity {
         this.approvedBy = approvedBy;
     }
 
-    public String getStatusReport() {
-        return statusReport;
+    public String getReport() {
+        return report;
     }
 
-    public void setStatusReport(String statusReport) {
-        this.statusReport = statusReport;
+    public void setReport(String report) {
+        this.report = report;
     }
 
     public Date getSubmittedDate() {
@@ -126,6 +150,7 @@ public class StatusReport extends AbstractEntity {
         this.submittedDate = submittedDate;
     }
 
+    @XmlElement
     public Project getProject() {
         return project;
     }
@@ -134,8 +159,30 @@ public class StatusReport extends AbstractEntity {
         this.project = project;
     }
 
+    @XmlTransient
+    public ClientInformation getClientInformation() {
+        return clientInformation;
+    }
+
+    public void setClientInformation(ClientInformation clientInformation) {
+        this.clientInformation = clientInformation;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void populateAuditData() {
+        if (getSubmittedDate() == null) {
+            this.submittedDate = new Date();
+        }
+        if (getPreparedBy() == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            this.preparedBy = auth.getName();
+        }
+    }
+
     @Override
     public String toString() {
-        return "StatusReport{" + "reportStartDate=" + reportStartDate + ", reportEndDate=" + reportEndDate + ", company=" + company + ", preparedBy =" + preparedBy + ", approvedBy =" + approvedBy + ", statusReport=" + statusReport + ", submittedDate =" + submittedDate + ", project=" + project + '}';
+        return "StatusReport{" + "reportStartDate=" + reportStartDate + ", reportEndDate=" + reportEndDate + ", preparedBy=" + preparedBy + ", approvedBy=" + approvedBy + ", statusReport=" + report + ", submittedDate=" + submittedDate + '}';
     }
+
 }
