@@ -5,7 +5,6 @@ package info.yalamanchili.office.jrs;
 
 import com.google.common.io.ByteStreams;
 import info.chili.commons.FileUtils;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.service.LoggingUtil;
@@ -46,18 +45,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class FileResource {
-
+    
     private static final Log log = LogFactory.getLog(FileResource.class);
     @Autowired
     protected OfficeServiceConfiguration officeServiceConfiguration;
-
+    
     @POST
     @Path("/upload")
     public Response uploadFile(@Context HttpServletRequest request) {
         log.info("---------------uploading file-----------------");
         return processFileUpload(request);
     }
-
+    
     @GET
     @Path("/download")
     public Response downloadFile(@QueryParam("path") String path, @QueryParam("entityId") String entityId) {
@@ -82,7 +81,7 @@ public class FileResource {
         } catch (Exception e) {
             throw new RuntimeException("Error processing File download" + e);
         }
-
+        
     }
 //TODO move to commons
 
@@ -100,9 +99,9 @@ public class FileResource {
         } catch (Exception e) {
             throw new RuntimeException("Error deleting file" + e);
         }
-
+        
     }
-
+    
     protected String swapEntityId(String path, String entityId) {
         if (entityId != null && path.contains("entityId")) {
             return path.replace("entityId", entityId);
@@ -110,12 +109,12 @@ public class FileResource {
             return path;
         }
     }
-
+    
     protected void setResponseHeaders(ResponseBuilder response, File file) {
         setContentHeaders(response, file);
         setCacheControlHeaders(response, file);
     }
-
+    
     protected void setCacheControlHeaders(ResponseBuilder response, File file) {
         CacheControl cc = new CacheControl();
         //1 week
@@ -133,16 +132,12 @@ public class FileResource {
 
     protected void setContentHeaders(ResponseBuilder response, File file) {
         String fileName = file.getName();
-        if (info.chili.commons.FileUtils.isPDF(fileName)) {
-            response.header("Content-Disposition", "filename=" + fileName);
-            response.header("Content-Type", "application/pdf");
-            return;
-        }
+        response.header("Content-Type", FileUtils.getFileContentType(file));
         //Content disposition with attachement forces the browser to download as attachment(avod inconsistent file type handles by browser)
-        response.header("Content-Disposition", "attachment; filename=" + fileName);
+        response.header("Content-Disposition", "filename=" + fileName);
         response.header("Content-Length", fileName);
     }
-
+    
     protected Response validateFileUpload(FileItem item) {
         try {
             Validator validator = (Validator) SpringContext.getBean("securityValidator");
@@ -158,7 +153,7 @@ public class FileResource {
         }
         return null;
     }
-
+    
     protected Response processFileUpload(HttpServletRequest request) {
         FileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
@@ -188,13 +183,13 @@ public class FileResource {
         }
         return Response.ok().build();
     }
-
+    
     protected Response buildResponse(Response.Status status, String errorMsg, Exception e) {
         LoggingUtil.logExceptionDetials(e);
         errorMsg = "Error: " + errorMsg;
         return Response.status(status).entity(errorMsg).header("Content-Type", "text/html").header("Content-Length", errorMsg.length()).build();
     }
-
+    
     protected int getFileUploadSize(FileItem file) {
         if (FileUtils.isImage(file.getName()) && file.getSize() > OfficeServiceConfiguration.instance().getImageSizeLimit()) {
             return (int) OfficeServiceConfiguration.instance().getImageSizeLimit();
@@ -205,7 +200,7 @@ public class FileResource {
             return (int) OfficeServiceConfiguration.instance().getFileSizeLimit();
         }
     }
-
+    
     public static FileResource instance() {
         return SpringContext.getBean(FileResource.class);
     }
