@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class StatusReportSidePanel extends ALComposite implements ClickHandler {
 
-    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.admin.sow.SOWSidePanel.class.getName());
+    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.StatusReportSidePanel.class.getName());
     public FlowPanel satussidepanel = new FlowPanel();
     ClickableLink createsatuslink = new ClickableLink("Create Status Report");
 
@@ -48,7 +48,7 @@ public class StatusReportSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createsatuslink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateStatusReportPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateStatusReportPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
