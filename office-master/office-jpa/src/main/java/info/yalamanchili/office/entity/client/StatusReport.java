@@ -34,11 +34,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author prasanthi.p
  */
-@Indexed
-@XmlRootElement
-@XmlType
-@Entity
-@Audited
+//@Indexed
+//@XmlRootElement
+//@XmlType
+//@Entity
+//@Audited
 public class StatusReport extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;

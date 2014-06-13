@@ -20,6 +20,7 @@ public class OfficeRoles {
     public enum OfficeRole {
 
         ROLE_USER,
+        ROLE_CORPORATE_EMPLOYEE,
         ROLE_ADMIN,
         ROLE_HR,
         ROLE_RECRUITER,
@@ -49,6 +50,7 @@ public class OfficeRoles {
 
     static {
         rolesMessages.put(OfficeRole.ROLE_USER.name(), "User");
+        rolesMessages.put(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name(), "Corporate Employee");
         rolesMessages.put(OfficeRole.ROLE_ADMIN.name(), "Admin");
         rolesMessages.put(OfficeRole.ROLE_HR.name(), "HR");
         rolesMessages.put(OfficeRole.ROLE_RECRUITER.name(), "Recruiter");

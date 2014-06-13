@@ -76,7 +76,6 @@ public class SecurityService {
         if (context == null) {
             return false;
         }
-
         Authentication authentication = context.getAuthentication();
         if (authentication == null) {
             return false;

@@ -8,6 +8,7 @@ import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -61,21 +62,21 @@ public class AdminResource {
     public EmployeeDao employeeDao;
     @PersistenceContext
     EntityManager em;
-
+    
     @Path("/login")
     @PUT
     @Cacheable(value = OfficeCacheKeys.LOGIN, key = "#user.username")
     public EmployeeLoginDto login(CUser user) {
         return mapper.map(securityService.login(user), EmployeeLoginDto.class);
     }
-
+    
     @Path("/changepassword/{empId}")
     @PUT
     public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.changePassword(empId, user);
     }
-
+    
     @Path("/resetpassword/{empId}")
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
@@ -83,7 +84,7 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.resetPassword(empId, user);
     }
-
+    
     @Path("/deactivateuser/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -92,7 +93,7 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         employeeService.deactivateUser(empId);
     }
-
+    
     @Path("/createuser")
     @PUT
     @Produces("application/text")
@@ -102,7 +103,7 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.createUser(employee);
     }
-
+    
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -117,7 +118,7 @@ public class AdminResource {
         }
         return obj;
     }
-
+    
     @GET
     @Path("/role/add/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -130,7 +131,7 @@ public class AdminResource {
             OfficeBPMIdentityService.instance().addUserToGroup(emp.getUser().getUsername(), role.getRolename());
         }
     }
-
+    
     @GET
     @Path("/role/remove/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -140,8 +141,8 @@ public class AdminResource {
         Employee emp = empDao.findById(empId);
         for (Long roleId : ids) {
             CRole role = CRoleDao.instance().findById(roleId);
-            if (role.getRolename().equals("ROLE_USER")) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.action", "cannot remove user role.");
+            if (role.getRolename().equals(OfficeRoles.OfficeRole.ROLE_USER.name()) || role.getRolename().equals(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.action", "cannot remove role.");
             }
             if (ids.contains(roleId)) {
                 emp.getUser().getRoles().remove(role);
@@ -149,7 +150,7 @@ public class AdminResource {
             }
         }
     }
-
+    
     @GET
     public Employee getCurrentUser() {
         return securityService.getCurrentUser();

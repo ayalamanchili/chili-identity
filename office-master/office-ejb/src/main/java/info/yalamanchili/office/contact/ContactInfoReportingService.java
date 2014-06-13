@@ -11,6 +11,7 @@ package info.yalamanchili.office.contact;
 import info.chili.commons.FileIOUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
@@ -42,7 +43,7 @@ public class ContactInfoReportingService {
 
     public Response getCorporateContactInfo() {
         List<EmployeeDto> res = new ArrayList<EmployeeDto>();
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+        for (Employee emp :SecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             EmployeeDto dto = new EmployeeDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());

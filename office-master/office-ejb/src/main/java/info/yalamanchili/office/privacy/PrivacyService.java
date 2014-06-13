@@ -8,7 +8,6 @@
 package info.yalamanchili.office.privacy;
 
 import info.chili.commons.ReflectionUtils;
-import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
@@ -30,10 +29,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class PrivacyService {
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
         Employee employee = getIdentity(joinPoint, privacyAware);
         if (employee == null) {
@@ -45,7 +44,7 @@ public class PrivacyService {
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
-        if ("Corporate Employee".equals(currentUser.getEmployeeType().getName())) {
+        if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE)) {
             return true;
         }
         PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
@@ -54,17 +53,17 @@ public class PrivacyService {
         }
         return false;
     }
-
+    
     protected boolean canAccessPrivateData(Employee currentUser) {
-        if ("Corporate Employee".equals(currentUser.getEmployeeType().getName())) {
+         if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE)) {
             return true;
         } else {
             // ServiceMessages.instance().addError(new info.chili.service.jrs.types.Error("privacy", "NOT_AUTHORIZED", "Data is hidden based on user privacy settings"));
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "privacy.voilation", "Old Password Doesn't Match");
         }
-
+        
     }
-
+    
     protected Employee getIdentity(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
         Employee employee = null;
         if (privacyAware.identityClass().equals(Employee.class)) {
@@ -77,7 +76,7 @@ public class PrivacyService {
         }
         return employee;
     }
-
+    
     public static PrivacyService instance() {
         return SpringContext.getBean(PrivacyService.class);
     }

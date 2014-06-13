@@ -12,10 +12,13 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.QueryUtils;
+import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
@@ -47,14 +50,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Scope("prototype")
 public class EmployeeDao extends CRUDDao<Employee> {
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     public EmployeeDao() {
         super(Employee.class);
     }
-
+    //TODO temp method remove later
+    public void syncCorpEmployeeRoles() {
+        CRole role = CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name());
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+            if (!SecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+                emp.getUser().addRole(role);
+                em.merge(emp);
+            }
+        }
+        
+    }
+    
     @Override
     public Employee save(Employee entity) {
         updateSSN(entity);
@@ -74,13 +88,17 @@ public class EmployeeDao extends CRUDDao<Employee> {
             entity.setSsn(findById(entity.getId()).getSsn());
         }
     }
-
+    
     protected void syncEmployeeTypeChange(Employee emp) {
         if ("Corporate Employee".equals(emp.getEmployeeType().getName())) {
             OfficeBPMIdentityService.instance().createUser(emp.getEmployeeId());
+            emp.getUser().addRole(CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
+        }else{
+            OfficeBPMIdentityService.instance().deleteUser(emp.getEmployeeId());
+            emp.getUser().removeRole(CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name()));
         }
     }
-
+    
     public Email updatePrimaryEmail(Contact emp, Email newEmail) {
         if (emp.getPrimaryEmail() == null) {
             newEmail.setPrimaryEmail(Boolean.TRUE);
@@ -95,7 +113,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return newEmail;
     }
-
+    
     public List<Employee> searchByCompanyContact(Employee companyContact, int start, int limit) {
         Query query = getEntityManager().createQuery("select DISTINCT cc.employee FROM " + CompanyContact.class.getCanonicalName() + " cc WHERE cc.contact.id=:contactIdParam", Employee.class);
         query.setParameter("contactIdParam", companyContact.getId());
@@ -103,7 +121,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-
+    
     public Employee findByEmail(String email) {
         TypedQuery<Employee> qry = em.createQuery("from " + Employee.class.getCanonicalName() + " emails.email=:emailParam and user.enabled=true", Employee.class);
         qry.setParameter("emailParam", email);
@@ -113,7 +131,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
             return null;
         }
     }
-
+    
     public Employee findEmployeWithEmpId(String empId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam and emp.user.enabled=true");
         getEmployeQ.setParameter("empIdParam", empId);
@@ -125,23 +143,23 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(e);
         }
     }
-
+    
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     @Override
     public Map<String, String> getEntityStringMapByParams(int start, int limit, String... params) {
         return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true", start, limit, params);
     }
-
+    
     public Map<String, String> getEmployeeStringMapByType(int start, int limit, String employeeType, String... params) {
         return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true and employeeType.name='" + employeeType + "'", start, limit, params);
     }
-
+    
     public List<Employee> getEmployeesByType(String type) {
         TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where user.enabled=true and employeeType.name=:employeeTypeParam", Employee.class);
         query.setParameter("employeeTypeParam", type);
         return query.getResultList();
     }
-
+    
     public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String role) {
         Map<String, String> res = new HashMap<String, String>();
         CRole crole = QueryUtils.findEntity(getEntityManager(), CRole.class, "rolename", role);
@@ -152,7 +170,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return res;
     }
-
+    
     @Override
     public void delete(Long id) {
         Employee emp = findById(id);
@@ -175,14 +193,14 @@ public class EmployeeDao extends CRUDDao<Employee> {
             throw new RuntimeException(e);
         }
     }
-
+    
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-
+    
     public static EmployeeDao instance() {
         return SpringContext.getBean(EmployeeDao.class);
     }
-
+    
 }
