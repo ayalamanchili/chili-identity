@@ -10,7 +10,7 @@ public class Auth {
 
     public enum ROLE {
 
-        ROLE_USER, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME, ROLE_DRIVE, ROLE_RELATIONSHIP, ROLE_ACCOUNT_VIEW,
+        ROLE_USER, ROLE_CORPORATE_EMPLOYEE, ROLE_HR, ROLE_EXPENSE, ROLE_ADMIN, ROLE_RECRUITER, ROLE_TIME, ROLE_DRIVE, ROLE_RELATIONSHIP, ROLE_ACCOUNT_VIEW,
         ROLE_HR_ADMINSTRATION,
         ROLE_H1B_IMMIGRATION,
         ROLE_GC_IMMIGRATION,
@@ -28,28 +28,16 @@ public class Auth {
     }
 
     public static boolean isAdmin() {
-        if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_ADMIN.name())) {
-            return true;
-        } else {
-            return false;
-        }
+        return OfficeWelcome.instance().roles.contains(ROLE.ROLE_ADMIN.name());
     }
 
     public static boolean isEmployee(JSONObject emp) {
         String employeeType = JSONUtils.toString(emp.get("employeeType"), "name");
-        if (employeeType.equals("Employee") || employeeType.equals("Corporate Employee")) {
-            return true;
-        } else {
-            return false;
-        }
+        return employeeType.equals("Employee") || employeeType.equals("Corporate Employee");
     }
 
     public static boolean isHR() {
-        if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_HR.name())) {
-            return true;
-        } else {
-            return false;
-        }
+        return OfficeWelcome.instance().roles.contains(ROLE.ROLE_HR.name());
     }
 
     public static boolean hasAnyOfRoles(ROLE... roles) {
@@ -62,86 +50,48 @@ public class Auth {
     }
 
     public static boolean isAccountant() {
-        if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_EXPENSE.name())) {
-            return true;
-        } else {
-            return false;
-        }
+        return OfficeWelcome.instance().roles.contains(ROLE.ROLE_EXPENSE.name());
     }
 
     public static boolean hasContractsRole() {
-        if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_TIME.name())) {
-            return true;
-        } else {
-            return false;
-        }
+        return OfficeWelcome.instance().roles.contains(ROLE.ROLE_TIME.name());
     }
 
     public static boolean isRelationshipTeam() {
-        if (OfficeWelcome.instance().roles.contains(ROLE.ROLE_RELATIONSHIP.name())) {
-            return true;
-        } else {
-            return false;
-        }
+        return OfficeWelcome.instance().roles.contains(ROLE.ROLE_RELATIONSHIP.name());
     }
 
     public static boolean hasOnlyUserRole() {
-        if (OfficeWelcome.instance().roles.size() == 1 && OfficeWelcome.instance().roles.contains(ROLE.ROLE_USER.name())) {
-            return true;
-        } else {
-            return false;
-        }
+        return OfficeWelcome.instance().roles.size() == 1 && OfficeWelcome.instance().roles.contains(ROLE.ROLE_USER.name());
     }
     /*
      * return true for users with more that just user role
      */
 
     public static boolean hasNonUserRoles() {
-        if (OfficeWelcome.instance().roles.size() > 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return OfficeWelcome.instance().roles.size() > 1;
     }
 
     public static boolean isCorporateEmployee(JSONObject employee) {
-        if (JSONUtils.toString(employee.get("employeeType"), "name").equals("Corporate Employee")) {
-            return true;
-        } else {
-            return false;
-        }
+        return JSONUtils.toString(employee.get("employeeType"), "name").equals("Corporate Employee");
     }
 
     public static boolean isCorporateEmployee() {
-        if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Corporate Employee")) {
-            return true;
-        } else {
-            return false;
-        }
+       return OfficeWelcome.instance().roles.contains(ROLE.ROLE_CORPORATE_EMPLOYEE.name());
     }
 
     public static boolean isConsultantEmployee() {
-        if (JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Employee")) {
-            return true;
-        } else {
-            return false;
-        }
+        return JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Employee");
     }
 
     public static boolean isSubContractor(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
-        if (empType != null && empType.equals("Subcontractor")) {
-            return true;
-        }
-        return false;
+        return empType != null && empType.equals("Subcontractor");
     }
 
     public static boolean is1099(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
-        if (empType != null && empType.equals("1099 Contractor")) {
-            return true;
-        }
-        return false;
+        return empType != null && empType.equals("1099 Contractor");
     }
 
     public static String[] getAllRoles() {

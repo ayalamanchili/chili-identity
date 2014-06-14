@@ -49,6 +49,7 @@
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="drive"/>
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="social"/>
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="roles"/>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="emails"/>
             </set>
         </property>
     </bean>

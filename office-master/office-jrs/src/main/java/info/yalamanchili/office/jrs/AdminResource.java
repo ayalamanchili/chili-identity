@@ -38,6 +38,7 @@ import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.security.User;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 
 @Path("secured/admin")
 @Produces("application/json")
@@ -62,21 +63,21 @@ public class AdminResource {
     public EmployeeDao employeeDao;
     @PersistenceContext
     EntityManager em;
-    
+
     @Path("/login")
     @PUT
     @Cacheable(value = OfficeCacheKeys.LOGIN, key = "#user.username")
     public EmployeeLoginDto login(CUser user) {
         return mapper.map(securityService.login(user), EmployeeLoginDto.class);
     }
-    
+
     @Path("/changepassword/{empId}")
     @PUT
     public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.changePassword(empId, user);
     }
-    
+
     @Path("/resetpassword/{empId}")
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
@@ -84,16 +85,19 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.resetPassword(empId, user);
     }
-    
+
     @Path("/deactivateuser/{empId}")
     @PUT
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @CacheEvict(value = "employees", allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
+        @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+    })
     public void deactivateuser(@PathParam("empId") Long empId) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         employeeService.deactivateUser(empId);
     }
-    
+
     @Path("/createuser")
     @PUT
     @Produces("application/text")
@@ -103,7 +107,7 @@ public class AdminResource {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.createUser(employee);
     }
-    
+
     @GET
     @Path("/roles/{empId}/{start}/{limit}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -118,11 +122,14 @@ public class AdminResource {
         }
         return obj;
     }
-    
+
     @GET
     @Path("/role/add/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true),
+        @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+    })
     public void addUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         Employee emp = em.find(Employee.class, empId);
         for (Long roleId : ids) {
@@ -131,11 +138,14 @@ public class AdminResource {
             OfficeBPMIdentityService.instance().addUserToGroup(emp.getUser().getUsername(), role.getRolename());
         }
     }
-    
+
     @GET
     @Path("/role/remove/{empId}/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = OfficeCacheKeys.LOGIN, allEntries = true),
+        @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+    })
     public void removeUserRoles(@PathParam("empId") Long empId, @QueryParam("id") List<Long> ids) {
         EmployeeDao empDao = (EmployeeDao) SpringContext.getBean(EmployeeDao.class);
         Employee emp = empDao.findById(empId);
@@ -150,7 +160,7 @@ public class AdminResource {
             }
         }
     }
-    
+
     @GET
     public Employee getCurrentUser() {
         return securityService.getCurrentUser();

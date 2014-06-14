@@ -7,7 +7,7 @@ import com.google.common.io.ByteStreams;
 import info.chili.commons.FileUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.service.LoggingUtil;
+import info.yalamanchili.office.email.MailUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -161,7 +161,7 @@ public class FileResource {
         try {
             items = upload.parseRequest(request);
         } catch (FileUploadException e) {
-            LoggingUtil.logExceptionDetials(e);
+            MailUtils.logExceptionDetials(e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error Uploading File").build();
         }
         for (FileItem item : items) {
@@ -185,7 +185,7 @@ public class FileResource {
     }
     
     protected Response buildResponse(Response.Status status, String errorMsg, Exception e) {
-        LoggingUtil.logExceptionDetials(e);
+        MailUtils.logExceptionDetials(e);
         errorMsg = "Error: " + errorMsg;
         return Response.status(status).entity(errorMsg).header("Content-Type", "text/html").header("Content-Length", errorMsg.length()).build();
     }

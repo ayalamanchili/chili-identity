@@ -43,7 +43,7 @@ public class ContactInfoReportingService {
 
     public Response getCorporateContactInfo() {
         List<EmployeeDto> res = new ArrayList<EmployeeDto>();
-        for (Employee emp :SecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp :SecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             EmployeeDto dto = new EmployeeDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());

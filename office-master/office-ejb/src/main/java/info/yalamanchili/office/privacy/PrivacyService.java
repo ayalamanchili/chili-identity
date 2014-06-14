@@ -44,7 +44,7 @@ public class PrivacyService {
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
-        if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE)) {
+        if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             return true;
         }
         PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
@@ -55,7 +55,7 @@ public class PrivacyService {
     }
     
     protected boolean canAccessPrivateData(Employee currentUser) {
-         if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE)) {
+         if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             return true;
         } else {
             // ServiceMessages.instance().addError(new info.chili.service.jrs.types.Error("privacy", "NOT_AUTHORIZED", "Data is hidden based on user privacy settings"));

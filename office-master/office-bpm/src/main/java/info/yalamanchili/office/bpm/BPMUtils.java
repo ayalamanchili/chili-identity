@@ -54,7 +54,7 @@ public class BPMUtils {
                 roles.add(identityLink.getGroupId());
             }
             if (identityLink.getUserId() != null && !identityLink.getUserId().isEmpty()) {
-                Employee emp = MailUtils.instance().findEmployee(identityLink.getUserId());
+                Employee emp = MailUtils.instance().findEmployeWithEmpId(identityLink.getUserId());
                 if (emp != null && emp.getPrimaryEmail() != null) {
                     emails.add(emp.getPrimaryEmail().getEmail());
                 }
@@ -82,7 +82,7 @@ public class BPMUtils {
                 roles.add(identityLink.getGroupId());
             }
             if (identityLink.getUserId() != null && !identityLink.getUserId().isEmpty()) {
-                Employee emp = MailUtils.instance().findEmployee(identityLink.getUserId());
+                Employee emp = MailUtils.instance().findEmployeWithEmpId(identityLink.getUserId());
                 if (emp != null && emp.getPrimaryEmail() != null) {
                     emails.add(emp.getPrimaryEmail().getEmail());
                 }

@@ -103,9 +103,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Self Service", SELF_SERVICE_NODE);
             addFirstChildLink("Documents", DOCUMENTS_NODE);
         }
-        if (Auth.isAdmin() && Auth.isCorporateEmployee(entity)) {
+//        if (Auth.isAdmin() && Auth.isCorporateEmployee(entity)) {
             addFirstChildLink("Roles", ROLES_NODE);
-        }
+//        }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
         }

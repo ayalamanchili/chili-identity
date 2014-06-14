@@ -32,4 +32,8 @@ public interface OfficeCacheKeys {
     String DRIVE = "drive";
     String SOCIAL = "social";
     String ROLES = "roles";
+    /**
+     * holds key values for email messaging with address
+     */
+    String EMAILS = "emails";
 }

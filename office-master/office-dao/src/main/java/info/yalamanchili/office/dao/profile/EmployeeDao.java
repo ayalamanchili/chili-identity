@@ -16,8 +16,10 @@ import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
+import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
@@ -37,6 +39,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
@@ -132,9 +135,10 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
     }
     
-    public Employee findEmployeWithEmpId(String empId) {
+    @Cacheable(value = OfficeCacheKeys.EMAILS, key = "{#root.methodName,#employeeId}")
+    public Employee findEmployeWithEmpId(String employeeId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam and emp.user.enabled=true");
-        getEmployeQ.setParameter("empIdParam", empId);
+        getEmployeQ.setParameter("empIdParam", employeeId);
         try {
             return (Employee) getEmployeQ.getSingleResult();
         } catch (NoResultException e) {

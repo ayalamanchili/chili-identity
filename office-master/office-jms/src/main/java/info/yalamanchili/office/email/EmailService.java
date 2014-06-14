@@ -8,6 +8,7 @@
 package info.yalamanchili.office.email;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -35,6 +36,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -56,7 +58,6 @@ public class EmailService {
     @Autowired
     protected OfficeServiceConfiguration officeServiceConfiguration;
 
-    @Async
     public void sendEmail(final Email email) {
         final Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
         if (tos.length < 1) {
@@ -107,13 +108,13 @@ public class EmailService {
     }
 
     protected void cleanEmailHtmlBody(Email email) {
-        if (email.isRichText()) {
-            try {
-                email.setBody(cleanData(email.getBody()));
-            } catch (UnsupportedEncodingException ex) {
-                throw new RuntimeException(ex);
-            }
+//        if (email.isRichText()) {
+        try {
+            email.setBody(cleanData(email.getBody()));
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
         }
+        //   }
     }
 
     protected String cleanData(String data) throws UnsupportedEncodingException {
@@ -147,6 +148,7 @@ public class EmailService {
                 address.validate();
                 addresses.add(address);
             } catch (AddressException ex) {
+                MailUtils.logExceptionDetials(ex);
                 logger.log(Level.WARNING, ex.getMessage());
             }
         }
@@ -171,8 +173,9 @@ public class EmailService {
         }
         return result;
     }
-
-    protected boolean notificationsEnabled(String emailAddress) {
+//TODO this is not getting cached
+    @Cacheable(value = OfficeCacheKeys.EMAILS, key = "{#root.methodName,#emailAddress}")
+    public Boolean notificationsEnabled(String emailAddress) {
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {
             Employee emp = (Employee) findEmail(emailAddress).getContact();

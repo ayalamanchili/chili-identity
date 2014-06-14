@@ -6,19 +6,14 @@ package info.yalamanchili.office.service;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.LoginSuccessListener;
-import info.yalamanchili.office.email.Email;
-import info.yalamanchili.office.jms.MessagingService;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import info.yalamanchili.office.email.MailUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.activiti.engine.ActivitiException;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
@@ -67,7 +62,7 @@ public class ServiceInterceptor {
         } catch (ServiceException se) {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
         } catch (Exception e) {
-            LoggingUtil.logExceptionDetials(e);
+            MailUtils.logExceptionDetials(e);
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", e.getMessage());
         }
         checkForErrors();
@@ -95,7 +90,7 @@ public class ServiceInterceptor {
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
 
         } else {
-            LoggingUtil.logExceptionDetials(exception);
+            MailUtils.logExceptionDetials(exception);
             //TODO this is again intercepted by this same service interceptor to convert into 400 error
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
         }
