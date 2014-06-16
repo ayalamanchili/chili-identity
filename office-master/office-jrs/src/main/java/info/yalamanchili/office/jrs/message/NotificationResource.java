@@ -115,7 +115,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
 
     @XmlRootElement
     @XmlType
-    public static class NotificationGroupTable {
+    public static class NotificationGroupTable implements java.io.Serializable{
 
         protected Long size;
         protected List<NotificationGroup> entities;

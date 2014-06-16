@@ -87,7 +87,7 @@ public class PracticeResource extends CRUDResource<Practice> {
 
     @XmlRootElement
     @XmlType
-    public static class PracticeTable {
+    public static class PracticeTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Practice> entities;

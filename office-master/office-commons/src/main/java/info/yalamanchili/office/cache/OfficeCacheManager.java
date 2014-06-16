@@ -9,8 +9,9 @@
 package info.yalamanchili.office.cache;
 
 import info.chili.spring.SpringContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
-import org.springframework.cache.support.SimpleCacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,9 +21,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeCacheManager {
 
+    @Autowired
+    protected EhCacheCacheManager cacheManager;
+
     public void cleanAll() {
-        for (String cacheName : getCacheManager().getCacheNames()) {
-            getCacheManager().getCache(cacheName).clear();
+        for (String cacheName : cacheManager.getCacheNames()) {
+            cacheManager.getCache(cacheName).clear();
         }
     }
 
@@ -35,16 +39,28 @@ public class OfficeCacheManager {
     }
 
     protected Cache getCacheWithName(String cacheName) {
-        Cache cache = getCacheManager().getCache(cacheName);
+        Cache cache = cacheManager.getCache(cacheName);
         if (cache == null) {
             throw new RuntimeException("Cache not found:" + cacheName);
         }
         return cache;
     }
 
-    //TODO user autowire
-    protected SimpleCacheManager getCacheManager() {
-        return (SimpleCacheManager) SpringContext.getBean("cacheManager");
+    public boolean contains(String region, String key) {
+        return cacheManager.getCache(region).get(key) != null;
+    }
+
+    public void put(String region, Object key, Object value) {
+        cacheManager.getCache(region).put(key, value);
+    }
+
+    public Object get(String region, Object key) {
+        if (cacheManager.getCache(region).get(key) != null) {
+            return cacheManager.getCache(region).get(key).get();
+        } else {
+            return null;
+        }
+
     }
 
     public static OfficeCacheManager instance() {

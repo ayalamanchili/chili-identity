@@ -95,7 +95,7 @@ public class SkillResource extends CRUDResource<Skill> {
 
     @XmlRootElement
     @XmlType
-    public static class SkillTable {
+    public static class SkillTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Skill> entities;

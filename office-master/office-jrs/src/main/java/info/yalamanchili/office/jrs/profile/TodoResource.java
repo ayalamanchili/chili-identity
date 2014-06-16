@@ -65,7 +65,7 @@ public class TodoResource extends CRUDResource<Todo> {
 
     @XmlRootElement
     @XmlType
-    public static class TodoTable {
+    public static class TodoTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Todo> entities;

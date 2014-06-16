@@ -78,7 +78,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
 
     @XmlRootElement
     @XmlType
-    public static class EmployeeDocumentTable {
+    public static class EmployeeDocumentTable implements java.io.Serializable{
 
         protected Long size;
         protected List<EmployeeDocument> entities;

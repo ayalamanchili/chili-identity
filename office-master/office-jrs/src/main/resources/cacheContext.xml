@@ -27,31 +27,13 @@
     <!-- Enables the caching through annotations -->
     <cache:annotation-driven />
     
-    <!-- Generic cache manager based on the JDK ConcurrentMap -->
-    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
-        <property name="caches">
-            <set>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="employees" />
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="login" />
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="addresstypes" />
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="emailtype" />
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="phonetype" />
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="companycontacttype"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="practice"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="technologyGroup"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="skill"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="skillsettag"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="certification"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="client"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="vendor"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="subcontractor"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="issuetype"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="drive"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="social"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="roles"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="emails"/>
-            </set>
-        </property>
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcache"/>
+    </bean>
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:office/ehcache.xml"/>
+        <property name="shared" value="true"/>
     </bean>
 
 </beans>

@@ -136,7 +136,7 @@ public class Task {
 
     @XmlRootElement
     @XmlType
-    public static class TaskTable {
+    public static class TaskTable implements java.io.Serializable{
 
         protected Long size;
         protected Set<Task> entities;

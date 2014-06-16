@@ -117,7 +117,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
 
     @XmlRootElement
     @XmlType
-    public static class TimeSheetTable {
+    public static class TimeSheetTable implements java.io.Serializable{
 
         protected Long size;
         protected List<TimeSheet> entities;

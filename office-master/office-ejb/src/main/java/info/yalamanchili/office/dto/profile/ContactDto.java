@@ -150,7 +150,7 @@ public class ContactDto implements Serializable {
 
     @XmlRootElement
     @XmlType
-    public static class ContactDtoTable {
+    public static class ContactDtoTable implements java.io.Serializable{
 
         protected Long size;
         protected List<ContactDto> entities;

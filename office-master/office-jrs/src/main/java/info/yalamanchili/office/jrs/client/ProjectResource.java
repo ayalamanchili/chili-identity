@@ -79,7 +79,7 @@ public class ProjectResource extends CRUDResource<Project> {
 
     @XmlRootElement
     @XmlType
-    public static class ProjectTable {
+    public static class ProjectTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Project> entities;

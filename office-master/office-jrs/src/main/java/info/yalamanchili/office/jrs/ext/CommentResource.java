@@ -56,7 +56,7 @@ public class CommentResource {
 
     @XmlRootElement
     @XmlType
-    public static class CommentTable {
+    public static class CommentTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Comment> entities;

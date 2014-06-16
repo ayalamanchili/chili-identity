@@ -36,7 +36,7 @@ public class EmailResource extends CRUDResource<Email> {
 
     @XmlRootElement
     @XmlType
-    public static class EmailTable {
+    public static class EmailTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Email> entities;

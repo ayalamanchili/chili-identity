@@ -91,7 +91,7 @@ public class FileDto implements Serializable {
 
     @XmlRootElement
     @XmlType
-    public static class FileTable {
+    public static class FileTable implements java.io.Serializable{
 
         protected Long size;
         protected List<FileDto> entities;

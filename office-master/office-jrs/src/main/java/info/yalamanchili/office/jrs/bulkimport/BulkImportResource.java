@@ -90,7 +90,7 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
 
     @XmlRootElement
     @XmlType
-    public static class BulkImportTable {
+    public static class BulkImportTable implements java.io.Serializable{
 
         protected Long size;
         protected List<BulkImport> entities;

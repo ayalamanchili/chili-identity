@@ -25,7 +25,7 @@ import org.dozer.Mapper;
  */
 @XmlRootElement
 @XmlType
-public class Post {
+public class Post implements java.io.Serializable{
 
     protected Long id;
     protected Long employeeId;

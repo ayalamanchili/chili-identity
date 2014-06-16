@@ -8,11 +8,14 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.PreferencesDao;
 import info.yalamanchili.office.entity.profile.Preferences;
 import info.yalamanchili.office.jrs.CRUDResource;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +30,12 @@ public class PreferencesResource extends CRUDResource<Preferences> {
 
     @Autowired
     public PreferencesDao preferencesDao;
+
+    @PUT
+    @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+    public Preferences save(Preferences entity) {
+        return preferencesDao.save(entity);
+    }
 
     @Override
     public CRUDDao getDao() {

@@ -123,7 +123,7 @@ public class SelfServiceResource {
 
     @XmlRootElement
     @XmlType
-    public static class ServiceTicketTable {
+    public static class ServiceTicketTable implements java.io.Serializable{
 
         protected Long size;
         protected List<ServiceTicket> entities;

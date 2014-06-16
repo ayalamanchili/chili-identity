@@ -52,7 +52,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
 
     @XmlRootElement
     @XmlType
-    public static class EmployeeReportTable {
+    public static class EmployeeReportTable implements java.io.Serializable{
 
         protected Long size;
         protected List<StatusReport> entities;

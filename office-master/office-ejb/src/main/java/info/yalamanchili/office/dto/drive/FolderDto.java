@@ -98,7 +98,7 @@ public class FolderDto implements Serializable {
 
     @XmlRootElement
     @XmlType
-    public static class FolderTable {
+    public static class FolderTable implements java.io.Serializable{
 
         protected Long size;
         protected List<FolderDto> entities;

@@ -70,7 +70,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @XmlRootElement
     @XmlType
-    public static class BillingRateTable {
+    public static class BillingRateTable implements java.io.Serializable{
 
         protected Long size;
         protected List<BillingRate> entities;
@@ -95,7 +95,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @XmlRootElement
     @XmlType
-    public static class ClientInformationTable {
+    public static class ClientInformationTable implements java.io.Serializable{
 
         protected Long size;
         protected List<ClientInformation> entities;

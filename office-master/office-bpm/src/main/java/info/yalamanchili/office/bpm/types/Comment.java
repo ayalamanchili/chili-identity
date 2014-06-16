@@ -80,7 +80,7 @@ public class Comment implements org.activiti.engine.task.Comment {
 
     @XmlRootElement
     @XmlType
-    public static class CommentTable {
+    public static class CommentTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Comment> entities;

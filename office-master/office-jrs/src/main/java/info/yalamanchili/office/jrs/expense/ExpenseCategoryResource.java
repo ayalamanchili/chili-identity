@@ -52,7 +52,7 @@ public class ExpenseCategoryResource extends CRUDResource<ExpenseCategory> {
 
     @XmlRootElement
     @XmlType
-    public static class ExpenseCategoryTable {
+    public static class ExpenseCategoryTable implements java.io.Serializable{
 
         protected Long size;
         protected List<ExpenseCategory> entities;

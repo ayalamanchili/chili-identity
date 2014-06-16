@@ -292,7 +292,7 @@ public class VendorResource extends CRUDResource<Vendor> {
 
     @XmlRootElement
     @XmlType
-    public static class VendorTable {
+    public static class VendorTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Vendor> entities;

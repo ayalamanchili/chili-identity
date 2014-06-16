@@ -82,7 +82,7 @@ public class PhoneTypeResource extends CRUDResource<PhoneType> {
 
     @XmlRootElement
     @XmlType
-    public static class PhoneTypeTable {
+    public static class PhoneTypeTable implements java.io.Serializable{
 
         protected Long size;
         protected List<PhoneType> entities;

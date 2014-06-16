@@ -284,7 +284,7 @@ public class ClientResource extends CRUDResource<Client> {
 
     @XmlRootElement
     @XmlType
-    public static class ClientTable {
+    public static class ClientTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Client> entities;

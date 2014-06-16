@@ -61,7 +61,7 @@ public class LoginActivityDto implements Serializable {
 
     @XmlRootElement
     @XmlType
-    public static class LoginActivityTable {
+    public static class LoginActivityTable implements java.io.Serializable{
 
         protected Long size;
         protected List<LoginActivityDto> entities;

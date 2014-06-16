@@ -62,7 +62,7 @@ public class TransactionResource extends CRUDResource<Transaction> {
 
     @XmlRootElement
     @XmlType
-    public static class TransactionTable {
+    public static class TransactionTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Transaction> entities;

@@ -81,7 +81,7 @@ public class PrivacyResource extends CRUDResource<PrivacySetting> {
 
     @XmlRootElement
     @XmlType
-    public static class PrivacyTable {
+    public static class PrivacyTable implements java.io.Serializable{
 
         protected Long size;
         protected List<PrivacySetting> entities;

@@ -246,7 +246,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
 
     @XmlRootElement
     @XmlType
-    public static class SubcontractorTable {
+    public static class SubcontractorTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Subcontractor> entities;

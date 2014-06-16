@@ -54,7 +54,7 @@ public class EmergencyContactResource extends CRUDResource<EmergencyContactDto> 
 
     @XmlRootElement
     @XmlType
-    public static class EmergencyContactTable {
+    public static class EmergencyContactTable implements java.io.Serializable{
 
         protected Long size;
         protected List<EmergencyContactDto> entities;

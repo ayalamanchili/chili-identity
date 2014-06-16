@@ -10,6 +10,7 @@ package info.yalamanchili.office.email;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.cache.OfficeCacheManager;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -26,6 +27,7 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -41,20 +43,29 @@ public class MailUtils {
     private final static Logger logger = Logger.getLogger(MailUtils.class.getName());
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     protected EntityManager em;
-//TODO this is not getting cached
-    @Cacheable(value = OfficeCacheKeys.EMAILS, key = "{#root.methodName,#employeeId}")
+
+    @Autowired
+    protected OfficeCacheManager officeCacheManager;
+
     public Employee findEmployeWithEmpId(String employeeId) {
+        if (officeCacheManager.contains(OfficeCacheKeys.EMAILS, employeeId)) {
+            return (Employee) officeCacheManager.get(OfficeCacheKeys.EMAILS, employeeId);
+        }
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where user.enabled=true and employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", employeeId);
         if (getUserQuery.getResultList().size() > 0) {
-            return getUserQuery.getResultList().get(0);
+            Employee emp = getUserQuery.getResultList().get(0);
+            officeCacheManager.put(OfficeCacheKeys.EMAILS, employeeId, emp);
+            return emp;
         } else {
             return null;
         }
     }
-    //TODO this is not getting cached
-    @Cacheable(value = OfficeCacheKeys.EMAILS, key = "{#root.methodName,#roles}")
+
     public Set<String> getEmailsAddressesForRoles(String... roles) {
+        if (officeCacheManager.contains(OfficeCacheKeys.EMAILS, Arrays.toString(roles))) {
+            return (Set<String>) officeCacheManager.get(OfficeCacheKeys.EMAILS, Arrays.toString(roles));
+        }
         Set<String> emails = new HashSet<String>();
         Query getUsersInRoleQuery = em.createQuery("select user from CUser user join user.roles role where user.enabled=true and role.rolename in (:roles)", CUser.class);
         getUsersInRoleQuery.setParameter("roles", Arrays.asList(roles));
@@ -67,6 +78,7 @@ public class MailUtils {
             emails.add(emp.getPrimaryEmail().getEmail());
         }
         logger.info("emails:" + emails);
+        officeCacheManager.put(OfficeCacheKeys.EMAILS, Arrays.toString(roles), emails);
         return emails;
     }
 

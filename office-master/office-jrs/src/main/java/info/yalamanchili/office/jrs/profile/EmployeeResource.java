@@ -432,7 +432,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @XmlRootElement
     @XmlType
-    public static class EmployeeTable {
+    public static class EmployeeTable implements java.io.Serializable {
 
         protected Long size;
         protected List<info.yalamanchili.office.dto.profile.EmployeeDto> entities;

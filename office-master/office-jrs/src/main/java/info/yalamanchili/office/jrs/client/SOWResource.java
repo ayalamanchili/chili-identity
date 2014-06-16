@@ -58,7 +58,7 @@ public class SOWResource extends CRUDResource<StatementOfWork> {
 
     @XmlRootElement
     @XmlType
-    public static class SOWTable {
+    public static class SOWTable implements java.io.Serializable{
 
         protected Long size;
         protected List<StatementOfWork> entities;

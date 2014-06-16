@@ -150,7 +150,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
 
     @XmlRootElement
     @XmlType
-    public static class SkillSetTagTable {
+    public static class SkillSetTagTable implements java.io.Serializable{
 
         protected Long size;
         protected List<SkillSetTag> entities;

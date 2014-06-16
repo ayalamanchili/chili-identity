@@ -85,7 +85,7 @@ public class MessageResource extends CRUDResource<MessageDto> {
 
     @XmlRootElement
     @XmlType
-    public static class MessageTable {
+    public static class MessageTable implements java.io.Serializable{
 
         protected Long size;
         protected List<MessageDto> entities;

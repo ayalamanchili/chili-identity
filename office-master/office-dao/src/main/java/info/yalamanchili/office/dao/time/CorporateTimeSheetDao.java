@@ -210,7 +210,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
 
     @XmlRootElement
     @XmlType
-    public static class CorporateTimeSheetTable {
+    public static class CorporateTimeSheetTable implements java.io.Serializable{
 
         protected Long size;
         protected List<CorporateTimeSheet> entities;

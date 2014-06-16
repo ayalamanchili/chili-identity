@@ -89,7 +89,7 @@ public class CertificationResource extends CRUDResource<Certification> {
 
     @XmlRootElement
     @XmlType
-    public static class CertificationTable {
+    public static class CertificationTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Certification> entities;

@@ -12,6 +12,7 @@ import javax.jms.ObjectMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class EmailQueueMessageListener implements MessageListener {
@@ -19,6 +20,7 @@ public class EmailQueueMessageListener implements MessageListener {
     @Autowired
     protected EmailService emailService;
 
+    @Override
     public void onMessage(Message message) {
         try {
             if (message instanceof ObjectMessage) {

@@ -87,7 +87,7 @@ public class TechnologyGroupResource extends CRUDResource<TechnologyGroup> {
 
     @XmlRootElement
     @XmlType
-    public static class TechnologyGroupTable {
+    public static class TechnologyGroupTable implements java.io.Serializable{
 
         protected Long size;
         protected List<TechnologyGroup> entities;

@@ -561,7 +561,7 @@ public class ContractDto implements Serializable {
 
     @XmlRootElement
     @XmlType
-    public static class ContractTable {
+    public static class ContractTable implements java.io.Serializable{
 
         protected Long size;
         protected List<ContractDto> entities;

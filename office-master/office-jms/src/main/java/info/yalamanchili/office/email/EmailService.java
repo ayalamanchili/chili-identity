@@ -9,6 +9,7 @@ package info.yalamanchili.office.email;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.cache.OfficeCacheManager;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -40,7 +41,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.w3c.tidy.Tidy;
@@ -57,6 +57,9 @@ public class EmailService {
     protected JavaMailSender mailSender;
     @Autowired
     protected OfficeServiceConfiguration officeServiceConfiguration;
+
+    @Autowired
+    protected OfficeCacheManager officeCacheManager;
 
     public void sendEmail(final Email email) {
         final Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
@@ -173,17 +176,21 @@ public class EmailService {
         }
         return result;
     }
-//TODO this is not getting cached
-    @Cacheable(value = OfficeCacheKeys.EMAILS, key = "{#root.methodName,#emailAddress}")
+
     public Boolean notificationsEnabled(String emailAddress) {
+        if (officeCacheManager.contains(OfficeCacheKeys.EMAILS, emailAddress)) {
+            return (Boolean) officeCacheManager.get(OfficeCacheKeys.EMAILS, emailAddress);
+        }
         info.yalamanchili.office.entity.profile.Email email = findEmail(emailAddress);
         if (email != null && email.getContact() instanceof Employee) {
             Employee emp = (Employee) findEmail(emailAddress).getContact();
             //TODO check active?
             if (!emp.getPreferences().getEnableEmailNotifications()) {
+                officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, false);
                 return false;
             }
         }
+        officeCacheManager.put(OfficeCacheKeys.EMAILS, emailAddress, true);
         return true;
     }
 

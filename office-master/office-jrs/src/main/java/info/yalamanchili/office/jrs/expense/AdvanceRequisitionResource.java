@@ -104,7 +104,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @XmlRootElement
     @XmlType
-    public static class AdvanceRequisitionTable {
+    public static class AdvanceRequisitionTable implements java.io.Serializable{
 
         protected Long size;
         protected List<AdvanceRequisition> entities;

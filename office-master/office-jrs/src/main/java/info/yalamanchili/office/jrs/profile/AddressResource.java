@@ -75,7 +75,7 @@ public class AddressResource extends CRUDResource<Address> {
 
     @XmlRootElement
     @XmlType
-    public static class AddressTable {
+    public static class AddressTable implements java.io.Serializable{
 
         protected Long size;
         protected List<Address> entities;
