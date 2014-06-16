@@ -1,6 +1,3 @@
-/**
- * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -9,28 +6,28 @@ package info.yalamanchili.office.client.profile.statusreport;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.profile.phonetype.SelectPhoneTypeWidget;
 import java.util.logging.Logger;
 
 /**
  *
  * @author prasanthi.p
  */
-public class CreateStatusReportPanel extends CreateComposite {
+public class UpdateStatusReportPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.CreateStatusReportPanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateStatusReportPanel.class.getName());
 
-    public CreateStatusReportPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
-        initCreateComposite("StatusReport", OfficeWelcome.constants);
+    public UpdateStatusReportPanel(JSONObject entity) {
+        initUpdateComposite(entity, "StatusReport", OfficeWelcome.constants);
     }
 
     @Override
@@ -50,33 +47,39 @@ public class CreateStatusReportPanel extends CreateComposite {
     }
 
     @Override
-    protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
                 handleErrorResponse(arg0);
             }
 
             @Override
             public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
+                postUpdateSuccess(arg0);
             }
         });
     }
 
     @Override
-    protected void addButtonClicked() {
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("report", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("project", entity, null);
+        assignFieldValueFromEntity("clientInformation", entity, null);
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Status Report Created");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new StatusReportSidePanel());
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Updated Status Report Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel());
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override
@@ -106,9 +109,6 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        String projectId = null;
-        SelectProjectWidget projectT = (SelectProjectWidget) fields.get("project");
-        projectId = JSONUtils.toString(projectT.getSelectedObject(), "id");
-        return OfficeWelcome.constants.root_url() + "project/statusreport/" + projectId;
+        return OfficeWelcome.constants.root_url() + "statusreport";
     }
 }

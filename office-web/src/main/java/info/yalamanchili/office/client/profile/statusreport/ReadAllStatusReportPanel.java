@@ -49,6 +49,8 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadStatusReportPanel(getEntity(entityId)));
     }
 
     @Override
@@ -71,6 +73,8 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateStatusReportPanel(getEntity(entityId)));
     }
 
     @Override
