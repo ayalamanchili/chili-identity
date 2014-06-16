@@ -91,7 +91,7 @@ public class CreateStatusReportPanel extends CreateComposite {
     protected void addWidgets() {
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
-        addField("status", false, false, DataType.STRING_FIELD);
+        addEnumField("status", false, false, ProjectStatus.names());
         addField("preparedBy", false, true, DataType.STRING_FIELD);
         addField("approvedBy", false, true, DataType.STRING_FIELD);
         addField("report", false, false, DataType.STRING_FIELD);
@@ -106,9 +106,10 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        String projectId = null;
-        SelectProjectWidget projectT = (SelectProjectWidget) fields.get("project");
-        projectId = JSONUtils.toString(projectT.getSelectedObject(), "id");
-        return OfficeWelcome.constants.root_url() + "project/statusreport/" + projectId;
+        return OfficeWelcome.constants.root_url() + "statusreport";
+//        String projectId = null;
+//        SelectProjectWidget projectT = (SelectProjectWidget) fields.get("project");
+//        projectId = JSONUtils.toString(projectT.getSelectedObject(), "id");
+//        return OfficeWelcome.constants.root_url() + "project/statusreport/" + projectId;
     }
 }
