@@ -12,7 +12,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -91,13 +90,13 @@ public class CreateStatusReportPanel extends CreateComposite {
     protected void addWidgets() {
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
-        addEnumField("status", false, false, ProjectStatus.names());
-        addField("preparedBy", false, true, DataType.STRING_FIELD);
-        addField("approvedBy", false, true, DataType.STRING_FIELD);
-        addField("report", false, false, DataType.STRING_FIELD);
-        addField("submittedDate", false, true, DataType.DATE_FIELD);
+        addEnumField("status", false, true, ProjectStatus.names());
+        addField("preparedBy", false, false, DataType.STRING_FIELD);
+        addField("approvedBy", false, false, DataType.STRING_FIELD);
+        addField("report", false, true, DataType.STRING_FIELD);
+        addField("submittedDate", false, false, DataType.DATE_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        addDropDown("clientInformation", new SelectClientInfoWidget(false, false));
     }
 
     @Override

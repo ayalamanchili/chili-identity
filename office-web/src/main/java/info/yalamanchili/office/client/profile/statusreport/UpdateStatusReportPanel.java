@@ -15,7 +15,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.phonetype.SelectPhoneTypeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -94,13 +93,13 @@ public class UpdateStatusReportPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
-        addField("status", false, false, DataType.STRING_FIELD);
-        addField("preparedBy", false, true, DataType.STRING_FIELD);
-        addField("approvedBy", false, true, DataType.STRING_FIELD);
-        addField("report", false, false, DataType.STRING_FIELD);
-        addField("submittedDate", false, true, DataType.DATE_FIELD);
+        addEnumField("status", false, true, ProjectStatus.names());
+        addField("preparedBy", false, false, DataType.STRING_FIELD);
+        addField("approvedBy", false, false, DataType.STRING_FIELD);
+        addField("report", false, true, DataType.STRING_FIELD);
+        addField("submittedDate", false, false, DataType.DATE_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        addDropDown("clientInformation", new SelectClientInfoWidget(false, false));
     }
 
     @Override

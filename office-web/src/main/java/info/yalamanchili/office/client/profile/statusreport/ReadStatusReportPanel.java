@@ -75,13 +75,13 @@ public class ReadStatusReportPanel extends ReadComposite {
     protected void addWidgets() {
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
-        addField("status", false, false, DataType.STRING_FIELD);
-        addField("preparedBy", false, true, DataType.STRING_FIELD);
-        addField("approvedBy", false, true, DataType.STRING_FIELD);
-        addField("report", false, false, DataType.STRING_FIELD);
-        addField("submittedDate", false, true, DataType.DATE_FIELD);
+        addEnumField("status", false, true, ProjectStatus.names());
+        addField("preparedBy", false, false, DataType.STRING_FIELD);
+        addField("approvedBy", false, false, DataType.STRING_FIELD);
+        addField("report", false, true, DataType.STRING_FIELD);
+        addField("submittedDate", false, false, DataType.DATE_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        addDropDown("clientInformation", new SelectClientInfoWidget(false, false));
     }
 
     @Override
