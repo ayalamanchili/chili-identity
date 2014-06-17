@@ -30,7 +30,9 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
 
     @Override
     public StatusReport save(StatusReport entity) {
-        //TODO set project and client information
+        entity.setProject(ProjectDao.instance().findById(entity.getProject().getId()));
+
+        //TODO set cleint information
         return super.save(entity);
     }
 

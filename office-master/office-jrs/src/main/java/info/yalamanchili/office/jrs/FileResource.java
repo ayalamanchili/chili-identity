@@ -135,6 +135,8 @@ public class FileResource {
         String contentType = FileUtils.getFileContentType(file);
         if (contentType == null) {
             response.header("Content-Disposition", "attachment;");
+        }else{
+             response.header("Content-Disposition", "attachment; filename="+file.getName());
         }
         response.header("Content-Type", contentType);
         //Content disposition with attachement forces the browser to download as attachment(avod inconsistent file type handles by browser)
