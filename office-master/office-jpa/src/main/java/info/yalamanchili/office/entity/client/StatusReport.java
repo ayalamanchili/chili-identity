@@ -92,6 +92,7 @@ public class StatusReport extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_CLNT_INFO_SRV_TKTS")
+    @NotNull
     protected ClientInformation clientInformation;
 
     public Date getReportStartDate() {

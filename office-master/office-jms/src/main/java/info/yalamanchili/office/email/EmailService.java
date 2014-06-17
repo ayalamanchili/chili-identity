@@ -110,13 +110,13 @@ public class EmailService {
     }
 
     protected void cleanEmailHtmlBody(Email email) {
-//        if (email.isRichText()) {
-        try {
-            email.setBody(cleanData(email.getBody()));
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
+        if (email.isRichText()) {
+            try {
+                email.setBody(cleanData(email.getBody()));
+            } catch (UnsupportedEncodingException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-        //   }
     }
 
     protected String cleanData(String data) throws UnsupportedEncodingException {
