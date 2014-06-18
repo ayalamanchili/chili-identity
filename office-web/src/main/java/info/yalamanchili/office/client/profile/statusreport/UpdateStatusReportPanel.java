@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -40,7 +43,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignEntityValueFromField("report", status);
         assignEntityValueFromField("submittedDate", status);
         assignEntityValueFromField("project", status);
-        assignEntityValueFromField("clientInformation", status);
+//        assignEntityValueFromField("clientInformation", status);
         logger.info(status.toString());
         return status;
     }
@@ -71,7 +74,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("report", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("project", entity, null);
-        assignFieldValueFromEntity("clientInformation", entity, null);
+//        assignFieldValueFromEntity("clientInformation", entity, null);
     }
 
     @Override
@@ -96,10 +99,10 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addEnumField("status", false, true, ProjectStatus.names());
         addField("preparedBy", false, false, DataType.STRING_FIELD);
         addField("approvedBy", false, false, DataType.STRING_FIELD);
-        addField("report", false, true, DataType.STRING_FIELD);
+        addField("report", false, true, DataType.RICH_TEXT_AREA);
         addField("submittedDate", false, false, DataType.DATE_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, false));
+//        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
     }
 
     @Override

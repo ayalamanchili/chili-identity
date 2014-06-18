@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -57,10 +60,10 @@ public class ReadStatusReportPanel extends ReadComposite {
         assignFieldValueFromEntity("status", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("report", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("project", entity, null);
-        assignFieldValueFromEntity("clientInformation", entity, null);
+//        assignFieldValueFromEntity("clientInformation", entity, null);
     }
 
     @Override
@@ -81,7 +84,7 @@ public class ReadStatusReportPanel extends ReadComposite {
         addField("report", false, true, DataType.STRING_FIELD);
         addField("submittedDate", false, false, DataType.DATE_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, false));
+//        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
     }
 
     @Override
@@ -90,6 +93,6 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "phone";
+        return OfficeWelcome.constants.root_url() + "statusreport";
     }
 }

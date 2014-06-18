@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="status_report_approval_process">
+        <startEvent id="statusReportStart">
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="statusReportStart" targetRef="statusReportApprovalTask" />
+        <userTask id="statusReportApprovalTask" 
+                  name="Status Report Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_RELATIONSHIP">
+            <documentation>
+                Status Report Task for
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Report Start Date    : #{entity.reportStartDate}
+                Report End Date     : #{entity.reportEndDate} 
+                Status     : #{entity.status} 
+                Report Description         : #{entity.report} 
+                Project         : #{entity.project}
+                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.statusreport.StatusReportProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="username" 
+                                       name="Username"
+                                       required="true" 
+                                       variable="username"
+                                       type="string" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="statusReportApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <sequenceFlow id="flow4" sourceRef="statusReportApprovalTask" targetRef="statusReportEnd" />
+        <!-- end-->
+        <endEvent id="statusReportEnd" />
+    </process>
+</definitions>

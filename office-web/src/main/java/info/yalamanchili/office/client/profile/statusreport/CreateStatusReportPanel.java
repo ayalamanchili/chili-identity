@@ -43,7 +43,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         assignEntityValueFromField("report", status);
         assignEntityValueFromField("submittedDate", status);
         assignEntityValueFromField("project", status);
-        assignEntityValueFromField("clientInformation", status);
+//        assignEntityValueFromField("clientInformation", status);
         logger.info(status.toString());
         return status;
     }
@@ -93,10 +93,10 @@ public class CreateStatusReportPanel extends CreateComposite {
         addEnumField("status", false, true, ProjectStatus.names());
         addField("preparedBy", false, false, DataType.STRING_FIELD);
         addField("approvedBy", false, false, DataType.STRING_FIELD);
-        addField("report", false, true, DataType.STRING_FIELD);
+        addField("report", false, true, DataType.RICH_TEXT_AREA);
         addField("submittedDate", false, false, DataType.DATE_FIELD);
         addDropDown("project", new SelectProjectWidget(false, true));
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, false));
+//        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "statusreport";
+        return OfficeWelcome.constants.root_url() + "statusreport/submit-status-reoprt-request";
 //        String projectId = null;
 //        SelectProjectWidget projectT = (SelectProjectWidget) fields.get("project");
 //        projectId = JSONUtils.toString(projectT.getSelectedObject(), "id");

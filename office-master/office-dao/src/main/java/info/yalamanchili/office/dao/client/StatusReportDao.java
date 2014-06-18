@@ -9,9 +9,8 @@ package info.yalamanchili.office.dao.client;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.client.StatusReport;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.EmployeeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;
@@ -33,6 +32,8 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
         entity.setProject(ProjectDao.instance().findById(entity.getProject().getId()));
 
         //TODO set cleint information
+        entity.setClientInformation(ClientInformationDao.instance().findById(entity.getClientInformation().getId()));
+
         return super.save(entity);
     }
 

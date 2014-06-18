@@ -11,8 +11,10 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.StatusReportDao;
 import info.yalamanchili.office.entity.client.StatusReport;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.statusreport.StatusReportService;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -41,6 +43,12 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
         return employeeReportDao;
     }
 
+    @PUT
+    @Path("/submit-status-reoprt-request")
+    public void submitStatusReportRequest(StatusReport entity) {
+        StatusReportService.instance().submitStatusReport(entity);
+    }
+
     @GET
     @Path("/{start}/{limit}")
     public EmployeeReportTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -52,7 +60,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
 
     @XmlRootElement
     @XmlType
-    public static class EmployeeReportTable implements java.io.Serializable{
+    public static class EmployeeReportTable implements java.io.Serializable {
 
         protected Long size;
         protected List<StatusReport> entities;

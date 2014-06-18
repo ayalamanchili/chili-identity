@@ -6,7 +6,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package info.yalamanchili.office.entity.client;
 
 /**
@@ -14,5 +13,6 @@ package info.yalamanchili.office.entity.client;
  * @author ayalamanchili
  */
 public enum ProjectStatus {
-    OnSchedule,BehindSehedule,OnHold,AboveSchedule,Cancelled
+
+    OnSchedule, BehindSehedule, OnHold, AboveSchedule, Cancelled, Rejected, Approved, Pending
 }
