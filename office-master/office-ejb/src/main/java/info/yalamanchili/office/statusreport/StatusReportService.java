@@ -19,11 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author prasanthi.p
  */
+@Component
+@Scope("request")
 public class StatusReportService {
 
     @Autowired
