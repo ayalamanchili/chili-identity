@@ -71,9 +71,9 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Status Report Created");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new StatusReportSidePanel());
+        new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours for Email confirmation");
+//        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+//        TabPanel.instance().myOfficePanel.sidePanelTop.add(new StatusReportSidePanel());
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel());
     }
