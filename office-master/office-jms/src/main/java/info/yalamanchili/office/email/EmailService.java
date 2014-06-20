@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.email;
 
+import com.google.common.xml.XmlEscapers;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.cache.OfficeCacheManager;
@@ -116,8 +117,12 @@ public class EmailService {
             } catch (UnsupportedEncodingException ex) {
                 throw new RuntimeException(ex);
             }
+        } else {
+            //escape & # special chars for task emails
+            email.setBody(XmlEscapers.xmlAttributeEscaper().escape(email.getBody()));
         }
     }
+//TODO move to commons and describe this method.
 
     protected String cleanData(String data) throws UnsupportedEncodingException {
         if (data == null) {

@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
@@ -45,7 +46,10 @@ public class EmailDao extends CRUDDao<Email> {
     }
 
     @Override
-    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
+        @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+    })
     public Email save(Email entity) {
         if (entity.getId() != null) {
             Contact cnt = ContactDao.instance().findById(entity.getContact().getId());

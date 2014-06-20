@@ -267,7 +267,10 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     @PUT
     @Path("/email/{empId}")
-    @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
+        @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
+    })
     public void addEmail(@PathParam("empId") Long empId, Email email) {
         Employee emp = (Employee) getDao().findById(empId);
 
