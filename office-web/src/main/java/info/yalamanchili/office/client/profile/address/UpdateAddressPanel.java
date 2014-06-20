@@ -49,6 +49,7 @@ public class UpdateAddressPanel extends UpdateComposite {
             assignEntityValueFromField("addressType", entity);
         }
         if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+            assignEntityValueFromField("addressType", entity);
             assignEntityValueFromField("notifyChange", entity);
             assignEntityValueFromField("changeNotes", entity);
         }
@@ -119,6 +120,7 @@ public class UpdateAddressPanel extends UpdateComposite {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         }
         if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+            addDropDown("addressType", new SelectAddressTypeWidget(false, false));
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
         }
