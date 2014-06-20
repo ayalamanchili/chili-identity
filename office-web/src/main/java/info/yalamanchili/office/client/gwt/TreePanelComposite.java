@@ -84,7 +84,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 
     @Override
     public void onSelection(SelectionEvent<TreeItem> event) {
-        loadEntity();
+        ensureEntityLoaded();
         TreeItem selectedItem = (TreeItem) event.getSelectedItem();
         TreeItem root = tree.getItem(0);
         if (root.equals(selectedItem)) {
@@ -98,10 +98,11 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 
     @Override
     public void onOpen(OpenEvent<TreeItem> event) {
+        ensureEntityLoaded();
         for (String key : childTreeWidgets.keySet()) {
             if (event.getTarget().getUserObject() != null && key.equalsIgnoreCase(event.getTarget().getUserObject().toString())) {
                 TreePanelComposite child = childTreeWidgets.get(key);
-                child.loadEntity();
+                child.ensureEntityLoaded();
             }
         }
     }
@@ -150,9 +151,17 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
 
     public abstract void treeNodeSelected(String entityNodeKey);
 
+    public void ensureEntityLoaded() {
+        if (getEntity() == null) {
+            loadEntity();
+        }
+
+    }
+
     public abstract void loadEntity();
 
-    public abstract void showEntity();
+    public abstract
+            void showEntity();
 
     public class TreeItemLabel extends Label {
 

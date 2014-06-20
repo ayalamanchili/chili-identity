@@ -59,7 +59,7 @@ public class CreateAddressPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-        // TODO Auto-generated method stub
+        addButtonClicked();
     }
 
     @Override

@@ -81,10 +81,6 @@ public class TreeSkillSetPanel extends TreePanelComposite {
 
     @Override
     public void loadEntity() {
-        if (ReadSkillSetPanel.instance() != null) {
-            entity = ReadSkillSetPanel.instance().getEntity();
-            return;
-        }
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override

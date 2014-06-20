@@ -9,7 +9,6 @@ package info.yalamanchili.office.client.profile.address;
 
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 
