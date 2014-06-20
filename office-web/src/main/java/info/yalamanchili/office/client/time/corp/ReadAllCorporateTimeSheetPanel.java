@@ -68,11 +68,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -92,11 +92,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllCorporateTimeSheetsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
@@ -212,24 +212,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     }
 
     protected void cancelLeaveRequest(String requestId) {
-        if (Window.confirm("Are you sure? You want to cancel the Leave Request")) {
-            HttpService.HttpServiceAsync.instance().doGet(getCancelLeaveRequestUrl(requestId), OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    new ResponseStatusWidget().show("Cancel request has been submitted");
-                    TabPanel.instance().getTimePanel().entityPanel.clear();
-                    TabPanel.instance().getTimePanel().sidePanelTop.clear();
-                    TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSummarySidePanel());
-                    TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
-                    TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
-                }
-            });
-        }
-    }
-
-    protected String getCancelLeaveRequestUrl(String requestId) {
-        return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/cancel-leave-request/" + requestId;
+        new GenericPopup(new CorpEmpLeaveRequestCancelPanel(requestId)).show();
     }
 
     @Override

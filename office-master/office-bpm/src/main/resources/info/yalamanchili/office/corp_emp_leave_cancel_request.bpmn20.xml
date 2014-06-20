@@ -10,7 +10,9 @@
         <sequenceFlow targetRef="corpEmpLeaveRequestCancelTask" sourceRef="corpEmpLeaveRequestCancelStart"/>
         <userTask id="corpEmpLeaveRequestCancelTask" name="Cancel Leave Request For ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
-                A Leave cancel request has been created. please review and approve or reject as needed
+                A Leave cancel request has been created. 
+                Reason:       : #{cancelReason}
+                please review and approve or reject as needed
                 if approved the hours will hours will be released and are availble for later.
                 Request Details:
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}

@@ -78,8 +78,8 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/cancel-leave-request/{timesheetId}")
-    public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId) {
-        CorporateTimeService.instance().cancelLeaveRequest(timesheetId);
+    public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId,@QueryParam("cancelReason") String cancelReason) {
+        CorporateTimeService.instance().cancelLeaveRequest(timesheetId,cancelReason);
     }
 
     @Override

@@ -65,7 +65,7 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+        addField("notes", false, true, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
