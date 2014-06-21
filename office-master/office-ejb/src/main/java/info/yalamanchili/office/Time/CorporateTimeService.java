@@ -74,12 +74,7 @@ public class CorporateTimeService {
 
     public void cancelLeaveRequest(Long timesheetId, String cancelReason) {
         CorporateTimeSheet ts = corporateTimeSheetDao.findById(timesheetId);
-        List<Task> tasks = OfficeBPMTaskService.instance().findTasksWithVariable("entityId", ts.getId());
-        for (Task task : tasks) {
-            if (task.getTaskDefinitionKey().equals("corpEmpLeaveRequestCancelTask")) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cancel.request.pending", "Cancel Request Already Submitted ");
-            }
-        }
+        validateExistingCanelRequests(timesheetId);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", ts);
         vars.put("entityId", ts.getId());
@@ -89,6 +84,15 @@ public class CorporateTimeService {
         vars.put("summary", getYearlySummary(emp));
         OfficeBPMService.instance().startProcess("corp_emp_leave_cancel_request", vars);
 
+    }
+
+    protected void validateExistingCanelRequests(Long tsId) {
+        List<Task> tasks = OfficeBPMTaskService.instance().findTasksWithVariable("entityId", tsId);
+        for (Task task : tasks) {
+            if (task.getTaskDefinitionKey().equals("corpEmpLeaveRequestCancelTask")) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cancel.request.pending", "Cancel Request Already Submitted ");
+            }
+        }
     }
 
     public CorporateTimeSummary getYearlySummary(Employee employee) {

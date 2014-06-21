@@ -16,6 +16,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -59,6 +60,7 @@ public class CorpEmpLeaveRequestCancelPanel extends ALComposite implements Click
             return;
         }
         if (Window.confirm("Your request will be submitted for approval. Are you sure? You want to cancel the Leave Request")) {
+            GenericPopup.instance().hide();
             HttpService.HttpServiceAsync.instance().doGet(getCancelLeaveRequestUrl(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override
