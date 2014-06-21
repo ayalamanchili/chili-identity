@@ -26,16 +26,16 @@ public class SelectClientInfoWidget extends SelectComposite {
     protected void fetchDropDownData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "client"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                processData(entityString);
-            }
-        });
+                    @Override
+                    public void onResponse(String entityString) {
+                        processData(entityString);
+                    }
+                });
     }
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "clientinformation/dropdown", start, limit, columns);
+        return OfficeWelcome.constants.root_url() + "clientinformation/dropdown/employee";
     }
 
     @Override
