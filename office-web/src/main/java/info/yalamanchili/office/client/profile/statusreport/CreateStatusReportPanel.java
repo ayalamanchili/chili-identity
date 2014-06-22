@@ -13,6 +13,8 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
@@ -27,8 +29,8 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.CreateStatusReportPanel.class.getName());
 
-    public CreateStatusReportPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
+    public CreateStatusReportPanel() {
+        super(CreateCompositeType.CREATE);
         initCreateComposite("StatusReport", OfficeWelcome.constants);
     }
 
@@ -71,11 +73,9 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Request Submited, please wait for email notification within 48 hours for Email confirmation");
-//        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-//        TabPanel.instance().myOfficePanel.sidePanelTop.add(new StatusReportSidePanel());
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel());
+        new ResponseStatusWidget().show("Status Report Submitted");
+        TabPanel.instance().getHomePanel().entityPanel.clear();
+        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllStatusReportPanel());
     }
 
     @Override
@@ -88,15 +88,17 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        addDropDown("project", new SelectProjectWidget(false, true));
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
         addEnumField("status", false, true, ProjectStatus.names());
-        addField("preparedBy", false, false, DataType.STRING_FIELD);
-        addField("approvedBy", false, false, DataType.STRING_FIELD);
         addField("report", false, true, DataType.RICH_TEXT_AREA);
-        addField("submittedDate", false, false, DataType.DATE_FIELD);
-        addDropDown("project", new SelectProjectWidget(false, true));
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+            addField("preparedBy", false, false, DataType.STRING_FIELD);
+            addField("approvedBy", false, false, DataType.STRING_FIELD);
+            addField("submittedDate", false, false, DataType.DATE_FIELD);
+        }
     }
 
     @Override
@@ -105,10 +107,6 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "statusreport/submit-status-reoprt-request";
-//        String projectId = null;
-//        SelectProjectWidget projectT = (SelectProjectWidget) fields.get("project");
-//        projectId = JSONUtils.toString(projectT.getSelectedObject(), "id");
-//        return OfficeWelcome.constants.root_url() + "project/statusreport/" + projectId;
+        return OfficeWelcome.constants.root_url() + "statusreport";
     }
 }

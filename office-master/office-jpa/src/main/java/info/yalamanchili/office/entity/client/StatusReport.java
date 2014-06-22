@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -97,7 +96,7 @@ public class StatusReport extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_CLNT_INFO_SRV_TKTS")
-//    @NotNull
+    @NotNull
     protected ClientInformation clientInformation;
     /**
      * bpmProcessId
@@ -185,7 +184,7 @@ public class StatusReport extends AbstractEntity {
         this.project = project;
     }
 
-    @XmlTransient
+    @XmlElement
     public ClientInformation getClientInformation() {
         return clientInformation;
     }

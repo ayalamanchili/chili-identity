@@ -36,11 +36,6 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         initTable("StatusReport", OfficeWelcome.constants);
     }
 
-    public ReadAllStatusReportPanel(JSONArray array) {
-        instance = this;
-        initTable("StatusReport", array, OfficeWelcome.constants);
-    }
-
     public ReadAllStatusReportPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
@@ -49,19 +44,25 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadStatusReportPanel(getEntity(entityId)));
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadStatusReportPanel(getEntity(entityId)));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadStatusReportPanel(getEntity(entityId)));
+        }
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -81,11 +82,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllstatusPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -109,7 +110,7 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_EXPENSE, Auth.ROLE.ROLE_TIME)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -121,6 +122,10 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllstatusPanelURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "statusreport/" + start.toString() + "/" + limit.toString();
+        String url = OfficeWelcome.constants.root_url() + "statusreport/" + start.toString() + "/" + limit;
+        if (parentId != null) {
+            url = url + "?employeeId=" + parentId;
+        }
+        return url;
     }
 }

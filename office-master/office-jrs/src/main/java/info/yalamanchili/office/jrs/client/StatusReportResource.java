@@ -9,7 +9,10 @@ package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.client.StatusReportDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.StatusReport;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.statusreport.StatusReportService;
 import java.util.List;
@@ -17,6 +20,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -44,17 +48,23 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     }
 
     @PUT
-    @Path("/submit-status-reoprt-request")
-    public void submitStatusReportRequest(StatusReport entity) {
-        StatusReportService.instance().submitStatusReport(entity);
+    @Override
+    public StatusReport save(StatusReport entity) {
+        return StatusReportService.instance().save(entity);
     }
 
     @GET
     @Path("/{start}/{limit}")
-    public EmployeeReportTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+    public EmployeeReportTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        Employee emp = null;
+        if (employeeId == null) {
+            emp = SecurityService.instance().getCurrentUser();
+        } else {
+            emp = EmployeeDao.instance().findById(employeeId);
+        }
         EmployeeReportTable tableObj = new EmployeeReportTable();
-        tableObj.setEntities(getDao().query(start, limit));
-        tableObj.setSize(getDao().size());
+        tableObj.setEntities(employeeReportDao.getReports(emp, start, limit));
+        tableObj.setSize(employeeReportDao.getReportsSize(emp, start, limit));
         return tableObj;
     }
 

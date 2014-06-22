@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.statusreport;
 
+import com.google.common.base.Strings;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -18,6 +19,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.PUT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,8 +35,17 @@ public class StatusReportService {
     @Autowired
     protected StatusReportDao statusReportDao;
 
-    public void submitStatusReport(StatusReport entity) {
+    public StatusReport save(StatusReport entity) {
+        entity = statusReportDao.save(entity);
+        if (Strings.isNullOrEmpty(entity.getApprovedBy())) {
+            startStatusReportProcess(entity);
+        }
+        return entity;
+    }
+
+    public void startStatusReportProcess(StatusReport entity) {
         Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entityId", entity.getId());
         vars.put("entity", entity);
         Employee emp = SecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);

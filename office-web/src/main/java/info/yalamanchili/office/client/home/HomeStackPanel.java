@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.home.tasks.TasksStackPanelWidget;
 import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
 import info.yalamanchili.office.client.profile.selfservice.CreateServiceTicketPanel;
 import info.yalamanchili.office.client.profile.selfservice.SelfServiceStackPanel;
+import info.yalamanchili.office.client.profile.statusreport.ProjectsStackPanelWidget;
 
 /**
  *
@@ -31,6 +32,7 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
     SelfServiceStackPanel selfServStackPanel = new SelfServiceStackPanel();
     TasksStackPanelWidget taskStackPanel = new TasksStackPanelWidget();
     MessageStackPanelWidget msgStackPanel = new MessageStackPanelWidget();
+    ProjectsStackPanelWidget projectsStackPanel = new ProjectsStackPanelWidget();
     TODOStackPanelWidget todoStackPanel = new TODOStackPanelWidget();
     AuditStackPanelWidget auditStackPanelWidget = new AuditStackPanelWidget();
 
@@ -53,13 +55,17 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
             panel.add(taskStackPanel, "Tasks");
         }
         panel.add(selfServStackPanel, "Self Service");
+        if (Auth.hasOnlyUserRole()) {
+            panel.add(projectsStackPanel, "My Projects");
+        }
         panel.add(msgStackPanel, "Messages");
         if (Auth.isCorporateEmployee()) {
             panel.add(auditStackPanelWidget, "Audit");
         }
         panel.add(todoStackPanel, "TODO's");
     }
-
+    
+//TODO this does not seem to be working
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(selfServStackPanel)) {

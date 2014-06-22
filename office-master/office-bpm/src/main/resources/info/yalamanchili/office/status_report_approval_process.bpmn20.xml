@@ -18,14 +18,12 @@
                   name="Status Report Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
                   activiti:candidateGroups="ROLE_RELATIONSHIP">
             <documentation>
-                Status Report Task for
-                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Report Start Date    : #{entity.reportStartDate}
+                Project Status Report Submitted For Approval
+                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Report Start Date   : #{entity.reportStartDate}
                 Report End Date     : #{entity.reportEndDate} 
-                Status     : #{entity.status} 
-                Report Description         : #{entity.report} 
-                Project         : #{entity.project}
-                
+                Status              : #{entity.status} 
+                Project             : #{entity.project.name}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -37,11 +35,6 @@
                     <activiti:value id="approved" name="approved"/>
                     <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
-                <activiti:formProperty id="username" 
-                                       name="Username"
-                                       required="true" 
-                                       variable="username"
-                                       type="string" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="false" 

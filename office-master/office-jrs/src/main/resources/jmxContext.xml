@@ -13,15 +13,15 @@
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <!-- Exposing jmx via rmi -->
-    <bean class="org.springframework.jmx.support.ConnectorServerFactoryBean"
+ <!--   <bean class="org.springframework.jmx.support.ConnectorServerFactoryBean"
           depends-on="rmiRegistry">
         <property name="objectName" value="connector:name=office-rmi" />
         <property name="serviceUrl"
                   value="service:jmx:rmi://localhost/jndi/rmi://localhost:10088/office-connector" />
-    </bean>
+    </bean>-->
 
-    <bean id="rmiRegistry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">
+   <!-- <bean id="rmiRegistry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">
         <property name="port" value="10088" />
-    </bean>
+    </bean>-->
 
 </beans>

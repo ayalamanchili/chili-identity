@@ -13,6 +13,7 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
@@ -43,7 +44,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignEntityValueFromField("report", status);
         assignEntityValueFromField("submittedDate", status);
         assignEntityValueFromField("project", status);
-//        assignEntityValueFromField("clientInformation", status);
+        assignEntityValueFromField("clientInformation", status);
         logger.info(status.toString());
         return status;
     }
@@ -52,16 +53,16 @@ public class UpdateStatusReportPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -74,7 +75,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("report", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("project", entity, null);
-//        assignFieldValueFromEntity("clientInformation", entity, null);
+        assignFieldValueFromEntity("clientInformation", entity, null);
     }
 
     @Override
@@ -94,15 +95,17 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        addDropDown("project", new SelectProjectWidget(false, true));
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
         addEnumField("status", false, true, ProjectStatus.names());
-        addField("preparedBy", false, false, DataType.STRING_FIELD);
-        addField("approvedBy", false, false, DataType.STRING_FIELD);
         addField("report", false, true, DataType.RICH_TEXT_AREA);
-        addField("submittedDate", false, false, DataType.DATE_FIELD);
-        addDropDown("project", new SelectProjectWidget(false, true));
-//        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            addField("preparedBy", false, false, DataType.STRING_FIELD);
+            addField("approvedBy", false, false, DataType.STRING_FIELD);
+            addField("submittedDate", false, false, DataType.DATE_FIELD);
+        }
     }
 
     @Override

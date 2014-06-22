@@ -34,6 +34,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.companycontact.CompanyContactOptionsPanel;
 import info.yalamanchili.office.client.companycontact.ReadAllCompanyContactPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.TreeClientInfoPanel;
 import info.yalamanchili.office.client.profile.empdoc.EmpDocOptionsPanel;
 import info.yalamanchili.office.client.profile.empdoc.ReadAllEmpDocsPanel;
 import info.yalamanchili.office.client.profile.privacy.PrivacyOptionsPanel;
@@ -64,12 +65,14 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String RESET_PASSWORD_NODE = "resetpassword";
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel;
+    protected TreeClientInfoPanel clientInfoTreePanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
         instance = this;
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
+        clientInfoTreePanel = new TreeClientInfoPanel(getEntityId());
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -93,7 +96,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Addresses", ADDRESS_NODE);
         addFirstChildLink("Emails", EMAIL_NODE);
         addFirstChildLink("Phones", PHONE_NODE);
-        addFirstChildLink("Client Information", CLIENT_INFO_NODE);
+        addFirstChildLink("Client Information", CLIENT_INFO_NODE, clientInfoTreePanel);
         addFirstChildLink("Emergency Contacts", EMERGENCY_CONTACT_NODE);
         addFirstChildLink("Company Contacts", COMPANY_CONTACT_NODE);
         if (Auth.isEmployee(entity)) {
@@ -103,9 +106,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Self Service", SELF_SERVICE_NODE);
             addFirstChildLink("Documents", DOCUMENTS_NODE);
         }
-//        if (Auth.isAdmin() && Auth.isCorporateEmployee(entity)) {
+        if (Auth.isAdmin()) {
             addFirstChildLink("Roles", ROLES_NODE);
-//        }
+        }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
         }
@@ -212,6 +215,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         } //TODO review
         if (skillSetTreePanel != null) {
             skillSetTreePanel.treeNodeSelected(entityNodeKey);
+        }
+        if (clientInfoTreePanel != null) {
+            clientInfoTreePanel.treeNodeSelected(entityNodeKey);
         }
     }
 
