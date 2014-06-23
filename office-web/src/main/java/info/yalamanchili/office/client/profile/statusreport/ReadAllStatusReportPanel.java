@@ -58,11 +58,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -82,11 +82,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllstatusPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -103,8 +103,8 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("project"), "name"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "ReportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "ReportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
     }
 

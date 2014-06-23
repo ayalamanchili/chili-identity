@@ -54,17 +54,17 @@ public class CreateStatusReportPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -74,8 +74,8 @@ public class CreateStatusReportPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Status Report Submitted");
-        TabPanel.instance().getHomePanel().entityPanel.clear();
-        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllStatusReportPanel());
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllStatusReportPanel());
     }
 
     @Override
