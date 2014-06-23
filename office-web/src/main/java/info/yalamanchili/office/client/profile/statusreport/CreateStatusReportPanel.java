@@ -73,9 +73,15 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Status Report Submitted");
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllStatusReportPanel());
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            new ResponseStatusWidget().show("Status Report Submitted");
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllStatusReportPanel());
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadAllStatusReportPanel());
+        }
     }
 
     @Override
