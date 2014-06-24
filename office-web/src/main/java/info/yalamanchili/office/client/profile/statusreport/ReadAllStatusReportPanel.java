@@ -60,11 +60,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -84,18 +84,18 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllstatusPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Project"));
-        table.setText(0, 2, getKeyValue("Project"));
+        table.setText(0, 2, getKeyValue("Client Information"));
         table.setText(0, 3, getKeyValue("Report Start Date"));
         table.setText(0, 4, getKeyValue("Report End Date"));
         table.setText(0, 5, getKeyValue("Print"));

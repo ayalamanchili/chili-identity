@@ -28,9 +28,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 @Entity
 public class File extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
     @NotEmpty(message = "{file.not.empty.msg}")
     @Index(name = "FILE_NM")
     protected String name;
@@ -42,7 +42,7 @@ public class File extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "FILE_UPDT_BY")
     protected String updatedBy;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @NotNull
+//    @NotNull
     protected Folder folder;
 
     public File() {

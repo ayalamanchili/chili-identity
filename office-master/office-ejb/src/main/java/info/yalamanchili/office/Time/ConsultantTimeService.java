@@ -9,6 +9,7 @@
 package info.yalamanchili.office.Time;
 
 import info.chili.commons.FileIOUtils;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -16,7 +17,6 @@ import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
-import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.template.TemplateService;
 import java.util.HashMap;
 import java.util.List;
@@ -54,11 +54,32 @@ public class ConsultantTimeService {
         //delete cancel request is exists
         List<Task> tasks = taskService.findTasksWithVariable("entityId", entity.getId());
         for (Task task : tasks) {
-            if (task.getTaskDefinitionKey().equals("corpEmpLeaveRequestCancelTask")) {
+            if (task.getTaskDefinitionKey().equals("consultantEmpLeaveRequestCancelTask")) {
                 taskService.deleteTask(task.getId());
             }
         }
         submitLeaveRequest(entity);
+    }
+
+    public void cancelLeaveRequest(Long timesheetId, String cancelReason) {
+        ConsultantTimeSheet cts = consultantTimeSheetDao.findById(timesheetId);
+        validateExistingCanelRequests(timesheetId);
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entity", cts);
+        vars.put("entityId", cts.getId());
+        vars.put("cancelReason", cancelReason);
+        Employee emp = SecurityService.instance().getCurrentUser();
+        vars.put("currentEmployee", emp);
+        OfficeBPMService.instance().startProcess("consultant_emp_leave_cancel_request", vars);
+    }
+
+    protected void validateExistingCanelRequests(Long tsId) {
+        List<Task> tasks = OfficeBPMTaskService.instance().findTasksWithVariable("entityId", tsId);
+        for (Task task : tasks) {
+            if (task.getTaskDefinitionKey().equals("consultantEmpLeaveRequestCancelTask")) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cancel.request.pending", "Cancel Request Already Submitted ");
+            }
+        }
     }
 
     public Response getReport(Long id) {
