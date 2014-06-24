@@ -14,6 +14,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import java.util.logging.Logger;
@@ -23,23 +24,23 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class ReadStatusReportPanel extends ReadComposite {
-    
+
     private static ReadStatusReportPanel instance;
     private static Logger logger = Logger.getLogger(ReadStatusReportPanel.class.getName());
-    
+
     public static ReadStatusReportPanel instance() {
         return instance;
     }
-    
+
     public ReadStatusReportPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "StatusReport", OfficeWelcome.constants);
     }
-    
+
     public ReadStatusReportPanel(String id) {
         initReadComposite(id, "StatusReport", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -51,10 +52,14 @@ public class ReadStatusReportPanel extends ReadComposite {
                     }
                 });
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info(entity.toString());
+        if (TabPanel.instance().homePanel.isVisible()) {
+            assignFieldValueFromEntity("clientInformation", entity, null);
+        }
+        assignFieldValueFromEntity("project", entity, null);
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
@@ -62,21 +67,22 @@ public class ReadStatusReportPanel extends ReadComposite {
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("project", entity, null);
-        assignFieldValueFromEntity("clientInformation", entity, null);
+
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        if (TabPanel.instance().homePanel.isVisible()) {
+            addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        }
         addDropDown("project", new SelectProjectWidget(false, true));
         addField("reportStartDate", true, true, DataType.DATE_FIELD);
         addField("reportEndDate", true, true, DataType.DATE_FIELD);
@@ -85,13 +91,13 @@ public class ReadStatusReportPanel extends ReadComposite {
         addField("preparedBy", true, false, DataType.STRING_FIELD);
         addField("approvedBy", true, false, DataType.STRING_FIELD);
         addField("submittedDate", true, false, DataType.DATE_FIELD);
-        
+
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "statusreport";

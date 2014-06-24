@@ -35,18 +35,16 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject status = new JSONObject();
-        assignEntityValueFromField("reportStartDate", status);
-        assignEntityValueFromField("reportEndDate", status);
-        assignEntityValueFromField("status", status);
-        assignEntityValueFromField("preparedBy", status);
-        assignEntityValueFromField("approvedBy", status);
-        assignEntityValueFromField("report", status);
-        assignEntityValueFromField("submittedDate", status);
-        assignEntityValueFromField("project", status);
-        assignEntityValueFromField("clientInformation", status);
-        logger.info(status.toString());
-        return status;
+        assignEntityValueFromField("reportStartDate", entity);
+        assignEntityValueFromField("reportEndDate", entity);
+        assignEntityValueFromField("status", entity);
+        assignEntityValueFromField("preparedBy", entity);
+        assignEntityValueFromField("approvedBy", entity);
+        assignEntityValueFromField("report", entity);
+        assignEntityValueFromField("submittedDate", entity);
+        assignEntityValueFromField("project", entity);
+        logger.info(entity.toString());
+        return entity;
     }
 
     @Override
@@ -67,15 +65,17 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        if (TabPanel.instance().homePanel.isVisible()) {
+            assignFieldValueFromEntity("clientInformation", entity, null);
+        }
+        assignFieldValueFromEntity("project", entity, null);
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("report", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("project", entity, null);
-        assignFieldValueFromEntity("clientInformation", entity, null);
     }
 
     @Override
@@ -95,7 +95,9 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        if (TabPanel.instance().homePanel.isVisible()) {
+            addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        }
         addDropDown("project", new SelectProjectWidget(false, true));
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);

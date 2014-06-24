@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.Time.CorporateTimeService;
 import info.yalamanchili.office.dao.client.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -20,7 +21,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -66,6 +69,14 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
         tableObj.setEntities(employeeReportDao.getReports(emp, start, limit));
         tableObj.setSize(employeeReportDao.getReportsSize(emp, start, limit));
         return tableObj;
+    }
+
+    //TODO move to abstract resource
+    @GET
+    @Path("/report")
+    @Produces({"application/pdf"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return StatusReportService.instance().getReport(id);
     }
 
     @XmlRootElement

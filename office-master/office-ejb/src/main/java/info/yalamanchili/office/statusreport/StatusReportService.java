@@ -8,6 +8,7 @@
 package info.yalamanchili.office.statusreport;
 
 import com.google.common.base.Strings;
+import info.chili.commons.FileIOUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -16,10 +17,11 @@ import info.yalamanchili.office.dao.client.StatusReportDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.template.TemplateService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.PUT;
+import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -52,6 +54,7 @@ public class StatusReportService {
         OfficeBPMService.instance().startProcess("status_report_approval_process", vars);
     }
 
+    //TODO move to commons
     protected Task getTaskForTicket(StatusReport statusReport) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         List<Task> tasks = taskService.getTasksForProcessId(statusReport.getBpmProcessId());
@@ -69,6 +72,17 @@ public class StatusReportService {
             OfficeBPMTaskService.instance().deleteTask(task.getId());
         }
         statusReportDao.delete(id);
+    }
+
+    //TODO move to commons
+    public Response getReport(Long id) {
+        String report = TemplateService.instance().process("status-report.xhtml", statusReportDao.findById(id));
+        byte[] pdf = FileIOUtils.convertToPDF(report);
+        return Response
+                .ok(pdf)
+                .header("content-disposition", "filename = status-report.pdf")
+                .header("Content-Length", pdf.length)
+                .build();
     }
 
     public static StatusReportService instance() {
