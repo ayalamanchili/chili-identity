@@ -87,11 +87,6 @@ public class StatusReport extends AbstractEntity {
     @NotNull(message = "{project.not.empty.msg}")
     protected Project project;
     /**
-     * employee
-     */
-    @ManyToOne
-    protected Employee employee;
-    /**
      * clientInformation
      */
     @ManyToOne
@@ -109,14 +104,6 @@ public class StatusReport extends AbstractEntity {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
     }
 
     public Date getReportStartDate() {
