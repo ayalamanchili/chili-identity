@@ -8,14 +8,19 @@
     <process id="consultant_emp_leave_cancel_request">
         <startEvent id="consultantEmpLeaveRequestCancelStart" />
         <sequenceFlow targetRef="consultantEmpLeaveRequestCancelTask" sourceRef="consultantEmpLeaveRequestCancelStart"/>
-        <userTask id="consultantEmpLeaveRequestCancelTask" name="Cancel Leave Request For ${currentEmployee.firstName} ${currentEmployee.lastName}">
+        <userTask id="consultantEmpLeaveRequestCancelTask" name="Cancel Leave Request For ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
-                Employee Leave Request
+                A Leave cancel request has been created. 
+                Reason:       : #{cancelReason}
+                please review and approve or reject as needed
+                if approved the hours will hours will be released and are availble for later.
+                Request Details:
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Start Date    : #{leaveRequest.startDate}
-                End Date      : #{leaveRequest.endDate} 
-                Category      : #{leaveRequest.category} 
-                Hours         : #{leaveRequest.hours} 
+                Start Date    : #{entity.startDate}
+                End Date      : #{entity.endDate} 
+                Category      : #{entity.category} 
+                Hours         : #{entity.hours} 
             </documentation>
             <extensionElements>
                 <activiti:taskListener class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestCancelProcess" event="create"/>
