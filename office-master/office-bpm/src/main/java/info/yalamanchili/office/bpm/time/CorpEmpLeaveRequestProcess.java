@@ -200,8 +200,8 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         CorporateTimeSheet ts = getTimeSheetFromTask(task);
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName() + " : Start Date " + ts.getStartDate() + " End Date " + ts.getEndDate();
-        email.setSubject(summary);
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        email.setBody(summary);
         email.setHtml(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
