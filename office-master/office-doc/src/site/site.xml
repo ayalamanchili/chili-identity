@@ -27,6 +27,7 @@
                     <item name="Update Billrate" href="/office/updatebillingrate.html"/>
                 </item>
                 <item name="Employee Documents" href="/office/documetns.html"/>
+                <item name="Manage Employee Information" href="/office/manageEmpinfo.html"/>
             </item>
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Manage Profle" href="office/profile/profile.html"/>
@@ -48,7 +49,6 @@
             </item>
             <item name="Adminstration" href="/office/admin.html" collapse="true">
                 <item name="Bulkupload" href="/office/bulkupload.html"/>
-                <item name="ManageEmployeeInformation" href="/office/manageEmpinfo.html"/>
             </item>
             <item name="Time" href="/office/timesheets/submit-leave-request.html" collapse="true">
                 <item name="Submit Leave Request" href="/office/timesheets/submit-leave-request.html"/>
@@ -73,7 +73,10 @@
                 <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
                 <item name="Overview" href="/office/selfservice/overview.html"/>
             </item>
-            <item name="ProjectsReports" href="/office/statusreport.html"/>           
+            <item name="ProjectsReports" href="/office/statusreport/statusreport.html"  collapse="true">
+                <item name="Submit Project Status Report" href="/office/statusreport/statusreport.html" />
+                <item name="Project Status Report Process" href="/office/statusreport/statusreportprocess.html"/>
+            </item>
             <item name="Expense" href="/office/expense/advance.html" collapse="true">
                 <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
                 <item name="Advance Requisition Process" href="/office/expense/advancerequestprocess.html"/>
