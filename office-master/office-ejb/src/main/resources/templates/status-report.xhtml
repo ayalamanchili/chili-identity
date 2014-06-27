@@ -19,41 +19,70 @@
 
 
             <div class="content" style="width:700px;height:350px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
-                    <h4>Time Sheet</h4>
+                    <h4>Monthly Task Report by user user --- (for System Soft Technologies LLC)</h4>
                 </div>
                 <div>
-                    <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" >
+                    <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:10px;" >
+
                         <table>
+                            <thead>
+                                <tr>
+                                    <th>Project Description</th>
+                                    <td th:text="${entity.project.name}" />
+                                </tr>
+                                <tr>
+                                    <th>Report Start Date</th>
+                                    <td th:text="${entity.reportStartDate}" />
+                                </tr>
+                                <tr>
+                                    <th>Report End Date</th>
+                                    <td th:text="${entity.reportEndDate}" />
+                                </tr>
+                                <tr>
+                                    <th>Project Status</th>
+                                    <td th:text="${entity.status}" />
+                                </tr>
+                                <tr>
+                                    <th>Prepared By</th>
+                                    <td th:text="${entity.preparedBy}" />
+                                </tr>
+                                <tr>
+                                    <th>Approved By</th>
+                                    <td th:text="${entity.approvedBy}" />
+                                </tr>
+                                <tr>
+                                    <th>Report Distribution </th>
+                                    <td th:text="${entity.report}" />
+                                </tr>
+                            </thead>
+                        </table> 
+                    </div>    
+
+                    <div  style="text-align:center; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:10px;" >
+                        <h4> 
+                            WORK ACCOMPLISHMENTS
+                        </h4>
+                        <table>
+
                             <tr>
-                                <td>Project</td>
-                                <td th:text="${entity.project.name}" />
-                            </tr>
-                            <tr>
-                                <td>Start Date</td>
-                                <td th:text="${entity.reportStartDate}" />
-                            </tr>
-                            <tr>
-                                <td>End Date</td>
-                                <td th:text="${entity.reportEndDate}" />
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td th:text="${entity.status}" />
-                            </tr>
-                            <tr>
-                                <td>Prepared By</td>
-                                <td th:text="${entity.preparedBy}" />
-                            </tr>
-                            <tr>
-                                <td>Approved By</td>
-                                <td th:text="${entity.approvedBy}" />
-                            </tr>
-                            <tr>
-                                <td>Report</td>
+                                <th>Report Distribution </th>
                                 <td th:text="${entity.report}" />
                             </tr>
+
                         </table>
-                    </div>      
+                    </div> 
+
+                    <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:10px;" >
+
+                        <table>
+
+                            <tr>
+                                <th>Prepared By</th>
+                                <td th:text="${entity.preparedBy}" />
+                            </tr>
+
+                        </table>
+                    </div>
                 </div>
             </div>
 
