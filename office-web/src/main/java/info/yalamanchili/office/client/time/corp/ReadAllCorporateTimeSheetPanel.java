@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -38,67 +37,67 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllCorporateTimeSheetPanel.class.getName());
     public static ReadAllCorporateTimeSheetPanel instance;
-    
+
     public ReadAllCorporateTimeSheetPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
         initTable("Corporate Time Sheets", OfficeWelcome.constants);
     }
-    
+
     public ReadAllCorporateTimeSheetPanel() {
         instance = this;
         initTable("My Time Sheets", OfficeWelcome.constants);
     }
-    
+
     public ReadAllCorporateTimeSheetPanel(String title, JSONArray array) {
         instance = this;
         initTable(title, array, OfficeWelcome.constants);
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadCorporateTimeSheetPanel(entityId));
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
-    
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Coporate Time Sheet Information");
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new ReadAllCorporateTimeSheetPanel(parentId));
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().timePanel.entityPanel.add(new UpdateCorporateTimeSheetPanel(getEntity(entityId)));
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllCorporateTimeSheetsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
     }
-    
+
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
         String queryStr = "?";
         if (CorpoateTimeSidePanel.instance != null && CorpoateTimeSidePanel.instance.categoryField.getValue() != null) {
@@ -113,12 +112,14 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             return OfficeWelcome.constants.root_url() + "corporate-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString() + queryStr;
         }
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Category"));
+        if (!isEmployeesOnLeavePanel) {
+            table.setText(0, 2, getKeyValue("Category"));
+        }
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("Hours"));
@@ -127,7 +128,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         table.setText(0, 8, getKeyValue("Update"));
         table.setText(0, 9, getKeyValue("Print"));
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -135,7 +136,9 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            setEnumColumn(i, 2, entity, "category", "category");
+            if (!isEmployeesOnLeavePanel) {
+                setEnumColumn(i, 2, entity, "category", "category");
+            }
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
@@ -156,7 +159,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             table.setWidget(i, 9, reportL);
         }
     }
-    
+
     protected boolean enableCancelRequest(JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
         String category = JSONUtils.toString(entity, "category");
@@ -166,7 +169,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             return false;
         }
     }
-    
+
     protected boolean enableUpdateRequest(JSONObject entity) {
         String category = JSONUtils.toString(entity, "category");
         String status = JSONUtils.toString(entity, "status");
@@ -176,14 +179,14 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             return false;
         }
     }
-    
+
     protected boolean isMyTimeSheet(JSONObject entity) {
         if (OfficeWelcome.instance().getCurrentUserEmpId().equals(JSONUtils.toString(entity.get("employee").isObject(), "employeeId"))) {
             return true;
         }
         return false;
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
@@ -192,11 +195,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
-    
+
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/delete/" + entityId;
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() instanceof ClickableLink) {
@@ -211,16 +214,23 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
             super.onClick(event);
         }
     }
-    
+
     protected void cancelLeaveRequest(String requestId) {
         new GenericPopup(new CorpEmpLeaveRequestCancelPanel(requestId)).show();
     }
-    
+
     @Override
     protected boolean showDocumentationLink() {
         return true;
     }
-    
+    protected boolean isEmployeesOnLeavePanel = false;
+
+    public ReadAllCorporateTimeSheetPanel(String title, JSONArray array, boolean isEmployeesOnLeavePanel) {
+        instance = this;
+        isEmployeesOnLeavePanel = false;
+        initTable(title, array, OfficeWelcome.constants);
+    }
+
     @Override
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/submit-leave-request.html";
