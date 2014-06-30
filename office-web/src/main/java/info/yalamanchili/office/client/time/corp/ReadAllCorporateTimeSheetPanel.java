@@ -223,7 +223,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     protected boolean showDocumentationLink() {
         return true;
     }
-    protected boolean isEmployeesOnLeavePanel = false;
+    protected boolean isEmployeesOnLeavePanel = true;
 
     public ReadAllCorporateTimeSheetPanel(String title, JSONArray array, boolean isEmployeesOnLeavePanel) {
         instance = this;
