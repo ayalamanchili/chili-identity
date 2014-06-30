@@ -56,6 +56,13 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
         instance = this;
         initTable(title, array, OfficeWelcome.constants);
     }
+    protected boolean isEmployeesOnLeavePanel = false;
+
+    public ReadAllCorporateTimeSheetPanel(String title, JSONArray array, boolean isEmployeesOnLeavePanel) {
+        instance = this;
+        isEmployeesOnLeavePanel = isEmployeesOnLeavePanel;
+        initTable(title, array, OfficeWelcome.constants);
+    }
 
     @Override
     public void viewClicked(String entityId) {
@@ -67,11 +74,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -91,11 +98,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllCorporateTimeSheetsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
@@ -222,13 +229,6 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
     @Override
     protected boolean showDocumentationLink() {
         return true;
-    }
-    protected boolean isEmployeesOnLeavePanel = true;
-
-    public ReadAllCorporateTimeSheetPanel(String title, JSONArray array, boolean isEmployeesOnLeavePanel) {
-        instance = this;
-        isEmployeesOnLeavePanel = false;
-        initTable(title, array, OfficeWelcome.constants);
     }
 
     @Override
