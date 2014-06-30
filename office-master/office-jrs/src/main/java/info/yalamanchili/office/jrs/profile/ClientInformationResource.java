@@ -7,6 +7,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -65,10 +66,24 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         Query query = clientInformationDao.getEntityManager().createQuery("select id, client.name from " + ClientInformation.class.getCanonicalName() + " where employee=:employeeParam");
         query.setParameter("employeeParam", SecurityService.instance().getCurrentUser());
         List<Entry> result = new ArrayList<Entry>();
-        List<Object> results=query.getResultList();
+        List<Object> results = query.getResultList();
         for (Iterator<Object> it = results.iterator(); it.hasNext();) {
             Object[] values = (Object[]) it.next();
             result.add(new Entry(values[0].toString(), values[1].toString()));
+        }
+        return result;
+    }
+
+    @GET
+    @Path("/projects/dropdown/{id}/{start}/{limit}")
+    public List<Entry> getClientContactsDropDown(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
+        ClientInformation ci = ClientInformationDao.instance().findById(id);
+        List<Entry> result = new ArrayList<Entry>();
+        for (Project project : ci.getClient().getProjects()) {
+            Entry entry = new Entry();
+            entry.setId(project.getId().toString());
+            entry.setValue(project.getName());
+            result.add(entry);
         }
         return result;
     }

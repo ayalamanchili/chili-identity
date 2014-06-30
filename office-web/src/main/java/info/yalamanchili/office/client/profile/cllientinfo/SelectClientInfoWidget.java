@@ -18,8 +18,15 @@ import info.yalamanchili.office.client.OfficeWelcome;
  */
 public class SelectClientInfoWidget extends SelectComposite {
 
+    private static SelectClientInfoWidget instance;
+
+    public static SelectClientInfoWidget instance() {
+        return instance;
+    }
+
     public SelectClientInfoWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "ClientInfo", readOnly, isRequired);
+        instance = this;
     }
 
     @Override
