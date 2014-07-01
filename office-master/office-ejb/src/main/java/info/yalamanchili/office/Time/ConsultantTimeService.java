@@ -133,7 +133,7 @@ public class ConsultantTimeService {
         for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             summary.add(getYearlySummary(emp));
         }
-        String report = TemplateService.instance().process("corp-emp-summary.xhtml", summary);
+        String report = TemplateService.instance().process("cons-emp-summary.xhtml", summary);
         return ReportGenerator.generatePDFReportFromHtml(report);
     }
 
