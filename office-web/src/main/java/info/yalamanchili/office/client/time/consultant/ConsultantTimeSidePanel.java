@@ -19,10 +19,12 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -45,7 +47,6 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel panel = new FlowPanel();
     ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
-
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
@@ -63,7 +64,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     DateField endDateF = new DateField(OfficeWelcome.constants,
             "endDate", "CorporateTimeSheet", false, true);
     Button viewReportsB = new Button("View");
-
+    FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/all-emp-summary-report" + "&passthrough=true");
     protected static ConsultantTimeSidePanel instance;
 
     public static ConsultantTimeSidePanel instance() {
@@ -107,6 +108,9 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             reportsPanel.add(viewReportsB);
             reportsCaptionPanel.setContentWidget(reportsPanel);
             panel.add(reportsCaptionPanel);
+            panel.add(summaryReportL);
+
+
         }
     }
 
@@ -141,21 +145,21 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         }
         HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            new ResponseStatusWidget().show("no results");
-                        } else {
-                            //TODO use size and entities attributes
-                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                            String key = (String) resObj.keySet().toArray()[0];
-                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            TabPanel.instance().getTimePanel().entityPanel.clear();
-                            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel("Time Sheet Report Results", results));
-                        }
+            @Override
+            public void onResponse(String result) {
+                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                    new ResponseStatusWidget().show("no results");
+                } else {
+                    //TODO use size and entities attributes
+                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                    String key = (String) resObj.keySet().toArray()[0];
+                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                    TabPanel.instance().getTimePanel().entityPanel.clear();
+                    TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel("Time Sheet Report Results", results));
+                }
 
-                    }
-                });
+            }
+        });
     }
 
     protected String getReportUrl() {

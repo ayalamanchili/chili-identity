@@ -112,19 +112,8 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         return queryStr.toString();
     }
 
-    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category) {
-        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
-        query.setParameter("employeeParam", employee);
-        query.setParameter("categoryParam", category);
-        query.setParameter("startDateParam", DateUtils.getFirstDayOfCurrentYear(), TemporalType.DATE);
-        query.setParameter("endDateParam", DateUtils.getLastDayCurrentOfYear(), TemporalType.DATE);
-        if (query.getSingleResult() != null) {
-            return query.getSingleResult();
-        } else {
-            return BigDecimal.ZERO;
-        }
-    }
-
+//    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category) {
+//    }
     public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, int start, int limit) {
         String queryStr = getReportQueryString(dto);
         TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery(queryStr, ConsultantTimeSheet.class);
@@ -166,7 +155,6 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         query.setParameter("dateRangeEndParam", DateUtils.getNextDay(new Date(), 30), TemporalType.DATE);
         return query.getResultList();
     }
-
     @PersistenceContext
     protected EntityManager em;
 
@@ -177,5 +165,18 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
 
     public static ConsultantTimeSheetDao instance() {
         return SpringContext.getBean(ConsultantTimeSheetDao.class);
+    }
+
+    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory timeSheetCategory, TimeSheetStatus timeSheetStatus) {
+        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
+        query.setParameter("employeeParam", employee);
+        query.setParameter("categoryParam", timeSheetCategory);
+        query.setParameter("startDateParam", DateUtils.getFirstDayOfCurrentYear(), TemporalType.DATE);
+        query.setParameter("endDateParam", DateUtils.getLastDayCurrentOfYear(), TemporalType.DATE);
+        if (query.getSingleResult() != null) {
+            return query.getSingleResult();
+        } else {
+            return BigDecimal.ZERO;
+        }
     }
 }

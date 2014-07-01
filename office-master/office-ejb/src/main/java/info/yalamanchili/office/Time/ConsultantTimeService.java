@@ -9,15 +9,22 @@
 package info.yalamanchili.office.Time;
 
 import info.chili.commons.FileIOUtils;
+import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
+import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.template.TemplateService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +89,35 @@ public class ConsultantTimeService {
         }
     }
 
+    public ConsultantTimeSummary getYearlySummary(Employee employee) {
+        ConsultantTimeSummary summary = new ConsultantTimeSummary();
+        summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
+        summary.setAvailableSickHours(getYearlySickBalance(employee));
+        summary.setAvailableVacationHours(getYearlyVacationBalance(employee));
+        summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved));
+        summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
+        summary.setStartDate(employee.getStartDate());
+        return summary;
+    }
+
+    public BigDecimal getYearlySickBalance(Employee employee) {
+        BigDecimal earned = consultantTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved);
+        BigDecimal spent = consultantTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Sick_Spent, TimeSheetStatus.Approved);
+        return earned.subtract(spent);
+    }
+
+    public BigDecimal getYearlyPeronalBalance(Employee employee) {
+        BigDecimal earned = consultantTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved);
+        BigDecimal spent = consultantTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved);
+        return earned.subtract(spent);
+    }
+
+    public BigDecimal getYearlyVacationBalance(Employee employee) {
+        BigDecimal earned = consultantTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved);
+        BigDecimal spent = consultantTimeSheetDao.getHoursInCurrentYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved);
+        return earned.subtract(spent);
+    }
+
     public Response getReport(Long id) {
         String report = TemplateService.instance().process("corp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
         byte[] pdf = FileIOUtils.convertToPDF(report);
@@ -90,6 +126,15 @@ public class ConsultantTimeService {
                 .header("content-disposition", "filename = timesheet.pdf")
                 .header("Content-Length", pdf.length)
                 .build();
+    }
+
+    public Response getAllEmployeesSummaryReport() {
+        List<ConsultantTimeSummary> summary = new ArrayList<ConsultantTimeSummary>();
+        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            summary.add(getYearlySummary(emp));
+        }
+        String report = TemplateService.instance().process("corp-emp-summary.xhtml", summary);
+        return ReportGenerator.generatePDFReportFromHtml(report);
     }
 
     public static ConsultantTimeService instance() {

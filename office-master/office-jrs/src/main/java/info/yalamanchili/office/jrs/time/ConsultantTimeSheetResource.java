@@ -110,6 +110,13 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
         return tableObj;
     }
 
+    @GET
+    @Path("/all-emp-summary-report")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CONSULTANT_TIME_REPORTS')")
+    public Response getAllEmployeesSummaryReport() {
+        return ConsultantTimeService.instance().getAllEmployeesSummaryReport();
+    }
+
     @PUT
     @Path("/report/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_REPORTS')")
