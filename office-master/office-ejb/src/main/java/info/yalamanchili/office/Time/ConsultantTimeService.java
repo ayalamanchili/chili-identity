@@ -130,7 +130,7 @@ public class ConsultantTimeService {
 
     public Response getAllEmployeesSummaryReport() {
         List<ConsultantTimeSummary> summary = new ArrayList<ConsultantTimeSummary>();
-        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRoles.OfficeRole.ROLE_CONSULTANT_TIME_REPORTS.name())) {
             summary.add(getYearlySummary(emp));
         }
         String report = TemplateService.instance().process("cons-emp-summary.xhtml", summary);
