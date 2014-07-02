@@ -14,6 +14,8 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.SelectConsultantEmployeeWidget;
@@ -43,8 +45,10 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("notes", entity);
-        assignEntityValueFromField("approvedBy", entity);
-        assignEntityValueFromField("createdTimeStamp", entity);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
+            assignEntityValueFromField("approvedBy", entity);
+            assignEntityValueFromField("createdTimeStamp", entity);
+        }
         return entity;
     }
 
@@ -52,16 +56,16 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -73,8 +77,10 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("approvedBy", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("createdTimeStamp", entity, DataType.DATE_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
+            assignFieldValueFromEntity("approvedBy", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("createdTimeStamp", entity, DataType.DATE_FIELD);
+        }
         employeeF.getListBox().setEnabled(false);
     }
 
@@ -103,8 +109,10 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addField("notes", false, true, DataType.TEXT_AREA_FIELD);
-        addField("approvedBy", false, true, DataType.DATE_FIELD);
-        addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
+            addField("approvedBy", false, true, DataType.STRING_FIELD);
+            addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
+        }
     }
 
     @Override

@@ -15,6 +15,8 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.SelectConsultantEmployeeWidget;
@@ -44,8 +46,10 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("status", entity);
-        assignEntityValueFromField("hours", entity);
-        assignEntityValueFromField("notes", entity);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
+            assignEntityValueFromField("approvedBy", entity);
+            assignEntityValueFromField("createdTimeStamp", entity);
+        }
         return entity;
     }
 
@@ -53,16 +57,16 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -94,6 +98,10 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
+            addField("approvedBy", false, true, DataType.STRING_FIELD);
+            addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
+        }
     }
 
     @Override

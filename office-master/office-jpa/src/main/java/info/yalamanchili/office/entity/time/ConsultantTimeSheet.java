@@ -88,19 +88,9 @@ public class ConsultantTimeSheet extends AbstractEntity {
     @org.hibernate.annotations.Index(name = "CON_TS_CRT_TS_STMP")
     protected Date createdTimeStamp;
     /**
-     * approved by Time Stamp
+     * approved by employee
      */
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-//    @org.hibernate.annotations.Index(name = "CON_TS_APY_TS_STMP")
-    protected Date approvedBy;
-
-    public Date getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(Date approvedBy) {
-        this.approvedBy = approvedBy;
-    }
+    protected String approvedBy;
 
     /**
      *
@@ -179,6 +169,14 @@ public class ConsultantTimeSheet extends AbstractEntity {
 
     public void setCreatedTimeStamp(Date createdTimeStamp) {
         this.createdTimeStamp = createdTimeStamp;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
     }
 
     @Override
