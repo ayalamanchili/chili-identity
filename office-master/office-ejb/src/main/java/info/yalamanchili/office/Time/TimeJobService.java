@@ -133,8 +133,12 @@ public class TimeJobService {
         }
     }
 
+    /**
+     * This will create yearly sick,vacation and personal days for Consultant Employees
+     */
     public void processConsultantEmpYearlyEarnedTimeSheets() {
-        //TODO also create prorate hours for emp who passed probation period
+        //this is not correct you are creating time sheets for all  employees with consultant time reports role.
+        // and consultants does not have the role. you have find all employees with type="Employee" eg: getEmployeesByType.getEmployeesByType("Employee");
         for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CONSULTANT_TIME_REPORTS.name())) {
             if (hasMoreThanOneYearService(emp)) {
                 //TODO externalize values of days/hours

@@ -38,15 +38,19 @@ public class OfficeSchedulerService {
 
     /**
      * runs jan 1 at 2'0 clock every year to accumulate yearly earned sick,
-     * personal and vacation days
+     * personal and vacation days for Employees
      */
     @Scheduled(cron = "0 0 2 1 1 *")
     public void runYearlyEarnedTimeSheets() {
         TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
     }
 
-    @Scheduled(cron = "0 0 2 1 1 *")
-    public void runConsYearlyEarnedTimeSheets() {
+    /**
+     * runs jan 1 at 3'0 clock every year to accumulate yearly earned sick,
+     * personal and vacation days for Consultants
+     */
+    @Scheduled(cron = "0 0 3 1 1 *")
+    public void runConsultantsYearlyEarnedTimeSheets() {
         TimeJobService.instance().processConsultantEmpYearlyEarnedTimeSheets();
     }
 
