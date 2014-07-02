@@ -45,6 +45,11 @@ public class OfficeSchedulerService {
         TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
     }
 
+    @Scheduled(cron = "0 0 2 1 1 *")
+    public void runConsYearlyEarnedTimeSheets() {
+        TimeJobService.instance().processConsultantEmpYearlyEarnedTimeSheets();
+    }
+
     /**
      * runs every night at 1.05 AM
      */

@@ -13,6 +13,7 @@ import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
 import info.yalamanchili.office.email.Email;
@@ -128,6 +129,21 @@ public class TimeJobService {
                 CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //10 days(80 hours) vacation earned
                 CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+            }
+        }
+    }
+
+    public void processConsultantEmpYearlyEarnedTimeSheets() {
+        //TODO also create prorate hours for emp who passed probation period
+        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CONSULTANT_TIME_REPORTS.name())) {
+            if (hasMoreThanOneYearService(emp)) {
+                //TODO externalize values of days/hours
+                //4 days(32 hours) Personal earned
+                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Personal_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                //4 days(32 hours) Sick earned
+                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                //10 days(80 hours) vacation earned
+                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
             }
         }
     }

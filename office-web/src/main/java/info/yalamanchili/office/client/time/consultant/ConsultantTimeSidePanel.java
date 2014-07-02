@@ -64,7 +64,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     DateField endDateF = new DateField(OfficeWelcome.constants,
             "endDate", "CorporateTimeSheet", false, true);
     Button viewReportsB = new Button("View");
-    FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/all-emp-summary-report" + "&passthrough=true");
+    FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/all-cons-summary-report" + "&passthrough=true");
     protected static ConsultantTimeSidePanel instance;
 
     public static ConsultantTimeSidePanel instance() {

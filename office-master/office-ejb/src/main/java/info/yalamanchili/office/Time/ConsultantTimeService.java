@@ -128,7 +128,7 @@ public class ConsultantTimeService {
                 .build();
     }
 
-    public Response getAllEmployeesSummaryReport() {
+    public Response getAllConsultantEmployeesSummaryReport() {
         List<ConsultantTimeSummary> summary = new ArrayList<ConsultantTimeSummary>();
         for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRoles.OfficeRole.ROLE_CONSULTANT_TIME_REPORTS.name())) {
             summary.add(getYearlySummary(emp));
