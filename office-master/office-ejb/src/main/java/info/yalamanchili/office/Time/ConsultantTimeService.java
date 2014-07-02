@@ -119,7 +119,7 @@ public class ConsultantTimeService {
     }
 
     public Response getReport(Long id) {
-        String report = TemplateService.instance().process("corp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
+        String report = TemplateService.instance().process("consultant-emp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
         byte[] pdf = FileIOUtils.convertToPDF(report);
         return Response
                 .ok(pdf)

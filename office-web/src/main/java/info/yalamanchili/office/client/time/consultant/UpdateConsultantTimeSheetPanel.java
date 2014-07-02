@@ -43,6 +43,8 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("notes", entity);
+        assignEntityValueFromField("approvedBy", entity);
+        assignEntityValueFromField("createdTimeStamp", entity);
         return entity;
     }
 
@@ -50,16 +52,16 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -71,6 +73,8 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("approvedBy", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("createdTimeStamp", entity, DataType.DATE_FIELD);
         employeeF.getListBox().setEnabled(false);
     }
 
@@ -98,7 +102,9 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+        addField("notes", false, true, DataType.TEXT_AREA_FIELD);
+        addField("approvedBy", false, true, DataType.DATE_FIELD);
+        addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
     }
 
     @Override

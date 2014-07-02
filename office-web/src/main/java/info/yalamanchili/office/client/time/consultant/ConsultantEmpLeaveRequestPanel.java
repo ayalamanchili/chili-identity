@@ -45,6 +45,8 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("notes", entity);
         entity.put("status", new JSONString(TimeSheetStatus.Pending.name()));
+        assignEntityValueFromField("approvedBy", entity);
+        assignEntityValueFromField("createdTimeStamp", entity);
         entity.put("employee", new JSONObject());
         return entity;
     }
@@ -97,6 +99,8 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names());
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+        addField("approvedBy", false, true, DataType.DATE_FIELD);
+        addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
     }
 
     @Override

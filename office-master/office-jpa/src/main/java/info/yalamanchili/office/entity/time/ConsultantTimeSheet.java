@@ -41,7 +41,6 @@ public class ConsultantTimeSheet extends AbstractEntity {
 
     @Transient
     private static final long serialVersionUID = 99992L;
-
     @NotNull(message = "{hours.not.empty.msg}")
     @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal hours;
@@ -52,12 +51,10 @@ public class ConsultantTimeSheet extends AbstractEntity {
     @ForeignKey(name = "FK_Emp_ConsultantTimeSheets")
     @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
-
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "TME_SHT_STRT_DT")
     protected Date startDate;
-
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{endDate.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "TME_SHT_END_DT")
@@ -80,7 +77,6 @@ public class ConsultantTimeSheet extends AbstractEntity {
      */
     @Lob
     protected String notes;
-
     /**
      * BPM process Id associated with the request
      */
@@ -91,6 +87,20 @@ public class ConsultantTimeSheet extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @org.hibernate.annotations.Index(name = "CON_TS_CRT_TS_STMP")
     protected Date createdTimeStamp;
+    /**
+     * approved by Time Stamp
+     */
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+//    @org.hibernate.annotations.Index(name = "CON_TS_APY_TS_STMP")
+    protected Date approvedBy;
+
+    public Date getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(Date approvedBy) {
+        this.approvedBy = approvedBy;
+    }
 
     /**
      *
