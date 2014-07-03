@@ -30,6 +30,10 @@ public class Comment extends AbstractHandleEntity {
     private static final long serialVersionUID = 1L;
     /**
      *
+     */
+    protected Double rating;
+    /**
+     *
      *
      */
     @Lob
@@ -44,6 +48,17 @@ public class Comment extends AbstractHandleEntity {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @org.hibernate.annotations.Index(name = "COMNT_TM_STMP")
     protected Date updatedTS;
+
+    public Comment() {
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
 
     public String getComment() {
         return comment;

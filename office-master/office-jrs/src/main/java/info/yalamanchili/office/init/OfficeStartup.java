@@ -35,6 +35,8 @@ import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.expense.ExpenseCategory;
+import info.yalamanchili.office.entity.ext.Question;
+import info.yalamanchili.office.entity.ext.QuestionType;
 import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.privacy.PrivacyMode;
@@ -413,6 +415,8 @@ public class OfficeStartup {
         privacySetting.setPrivacyMode(PrivacyMode.PUBLIC);
         privacySetting.setEmployee(userEmp);
         em.merge(privacySetting);
+        //Questons
+        createSampleQuestions();
     }
 
     protected AddressType getHomeAddressType() {
@@ -792,5 +796,17 @@ public class OfficeStartup {
             user.setEnabled(true);
             shristiUser = em.merge(user);
         }
+    }
+
+    protected void createSampleQuestions() {
+        Question q1 = new Question();
+        q1.setQuestionKey("self.review.question1");
+        q1.setType(QuestionType.Review_Self);
+        em.persist(q1);
+
+        Question q2 = new Question();
+        q2.setQuestionKey("self.review.question2");
+        q2.setType(QuestionType.Review_Self);
+        em.persist(q2);
     }
 }
