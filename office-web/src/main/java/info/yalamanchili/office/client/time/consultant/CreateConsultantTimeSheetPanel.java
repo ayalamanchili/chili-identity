@@ -57,16 +57,16 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -99,8 +99,8 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
-            addField("approvedBy", false, true, DataType.STRING_FIELD);
-            addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
+            addField("approvedBy", false, false, DataType.STRING_FIELD);
+            addField("createdTimeStamp", false, false, DataType.DATE_FIELD);
         }
     }
 
