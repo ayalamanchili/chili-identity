@@ -77,7 +77,7 @@ public class CreateQuestionPanel extends CreateComposite {
     protected void addWidgets() {
         addField("questionKey", false, true, DataType.STRING_FIELD);
         addField("questionInfoKey", false, false, DataType.STRING_FIELD);
-        addField("type", false, true, DataType.ENUM_FIELD);
+        addEnumField("type", false, true, QuestionType.names());
         addField("questionOrder", false, false, DataType.INTEGER_FIELD);
     }
 
