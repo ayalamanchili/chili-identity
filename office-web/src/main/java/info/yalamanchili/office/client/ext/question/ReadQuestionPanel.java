@@ -67,9 +67,9 @@ public class ReadQuestionPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("questionKey", true, true, DataType.STRING_FIELD);
-        addField("questionInfoKey", true, true, DataType.STRING_FIELD);
-        addEnumField("type", false, true, QuestionType.names());
+        addField("questionKey", true, false, DataType.STRING_FIELD);
+        addField("questionInfoKey", true, false, DataType.STRING_FIELD);
+        addEnumField("type", true, false, QuestionType.names());
         addField("questionOrder", true, false, DataType.INTEGER_FIELD);
     }
 

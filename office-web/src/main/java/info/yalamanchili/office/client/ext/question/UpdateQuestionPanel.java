@@ -79,7 +79,7 @@ public class UpdateQuestionPanel extends UpdateComposite {
         addField("questionKey", false, true, DataType.STRING_FIELD);
         addField("questionInfoKey", false, true, DataType.STRING_FIELD);
         addEnumField("type", false, true, QuestionType.names());
-        addField("questionOrder", false, false, DataType.INTEGER_FIELD);
+        addField("questionOrder", false, true, DataType.INTEGER_FIELD);
     }
 
     @Override
