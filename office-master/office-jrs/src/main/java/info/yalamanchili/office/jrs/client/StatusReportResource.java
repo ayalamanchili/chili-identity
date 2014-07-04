@@ -8,14 +8,16 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.Time.CorporateTimeService;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.client.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.statusreport.StatusReportService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -54,6 +56,19 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @Override
     public StatusReport save(StatusReport entity) {
         return StatusReportService.instance().save(entity);
+    }
+
+    @GET
+    @Path("/projects/dropdown/{id}/")
+    @Transactional
+    public List<Entry> getDropDown(@PathParam("id") Long statusReportId) {
+        StatusReport report = employeeReportDao.findById(statusReportId);
+        List<Entry> result = new ArrayList<Entry>();
+        List<Project> results = report.getClientInformation().getClient().getProjects();
+        for (Project project : results) {
+            result.add(new Entry(project.getId().toString(), project.getName()));
+        }
+        return result;
     }
 
     @GET

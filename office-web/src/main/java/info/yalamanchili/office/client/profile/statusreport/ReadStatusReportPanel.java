@@ -83,7 +83,7 @@ public class ReadStatusReportPanel extends ReadComposite {
         if (TabPanel.instance().homePanel.isVisible()) {
             addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
         }
-        addDropDown("project", new SelectProjectWidget(false, true));
+        addDropDown("project", new SelectProjectWidget(getEntityId(),false, true));
         addField("reportStartDate", true, true, DataType.DATE_FIELD);
         addField("reportEndDate", true, true, DataType.DATE_FIELD);
         addEnumField("status", true, true, ProjectStatus.names());

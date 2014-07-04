@@ -48,6 +48,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
+    @Override
     public ClientInformation save(ClientInformation entity) {
         return clientInformationService.update(entity);
     }

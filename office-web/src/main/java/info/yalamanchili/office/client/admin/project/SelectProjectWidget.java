@@ -22,7 +22,16 @@ public class SelectProjectWidget extends SelectComposite implements GenericListe
 
     public SelectProjectWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "Project", readOnly, isRequired);
-        SelectClientInfoWidget.instance().addListner(this);
+        if (SelectClientInfoWidget.instance() != null) {
+            SelectClientInfoWidget.instance().addListner(this);
+        }
+    }
+    protected String statusReportId;
+
+    public SelectProjectWidget(String statusReportId, Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "Project", readOnly, isRequired);
+        this.statusReportId = statusReportId;
+        processData();
     }
 
     @Override
@@ -31,7 +40,13 @@ public class SelectProjectWidget extends SelectComposite implements GenericListe
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "clientinformation/projects/dropdown/" + SelectClientInfoWidget.instance().getSelectedObjectId(), start, limit, columns);
+        if (statusReportId != null) {
+            return OfficeWelcome.constants.root_url() + "statusreport/projects/dropdown/" + statusReportId;
+        } else if (SelectClientInfoWidget.instance() != null) {
+            return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "clientinformation/projects/dropdown/" + SelectClientInfoWidget.instance().getSelectedObjectId(), start, limit, columns);
+        } else {
+            return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "project/dropdown", start, limit, columns);
+        }
     }
 
     @Override
@@ -40,6 +55,10 @@ public class SelectProjectWidget extends SelectComposite implements GenericListe
             processData(null);
             return;
         }
+        processData();
+    }
+
+    protected void processData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "name"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override

@@ -98,7 +98,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         if (TabPanel.instance().homePanel.isVisible()) {
             addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
         }
-        addDropDown("project", new SelectProjectWidget(false, true));
+        addDropDown("project", new SelectProjectWidget(getEntityId(), false, true));
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
         addEnumField("status", false, true, ProjectStatus.names());
