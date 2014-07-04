@@ -11,14 +11,14 @@
     </head>
 
     <body>
-        <div class="wrapper" style="width:700px;height:500px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:10px;">
+        <div class="wrapper" style="width:700px;height:800px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:10px;">
             <div class="header" style="width:700px;height:100px;background-color:#c3d7ff;border-top-right-radius:10px;border-top-left-radius:10px;">
                 <div class="logo" style="width:200px;height:75px;float:left;padding-top:25px;padding-left:30px;" ><img src="http://yalamanchili.googlecode.com/files/sst-logo.png" /></div>
             </div>
 
 
 
-            <div class="content" style="width:700px;height:350px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
+            <div class="content" style="width:700px;height:650px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
                     <h4>Monthly Task Report by user user --- (for System Soft Technologies LLC)</h4>
                 </div>
                 <div>
@@ -52,7 +52,7 @@
                                 </tr>
                                 <tr>
                                     <th>Report Distribution </th>
-                                    <td th:text="${entity.report}" />
+                                    <th>System Soft Technologies </th>
                                 </tr>
                             </thead>
                         </table> 
@@ -63,12 +63,7 @@
                             WORK ACCOMPLISHMENTS
                         </h4>
                         <table>
-
-                            <tr>
-                                <th>Report Distribution </th>
-                                <td th:text="${entity.report}" />
-                            </tr>
-
+                           <div th:utext="${entity.report}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></div>
                         </table>
                     </div> 
 
