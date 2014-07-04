@@ -29,8 +29,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
-@Table(uniqueConstraints
-        = @UniqueConstraint(columnNames = {"questionKey"}))
+@Table(uniqueConstraints =
+        @UniqueConstraint(columnNames = {"questionKey"}))
 @Unique(entity = Question.class, fields = {"questionKey"}, message = "{question.key.not.unique.msg}")
 //TODO questionInfoKey unique?
 public class Question extends AbstractEntity {
@@ -40,7 +40,7 @@ public class Question extends AbstractEntity {
      *
      *
      */
-    @NotEmpty
+    @NotEmpty(message = "{question.questionKey.empty.msg}")
     @org.hibernate.annotations.Index(name = "QES_KEY_IDX")
     protected String questionKey;
     /**
@@ -48,14 +48,12 @@ public class Question extends AbstractEntity {
      *
      */
     protected String questionInfoKey;
-
     /**
      * Service ticket type
      */
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{question.type.empty.msg}")
     protected QuestionType type;
-
     protected Integer questionOrder;
 
     public Question() {
@@ -93,5 +91,4 @@ public class Question extends AbstractEntity {
     public void setQuestionOrder(Integer questionOrder) {
         this.questionOrder = questionOrder;
     }
-
 }
