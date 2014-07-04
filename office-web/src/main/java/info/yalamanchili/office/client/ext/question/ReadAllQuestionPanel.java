@@ -33,8 +33,8 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadQuestionPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadQuestionPanel(getEntity(entityId)));
     }
 
     @Override
@@ -51,14 +51,14 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Question Information");
-        TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllQuestionPanel());
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllQuestionPanel());
     }
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new UpdateQuestionPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateQuestionPanel(getEntity(entityId)));
     }
 
     @Override

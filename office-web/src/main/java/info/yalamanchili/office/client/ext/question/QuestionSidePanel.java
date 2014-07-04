@@ -47,8 +47,8 @@ public class QuestionSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createQuestionLink)) {
-            TabPanel.instance().getExpensePanel().entityPanel.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new CreateQuestionPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new CreateQuestionPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
