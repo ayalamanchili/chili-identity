@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.entity.client;
 
+import com.google.common.base.Strings;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -186,7 +187,7 @@ public class StatusReport extends AbstractEntity {
         if (getSubmittedDate() == null) {
             this.submittedDate = new Date();
         }
-        if (getPreparedBy() == null) {
+        if (Strings.isNullOrEmpty(getPreparedBy())) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             this.preparedBy = auth.getName();
         }

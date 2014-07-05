@@ -70,6 +70,9 @@ public class AddCommentWidget extends CreateComposite {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Comment");
         GenericPopup.instance().hide();
+        if (ReadAllCommentsPanel.instance() != null) {
+            ReadAllCommentsPanel.instance().preFetchTable(0);
+        }
     }
 
     @Override

@@ -29,7 +29,14 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllCommentsPanel.class.getName());
     protected String targetClassName;
 
+    private static ReadAllCommentsPanel instance;
+
+    public static ReadAllCommentsPanel instance() {
+        return instance;
+    }
+
     public ReadAllCommentsPanel(String parentId, String targetClassName) {
+        instance = this;
         this.parentId = parentId;
         this.targetClassName = targetClassName;
         initTable("Comment", OfficeWelcome.constants);
@@ -97,6 +104,7 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
 
     }
 
+    @Override
     protected void configureCreateButton() {
         createButton.setVisible(true);
     }
@@ -104,6 +112,7 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
     /**
      * override this method to perform logic to handle create button
      */
+    @Override
     protected void createButtonClicked() {
         new GenericPopup(new AddCommentWidget(parentId, targetClassName)).show();
     }

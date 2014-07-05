@@ -8,8 +8,11 @@
  */
 package info.yalamanchili.office.jrs.ext;
 
+import com.google.common.base.Strings;
+import info.chili.security.SecurityUtils;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.entity.ext.Comment;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -33,10 +36,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 //TODO create abstractREsource for ext
 public class CommentResource {
-
+    
     @Autowired
     public CommentDao commentDao;
-
+    
     @GET
     @Path("{targetClassName}/{id}/{start}/{limit}")
     public CommentTable getComments(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -45,35 +48,41 @@ public class CommentResource {
         table.setEntities(comments);
         table.setSize(Integer.valueOf(comments.size()).longValue());
         return table;
-
+        
     }
-
+    
     @PUT
     @Path("{targetClassName}/{id}")
     public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment) {
+        if (Strings.isNullOrEmpty(comment.getUpdatedBy())) {
+            comment.setUpdatedBy(SecurityUtils.getCurrentUser());
+        }
+        if (comment.getUpdatedTS() == null) {
+            comment.setUpdatedTS(new Date());
+        }
         commentDao.save(comment, id, targetClassName);
     }
-
+    
     @XmlRootElement
     @XmlType
-    public static class CommentTable implements java.io.Serializable{
-
+    public static class CommentTable implements java.io.Serializable {
+        
         protected Long size;
         protected List<Comment> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<Comment> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<Comment> entities) {
             this.entities = entities;
         }

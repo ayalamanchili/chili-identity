@@ -78,7 +78,7 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
-            assignFieldValueFromEntity("approvedBy", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("createdTimeStamp", entity, DataType.DATE_FIELD);
         }
         employeeF.getListBox().setEnabled(false);
