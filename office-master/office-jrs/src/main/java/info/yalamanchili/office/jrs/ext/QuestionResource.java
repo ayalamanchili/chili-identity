@@ -46,15 +46,16 @@ public class QuestionResource extends CRUDResource<Question> {
     public CRUDDao getDao() {
         return questionDao;
     }
-//@Autowired
-//    public QuestionService questionService;
-//
-//    @GET
-//    @Path("/{start}/{limit}")
-//    public List<QuestionDto> getComments(@QueryParam("type") QuestionType type, @PathParam("start") int start, @PathParam("limit") int limit) {
-//        return questionService.getQuestions(type, start, limit);
-//
-//    }
+
+    @Autowired
+    public QuestionService questionService;
+
+    @GET
+    @Path("/by-type/{start}/{limit}")
+    public List<QuestionDto> getQuestions(@QueryParam("type") QuestionType type, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return questionService.getQuestions(type, start, limit);
+
+    }
 
     @GET
     @Path("/{start}/{limit}")

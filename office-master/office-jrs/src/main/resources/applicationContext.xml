@@ -28,6 +28,13 @@
     <bean id="tika" class="org.apache.tika.Tika"/>
     <bean id="mapper" class="org.dozer.DozerBeanMapper"/>
     <bean id="securityValidator" class="org.owasp.esapi.reference.DefaultValidator"/>
-    <util:properties id="officeProperties" location="classpath:office-service.properties" />  
+    <util:properties id="officeProperties" location="classpath:office-service.properties" /> 
+    
+    <bean id="officeMessages"
+              class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>messages/office-messages</value>
+        </property>
+    </bean> 
 
 </beans>

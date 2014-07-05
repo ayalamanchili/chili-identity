@@ -28,10 +28,4 @@
     
     <util:properties id="officeProperties" location="classpath:office-service.properties" />  
 
-    <bean id="officeMessages"
-              class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename">
-            <value>messages\office-messages</value>
-        </property>
-    </bean>
 </beans>
