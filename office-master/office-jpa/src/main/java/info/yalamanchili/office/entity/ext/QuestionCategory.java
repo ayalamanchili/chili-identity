@@ -12,8 +12,8 @@ package info.yalamanchili.office.entity.ext;
  *
  * @author anuyalamanchili
  */
-public enum QuestionType {
-
-    Review_Self,
-    Review_Mgr
+public enum QuestionCategory {
+    SKILL_AND_APTITUDE,
+    ATTITUDE,
+    MANAGEMENT,   
 }

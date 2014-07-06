@@ -11,7 +11,7 @@ package info.yalamanchili.office.dao.ext;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.ext.Question;
-import info.yalamanchili.office.entity.ext.QuestionType;
+import info.yalamanchili.office.entity.ext.QuestionCategory;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,7 +34,7 @@ public class QuestionDao extends CRUDDao<Question> {
         super(Question.class);
     }
 
-    public List<Question> getQuestions(QuestionType type, int start, int limit) {
+    public List<Question> getQuestions(QuestionCategory type, int start, int limit) {
         TypedQuery<Question> questionsQ = em.createQuery("from " + Question.class.getCanonicalName() + " where type=:typeParam order by sortOrder ASC", Question.class);
         questionsQ.setParameter("typeParam", type);
         questionsQ.setFirstResult(start);

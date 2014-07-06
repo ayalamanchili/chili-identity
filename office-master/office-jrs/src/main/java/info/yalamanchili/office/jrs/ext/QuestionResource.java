@@ -13,8 +13,8 @@ import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dto.ext.QuestionDto;
 import info.yalamanchili.office.entity.ext.Question;
-import info.yalamanchili.office.entity.ext.QuestionType;
-import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.ext.QuestionCategory;
+import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.ext.QuestionService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -56,10 +56,10 @@ public class QuestionResource extends CRUDResource<Question> {
     public QuestionService questionService;
 
     @GET
-    @Path("/by-type/{start}/{limit}")
+    @Path("/query/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.QUESTIONS)
-    public List<QuestionDto> getQuestions(@QueryParam("type") QuestionType type, @PathParam("start") int start, @PathParam("limit") int limit) {
-        return questionService.getQuestions(type, start, limit);
+    public List<QuestionDto> getQuestions(@QueryParam("category") QuestionCategory category, @QueryParam("category") QuestionContext context, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return questionService.getQuestions(category, start, limit);
 
     }
 

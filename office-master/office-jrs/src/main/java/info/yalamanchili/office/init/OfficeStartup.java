@@ -36,7 +36,8 @@ import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.expense.ExpenseCategory;
 import info.yalamanchili.office.entity.ext.Question;
-import info.yalamanchili.office.entity.ext.QuestionType;
+import info.yalamanchili.office.entity.ext.QuestionCategory;
+import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.privacy.PrivacyMode;
@@ -801,12 +802,14 @@ public class OfficeStartup {
     protected void createSampleQuestions() {
         Question q1 = new Question();
         q1.setQuestionKey("self.review.question1");
-        q1.setType(QuestionType.Review_Self);
+        q1.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
+        q1.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q1);
 
         Question q2 = new Question();
         q2.setQuestionKey("self.review.question2");
-        q2.setType(QuestionType.Review_Self);
+        q2.setCategory(QuestionCategory.ATTITUDE);
+        q2.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q2);
     }
 }

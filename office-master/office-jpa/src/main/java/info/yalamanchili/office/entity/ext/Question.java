@@ -15,7 +15,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -29,8 +28,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
-@Table(uniqueConstraints =
-        @UniqueConstraint(columnNames = {"questionKey"}))
+@Table(uniqueConstraints
+        = @UniqueConstraint(columnNames = {"questionKey"}))
 @Unique(entity = Question.class, fields = {"questionKey"}, message = "{question.key.not.unique.msg}")
 //TODO questionInfoKey unique?
 public class Question extends AbstractEntity {
@@ -49,13 +48,17 @@ public class Question extends AbstractEntity {
      */
     protected String questionInfoKey;
     /**
-     * Service ticket type
+     * Service ticket category
      */
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{question.type.empty.msg}")
-    protected QuestionType type;
+    protected QuestionCategory category;
     /**
-     * 
+     * Service ticket context
+     */
+    @Enumerated(EnumType.STRING)
+    protected QuestionContext context;
+    /**
+     *
      */
     protected Integer sortOrder;
 
@@ -78,12 +81,12 @@ public class Question extends AbstractEntity {
         this.questionInfoKey = questionInfoKey;
     }
 
-    public QuestionType getType() {
-        return type;
+    public QuestionCategory getCategory() {
+        return category;
     }
 
-    public void setType(QuestionType type) {
-        this.type = type;
+    public void setCategory(QuestionCategory category) {
+        this.category = category;
     }
 
     public Integer getSortOrder() {
@@ -92,5 +95,13 @@ public class Question extends AbstractEntity {
 
     public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public QuestionContext getContext() {
+        return context;
+    }
+
+    public void setContext(QuestionContext context) {
+        this.context = context;
     }
 }
