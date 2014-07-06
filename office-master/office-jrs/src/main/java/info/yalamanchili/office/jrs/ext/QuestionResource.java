@@ -9,14 +9,17 @@
 package info.yalamanchili.office.jrs.ext;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dto.ext.QuestionDto;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionType;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -24,6 +27,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -52,9 +57,17 @@ public class QuestionResource extends CRUDResource<Question> {
 
     @GET
     @Path("/by-type/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.QUESTIONS)
     public List<QuestionDto> getQuestions(@QueryParam("type") QuestionType type, @PathParam("start") int start, @PathParam("limit") int limit) {
         return questionService.getQuestions(type, start, limit);
 
+    }
+
+    @PUT
+    @Override
+    @CacheEvict(value = OfficeCacheKeys.QUESTIONS, allEntries = true)
+    public Question save(Question entity) {
+        return super.save(entity);
     }
 
     @GET

@@ -54,7 +54,10 @@ public class Question extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{question.type.empty.msg}")
     protected QuestionType type;
-    protected Integer questionOrder;
+    /**
+     * 
+     */
+    protected Integer sortOrder;
 
     public Question() {
     }
@@ -83,12 +86,11 @@ public class Question extends AbstractEntity {
         this.type = type;
     }
 
-    public Integer getQuestionOrder() {
-        //TODO return default to supprort sort
-        return questionOrder;
+    public Integer getSortOrder() {
+        return sortOrder;
     }
 
-    public void setQuestionOrder(Integer questionOrder) {
-        this.questionOrder = questionOrder;
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 }

@@ -25,6 +25,7 @@
     <cache name="social" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="roles" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     <cache name="emails" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
+    <cache name="questions" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
     
     <cache name="aclCache" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />
 </ehcache>

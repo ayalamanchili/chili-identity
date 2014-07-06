@@ -29,7 +29,6 @@ public class MessagesUtils {
         try {
             message = messageSource.getMessage(key, null, null);
         } catch (NoSuchMessageException e) {
-            e.printStackTrace();
             message = key;
         }
         return message;

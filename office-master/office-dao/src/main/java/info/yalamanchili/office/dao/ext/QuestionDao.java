@@ -35,8 +35,7 @@ public class QuestionDao extends CRUDDao<Question> {
     }
 
     public List<Question> getQuestions(QuestionType type, int start, int limit) {
-        TypedQuery<Question> questionsQ = em.createQuery("from " + Question.class.getCanonicalName() + " where type=:typeParam", Question.class);
-        //TODO use sort order
+        TypedQuery<Question> questionsQ = em.createQuery("from " + Question.class.getCanonicalName() + " where type=:typeParam order by sortOrder ASC", Question.class);
         questionsQ.setParameter("typeParam", type);
         questionsQ.setFirstResult(start);
         questionsQ.setMaxResults(limit);
