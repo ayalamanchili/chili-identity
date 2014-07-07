@@ -1,8 +1,8 @@
 Advance Request Process
 =========
  - When a employee submits Advance Requisition Request 
-    -  For Employees the approval Task is sent to Reports_To Manager .
-    -  For Corporate Employees the approval Task is sent to Payroll Department.
+    -  For Employees the approval Task is sent to Payroll Department.
+    -  For Corporate Employees the approval Task is to Reports_To Manager.
  - If the Task is approved a Final Approval Task is create for Admin.
  - The approved amount can be update during this process.
  - Once the final approval is completed a Task for Accounts Payable Dept is created for Payment Dispatch.
