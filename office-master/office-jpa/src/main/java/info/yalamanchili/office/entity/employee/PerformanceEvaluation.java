@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -32,7 +35,6 @@ import org.hibernate.search.annotations.Indexed;
 public class PerformanceEvaluation extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
-
     /**
      * evaluation Date
      */
@@ -180,5 +182,4 @@ public class PerformanceEvaluation extends AbstractEntity {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-
 }
