@@ -24,9 +24,13 @@ public class PerformanceEvaluationSidePanel extends ALComposite implements Click
     public FlowPanel evaluationSidePanel = new FlowPanel();
     ClickableLink createevaluationLink = new ClickableLink("Create Performance Evaluation");
 
+    public PerformanceEvaluationSidePanel() {
+        init(evaluationSidePanel);
+    }
+
     @Override
     protected void addListeners() {
-        init(evaluationSidePanel);
+        createevaluationLink.addClickHandler(this);
     }
 
     @Override

@@ -80,17 +80,10 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("EvaluationDate"));
-        table.setText(0, 2, getKeyValue("EvaluationPeriodStartDate"));
-        table.setText(0, 3, getKeyValue("EvaluationPeriodEndDate"));
-        table.setText(0, 4, getKeyValue("Type"));
-        table.setText(0, 5, getKeyValue("Rating"));
-//        table.setText(0, 6, getKeyValue("KeyAccomplishments"));
-//        table.setText(0, 7, getKeyValue("AreasNeedImprovement"));
-//        table.setText(0, 8, getKeyValue("ManagersComments"));
-//        table.setText(0, 9, getKeyValue("EmployeeComments"));
-//        table.setText(0, 10, getKeyValue("CeoComments"));
-//        table.setText(0, 11, getKeyValue("Employee"));
+        table.setText(0, 1, getKeyValue("EvaluationPeriodStartDate"));
+        table.setText(0, 2, getKeyValue("EvaluationPeriodEndDate"));
+        table.setText(0, 3, getKeyValue("Type"));
+        table.setText(0, 4, getKeyValue("Rating"));
     }
 
     @Override
@@ -98,17 +91,10 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evaluationDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evaluationPeriodStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evaluationPeriodEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 4, JSONUtils.toString(entity.get("type"), "name"));
-            table.setText(i, 5, JSONUtils.toString(entity, "rating"));
-//            table.setText(i, 6, JSONUtils.toString(entity, "keyAccomplishments"));
-//            table.setText(i, 7, JSONUtils.toString(entity, "areasNeedImprovement"));
-//            table.setText(i, 8, JSONUtils.toString(entity, "managersComments"));
-//            table.setText(i, 9, JSONUtils.toString(entity, "employeeComments"));
-//            table.setText(i, 10, JSONUtils.toString(entity, "ceoComments"));
-//            table.setText(i, 11, JSONUtils.toString(entity.get("employee"), "firstName"));
+            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evaluationPeriodStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evaluationPeriodEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 3, JSONUtils.toString(entity.get("type"), "name"));
+            table.setText(i, 4, JSONUtils.toString(entity, "rating"));
         }
     }
 
