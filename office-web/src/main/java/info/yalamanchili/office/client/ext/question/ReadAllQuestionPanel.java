@@ -78,8 +78,9 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("QuestionKey"));
         table.setText(0, 2, getKeyValue("QuestionInfoKey"));
-        table.setText(0, 3, getKeyValue("Type"));
-        table.setText(0, 4, getKeyValue("QuestionOrder"));
+        table.setText(0, 3, getKeyValue("QuestionCategory"));
+        table.setText(0, 4, getKeyValue("QuestionContext"));
+        table.setText(0, 5, getKeyValue("QuestionOrder"));
     }
 
     @Override
@@ -89,8 +90,9 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "questionKey"));
             table.setText(i, 2, JSONUtils.toString(entity, "questionInfoKey"));
-            table.setText(i, 3, JSONUtils.toString(entity, "type"));
-            table.setText(i, 4, JSONUtils.toString(entity, "questionOrder"));
+            table.setText(i, 3, JSONUtils.toString(entity, "category"));
+            table.setText(i, 4, JSONUtils.toString(entity, "context"));
+            table.setText(i, 5, JSONUtils.toString(entity, "questionOrder"));
         }
     }
 

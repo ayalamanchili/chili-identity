@@ -30,7 +30,8 @@ public class UpdateQuestionPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("questionKey", entity);
         assignEntityValueFromField("questionInfoKey", entity);
-        assignEntityValueFromField("type", entity);
+        assignEntityValueFromField("category", entity);
+        assignEntityValueFromField("context", entity);
         assignEntityValueFromField("questionOrder", entity);
         return entity;
     }
@@ -55,7 +56,8 @@ public class UpdateQuestionPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("questionKey", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("questionInfoKey", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("context", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("questionOrder", entity, DataType.INTEGER_FIELD);
     }
 
@@ -77,9 +79,10 @@ public class UpdateQuestionPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("questionKey", false, true, DataType.STRING_FIELD);
-        addField("questionInfoKey", false, true, DataType.STRING_FIELD);
-        addEnumField("type", false, true, QuestionType.names());
-        addField("questionOrder", false, true, DataType.INTEGER_FIELD);
+        addField("questionInfoKey", false, false, DataType.STRING_FIELD);
+        addEnumField("category", false, true, QuestionCategory.names());
+        addEnumField("context", false, true, QuestionContext.names());
+        addField("questionOrder", false, false, DataType.INTEGER_FIELD);
     }
 
     @Override

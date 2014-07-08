@@ -11,7 +11,6 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.selfservice.TicketType;
 import java.util.logging.Logger;
 
 /**
@@ -53,7 +52,8 @@ public class ReadQuestionPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("questionKey", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("questionInfoKey", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("context", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("questionOrder", entity, DataType.INTEGER_FIELD);
     }
 
@@ -69,7 +69,8 @@ public class ReadQuestionPanel extends ReadComposite {
     protected void addWidgets() {
         addField("questionKey", true, false, DataType.STRING_FIELD);
         addField("questionInfoKey", true, false, DataType.STRING_FIELD);
-        addEnumField("type", true, false, QuestionType.names());
+        addEnumField("category", true, false, QuestionCategory.names());
+        addEnumField("context", true, false, QuestionContext.names());
         addField("questionOrder", true, false, DataType.INTEGER_FIELD);
     }
 

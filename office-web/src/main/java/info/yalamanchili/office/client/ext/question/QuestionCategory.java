@@ -8,13 +8,14 @@ package info.yalamanchili.office.client.ext.question;
  *
  * @author prasanthi.p
  */
-enum QuestionType {
+public enum QuestionCategory {
 
-    Review_Self,
-    Review_Mgr;
+    SKILL_AND_APTITUDE,
+    ATTITUDE,
+    MANAGEMENT;
 
     public static String[] names() {
-        QuestionType[] values = values();
+        QuestionCategory[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             names[i] = values[i].name();

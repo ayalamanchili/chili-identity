@@ -32,7 +32,8 @@ public class CreateQuestionPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("questionKey", entity);
         assignEntityValueFromField("questionInfoKey", entity);
-        assignEntityValueFromField("type", entity);
+        assignEntityValueFromField("category", entity);
+        assignEntityValueFromField("context", entity);
         assignEntityValueFromField("questionOrder", entity);
         logger.info("ddd" + entity);
         return entity;
@@ -77,7 +78,8 @@ public class CreateQuestionPanel extends CreateComposite {
     protected void addWidgets() {
         addField("questionKey", false, true, DataType.STRING_FIELD);
         addField("questionInfoKey", false, false, DataType.STRING_FIELD);
-        addEnumField("type", false, true, QuestionType.names());
+        addEnumField("category", false, true, QuestionCategory.names());
+        addEnumField("context", false, true, QuestionContext.names());
         addField("questionOrder", false, false, DataType.INTEGER_FIELD);
     }
 
