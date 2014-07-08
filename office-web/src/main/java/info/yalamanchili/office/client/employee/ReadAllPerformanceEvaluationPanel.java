@@ -17,8 +17,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expense.ReadExpensePanel;
-import info.yalamanchili.office.client.expense.UpdateExpensePanel;
 import java.util.logging.Logger;
 
 /**
@@ -38,7 +36,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-//        TabPanel.instance().expensePanel.entityPanel.add(new ReadPerformanceEvaluationPanel(getEntity(entityId)));
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadPerformanceEvaluationPanel(getEntity(entityId)));
     }
 
     @Override
@@ -62,7 +60,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(getEntity(entityId)));
     }
 
     @Override
