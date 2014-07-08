@@ -32,6 +32,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
+        assignEntityValueFromField("employee", entity);
         assignEntityValueFromField("evaluationDate", entity);
         assignEntityValueFromField("evaluationPeriodStartDate", entity);
         assignEntityValueFromField("evaluationPeriodEndDate", entity);
@@ -42,7 +43,6 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         assignEntityValueFromField("managersComments", entity);
         assignEntityValueFromField("employeeComments", entity);
         assignEntityValueFromField("ceoComments", entity);
-        assignEntityValueFromField("employee", entity);
         logger.info("ddd" + entity);
         return entity;
     }
@@ -84,17 +84,17 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("evaluationDate", false, true, DataType.DATE_FIELD);
+        addDropDown("employee", selectEmployeeWidgetF);
+        addField("evaluationDate", false, false, DataType.DATE_FIELD);
         addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD);
         addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
-        addEnumField("type", false, false, EvaluationFrequencyType.names());
-        addField("rating", false, true, DataType.IMAGE_FIELD);
-        addField("keyAccomplishments", false, true, DataType.STRING_FIELD);
-        addField("areasNeedImprovement", false, true, DataType.STRING_FIELD);
+        addEnumField("type", false, true, EvaluationFrequencyType.names());
+        addField("rating", false, true, DataType.INTEGER_FIELD);
+        addField("keyAccomplishments", false, false, DataType.STRING_FIELD);
+        addField("areasNeedImprovement", false, false, DataType.STRING_FIELD);
         addField("managersComments", false, false, DataType.STRING_FIELD);
-        addField("employeeComments", false, true, DataType.STRING_FIELD);
-        addField("ceoComments", false, true, DataType.STRING_FIELD);
-        addDropDown("employee", selectEmployeeWidgetF);
+        addField("employeeComments", false, false, DataType.STRING_FIELD);
+        addField("ceoComments", false, false, DataType.STRING_FIELD);
     }
 
     @Override
