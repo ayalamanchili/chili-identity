@@ -117,7 +117,7 @@ public class ProfileNotificationService {
         email.setTos(tos);
         email.setSubject("Employee Feedback from " + username);
         email.setBody(fb.getFeedbackmsg());
-        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
         messagingService.sendEmail(email);
     }
 
