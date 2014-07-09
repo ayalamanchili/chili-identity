@@ -49,14 +49,13 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
 
     @GET
     @Path("/summary")
-    public ConsultantTimeSummary getCorporateTimeSummary() {
+    public ConsultantTimeSummary getConsultantTimeSummary() {
         return ConsultantTimeService.instance().getYearlySummary(SecurityService.instance().getCurrentUser());
     }
     @GET
     @Path("/summary/{empId}")
-    public ConsultantTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
+    public ConsultantTimeSummary getConsultantTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
-        ConsultantTimeService.instance().checkAccessToEmployeeTime(emp);
         return ConsultantTimeService.instance().getYearlySummary(emp);
     }
     @PUT
