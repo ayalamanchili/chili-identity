@@ -10,11 +10,15 @@ package info.yalamanchili.office.dto.time;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author prasanthi.p
  */
+@XmlRootElement
+@XmlType
 public class ConsultantTimeSummary implements Serializable {
 
     protected BigDecimal availableSickHours;

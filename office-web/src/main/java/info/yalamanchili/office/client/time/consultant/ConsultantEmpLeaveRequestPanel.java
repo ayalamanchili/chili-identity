@@ -77,6 +77,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         TabPanel.instance().getTimePanel().entityPanel.clear();
         TabPanel.instance().getTimePanel().sidePanelTop.clear();
         TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
+        TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
         TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
     }

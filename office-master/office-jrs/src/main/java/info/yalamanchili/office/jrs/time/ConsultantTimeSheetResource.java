@@ -14,6 +14,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
+import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -46,6 +47,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeSheet> {
 
+    @GET
+    @Path("/summary")
+    public ConsultantTimeSummary getCorporateTimeSummary() {
+        return ConsultantTimeService.instance().getYearlySummary(SecurityService.instance().getCurrentUser());
+    }
+    @GET
+    @Path("/summary/{empId}")
+    public ConsultantTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
+        Employee emp = EmployeeDao.instance().findById(empId);
+        ConsultantTimeService.instance().checkAccessToEmployeeTime(emp);
+        return ConsultantTimeService.instance().getYearlySummary(emp);
+    }
     @PUT
     @Path("/submit-leave-request")
     public void submitLeaveRequest(ConsultantTimeSheet request) {

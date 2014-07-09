@@ -20,6 +20,7 @@ import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPa
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSidePanel;
+import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummaryPanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import info.yalamanchili.office.client.time.consultant.ReadCurrentConsultantLeavesPanel;
@@ -60,10 +61,11 @@ public class TimeMenu extends Composite {
                 TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentCorpLeavesPanel());
-            } else if(Auth.isConsultantEmployee()) {
+            } else if (Auth.isConsultantEmployee()) {
                 TabPanel.instance().getTimePanel().sidePanelTop.add(new ConsultantTimeSummarySidePanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel());
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
-              //  TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadCurrentConsultantLeavesPanel());
             }
         }
     };
@@ -75,7 +77,6 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().sidePanelTop.add(new CorpoateTimeSidePanel());
         }
     };
-
     Command consultantTimeMaintainenceCmd = new Command() {
         @Override
         public void execute() {

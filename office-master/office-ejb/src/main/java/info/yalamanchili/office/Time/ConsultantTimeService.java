@@ -15,6 +15,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
@@ -139,5 +140,20 @@ public class ConsultantTimeService {
 
     public static ConsultantTimeService instance() {
         return SpringContext.getBean(ConsultantTimeService.class);
+    }
+
+    public void checkAccessToEmployeeTime(Employee emp) {
+        Employee currentUser = SecurityService.instance().getCurrentUser();
+        if (emp.getEmployeeId().equals(currentUser.getEmployeeId())) {
+            return;
+        }
+        Employee reportsToEmp = CompanyContactDao.instance().getReportsToContactForEmployee(emp);
+        if (reportsToEmp != null && currentUser.getEmployeeId().equals(reportsToEmp.getEmployeeId())) {
+            return;
+        }
+        if (SecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRoles.OfficeRole.ROLE_CORPORATE_TIME_REPORTS.name())) {
+            return;
+        }
+        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
     }
 }

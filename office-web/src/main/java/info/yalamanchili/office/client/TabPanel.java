@@ -42,8 +42,10 @@ import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
 import info.yalamanchili.office.client.recruiting.RecruitingMenu;
 import info.yalamanchili.office.client.reports.ReportsMenu;
+import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummaryPanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
+import info.yalamanchili.office.client.time.consultant.ReadCurrentConsultantLeavesPanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummaryPanel;
 import info.yalamanchili.office.client.time.corp.ReadAllCorporateTimeSheetPanel;
@@ -226,8 +228,9 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             timePanel.entityPanel.add(new ReadCurrentCorpLeavesPanel());
         } else if (Auth.isConsultantEmployee()) {
             timePanel.sidePanelTop.add(new ConsultantTimeSummarySidePanel());
+            timePanel.entityPanel.add(new ConsultantTimeSummaryPanel());
             timePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel());
-//            timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());
+            timePanel.entityPanel.add(new ReadCurrentConsultantLeavesPanel());
         }
         timePanel.entityTitlePanel.add(new TimeMenu());
     }

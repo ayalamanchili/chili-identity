@@ -122,6 +122,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         }
         if (empWidget.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel(empWidget.getSelectedObjectId()));
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(empWidget.getSelectedObjectId()));
         }
         if (event.getSource().equals(viewReportsB)) {
