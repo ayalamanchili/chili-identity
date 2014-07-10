@@ -8,8 +8,8 @@
 package info.yalamanchili.office.privacy;
 
 import info.chili.commons.ReflectionUtils;
-import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
@@ -29,10 +29,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class PrivacyService {
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     protected boolean performPrivacyCheck(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
         Employee employee = getIdentity(joinPoint, privacyAware);
         if (employee == null) {
@@ -44,8 +44,16 @@ public class PrivacyService {
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
-        if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            return true;
+        if (SecurityService.instance().getUserRoles(employee).contains(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())){
+            //this is corp emp info check if user has HR role
+            if(SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_HR.name())){
+                return true;
+            }
+        }else{
+            //This is consultant employee information check is the user has corp emp role
+            if(SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+                return true;
+            }
         }
         PrivacySetting setting = PrivacySettingDao.instance().getPrivacySettingsForData(employee, privacyAware.key());
         if (setting != null && PrivacyMode.PUBLIC.equals(setting.getPrivacyMode())) {
@@ -53,17 +61,7 @@ public class PrivacyService {
         }
         return false;
     }
-    
-    protected boolean canAccessPrivateData(Employee currentUser) {
-         if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            return true;
-        } else {
-            // ServiceMessages.instance().addError(new info.chili.service.jrs.types.Error("privacy", "NOT_AUTHORIZED", "Data is hidden based on user privacy settings"));
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "privacy.voilation", "Old Password Doesn't Match");
-        }
-        
-    }
-    
+
     protected Employee getIdentity(ProceedingJoinPoint joinPoint, PrivacyAware privacyAware) {
         Employee employee = null;
         if (privacyAware.identityClass().equals(Employee.class)) {
@@ -76,7 +74,7 @@ public class PrivacyService {
         }
         return employee;
     }
-    
+
     public static PrivacyService instance() {
         return SpringContext.getBean(PrivacyService.class);
     }
