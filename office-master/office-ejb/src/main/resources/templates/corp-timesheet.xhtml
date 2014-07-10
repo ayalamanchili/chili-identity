@@ -11,47 +11,87 @@
     </head>
 
     <body>
-        <div class="wrapper" style="width:700px;height:500px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:10px;">
+        <div class="wrapper" style="width:700px;height:850px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:10px;">
             <div class="header" style="width:700px;height:100px;background-color:#c3d7ff;border-top-right-radius:10px;border-top-left-radius:10px;">
                 <div class="logo" style="width:200px;height:75px;float:left;padding-top:25px;padding-left:30px;" ><img src="http://yalamanchili.googlecode.com/files/sst-logo.png" /></div>
             </div>
 
 
-
             <div class="content" style="width:700px;height:350px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
-                    <h4>Time Sheet</h4>
+                    <h4>Leave Request Form</h4>
                 </div>
                 <div>
                     <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" >
                         <table>
-                            <tr>
-                                <td>Employee</td>
-                                <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
-                            </tr>
-                            <tr>
-                                <td>Hours</td>
-                                <td th:text="${entity.hours}" />
-                            </tr>
-                            <tr>
-                                <td>Start Date</td>
-                                <td th:text="${entity.StartDate}" />
-                            </tr>
-                            <tr>
-                                <td>End Date</td>
-                                <td th:text="${entity.endDate}" />
-                            </tr>
-                            <tr>
-                                <td>Category</td>
-                                <td th:text="${entity.category}" />
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td th:text="${entity.status}" />
-                            </tr>
-                            <tr>
-                                <td>Notes</td>
-                                <td th:text="${entity.notes}" />
-                            </tr>
+
+                            <div class="dashbrd">
+                                <div style="float:right; margin-top:50px; margin-bottom:20px;" ><table border="1">
+                                        <tr>
+                                            <th colspan="2" style="text-align:center; padding: 5px 20px 5px 20px;"><h3>Leaves Dashboard</h3></th>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; padding: 3px 20px 3px 20px;"><strong>Type of Leaves</strong></td>
+                                            <td style="text-align:center;"><strong>Availability</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Personal Leaves</td>
+                                            <td><input type="text" size="35" name="Personal Leaves" value=""/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sick Leaves</td>
+                                            <td><input type="text" size="35" name="Sick Leaves" value=""/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vacation Leaves</td>
+                                            <td><input type="text" size="35" name="Vacation Leaves" value=""/></td>
+                                        </tr>
+
+                                    </table></div>
+                            </div><div></div>
+                            <div><br> </br><br> </br><br> </br><br> </br> <table border="0">
+                                    <br> </br><br> </br><br> </br><br> </br><br> </br><br> </br><br> </br><br> </br><br> </br><br> </br>
+                                    <tr>
+                                        <td>Employee Name</td>
+                                        <td>:<input type="text" size="62" name="Employee Name" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Requested Date </td>
+                                        <td>:<input type="text" size="62" name="Requested Date" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Leave Start Date</td>
+                                        <td>:<input type="text" size="62" name="Leave Start Date" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Leave End Date</td>
+                                        <td>:<input type="text" size="62" name="Leave End Date" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Number of Days Applied</td>
+                                        <td>:<input type="text" size="62" name="Number of Days Applied" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Purpose</td>
+                                        <td>:<textarea rows="4" cols="48"></textarea></td>
+                                    </tr>
+
+                                </table></div>
+                            <br> </br>
+
+                            <p>I, <input type="text" size="45" name="Personal Leaves" value=""/> understand that this leave will be treated as an unpaid
+                                Leave if I do not have any leave balance left. (See notes below)</p><br> </br>
+
+                            <p>Employee Signature : <input type="text" name="Employee Signature" value=""/></p><br> </br>
+                            <p>Approver's Signature : <input type="text" name="Approver's Signature" value=""/></p>
+
+                            <br> </br>
+                            <p><strong>Notes:</strong></p>
+                            <div Style="padding-left:20px;"><ul>
+                                    <li>All unpaid leave must be approved by the employee supervisor to ensure coverage.</li>
+                                    <li>All unpaid leave must receive final authorization from Sreedhar.</li>
+                                    <li>Unpaid leave will only be granted for matters of critical urgency.</li>
+                                    <li>Employees are expected to give a minimum of one (1) week notice when requesting
+                                        leave. In an emergency, the employee is requested to give as much notice as possible.</li></ul></div>
                         </table>
                     </div>      
                 </div>
