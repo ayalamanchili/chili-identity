@@ -54,7 +54,7 @@ public class ReadQuestionPanel extends ReadComposite {
         assignFieldValueFromEntity("questionInfoKey", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("context", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("questionOrder", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("sortOrder", entity, DataType.INTEGER_FIELD);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ReadQuestionPanel extends ReadComposite {
         addField("questionInfoKey", true, false, DataType.STRING_FIELD);
         addEnumField("category", true, false, QuestionCategory.names());
         addEnumField("context", true, false, QuestionContext.names());
-        addField("questionOrder", true, false, DataType.INTEGER_FIELD);
+        addField("sortOrder", true, false, DataType.INTEGER_FIELD);
     }
 
     @Override

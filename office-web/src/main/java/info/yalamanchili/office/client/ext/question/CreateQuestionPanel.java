@@ -34,7 +34,7 @@ public class CreateQuestionPanel extends CreateComposite {
         assignEntityValueFromField("questionInfoKey", entity);
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("context", entity);
-        assignEntityValueFromField("questionOrder", entity);
+        assignEntityValueFromField("sortOrder", entity);
         logger.info("ddd" + entity);
         return entity;
     }
@@ -80,7 +80,7 @@ public class CreateQuestionPanel extends CreateComposite {
         addField("questionInfoKey", false, false, DataType.STRING_FIELD);
         addEnumField("category", false, true, QuestionCategory.names());
         addEnumField("context", false, true, QuestionContext.names());
-        addField("questionOrder", false, false, DataType.INTEGER_FIELD);
+        addField("sortOrder", false, false, DataType.INTEGER_FIELD);
     }
 
     @Override

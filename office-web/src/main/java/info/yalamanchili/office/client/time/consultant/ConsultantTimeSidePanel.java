@@ -60,9 +60,11 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     CaptionPanel reportsCaptionPanel = new CaptionPanel();
     FlowPanel reportsPanel = new FlowPanel();
     DateField startDateF = new DateField(OfficeWelcome.constants,
-            "startDate", "CorporateTimeSheet", false, true);
+            "startDate", "ConsultantTimeSheet", false, true);
     DateField endDateF = new DateField(OfficeWelcome.constants,
-            "endDate", "CorporateTimeSheet", false, true);
+            "endDate", "ConsultantTimeSheet", false, true);
+    EnumField reportCategoryField = new EnumField(OfficeWelcome.constants, "category", "ConsultantTimeSheet",
+            false, false, TimeSheetCategory.names());
     Button viewReportsB = new Button("View");
     FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/all-cons-summary-report" + "&passthrough=true");
     protected static ConsultantTimeSidePanel instance;
@@ -105,12 +107,11 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             //reports panel
             reportsPanel.add(startDateF);
             reportsPanel.add(endDateF);
+            reportsPanel.add(reportCategoryField);
             reportsPanel.add(viewReportsB);
             reportsCaptionPanel.setContentWidget(reportsPanel);
             panel.add(reportsCaptionPanel);
             panel.add(summaryReportL);
-
-
         }
     }
 
@@ -143,6 +144,9 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         }
         if (endDateF.getDate() != null) {
             search.put("endDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
+        }
+        if (reportCategoryField.getValue() != null) {
+            search.put("category", new JSONString(reportCategoryField.getValue()));
         }
         HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
