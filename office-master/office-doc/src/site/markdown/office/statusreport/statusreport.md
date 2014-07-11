@@ -6,6 +6,7 @@ Projects Reports
  - Submit all required information in status report and click create button 
  - Once submitted the request it will send to the appropriate  department (Engagement) for approval and you will receive a email about the final decision. 
 
+
 How To Submit Project Status Report
 ----
 ![alt text](../../images/statusreport/statusreport.png "Status Report")
@@ -13,3 +14,16 @@ How To Submit Project Status Report
 Submit Project Status Report
 ----
 ![alt text](../../images/statusreport/submit-status-report.png "Status Report")
+
+Print Status Report
+===========
+Navigate to Home --> My Projects --> Projects Reports --> Print
+
+Print the Status Report
+----
+![alt text](../../images/statusreport/print-status-report.png "Status Report")
+
+Status Report pdf
+----
+![alt text](../../images/statusreport/status-report-pdf.png "Status Report")
+

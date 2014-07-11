@@ -92,7 +92,7 @@ public class StatusReport extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_CLNT_INFO_SRV_TKTS")
-    @NotNull
+    @NotNull(message = "{clientInformation.not.empty.msg}")
     protected ClientInformation clientInformation;
     /**
      * bpmProcessId
