@@ -27,6 +27,7 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -70,6 +71,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             false, false, true, TimeSheetCategory.names(), Alignment.VERTICAL);
 
     Button viewReportsB = new Button("View");
+    Button reportsB = new Button("Report");
     FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/all-cons-summary-report" + "&passthrough=true");
     protected static ConsultantTimeSidePanel instance;
 
@@ -87,6 +89,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         createtimeSheetlink.addClickHandler(this);
         showTimeSheetsForEmpB.addClickHandler(this);
         viewReportsB.addClickHandler(this);
+        reportsB.addClickHandler(this);
     }
 
     @Override
@@ -115,6 +118,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             reportsPanel.add(reportCategoryField);
             reportsPanel.add(reportStatusField);
             reportsPanel.add(viewReportsB);
+            reportsPanel.add(reportsB);
             reportsCaptionPanel.setContentWidget(reportsPanel);
             panel.add(reportsCaptionPanel);
             panel.add(summaryReportL);
@@ -133,20 +137,54 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(empWidget.getSelectedObjectId()));
         }
         if (event.getSource().equals(viewReportsB)) {
-            showReport();
+            viewReport();
+        }
+        if (event.getSource().equals(reportsB)) {
+            pdfReport();
         }
 
     }
 
-    protected void showReport() {
+    protected void pdfReport() {
+        FileUtils.openFile(getReportObject(), getPDFReportURL());
+    }
+
+    protected String getPDFReportURL() {
+        return ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/report" + "&passthrough=true";
+    }
+
+    protected void viewReport() {
+        JSONObject search = getReportObject();
+        if (search != null) {
+            HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("no results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().getTimePanel().entityPanel.clear();
+                                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel("Time Sheet Report Results", results));
+                            }
+
+                        }
+                    });
+        }
+    }
+
+    protected JSONObject getReportObject() {
         JSONObject search = new JSONObject();
         if ((startDateF.getDate() == null)) {
             startDateF.setMessage("required");
-            return;
+            return null;
         }
         if ((endDateF.getDate() == null)) {
             endDateF.setMessage("required");
-            return;
+            return null;
         }
         if (startDateF.getDate() != null) {
             search.put("startDate", new JSONString(DateUtils.toDateString(startDateF.getDate())));
@@ -161,26 +199,10 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             search.put("status", JSONUtils.toJSONArray(reportStatusField.getValues()));
         }
         logger.info("asdf" + search.toString());
-        HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            new ResponseStatusWidget().show("no results");
-                        } else {
-                            //TODO use size and entities attributes
-                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                            String key = (String) resObj.keySet().toArray()[0];
-                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            TabPanel.instance().getTimePanel().entityPanel.clear();
-                            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel("Time Sheet Report Results", results));
-                        }
-
-                    }
-                });
+        return search;
     }
 
     protected String getReportUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "consultant-timesheet/report/0/500";
+        return OfficeWelcome.instance().constants.root_url() + "consultant-timesheet/report/0/10000";
     }
 }

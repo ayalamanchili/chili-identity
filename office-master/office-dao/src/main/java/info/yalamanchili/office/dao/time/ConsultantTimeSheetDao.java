@@ -8,21 +8,30 @@
  */
 package info.yalamanchili.office.dao.time;
 
+import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
+import info.chili.commons.FileIOUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
+import info.yalamanchili.office.template.TemplateService;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -119,6 +128,19 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
+    }
+
+    public Response getPDFReport(SearchConsultantTimeSheetDto dto) {
+        String html = TemplateService.instance().process("consultant-time-report.xhtml", getReport(dto, 0, 10000));
+        byte[] pdf = FileIOUtils.convertToPDF(html);
+        File file = new File(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "consultant-ts-report.pdf");
+        try {
+            Files.write(pdf, file);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        return Response.ok("consultant-ts-report.pdf".getBytes()).header("content-disposition", "filename = consultant-ts-report.pdf")
+                .header("Content-Length", "consultant-ts-report.pdf".length()).build();
     }
 
     protected Query getReportQueryWithParams(String qryStr, Query query, SearchConsultantTimeSheetDto dto) {

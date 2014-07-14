@@ -22,6 +22,7 @@ import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -52,12 +53,14 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     public ConsultantTimeSummary getConsultantTimeSummary() {
         return ConsultantTimeService.instance().getYearlySummary(SecurityService.instance().getCurrentUser());
     }
+
     @GET
     @Path("/summary/{empId}")
     public ConsultantTimeSummary getConsultantTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
         return ConsultantTimeService.instance().getYearlySummary(emp);
     }
+
     @PUT
     @Path("/submit-leave-request")
     public void submitLeaveRequest(ConsultantTimeSheet request) {
@@ -136,8 +139,16 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
         return consultantTimeSheetDao.getReport(dto, start, limit);
     }
 
-    @GET
+    @POST
     @Path("/report")
+    @Produces({"application/pdf"})
+    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_REPORTS')")
+    public Response getPDFReport(SearchConsultantTimeSheetDto dto) {
+        return consultantTimeSheetDao.getPDFReport(dto);
+    }
+
+    @GET
+    @Path("/report/{start}/{limit}")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
         return ConsultantTimeService.instance().getReport(id);
