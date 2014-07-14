@@ -25,6 +25,7 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -41,7 +42,7 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
+public class CorporateTimeSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
@@ -63,21 +64,23 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
             "startDate", "CorporateTimeSheet", false, true);
     DateField endDateF = new DateField(OfficeWelcome.constants,
             "endDate", "CorporateTimeSheet", false, true);
+    EnumField reportStatusField = new EnumField(OfficeWelcome.constants, "status", "CorporateTimeSheet",
+            false, false, true, TimeSheetStatus.names(), Alignment.VERTICAL);
     EnumField reportCategoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
-            false, false, TimeSheetCategory.names());
+            false, false, true, TimeSheetCategory.names(), Alignment.VERTICAL);
     EnumField roleF = new EnumField(OfficeWelcome.constants, "role", "Employee",
             false, false, Auth.getAllRoles());
     ClickableLink clearReportsL = new ClickableLink("clear");
     Button viewReportsB = new Button("View");
     FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/all-emp-summary-report" + "&passthrough=true");
 
-    protected static CorpoateTimeSidePanel instance;
+    protected static CorporateTimeSidePanel instance;
 
-    public static CorpoateTimeSidePanel instance() {
+    public static CorporateTimeSidePanel instance() {
         return instance;
     }
 
-    public CorpoateTimeSidePanel() {
+    public CorporateTimeSidePanel() {
         instance = this;
         init(timeSheetsidepanel);
     }
@@ -94,6 +97,7 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
     protected void configure() {
         timesheetsForEmpCaptionPanel.setCaptionHTML("Time Summary");
         reportsCaptionPanel.setCaptionHTML("Reports");
+        TabPanel.instance().timePanel.sidePanelTop.setHeight("100%");
     }
 
     @Override
@@ -115,6 +119,7 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
             reportsPanel.add(startDateF);
             reportsPanel.add(endDateF);
             reportsPanel.add(reportCategoryField);
+            reportsPanel.add(reportStatusField);
             reportsPanel.add(roleF);
             reportsPanel.add(viewReportsB);
 //            reportsPanel.add(clearReportsL);
@@ -152,8 +157,11 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
 
     protected void showReport() {
         JSONObject search = new JSONObject();
-        if ((startDateF.getDate() == null && endDateF.getDate() != null) || (startDateF.getDate() != null && endDateF.getDate() == null)) {
+        if (startDateF.getDate() == null) {
             startDateF.setMessage("required");
+            return;
+        }
+        if (startDateF.getDate() == null) {
             endDateF.setMessage("required");
             return;
         }
@@ -163,8 +171,14 @@ public class CorpoateTimeSidePanel extends ALComposite implements ClickHandler {
         if (endDateF.getDate() != null) {
             search.put("endDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
         }
-        if (reportCategoryField.getValue() != null) {
-            search.put("category", new JSONString(reportCategoryField.getValue()));
+        if (reportCategoryField.getValues() != null) {
+            search.put("category", JSONUtils.toJSONArray(reportCategoryField.getValues()));
+        }
+        if (reportStatusField.getValues() != null) {
+            search.put("status", JSONUtils.toJSONArray(reportStatusField.getValues()));
+        }
+        if (roleF.getValue() != null) {
+            search.put("role", new JSONString(roleF.getValue()));
         }
         HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {

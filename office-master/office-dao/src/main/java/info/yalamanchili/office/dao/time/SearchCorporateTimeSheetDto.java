@@ -13,6 +13,7 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -26,8 +27,8 @@ public class SearchCorporateTimeSheetDto implements Serializable {
 
     protected Date startDate;
     protected Date endDate;
-    protected TimeSheetCategory category;
-    protected TimeSheetStatus status;
+    protected List<TimeSheetCategory> category;
+    protected List<TimeSheetStatus> status;
     protected OfficeRole role;
 
     public Date getStartDate() {
@@ -46,19 +47,19 @@ public class SearchCorporateTimeSheetDto implements Serializable {
         this.endDate = endDate;
     }
 
-    public TimeSheetCategory getCategory() {
+    public List<TimeSheetCategory> getCategory() {
         return category;
     }
 
-    public void setCategory(TimeSheetCategory category) {
+    public void setCategory(List<TimeSheetCategory> category) {
         this.category = category;
     }
 
-    public TimeSheetStatus getStatus() {
+    public List<TimeSheetStatus> getStatus() {
         return status;
     }
 
-    public void setStatus(TimeSheetStatus status) {
+    public void setStatus(List<TimeSheetStatus> status) {
         this.status = status;
     }
 

@@ -112,8 +112,6 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         return queryStr.toString();
     }
 
-//    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category) {
-//    }
     public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, int start, int limit) {
         String queryStr = getReportQueryString(dto);
         TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery(queryStr, ConsultantTimeSheet.class);
@@ -124,24 +122,35 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
     }
 
     protected Query getReportQueryWithParams(String qryStr, Query query, SearchConsultantTimeSheetDto dto) {
-        query.setParameter("statusParam", TimeSheetStatus.Approved);
         if (qryStr.contains("startDateParam")) {
             query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
         }
         if (qryStr.contains("endDateParam")) {
             query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
         }
+        if (qryStr.contains("statusParam")) {
+            query.setParameter("statusParam", dto.getStatus());
+        }
+        if (qryStr.contains("categoryParam")) {
+            query.setParameter("categoryParam", dto.getCategory());
+        }
         return query;
     }
 
     protected String getReportQueryString(SearchConsultantTimeSheetDto dto) {
         StringBuilder reportQueryBuilder = new StringBuilder();
-        reportQueryBuilder.append("from ").append(ConsultantTimeSheet.class.getCanonicalName()).append(" where status=:statusParam ");
+        reportQueryBuilder.append("from ").append(ConsultantTimeSheet.class.getCanonicalName()).append(" where ");
         if (dto.getStartDate() != null) {
-            reportQueryBuilder.append(" and startDate>=:startDateParam ");
+            reportQueryBuilder.append(" startDate>=:startDateParam ");
         }
         if (dto.getEndDate() != null) {
             reportQueryBuilder.append(" and endDate<=:endDateParam ");
+        }
+        if (dto.getStatus() != null) {
+            reportQueryBuilder.append(" and status in (:statusParam) ");
+        }
+        if (dto.getCategory() != null) {
+            reportQueryBuilder.append(" and category in (:categoryParam) ");
         }
         reportQueryBuilder.append(" order by startDate DESC ");
         return reportQueryBuilder.toString();

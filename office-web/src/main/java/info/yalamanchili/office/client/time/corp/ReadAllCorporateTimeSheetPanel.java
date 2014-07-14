@@ -107,11 +107,11 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
         String queryStr = "?";
-        if (CorpoateTimeSidePanel.instance != null && CorpoateTimeSidePanel.instance.categoryField.getValue() != null) {
-            queryStr = queryStr + "&category=" + CorpoateTimeSidePanel.instance.categoryField.getValue();
+        if (CorporateTimeSidePanel.instance != null && CorporateTimeSidePanel.instance.categoryField.getValue() != null) {
+            queryStr = queryStr + "&category=" + CorporateTimeSidePanel.instance.categoryField.getValue();
         }
-        if (CorpoateTimeSidePanel.instance != null && CorpoateTimeSidePanel.instance.statusField.getValue() != null) {
-            queryStr = queryStr + "&status=" + CorpoateTimeSidePanel.instance.statusField.getValue();
+        if (CorporateTimeSidePanel.instance != null && CorporateTimeSidePanel.instance.statusField.getValue() != null) {
+            queryStr = queryStr + "&status=" + CorporateTimeSidePanel.instance.statusField.getValue();
         }
         if (parentId == null) {
             return OfficeWelcome.constants.root_url() + "corporate-timesheet/currentuser/" + start.toString() + "/" + limit.toString() + queryStr;

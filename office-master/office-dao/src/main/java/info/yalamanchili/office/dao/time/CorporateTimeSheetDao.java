@@ -153,12 +153,14 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     protected Query getReportQueryWithParams(String qryStr, Query query, SearchCorporateTimeSheetDto dto, List<Employee> emps) {
-        query.setParameter("statusParam", TimeSheetStatus.Approved);
         if (qryStr.contains("startDateParam")) {
             query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
         }
         if (qryStr.contains("endDateParam")) {
             query.setParameter("endDateParam", dto.getEndDate(), TemporalType.DATE);
+        }
+        if (qryStr.contains("statusParam")) {
+            query.setParameter("statusParam", dto.getStatus());
         }
         if (qryStr.contains("categoryParam")) {
             query.setParameter("categoryParam", dto.getCategory());
@@ -171,15 +173,18 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
 
     protected String getReportQueryString(SearchCorporateTimeSheetDto dto, List<Employee> emps) {
         StringBuilder reportQueryBuilder = new StringBuilder();
-        reportQueryBuilder.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where status=:statusParam ");
+        reportQueryBuilder.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where ");
         if (dto.getStartDate() != null) {
-            reportQueryBuilder.append(" and startDate>=:startDateParam ");
+            reportQueryBuilder.append(" startDate>=:startDateParam ");
         }
         if (dto.getEndDate() != null) {
             reportQueryBuilder.append(" and endDate<=:endDateParam ");
         }
+        if (dto.getStatus() != null) {
+            reportQueryBuilder.append(" and status in (:statusParam) ");
+        }
         if (dto.getCategory() != null) {
-            reportQueryBuilder.append(" and category =:categoryParam ");
+            reportQueryBuilder.append(" and category in (:categoryParam) ");
         }
         if (emps != null && emps.size() > 0) {
             reportQueryBuilder.append(" and employee in (:empsWithRoleParam) ");
@@ -210,7 +215,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
 
     @XmlRootElement
     @XmlType
-    public static class CorporateTimeSheetTable implements java.io.Serializable{
+    public static class CorporateTimeSheetTable implements java.io.Serializable {
 
         protected Long size;
         protected List<CorporateTimeSheet> entities;
