@@ -139,7 +139,7 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        return Response.ok("consultant-ts-report.pdf".getBytes()).header("content-disposition", "filename = consultant-ts-report.pdf")
+        return Response.ok("consultant-ts-report.pdf".getBytes()).header("content-disposition", "inline; filename = consultant-ts-report.pdf")
                 .header("Content-Length", "consultant-ts-report.pdf".length()).build();
     }
 
