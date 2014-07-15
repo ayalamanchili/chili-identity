@@ -156,6 +156,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     protected void viewReport() {
         JSONObject search = getReportObject();
         if (search != null) {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
             HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override
