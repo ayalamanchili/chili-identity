@@ -16,6 +16,7 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
@@ -131,7 +132,7 @@ public class ConsultantTimeService {
 
     public Response getAllConsultantEmployeesSummaryReport() {
         List<ConsultantTimeSummary> summary = new ArrayList<ConsultantTimeSummary>();
-        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRoles.OfficeRole.ROLE_CONSULTANT_TIME_REPORTS.name())) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             summary.add(getYearlySummary(emp));
         }
         String report = TemplateService.instance().process("cons-emp-summary.xhtml", summary);
