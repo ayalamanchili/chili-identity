@@ -26,6 +26,7 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -47,7 +48,6 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
     ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
-
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
@@ -72,8 +72,8 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             false, false, Auth.getAllRoles());
     ClickableLink clearReportsL = new ClickableLink("clear");
     Button viewReportsB = new Button("View");
+    Button reportsB = new Button("Report");
     FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/all-emp-summary-report" + "&passthrough=true");
-
     protected static CorporateTimeSidePanel instance;
 
     public static CorporateTimeSidePanel instance() {
@@ -91,6 +91,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         showTimeSheetsForEmpB.addClickHandler(this);
         viewReportsB.addClickHandler(this);
         clearReportsL.addClickHandler(this);
+        reportsB.addClickHandler(this);
     }
 
     @Override
@@ -122,6 +123,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             reportsPanel.add(reportStatusField);
             reportsPanel.add(roleF);
             reportsPanel.add(viewReportsB);
+            reportsPanel.add(reportsB);
 //            reportsPanel.add(clearReportsL);
             reportsCaptionPanel.setContentWidget(reportsPanel);
             timeSheetsidepanel.add(reportsCaptionPanel);
@@ -141,11 +143,23 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(empWidget.getSelectedObjectId()));
         }
         if (event.getSource().equals(viewReportsB)) {
-            showReport();
+            viewReport();
         }
         if (event.getSource().equals(clearReportsL)) {
             clearReportsField();
         }
+        if (event.getSource().equals(reportsB)) {
+            pdfReport();
+        }
+
+    }
+
+    protected void pdfReport() {
+        FileUtils.openFile(getReportObject(), getPDFReportURL());
+    }
+
+    protected String getPDFReportURL() {
+        return ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/report" + "&passthrough=true";
     }
 
     protected void clearReportsField() {
@@ -155,15 +169,38 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         TabPanel.instance().getTimePanel().entityPanel.clear();
     }
 
-    protected void showReport() {
+    protected void viewReport() {
+        JSONObject search = getReportObject();
+        if (search != null) {
+            HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String result) {
+                    TabPanel.instance().getTimePanel().entityPanel.clear();
+                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                        new ResponseStatusWidget().show("no results");
+                    } else {
+                        //TODO use size and entities attributes
+                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                        String key = (String) resObj.keySet().toArray()[0];
+                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+
+                        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel("Time Sheet Report Results", results));
+                    }
+                }
+            });
+        }
+    }
+
+    protected JSONObject getReportObject() {
         JSONObject search = new JSONObject();
         if (startDateF.getDate() == null) {
             startDateF.setMessage("required");
-            return;
+            return null;
         }
         if (startDateF.getDate() == null) {
             endDateF.setMessage("required");
-            return;
+            return null;
         }
         if (startDateF.getDate() != null) {
             search.put("startDate", new JSONString(DateUtils.toDateString(startDateF.getDate())));
@@ -180,24 +217,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         if (roleF.getValue() != null) {
             search.put("role", new JSONString(roleF.getValue()));
         }
-        HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        TabPanel.instance().getTimePanel().entityPanel.clear();
-                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            new ResponseStatusWidget().show("no results");
-                        } else {
-                            //TODO use size and entities attributes
-                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                            String key = (String) resObj.keySet().toArray()[0];
-                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-
-                            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel("Time Sheet Report Results", results));
-                        }
-
-                    }
-                });
+        return search;
     }
 
     protected String getReportUrl() {

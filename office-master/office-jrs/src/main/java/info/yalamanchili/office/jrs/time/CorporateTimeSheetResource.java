@@ -22,6 +22,7 @@ import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -78,8 +79,8 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/cancel-leave-request/{timesheetId}")
-    public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId,@QueryParam("cancelReason") String cancelReason) {
-        CorporateTimeService.instance().cancelLeaveRequest(timesheetId,cancelReason);
+    public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId, @QueryParam("cancelReason") String cancelReason) {
+        CorporateTimeService.instance().cancelLeaveRequest(timesheetId, cancelReason);
     }
 
     @Override
@@ -99,7 +100,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-
     @Autowired
     public CorporateTimeSheetDao corporateTimeSheetDao;
 
@@ -130,6 +130,14 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         return corporateTimeSheetDao.getReport(dto, start, limit);
     }
 
+    @POST
+    @Path("/report")
+    @Produces({"application/pdf"})
+    @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CORPORATE_TIME_REPORTS')")
+    public Response getPDFReport(SearchCorporateTimeSheetDto dto) {
+        return corporateTimeSheetDao.getPDFReport(dto);
+    }
+
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
@@ -150,5 +158,4 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(employee, status, category));
         return tableObj;
     }
-
 }

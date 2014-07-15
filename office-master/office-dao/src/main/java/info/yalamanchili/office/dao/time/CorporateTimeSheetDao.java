@@ -8,14 +8,20 @@
  */
 package info.yalamanchili.office.dao.time;
 
+import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
+import info.chili.commons.FileIOUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
+import info.yalamanchili.office.template.TemplateService;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +30,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -152,6 +159,19 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return query.getResultList();
     }
 
+    public Response getPDFReport(SearchCorporateTimeSheetDto dto) {
+        String html = TemplateService.instance().process("corporate-time-report.xhtml", getReport(dto, 0, 10000));
+        byte[] pdf = FileIOUtils.convertToPDF(html);
+        File file = new File(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "corporate-ts-report.pdf");
+        try {
+            Files.write(pdf, file);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        return Response.ok("corporate-ts-report.pdf".getBytes()).header("content-disposition", "filename = corporate-ts-report.pdf")
+                .header("Content-Length", "corporate-ts-report.pdf".length()).build();
+    }
+
     protected Query getReportQueryWithParams(String qryStr, Query query, SearchCorporateTimeSheetDto dto, List<Employee> emps) {
         if (qryStr.contains("startDateParam")) {
             query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
@@ -200,7 +220,6 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         query.setParameter("categoryParam", category);
         return query.getResultList();
     }
-
     @PersistenceContext
     protected EntityManager em;
 
