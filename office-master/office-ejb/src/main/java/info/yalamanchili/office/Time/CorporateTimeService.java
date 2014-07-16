@@ -140,7 +140,11 @@ public class CorporateTimeService {
     }
 
     public Response getReport(Long id) {
-        String report = TemplateService.instance().process("corp-timesheet.xhtml", corporateTimeSheetDao.findById(id));
+        CorporateTimeSheet ts = corporateTimeSheetDao.findById(id);
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entity", ts);
+        vars.put("summary", getYearlySummary(ts.getEmployee()));
+        String report = TemplateService.instance().process("corp-timesheet.xhtml", vars);
         byte[] pdf = FileIOUtils.convertToPDF(report);
         return Response
                 .ok(pdf)

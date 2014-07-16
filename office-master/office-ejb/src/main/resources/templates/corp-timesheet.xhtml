@@ -36,18 +36,22 @@
                                         <tr>
                                             <td>Personal Leaves</td>
                                             <td></td>
+                                            <td th:text="${summary.availablePersonalHours}" />
                                         </tr>
                                         <tr>
                                             <td>Sick Leaves</td>
                                             <td></td>
+                                            <td th:text="${summary.availablePersonalHours}" />
                                         </tr>
                                         <tr>
                                             <td>Vacation Leaves</td>
                                             <td></td>
+                                            <td th:text="${summary.availableVacationHours}" />
                                         </tr>
                                         <tr>
                                             <td>Unpaid Used</td>
                                             <td></td>
+                                            <td th:text="${summary.usedUnpaidHours}" />
                                         </tr>
 
                                     </table></div>
