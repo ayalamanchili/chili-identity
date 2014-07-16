@@ -27,31 +27,38 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Project Description</th>
+                                    <th style="width:150px ">Project Description</th>
+                                    <td> :  </td>
                                     <td th:text="${entity.project.name}" />
                                 </tr>
                                 <tr>
                                     <th>Report Start Date</th>
+                                    <td> :  </td>
                                     <td th:text="${entity.reportStartDate}" />
                                 </tr>
                                 <tr>
                                     <th>Report End Date</th>
+                                    <td> :  </td>
                                     <td th:text="${entity.reportEndDate}" />
                                 </tr>
                                 <tr>
                                     <th>Project Status</th>
+                                    <td> :  </td>
                                     <td th:text="${entity.status}" />
                                 </tr>
                                 <tr>
                                     <th>Prepared By</th>
+                                    <td> :  </td>
                                     <td th:text="${entity.preparedBy}" />
                                 </tr>
                                 <tr>
                                     <th>Approved By</th>
+                                    <td> :  </td>
                                     <td th:text="${entity.approvedBy}" />
                                 </tr>
                                 <tr>
                                     <th>Report Distribution </th>
+                                    <td> :  </td>
                                     <th>System Soft Technologies </th>
                                 </tr>
                             </thead>
@@ -62,9 +69,9 @@
                         <h4> 
                             WORK ACCOMPLISHMENTS
                         </h4>
-                        <table>
-                           <div th:utext="${entity.report}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></div>
-                        </table>
+
+                        <td th:utext="${entity.report}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></td>
+
                     </div> 
 
                     <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:10px;" >
@@ -72,7 +79,7 @@
                         <table>
 
                             <tr>
-                                <th>Prepared By</th>
+                                <th style="width:150px ">Prepared By :</th>
                                 <td th:text="${entity.preparedBy}" />
                             </tr>
 

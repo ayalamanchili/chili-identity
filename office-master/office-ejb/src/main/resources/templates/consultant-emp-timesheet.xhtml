@@ -30,128 +30,69 @@
                             <table border="0">
                                 <tbody>
                                     <tr>
-                                        <td>
-
-                                            Employee Name
-
-                                        </td>
-                                        <td>
-
-                                            :
-                                            <u>
-                                                <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
-                                            </u>
-
-                                        </td>
+                                        <th style="width:150px ">   Employee Name </th>
+                                        <td> :  </td>
+                                        <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
                                     </tr>
                                     <tr>
-                                        <td>
-
-                                            Requested Date 
-
-                                        </td>
-                                        <td>
-
-                                            :
-                                            <u> <td th:text="${entity.StartDate}" />
-                                            </u>
-
-                                        </td>
+                                        <th> Requested Date </th>
+                                        <td> :  </td>
+                                        <td th:text="${entity.StartDate}" />
                                     </tr>
                                     <tr>
-                                        <td>
-
-                                            Start Date
-
-                                        </td>
-                                        <td>
-
-                                            :
-                                            <u> <td th:text="${entity.StartDate}" />
-                                            </u>
-
-                                        </td>
+                                        <th>Start Date </th>
+                                        <td> : </td>
+                                        <td th:text="${entity.StartDate}" />                                      
                                     </tr>
                                     <tr>
-                                        <td>
-
-                                            End Date
-
-                                        </td>
-                                        <td>
-
-                                            :
-                                            <u>   <td th:text="${entity.endDate}" />
-                                            </u>
-                                        </td>
+                                        <th> End Date </th>
+                                        <td> :  </td>
+                                        <td th:text="${entity.endDate}" />                                                                              
                                     </tr>
 
                                     <tr>
-                                        <td>
+                                        <th>Purpose</th>
+                                        <td> :  </td>
+                                        <td th:text="${entity.notes}" />                                      
 
-                                            Purpose
-
-                                        </td>
-                                        <td>
-
-                                            :
-
-                                            <u> 
-                                                <td th:text="${entity.notes}" /> 
-                                            </u>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <br></br>
 
-                        <p>
-
-                            I,  <u>  <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
-                            </u>
-
-                            understand that this leave will be treated as an unpaid Leave if I do not have any leave balance left. (See notes below)
-
+                        <p >
+                            I,    <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
+                            understand that this leave will be treated as an unpaid leave if I do not have any leave balance left. (See notes below)
                         </p>
-                        <br></br>
-                        <p>
 
-                            Employee Signature : <u>  <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
-                            </u>
-
-                        </p>
                         <br></br>
 
-                        <p>
-
-                            Approver's Signature : <u>  <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
-                            </u>
-
-
-                        </p>
+                        <tr>
+                            <th style="width:150px ">  Employee Signature :</th>
+                            <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
+                        </tr>
+                        <br></br>
+                        <tr>
+                            <th style="width:150px "> Approver's Signature :</th>
+                            <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
+                        </tr>
                         <br></br>
 
                         <p>
                             <strong>
-
                                 Notes:
-
                             </strong>
                         </p>
                         <div style="padding-left:20px;">
                             <ul>
                                 <li>
-
                                     Employees are expected to give a minimum of one (1) week’s notice when requesting leave. 
                                     However, in an emergency, the employee is requested to give as much notice as possible.
 
                                 </li>
-
                             </ul>
-                        </div>
-                        <p></p>
-
+                        </div>                       
                     </div>      
                 </div>
             </div>
