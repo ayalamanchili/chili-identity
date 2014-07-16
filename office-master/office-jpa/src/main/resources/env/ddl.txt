@@ -1,3 +1,7 @@
+====
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+====
+
 CREATE DATABASE  IF NOT EXISTS `office` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `office`;
 -- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
