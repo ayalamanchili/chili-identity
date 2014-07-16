@@ -149,6 +149,13 @@ public class TimeJobService {
                 ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //10 days(80 hours) vacation earned
                 ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                //Get Available Vacation in previous year and Create carry forword for max of 5days--> 40 hours
+                BigDecimal carryFwdVacation = ConsultantTimeService.instance().getYearlyVacationBalance(emp, DateUtils.getNextYear(new Date(), -1));
+                if (carryFwdVacation.longValue() >= 80) {
+                    ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                } else {
+                    ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, carryFwdVacation, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                }
             }
         }
     }

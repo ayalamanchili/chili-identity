@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -198,12 +196,12 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         return SpringContext.getBean(ConsultantTimeSheetDao.class);
     }
 
-    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory timeSheetCategory, TimeSheetStatus timeSheetStatus) {
+    public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
         TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
         query.setParameter("employeeParam", employee);
         query.setParameter("categoryParam", timeSheetCategory);
-        query.setParameter("startDateParam", DateUtils.getFirstDayOfCurrentYear(), TemporalType.DATE);
-        query.setParameter("endDateParam", DateUtils.getLastDayCurrentOfYear(), TemporalType.DATE);
+        query.setParameter("startDateParam", DateUtils.getFirstDayOfYear(yearDate), TemporalType.DATE);
+        query.setParameter("endDateParam", DateUtils.getLastDayOfYear(yearDate), TemporalType.DATE);
         if (query.getSingleResult() != null) {
             return query.getSingleResult();
         } else {
