@@ -27,10 +27,16 @@
                             <thead>
                                 <tr>
                                     <th>Employee Name</th>
-                                    <th>Start Date</th>
+                                    <th>Hire Date</th>
+                                    <th>Total Vacation Hours</th>
+                                    <th>Total Personal Hours</th>
+                                    <th>Total Sick Hours</th>
                                     <th>Vacation Available</th>
                                     <th>Personal Available</th>
-                                    <th>Sick Available</th>
+                                    <th>Sick Available</th>                                    
+                                    <th>Used Vacation Hours</th>
+                                    <th>Used Personal Hours</th>
+                                    <th>Used Sick Hours</th>                                    
                                     <th>Unpaid Used</th>
                                 </tr>
                             </thead>
@@ -38,9 +44,15 @@
                                 <tr th:each="summary : ${entity}">
                                     <td th:text="${summary.employee}" />
                                     <td th:text="${summary.startDate}" />
+                                    <td th:text="${summary.totalVacationHours}" />
+                                    <td th:text="${summary.totalPersonalHours}"/>
+                                    <td th:text="${summary.totalSickHours}"/>
                                     <td th:text="${summary.availableVacationHours}" />
                                     <td th:text="${summary.availablePersonalHours}" />
                                     <td th:text="${summary.availableSickHours}" />
+                                    <td th:text="${summary.usedVacationHours}" />
+                                    <td th:text="${summary.usedPersonalHours}"/>
+                                    <td th:text="${summary.usedSickHours}"/>
                                     <td th:text="${summary.usedUnpaidHours}" />
                                 </tr>
                             </tbody>
