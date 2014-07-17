@@ -92,9 +92,19 @@ public class ConsultantTimeService {
 
     public ConsultantTimeSummary getYearlySummary(Employee employee) {
         ConsultantTimeSummary summary = new ConsultantTimeSummary();
-        summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
-        summary.setAvailableSickHours(getYearlySickBalance(employee));
+        //vacation
+        summary.setTotalVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date()));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
+        //Personal
+        summary.setTotalPersonalHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedPersonalHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved, new Date()));
+        summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
+        //Sick
+        summary.setTotalSickHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedSickHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Spent, TimeSheetStatus.Approved, new Date()));
+        summary.setAvailableSickHours(getYearlySickBalance(employee));
+
         summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
@@ -112,7 +122,7 @@ public class ConsultantTimeService {
         BigDecimal spent = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved, new Date());
         return earned.subtract(spent);
     }
-    
+
     public BigDecimal getYearlyVacationBalance(Employee employee, Date yearDate) {
         BigDecimal vacationEarned = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date());
         BigDecimal vacationCarryForward = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, yearDate);

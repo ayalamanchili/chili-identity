@@ -21,9 +21,25 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class ConsultantTimeSummary implements Serializable {
 
-    protected BigDecimal availableSickHours;
-    protected BigDecimal availablePersonalHours;
+    /**
+     * Vacation
+     */
+    protected BigDecimal totalVacationHours;
+    protected BigDecimal usedVacationHours;
     protected BigDecimal availableVacationHours;
+    /**
+     * Personal
+     */
+    protected BigDecimal totalPersonalHours;
+    protected BigDecimal usedPersonalHours;
+    protected BigDecimal availablePersonalHours;
+    /**
+     * Sick
+     */
+    protected BigDecimal totalSickHours;
+    protected BigDecimal usedSickHours;
+    protected BigDecimal availableSickHours;
+
     protected BigDecimal usedUnpaidHours;
     protected String employee;
     protected Date startDate;
@@ -37,20 +53,20 @@ public class ConsultantTimeSummary implements Serializable {
         this.availableVacationHours = availableVacationHours;
     }
 
-    public BigDecimal getAvailableSickHours() {
-        return availableSickHours;
+    public BigDecimal getTotalVacationHours() {
+        return totalVacationHours;
     }
 
-    public void setAvailableSickHours(BigDecimal availableSickHours) {
-        this.availableSickHours = availableSickHours;
+    public void setTotalVacationHours(BigDecimal totalVacationHours) {
+        this.totalVacationHours = totalVacationHours;
     }
 
-    public BigDecimal getAvailablePersonalHours() {
-        return availablePersonalHours;
+    public BigDecimal getUsedVacationHours() {
+        return usedVacationHours;
     }
 
-    public void setAvailablePersonalHours(BigDecimal availablePersonalHours) {
-        this.availablePersonalHours = availablePersonalHours;
+    public void setUsedVacationHours(BigDecimal usedVacationHours) {
+        this.usedVacationHours = usedVacationHours;
     }
 
     public BigDecimal getAvailableVacationHours() {
@@ -61,6 +77,54 @@ public class ConsultantTimeSummary implements Serializable {
         this.availableVacationHours = availableVacationHours;
     }
 
+    public BigDecimal getTotalPersonalHours() {
+        return totalPersonalHours;
+    }
+
+    public void setTotalPersonalHours(BigDecimal totalPersonalHours) {
+        this.totalPersonalHours = totalPersonalHours;
+    }
+
+    public BigDecimal getUsedPersonalHours() {
+        return usedPersonalHours;
+    }
+
+    public void setUsedPersonalHours(BigDecimal usedPersonalHours) {
+        this.usedPersonalHours = usedPersonalHours;
+    }
+
+    public BigDecimal getAvailablePersonalHours() {
+        return availablePersonalHours;
+    }
+
+    public void setAvailablePersonalHours(BigDecimal availablePersonalHours) {
+        this.availablePersonalHours = availablePersonalHours;
+    }
+
+    public BigDecimal getTotalSickHours() {
+        return totalSickHours;
+    }
+
+    public void setTotalSickHours(BigDecimal totalSickHours) {
+        this.totalSickHours = totalSickHours;
+    }
+
+    public BigDecimal getUsedSickHours() {
+        return usedSickHours;
+    }
+
+    public void setUsedSickHours(BigDecimal usedSickHours) {
+        this.usedSickHours = usedSickHours;
+    }
+
+    public BigDecimal getAvailableSickHours() {
+        return availableSickHours;
+    }
+
+    public void setAvailableSickHours(BigDecimal availableSickHours) {
+        this.availableSickHours = availableSickHours;
+    }
+
     public BigDecimal getUsedUnpaidHours() {
         return usedUnpaidHours;
     }
@@ -69,6 +133,7 @@ public class ConsultantTimeSummary implements Serializable {
         this.usedUnpaidHours = usedUnpaidHours;
     }
 
+   
     public String getEmployee() {
         return employee;
     }
