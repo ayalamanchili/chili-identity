@@ -27,16 +27,17 @@
                             <thead>
                                 <tr>
                                     <th>Employee Name</th>
-                                    <th>Hire Date</th>
-                                    <th>Total Vacation Hours</th>
-                                    <th>Total Personal Hours</th>
-                                    <th>Total Sick Hours</th>
-                                    <th>Vacation Available</th>
-                                    <th>Personal Available</th>
-                                    <th>Sick Available</th>                                    
-                                    <th>Used Vacation Hours</th>
-                                    <th>Used Personal Hours</th>
-                                    <th>Used Sick Hours</th>                                    
+                                    <th>Start Date</th>
+                                    <th>T V H</th>
+                                    <th>T P H</th>
+                                    <th>T S H</th>
+                                    <th>A V H</th>
+                                    <th>A P H</th>
+                                    <th>A S H</th>                                    
+                                    <th>U V H</th>
+                                    <th>U P H</th>
+                                    <th>U S H</th>      
+                                    <th>C F V H</th>
                                     <th>Unpaid Used</th>
                                 </tr>
                             </thead>
@@ -53,11 +54,26 @@
                                     <td th:text="${summary.usedVacationHours}" />
                                     <td th:text="${summary.usedPersonalHours}"/>
                                     <td th:text="${summary.usedSickHours}"/>
+                                    <td th:text="${summary.usedSickHours}"/>
                                     <td th:text="${summary.usedUnpaidHours}" />
                                 </tr>
                             </tbody>
                         </table>
-                    </div>      
+                    </div>     
+                    <div Style="text-align:left;"><ul>
+                            <li>T V H=TOTAL VACATION HOURS</li>
+                            <li>T P H=TOTAL PERSONAL HOURS</li>
+                            <li>T S H=TOTAL SICK HOURS</li>
+                            <li>A V H=AVALIABLE VACATION HOURS</li>
+                            <li>A P H=AVALIABLE PERSONAL HOURS</li>
+                            <li>A S H=AVALIABLE SICK HOURS</li>
+                            <li>U V H=USED VACATION HOURS</li>
+                            <li>U P H=USED PERSONAL HOURS</li>
+                            <li>U P V H=CARRY FORWARD VACATION HOURS</li>
+                            <li>U S H=USED SICK HOURS</li>
+                        </ul>
+
+                    </div>
                 </div>
             </div>
 
