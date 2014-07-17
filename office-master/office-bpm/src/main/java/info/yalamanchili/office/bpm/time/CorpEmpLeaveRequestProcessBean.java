@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -37,8 +38,8 @@ public class CorpEmpLeaveRequestProcessBean {
         if (noValidationsCategories.contains(entity.getCategory())) {
             return true;
         }
-        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved);
-        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInCurrentYear(employee, entity.getCategory(), TimeSheetStatus.Approved);
+        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved, new Date());
+        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInYear(employee, entity.getCategory(), TimeSheetStatus.Approved, new Date());
         if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) <= 0) {
             return true;
         } else {

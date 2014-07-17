@@ -123,13 +123,13 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return queryStr.toString();
     }
 
-    public BigDecimal getHoursInCurrentYear(Employee employee, TimeSheetCategory category, TimeSheetStatus status) {
+    public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory category, TimeSheetStatus status,Date yearDate) {
         TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and status=:statusParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
         query.setParameter("employeeParam", employee);
         query.setParameter("categoryParam", category);
         query.setParameter("statusParam", status);
-        query.setParameter("startDateParam", DateUtils.getFirstDayOfCurrentYear(), TemporalType.DATE);
-        query.setParameter("endDateParam", DateUtils.getLastDayCurrentOfYear(), TemporalType.DATE);
+        query.setParameter("startDateParam", DateUtils.getFirstDayOfYear(yearDate), TemporalType.DATE);
+        query.setParameter("endDateParam", DateUtils.getLastDayOfYear(yearDate), TemporalType.DATE);
         if (query.getSingleResult() != null) {
             return query.getSingleResult();
         } else {

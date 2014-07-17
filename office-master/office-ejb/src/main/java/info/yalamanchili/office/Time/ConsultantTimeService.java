@@ -94,7 +94,7 @@ public class ConsultantTimeService {
         ConsultantTimeSummary summary = new ConsultantTimeSummary();
         summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
         summary.setAvailableSickHours(getYearlySickBalance(employee));
-        summary.setAvailableVacationHours(getYearlyVacationBalance(employee));
+        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
         summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
@@ -112,15 +112,7 @@ public class ConsultantTimeService {
         BigDecimal spent = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved, new Date());
         return earned.subtract(spent);
     }
-
-    @Deprecated
-    public BigDecimal getYearlyVacationBalance(Employee employee) {
-        BigDecimal vacationEarned = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date());
-        BigDecimal vacationCarryForward = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, new Date());
-        BigDecimal spent = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date());
-        return vacationEarned.add(vacationCarryForward).subtract(spent);
-    }
-
+    
     public BigDecimal getYearlyVacationBalance(Employee employee, Date yearDate) {
         BigDecimal vacationEarned = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date());
         BigDecimal vacationCarryForward = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, yearDate);
