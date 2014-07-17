@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.commons.DateUtils;
 import info.chili.commons.FileIOUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
@@ -48,6 +49,7 @@ public class CorporateTimeService {
     protected CorporateTimeSheetDao corporateTimeSheetDao;
 
     public void submitLeaveRequest(CorporateTimeSheet entity) {
+        validateRequest(entity);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
         Employee emp = SecurityService.instance().getCurrentUser();
@@ -58,6 +60,15 @@ public class CorporateTimeService {
         }
         vars.put("notifyEmployees", entity.getNotifyEmployees());
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
+    }
+    
+    protected void validateRequest(CorporateTimeSheet entity){
+        if (entity.getStartDate().after(DateUtils.getNextMonth(new Date(), 11)) || entity.getStartDate().before(DateUtils.getNextMonth(new Date(), -11))) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.startdate", "Start Date Invalid");
+        }
+        if (entity.getEndDate().after(DateUtils.getNextMonth(new Date(), 11)) || entity.getEndDate().before(DateUtils.getNextMonth(new Date(), -11))) {
+             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.enddate", "End Date Invalid ");
+        }
     }
 
     public void updateLeaveRequest(CorporateTimeSheet entity) {
