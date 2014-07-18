@@ -60,7 +60,7 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
 
     public ReadAllCorporateTimeSheetPanel(String title, JSONArray array, boolean isEmployeesOnLeavePanel) {
         instance = this;
-        isEmployeesOnLeavePanel = isEmployeesOnLeavePanel;
+        this.isEmployeesOnLeavePanel = isEmployeesOnLeavePanel;
         initTable(title, array, OfficeWelcome.constants);
     }
 
