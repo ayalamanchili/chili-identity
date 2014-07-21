@@ -25,6 +25,7 @@ public class Auth {
         ROLE_SYSTEM_AND_NETWORK_ADMIN,
         ROLE_CORPORATE_TIME_REPORTS,
         ROLE_CONSULTANT_TIME_REPORTS,
+        ROLE_IT_DEVELOPER,
     }
 
     public static boolean isAdmin() {
@@ -77,7 +78,7 @@ public class Auth {
     }
 
     public static boolean isCorporateEmployee() {
-       return OfficeWelcome.instance().roles.contains(ROLE.ROLE_CORPORATE_EMPLOYEE.name());
+        return OfficeWelcome.instance().roles.contains(ROLE.ROLE_CORPORATE_EMPLOYEE.name());
     }
 
     public static boolean isConsultantEmployee() {
@@ -92,6 +93,10 @@ public class Auth {
     public static boolean is1099(JSONObject emp) {
         String empType = JSONUtils.toString(emp.get("employeeType"), "name");
         return empType != null && empType.equals("1099 Contractor");
+    }
+
+    public static boolean isItDeveloper() {
+        return OfficeWelcome.instance().roles.contains(ROLE.ROLE_IT_DEVELOPER.name());
     }
 
     public static String[] getAllRoles() {
