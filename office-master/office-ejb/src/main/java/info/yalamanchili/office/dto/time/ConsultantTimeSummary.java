@@ -39,7 +39,16 @@ public class ConsultantTimeSummary implements Serializable {
     protected BigDecimal totalSickHours;
     protected BigDecimal usedSickHours;
     protected BigDecimal availableSickHours;
-
+    /**
+     * total hours
+     */
+    protected BigDecimal totalAvaliableHours;
+    protected BigDecimal totalUsedHours;
+    protected BigDecimal balanceHours;
+    /**
+     *
+     *
+     */
     protected BigDecimal usedUnpaidHours;
     protected String employee;
     protected Date startDate;
@@ -133,7 +142,6 @@ public class ConsultantTimeSummary implements Serializable {
         this.usedUnpaidHours = usedUnpaidHours;
     }
 
-   
     public String getEmployee() {
         return employee;
     }
@@ -148,5 +156,29 @@ public class ConsultantTimeSummary implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public BigDecimal getTotalAvaliableHours() {
+        return totalAvaliableHours;
+    }
+
+    public void setTotalAvaliableHours(BigDecimal totalAvaliableHours) {
+        this.totalAvaliableHours = totalAvaliableHours;
+    }
+
+    public BigDecimal getTotalUsedHours() {
+        return totalUsedHours;
+    }
+
+    public void setTotalUsedHours(BigDecimal totalUsedHours) {
+        this.totalUsedHours = totalUsedHours;
+    }
+
+    public BigDecimal getBalanceHours() {
+        return balanceHours;
+    }
+
+    public void setBalanceHours(BigDecimal balanceHours) {
+        this.balanceHours = balanceHours;
     }
 }
