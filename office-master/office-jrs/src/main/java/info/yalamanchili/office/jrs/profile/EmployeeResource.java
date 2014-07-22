@@ -397,15 +397,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         }
         return employees;
     }
-
-//TODO use Report Generator
+//TODO user super class search
     @POST
     @Path("/search_employee_report")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("format") String format) {
-        Response.ResponseBuilder response;
-        //TODO get autogenerate unique file name
-        String fileName = "report" + "." + format;
+    public Response searchEmployeeReport(EmployeeSearchDto entity,@QueryParam("reportName") String reportName, @QueryParam("format") String format) {
         List<EmployeeDto> data = new ArrayList<EmployeeDto>();
         Long size;
         if (entity.getCompanyContacts().size() > 0) {
@@ -419,13 +415,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             data.addAll(searchEmployee(entity, start, limit));
             start = start + limit;
         } while ((start + limit) < size);
-        try {
-            ReportGenerator.generateReport(data, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
-            response = Response.ok(fileName.getBytes());
-        } catch (JRException e) {
-            response = Response.serverError();
-        }
-        return response.build();
+            return ReportGenerator.generateReport(data,reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
     }
 
     @Override

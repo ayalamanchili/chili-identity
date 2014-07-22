@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import com.google.common.base.Strings;
 import info.chili.commons.SearchUtils;
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -17,7 +18,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -27,10 +27,11 @@ public abstract class CRUDResource<T> extends info.chili.service.jrs.CRUDResourc
 
     @PUT
     @Path("/search_report")
-    public Response searchReport(T entity, @QueryParam("format") String format) {
+    public Response searchReport(T entity,@QueryParam("fileName")String reportName, @QueryParam("format") String format) {
         Response.ResponseBuilder response;
-        //TODO get autogenerate unique file name
-        String fileName = "report" + "." + format;
+        if(Strings.isNullOrEmpty(reportName)){
+            reportName="report";
+        }
         List<T> data = new ArrayList<T>();
         Long size = SearchUtils.getSearchSize(getDao().getEntityManager(), entity);
         int start = 0;
@@ -39,12 +40,6 @@ public abstract class CRUDResource<T> extends info.chili.service.jrs.CRUDResourc
             data.addAll(search(entity, start, limit));
             start = start + limit;
         } while ((start + limit) < size);
-        try {
-            ReportGenerator.generateReport(data, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName);
-            response = Response.ok(fileName.getBytes());
-        } catch (JRException e) {
-            response = Response.serverError();
-        }
-        return response.build();
+            return ReportGenerator.generateReport(data,reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
     }
 }

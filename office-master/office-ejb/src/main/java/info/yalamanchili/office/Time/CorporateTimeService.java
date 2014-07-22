@@ -172,7 +172,7 @@ public class CorporateTimeService {
             summary.add(getYearlySummary(emp));
         }
         String report = TemplateService.instance().process("corp-emp-summary.xhtml", summary);
-        return ReportGenerator.generatePDFReportFromHtml(report);
+        return ReportGenerator.generatePDFReportFromHtml(report,"corp-emp-summary");
     }
 
     public static CorporateTimeService instance() {

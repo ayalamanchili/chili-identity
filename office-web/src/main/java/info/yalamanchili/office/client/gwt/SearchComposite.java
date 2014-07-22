@@ -39,6 +39,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -69,13 +70,9 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected DisclosurePanel advancedSearchDP = new DisclosurePanel("Advanced Search");
     protected FlowPanel advancedSearchPanel = new FlowPanel();
     /*
-     * Reporting widgets
+     reports
      */
-    protected DisclosurePanel reportsDP = new DisclosurePanel("Reports");
-    protected FlowPanel reportsPanel = new FlowPanel();
-    protected Button generateRepB = new Button("Generate");
-    protected Label formatL = new Label("Format");
-    protected ListBox formatLB = new ListBox();
+    protected ReportsWidget reportsW = new ReportsWidget(this);
     /*
      * attributes
      */
@@ -126,24 +123,15 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
 
     protected void onOpenAdvancedSearch() {
         populateAdvancedSuggestBoxes();
-        reportsDP.setVisible(true);
+        reportsW.setVisible(true);
     }
 
     protected void onCloseAdvancedSearch() {
-        reportsDP.setVisible(false);
+        reportsW.setVisible(false);
     }
 
     protected void configureReportsPanel() {
-        reportsPanel.add(formatL);
-        formatLB.addItem("PDF", "pdf");
-        formatLB.addItem("HTML", "html");
-        formatLB.addItem("XML", "xml");
-        reportsPanel.add(formatLB);
-        reportsPanel.add(generateRepB);
-        reportsDP.setContent(reportsPanel);
-        mainPanel.add(reportsDP);
-        generateRepB.addClickHandler(this);
-        reportsDP.setVisible(false);
+        mainPanel.add(reportsW);
     }
 
     protected abstract void populateSearchSuggestBox();
@@ -308,29 +296,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected abstract void search(JSONObject entity);
 
     protected void generateReport(JSONObject entity) {
-        //TODO make this abstract 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(getReportURL()));
-        builder.setHeader("Content-Type", "application/json");
-
-        try {
-            builder.sendRequest(entity.toString(), new RequestCallback() {
-                @Override
-                public void onResponseReceived(com.google.gwt.http.client.Request request, com.google.gwt.http.client.Response response) {
-                    if (200 == response.getStatusCode()) {
-                        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + response.getText(), "_blank", "");
-                    } else {
-                        Window.alert("error downloading report");
-                    }
-                }
-
-                @Override
-                public void onError(com.google.gwt.http.client.Request request, Throwable exception) {
-                    Window.alert(exception.getLocalizedMessage());
-                }
-            });
-        } catch (RequestException e) {
-            Window.alert(e.getLocalizedMessage());
-        }
+        FileUtils.openFile(entity, getReportURL());
     }
 
     protected boolean disableRegularSearch() {
@@ -339,10 +305,6 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
 
     protected boolean enableGenerateReport() {
         return false;
-    }
-
-    protected String getReportFormat() {
-        return formatLB.getValue(formatLB.getSelectedIndex());
     }
 
     protected abstract void postSearchSuccess(JSONArray result);
@@ -377,7 +339,7 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
         if (event.getSource() == searchButton) {
             processSearch();
         }
-        if (event.getSource() == generateRepB) {
+        if (event.getSource() == reportsW.getGenerateReportButton()) {
             generateReportClicked();
         }
     }
@@ -445,4 +407,9 @@ public abstract class SearchComposite extends Composite implements ClickHandler,
     protected String getReportURL() {
         return null;
     }
+    
+    protected String getReportFormat() {
+        return reportsW.getReportFormat();
+    }
+
 }
