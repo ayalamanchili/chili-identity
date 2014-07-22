@@ -30,6 +30,14 @@ public enum TimeSheetCategory {
     Maternity,
     Other;
 
+    public static List<TimeSheetCategory> getLeaveSpentCheckedCategories() {
+        List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();
+        res.add(Vacation_Spent);
+        res.add(Sick_Spent);
+        res.add(Personal_Spent);
+        return res;
+    }
+
     public static List<TimeSheetCategory> getLeaveSpentCategories() {
         List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();
         res.add(Vacation_Spent);

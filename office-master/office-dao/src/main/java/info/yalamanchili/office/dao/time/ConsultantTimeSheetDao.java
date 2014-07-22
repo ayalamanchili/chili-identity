@@ -8,19 +8,14 @@
  */
 package info.yalamanchili.office.dao.time;
 
-import com.google.common.io.Files;
+import com.google.common.collect.Lists;
 import info.chili.commons.DateUtils;
-import info.chili.commons.FileIOUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
-import info.yalamanchili.office.template.TemplateService;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +24,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -128,19 +122,6 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         return query.getResultList();
     }
 
-    public Response getPDFReport(SearchConsultantTimeSheetDto dto) {
-        String html = TemplateService.instance().process("consultant-time-report.xhtml", getReport(dto, 0, 10000));
-        byte[] pdf = FileIOUtils.convertToPDF(html);
-        File file = new File(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "consultant-ts-report.pdf");
-        try {
-            Files.write(pdf, file);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        return Response.ok("consultant-ts-report.pdf".getBytes()).header("content-disposition", "inline; filename = consultant-ts-report.pdf")
-                .header("Content-Length", "consultant-ts-report.pdf".length()).build();
-    }
-
     protected Query getReportQueryWithParams(String qryStr, Query query, SearchConsultantTimeSheetDto dto) {
         if (qryStr.contains("startDateParam")) {
             query.setParameter("startDateParam", dto.getStartDate(), TemporalType.DATE);
@@ -197,9 +178,18 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
     }
 
     public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
-        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
+        return getHoursInYear(employee, Lists.newArrayList(timeSheetCategory), Lists.newArrayList(timeSheetStatus), yearDate);
+    }
+
+    public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
+        return getHoursInYear(employee, timeSheetCategory, Lists.newArrayList(timeSheetStatus), yearDate);
+    }
+
+    public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> timeSheetCategory, List<TimeSheetStatus> timeSheetStatus, Date yearDate) {
+        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category in (:categoryParam) and status in (:statusParam) and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
         query.setParameter("employeeParam", employee);
         query.setParameter("categoryParam", timeSheetCategory);
+        query.setParameter("statusParam", timeSheetStatus);
         query.setParameter("startDateParam", DateUtils.getFirstDayOfYear(yearDate), TemporalType.DATE);
         query.setParameter("endDateParam", DateUtils.getLastDayOfYear(yearDate), TemporalType.DATE);
         if (query.getSingleResult() != null) {
