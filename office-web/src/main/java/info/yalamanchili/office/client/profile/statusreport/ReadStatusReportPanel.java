@@ -16,6 +16,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import java.util.logging.Logger;
 
@@ -49,8 +50,13 @@ public class ReadStatusReportPanel extends ReadComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        populateComments();
                     }
                 });
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.StatusReport"));
     }
 
     @Override
@@ -83,7 +89,7 @@ public class ReadStatusReportPanel extends ReadComposite {
         if (TabPanel.instance().homePanel.isVisible()) {
             addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
         }
-        addDropDown("project", new SelectProjectWidget(getEntityId(),false, true));
+        addDropDown("project", new SelectProjectWidget(getEntityId(), false, true));
         addField("reportStartDate", true, true, DataType.DATE_FIELD);
         addField("reportEndDate", true, true, DataType.DATE_FIELD);
         addEnumField("status", true, true, ProjectStatus.names());

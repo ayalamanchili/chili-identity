@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
@@ -63,6 +64,10 @@ public class UpdateStatusReportPanel extends UpdateComposite {
                 });
     }
 
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.StatusReport"));
+    }
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         if (TabPanel.instance().homePanel.isVisible()) {
@@ -76,6 +81,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
+        populateComments();
     }
 
     @Override
