@@ -144,7 +144,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @Produces({"application/pdf"})
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_REPORTS')")
     public Response getPDFReport(SearchConsultantTimeSheetDto dto) {
-        return consultantTimeSheetDao.getPDFReport(dto);
+        return ConsultantTimeService.instance().getReport(dto);
     }
 
     @GET
