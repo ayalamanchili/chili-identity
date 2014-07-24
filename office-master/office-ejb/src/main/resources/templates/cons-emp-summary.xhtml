@@ -36,7 +36,10 @@
                                     <th>A S H</th>                                    
                                     <th>U V H</th>
                                     <th>U P H</th>
-                                    <th>U S H</th>      
+                                    <th>U S H</th>    
+                                    <th>T A H</th>    
+                                    <th>T U H</th>
+                                    <th>T A H</th>
                                     <th>Unpaid Used</th>
                                 </tr>
                             </thead>
@@ -53,6 +56,9 @@
                                     <td th:text="${summary.usedVacationHours}" />
                                     <td th:text="${summary.usedPersonalHours}"/>
                                     <td th:text="${summary.usedSickHours}"/>
+                                    <td th:text="${summary.totalAccumulatedHours}" />
+                                    <td th:text="${summary.totalUsedHours}"/>
+                                    <td th:text="${summary.totalAvailableHours}"/>
                                     <td th:text="${summary.usedUnpaidHours}" />
                                 </tr>
                             </tbody>
@@ -91,6 +97,17 @@
                                 </td>
                                 <td style="border: 1px solid black;">
                                     U S H=USED SICK HOURS
+                                </td>
+                            </tr>
+                            <tr style="border: 1px solid black;">
+                                <td style="border: 1px solid black;">
+                                    T V H=Total Accumulated Hours
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    T U H=Total Used Hours
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    T A H=Total Available Hours
                                 </td>
                             </tr>
                         </table>
