@@ -158,8 +158,8 @@ public class ConsultantTimeService {
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             summary.add(getYearlySummary(emp));
         }
-        String report = TemplateService.instance().process("consultant-ts-summary-report.xhtml", summary);
-        return ReportGenerator.generatePDFReportFromHtml(report, "consultant-ts-summary-report");
+        String report = TemplateService.instance().process("cons-emp-summary.xhtml", summary);
+        return ReportGenerator.generatePDFReportFromHtml(report, "cons-emp-summary");
     }
 
     public static ConsultantTimeService instance() {
