@@ -62,6 +62,9 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
         assignFieldValueFromEntity("availablePersonalHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("availableVacationHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("usedUnpaidHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("totalAccumulatedHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("totalUsedHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("totalAvailableHours", entity, DataType.FLOAT_FIELD);
     }
 
     @Override
@@ -80,6 +83,9 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
         addField("availablePersonalHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("availableVacationHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("usedUnpaidHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("totalAccumulatedHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("totalUsedHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("totalAvailableHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
