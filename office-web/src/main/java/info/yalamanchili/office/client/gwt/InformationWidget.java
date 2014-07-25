@@ -9,7 +9,7 @@
 package info.yalamanchili.office.client.gwt;
 
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.composite.ALComposite;
 
 /**
@@ -19,13 +19,13 @@ import info.chili.gwt.composite.ALComposite;
 public class InformationWidget extends ALComposite {
 
     protected FlowPanel panel = new FlowPanel();
-    protected Label label = new Label();
+    protected HTML html = new HTML();
     protected String information;
 
     public InformationWidget(String information) {
         this.information = information;
         init(panel);
-        label.setText(information);
+        html.setHTML(information);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class InformationWidget extends ALComposite {
 
     @Override
     protected void addWidgets() {
-        panel.add(label);
+        panel.add(html);
     }
 
 }

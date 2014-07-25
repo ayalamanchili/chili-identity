@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.ext.comment;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Timer;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -43,16 +44,22 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
     }
 
     @Override
-    public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getCommentsUrl(parentId, targetClassName, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
-                false, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
-
+    public void preFetchTable(final int start) {
+        //delayed due to issues with http connections manager not releasing connections
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                HttpService.HttpServiceAsync.instance().doGet(getCommentsUrl(parentId, targetClassName, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+                        false, new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                logger.info(result);
+                                postFetchTable(result);
+                            }
+                        });
+            }
+        };
+        timer.schedule(2000);
     }
 
     protected String getCommentsUrl(String parentId, String targetClassName, Integer start, String limit) {

@@ -10,8 +10,6 @@ package info.yalamanchili.office.dao.client;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
@@ -36,7 +34,7 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
     public StatusReport save(StatusReport entity) {
         entity.setProject(ProjectDao.instance().findById(entity.getProject().getId()));
         entity.setClientInformation(ClientInformationDao.instance().findById(entity.getClientInformation().getId()));
-        return super.save(entity);
+        return em.merge(entity);
     }
 
     public List<StatusReport> getReports(Employee emp, int start, int limit) {

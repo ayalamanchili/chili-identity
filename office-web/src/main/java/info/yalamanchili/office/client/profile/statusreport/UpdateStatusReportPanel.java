@@ -11,7 +11,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -36,6 +38,8 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("project", entity);
+        assignEntityValueFromField("clientInformation", entity);
         assignEntityValueFromField("reportStartDate", entity);
         assignEntityValueFromField("reportEndDate", entity);
         assignEntityValueFromField("status", entity);
@@ -65,7 +69,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
     }
 
     protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.StatusReport"));
+        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.StatusReport"));
     }
 
     @Override
@@ -77,10 +81,12 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
+        }
         assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
         populateComments();
     }
 
@@ -97,6 +103,9 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
+        RichTextField reportF = (RichTextField) fields.get("report");
+        reportF.setWidth("100%");
+        reportF.area.setHeight("400px");
     }
 
     @Override
@@ -105,15 +114,16 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
         }
         addDropDown("project", new SelectProjectWidget(getEntityId(), false, true));
-        addField("reportStartDate", false, true, DataType.DATE_FIELD);
-        addField("reportEndDate", false, true, DataType.DATE_FIELD);
-        addEnumField("status", false, true, ProjectStatus.names());
+        addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
         addField("report", false, true, DataType.RICH_TEXT_AREA);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            addField("preparedBy", false, false, DataType.STRING_FIELD);
-            addField("approvedBy", false, false, DataType.STRING_FIELD);
-            addField("submittedDate", false, false, DataType.DATE_FIELD);
+            addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
+        alignFields();
     }
 
     @Override

@@ -9,6 +9,7 @@ package info.yalamanchili.office.statusreport;
 
 import com.google.common.base.Strings;
 import info.chili.commons.FileIOUtils;
+import info.chili.commons.HtmlUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -38,8 +39,9 @@ public class StatusReportService {
     protected StatusReportDao statusReportDao;
 
     public StatusReport save(StatusReport entity) {
+        entity.setReport(HtmlUtils.cleanData(entity.getReport()));
         entity = statusReportDao.save(entity);
-        if (Strings.isNullOrEmpty(entity.getApprovedBy())) {
+        if (Strings.isNullOrEmpty(entity.getApprovedBy()) && entity.getId() == null) {
             startStatusReportProcess(entity);
         }
         return entity;

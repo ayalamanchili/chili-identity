@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.cllientinfo;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 /**
@@ -25,7 +26,7 @@ public class SelectClientInfoWidget extends SelectComposite {
     }
 
     public SelectClientInfoWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "ClientInfo", readOnly, isRequired);
+        super(OfficeWelcome.constants, "ClientInfo", readOnly, isRequired, Alignment.HORIZONTAL);
         instance = this;
     }
 

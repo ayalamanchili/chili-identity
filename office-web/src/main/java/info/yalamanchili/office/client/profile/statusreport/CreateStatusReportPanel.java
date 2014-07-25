@@ -13,7 +13,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
@@ -88,6 +90,9 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void configure() {
+        RichTextField reportF = (RichTextField) fields.get("report");
+        reportF.setWidth("100%");
+        reportF.area.setHeight("400px");
     }
 
     @Override
@@ -95,15 +100,16 @@ public class CreateStatusReportPanel extends CreateComposite {
         addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
         addDropDown("project", new SelectProjectWidget(false, true));
         entityFieldsPanel.add(missingInfoL);
-        addField("reportStartDate", false, true, DataType.DATE_FIELD);
-        addField("reportEndDate", false, true, DataType.DATE_FIELD);
-        addEnumField("status", false, true, ProjectStatus.names());
+        addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
         addField("report", false, true, DataType.RICH_TEXT_AREA);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
-            addField("preparedBy", false, false, DataType.STRING_FIELD);
-            addField("approvedBy", false, false, DataType.STRING_FIELD);
-            addField("submittedDate", false, false, DataType.DATE_FIELD);
+            addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
+        alignFields();
     }
 
     @Override
@@ -113,7 +119,7 @@ public class CreateStatusReportPanel extends CreateComposite {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(missingInfoL)) {
-            new GenericPopup(new InformationWidget("Please submit a Service Ticket with Type='Other' and enter the details of missing information.\n eg: I am trying to submit my project status report and dont see my client and project inforation available.\n You will get a email notification once the information is ready so you can go back to submit the status report.")).show();
+            new GenericPopup(new InformationWidget("Please submit a <b>Service Ticket</b> under </br><b>Home-->Self Service-->Open Ticket with Type='Other'</b> and </br>enter the details of missing information. </br>eg: I am trying to submit my project status report and dont see my client and project inforation available. </br>You will get a email notification once the information is ready so you can go back to submit the status report.")).show();
         }
         super.onClick(event);
     }

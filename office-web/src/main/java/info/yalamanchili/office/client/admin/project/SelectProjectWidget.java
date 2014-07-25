@@ -12,6 +12,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.listeners.GenericListener;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 
 /**
@@ -21,7 +22,7 @@ import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidge
 public class SelectProjectWidget extends SelectComposite implements GenericListener {
 
     public SelectProjectWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Project", readOnly, isRequired);
+        super(OfficeWelcome.constants, "Project", readOnly, isRequired, Alignment.HORIZONTAL);
         if (SelectClientInfoWidget.instance() != null) {
             SelectClientInfoWidget.instance().addListner(this);
         }
@@ -29,8 +30,11 @@ public class SelectProjectWidget extends SelectComposite implements GenericListe
     protected String statusReportId;
 
     public SelectProjectWidget(String statusReportId, Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Project", readOnly, isRequired);
+        super(OfficeWelcome.constants, "Project", readOnly, isRequired, Alignment.HORIZONTAL);
         this.statusReportId = statusReportId;
+        if (SelectClientInfoWidget.instance() != null) {
+            SelectClientInfoWidget.instance().addListner(this);
+        }
         processData();
     }
 
@@ -40,10 +44,10 @@ public class SelectProjectWidget extends SelectComposite implements GenericListe
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        if (statusReportId != null) {
-            return OfficeWelcome.constants.root_url() + "statusreport/projects/dropdown/" + statusReportId;
-        } else if (SelectClientInfoWidget.instance() != null) {
+        if (SelectClientInfoWidget.instance() != null && SelectClientInfoWidget.instance().getSelectedObject() != null) {
             return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "clientinformation/projects/dropdown/" + SelectClientInfoWidget.instance().getSelectedObjectId(), start, limit, columns);
+        } else if (statusReportId != null) {
+            return OfficeWelcome.constants.root_url() + "statusreport/projects/dropdown/" + statusReportId;
         } else {
             return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "project/dropdown", start, limit, columns);
         }

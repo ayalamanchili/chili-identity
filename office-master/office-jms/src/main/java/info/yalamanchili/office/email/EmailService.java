@@ -8,6 +8,7 @@
 package info.yalamanchili.office.email;
 
 import com.google.common.xml.XmlEscapers;
+import info.chili.commons.HtmlUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.cache.OfficeCacheManager;
@@ -15,8 +16,6 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import info.yalamanchili.office.template.TemplateService;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
@@ -43,7 +42,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
-import org.w3c.tidy.Tidy;
 
 /**
  *
@@ -112,29 +110,11 @@ public class EmailService {
 
     protected void cleanEmailHtmlBody(Email email) {
         if (email.isRichText()) {
-            try {
-                email.setBody(cleanData(email.getBody()));
-            } catch (UnsupportedEncodingException ex) {
-                throw new RuntimeException(ex);
-            }
+            email.setBody(HtmlUtils.cleanData(email.getBody()));
         } else {
             //escape & # special chars for task emails
             email.setBody(XmlEscapers.xmlAttributeEscaper().escape(email.getBody()));
         }
-    }
-//TODO move to commons and describe this method.
-
-    protected String cleanData(String data) throws UnsupportedEncodingException {
-        if (data == null) {
-            return "";
-        }
-        Tidy tidy = new Tidy();
-        tidy.setPrintBodyOnly(true);
-        tidy.setXmlOut(true);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes("UTF-8"));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        tidy.parseDOM(inputStream, outputStream);
-        return outputStream.toString("UTF-8");
     }
 
     protected void processAttchments(MimeMessageHelper message, Email email) throws MessagingException {

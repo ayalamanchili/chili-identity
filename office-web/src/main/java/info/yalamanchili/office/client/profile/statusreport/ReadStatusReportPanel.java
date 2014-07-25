@@ -9,10 +9,13 @@ package info.yalamanchili.office.client.profile.statusreport;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
@@ -50,7 +53,6 @@ public class ReadStatusReportPanel extends ReadComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-                        populateComments();
                     }
                 });
     }
@@ -73,7 +75,7 @@ public class ReadStatusReportPanel extends ReadComposite {
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
-
+        populateComments();
     }
 
     @Override
@@ -82,6 +84,9 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     protected void configure() {
+        RichTextField reportF = (RichTextField) fields.get("report");
+        reportF.setHeightAndWidth("50%", "100%");
+        reportF.area.setHeight("400px");
     }
 
     @Override
@@ -90,14 +95,14 @@ public class ReadStatusReportPanel extends ReadComposite {
             addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
         }
         addDropDown("project", new SelectProjectWidget(getEntityId(), false, true));
-        addField("reportStartDate", true, true, DataType.DATE_FIELD);
-        addField("reportEndDate", true, true, DataType.DATE_FIELD);
-        addEnumField("status", true, true, ProjectStatus.names());
+        addField("reportStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reportEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", true, true, ProjectStatus.names(), Alignment.HORIZONTAL);
         addField("report", true, true, DataType.RICH_TEXT_AREA);
-        addField("preparedBy", true, false, DataType.STRING_FIELD);
-        addField("approvedBy", true, false, DataType.STRING_FIELD);
-        addField("submittedDate", true, false, DataType.DATE_FIELD);
-
+        addField("preparedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("submittedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override
