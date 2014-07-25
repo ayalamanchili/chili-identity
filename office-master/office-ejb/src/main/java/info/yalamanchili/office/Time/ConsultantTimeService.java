@@ -139,8 +139,8 @@ public class ConsultantTimeService {
     }
 
     public Response getReport(SearchConsultantTimeSheetDto dto) {
-        String html = TemplateService.instance().process("consultant-timesheets-report.xhtml", consultantTimeSheetDao.getReport(dto, 0, 10000));
-        return ReportGenerator.createPDFReportFromHtml(html, "consultant-timesheets-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        String html = TemplateService.instance().process("cons-emp-summary.xhtml", consultantTimeSheetDao.getReport(dto, 0, 10000));
+        return ReportGenerator.createPDFReportFromHtml(html, "cons-emp-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
     }
 
     public Response getReport(Long id) {
