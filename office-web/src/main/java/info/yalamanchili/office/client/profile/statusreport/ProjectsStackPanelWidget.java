@@ -25,7 +25,6 @@ public class ProjectsStackPanelWidget extends ALComposite implements ClickHandle
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink projectReportsL = new ClickableLink("Projects Reports");
-    protected ClickableLink createStatusReportL = new ClickableLink("Submit Project Status Report");
     
     public ProjectsStackPanelWidget() {
         init(panel);
@@ -34,7 +33,6 @@ public class ProjectsStackPanelWidget extends ALComposite implements ClickHandle
     @Override
     protected void addListeners() {
         projectReportsL.addClickHandler(this);
-        createStatusReportL.addClickHandler(this);
     }
     
     @Override
@@ -51,12 +49,7 @@ public class ProjectsStackPanelWidget extends ALComposite implements ClickHandle
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(projectReportsL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
-            TabPanel.instance().getHomePanel().entityPanel.add(createStatusReportL);
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllStatusReportPanel());
-        }
-        if (event.getSource().equals(createStatusReportL)) {
-            TabPanel.instance().getHomePanel().entityPanel.clear();
-            TabPanel.instance().getHomePanel().entityPanel.add(new CreateStatusReportPanel());
         }
     }
 }

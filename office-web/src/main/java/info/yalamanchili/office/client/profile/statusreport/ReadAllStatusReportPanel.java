@@ -18,6 +18,7 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -45,6 +46,18 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     }
 
     @Override
+    protected void configureCreateButton() {
+        createButton.setText("Submit Status Report");
+        createButton.setVisible(true);
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getHomePanel().entityPanel.clear();
+        TabPanel.instance().getHomePanel().entityPanel.add(new CreateStatusReportPanel());
+    }
+
+    @Override
     public void viewClicked(String entityId) {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -60,11 +73,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -84,11 +97,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllstatusPanelURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override

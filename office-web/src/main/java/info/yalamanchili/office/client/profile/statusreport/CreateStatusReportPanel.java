@@ -7,16 +7,20 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
+import info.yalamanchili.office.client.gwt.InformationWidget;
 import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import java.util.logging.Logger;
 
@@ -27,6 +31,8 @@ import java.util.logging.Logger;
 public class CreateStatusReportPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.CreateStatusReportPanel.class.getName());
+
+    protected Anchor missingInfoL = new Anchor("Client or Project not present?");
 
     public CreateStatusReportPanel() {
         super(CreateCompositeType.CREATE);
@@ -45,7 +51,6 @@ public class CreateStatusReportPanel extends CreateComposite {
         assignEntityValueFromField("submittedDate", status);
         assignEntityValueFromField("project", status);
         assignEntityValueFromField("clientInformation", status);
-        logger.info(status.toString());
         return status;
     }
 
@@ -78,6 +83,7 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
+        missingInfoL.addClickHandler(this);
     }
 
     @Override
@@ -88,6 +94,7 @@ public class CreateStatusReportPanel extends CreateComposite {
     protected void addWidgets() {
         addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
         addDropDown("project", new SelectProjectWidget(false, true));
+        entityFieldsPanel.add(missingInfoL);
         addField("reportStartDate", false, true, DataType.DATE_FIELD);
         addField("reportEndDate", false, true, DataType.DATE_FIELD);
         addEnumField("status", false, true, ProjectStatus.names());
@@ -101,6 +108,14 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(missingInfoL)) {
+            new GenericPopup(new InformationWidget("Please submit a Service Ticket with Type='Other' and enter the details of missing information.\n eg: I am trying to submit my project status report and dont see my client and project inforation available.\n You will get a email notification once the information is ready so you can go back to submit the status report.")).show();
+        }
+        super.onClick(event);
     }
 
     @Override
