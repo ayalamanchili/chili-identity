@@ -27,12 +27,18 @@
             <artifactId>thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
         </dependency>
+        <!-- convert html to string for Activiti task doc-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
         <!-- Clean up email html for rich text -->
         <dependency>
             <groupId>jtidy</groupId>
             <artifactId>jtidy</artifactId>
             <version>r938</version>
-        </dependency> 
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -74,6 +80,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <thymeleaf.version>2.0.13</thymeleaf.version>
+        <jsoup.version>1.7.3</jsoup.version>
     </properties>
     <scm>
         <connection>scm:svn:http://yalamanchili.info/projects/office/trunk/office-commons</connection>

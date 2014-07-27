@@ -24,7 +24,7 @@
                 Created By  : #{ticket.employee.firstName} #{ticket.employee.lastName} 
                 Number      : #{ticket.id}          
                 Subject     : #{ticket.subject}
-                Notes       : #{ticket.description}
+                Notes       : #{ticket.descriptionToText()}
                 Type        : #{ticket.type}
                 Created     : #{ticket.createdTimeStamp}
                 Please go to Home--> Self Service --> My Tickets --> View to resolve the ticket.

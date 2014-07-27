@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.entity.selfserv;
 
+import info.chili.commons.HtmlUtils;
 import info.chili.jpa.AbstractEntity;
 import info.chili.security.domain.CRole;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -184,4 +185,7 @@ public class ServiceTicket extends AbstractEntity {
         this.comments = comments;
     }
 
+    public String descriptionToText() {
+        return HtmlUtils.htmlToText(getDescription());
+    }
 }
