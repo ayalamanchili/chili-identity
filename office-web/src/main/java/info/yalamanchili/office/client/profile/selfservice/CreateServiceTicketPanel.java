@@ -75,8 +75,7 @@ public class CreateServiceTicketPanel extends CreateComposite {
     @Override
     protected void configure() {
         descriptionF = (RichTextField) fields.get("description");
-        descriptionF.fieldPanel.setWidth("30%");
-        descriptionF.area.setWidth("100%");
+        descriptionF.setWidth("100%");
     }
 
     @Override

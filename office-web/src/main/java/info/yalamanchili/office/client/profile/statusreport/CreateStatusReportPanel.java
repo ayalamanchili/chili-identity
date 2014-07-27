@@ -7,8 +7,11 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
+import com.axeiya.gwtckeditor.client.CKConfig;
+import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.crud.CreateComposite;
@@ -35,6 +38,7 @@ public class CreateStatusReportPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.CreateStatusReportPanel.class.getName());
 
     protected Anchor missingInfoL = new Anchor("Client or Project not present?");
+    protected CKEditor reportEditor = new CKEditor(CKConfig.full);
 
     public CreateStatusReportPanel() {
         super(CreateCompositeType.CREATE);
@@ -49,7 +53,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         assignEntityValueFromField("status", status);
         assignEntityValueFromField("preparedBy", status);
         assignEntityValueFromField("approvedBy", status);
-        assignEntityValueFromField("report", status);
+        status.put("report", new JSONString(reportEditor.getHTML()));
         assignEntityValueFromField("submittedDate", status);
         assignEntityValueFromField("project", status);
         assignEntityValueFromField("clientInformation", status);
@@ -90,9 +94,8 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void configure() {
-        RichTextField reportF = (RichTextField) fields.get("report");
-        reportF.setWidth("100%");
-        reportF.area.setHeight("400px");
+        reportEditor.setHeight("350px");
+        reportEditor.setWidth("100%");
     }
 
     @Override
@@ -103,7 +106,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
-        addField("report", false, true, DataType.RICH_TEXT_AREA);
+        entityFieldsPanel.add(reportEditor);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

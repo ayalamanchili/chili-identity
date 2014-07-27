@@ -85,8 +85,7 @@ public class ReadStatusReportPanel extends ReadComposite {
     @Override
     protected void configure() {
         RichTextField reportF = (RichTextField) fields.get("report");
-        reportF.setHeightAndWidth("50%", "100%");
-        reportF.area.setHeight("400px");
+        reportF.setHeightAndWidth("400px", "100%");
     }
 
     @Override

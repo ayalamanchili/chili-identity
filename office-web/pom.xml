@@ -35,7 +35,13 @@
             <groupId>fr.hd3d.html5</groupId>
             <artifactId>video</artifactId>
             <version>1.0</version>
-        </dependency>
+        </dependency>   
+        <dependency>
+            <groupId>com.axeiya.gwt</groupId>
+            <artifactId>gwt-ckeditor</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>    
         <!-- gauve -gwt-->
         <dependency>
             <groupId>com.google.guava</groupId>

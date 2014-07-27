@@ -7,7 +7,10 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
+import com.axeiya.gwtckeditor.client.CKConfig;
+import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
@@ -32,6 +35,8 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateStatusReportPanel.class.getName());
 
+    protected CKEditor reportEditor = new CKEditor(CKConfig.full);
+
     public UpdateStatusReportPanel(JSONObject entity) {
         initUpdateComposite(entity, "StatusReport", OfficeWelcome.constants);
     }
@@ -45,7 +50,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignEntityValueFromField("status", entity);
         assignEntityValueFromField("preparedBy", entity);
         assignEntityValueFromField("approvedBy", entity);
-        assignEntityValueFromField("report", entity);
+        entity.put("report", new JSONString(reportEditor.getHTML()));
         assignEntityValueFromField("submittedDate", entity);
         assignEntityValueFromField("project", entity);
         logger.info(entity.toString());
@@ -80,13 +85,13 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("project", entity, null);
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
+        reportEditor.setHTML(entity.get("report").isString().stringValue());
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
         }
-        assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         populateComments();
     }
 
@@ -103,9 +108,8 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
-        RichTextField reportF = (RichTextField) fields.get("report");
-        reportF.setWidth("100%");
-        reportF.area.setHeight("400px");
+        reportEditor.setHeight("350px");
+        reportEditor.setWidth("100%");
     }
 
     @Override
@@ -117,7 +121,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
-        addField("report", false, true, DataType.RICH_TEXT_AREA);
+        entityFieldsPanel.add(reportEditor);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
