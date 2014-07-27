@@ -10,8 +10,15 @@ package info.yalamanchili.office.jrs.ext;
 
 import com.google.common.base.Strings;
 import info.chili.security.SecurityUtils;
+import info.chili.service.jrs.types.Entry;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.ext.Comment;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -36,10 +43,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 //TODO create abstractREsource for ext
 public class CommentResource {
-    
+
     @Autowired
     public CommentDao commentDao;
-    
+
     @GET
     @Path("{targetClassName}/{id}/{start}/{limit}")
     public CommentTable getComments(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -48,12 +55,13 @@ public class CommentResource {
         table.setEntities(comments);
         table.setSize(Integer.valueOf(comments.size()).longValue());
         return table;
-        
+
     }
-    
+
     @PUT
     @Path("{targetClassName}/{id}")
     public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment) {
+        sendCommentNotification(comment);
         if (Strings.isNullOrEmpty(comment.getUpdatedBy())) {
             comment.setUpdatedBy(SecurityUtils.getCurrentUser());
         }
@@ -62,27 +70,42 @@ public class CommentResource {
         }
         commentDao.save(comment, id, targetClassName);
     }
-    
+
+    protected void sendCommentNotification(Comment comment) {
+        Email email = new Email();
+        for (Entry e : comment.getNotifyEmployees()) {
+            email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());
+        }
+        Employee currentUser = SecurityService.instance().getCurrentUser();
+        email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName());
+        String body = "Commment Added: \n" + comment.getComment() + " \n ref:"
+                + comment.getTargetEntityName();
+        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        email.setBody(body);
+        email.setHtml(Boolean.TRUE);
+        messagingService.sendEmail(email);
+    }
+
     @XmlRootElement
     @XmlType
     public static class CommentTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<Comment> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<Comment> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<Comment> entities) {
             this.entities = entities;
         }

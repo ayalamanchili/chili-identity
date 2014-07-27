@@ -9,10 +9,13 @@
 package info.yalamanchili.office.entity.ext;
 
 import info.chili.jpa.AbstractHandleEntity;
+import info.chili.service.jrs.types.Entry;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
@@ -49,6 +52,12 @@ public class Comment extends AbstractHandleEntity {
     @org.hibernate.annotations.Index(name = "COMNT_TM_STMP")
     protected Date updatedTS;
 
+    /**
+     *
+     */
+    @Transient
+    protected List<Entry> notifyEmployees;
+
     public Comment() {
     }
 
@@ -82,6 +91,14 @@ public class Comment extends AbstractHandleEntity {
 
     public void setUpdatedTS(Date updatedTS) {
         this.updatedTS = updatedTS;
+    }
+
+    public List<Entry> getNotifyEmployees() {
+        return notifyEmployees;
+    }
+
+    public void setNotifyEmployees(List<Entry> notifyEmployees) {
+        this.notifyEmployees = notifyEmployees;
     }
 
 }
