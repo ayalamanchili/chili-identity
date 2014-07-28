@@ -32,6 +32,15 @@ public class QuestionComment {
      */
     @NotNull(message = "{questioncomment.comments.not.empty.msg}")
     protected Double rating;
+    protected String createQuestionComment;
+
+    public String getCreateQuestionComment() {
+        return createQuestionComment;
+    }
+
+    public void setCreateQuestionComment(String createQuestionComment) {
+        this.createQuestionComment = createQuestionComment;
+    }
 
     public QuestionComment() {
     }
@@ -59,5 +68,4 @@ public class QuestionComment {
     public void setRating(Double rating) {
         this.rating = rating;
     }
-    
 }
