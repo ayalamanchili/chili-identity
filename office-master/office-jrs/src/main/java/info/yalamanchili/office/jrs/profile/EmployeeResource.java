@@ -154,7 +154,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Transactional(propagation = Propagation.NEVER)
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getEmployeesByTypeDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
-            @QueryParam("column") List<String> columns, @QueryParam("employee-type") String employeeType) {
+            @QueryParam("column") List<String> columns, @QueryParam("employee-type") List<String> employeeType) {
         List<Entry> result = new ArrayList<Entry>();
         Map<String, String> values = EmployeeDao.instance().getEmployeeStringMapByType(start, limit, employeeType, columns.toArray(new String[columns.size()]));
         for (String key : values.keySet()) {

@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.dao.profile;
 
+import com.google.common.base.Joiner;
 import info.chili.security.SecurityUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
@@ -61,7 +62,6 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     //TODO temp method remove later
-
     @Transactional
     public void syncCorpEmployeeRoles() {
         CRole role = CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name());
@@ -156,8 +156,8 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true", start, limit, params);
     }
 
-    public Map<String, String> getEmployeeStringMapByType(int start, int limit, String employeeType, String... params) {
-        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true and employeeType.name='" + employeeType + "'", start, limit, params);
+    public Map<String, String> getEmployeeStringMapByType(int start, int limit, List<String> employeeType, String... params) {
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Employee.class.getCanonicalName(), params) + " where user.enabled=true and employeeType.name in ('" + Joiner.on("','").join(employeeType) + "')", start, limit, params);
     }
 
     public List<Employee> getEmployeesByType(String type) {
