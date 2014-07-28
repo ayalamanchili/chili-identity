@@ -9,14 +9,18 @@
 package info.yalamanchili.office.entity.employee;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -91,6 +95,12 @@ public class PerformanceEvaluation extends AbstractEntity {
     @ForeignKey(name = "FK_EMP_PERF_EVALS")
     @NotNull(message = "{perf.eval.employee.not.empty.msg}")
     protected Employee employee;
+
+    /**
+     * questions
+     */
+    @OneToMany(cascade = CascadeType.MERGE)
+    protected List<Question> questions;
 
     public PerformanceEvaluation() {
     }
@@ -181,5 +191,23 @@ public class PerformanceEvaluation extends AbstractEntity {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public List<Question> getQuestions() {
+        if (this.questions == null) {
+            this.questions = new ArrayList<Question>();
+        }
+        return questions;
+    }
+
+    public void addQuestion(Question entity) {
+        if (entity == null) {
+            return;
+        }
+        getQuestions().add(entity);
     }
 }
