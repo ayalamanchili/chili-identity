@@ -8,7 +8,7 @@
 package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.dao.emplyee.PerformanceEvaluationDao;
+import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;

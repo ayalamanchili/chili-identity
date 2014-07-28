@@ -8,9 +8,9 @@
 package info.yalamanchili.office.bpm.statusreport;
 
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
-import info.yalamanchili.office.dao.client.StatusReportDao;
+import info.yalamanchili.office.dao.employee.StatusReportDao;
 import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.entity.client.StatusReport;
+import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;

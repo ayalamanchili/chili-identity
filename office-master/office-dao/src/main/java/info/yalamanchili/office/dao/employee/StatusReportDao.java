@@ -5,12 +5,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dao.client;
+package info.yalamanchili.office.dao.employee;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.entity.client.StatusReport;
+import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.persistence.EntityManager;

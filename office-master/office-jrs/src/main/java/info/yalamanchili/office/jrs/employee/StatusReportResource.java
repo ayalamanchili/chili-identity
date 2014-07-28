@@ -5,18 +5,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.client;
+package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
-import info.yalamanchili.office.dao.client.StatusReportDao;
+import info.yalamanchili.office.dao.employee.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.entity.client.Project;
-import info.yalamanchili.office.entity.client.StatusReport;
+import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.statusreport.StatusReportService;
+import info.yalamanchili.office.employee.StatusReportService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;

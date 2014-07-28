@@ -42,6 +42,17 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
         }
     }
 
+    public Comment addComment(String comment,Double rating, AbstractEntity target) {
+        if (Strings.isNullOrEmpty(comment)) {
+            return null;
+        } else {
+            Comment cmnt = new Comment();
+            cmnt.setRating(rating);
+            cmnt.setComment(comment);
+            return save(cmnt, target);
+        }
+    }
+
     @Override
     public Comment save(Comment source, AbstractEntity target) {
         Employee emp = SecurityService.instance().getCurrentUser();

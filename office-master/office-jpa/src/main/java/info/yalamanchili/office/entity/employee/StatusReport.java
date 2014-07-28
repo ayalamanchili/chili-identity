@@ -5,10 +5,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.client;
+package info.yalamanchili.office.entity.employee;
 
 import com.google.common.base.Strings;
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.client.Project;
+import info.yalamanchili.office.entity.client.ProjectStatus;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.util.Date;
 import javax.persistence.Entity;

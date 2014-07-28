@@ -13,6 +13,7 @@ import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dto.ext.QuestionDto;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
+import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.messages.MessagesUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,9 @@ public class QuestionService {
     @Autowired
     protected QuestionDao questionDao;
 
-    public List<QuestionDto> getQuestions(QuestionCategory type, int start, int limit) {
+    public List<QuestionDto> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit) {
         List<QuestionDto> questions = new ArrayList<QuestionDto>();
-        for (Question q : questionDao.getQuestions(type, start, limit)) {
+        for (Question q : questionDao.getQuestions(category, context, start, limit)) {
             QuestionDto dto = new QuestionDto();
             dto.setQuestion(messagesUtils.get(q.getQuestionKey()));
             dto.setQuestionInfo(messagesUtils.get(q.getQuestionInfoKey()));
