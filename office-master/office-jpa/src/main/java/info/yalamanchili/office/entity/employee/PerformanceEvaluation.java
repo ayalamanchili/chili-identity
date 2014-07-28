@@ -47,12 +47,14 @@ public class PerformanceEvaluation extends AbstractEntity {
     /**
      * start Date
      */
+    @NotNull
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date evaluationPeriodStartDate;
     /**
      * end Date
      */
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @NotNull
     protected Date evaluationPeriodEndDate;
     /**
      * Evaluation Frequency

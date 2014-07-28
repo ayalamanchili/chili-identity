@@ -58,8 +58,8 @@ public class QuestionResource extends CRUDResource<Question> {
     @GET
     @Path("/query/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.QUESTIONS)
-    public List<QuestionDto> getQuestions(@QueryParam("category") QuestionCategory category, @QueryParam("category") QuestionContext context, @PathParam("start") int start, @PathParam("limit") int limit) {
-        return questionService.getQuestions(category, start, limit);
+    public List<QuestionDto> getQuestions(@QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return questionService.getQuestions(category, context, start, limit);
 
     }
 

@@ -9,10 +9,13 @@ package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
+import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
+import info.yalamanchili.office.employee.PerformanceEvaluationService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlElement;
@@ -40,6 +43,12 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     @Override
     public CRUDDao getDao() {
         return performanceEvaluationDao;
+    }
+
+    @PUT
+    @Path("/save")
+    public String savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+        return PerformanceEvaluationService.instance().savePerformanceEvaluation(dto);
     }
 
     @GET
