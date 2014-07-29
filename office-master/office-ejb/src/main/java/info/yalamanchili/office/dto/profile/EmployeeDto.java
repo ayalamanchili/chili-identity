@@ -14,11 +14,14 @@ import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -42,6 +45,8 @@ public class EmployeeDto implements Serializable {
     protected Date dateOfBirth;
     @NotNull(message = "{sex.not.empty.msg}")
     protected Sex sex;
+    @Enumerated(EnumType.STRING)
+    @Field
     protected Branch branch;
     protected String imageURL;
     @NotNull(message = "{startDate.not.empty.msg}")

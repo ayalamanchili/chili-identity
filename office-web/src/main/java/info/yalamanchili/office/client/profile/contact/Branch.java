@@ -15,19 +15,19 @@ public enum Branch {
     /**
      * @generated
      */
-    INDIA,
+    Hyderabad,
     /**
      * @generated
      */
-    FLORIDA,
+    Florida,
     /**
      * @generated
      */
-    TAMPA,
+    Tampa,
     /**
      * @generated
      */
-    HERNDON;
+    Herndon;
 
     public static String[] names() {
         Branch[] values = values();

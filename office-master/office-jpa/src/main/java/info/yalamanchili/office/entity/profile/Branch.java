@@ -16,17 +16,17 @@ public enum Branch {
     /**
      * @generated
      */
-    INDIA,
+    Hyderabad,
     /**
      * @generated
      */
-    FLORIDA,
+    Florida,
     /**
      * @generated
      */
-    TAMPA,
+    Tampa,
     /**
      * @generated
      */
-    HERNDON,
+    Herndon,
 }
