@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.employee;
 
+import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -51,7 +52,7 @@ public class PerformanceEvaluationSidePanel extends ALComposite implements Click
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createevaluationLink)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new CreatePerformanceEvaluationPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new CreatePerformanceEvaluationPanel());
         }
     }
 }

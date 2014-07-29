@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.employee;
+package info.yalamanchili.office.client.employee.prefeval;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -15,6 +15,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.employee.EvaluationFrequencyType;
+import info.yalamanchili.office.client.employee.ReadAllPerformanceEvaluationPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -27,8 +29,8 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     private static Logger logger = Logger.getLogger(CreatePerformanceEvaluationPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
 
-    public CreatePerformanceEvaluationPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
+    public CreatePerformanceEvaluationPanel() {
+        super(CreateCompositeType.CREATE);
         initCreateComposite("PerformanceEvaluation", OfficeWelcome.constants);
     }
 
