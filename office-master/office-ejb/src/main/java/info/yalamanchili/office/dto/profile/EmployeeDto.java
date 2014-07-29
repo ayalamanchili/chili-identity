@@ -115,6 +115,14 @@ public class EmployeeDto implements Serializable {
         this.sex = sex;
     }
 
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
     public String getImageURL() {
         return imageURL;
     }

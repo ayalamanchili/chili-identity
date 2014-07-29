@@ -73,6 +73,14 @@ public class Employee extends Contact {
     protected String jobTitle;
     protected Branch branch;
 
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
