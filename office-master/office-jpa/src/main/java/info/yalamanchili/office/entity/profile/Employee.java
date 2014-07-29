@@ -50,8 +50,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-        })
+    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+})
 @Indexed
 @XmlRootElement
 @Entity
@@ -71,6 +71,7 @@ public class Employee extends Contact {
     @org.hibernate.annotations.Index(name = "EMPID")
     protected String employeeId;
     protected String jobTitle;
+    protected Branch branch;
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;

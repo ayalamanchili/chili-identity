@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
@@ -49,6 +50,7 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("startDate", employee);
         assignEntityValueFromField("employeeType", employee);
         assignEntityValueFromField("jobTitle", employee);
+        assignEntityValueFromField("branch", employee);
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", employee);
         }
@@ -78,6 +80,7 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("passwordHash", false, true, DataType.PASSWORD_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
@@ -94,16 +97,16 @@ public class CreateEmployeePanel extends CreateComposite {
     public void createButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadImage(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadImage(arg0);
+            }
+        });
 
     }
 

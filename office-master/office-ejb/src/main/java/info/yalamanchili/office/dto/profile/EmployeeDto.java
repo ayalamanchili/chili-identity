@@ -8,6 +8,7 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.chili.security.SecurityUtils;
+import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Sex;
@@ -41,6 +42,7 @@ public class EmployeeDto implements Serializable {
     protected Date dateOfBirth;
     @NotNull(message = "{sex.not.empty.msg}")
     protected Sex sex;
+    protected Branch branch;
     protected String imageURL;
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;

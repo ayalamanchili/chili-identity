@@ -18,6 +18,7 @@ import info.chili.gwt.fields.FileuploadField;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 
 public class UpdateEmployeePanel extends UpdateComposite {
@@ -47,6 +48,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("sex", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("jobTitle", entity);
+        assignEntityValueFromField("branch", entity);
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", entity);
         }
@@ -92,6 +94,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
             assignFieldValueFromEntity("employeeType", entity, null);
         }
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
@@ -119,6 +122,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }

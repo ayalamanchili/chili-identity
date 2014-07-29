@@ -27,7 +27,7 @@
                         <div></div>
                         <div>
                             <br></br>
-                            <table border="0">
+                            <table >
                                 <tbody>
                                     <tr>
                                         <th style="width:150px ">   Employee Name </th>
@@ -75,7 +75,7 @@
                         <br></br>
                         <tr>
                             <th style="width:150px "> Approver's Signature :</th>
-                            <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
+                            <td th:text="${entity.approvedBy}" />
                         </tr>
                         <br></br>
 
