@@ -35,21 +35,22 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ContactInfoReportingService {
-
+    
     @Autowired
     protected Mapper mapper;
     @PersistenceContext
     protected EntityManager em;
-
+    
     public Response getCorporateContactInfo() {
         List<EmployeeDto> res = new ArrayList<EmployeeDto>();
-        for (Employee emp :SecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             EmployeeDto dto = new EmployeeDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
             dto.setJobTitle(emp.getJobTitle());
-
-
+            dto.setBranch(emp.getBranch());
+            
+            
             if (emp.getPrimaryEmail() != null) {
                 dto.setEmail(emp.getPrimaryEmail().getEmail());
             }
@@ -75,7 +76,7 @@ public class ContactInfoReportingService {
                 .header("Content-Length", pdf.length)
                 .build();
     }
-
+    
     public static ContactInfoReportingService instance() {
         return SpringContext.getBean(ContactInfoReportingService.class);
     }

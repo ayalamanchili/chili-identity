@@ -29,6 +29,7 @@
                                     <th>Name</th>
                                     <th>Title</th>
                                     <th>Email</th>
+                                    <th>Location</th>
                                     <th>Phone</th>
                                     <th>Ext</th>
                                 </tr>
@@ -38,6 +39,7 @@
                                     <td th:text="${contact.firstName} + ' ' + ${contact.lastName}" />
                                     <td th:text="${contact.jobTitle}"></td>
                                     <td th:text="${contact.email}"></td>
+                                    <td th:text="${contact.branch}"></td>
                                     <td th:text="${contact.phoneNumber}"></td>
                                     <td th:text="${contact.phoneNumberExt}"></td>
                                 </tr>
