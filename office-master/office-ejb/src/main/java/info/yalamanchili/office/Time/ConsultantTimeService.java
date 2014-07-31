@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.Time;
 
-import com.google.common.base.Strings;
 import info.chili.commons.FileIOUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
@@ -139,8 +138,8 @@ public class ConsultantTimeService {
     }
 
     public Response getReport(SearchConsultantTimeSheetDto dto) {
-        String html = TemplateService.instance().process("cons-emp-summary.xhtml", consultantTimeSheetDao.getReport(dto, 0, 10000));
-        return ReportGenerator.createPDFReportFromHtml(html, "cons-emp-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        String html = TemplateService.instance().process("consultant-time-report.xhtml", consultantTimeSheetDao.getReport(dto, 0, 10000));
+        return ReportGenerator.createPDFReportFromHtml(html, "consultant-time-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
     }
 
     public Response getReport(Long id) {
