@@ -36,6 +36,8 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         steps.add(new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.Start.name(), CreatePerformanceEvaluationPanelType.Start.name()));
         steps.add(new CreateQuestionCommentsWidgetStep(QuestionCategory.ATTITUDE.name(), QuestionCategory.ATTITUDE.name()));
         steps.add(new CreateQuestionCommentsWidgetStep(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionCategory.SKILL_AND_APTITUDE.name()));
+        steps.add(new CreateQuestionCommentsWidgetStep(QuestionCategory.MANAGEMENT.name(), QuestionCategory.MANAGEMENT.name()));
+        steps.add(new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.End.name(), CreatePerformanceEvaluationPanelType.End.name()));
     }
 
     public class CreatePerformanceEvaluationStep extends AbstractStep<CreatePerformanceEvaluationPanel> {
@@ -53,13 +55,36 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         @Override
+        protected boolean isLastStep() {
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
         public JSONObject getValue() {
             return widget.populateEntityFromFields();
         }
 
         @Override
-        protected void next() {
+        protected void next(boolean isLastStep) {
+            if (isLastStep) {
+                complete();
+            }
+        }
 
+        protected void complete() {
+
+        }
+
+        @Override
+        protected String nextButtonText() {
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
+                return "Complete";
+            }
+            return "Next";
         }
 
         @Override
@@ -101,15 +126,8 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         @Override
-        protected void next() {
+        protected void next(boolean isLastStep) {
 
-        }
-
-        protected String nextButtonText() {
-            if (stepId.equals(QuestionCategory.MANAGEMENT.name())) {
-                return "Complete";
-            }
-            return "Next";
         }
 
         @Override
