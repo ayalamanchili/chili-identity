@@ -40,10 +40,10 @@ public class StatusReportService {
 
     public StatusReport save(StatusReport entity) {
         entity.setReport(HtmlUtils.cleanData(entity.getReport()));
-        entity = statusReportDao.save(entity);
         if (Strings.isNullOrEmpty(entity.getApprovedBy()) && entity.getId() == null) {
             startStatusReportProcess(entity);
         }
+        entity = statusReportDao.save(entity);
         return entity;
     }
 
