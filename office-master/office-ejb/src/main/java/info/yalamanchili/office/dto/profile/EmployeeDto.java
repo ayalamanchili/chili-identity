@@ -45,6 +45,7 @@ public class EmployeeDto implements Serializable {
     protected Date dateOfBirth;
     @NotNull(message = "{sex.not.empty.msg}")
     protected Sex sex;
+    @NotNull(message = "{branch.not.empty.msg}")
     @Enumerated(EnumType.STRING)
     @Field
     protected Branch branch;

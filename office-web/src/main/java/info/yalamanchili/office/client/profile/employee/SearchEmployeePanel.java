@@ -22,6 +22,7 @@ import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
+import info.yalamanchili.office.client.profile.contact.Branch;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -63,6 +64,8 @@ public class SearchEmployeePanel extends SearchComposite {
             String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
             addEnumField("employeeType", false, false, employeeTypeStrs);
             addEnumField("role", false, false, Auth.getAllRoles());
+            String[] branch = {"Hyderabad", "Florida", "Tampa", "Herndon"};
+            addEnumField("branch", false, false, branch);
         }
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
@@ -97,6 +100,13 @@ public class SearchEmployeePanel extends SearchComposite {
                 user.put("roles", roles);
                 entity.put("user", user);
             }
+            //branch
+            JSONObject branch = new JSONObject();
+            assignEntityValueFromField("employeeType", branch, "name");
+            if (branch.size() > 0) {
+                entity.put("branch", branch);
+            }
+
         }
 
         //populate address for search
@@ -145,11 +155,11 @@ public class SearchEmployeePanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 200),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            processSearchResult(result);
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    processSearchResult(result);
+                }
+            });
         }
     }
 
@@ -157,11 +167,11 @@ public class SearchEmployeePanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 200), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        processSearchResult(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                processSearchResult(result);
+            }
+        });
     }
 
     @Override
