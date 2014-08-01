@@ -5,7 +5,8 @@ Projects Reports
  - Navigate to Home --> My Projects --> Projects Reports --> Click Submit Project Status Report
  - Submit all required information in status report and click create button 
  - Once submitted the request it will send to the appropriate  department (Engagement) for approval and you will receive a email about the final decision. 
-
+ - if client and project is not present please submit a request under service ticket .
+ - GO TO **Home-->Self Service-->open ticket e=with other type ="other "and enter the details ** ticket goes to Engagement team .they will update the client and project dateils .
 
 How To Submit Project Status Report
 ----

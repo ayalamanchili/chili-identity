@@ -32,7 +32,6 @@ public class UpdateQuestionPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("questionKey", entity);
-        assignEntityValueFromField("questionInfoKey", entity);
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("context", entity);
         assignEntityValueFromField("sortOrder", entity);
@@ -58,7 +57,6 @@ public class UpdateQuestionPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("questionKey", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("questionInfoKey", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("context", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("sortOrder", entity, DataType.INTEGER_FIELD);
@@ -82,7 +80,6 @@ public class UpdateQuestionPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("questionKey", false, true, DataType.STRING_FIELD);
-        addField("questionInfoKey", false, false, DataType.STRING_FIELD);
         addEnumField("category", false, true, QuestionCategory.names());
         addEnumField("context", false, true, QuestionContext.names());
         addField("sortOrder", false, false, DataType.INTEGER_FIELD);

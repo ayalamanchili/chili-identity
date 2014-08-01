@@ -54,7 +54,6 @@ public class ReadQuestionPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("questionKey", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("questionInfoKey", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("context", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("sortOrder", entity, DataType.INTEGER_FIELD);
@@ -71,7 +70,6 @@ public class ReadQuestionPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("questionKey", true, false, DataType.STRING_FIELD);
-        addField("questionInfoKey", true, false, DataType.STRING_FIELD);
         addEnumField("category", true, false, QuestionCategory.names());
         addEnumField("context", true, false, QuestionContext.names());
         addField("sortOrder", true, false, DataType.INTEGER_FIELD);
