@@ -22,7 +22,6 @@ import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
-import info.yalamanchili.office.client.profile.contact.Branch;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -102,7 +101,7 @@ public class SearchEmployeePanel extends SearchComposite {
             }
             //branch
             JSONObject branch = new JSONObject();
-            assignEntityValueFromField("employeeType", branch, "name");
+            assignEntityValueFromField("branch", branch, "name");
             if (branch.size() > 0) {
                 entity.put("branch", branch);
             }
