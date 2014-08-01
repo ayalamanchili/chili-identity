@@ -1,3 +1,6 @@
+/**
+ * System Soft Technolgies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,7 +10,7 @@ package info.yalamanchili.office.client.employee;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -15,12 +18,15 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
 public abstract class AbstractWizard extends ALComposite implements ClickHandler {
+
+    private static Logger logger = Logger.getLogger(AbstractWizard.class.getName());
 
     protected CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
@@ -35,6 +41,7 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
     public AbstractWizard() {
         initSteps();
         currentStep = steps.get(0);
+        currentStep.onLoad();
         currentStepNumber = 0;
         init(captionPanel);
     }
@@ -72,29 +79,36 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
     }
 
     protected void nextClicked() {
+        currentStep.next();
         stepPanel.clear();
         currentStep = steps.get(++currentStepNumber);
-        currentStep.next();
+        stepPanel.add(currentStep.getWidget());
+        currentStep.onLoad();
     }
 
     protected void previousClicked() {
+        currentStep.previous();
         stepPanel.clear();
         currentStep = steps.get(--currentStepNumber);
-        currentStep.previous();
+        stepPanel.add(currentStep.getWidget());
     }
 
     public abstract class AbstractStep<T extends Composite> {
 
         protected String stepId;
+        protected String stepName;
 
-        public AbstractStep(String stepId) {
+        public AbstractStep(String stepId, String stepName) {
             this.stepId = stepId;
+            this.stepName = stepName;
         }
         protected T widget;
 
         public abstract T getWidget();
 
-        public abstract JSONObject getValue();
+        public abstract JSONValue getValue();
+
+        protected abstract void onLoad();
 
         protected abstract void next();
 

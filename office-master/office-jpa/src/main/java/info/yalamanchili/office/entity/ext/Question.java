@@ -31,7 +31,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(uniqueConstraints
         = @UniqueConstraint(columnNames = {"questionKey"}))
 @Unique(entity = Question.class, fields = {"questionKey"}, message = "{question.key.not.unique.msg}")
-//TODO questionInfoKey unique?
 public class Question extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
@@ -42,11 +41,6 @@ public class Question extends AbstractEntity {
     @NotEmpty(message = "{question.questionKey.empty.msg}")
     @org.hibernate.annotations.Index(name = "QES_KEY_IDX")
     protected String questionKey;
-    /**
-     *
-     *
-     */
-    protected String questionInfoKey;
     /**
      * Service ticket category
      */
@@ -71,14 +65,6 @@ public class Question extends AbstractEntity {
 
     public void setQuestionKey(String questionKey) {
         this.questionKey = questionKey;
-    }
-
-    public String getQuestionInfoKey() {
-        return questionInfoKey;
-    }
-
-    public void setQuestionInfoKey(String questionInfoKey) {
-        this.questionInfoKey = questionInfoKey;
     }
 
     public QuestionCategory getCategory() {

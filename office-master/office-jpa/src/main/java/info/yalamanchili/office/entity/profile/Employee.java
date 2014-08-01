@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -50,8 +52,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-})
+            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+        })
 @Indexed
 @XmlRootElement
 @Entity
@@ -71,6 +73,7 @@ public class Employee extends Contact {
     @org.hibernate.annotations.Index(name = "EMPID")
     protected String employeeId;
     protected String jobTitle;
+    @Enumerated(EnumType.STRING)
     protected Branch branch;
 
     public Branch getBranch() {

@@ -20,6 +20,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -31,8 +32,9 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllPerformanceEvaluationPanel.class.getName());
     public static ReadAllPerformanceEvaluationPanel instance;
 
-    public ReadAllPerformanceEvaluationPanel() {
+    public ReadAllPerformanceEvaluationPanel(String employeeId) {
         instance = this;
+        this.parentId = employeeId;
         initTable("PerformanceEvaluation", OfficeWelcome.constants);
     }
 
@@ -46,18 +48,18 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted PerformanceEvaluation Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(parentId));
     }
 
     @Override
@@ -68,14 +70,14 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getEvalURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+        HttpService.HttpServiceAsync.instance().doGet(getURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -112,8 +114,22 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
         return OfficeWelcome.instance().constants.root_url() + "performance-evaluation/delete/" + entityId;
     }
 
-    private String getEvalURL(Integer start, String limit) {
+    private String getURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "performance-evaluation/" + start.toString() + "/"
-                + limit.toString();
+                + limit.toString() + "?employeeId=" + parentId;
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            createButton.setText("Create Performance Evaluation");
+            createButton.setVisible(true);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(TreeEmployeePanel.instance().getEntityId()));
     }
 }

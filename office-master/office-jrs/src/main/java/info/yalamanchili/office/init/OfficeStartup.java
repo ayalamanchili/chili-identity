@@ -800,16 +800,37 @@ public class OfficeStartup {
     }
 
     protected void createSampleQuestions() {
+//        SKILL_AND_APTITUDE
         Question q1 = new Question();
-        q1.setQuestionKey("self.review.question1");
+        q1.setQuestionKey("performance.review.skill.aptitude.question1");
         q1.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q1.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q1);
-
         Question q2 = new Question();
-        q2.setQuestionKey("self.review.question2");
-        q2.setCategory(QuestionCategory.ATTITUDE);
+        q2.setQuestionKey("performance.review.skill.aptitude.question2");
+        q2.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q2.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q2);
+        Question q3 = new Question();
+        q3.setQuestionKey("performance.review.skill.aptitude.question3");
+        q3.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
+        q3.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q3);
+//     ATTITUDE
+        Question q4 = new Question();
+        q4.setQuestionKey("performance.review.attitude.question1");
+        q4.setCategory(QuestionCategory.ATTITUDE);
+        q4.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q4);
+        Question q5 = new Question();
+        q5.setQuestionKey("performance.review.attitude.question2");
+        q5.setCategory(QuestionCategory.ATTITUDE);
+        q5.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q5);
+        Question q6 = new Question();
+        q6.setQuestionKey("performance.review.attitude.question3");
+        q6.setCategory(QuestionCategory.ATTITUDE);
+        q6.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q6);
     }
 }

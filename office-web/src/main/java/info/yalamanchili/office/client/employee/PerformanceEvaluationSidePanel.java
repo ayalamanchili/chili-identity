@@ -52,7 +52,7 @@ public class PerformanceEvaluationSidePanel extends ALComposite implements Click
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createevaluationLink)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new CreatePerformanceEvaluationPanel());
+//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new CreatePerformanceEvaluationPanel());
         }
     }
 }

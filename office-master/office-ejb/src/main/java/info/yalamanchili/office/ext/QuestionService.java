@@ -38,8 +38,9 @@ public class QuestionService {
         List<QuestionDto> questions = new ArrayList<QuestionDto>();
         for (Question q : questionDao.getQuestions(category, context, start, limit)) {
             QuestionDto dto = new QuestionDto();
+            dto.setSortOrder(q.getSortOrder());
             dto.setQuestion(messagesUtils.get(q.getQuestionKey()));
-            dto.setQuestionInfo(messagesUtils.get(q.getQuestionInfoKey()));
+            dto.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
             questions.add(dto);
         }
         return questions;

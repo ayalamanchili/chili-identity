@@ -58,6 +58,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String COMPANY_CONTACT_NODE = "companyContact";
     protected static final String PRIVACY_NODE = "privacy";
     protected static final String SKILL_SET_NODE = "skillset";
+    protected static final String REPORTS_NODE = "reports";
     protected static final String SELF_SERVICE_NODE = "selfService";
     protected static final String DOCUMENTS_NODE = "documents";
     protected static final String PREFERENCES_NODE = "preferences";
@@ -66,6 +67,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected TreeSkillSetPanel skillSetTreePanel;
     protected TreeClientInfoPanel clientInfoTreePanel;
+    protected TreeEmpReportsPanel empReportsPanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
@@ -73,6 +75,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         this.entity = emp;
         skillSetTreePanel = new TreeSkillSetPanel(getEntityId());
         clientInfoTreePanel = new TreeClientInfoPanel(getEntityId());
+        empReportsPanel = new TreeEmpReportsPanel(getEntityId());
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -110,6 +113,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
             addFirstChildLink("Roles", ROLES_NODE);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP) && Auth.isEmployee(entity)) {
+            addFirstChildLink("Reports", REPORTS_NODE, empReportsPanel);
             addFirstChildLink("Reset Password", RESET_PASSWORD_NODE);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
@@ -218,6 +222,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         }
         if (clientInfoTreePanel != null) {
             clientInfoTreePanel.treeNodeSelected(entityNodeKey);
+        }
+        if (empReportsPanel != null) {
+            empReportsPanel.treeNodeSelected(entityNodeKey);
         }
     }
 
