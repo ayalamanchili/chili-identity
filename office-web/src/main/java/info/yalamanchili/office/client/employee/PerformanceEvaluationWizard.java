@@ -49,14 +49,19 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         public CreatePerformanceEvaluationPanel getWidget() {
             if (widget == null) {
-                widget = new CreatePerformanceEvaluationPanel(employeeId, CreatePerformanceEvaluationPanelType.Start);
+                if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name())) {
+                    widget = new CreatePerformanceEvaluationPanel(employeeId, CreatePerformanceEvaluationPanelType.Start);
+                }
+                if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
+                    widget = new CreatePerformanceEvaluationPanel(employeeId, CreatePerformanceEvaluationPanelType.End);
+                }
             }
             return widget;
         }
 
         @Override
         protected boolean isLastStep() {
-            if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name())) {
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
                 return true;
             } else {
                 return false;

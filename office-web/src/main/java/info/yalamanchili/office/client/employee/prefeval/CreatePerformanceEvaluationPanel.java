@@ -92,9 +92,9 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             addField("rating", false, true, DataType.INTEGER_FIELD);
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
-            addField("keyAccomplishments", false, false, DataType.STRING_FIELD);
-            addField("areasNeedImprovement", false, false, DataType.STRING_FIELD);
-            addField("managersComments", false, false, DataType.STRING_FIELD);
+            addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
+            addField("areasNeedImprovement", false, false, DataType.RICH_TEXT_AREA);
+            addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
         }
     }
 

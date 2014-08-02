@@ -14,5 +14,5 @@ package info.yalamanchili.office.entity.employee;
  */
 public enum EvaluationFrequencyType {
 
-    Anually;
+    Annual;
 }
