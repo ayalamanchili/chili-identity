@@ -101,6 +101,18 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         protected void onLoad() {
 
         }
+
+        @Override
+        protected boolean validate() {
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name())) {
+                getWidget().validate();
+            }
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
+
+            }
+            return true;
+        }
+
     }
 
     public class CreateQuestionCommentsWidgetStep extends AbstractStep<CreateQuestionCommentsWidget> {
@@ -143,6 +155,11 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         protected void onLoad() {
             widget.loadQuestions();
+        }
+
+        @Override
+        protected boolean validate() {
+            return true;
         }
 
     }

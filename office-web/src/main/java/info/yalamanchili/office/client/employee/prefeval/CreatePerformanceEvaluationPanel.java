@@ -9,8 +9,10 @@ package info.yalamanchili.office.client.employee.prefeval;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.employee.EvaluationFrequencyType;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
@@ -105,5 +107,25 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation";
+    }
+
+    @Override
+    public void validate() {
+        HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                    }
+                });
+    }
+    
+
+    protected String getValidateUrl() {
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/validate";
     }
 }

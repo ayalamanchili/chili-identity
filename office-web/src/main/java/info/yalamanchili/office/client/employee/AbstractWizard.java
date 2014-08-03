@@ -25,9 +25,9 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public abstract class AbstractWizard extends ALComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(AbstractWizard.class.getName());
-    
+
     protected CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     protected FlowPanel stepPanel = new FlowPanel();
@@ -37,7 +37,7 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
     protected List<AbstractStep> steps = new ArrayList<AbstractStep>();
     protected Button nextB = new Button("Next");
     protected Button previousB = new Button("Previous");
-    
+
     public AbstractWizard() {
         initSteps();
         currentStep = steps.get(0);
@@ -45,19 +45,19 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
         currentStepNumber = 0;
         init(captionPanel);
     }
-    
+
     protected abstract void initSteps();
-    
+
     @Override
     protected void addListeners() {
         nextB.addClickHandler(this);
         previousB.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         stepPanel.add(currentStep.getWidget());
@@ -67,7 +67,7 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
         panel.add(actionsPanel);
         captionPanel.setContentWidget(panel);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(nextB)) {
@@ -76,8 +76,11 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
             previousClicked();
         }
     }
-    
+
     protected void nextClicked() {
+        if (!currentStep.validate()) {
+            return;
+        }
         currentStep.next(currentStep.isLastStep());
         if (currentStep.isLastStep()) {
         } else {
@@ -88,45 +91,47 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
             currentStep.onLoad();
         }
     }
-    
+
     protected void previousClicked() {
         currentStep.previous();
         stepPanel.clear();
         currentStep = steps.get(--currentStepNumber);
         stepPanel.add(currentStep.getWidget());
         currentStep.onLoad();
-        
+
     }
-    
+
     public abstract class AbstractStep<T extends Composite> {
-        
+
         protected String stepId;
         protected String stepName;
-        
+
         public AbstractStep(String stepId, String stepName) {
             this.stepId = stepId;
             this.stepName = stepName;
         }
         protected T widget;
-        
+
         public abstract T getWidget();
-        
+
         public abstract JSONValue getValue();
-        
+
         protected abstract void onLoad();
-        
+
+        protected abstract boolean validate();
+
         protected abstract void next(boolean lastStep);
-        
+
         protected abstract void previous();
-        
+
         protected String nextButtonText() {
             return "Next";
         }
-        
+
         protected String previousButtonText() {
             return "Previous";
         }
-        
+
         protected boolean isLastStep() {
             return false;
         }
