@@ -13,7 +13,7 @@ package info.yalamanchili.office.client.employee;
  */
 public enum EvaluationFrequencyType {
 
-    Anually;
+    Annual;
 
     public static String[] names() {
         EvaluationFrequencyType[] values = values();

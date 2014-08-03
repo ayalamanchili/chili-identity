@@ -71,16 +71,13 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(nextB)) {
-            nextClicked();
+            currentStep.validate();
         } else if (event.getSource().equals(previousB)) {
             previousClicked();
         }
     }
 
     protected void nextClicked() {
-        if (!currentStep.validate()) {
-            return;
-        }
         currentStep.next(currentStep.isLastStep());
         if (currentStep.isLastStep()) {
         } else {
@@ -97,6 +94,7 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
         stepPanel.clear();
         currentStep = steps.get(--currentStepNumber);
         stepPanel.add(currentStep.getWidget());
+        nextB.setText(currentStep.nextButtonText());
         currentStep.onLoad();
 
     }
@@ -118,8 +116,6 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
 
         protected abstract void onLoad();
 
-        protected abstract boolean validate();
-
         protected abstract void next(boolean lastStep);
 
         protected abstract void previous();
@@ -135,5 +131,11 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
         protected boolean isLastStep() {
             return false;
         }
+
+        /**
+         * sub class must call postValidate on complete with null string if
+         * validation is successful
+         */
+        protected abstract void validate();
     }
 }

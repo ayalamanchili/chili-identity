@@ -31,8 +31,18 @@ public class QuestionDto implements Serializable {
      *
      */
     protected String questionInfo;
-
+    /**
+     *
+     */
     protected Integer sortOrder;
+    /**
+     *
+     */
+    protected boolean questionCommentRequired;
+    /**
+     *
+     */
+    protected boolean questionRatingRequired;
 
     public QuestionDto() {
     }
@@ -67,6 +77,22 @@ public class QuestionDto implements Serializable {
 
     public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public boolean isQuestionCommentRequired() {
+        return questionCommentRequired;
+    }
+
+    public void setQuestionCommentRequired(boolean questionCommentRequired) {
+        this.questionCommentRequired = questionCommentRequired;
+    }
+
+    public boolean isQuestionRatingRequired() {
+        return questionRatingRequired;
+    }
+
+    public void setQuestionRatingRequired(boolean questionRatingRequired) {
+        this.questionRatingRequired = questionRatingRequired;
     }
 
 }

@@ -60,6 +60,7 @@ public class PerformanceEvaluation extends AbstractEntity {
      * Evaluation Frequency
      */
     @Enumerated(EnumType.STRING)
+    @NotNull
     protected EvaluationFrequencyType type;
     /**
      *
@@ -95,7 +96,6 @@ public class PerformanceEvaluation extends AbstractEntity {
      */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_EMP_PERF_EVALS")
-    @NotNull(message = "{perf.eval.employee.not.empty.msg}")
     protected Employee employee;
 
     /**

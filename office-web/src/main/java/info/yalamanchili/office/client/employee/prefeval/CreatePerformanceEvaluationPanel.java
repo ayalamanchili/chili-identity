@@ -109,7 +109,6 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         return OfficeWelcome.constants.root_url() + "performance-evaluation";
     }
 
-    @Override
     public void validate() {
         HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
@@ -123,7 +122,6 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
                     }
                 });
     }
-    
 
     protected String getValidateUrl() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation/validate";

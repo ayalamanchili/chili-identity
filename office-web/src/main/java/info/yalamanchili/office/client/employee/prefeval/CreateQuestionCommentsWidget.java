@@ -79,6 +79,26 @@ public class CreateQuestionCommentsWidget extends Composite {
         return questionComments;
     }
 
+    public boolean validate() {
+        int i = 0;
+        for (CreateQuestionCommentWidget widget : commentWidgets) {
+            if (!widget.validate()) {
+                i++;
+            }
+        }
+        if (i == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void clearMessages() {
+        for (CreateQuestionCommentWidget widget : commentWidgets) {
+            widget.clearMessages();
+        }
+    }
+
     protected String getQuestionsUrl() {
         return OfficeWelcome.instance().constants.root_url() + "question/query/0/100?category=" + category.name() + "&context=" + context.name();
     }

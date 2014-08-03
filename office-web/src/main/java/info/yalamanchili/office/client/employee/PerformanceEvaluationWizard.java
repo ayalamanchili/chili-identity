@@ -11,6 +11,9 @@ package info.yalamanchili.office.client.employee;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.employee.AbstractWizard.AbstractStep;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel.CreatePerformanceEvaluationPanelType;
 import info.yalamanchili.office.client.employee.prefeval.CreateQuestionCommentsWidget;
@@ -81,7 +84,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         protected void complete() {
-
+            
         }
 
         @Override
@@ -103,14 +106,25 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         @Override
-        protected boolean validate() {
-            if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name())) {
-                getWidget().validate();
-            }
-            if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
+        protected void validate() {
+            getWidget().clearMessages();
+            HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), getWidget().populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new AsyncCallback<String>() {
+                        @Override
+                        public void onFailure(Throwable res) {
+                            getWidget().handleErrorResponse(res);
+                        }
 
-            }
-            return true;
+                        @Override
+                        public void onSuccess(String res) {
+                            getWidget().clearMessages();
+                            nextClicked();
+                        }
+                    });
+        }
+
+        protected String getValidateUrl() {
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/validate";
         }
 
     }
@@ -158,10 +172,12 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         @Override
-        protected boolean validate() {
-            return true;
+        protected void validate() {
+            if (getWidget().validate()) {
+                nextClicked();
+            }
+            getWidget().clearMessages();
         }
-
     }
 
 }

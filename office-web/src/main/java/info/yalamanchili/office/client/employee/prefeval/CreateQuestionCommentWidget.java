@@ -35,7 +35,7 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected HTML questionDecriptionL = new HTML();
     TextAreaField commentTB = new TextAreaField(OfficeWelcome.constants, "comment", "Comment", false, true, Alignment.VERTICAL);
     String[] rating = {"1", "2", "3", "4", "5"};
-    protected EnumField ratingF = new EnumField(OfficeWelcome.constants, "comment", "Comment", false, true, false, rating, Alignment.VERTICAL);
+    protected EnumField ratingF = new EnumField(OfficeWelcome.constants, "rating", "Rating", false, true, false, rating, Alignment.VERTICAL);
 
     public CreateQuestionCommentWidget(JSONObject question) {
         this.question = question;
@@ -57,6 +57,20 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected void configure() {
         questionL.setHTML(JSONUtils.toString(question, "question"));
         questionDecriptionL.setHTML(JSONUtils.toString(question, "questionInfo"));
+    }
+
+    public boolean validate() {
+        if (ratingF.getValue() == null) {
+            ratingF.setMessage("Please select a rating");
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public void clearMessages() {
+        ratingF.clearMessage();
     }
 
     @Override
