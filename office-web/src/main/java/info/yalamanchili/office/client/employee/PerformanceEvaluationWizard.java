@@ -113,7 +113,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         protected String getCompleteUrl() {
-            return OfficeWelcome.constants.root_url() + "employee/performance-evaluation/save";
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/save";
         }
 
         protected JSONObject populateEntity() {
@@ -128,12 +128,15 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             int x = 0;
             for (int i = 0; i < attitudeQuestions.size(); i++) {
                 questionComments.set(x, attitudeQuestions.get(i));
+                x++;
             }
             for (int i = 0; i < skillQuestions.size(); i++) {
                 questionComments.set(x, skillQuestions.get(i));
+                x++;
             }
             for (int i = 0; i < managementQuestions.size(); i++) {
                 questionComments.set(x, managementQuestions.get(i));
+                x++;
             }
             entity.put("comments", questionComments);
             logger.info("Dddddddddddddd" + entity.toString());

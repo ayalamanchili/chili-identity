@@ -28,16 +28,17 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class QuestionService {
-    
+
     @Autowired
     protected MessagesUtils messagesUtils;
     @Autowired
     protected QuestionDao questionDao;
-    
+
     public List<QuestionDto> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit) {
         List<QuestionDto> questions = new ArrayList<QuestionDto>();
         for (Question q : questionDao.getQuestions(category, context, start, limit)) {
             QuestionDto dto = new QuestionDto();
+            dto.setId(q.getId());
             dto.setSortOrder(q.getSortOrder());
             dto.setQuestion(messagesUtils.get(q.getQuestionKey()));
             dto.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
@@ -47,9 +48,9 @@ public class QuestionService {
         }
         return questions;
     }
-    
+
     public static QuestionService instance() {
         return SpringContext.getBean(QuestionService.class);
     }
-    
+
 }

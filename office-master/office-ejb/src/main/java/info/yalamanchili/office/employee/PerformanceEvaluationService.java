@@ -51,7 +51,7 @@ public class PerformanceEvaluationService {
 
     public void saveQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
         for (QuestionComment comment : comments) {
-            Question qes = QuestionDao.instance().findById(comment.getQuestionId());
+            Question qes = QuestionDao.instance().findById(comment.getId());
             perfEval.addQuestion(qes);
             CommentDao.instance().addComment(comment.getComment(), comment.getRating(), qes);
         }

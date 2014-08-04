@@ -34,8 +34,8 @@ import org.hibernate.search.annotations.Indexed;
  */
 @Indexed
 @XmlRootElement
-//@Entity
-//@Audited
+@Entity
+@Audited
 public class PerformanceEvaluation extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
@@ -65,6 +65,7 @@ public class PerformanceEvaluation extends AbstractEntity {
     /**
      *
      */
+    @NotNull
     protected Double rating;
     /**
      *

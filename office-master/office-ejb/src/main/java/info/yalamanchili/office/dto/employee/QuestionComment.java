@@ -21,27 +21,26 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class QuestionComment {
 
-    protected Long questionId;
+    protected Long id;
     /**
      *
      */
-    @NotEmpty(message = "{questioncomment.comments.not.empty.msg}")
     protected String comment;
     /**
      *
      */
-    @NotNull(message = "{questioncomment.comments.not.empty.msg}")
+    @NotNull(message = "{questioncomment.rating.not.empty.msg}")
     protected Double rating;
 
     public QuestionComment() {
     }
 
-    public Long getQuestionId() {
-        return questionId;
+    public Long getId() {
+        return id;
     }
 
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getComment() {
@@ -59,5 +58,5 @@ public class QuestionComment {
     public void setRating(Double rating) {
         this.rating = rating;
     }
-    
+
 }

@@ -9,9 +9,11 @@
 package info.yalamanchili.office.dto.employee;
 
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
+import java.io.Serializable;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -19,9 +21,9 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author ayalamanchili
  */
-@XmlRootElement(name = "PerformanceEvaluation")
+@XmlRootElement
 @XmlType
-public class PerformanceEvaluationSaveDto {
+public class PerformanceEvaluationSaveDto implements Serializable {
 
     @NotNull
     protected Long employeeId;
@@ -41,6 +43,7 @@ public class PerformanceEvaluationSaveDto {
         this.employeeId = employeeId;
     }
 
+    @XmlElement
     public PerformanceEvaluation getPerformanceEvaluation() {
         return performanceEvaluation;
     }
@@ -49,6 +52,7 @@ public class PerformanceEvaluationSaveDto {
         this.performanceEvaluation = performanceEvaluation;
     }
 
+    @XmlElement
     public List<QuestionComment> getComments() {
         return comments;
     }
