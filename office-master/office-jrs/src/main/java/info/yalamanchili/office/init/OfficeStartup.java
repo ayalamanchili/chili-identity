@@ -800,6 +800,7 @@ public class OfficeStartup {
     }
 
     protected void createSampleQuestions() {
+
 //        SKILL_AND_APTITUDE
         Question q1 = new Question();
         q1.setQuestionKey("performance.review.skill.aptitude.question1");
@@ -816,21 +817,99 @@ public class OfficeStartup {
         q3.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q3.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q3);
-//     ATTITUDE
         Question q4 = new Question();
-        q4.setQuestionKey("performance.review.attitude.question1");
-        q4.setCategory(QuestionCategory.ATTITUDE);
+        q4.setQuestionKey("performance.review.skill.aptitude.question4");
+        q4.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q4.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q4);
         Question q5 = new Question();
-        q5.setQuestionKey("performance.review.attitude.question2");
-        q5.setCategory(QuestionCategory.ATTITUDE);
+        q5.setQuestionKey("performance.review.skill.aptitude.question5");
+        q5.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q5.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q5);
         Question q6 = new Question();
-        q6.setQuestionKey("performance.review.attitude.question3");
-        q6.setCategory(QuestionCategory.ATTITUDE);
+        q6.setQuestionKey("performance.review.skill.aptitude.question6");
+        q6.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q6.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         em.persist(q6);
+        Question q7 = new Question();
+        q7.setQuestionKey("performance.review.skill.aptitude.question7");
+        q7.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
+        q7.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q7);
+        Question q8 = new Question();
+        q8.setQuestionKey("performance.review.skill.aptitude.question8");
+        q8.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
+        q8.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q8);
+        Question q9 = new Question();
+        q9.setQuestionKey("performance.review.skill.aptitude.question9");
+        q9.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
+        q9.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q9);
+        Question q10 = new Question();
+        q10.setQuestionKey("performance.review.skill.aptitude.question10");
+        q10.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
+        q10.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q10);
+
+//     ATTITUDE
+        Question q11 = new Question();
+        q11.setQuestionKey("performance.review.attitude.question11");
+        q11.setCategory(QuestionCategory.ATTITUDE);
+        q11.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q11);
+        Question q12 = new Question();
+        q12.setQuestionKey("performance.review.attitude.question12");
+        q12.setCategory(QuestionCategory.ATTITUDE);
+        q12.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q12);
+        Question q13 = new Question();
+        q13.setQuestionKey("performance.review.attitude.question13");
+        q13.setCategory(QuestionCategory.ATTITUDE);
+        q13.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q13);
+        Question q14 = new Question();
+        q14.setQuestionKey("performance.review.attitude.question14");
+        q14.setCategory(QuestionCategory.ATTITUDE);
+        q14.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q14);
+        Question q15 = new Question();
+        q15.setQuestionKey("performance.review.attitude.question15");
+        q15.setCategory(QuestionCategory.ATTITUDE);
+        q15.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q15);
+
+//#Management (Applicable to Managers w/Direct Reports only):
+        Question q16 = new Question();
+        q16.setQuestionKey("performance.review.managenet.question16");
+        q16.setCategory(QuestionCategory.MANAGEMENT);
+        q16.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q16);
+        Question q17 = new Question();
+        q17.setQuestionKey("performance.review.managenet.question17");
+        q17.setCategory(QuestionCategory.MANAGEMENT);
+        q17.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q17);
+        Question q18 = new Question();
+        q18.setQuestionKey("performance.review.managenet.question18");
+        q18.setCategory(QuestionCategory.MANAGEMENT);
+        q18.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q18);
+        Question q19 = new Question();
+        q19.setQuestionKey("performance.review.managenet.question19");
+        q19.setCategory(QuestionCategory.MANAGEMENT);
+        q19.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q19);
+        Question q20 = new Question();
+        q20.setQuestionKey("performance.review.managenet.question20");
+        q20.setCategory(QuestionCategory.MANAGEMENT);
+        q20.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q20);
+        Question q21 = new Question();
+        q21.setQuestionKey("performance.review.managenet.question21");
+        q21.setCategory(QuestionCategory.MANAGEMENT);
+        q21.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        em.persist(q21);
     }
 }

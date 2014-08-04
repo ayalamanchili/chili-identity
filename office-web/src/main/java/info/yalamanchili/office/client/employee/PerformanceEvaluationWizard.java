@@ -33,8 +33,8 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
     protected String employeeId;
     protected CreatePerformanceEvaluationStep perfEvalStartStep;
     protected CreatePerformanceEvaluationStep perfEvalStartEnd;
-    CreateQuestionCommentsWidgetStep attitudeQuestionsStep;
     CreateQuestionCommentsWidgetStep skillQuestionsStep;
+    CreateQuestionCommentsWidgetStep attitudeQuestionsStep;
     CreateQuestionCommentsWidgetStep managementQuestionsStep;
 
     public PerformanceEvaluationWizard(String employeeId) {
@@ -44,14 +44,14 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
     @Override
     protected void initSteps() {
         perfEvalStartStep = new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.Start.name(), CreatePerformanceEvaluationPanelType.Start.name());
-        attitudeQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.ATTITUDE.name(), QuestionCategory.ATTITUDE.name());
         skillQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionCategory.SKILL_AND_APTITUDE.name());
+        attitudeQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.ATTITUDE.name(), QuestionCategory.ATTITUDE.name());
         managementQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.MANAGEMENT.name(), QuestionCategory.MANAGEMENT.name());
         perfEvalStartEnd = new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.End.name(), CreatePerformanceEvaluationPanelType.End.name());
 
         steps.add(perfEvalStartStep);
-        steps.add(attitudeQuestionsStep);
         steps.add(skillQuestionsStep);
+        steps.add(attitudeQuestionsStep);
         steps.add(managementQuestionsStep);
         steps.add(perfEvalStartEnd);
     }
@@ -99,17 +99,17 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         protected void complete() {
             HttpService.HttpServiceAsync.instance().doPut(getCompleteUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
-                        @Override
-                        public void onFailure(Throwable res) {
-                            getWidget().handleErrorResponse(res);
-                        }
+                @Override
+                public void onFailure(Throwable res) {
+                    getWidget().handleErrorResponse(res);
+                }
 
-                        @Override
-                        public void onSuccess(String res) {
-                            getWidget().clearMessages();
-                            nextClicked();
-                        }
-                    });
+                @Override
+                public void onSuccess(String res) {
+                    getWidget().clearMessages();
+                    nextClicked();
+                }
+            });
         }
 
         protected String getCompleteUrl() {
@@ -121,8 +121,8 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             entity.put("employeeId", new JSONString(employeeId));
             JSONObject perfEval = perfEvalStartStep.getWidget().populateEntityFromFields();
             entity.put("performanceEvaluation", perfEval);
-            JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValue();
             JSONArray skillQuestions = skillQuestionsStep.getWidget().getValue();
+            JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValue();
             JSONArray managementQuestions = managementQuestionsStep.getWidget().getValue();
             JSONArray questionComments = new JSONArray();
             int x = 0;
@@ -153,12 +153,10 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void previous() {
-
         }
 
         @Override
         protected void onLoad() {
-
         }
 
         @Override
@@ -170,23 +168,22 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             getWidget().clearMessages();
             HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), getWidget().populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
-                        @Override
-                        public void onFailure(Throwable res) {
-                            getWidget().handleErrorResponse(res);
-                        }
+                @Override
+                public void onFailure(Throwable res) {
+                    getWidget().handleErrorResponse(res);
+                }
 
-                        @Override
-                        public void onSuccess(String res) {
-                            getWidget().clearMessages();
-                            nextClicked();
-                        }
-                    });
+                @Override
+                public void onSuccess(String res) {
+                    getWidget().clearMessages();
+                    nextClicked();
+                }
+            });
         }
 
         protected String getValidateUrl() {
             return OfficeWelcome.constants.root_url() + "performance-evaluation/validate";
         }
-
     }
 
     public class CreateQuestionCommentsWidgetStep extends AbstractStep<CreateQuestionCommentsWidget> {
@@ -198,11 +195,11 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         public CreateQuestionCommentsWidget getWidget() {
             if (widget == null) {
-                if (stepId.equals(QuestionCategory.ATTITUDE.name())) {
-                    widget = new CreateQuestionCommentsWidget(QuestionCategory.ATTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER);
-                }
                 if (stepId.equals(QuestionCategory.SKILL_AND_APTITUDE.name())) {
                     widget = new CreateQuestionCommentsWidget(QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+                }
+                if (stepId.equals(QuestionCategory.ATTITUDE.name())) {
+                    widget = new CreateQuestionCommentsWidget(QuestionCategory.ATTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER);
                 }
                 if (stepId.equals(QuestionCategory.MANAGEMENT.name())) {
                     widget = new CreateQuestionCommentsWidget(QuestionCategory.MANAGEMENT, QuestionContext.PERFORMANCE_EVALUATION_MANGER);
@@ -218,12 +215,10 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void next(boolean isLastStep) {
-
         }
 
         @Override
         protected void previous() {
-
         }
 
         @Override
@@ -237,8 +232,6 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
                 getWidget().clearMessages();
                 nextClicked();
             }
-
         }
     }
-
 }

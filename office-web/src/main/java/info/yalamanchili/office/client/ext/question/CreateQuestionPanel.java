@@ -37,6 +37,9 @@ public class CreateQuestionPanel extends CreateComposite {
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("context", entity);
         assignEntityValueFromField("sortOrder", entity);
+        assignEntityValueFromField("questionCommentRequired", entity);
+        assignEntityValueFromField("questionRatingRequired", entity);
+
         logger.info("ddd" + entity);
         return entity;
     }
@@ -82,6 +85,8 @@ public class CreateQuestionPanel extends CreateComposite {
         addEnumField("category", false, true, QuestionCategory.names());
         addEnumField("context", false, true, QuestionContext.names());
         addField("sortOrder", false, false, DataType.INTEGER_FIELD);
+        addField("questionCommentRequired", false, false, DataType.BOOLEAN_FIELD);
+        addField("questionRatingRequired", false, false, DataType.BOOLEAN_FIELD);
     }
 
     @Override

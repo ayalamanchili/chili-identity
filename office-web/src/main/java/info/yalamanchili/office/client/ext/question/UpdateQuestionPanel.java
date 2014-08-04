@@ -35,6 +35,8 @@ public class UpdateQuestionPanel extends UpdateComposite {
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("context", entity);
         assignEntityValueFromField("sortOrder", entity);
+        assignEntityValueFromField("questionCommentRequired", entity);
+        assignEntityValueFromField("questionRatingRequired", entity);
         return entity;
     }
 
@@ -60,6 +62,8 @@ public class UpdateQuestionPanel extends UpdateComposite {
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("context", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("sortOrder", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("questionCommentRequired", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("questionRatingRequired", entity, DataType.BOOLEAN_FIELD);
     }
 
     @Override
@@ -83,6 +87,8 @@ public class UpdateQuestionPanel extends UpdateComposite {
         addEnumField("category", false, true, QuestionCategory.names());
         addEnumField("context", false, true, QuestionContext.names());
         addField("sortOrder", false, false, DataType.INTEGER_FIELD);
+        addField("questionCommentRequired", false, false, DataType.BOOLEAN_FIELD);
+        addField("questionRatingRequired", false, false, DataType.BOOLEAN_FIELD);
     }
 
     @Override

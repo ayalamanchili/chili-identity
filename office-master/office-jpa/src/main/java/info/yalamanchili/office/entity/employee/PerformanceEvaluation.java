@@ -47,25 +47,25 @@ public class PerformanceEvaluation extends AbstractEntity {
     /**
      * start Date
      */
-    @NotNull
+    @NotNull(message = "{evaluationPeriodStartDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     protected Date evaluationPeriodStartDate;
     /**
      * end Date
      */
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    @NotNull
+    @NotNull(message = "{evaluationPeriodEndDate.not.empty.msg}")
     protected Date evaluationPeriodEndDate;
     /**
      * Evaluation Frequency
      */
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "{performanceevaluation.type.not.empty.msg}")
     protected EvaluationFrequencyType type;
     /**
      *
      */
-    @NotNull
+    @NotNull(message = "{rating.not.empty.msg}")
     protected Double rating;
     /**
      *
