@@ -44,14 +44,14 @@ public class PrivacyService {
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
-        if (SecurityService.instance().getUserRoles(employee).contains(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())){
+        if (SecurityService.instance().getUserRoles(employee).contains(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             //this is corp emp info check if user has HR role
-            if(SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_HR.name())){
+            if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_DATA.name())) {
                 return true;
             }
-        }else{
+        } else {
             //This is consultant employee information check is the user has corp emp role
-            if(SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
                 return true;
             }
         }

@@ -8,8 +8,10 @@
  */
 package info.yalamanchili.office.client.employee;
 
+import com.google.gwt.json.client.JSONArray;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.rpc.HttpService;
@@ -29,6 +31,11 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
     private static Logger logger = Logger.getLogger(PerformanceEvaluationWizard.class.getName());
     protected String employeeId;
+    protected CreatePerformanceEvaluationStep perfEvalStartStep;
+    protected CreatePerformanceEvaluationStep perfEvalStartEnd;
+    CreateQuestionCommentsWidgetStep attitudeQuestionsStep;
+    CreateQuestionCommentsWidgetStep skillQuestionsStep;
+    CreateQuestionCommentsWidgetStep managementQuestionsStep;
 
     public PerformanceEvaluationWizard(String employeeId) {
         this.employeeId = employeeId;
@@ -36,11 +43,17 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
     @Override
     protected void initSteps() {
-        steps.add(new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.Start.name(), CreatePerformanceEvaluationPanelType.Start.name()));
-        steps.add(new CreateQuestionCommentsWidgetStep(QuestionCategory.ATTITUDE.name(), QuestionCategory.ATTITUDE.name()));
-        steps.add(new CreateQuestionCommentsWidgetStep(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionCategory.SKILL_AND_APTITUDE.name()));
-        steps.add(new CreateQuestionCommentsWidgetStep(QuestionCategory.MANAGEMENT.name(), QuestionCategory.MANAGEMENT.name()));
-        steps.add(new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.End.name(), CreatePerformanceEvaluationPanelType.End.name()));
+        perfEvalStartStep = new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.Start.name(), CreatePerformanceEvaluationPanelType.Start.name());
+        attitudeQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.ATTITUDE.name(), QuestionCategory.ATTITUDE.name());
+        skillQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionCategory.SKILL_AND_APTITUDE.name());
+        managementQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.MANAGEMENT.name(), QuestionCategory.MANAGEMENT.name());
+        perfEvalStartEnd = new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.End.name(), CreatePerformanceEvaluationPanelType.End.name());
+
+        steps.add(perfEvalStartStep);
+        steps.add(attitudeQuestionsStep);
+        steps.add(skillQuestionsStep);
+        steps.add(managementQuestionsStep);
+        steps.add(perfEvalStartEnd);
     }
 
     public class CreatePerformanceEvaluationStep extends AbstractStep<CreatePerformanceEvaluationPanel> {
@@ -84,7 +97,47 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         protected void complete() {
-            
+            HttpService.HttpServiceAsync.instance().doPut(getCompleteUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new AsyncCallback<String>() {
+                        @Override
+                        public void onFailure(Throwable res) {
+                            getWidget().handleErrorResponse(res);
+                        }
+
+                        @Override
+                        public void onSuccess(String res) {
+                            getWidget().clearMessages();
+                            nextClicked();
+                        }
+                    });
+        }
+
+        protected String getCompleteUrl() {
+            return OfficeWelcome.constants.root_url() + "employee/performance-evaluation/save";
+        }
+
+        protected JSONObject populateEntity() {
+            JSONObject entity = new JSONObject();
+            entity.put("employeeId", new JSONString(employeeId));
+            JSONObject perfEval = perfEvalStartStep.getWidget().populateEntityFromFields();
+            entity.put("performanceEvaluation", perfEval);
+            JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValue();
+            JSONArray skillQuestions = skillQuestionsStep.getWidget().getValue();
+            JSONArray managementQuestions = managementQuestionsStep.getWidget().getValue();
+            JSONArray questionComments = new JSONArray();
+            int x = 0;
+            for (int i = 0; i < attitudeQuestions.size(); i++) {
+                questionComments.set(x, attitudeQuestions.get(i));
+            }
+            for (int i = 0; i < skillQuestions.size(); i++) {
+                questionComments.set(x, skillQuestions.get(i));
+            }
+            for (int i = 0; i < managementQuestions.size(); i++) {
+                questionComments.set(x, managementQuestions.get(i));
+            }
+            entity.put("comments", questionComments);
+            logger.info("Dddddddddddddd" + entity.toString());
+            return entity;
         }
 
         @Override
@@ -107,6 +160,10 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void validate() {
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
+                nextClicked();
+                return;
+            }
             getWidget().clearMessages();
             HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), getWidget().populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
@@ -174,9 +231,10 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         protected void validate() {
             if (getWidget().validate()) {
+                getWidget().clearMessages();
                 nextClicked();
             }
-            getWidget().clearMessages();
+
         }
     }
 

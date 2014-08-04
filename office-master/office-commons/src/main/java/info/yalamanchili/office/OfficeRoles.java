@@ -45,6 +45,7 @@ public class OfficeRoles {
         ROLE_CORPORATE_TIME_REPORTS,
         ROLE_CONSULTANT_TIME_REPORTS,
         ROLE_IT_DEVELOPER,
+        ROLE_CORPORATE_DATA
     }
     public final static Map<String, String> rolesMessages = new HashMap<String, String>();
 
@@ -74,5 +75,6 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_CORPORATE_TIME_REPORTS.name(), "Corporate Time Reports");
         rolesMessages.put(OfficeRole.ROLE_CONSULTANT_TIME_REPORTS.name(), "Consultant Time Reports");
         rolesMessages.put(OfficeRole.ROLE_IT_DEVELOPER.name(), "IT Developer");
+        rolesMessages.put(OfficeRole.ROLE_CORPORATE_DATA.name(), "Corporate Data");
     }
 }
