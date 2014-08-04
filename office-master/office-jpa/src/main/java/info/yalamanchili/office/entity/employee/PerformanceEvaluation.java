@@ -65,7 +65,7 @@ public class PerformanceEvaluation extends AbstractEntity {
     /**
      *
      */
-    @NotNull(message = "{rating.not.empty.msg}")
+//    @NotNull(message = "{rating.not.empty.msg}")
     protected Double rating;
     /**
      *
