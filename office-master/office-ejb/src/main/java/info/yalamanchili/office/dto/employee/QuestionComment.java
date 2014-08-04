@@ -8,10 +8,8 @@
  */
 package info.yalamanchili.office.dto.employee;
 
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -29,7 +27,6 @@ public class QuestionComment {
     /**
      *
      */
-    @NotNull(message = "{questioncomment.rating.not.empty.msg}")
     protected Double rating;
 
     public QuestionComment() {

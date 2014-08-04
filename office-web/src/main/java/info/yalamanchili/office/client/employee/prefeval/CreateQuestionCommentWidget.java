@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.employee.prefeval;
 
+import com.google.common.base.Strings;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -48,9 +49,15 @@ public class CreateQuestionCommentWidget extends ALComposite {
     }
 
     protected JSONObject getQuestionComment() {
-        question.put("comment", new JSONString(commentTB.getValue()));
-        question.put("rating", new JSONString(ratingF.getValue()));
-        return question;
+        JSONObject entity = new JSONObject();
+        entity.put("id", question.get("id").isString());
+        if (!Strings.isNullOrEmpty(commentTB.getValue())) {
+            entity.put("comment", new JSONString(commentTB.getValue()));
+        }
+        if (!Strings.isNullOrEmpty(ratingF.getValue())) {
+            entity.put("rating", new JSONString(ratingF.getValue()));
+        }
+        return entity;
     }
 
     @Override
@@ -60,13 +67,7 @@ public class CreateQuestionCommentWidget extends ALComposite {
     }
 
     public boolean validate() {
-        if (ratingF.getValue() == null) {
-            ratingF.setMessage("Please select a rating");
-            return false;
-        } else {
-            return true;
-        }
-
+        return true;
     }
 
     public void clearMessages() {

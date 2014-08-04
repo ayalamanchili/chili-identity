@@ -18,6 +18,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -95,14 +96,14 @@ public class PerformanceEvaluation extends AbstractEntity {
     /**
      * Employee
      */
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @ForeignKey(name = "FK_EMP_PERF_EVALS")
     protected Employee employee;
 
     /**
      * questions
      */
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.EAGER)
     protected List<Question> questions;
 
     public PerformanceEvaluation() {

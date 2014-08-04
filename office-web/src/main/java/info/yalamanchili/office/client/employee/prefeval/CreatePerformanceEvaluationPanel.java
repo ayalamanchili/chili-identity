@@ -15,7 +15,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.employee.EvaluationFrequencyType;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +24,6 @@ import java.util.logging.Logger;
 public class CreatePerformanceEvaluationPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreatePerformanceEvaluationPanel.class.getName());
-    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
     protected String employeeId;
 
     public enum CreatePerformanceEvaluationPanelType {

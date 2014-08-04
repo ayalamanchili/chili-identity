@@ -15,7 +15,9 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.AbstractWizard.AbstractStep;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel.CreatePerformanceEvaluationPanelType;
 import info.yalamanchili.office.client.employee.prefeval.CreateQuestionCommentsWidget;
@@ -99,17 +101,18 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         protected void complete() {
             HttpService.HttpServiceAsync.instance().doPut(getCompleteUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
-                @Override
-                public void onFailure(Throwable res) {
-                    getWidget().handleErrorResponse(res);
-                }
+                        @Override
+                        public void onFailure(Throwable res) {
+                            getWidget().handleErrorResponse(res);
+                        }
 
-                @Override
-                public void onSuccess(String res) {
-                    getWidget().clearMessages();
-                    nextClicked();
-                }
-            });
+                        @Override
+                        public void onSuccess(String res) {
+                            new ResponseStatusWidget().show("Successfully Created Performance Evaluation");
+                            TabPanel.instance().myOfficePanel.entityPanel.clear();
+                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(employeeId));
+                        }
+                    });
         }
 
         protected String getCompleteUrl() {
@@ -168,17 +171,17 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             getWidget().clearMessages();
             HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), getWidget().populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
-                @Override
-                public void onFailure(Throwable res) {
-                    getWidget().handleErrorResponse(res);
-                }
+                        @Override
+                        public void onFailure(Throwable res) {
+                            getWidget().handleErrorResponse(res);
+                        }
 
-                @Override
-                public void onSuccess(String res) {
-                    getWidget().clearMessages();
-                    nextClicked();
-                }
-            });
+                        @Override
+                        public void onSuccess(String res) {
+                            getWidget().clearMessages();
+                            nextClicked();
+                        }
+                    });
         }
 
         protected String getValidateUrl() {
@@ -215,10 +218,12 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void next(boolean isLastStep) {
+
         }
 
         @Override
         protected void previous() {
+
         }
 
         @Override
@@ -232,6 +237,8 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
                 getWidget().clearMessages();
                 nextClicked();
             }
+
         }
     }
+
 }
