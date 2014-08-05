@@ -27,6 +27,8 @@ import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -110,8 +112,7 @@ public class ConsultantTimeService {
         summary.setTotalAccumulatedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()));
         summary.setTotalUsedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()));
         summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
-        
-        
+
         summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
@@ -157,6 +158,12 @@ public class ConsultantTimeService {
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             summary.add(getYearlySummary(emp));
         }
+        Collections.sort(summary, new Comparator<ConsultantTimeSummary>() {
+            @Override
+            public int compare(ConsultantTimeSummary dto1, ConsultantTimeSummary dto2) {
+                return dto1.getEmployee().compareTo(dto2.getEmployee());
+            }
+        });
         String report = TemplateService.instance().process("cons-emp-summary.xhtml", summary);
         return ReportGenerator.generatePDFReportFromHtml(report, "cons-emp-summary");
     }

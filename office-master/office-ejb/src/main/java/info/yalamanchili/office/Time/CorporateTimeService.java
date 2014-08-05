@@ -19,6 +19,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.dto.time.CorporateTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -27,6 +28,8 @@ import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,13 +64,13 @@ public class CorporateTimeService {
         vars.put("notifyEmployees", entity.getNotifyEmployees());
         OfficeBPMService.instance().startProcess("corp_emp_leave_request_process", vars);
     }
-    
-    protected void validateRequest(CorporateTimeSheet entity){
+
+    protected void validateRequest(CorporateTimeSheet entity) {
         if (entity.getStartDate().after(DateUtils.getNextMonth(new Date(), 11)) || entity.getStartDate().before(DateUtils.getNextMonth(new Date(), -11))) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.startdate", "Start Date Invalid");
         }
         if (entity.getEndDate().after(DateUtils.getNextMonth(new Date(), 11)) || entity.getEndDate().before(DateUtils.getNextMonth(new Date(), -11))) {
-             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.enddate", "End Date Invalid ");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.enddate", "End Date Invalid ");
         }
     }
 
@@ -111,7 +114,7 @@ public class CorporateTimeService {
         CorporateTimeSummary summary = new CorporateTimeSummary();
         summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
         summary.setAvailableSickHours(getYearlySickBalance(employee));
-        summary.setAvailableVacationHours(getYearlyVacationBalance(employee,new Date()));
+        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
         summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
@@ -144,7 +147,7 @@ public class CorporateTimeService {
         BigDecimal spent = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved, new Date());
         return earned.subtract(spent);
     }
-    
+
     public BigDecimal getYearlyVacationBalance(Employee employee, Date yearDate) {
         BigDecimal vacationEarned = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, yearDate);
         BigDecimal vacationCarryForward = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, yearDate);
@@ -171,8 +174,14 @@ public class CorporateTimeService {
         for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             summary.add(getYearlySummary(emp));
         }
+        Collections.sort(summary, new Comparator<CorporateTimeSummary>() {
+            @Override
+            public int compare(CorporateTimeSummary dto1, CorporateTimeSummary dto2) {
+                return dto1.getEmployee().compareTo(dto2.getEmployee());
+            }
+        });
         String report = TemplateService.instance().process("corp-emp-summary.xhtml", summary);
-        return ReportGenerator.generatePDFReportFromHtml(report,"corp-emp-summary");
+        return ReportGenerator.generatePDFReportFromHtml(report, "corp-emp-summary");
     }
 
     public static CorporateTimeService instance() {
