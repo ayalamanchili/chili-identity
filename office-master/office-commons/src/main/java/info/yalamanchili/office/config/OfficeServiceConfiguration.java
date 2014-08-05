@@ -81,7 +81,7 @@ public class OfficeServiceConfiguration {
     /**
      * list of white listed emails addresses that can receive emails
      */
-    protected String filteredEmailsList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,anu@yalamanchili.info,vijay.v@sstech.us";
+    protected String filteredEmailsList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,anu@yalamanchili.info";
     /**
      * file path used by data loader tool
      */
