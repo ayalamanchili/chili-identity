@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dao.time;
 
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.io.Serializable;
@@ -29,6 +30,7 @@ public class SearchCorporateTimeSheetDto implements Serializable {
     protected Date endDate;
     protected List<TimeSheetCategory> category;
     protected List<TimeSheetStatus> status;
+    protected Branch branch;
     protected OfficeRole role;
 
     public Date getStartDate() {
@@ -61,6 +63,14 @@ public class SearchCorporateTimeSheetDto implements Serializable {
 
     public void setStatus(List<TimeSheetStatus> status) {
         this.status = status;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 
     public OfficeRole getRole() {

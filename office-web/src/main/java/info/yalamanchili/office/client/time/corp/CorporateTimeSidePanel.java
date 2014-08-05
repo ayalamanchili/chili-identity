@@ -70,7 +70,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
     EnumField reportCategoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
             false, false, true, TimeSheetCategory.names(), Alignment.VERTICAL);
     EnumField reportbranchField = new EnumField(OfficeWelcome.constants, "branch", "Employee",
-            false, false, true, Branch.names(), Alignment.VERTICAL);
+            false, false, Branch.names(), Alignment.VERTICAL);
     EnumField roleF = new EnumField(OfficeWelcome.constants, "role", "Employee",
             false, false, Auth.getAllRoles());
     ClickableLink clearReportsL = new ClickableLink("clear");

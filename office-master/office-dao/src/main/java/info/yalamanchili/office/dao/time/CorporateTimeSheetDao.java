@@ -123,7 +123,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return queryStr.toString();
     }
 
-    public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory category, TimeSheetStatus status,Date yearDate) {
+    public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory category, TimeSheetStatus status, Date yearDate) {
         TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and status=:statusParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
         query.setParameter("employeeParam", employee);
         query.setParameter("categoryParam", category);
@@ -188,6 +188,9 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         if (qryStr.contains("empsWithRoleParam")) {
             query.setParameter("empsWithRoleParam", emps);
         }
+        if (qryStr.contains("branchParam")) {
+            query.setParameter("branchParam", dto.getBranch());
+        }
         return query;
     }
 
@@ -208,6 +211,9 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
         if (emps != null && emps.size() > 0) {
             reportQueryBuilder.append(" and employee in (:empsWithRoleParam) ");
+        }
+        if (dto.getBranch() != null) {
+            reportQueryBuilder.append(" and employee.branch in (:branchParam) ");
         }
         reportQueryBuilder.append(" order by startDate DESC ");
         return reportQueryBuilder.toString();
