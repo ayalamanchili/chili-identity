@@ -81,6 +81,8 @@ public class SearchEmployeePanel extends SearchComposite {
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
+        //branch
+        assignEntityValueFromField("branch", entity);
         assignEntityValueFromField("employeeId", entity);
         if (Auth.isCorporateEmployee()) {
             //employeetype
@@ -99,13 +101,6 @@ public class SearchEmployeePanel extends SearchComposite {
                 user.put("roles", roles);
                 entity.put("user", user);
             }
-            //branch
-            JSONObject branch = new JSONObject();
-            assignEntityValueFromField("branch", branch, "name");
-            if (branch.size() > 0) {
-                entity.put("branch", branch);
-            }
-
         }
 
         //populate address for search

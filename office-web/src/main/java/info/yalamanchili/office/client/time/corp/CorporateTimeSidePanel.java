@@ -34,6 +34,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
@@ -68,6 +69,8 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             false, false, true, TimeSheetStatus.names(), Alignment.VERTICAL);
     EnumField reportCategoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
             false, false, true, TimeSheetCategory.names(), Alignment.VERTICAL);
+    EnumField reportbranchField = new EnumField(OfficeWelcome.constants, "branch", "Employee",
+            false, false, true, Branch.names(), Alignment.VERTICAL);
     EnumField roleF = new EnumField(OfficeWelcome.constants, "role", "Employee",
             false, false, Auth.getAllRoles());
     ClickableLink clearReportsL = new ClickableLink("clear");
@@ -120,6 +123,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             reportsPanel.add(startDateF);
             reportsPanel.add(endDateF);
             reportsPanel.add(reportCategoryField);
+            reportsPanel.add(reportbranchField);
             reportsPanel.add(reportStatusField);
             reportsPanel.add(roleF);
             reportsPanel.add(viewReportsB);
@@ -211,6 +215,9 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         }
         if (reportCategoryField.getValues() != null) {
             search.put("category", JSONUtils.toJSONArray(reportCategoryField.getValues()));
+        }
+        if (reportbranchField.getValues() != null) {
+            search.put("branch", JSONUtils.toJSONArray(reportbranchField.getValues()));
         }
         if (reportStatusField.getValues() != null) {
             search.put("status", JSONUtils.toJSONArray(reportStatusField.getValues()));
