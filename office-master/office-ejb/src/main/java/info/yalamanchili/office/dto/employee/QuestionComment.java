@@ -29,6 +29,15 @@ public class QuestionComment {
      */
     protected Double rating;
 
+    /**
+     *
+     */
+    protected String question;
+    /**
+     *
+     */
+    protected String questionInfo;
+
     public QuestionComment() {
     }
 
@@ -54,6 +63,22 @@ public class QuestionComment {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getQuestionInfo() {
+        return questionInfo;
+    }
+
+    public void setQuestionInfo(String questionInfo) {
+        this.questionInfo = questionInfo;
     }
 
 }

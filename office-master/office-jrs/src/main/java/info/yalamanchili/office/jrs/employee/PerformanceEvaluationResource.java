@@ -12,8 +12,11 @@ import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.SecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
+import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.employee.PerformanceEvaluationService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
+import info.yalamanchili.office.entity.ext.QuestionCategory;
+import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -51,11 +54,15 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
 
     @PUT
     @Path("/save")
-    public String savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        return PerformanceEvaluationService.instance().savePerformanceEvaluation(dto);
+    public void savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+        PerformanceEvaluationService.instance().savePerformanceEvaluation(dto);
     }
 
- 
+    @GET
+    @Path("/comments/{id}")
+    public List<QuestionComment> getQuestionComments(@PathParam("id") Long id, @QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context) {
+        return PerformanceEvaluationService.instance().getQuestionComments(id, category, context);
+    }
 
     @GET
     @Path("/{start}/{limit}")

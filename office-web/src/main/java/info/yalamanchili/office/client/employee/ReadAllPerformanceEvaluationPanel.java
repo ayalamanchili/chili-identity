@@ -40,8 +40,15 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadPerformanceEvaluationPanel(getEntity(entityId)));
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadPerformanceEvaluationPanel(entityId));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadPerformanceEvaluationPanel(entityId));
+        }
+
     }
 
     @Override

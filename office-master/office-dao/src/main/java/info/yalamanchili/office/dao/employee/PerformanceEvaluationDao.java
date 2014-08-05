@@ -10,8 +10,13 @@ package info.yalamanchili.office.dao.employee;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
+import info.yalamanchili.office.entity.ext.Question;
+import info.yalamanchili.office.entity.ext.QuestionCategory;
+import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -38,6 +43,14 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         TypedQuery<PerformanceEvaluation> query = em.createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", PerformanceEvaluation.class);
         query.setParameter("employeeParam", emp);
         return query.getResultList();
+    }
+
+    public Set<Question> getQuestions(Long id, QuestionCategory category, QuestionContext context) {
+        TypedQuery<Question> query = getEntityManager().createQuery("select question from " + PerformanceEvaluation.class.getCanonicalName() + " pe inner join pe.questions question where pe.id=:idPraam and question.category =:categoryParam and question.context =:contextParam", Question.class);
+        query.setParameter("idPraam", id);
+        query.setParameter("categoryParam", category);
+        query.setParameter("contextParam", context);
+        return new HashSet<Question>(query.getResultList());
     }
 
     public PerformanceEvaluationDao() {

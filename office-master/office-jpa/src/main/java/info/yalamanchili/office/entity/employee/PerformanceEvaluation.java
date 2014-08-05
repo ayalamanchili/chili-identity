@@ -11,20 +11,19 @@ package info.yalamanchili.office.entity.employee;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -103,8 +102,8 @@ public class PerformanceEvaluation extends AbstractEntity {
     /**
      * questions
      */
-    @OneToMany(fetch = FetchType.EAGER)
-    protected List<Question> questions;
+    @ManyToMany
+    protected Set<Question> questions;
 
     public PerformanceEvaluation() {
     }
@@ -189,6 +188,7 @@ public class PerformanceEvaluation extends AbstractEntity {
         this.ceoComments = ceoComments;
     }
 
+    @XmlTransient
     public Employee getEmployee() {
         return employee;
     }
@@ -197,13 +197,14 @@ public class PerformanceEvaluation extends AbstractEntity {
         this.employee = employee;
     }
 
-    public void setQuestions(List<Question> questions) {
+    public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
 
-    public List<Question> getQuestions() {
+    @XmlTransient
+    public Set<Question> getQuestions() {
         if (this.questions == null) {
-            this.questions = new ArrayList<Question>();
+            this.questions = new HashSet<Question>();
         }
         return questions;
     }

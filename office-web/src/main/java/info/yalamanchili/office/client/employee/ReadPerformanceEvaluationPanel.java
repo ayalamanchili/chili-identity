@@ -14,6 +14,9 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.ext.question.QuestionCategory;
+import info.yalamanchili.office.client.ext.question.QuestionContext;
+import info.yalamanchili.office.client.ext.question.ReadAllQuestionCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -31,11 +34,6 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         return instance;
     }
 
-    public ReadPerformanceEvaluationPanel(JSONObject entity) {
-        instance = this;
-        initReadComposite(entity, "PerformanceEvaluation", OfficeWelcome.constants);
-    }
-
     public ReadPerformanceEvaluationPanel(String id) {
         initReadComposite(id, "PerformanceEvaluation", OfficeWelcome.constants);
     }
@@ -44,18 +42,17 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employee", entity, null);
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
@@ -78,7 +75,6 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", selectEmployeeWidgetF);
         addField("evaluationDate", false, false, DataType.DATE_FIELD);
         addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD);
         addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
@@ -89,6 +85,11 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("managersComments", false, false, DataType.STRING_FIELD);
         addField("employeeComments", false, false, DataType.STRING_FIELD);
         addField("ceoComments", false, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl()));
+    }
+
+    protected String getQuestionCommentsUrl() {
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/comments/" + getEntityId() + "?category=" + QuestionCategory.ATTITUDE.name() + "&context=" + QuestionContext.PERFORMANCE_EVALUATION_MANGER.name();
     }
 
     @Override
@@ -97,6 +98,6 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation";
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/" + entityId;
     }
 }

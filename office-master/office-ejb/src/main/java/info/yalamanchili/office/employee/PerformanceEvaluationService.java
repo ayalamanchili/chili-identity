@@ -37,12 +37,11 @@ public class PerformanceEvaluationService {
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
 
-    public String savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+    public void savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
         PerformanceEvaluation entity = dto.getPerformanceEvaluation();
         entity.setEmployee(EmployeeDao.instance().findById(dto.getEmployeeId()));
-        entity = performanceEvaluationDao.getEntityManager().merge(entity);
         saveQuestionComments(entity, dto.getComments());
-        return performanceEvaluationDao.getEntityManager().merge(entity).getId().toString();
+        performanceEvaluationDao.getEntityManager().merge(entity);
     }
 
     public List<QuestionDto> getQuestions(QuestionCategory category) {
@@ -55,6 +54,10 @@ public class PerformanceEvaluationService {
             perfEval.addQuestion(qes);
             CommentDao.instance().addComment(comment.getComment(), comment.getRating(), qes);
         }
+    }
+
+    public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
+        return QuestionService.instance().mapQuestionComments(performanceEvaluationDao.getQuestions(id, category, context));
     }
 
     public static PerformanceEvaluationService instance() {

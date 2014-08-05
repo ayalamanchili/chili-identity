@@ -9,14 +9,18 @@
 package info.yalamanchili.office.ext;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
+import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
+import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.messages.MessagesUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -47,6 +51,23 @@ public class QuestionService {
             questions.add(dto);
         }
         return questions;
+    }
+
+    public List<QuestionComment> mapQuestionComments(Set<Question> questions) {
+        List<QuestionComment> res = new ArrayList<QuestionComment>();
+        CommentDao commentDao = CommentDao.instance();
+        for (Question q : questions) {
+            Comment cmmt = commentDao.find(q);
+            if (cmmt != null) {
+                QuestionComment qc = new QuestionComment();
+                qc.setQuestion(messagesUtils.get(q.getQuestionKey()));
+                qc.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
+                qc.setComment(cmmt.getComment());
+                qc.setRating(cmmt.getRating());
+                res.add(qc);
+            }
+        }
+        return res;
     }
 
     public static QuestionService instance() {

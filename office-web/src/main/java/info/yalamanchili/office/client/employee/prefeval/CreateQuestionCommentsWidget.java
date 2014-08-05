@@ -79,10 +79,8 @@ public class CreateQuestionCommentsWidget extends Composite {
         int i = 0;
         for (CreateQuestionCommentWidget widget : commentWidgets) {
             JSONObject qc = widget.getQuestionComment();
-            if (qc != null) {
-                questionComments.set(i, qc);
-                i++;
-            }
+            questionComments.set(i, qc);
+            i++;
         }
         return questionComments;
     }

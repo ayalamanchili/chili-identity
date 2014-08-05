@@ -142,7 +142,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
                 x++;
             }
             entity.put("comments", questionComments);
-            logger.info("Dddddddddddddd" + entity.toString());
+            logger.info(entity.toString());
             return entity;
         }
 
