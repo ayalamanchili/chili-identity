@@ -26,7 +26,7 @@ public enum Branch {
     /**
      * @generated
      */
-    Tampa,
+    Atlanta,
     /**
      * @generated
      */

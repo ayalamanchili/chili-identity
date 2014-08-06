@@ -63,7 +63,7 @@ public class SearchEmployeePanel extends SearchComposite {
             String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
             addEnumField("employeeType", false, false, employeeTypeStrs);
             addEnumField("role", false, false, Auth.getAllRoles());
-            String[] branch = {"Hyderabad", "Florida", "Tampa", "Herndon"};
+            String[] branch = {"Hyderabad", "Florida", "Atlanta", "Herndon"};
             addEnumField("branch", false, false, branch);
         }
         addField("city", DataType.STRING_FIELD);
