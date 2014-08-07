@@ -22,6 +22,7 @@ import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
+import info.yalamanchili.office.client.profile.contact.Branch;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -63,8 +64,7 @@ public class SearchEmployeePanel extends SearchComposite {
             String[] employeeTypeStrs = {"Corporate Employee", "Employee", "Subcontractor", "1099 Contractor"};
             addEnumField("employeeType", false, false, employeeTypeStrs);
             addEnumField("role", false, false, Auth.getAllRoles());
-            String[] branch = {"Hyderabad", "Florida", "Atlanta", "Herndon"};
-            addEnumField("branch", false, false, branch);
+            addEnumField("branch", false, false, Branch.names());
         }
         addField("city", DataType.STRING_FIELD);
         addEnumField("state", false, false, USAStatesFactory.getStates().toArray(new String[0]));
