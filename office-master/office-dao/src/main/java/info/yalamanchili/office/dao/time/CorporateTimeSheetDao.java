@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.time;
 
 import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
-import info.chili.commons.FileIOUtils;
+import info.chili.commons.PDFUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -161,7 +161,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
 
     public Response getPDFReport(SearchCorporateTimeSheetDto dto) {
         String html = TemplateService.instance().process("corporate-time-report.xhtml", getReport(dto, 0, 10000));
-        byte[] pdf = FileIOUtils.convertToPDF(html);
+        byte[] pdf = PDFUtils.convertToPDF(html);
         File file = new File(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "corporate-ts-report.pdf");
         try {
             Files.write(pdf, file);
