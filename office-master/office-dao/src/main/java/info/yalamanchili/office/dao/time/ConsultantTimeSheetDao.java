@@ -8,10 +8,13 @@
  */
 package info.yalamanchili.office.dao.time;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -50,6 +53,14 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
             ts.setEndDate(endDate);
             super.save(ts);
         }
+    }
+
+    @Override
+    public ConsultantTimeSheet save(ConsultantTimeSheet entity) {
+        if (!Strings.isNullOrEmpty(entity.getApprovedBy()) && EmployeeDao.instance().findEmployeWithEmpId(entity.getApprovedBy()) == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approvedById", "Approved By must be a employee Id");
+        }
+        return super.save(entity);
     }
 
     public ConsultantTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {

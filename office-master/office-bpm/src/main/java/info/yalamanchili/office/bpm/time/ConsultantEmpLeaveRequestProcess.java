@@ -10,7 +10,9 @@ package info.yalamanchili.office.bpm.time;
 
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import org.activiti.engine.delegate.DelegateTask;
@@ -21,7 +23,7 @@ import org.activiti.engine.delegate.TaskListener;
  * @author ayalamanchili
  */
 public class ConsultantEmpLeaveRequestProcess implements TaskListener {
-    
+
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -31,7 +33,7 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
             leaveRequestTaskCompleted(task);
         }
     }
-    
+
     protected void leaveRequestTaskCreated(DelegateTask task) {
         ConsultantTimeSheet ts = (ConsultantTimeSheet) task.getExecution().getVariable("leaveRequest");
         ts.setBpmProcessId(task.getExecution().getProcessInstanceId());
@@ -40,7 +42,7 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
         task.getExecution().setVariable("entityId", ts.getId());
         new GenericTaskCreateNotification().notify(task);
     }
-    
+
     protected void leaveRequestTaskCompleted(DelegateTask task) {
         ConsultantTimeSheet ts = getTimeSheetFromTask(task);
         if (ts == null) {
@@ -49,6 +51,8 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             ts.setStatus(TimeSheetStatus.Approved);
+            Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+            ts.setApprovedBy(currentUser.getEmployeeId());
         } else {
             ts.setStatus(TimeSheetStatus.Rejected);
             //TODO should this be deleted?
@@ -56,7 +60,7 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
         ConsultantTimeSheetDao.instance().save(ts);
         new GenericTaskCompleteNotification().notify(task);
     }
-    
+
     protected ConsultantTimeSheet getTimeSheetFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {

@@ -94,7 +94,7 @@ public class CreateProjectPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
+        addField("description", false, false, DataType.RICH_TEXT_AREA);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         if (showClient) {

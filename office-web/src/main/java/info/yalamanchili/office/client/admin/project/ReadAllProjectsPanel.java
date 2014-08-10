@@ -60,7 +60,6 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Client"));
         table.setText(0, 2, getKeyValue("Name"));
-        table.setText(0, 3, getKeyValue("Description"));
         table.setText(0, 4, getKeyValue("StartDate"));
         table.setText(0, 5, getKeyValue("EndDate"));
     }
@@ -73,7 +72,6 @@ public class ReadAllProjectsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("client"), "name"));
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
-            table.setText(i, 3, JSONUtils.toString(entity, "description"));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }

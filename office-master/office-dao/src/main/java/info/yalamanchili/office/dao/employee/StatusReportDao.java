@@ -7,10 +7,13 @@
  */
 package info.yalamanchili.office.dao.employee;
 
+import com.google.common.base.Strings;
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
@@ -35,6 +38,9 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
     public StatusReport save(StatusReport entity) {
         entity.setProject(ProjectDao.instance().findById(entity.getProject().getId()));
         entity.setClientInformation(ClientInformationDao.instance().findById(entity.getClientInformation().getId()));
+        if (!Strings.isNullOrEmpty(entity.getApprovedBy()) && EmployeeDao.instance().findEmployeWithEmpId(entity.getApprovedBy()) == null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approvedById", "Approved By must be a employee Id");
+        }
         return em.merge(entity);
     }
 

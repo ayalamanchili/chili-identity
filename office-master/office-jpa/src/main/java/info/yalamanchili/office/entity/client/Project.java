@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -40,6 +41,7 @@ public class Project extends AbstractEntity {
     @NotEmpty(message = "{project.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "PRJ_NM")
     protected String name;
+    @Lob
     protected String description;
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
