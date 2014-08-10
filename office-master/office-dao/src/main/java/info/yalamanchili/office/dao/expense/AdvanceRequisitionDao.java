@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.expense;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.expense.Check;
@@ -63,10 +63,10 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
     @Override
     @Transactional(readOnly = true)
     public List<AdvanceRequisition> query(int start, int limit) {
-        if (SecurityService.instance().hasAnyRole(OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name())) {
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name())) {
             return queryAll(start, limit);
         } else {
-            return queryForEmployee(SecurityService.instance().getCurrentUser().getId(), start, limit);
+            return queryForEmployee(OfficeSecurityService.instance().getCurrentUser().getId(), start, limit);
         }
     }
 

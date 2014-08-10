@@ -6,10 +6,12 @@ package info.yalamanchili.office.jrs.profile;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -63,9 +66,15 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @GET
     @Path("/dropdown/employee")
     @Transactional(propagation = Propagation.NEVER)
-    public List<Entry> getDropDown() {
+    public List<Entry> getDropDown(@QueryParam("employeeId") Long employeeId) {
         Query query = clientInformationDao.getEntityManager().createQuery("select id, client.name from " + ClientInformation.class.getCanonicalName() + " where employee=:employeeParam");
-        query.setParameter("employeeParam", SecurityService.instance().getCurrentUser());
+        Employee emp;
+        if (employeeId != null) {
+            emp = EmployeeDao.instance().findById(employeeId);
+        } else {
+            emp = OfficeSecurityService.instance().getCurrentUser();
+        }
+        query.setParameter("employeeParam", emp);
         List<Entry> result = new ArrayList<Entry>();
         List<Object> results = query.getResultList();
         for (Iterator<Object> it = results.iterator(); it.hasNext();) {

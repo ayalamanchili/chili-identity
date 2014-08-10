@@ -18,7 +18,7 @@ import info.yalamanchili.office.dao.profile.BillingRateDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
@@ -156,7 +156,7 @@ public class ClientInformationService {
     protected void startNewClientInfoProcess(ClientInformation ci) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("clientInfo", ci);
-        vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         OfficeBPMService.instance().startProcess("new_client_info_process", vars);
     }
 

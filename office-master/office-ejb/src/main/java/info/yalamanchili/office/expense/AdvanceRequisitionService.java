@@ -13,7 +13,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class AdvanceRequisitionService {
     public void submitAdvanceRequisition(AdvanceRequisition entity) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
         OfficeBPMService.instance().startProcess("advance_requisition_process", vars);
     }

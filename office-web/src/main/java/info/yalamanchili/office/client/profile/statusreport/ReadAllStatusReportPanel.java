@@ -18,7 +18,6 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -55,8 +54,15 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().getHomePanel().entityPanel.clear();
-        TabPanel.instance().getHomePanel().entityPanel.add(new CreateStatusReportPanel());
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateStatusReportPanel(parentId));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().getHomePanel().entityPanel.clear();
+            TabPanel.instance().getHomePanel().entityPanel.add(new CreateStatusReportPanel());
+        }
+
     }
 
     @Override

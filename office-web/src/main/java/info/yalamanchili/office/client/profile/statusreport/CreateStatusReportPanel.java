@@ -15,8 +15,8 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -40,8 +40,16 @@ public class CreateStatusReportPanel extends CreateComposite {
     protected Anchor missingInfoL = new Anchor("Client or Project not present?");
     protected CKEditor reportEditor = new CKEditor(CKConfig.full);
 
+    protected String employeeId;
+
     public CreateStatusReportPanel() {
         super(CreateCompositeType.CREATE);
+        initCreateComposite("StatusReport", OfficeWelcome.constants);
+    }
+
+    public CreateStatusReportPanel(String employeeId) {
+        super(CreateCompositeType.CREATE);
+        this.employeeId = employeeId;
         initCreateComposite("StatusReport", OfficeWelcome.constants);
     }
 
@@ -83,8 +91,15 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new ReadAllStatusReportPanel());
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(employeeId));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadAllStatusReportPanel());
+        }
+
     }
 
     @Override
@@ -92,15 +107,22 @@ public class CreateStatusReportPanel extends CreateComposite {
         missingInfoL.addClickHandler(this);
     }
 
+    BooleanField submitForApprovalF;
+
     @Override
     protected void configure() {
         reportEditor.setHeight("350px");
         reportEditor.setWidth("100%");
+        submitForApprovalF = (BooleanField) fields.get("submitForApproval");
     }
 
     @Override
     protected void addWidgets() {
-        addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        if (employeeId != null) {
+            addDropDown("clientInformation", new SelectClientInfoWidget(employeeId, false, true));
+        } else {
+            addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
+        }
         addDropDown("project", new SelectProjectWidget(false, true));
         entityFieldsPanel.add(missingInfoL);
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -112,6 +134,8 @@ public class CreateStatusReportPanel extends CreateComposite {
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
+        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for approval Engagement Manager."));
+        addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -129,6 +153,6 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "statusreport";
+        return OfficeWelcome.constants.root_url() + "statusreport/save?submitForApproval=" + submitForApprovalF.getValue();
     }
 }

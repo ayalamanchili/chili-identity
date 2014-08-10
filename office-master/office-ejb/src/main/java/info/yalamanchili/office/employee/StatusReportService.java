@@ -8,14 +8,14 @@
 package info.yalamanchili.office.employee;
 
 import com.google.common.base.Strings;
-import info.chili.commons.FileIOUtils;
 import info.chili.commons.HtmlUtils;
+import info.chili.commons.PDFUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.employee.StatusReportDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.template.TemplateService;
@@ -38,12 +38,12 @@ public class StatusReportService {
     @Autowired
     protected StatusReportDao statusReportDao;
 
-    public StatusReport save(StatusReport entity) {
+    public StatusReport save(StatusReport entity, Boolean submitForApproval) {
         entity.setReport(HtmlUtils.cleanData(entity.getReport()));
-        if (Strings.isNullOrEmpty(entity.getApprovedBy()) && entity.getId() == null) {
+        entity = statusReportDao.save(entity);
+        if (submitForApproval) {
             startStatusReportProcess(entity);
         }
-        entity = statusReportDao.save(entity);
         return entity;
     }
 
@@ -51,7 +51,7 @@ public class StatusReportService {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
         OfficeBPMService.instance().startProcess("status_report_approval_process", vars);
     }
@@ -79,7 +79,7 @@ public class StatusReportService {
     //TODO move to commons
     public Response getReport(Long id) {
         String report = TemplateService.instance().process("status-report.xhtml", statusReportDao.findById(id));
-        byte[] pdf = FileIOUtils.convertToPDF(report);
+        byte[] pdf = PDFUtils.convertToPDF(report);
         return Response
                 .ok(pdf)
                 .header("content-disposition", "filename = status-report.pdf")

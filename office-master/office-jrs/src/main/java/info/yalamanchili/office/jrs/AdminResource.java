@@ -10,7 +10,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.profile.EmployeeService;
@@ -50,7 +50,7 @@ public class AdminResource {
 
     //TODO make these be created on demand rather than at per request.
     @Autowired
-    protected SecurityService securityService;
+    protected OfficeSecurityService securityService;
     @Autowired
     protected OfficeBPMIdentityService officeBPMIdentityService;
     @Autowired

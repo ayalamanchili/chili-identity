@@ -14,7 +14,7 @@ import info.chili.commons.PDFUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -149,7 +149,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, int start, int limit) {
         List<Employee> emps = null;
         if (dto.getRole() != null) {
-            emps = SecurityService.instance().getUsersWithRoles(0, 2000, dto.getRole().name());
+            emps = OfficeSecurityService.instance().getUsersWithRoles(0, 2000, dto.getRole().name());
         }
         String queryStr = getReportQueryString(dto, emps);
         TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery(queryStr, CorporateTimeSheet.class);

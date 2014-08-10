@@ -27,7 +27,7 @@ import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
@@ -74,7 +74,7 @@ public class OfficeStartup {
 
     protected void startup() {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
-        SecurityService.instance().syncOfficeRoles();
+        OfficeSecurityService.instance().syncOfficeRoles();
         //This data is required in production
         if (config.getInitRefData()) {
             initUsers();
@@ -747,7 +747,7 @@ public class OfficeStartup {
             CUser user = new CUser();
             user.setUsername("useruser");
             user.setPasswordHash(SecurityUtils.encodePassword("useruser", null));
-            user.addRole(SecurityService.instance().getRole(OfficeRole.ROLE_USER));
+            user.addRole(OfficeSecurityService.instance().getRole(OfficeRole.ROLE_USER));
             user.setEnabled(true);
             userUser = em.merge(user);
         }
@@ -760,7 +760,7 @@ public class OfficeStartup {
             user.setPasswordHash(SecurityUtils.encodePassword("adminadmin", null));
             user.setEnabled(true);
             for (OfficeRole role : OfficeRole.values()) {
-                user.addRole(SecurityService.instance().getRole(role));
+                user.addRole(OfficeSecurityService.instance().getRole(role));
             }
             adminUser = em.merge(user);
         }
@@ -771,7 +771,7 @@ public class OfficeStartup {
             CUser user = new CUser();
             user.setUsername("racharya");
             user.setPasswordHash(SecurityUtils.encodePassword("racharya", null));
-            user.addRole(SecurityService.instance().getRole(OfficeRole.ROLE_USER));
+            user.addRole(OfficeSecurityService.instance().getRole(OfficeRole.ROLE_USER));
             user.setEnabled(true);
             rohanUser = em.merge(user);
         }
@@ -782,7 +782,7 @@ public class OfficeStartup {
             CUser user = new CUser();
             user.setUsername("padapala");
             user.setPasswordHash(SecurityUtils.encodePassword("padapala", null));
-            user.addRole(SecurityService.instance().getRole(OfficeRole.ROLE_USER));
+            user.addRole(OfficeSecurityService.instance().getRole(OfficeRole.ROLE_USER));
             user.setEnabled(true);
             pavanUser = em.merge(user);
         }
@@ -793,7 +793,7 @@ public class OfficeStartup {
             CUser user = new CUser();
             user.setUsername("sadhikari");
             user.setPasswordHash(SecurityUtils.encodePassword("sadhikari", null));
-            user.addRole(SecurityService.instance().getRole(OfficeRole.ROLE_USER));
+            user.addRole(OfficeSecurityService.instance().getRole(OfficeRole.ROLE_USER));
             user.setEnabled(true);
             shristiUser = em.merge(user);
         }

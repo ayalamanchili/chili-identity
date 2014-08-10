@@ -9,7 +9,8 @@ package info.yalamanchili.office.bpm.statusreport;
 
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.dao.employee.StatusReportDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import org.activiti.engine.delegate.DelegateTask;
@@ -27,12 +28,14 @@ public class StatusReportProcess implements TaskListener {
         if (request == null) {
             return;
         }
-        Employee currentUser = SecurityService.instance().getCurrentUser();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         String notes = (String) dt.getExecution().getVariable("notes");
         String status = (String) dt.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             request.setApprovedBy(currentUser.getEmployeeId());
         }
+        StatusReportDao.instance().save(request);
+        CommentDao.instance().addComment(notes, request);
         new GenericTaskCompleteNotification().notify(dt);
     }
 

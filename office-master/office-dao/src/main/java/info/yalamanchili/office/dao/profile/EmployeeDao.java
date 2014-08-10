@@ -20,7 +20,7 @@ import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
@@ -66,7 +66,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
     public void syncCorpEmployeeRoles() {
         CRole role = CRoleDao.instance().findRoleByName(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name());
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
-            if (!SecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (!OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
                 emp.getUser().addRole(role);
                 em.merge(emp);
             }

@@ -8,7 +8,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -37,7 +37,7 @@ public class AddressResource extends CRUDResource<Address> {
     @Autowired
     public EmployeeDao employeeDao;
     @Autowired
-    protected SecurityService securityService;
+    protected OfficeSecurityService securityService;
     @Autowired
     protected ProfileNotificationService profileNotificationservice;
 

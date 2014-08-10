@@ -11,7 +11,7 @@ package info.yalamanchili.office.toolbox;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.BillingDuration;
@@ -60,7 +60,7 @@ public class ClientInfoDataTool {
         Map<Long, ClientInformationRecord> data = new HashMap<Long, ClientInformationRecord>();
         for (ClientInformationRecord record : readClientInfoData()) {
             if (StringUtils.isNotEmpty(record.getEmployeeId())) {
-                Employee emp = SecurityService.instance().findEmployee(record.getEmployeeId());
+                Employee emp = OfficeSecurityService.instance().findEmployee(record.getEmployeeId());
                 if (emp != null) {
                     for (ClientInformation ci : emp.getClientInformations()) {
                         double similarity1 = info.chili.commons.StringUtils.jaccardSimilarity(ci.getClient().getName().toUpperCase(), record.getClientName().toUpperCase().trim());

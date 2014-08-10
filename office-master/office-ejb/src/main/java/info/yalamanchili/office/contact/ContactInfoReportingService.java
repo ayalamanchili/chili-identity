@@ -8,10 +8,9 @@
  */
 package info.yalamanchili.office.contact;
 
-import info.chili.commons.FileIOUtils;
+import info.chili.commons.PDFUtils;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Phone;
@@ -43,7 +42,7 @@ public class ContactInfoReportingService {
     
     public Response getCorporateContactInfo() {
         List<EmployeeDto> res = new ArrayList<EmployeeDto>();
-        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             EmployeeDto dto = new EmployeeDto();
             dto.setFirstName(emp.getFirstName());
             dto.setLastName(emp.getLastName());
@@ -69,7 +68,7 @@ public class ContactInfoReportingService {
         }
         String report = TemplateService.instance().process("corp-emp-contact-info.xhtml", res);
         //TODO move to commons
-        byte[] pdf = FileIOUtils.convertToPDF(report);
+        byte[] pdf = PDFUtils.convertToPDF(report);
         return Response
                 .ok(pdf)
                 .header("content-disposition", "filename = corporate-employee-contact-info.pdf")

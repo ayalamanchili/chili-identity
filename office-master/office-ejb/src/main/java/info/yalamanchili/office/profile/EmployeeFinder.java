@@ -8,7 +8,7 @@
 package info.yalamanchili.office.profile;
 
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -39,8 +39,8 @@ public class EmployeeFinder {
         empIdBuilder.append(firstName.trim().substring(0, 1));
         empIdBuilder.append(lastName.trim().replace(" ", "_"));
         //TODO handle space in last name
-        if (SecurityService.instance().findEmployee(empIdBuilder.toString().toLowerCase()) != null) {
-            return SecurityService.instance().findEmployee(empIdBuilder.toString().toLowerCase());
+        if (OfficeSecurityService.instance().findEmployee(empIdBuilder.toString().toLowerCase()) != null) {
+            return OfficeSecurityService.instance().findEmployee(empIdBuilder.toString().toLowerCase());
         } else {
             //TODO do advanced queries and search to find perfect employee match
         }

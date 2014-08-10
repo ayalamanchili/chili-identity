@@ -20,7 +20,7 @@ import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -56,7 +56,7 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
         if (ts == null) {
             return;
         }
-        Employee currentUser = SecurityService.instance().getCurrentUser();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (ts != null) {
             if (currentUser.getEmployeeId().equals(ts.getEmployee().getEmployeeId())) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.timesheet", "You cannot approve your timesheet");

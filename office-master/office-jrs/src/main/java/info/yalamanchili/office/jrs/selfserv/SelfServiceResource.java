@@ -9,7 +9,7 @@
 package info.yalamanchili.office.jrs.selfserv;
 
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
@@ -55,7 +55,7 @@ public class SelfServiceResource {
     @PUT
     @Path("/create-ticket/currentuser")
     public String createServiceTicket(ServiceTicket ticket) {
-        return SelfService.instance().createServiceTicket(SecurityService.instance().getCurrentUser(), ticket);
+        return SelfService.instance().createServiceTicket(OfficeSecurityService.instance().getCurrentUser(), ticket);
     }
 
     @PUT
@@ -93,7 +93,7 @@ public class SelfServiceResource {
     @Path("/tickets/currentuser/{start}/{limit}")
     public ServiceTicketTable getTickets(@PathParam("start") int start,
             @PathParam("limit") int limit) {
-        Employee currentUser = SecurityService.instance().getCurrentUser();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         ServiceTicketDao dao = ServiceTicketDao.instance();
         ServiceTicketTable table = new ServiceTicketTable();
         table.getEntities().addAll(dao.getCandidateTickets(currentUser, start, limit));

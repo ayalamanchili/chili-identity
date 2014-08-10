@@ -19,7 +19,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
@@ -125,7 +125,7 @@ public class SelfService {
     }
 
     protected void assignTask(ServiceTicket ticket) {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         ticket.setAssignedTo(emp);
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         Task task = getTaskForTicket(ticket);
@@ -174,7 +174,7 @@ public class SelfService {
     }
 
     protected void sendTicketUpdatedNotification(TicketComment comment) {
-        Employee commentAuthor = SecurityService.instance().getCurrentUser();
+        Employee commentAuthor = OfficeSecurityService.instance().getCurrentUser();
         Email email = new Email();
         email.setTos(getTicketNotificationGroup(comment));
         StringBuilder subject = new StringBuilder();
@@ -264,7 +264,7 @@ public class SelfService {
     protected void startServiceTicketTask(ServiceTicket ticket) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("ticket", ticket);
-        vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         String processId = OfficeBPMService.instance().startProcess("service_ticket_process", vars);
         ticket.setBpmProcessId(processId);
     }

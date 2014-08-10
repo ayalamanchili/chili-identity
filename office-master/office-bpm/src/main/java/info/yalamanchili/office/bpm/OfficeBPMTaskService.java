@@ -18,7 +18,7 @@ import info.yalamanchili.office.bpm.types.HistoricTask.HistoricTaskTable;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class OfficeBPMTaskService {
                 vars.put(entry.getId(), entry.getValue());
             }
         }
-        vars.put("taskActionUser", SecurityService.instance().getCurrentUser());
+        vars.put("taskActionUser", OfficeSecurityService.instance().getCurrentUser());
         bpmTaskService.complete(taskId, vars);
     }
 
@@ -201,7 +201,7 @@ public class OfficeBPMTaskService {
         TaskTable taskForAssignee = getTasksForAsignee(emp.getEmployeeId(), start, limit);
         TaskTable taskForUser = getCandidateTasksForUser(emp.getEmployeeId(), start, limit);
 
-        List<String> roles = SecurityService.instance().getUserRoles(emp);
+        List<String> roles = OfficeSecurityService.instance().getUserRoles(emp);
         TaskTable taskForRoles = getCandidateTasksForRoles(roles, start, limit);
 
         result.getEntities().addAll(taskForAssignee.getEntities());

@@ -12,7 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.privacy.PrivacyMode;
 import info.yalamanchili.office.entity.privacy.PrivacySetting;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -40,18 +40,18 @@ public class PrivacyService {
             //indicates invalid employee/identity passed along
             return true;
         }
-        Employee currentUser = SecurityService.instance().getCurrentUser();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (employee.getId().equals(currentUser.getId())) {
             return true;
         }
-        if (SecurityService.instance().getUserRoles(employee).contains(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        if (OfficeSecurityService.instance().getUserRoles(employee).contains(OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             //this is corp emp info check if user has HR role
-            if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_DATA.name())) {
+            if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_DATA.name())) {
                 return true;
             }
         } else {
             //This is consultant employee information check is the user has corp emp role
-            if (SecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
                 return true;
             }
         }

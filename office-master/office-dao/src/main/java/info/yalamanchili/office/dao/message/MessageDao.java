@@ -9,7 +9,7 @@ package info.yalamanchili.office.dao.message;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.message.Message;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
@@ -38,7 +38,7 @@ public class MessageDao extends CRUDDao<Message> {
 
     @Override
     public List<Message> query(int start, int limit) {
-        Employee currentEmployee = SecurityService.instance().getCurrentUser();
+        Employee currentEmployee = OfficeSecurityService.instance().getCurrentUser();
         Query findAllQuery = getEntityManager().createQuery("select msg from " + entityCls.getCanonicalName() + " msg JOIN msg.tos emp where emp =:empParam order by msg.messageTs DESC", entityCls);
         findAllQuery.setParameter("empParam", currentEmployee);
         findAllQuery.setFirstResult(start);
@@ -48,7 +48,7 @@ public class MessageDao extends CRUDDao<Message> {
 
     @Override
     public Long size() {
-        Employee currentEmployee = SecurityService.instance().getCurrentUser();
+        Employee currentEmployee = OfficeSecurityService.instance().getCurrentUser();
         TypedQuery<Long> sizeQuery = getEntityManager().createQuery("select count(*) from " + entityCls.getCanonicalName() + " msg JOIN msg.tos emp where emp =:empParam", Long.class);
         sizeQuery.setParameter("empParam", currentEmployee);
         return sizeQuery.getSingleResult();

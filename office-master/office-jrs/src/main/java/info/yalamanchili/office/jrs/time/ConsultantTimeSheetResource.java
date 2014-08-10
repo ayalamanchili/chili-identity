@@ -11,7 +11,7 @@ package info.yalamanchili.office.jrs.time;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.Time.ConsultantTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
@@ -51,7 +51,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @GET
     @Path("/summary")
     public ConsultantTimeSummary getConsultantTimeSummary() {
-        return ConsultantTimeService.instance().getYearlySummary(SecurityService.instance().getCurrentUser());
+        return ConsultantTimeService.instance().getYearlySummary(OfficeSecurityService.instance().getCurrentUser());
     }
 
     @GET
@@ -114,7 +114,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @GET
     @Path("/currentuser/{start}/{limit}")
     public ConsultantTimeSheetTable getConsultantTimeSheet(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category) {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         return getConsultantTimeSheets(emp, status, category, start, limit);
     }
 

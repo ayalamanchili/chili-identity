@@ -11,7 +11,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.employee.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -53,9 +53,9 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     }
 
     @PUT
-    @Override
-    public StatusReport save(StatusReport entity) {
-        return StatusReportService.instance().save(entity);
+    @Path("/save")
+    public StatusReport saveReport(StatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        return StatusReportService.instance().save(entity, submitForApproval);
     }
 
     @GET
@@ -76,7 +76,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     public EmployeeReportTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = null;
         if (employeeId == null) {
-            emp = SecurityService.instance().getCurrentUser();
+            emp = OfficeSecurityService.instance().getCurrentUser();
         } else {
             emp = EmployeeDao.instance().findById(employeeId);
         }

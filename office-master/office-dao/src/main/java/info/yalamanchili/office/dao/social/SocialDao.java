@@ -7,7 +7,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.entity.social.PostLike;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.social.PostFile;
 import java.util.Date;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
 public class SocialDao {
 
     @Autowired
-    protected SecurityService securityService;
+    protected OfficeSecurityService securityService;
     @PersistenceContext
     protected EntityManager em;
     @Autowired

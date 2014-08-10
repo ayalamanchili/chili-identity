@@ -21,11 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-//TODO move this along with SecurityService to EJB layer
+//TODO move this along with OfficeSecurityService to EJB layer
 public class LoginSuccessListener {
 
     public void logLogin() {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         LoginActivity loginActivity = new LoginActivity();
         loginActivity.setName(emp.getFirstName() + " " + emp.getLastName());
         loginActivity.setEmployeeId(emp.getEmployeeId());

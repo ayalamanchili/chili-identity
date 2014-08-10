@@ -11,7 +11,7 @@ import info.chili.service.jrs.types.Entries;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.TimeSheetDao;
 import info.yalamanchili.office.Time.TimeService;
 import info.yalamanchili.office.bpm.time.BPMTimeService;
@@ -65,7 +65,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
     @GET
     @Path("/summary/currentuser")
     public TimeSummary getCurrentEmployeeTimeSummary() {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         return timeService.getTimeSummary(emp);
     }
 
@@ -74,7 +74,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
     public void submitOvertimeHoursPayRequest(Entries vars) {
         Entry currentUser = new Entry();
         currentUser.setId("employee");
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         currentUser.setValue(emp.getFirstName() + " " + emp.getLastName());
         vars.getEntries().add(currentUser);
         BPMTimeService.instance().submitOverTimePayRequest(vars.getEntries());
@@ -108,7 +108,7 @@ public class TimeSheetResource extends CRUDResource<TimeSheet> {
     @Path("/currentuser/{start}/{limit}")
     public TimeSheetResource.TimeSheetTable getTimeSheetsForCurrentEmployee(@PathParam("payperiodid") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         TimeSheetResource.TimeSheetTable tableObj = new TimeSheetResource.TimeSheetTable();
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         tableObj.setEntities(TimeSheetDao.instance().getTimeSheetsEmployee(emp, start, limit, false));
         //TODO fix size
         tableObj.setSize(TimeSheetDao.instance().getTimeSheetsSizeForEmployee(emp, true));

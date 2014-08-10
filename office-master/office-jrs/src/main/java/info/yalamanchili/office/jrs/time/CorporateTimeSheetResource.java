@@ -10,7 +10,7 @@ package info.yalamanchili.office.jrs.time;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.Time.CorporateTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao.CorporateTimeSheetTable;
 import info.yalamanchili.office.dao.time.SearchCorporateTimeSheetDto;
@@ -48,7 +48,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @GET
     @Path("/summary")
     public CorporateTimeSummary getCorporateTimeSummary() {
-        return CorporateTimeService.instance().getYearlySummary(SecurityService.instance().getCurrentUser());
+        return CorporateTimeService.instance().getYearlySummary(OfficeSecurityService.instance().getCurrentUser());
     }
 
     @GET
@@ -119,7 +119,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @GET
     @Path("/currentuser/{start}/{limit}")
     public CorporateTimeSheetTable getCorporateTimeSheet(@QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         return getCorporateTimeSheets(emp, status, category, start, limit);
     }
 

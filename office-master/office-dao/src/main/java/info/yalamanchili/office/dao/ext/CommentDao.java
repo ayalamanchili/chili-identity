@@ -12,7 +12,7 @@ import com.google.common.base.Strings;
 import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.jpa.AbstractEntity;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
@@ -55,7 +55,7 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
 
     @Override
     public Comment save(Comment source, AbstractEntity target) {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         source.setUpdatedBy(emp.getFirstName() + " " + emp.getLastName());
         source.setUpdatedTS(new Date());
         return super.save(source, target);

@@ -26,13 +26,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Scope("prototype")
-public class SecurityService {
+public class OfficeSecurityService {
 
-    private final static Logger logger = Logger.getLogger(SecurityService.class.getName());
+    private final static Logger logger = Logger.getLogger(OfficeSecurityService.class.getName());
     @PersistenceContext
     protected EntityManager em;
 
-//TODO move to chili-security SecurityService
+//TODO move to chili-security OfficeSecurityService
     public CUser createCuser(CUser user) {
         return em.merge(user);
     }
@@ -146,7 +146,7 @@ public class SecurityService {
         return QueryUtils.findEntity(em, CRole.class, "rolename", role.name());
     }
 
-    public static SecurityService instance() {
-        return SpringContext.getBean(SecurityService.class);
+    public static OfficeSecurityService instance() {
+        return SpringContext.getBean(OfficeSecurityService.class);
     }
 }

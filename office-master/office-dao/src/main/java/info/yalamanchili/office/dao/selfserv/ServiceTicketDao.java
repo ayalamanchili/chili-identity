@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.selfserv;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.selfserv.ServiceTicket;
 import info.yalamanchili.office.entity.selfserv.TicketComment;
@@ -50,7 +50,7 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     public List<ServiceTicket> getCandidateTickets(Employee emp, int start, int limit) {
         TypedQuery<ServiceTicket> query = getEntityManager().createQuery("from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam OR  st.assignedTo=:employeeParam OR st.departmentAssigned.rolename in (:rolesParam) order by st.createdTimeStamp DESC", ServiceTicket.class);
         query.setParameter("employeeParam", emp);
-        query.setParameter("rolesParam", SecurityService.instance().getUserRoles(emp));
+        query.setParameter("rolesParam", OfficeSecurityService.instance().getUserRoles(emp));
         query.setFirstResult(start);
         query.setMaxResults(limit);
         return query.getResultList();
@@ -60,7 +60,7 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     public Long getCandidateTicketsSize(Employee emp, int start, int limit) {
         Query query = getEntityManager().createQuery("select count (*) from " + ServiceTicket.class.getCanonicalName() + " st where st.employee=:employeeParam OR st.assignedTo=:employeeParam OR st.departmentAssigned.rolename in (:rolesParam)");
         query.setParameter("employeeParam", emp);
-        query.setParameter("rolesParam", SecurityService.instance().getUserRoles(emp));
+        query.setParameter("rolesParam", OfficeSecurityService.instance().getUserRoles(emp));
         return (Long) query.getSingleResult();
     }
 
@@ -71,7 +71,7 @@ public class ServiceTicketDao extends CRUDDao<ServiceTicket> {
     }
 
     public TicketComment addTicketComment(Long ticketId, TicketComment comment) {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         comment.setCreatedBy(emp.getFirstName() + " " + emp.getLastName());
         comment.setCreatedTimeStamp(new Date());
         comment.setTicket(ServiceTicketDao.instance().findById(ticketId));

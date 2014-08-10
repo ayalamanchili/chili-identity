@@ -14,7 +14,7 @@ import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -76,7 +76,7 @@ public class CommentResource {
         for (Entry e : comment.getNotifyEmployees()) {
             email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());
         }
-        Employee currentUser = SecurityService.instance().getCurrentUser();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName());
         String body = "Commment Added: \n" + comment.getComment() + " \n ref:"
                 + comment.getTargetEntityName();

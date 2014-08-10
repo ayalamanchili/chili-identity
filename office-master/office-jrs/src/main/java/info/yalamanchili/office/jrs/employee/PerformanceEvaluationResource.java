@@ -10,7 +10,7 @@ package info.yalamanchili.office.jrs.employee;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.employee.PerformanceEvaluationService;
@@ -73,7 +73,7 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
             emp = EmployeeDao.instance().findById(employeeId);
 
         } else {
-            emp = SecurityService.instance().getCurrentUser();
+            emp = OfficeSecurityService.instance().getCurrentUser();
         }
         PerformanceEvaluationTable tableObj = new PerformanceEvaluationTable();
         tableObj.setEntities(performanceEvaluationDao.getPerformanceEvaluationsForEmp(emp));

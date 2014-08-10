@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.Time;
 
-import info.chili.commons.FileIOUtils;
+import info.chili.commons.PDFUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
@@ -16,7 +16,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
@@ -51,7 +51,7 @@ public class ConsultantTimeService {
     protected ConsultantTimeSheetDao consultantTimeSheetDao;
 
     public void submitLeaveRequest(ConsultantTimeSheet request) {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         request.setEmployee(emp);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("leaveRequest", request);
@@ -80,7 +80,7 @@ public class ConsultantTimeService {
         vars.put("entity", cts);
         vars.put("entityId", cts.getId());
         vars.put("cancelReason", cancelReason);
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
         OfficeBPMService.instance().startProcess("consultant_emp_leave_cancel_request", vars);
     }
@@ -145,7 +145,7 @@ public class ConsultantTimeService {
 
     public Response getReport(Long id) {
         String report = TemplateService.instance().process("consultant-emp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
-        byte[] pdf = FileIOUtils.convertToPDF(report);
+        byte[] pdf = PDFUtils.convertToPDF(report);
         return Response
                 .ok(pdf)
                 .header("content-disposition", "filename = timesheet.pdf")

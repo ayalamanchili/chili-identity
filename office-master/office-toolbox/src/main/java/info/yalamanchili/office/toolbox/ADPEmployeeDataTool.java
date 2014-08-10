@@ -12,7 +12,7 @@ import info.chili.jpa.validation.ValidationUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.toolbox.types.ADPEmployeeRecord;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.entity.profile.Email;
@@ -75,7 +75,7 @@ public class ADPEmployeeDataTool {
     public void syncADPEmpployeeData() {
         for (ADPEmployeeRecord record : loadADPRecords()) {
             if (record.getSsn() != null) {
-                Employee emp = SecurityService.instance().findEmployeeBySSN(record.getSsn());
+                Employee emp = OfficeSecurityService.instance().findEmployeeBySSN(record.getSsn());
                 if (emp != null) {
                     syncEmployeeAddresses(record, emp);
                     syncEmployeePhones(record, emp);

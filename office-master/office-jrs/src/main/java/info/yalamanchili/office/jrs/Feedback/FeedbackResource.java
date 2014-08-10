@@ -9,7 +9,7 @@ package info.yalamanchili.office.jrs.Feedback;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.feedback.FeedbackDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Feedback.Feedback;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -41,7 +41,7 @@ public class FeedbackResource extends CRUDResource<Feedback> {
     @Override
     public Feedback save(Feedback entity) {
         Feedback fb = (Feedback) getDao().save(entity);
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         ProfileNotificationService.instance().feedBackNotification(entity, emp.getFirstName() + " " + emp.getLastName());
         return fb;
     }

@@ -18,7 +18,7 @@ import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.HistoricTask;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.HashMap;
@@ -120,7 +120,7 @@ public class BPMResource {
     @GET
     @Path("/tasks/currentuser/{start}/{limit}")
     public TaskTable getMyTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
-        return officeBPMTaskService.getAllTasksForUser(SecurityService.instance().getCurrentUser(), start, limit);
+        return officeBPMTaskService.getAllTasksForUser(OfficeSecurityService.instance().getCurrentUser(), start, limit);
     }
 
     @GET
@@ -219,7 +219,7 @@ public class BPMResource {
     }
 
     protected Map<String, Object> getCurrentUserMap() {
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("currentEmployee", emp);
         return vars;

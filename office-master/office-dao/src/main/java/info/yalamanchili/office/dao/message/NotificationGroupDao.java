@@ -12,7 +12,7 @@ import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.message.NotificationGroup;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
@@ -48,7 +48,7 @@ public class NotificationGroupDao extends CRUDDao<NotificationGroup> {
                 group = save(group);
             }
             //add missing emps
-            for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, role.name())) {
+            for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, role.name())) {
                 boolean flag = false;
                 for (Employee grpEmp : group.getEmployees()) {
                     if (grpEmp.getEmployeeId().equals(emp.getEmployeeId())) {
@@ -62,7 +62,7 @@ public class NotificationGroupDao extends CRUDDao<NotificationGroup> {
             //remove emps
             for (Employee grpEmp : group.getEmployees()) {
                 boolean flag = false;
-                for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, role.name())) {
+                for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, role.name())) {
                     if (grpEmp.getEmployeeId().equals(emp.getEmployeeId())) {
                         flag = true;
                     }

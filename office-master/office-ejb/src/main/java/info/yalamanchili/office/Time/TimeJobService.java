@@ -12,7 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
@@ -66,7 +66,7 @@ public class TimeJobService {
      */
     public void approveNewCorpEmployeeTimeSheets() {
         List<CorporateTimeSheet> approvedts = new ArrayList<CorporateTimeSheet>();
-        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             if (emp.getStartDate() != null && new Date().before(DateUtils.getNextYear(DateUtils.getLastDayOfYear(emp.getStartDate()), 1))) {
                 for (CorporateTimeSheet ts : CorporateTimeSheetDao.instance().getTimeSheetsForEmployee(emp, TimeSheetStatus.getPendingAndSavedCategories(), TimeSheetCategory.getEarnedCategories())) {
                     if (ts.getBpmProcessId() == null && ts.getStartDate().before(new Date())) {
@@ -120,7 +120,7 @@ public class TimeJobService {
      */
     public void processCorpEmpYearlyEarnedTimeSheets() {
         //TODO also create prorate hours for emp who passed probation period
-        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             if (hasMoreThanOneYearService(emp)) {
                 //TODO externalize values of days/hours
                 //4 days(32 hours) Personal earned

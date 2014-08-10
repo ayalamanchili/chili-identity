@@ -34,8 +34,6 @@ import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
-import info.yalamanchili.office.client.expense.ExpensesSidePanel;
-import info.yalamanchili.office.client.expense.ReadAllExpensesPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -74,10 +72,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(homePanel, "Home", false);
         tabPanel.add(myOfficePanel, "My Office", false);
         tabPanel.add(timePanel, "Time", false);
-//        TODO under construction
-//        if (Auth.hasAnyOfRoles(ROLE.ROLE_EXPENSE, ROLE.ROLE_ADMIN, ROLE.ROLE_TIME, ROLE.ROLE_HR)) {
         tabPanel.add(expensePanel, "Expense", false);
-//        }
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(profilePanel, "Profile", false);
@@ -215,6 +210,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         myOfficePanel.entityTitlePanel.add(new MyOfficeMenu());
         myOfficePanel.entityPanel.add(new ReadAllEmployeesPanel());
         myOfficePanel.sidePanelTop.add(new EmployeeSidePanel());
+        myOfficePanel.sidePanelTop.setHeight("100%");
 
     }
 

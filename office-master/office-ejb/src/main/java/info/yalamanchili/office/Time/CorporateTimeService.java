@@ -9,7 +9,7 @@
 package info.yalamanchili.office.Time;
 
 import info.chili.commons.DateUtils;
-import info.chili.commons.FileIOUtils;
+import info.chili.commons.PDFUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
@@ -18,8 +18,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
-import info.yalamanchili.office.dao.security.SecurityService;
-import info.yalamanchili.office.dto.profile.EmployeeDto;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.time.CorporateTimeSummary;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -55,7 +54,7 @@ public class CorporateTimeService {
         validateRequest(entity);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
         vars.put("summary", getYearlySummary(emp));
         if (entity.getId() != null) {
@@ -94,7 +93,7 @@ public class CorporateTimeService {
         vars.put("entity", ts);
         vars.put("entityId", ts.getId());
         vars.put("cancelReason", cancelReason);
-        Employee emp = SecurityService.instance().getCurrentUser();
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
         vars.put("summary", getYearlySummary(emp));
         OfficeBPMService.instance().startProcess("corp_emp_leave_cancel_request", vars);
@@ -122,7 +121,7 @@ public class CorporateTimeService {
     }
 
     public void checkAccessToEmployeeTime(Employee emp) {
-        Employee currentUser = SecurityService.instance().getCurrentUser();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (emp.getEmployeeId().equals(currentUser.getEmployeeId())) {
             return;
         }
@@ -130,7 +129,7 @@ public class CorporateTimeService {
         if (reportsToEmp != null && currentUser.getEmployeeId().equals(reportsToEmp.getEmployeeId())) {
             return;
         }
-        if (SecurityService.instance().hasAnyRole(OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_CORPORATE_TIME_REPORTS.name())) {
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_CORPORATE_TIME_REPORTS.name())) {
             return;
         }
         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
@@ -161,7 +160,7 @@ public class CorporateTimeService {
         vars.put("entity", ts);
         vars.put("summary", getYearlySummary(ts.getEmployee()));
         String report = TemplateService.instance().process("corp-timesheet.xhtml", vars);
-        byte[] pdf = FileIOUtils.convertToPDF(report);
+        byte[] pdf = PDFUtils.convertToPDF(report);
         return Response
                 .ok(pdf)
                 .header("content-disposition", "filename = corp-timesheet.pdf")
@@ -171,7 +170,7 @@ public class CorporateTimeService {
 
     public Response getAllEmployeesSummaryReport() {
         List<CorporateTimeSummary> summary = new ArrayList<CorporateTimeSummary>();
-        for (Employee emp : SecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             summary.add(getYearlySummary(emp));
         }
         Collections.sort(summary, new Comparator<CorporateTimeSummary>() {

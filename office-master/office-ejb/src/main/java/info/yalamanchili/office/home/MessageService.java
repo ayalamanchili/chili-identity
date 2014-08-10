@@ -12,7 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.message.MessageDao;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.message.MessageDto;
 import info.yalamanchili.office.dto.message.MessageReadDto;
 import info.yalamanchili.office.entity.message.Message;
@@ -52,7 +52,7 @@ public class MessageService {
         newMessage.setSubject(messageDto.getSubject());
         newMessage.setMessage(messageDto.getMessage());
         newMessage.setMessageTs(new Date());
-        newMessage.setFromEmp(SecurityService.instance().getCurrentUser());
+        newMessage.setFromEmp(OfficeSecurityService.instance().getCurrentUser());
         for (Entry emp : messageDto.getTos()) {
             Employee toEmployee = EmployeeDao.instance().findEmployeWithEmpId(emp.getId());
             if (toEmployee != null) {
@@ -91,7 +91,7 @@ public class MessageService {
         replyMsg.setSubject(parentMessage.getSubject());
         replyMsg.setMessage(reply.getMessage());
         replyMsg.getTos().add(parentMessage.getFromEmp());
-        replyMsg.setFromEmp(SecurityService.instance().getCurrentUser());
+        replyMsg.setFromEmp(OfficeSecurityService.instance().getCurrentUser());
         //TODO support replyall --> parentMessage.getTos
         replyMsg.setMessageTs(new Date());
         replyMsg.setParentMessage(parentMessage);

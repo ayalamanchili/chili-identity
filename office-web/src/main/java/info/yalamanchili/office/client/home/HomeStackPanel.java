@@ -56,7 +56,7 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
         }
         panel.add(selfServStackPanel, "Self Service");
         if (Auth.hasOnlyUserRole()) {
-            panel.add(projectsStackPanel, "My Projects");
+            panel.add(projectsStackPanel, "My Reports");
         }
         panel.add(msgStackPanel, "Messages");
         if (Auth.isCorporateEmployee()) {

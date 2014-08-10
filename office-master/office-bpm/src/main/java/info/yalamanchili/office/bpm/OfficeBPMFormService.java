@@ -10,7 +10,7 @@ package info.yalamanchili.office.bpm;
 import info.chili.commons.DateUtils;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.types.FormProperty;
-import info.yalamanchili.office.dao.security.SecurityService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +65,7 @@ public class OfficeBPMFormService {
 
     public void submitStartForm(String processId, List<FormProperty> properties) {
         Map<String, Object> vars = convertFormProperties(properties);
-        vars.put("currentEmployee", SecurityService.instance().getCurrentUser());
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         if (processId == null) {
             throw new RuntimeException("invalid process id");
         }
