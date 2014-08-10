@@ -72,6 +72,9 @@ public class CommentResource {
     }
 
     protected void sendCommentNotification(Comment comment) {
+        if (comment.getNotifyEmployees() == null) {
+            return;
+        }
         Email email = new Email();
         for (Entry e : comment.getNotifyEmployees()) {
             email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());

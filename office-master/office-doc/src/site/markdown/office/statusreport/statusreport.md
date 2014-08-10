@@ -1,20 +1,33 @@
 Projects Reports
 ===========
 
- - Employee Logs in to portal and submit a status report 
- - Navigate to Home --> My Projects --> Projects Reports --> Click Submit Project Status Report
- - Submit all required information in status report and click create button 
+ - Employees should submit the current project status report on a regular basis. 
+ - Navigate to Home --> My Reports --> Projects Reports --> Click Submit Project Status Report.
+ - Enter all required information in status report.
+ - Please select the  *Submit For Approval* check box if you are ready to submit the report for review to the Engagement Manager. Otherwise just create it and you can come back to update and submit for approval.
  - Once submitted the request it will send to the appropriate  department (Engagement) for approval and you will receive a email about the final decision. 
  - if client and project is not present please submit a request under service ticket .
- - GO TO **Home-->Self Service-->open ticket e=with other type ="other "and enter the details ** ticket goes to Engagement team .they will update the client and project dateils .
+ - GO TO **Home-->Self Service-->open ticket with other type ="other "and enter the details ** ticket goes to Engagement team.
+ - Once the ticket is resolved by entering the information you will receive a email and you can logback in to submit your reports.
+
+Reports updates
+----
+
+ - Once submitted Engagement and Hr Team can review and provide feedback with comments. you should be receiving a email about the comments.
+ - You can log back to portal and update your report to accordingly and save it.
+ - once done you can also add back a comment notifying your Engagement Manager.
 
 How To Submit Project Status Report
 ----
-![alt text](../../images/statusreport/statusreport.png "Status Report")
+![alt text](../../images/statusreport/create-status-report.png "Crate Status Report")
 
 Submit Project Status Report
 ----
-![alt text](../../images/statusreport/submit-status-report.png "Status Report")
+![alt text](../../images/statusreport/submit-status-report.png "Submit Status Report")
+
+Update Status Report in response to Comment
+----
+![alt text](../../images/statusreport/update-report.png "Update Status Report")
 
 Print Status Report
 ===========
@@ -23,8 +36,3 @@ Navigate to Home --> My Projects --> Projects Reports --> Print
 Print the Status Report
 ----
 ![alt text](../../images/statusreport/print-status-report.png "Status Report")
-
-Status Report pdf
-----
-![alt text](../../images/statusreport/status-report-pdf.png "Status Report")
-

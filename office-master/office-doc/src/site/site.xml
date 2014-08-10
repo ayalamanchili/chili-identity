@@ -73,9 +73,9 @@
                 <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
                 <item name="Overview" href="/office/selfservice/overview.html"/>
             </item>
-            <item name="ProjectsReports" href="/office/statusreport/statusreport.html"  collapse="true">
-                <item name="Submit Project Status Report" href="/office/statusreport/statusreport.html" />
-                <item name="Project Status Report Process" href="/office/statusreport/statusreportprocess.html"/>
+            <item name="Projects Reports" href="/office/statusreport/statusreport.html"  collapse="true">
+                <item name="Submit Status Report" href="/office/statusreport/statusreport.html" />
+                <item name="Status Report Approval Process" href="/office/statusreport/statusreportprocess.html"/>
             </item>
             <item name="Expense" href="/office/expense/advance.html" collapse="true">
                 <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
