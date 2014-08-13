@@ -6,28 +6,15 @@ package info.yalamanchili.office.init;
 import info.chili.commons.DateUtils;
 import info.chili.commons.EntityQueryUtils;
 import info.chili.jpa.QueryUtils;
+import info.chili.security.SecurityService;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.AddressType;
-import info.yalamanchili.office.entity.profile.Certification;
-import info.yalamanchili.office.entity.profile.EmployeeType;
-import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Email;
-import info.yalamanchili.office.entity.profile.EmailType;
-import info.yalamanchili.office.entity.profile.EmergencyContact;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.Phone;
-import info.yalamanchili.office.entity.profile.PhoneType;
-import info.yalamanchili.office.entity.Company;
-import info.yalamanchili.office.entity.profile.Sex;
-import info.yalamanchili.office.entity.profile.Skill;
-import info.yalamanchili.office.entity.profile.SkillSet;
-import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
@@ -42,8 +29,23 @@ import info.yalamanchili.office.entity.practice.Practice;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.entity.privacy.PrivacyMode;
 import info.yalamanchili.office.entity.privacy.PrivacySetting;
+import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Certification;
+import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.EmailType;
+import info.yalamanchili.office.entity.profile.EmergencyContact;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.entity.profile.PhoneType;
 import info.yalamanchili.office.entity.profile.Preferences;
+import info.yalamanchili.office.entity.profile.Sex;
+import info.yalamanchili.office.entity.profile.Skill;
+import info.yalamanchili.office.entity.profile.SkillSet;
 import info.yalamanchili.office.entity.profile.TechnologyGroup;
+import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -76,6 +78,7 @@ public class OfficeStartup {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
         OfficeSecurityService.instance().syncOfficeRoles();
         //This data is required in production
+        initSecurity();
         if (config.getInitRefData()) {
             initUsers();
             AclDataInit aclDataInit = SpringContext.getBean(AclDataInit.class);
@@ -91,6 +94,13 @@ public class OfficeStartup {
 //        TimeJobService.instance().syncTimeSheetPeriods();
         OfficeBPMIdentityService.instance().syncUsersAndRoles();
 //        NotificationGroupDao.instance().syncNotificationGroupsForRoles();
+    }
+
+    protected void initSecurity() {
+        SecurityService security = SecurityService.instance();
+        OfficeSecurityConfiguration securityconfig = OfficeSecurityConfiguration.instance();
+        security.initKeyStore(securityconfig.getKeyStoreType(), securityconfig.getKeyStoreName(), securityconfig.getKeyStorePassword(), securityconfig.getKeyStorePath());
+        security.initSecurityProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 
     protected void initUsers() {

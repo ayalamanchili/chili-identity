@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.config;
 
+import info.chili.security.SecurityService;
+import info.chili.spring.SpringContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.stereotype.Component;
@@ -19,8 +21,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeSecurityConfiguration {
 
+    @Value("#{officeProperties['keystore.type']}")
+    protected String keyStoreType;
+
     @Value("#{officeProperties['keystore.name']}")
-    protected String keyStoreName = "office";
+    protected String keyStoreName;
+
+    @Value("#{officeProperties['keystore.password']}")
+    protected String keyStorePassword;
+
+    @Value("#{officeProperties['keystore.path']}")
+    protected String keyStorePath;
+
+    @ManagedAttribute
+    public String getKeyStoreType() {
+        return keyStoreType;
+    }
+
+    public void setKeyStoreType(String keyStoreType) {
+        this.keyStoreType = keyStoreType;
+    }
 
     @ManagedAttribute
     public String getKeyStoreName() {
@@ -31,4 +51,25 @@ public class OfficeSecurityConfiguration {
         this.keyStoreName = keyStoreName;
     }
 
+    @ManagedAttribute
+    public String getKeyStorePassword() {
+        return keyStorePassword;
+    }
+
+    public void setKeyStorePassword(String keyStorePassword) {
+        this.keyStorePassword = keyStorePassword;
+    }
+
+    @ManagedAttribute
+    public String getKeyStorePath() {
+        return keyStorePath;
+    }
+
+    public void setKeyStorePath(String keyStorePath) {
+        this.keyStorePath = keyStorePath;
+    }
+
+    public static OfficeSecurityConfiguration instance() {
+        return SpringContext.getBean(OfficeSecurityConfiguration.class);
+    }
 }
