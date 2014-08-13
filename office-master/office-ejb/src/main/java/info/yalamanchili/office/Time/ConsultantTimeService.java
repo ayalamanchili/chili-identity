@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import com.google.common.io.Files;
 import info.chili.commons.PDFUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
@@ -20,11 +21,15 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.template.TemplateService;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,10 +38,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import javax.ws.rs.core.Response;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -153,7 +160,8 @@ public class ConsultantTimeService {
                 .build();
     }
 
-    public Response getAllConsultantEmployeesSummaryReport() {
+    @Async
+    public void getAllConsultantEmployeesSummaryReport(Employee currentEmp) {
         List<ConsultantTimeSummary> summary = new ArrayList<ConsultantTimeSummary>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             summary.add(getYearlySummary(emp));
@@ -165,7 +173,17 @@ public class ConsultantTimeService {
             }
         });
         String report = TemplateService.instance().process("cons-emp-summary.xhtml", summary);
-        return ReportGenerator.generatePDFReportFromHtml(report, "cons-emp-summary");
+        String fileName = "all-consultants-report" + UUID.randomUUID().toString() + ".pdf";
+        try {
+            Files.write(PDFUtils.convertToPDF(report), new File(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        Email email = new Email();
+        email.addTo(currentEmp.getPrimaryEmail().getEmail());
+        email.setSubject("report");
+        email.addAttachment(fileName);
+        MessagingService.instance().sendEmail(email);
     }
 
     public static ConsultantTimeService instance() {
