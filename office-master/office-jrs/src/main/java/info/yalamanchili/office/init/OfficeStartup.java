@@ -78,7 +78,7 @@ public class OfficeStartup {
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
         OfficeSecurityService.instance().syncOfficeRoles();
         //This data is required in production
-        initSecurity();
+//        initSecurity();
         if (config.getInitRefData()) {
             initUsers();
             AclDataInit aclDataInit = SpringContext.getBean(AclDataInit.class);
