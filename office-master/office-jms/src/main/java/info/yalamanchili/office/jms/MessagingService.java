@@ -38,8 +38,19 @@ public class MessagingService {
             });
         }
     }
-    
-    public static MessagingService instance(){
+
+    public void emailReport(String fileName, byte[] reportData, String... tos) {
+        Email email = new Email();
+        for (String to : tos) {
+            email.addTo(to);
+        }
+        email.setSubject("Report:"+fileName);
+        email.addAttachment(fileName);
+        sendEmail(email);
+
+    }
+
+    public static MessagingService instance() {
         return SpringContext.getBean(MessagingService.class);
     }
 }
