@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -72,7 +73,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
 
     Button viewReportsB = new Button("View");
     Button reportsB = new Button("Report");
-    FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "consultant-timesheet/all-cons-summary-report" + "&passthrough=true");
+    Anchor summaryReportL = new Anchor("Summary Report");
     protected static ConsultantTimeSidePanel instance;
 
     public static ConsultantTimeSidePanel instance() {
@@ -90,6 +91,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         showTimeSheetsForEmpB.addClickHandler(this);
         viewReportsB.addClickHandler(this);
         reportsB.addClickHandler(this);
+        summaryReportL.addClickHandler(this);
     }
 
     @Override
@@ -142,7 +144,24 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         if (event.getSource().equals(reportsB)) {
             pdfReport();
         }
+        if (event.getSource().equals(summaryReportL)) {
+            processSummaryReports();
+        }
 
+    }
+
+    protected void processSummaryReports() {
+        HttpService.HttpServiceAsync.instance().doGet(getSummaryReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
+    protected String getSummaryReportUrl() {
+        return OfficeWelcome.constants.root_url() + "consultant-timesheet/all-cons-summary-report";
     }
 
     protected void pdfReport() {

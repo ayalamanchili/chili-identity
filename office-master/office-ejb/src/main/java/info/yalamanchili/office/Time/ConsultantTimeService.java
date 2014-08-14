@@ -179,11 +179,7 @@ public class ConsultantTimeService {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        Email email = new Email();
-        email.addTo(currentEmp.getPrimaryEmail().getEmail());
-        email.setSubject("report");
-        email.addAttachment(fileName);
-        MessagingService.instance().sendEmail(email);
+        MessagingService.instance().emailReport(fileName, PDFUtils.convertToPDF(report), currentEmp.getPrimaryEmail().getEmail());
     }
 
     public static ConsultantTimeService instance() {
