@@ -45,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -161,6 +162,7 @@ public class ConsultantTimeService {
     }
 
     @Async
+    @Transactional(readOnly = true)
     public void getAllConsultantEmployeesSummaryReport(Employee currentEmp) {
         List<ConsultantTimeSummary> summary = new ArrayList<ConsultantTimeSummary>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
