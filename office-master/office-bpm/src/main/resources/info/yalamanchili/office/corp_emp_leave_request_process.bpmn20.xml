@@ -53,8 +53,7 @@
                 Hours         : #{entity.hours} 
                 Notes         : #{entity.notes}
                 Vacation Available when request submitted : #{summary.availableVacationHours}
-                Personal Available when request submitted : #{summary.availablePersonalHours}
-                Sick Available when request submitted     : #{summary.availableSickHours}
+                PTO Available when request submitted : #{summary.availablePTOHours}
                 
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/timesheets/approving-timesheets.html

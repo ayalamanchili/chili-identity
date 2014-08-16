@@ -10,6 +10,7 @@ import info.chili.security.SecurityService;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -94,6 +95,7 @@ public class OfficeStartup {
 //        TimeJobService.instance().syncTimeSheetPeriods();
         OfficeBPMIdentityService.instance().syncUsersAndRoles();
 //        NotificationGroupDao.instance().syncNotificationGroupsForRoles();
+        TimeJobService.instance().migrateToPTOCategory();
     }
 
     protected void initSecurity() {

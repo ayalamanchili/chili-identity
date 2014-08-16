@@ -49,9 +49,8 @@ public class NewEmpTimeCompletionJob implements JavaDelegate {
         Date endDate = DateUtils.getLastDayCurrentOfYear();
         long proratedDays = DateUtils.getBetweenDay(startDate, endDate);
         BigDecimal proratedHours = DateUtils.getProratedHours(new BigDecimal("40.00"), new BigDecimal("365"), new BigDecimal(proratedDays));
-        CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, proratedHours, startDate, endDate);
-        CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Personal_Earned, proratedHours, startDate, endDate);
-        //Create prorated timesheets for sick,personal
+        CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.PTO_Earned, proratedHours, startDate, endDate);
+        //Create prorated timesheets for PTO,vacation
     }
 
     protected void runSixMonthCompletionJob(Employee emp, DelegateExecution execution) {
@@ -65,6 +64,6 @@ public class NewEmpTimeCompletionJob implements JavaDelegate {
 //        Date oneYearCompletionDate = (Date) execution.getVariable("oneYearCompletionDate");
         //5 vacation days after 1 year
 //        CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(40), DateUtils.getFirstDayOfYear(new Date().getYear()), DateUtils.getLastDayOfYear(new Date().getYear()));
-        // prorated vacation ,sick and personal
+        // prorated vacation ,PTO 
     }
 }

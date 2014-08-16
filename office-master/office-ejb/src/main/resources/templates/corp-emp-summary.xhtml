@@ -29,8 +29,7 @@
                                     <th>Employee Name</th>
                                     <th>Start Date</th>
                                     <th>Vacation Available</th>
-                                    <th>Personal Available</th>
-                                    <th>Sick Available</th>
+                                    <th>PTO Available</th>
                                     <th>Unpaid Used</th>
                                 </tr>
                             </thead>
@@ -39,8 +38,7 @@
                                     <td th:text="${summary.employee}" />
                                     <td th:text="${summary.startDate}" />
                                     <td th:text="${summary.availableVacationHours}" />
-                                    <td th:text="${summary.availablePersonalHours}" />
-                                    <td th:text="${summary.availableSickHours}" />
+                                    <td th:text="${summary.availablePTOHours}" />
                                     <td th:text="${summary.usedUnpaidHours}" />
                                 </tr>
                             </tbody>

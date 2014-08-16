@@ -115,24 +115,21 @@ public class TimeJobService {
     }
 
     /**
-     * This will create yearly sick,vacation and personal days for corp
+     * This will create yearly PTO,vacation days for corp
      * employees
      */
     public void processCorpEmpYearlyEarnedTimeSheets() {
         //TODO also create prorate hours for emp who passed probation period
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             if (hasMoreThanOneYearService(emp)) {
-                //TODO externalize values of days/hours
-                //4 days(32 hours) Personal earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Personal_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
-                //4 days(32 hours) Sick earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                //8 days(64 hours) PTO earned
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.PTO_Earned, CorporateTimeConstants.ptoEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //10 days(80 hours) vacation earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, CorporateTimeConstants.vacationEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //Get Available Vacation in previous year and Create carry forword for max of 5days--> 40 hours
                 BigDecimal carryFwdVacation = CorporateTimeService.instance().getYearlyVacationBalance(emp, DateUtils.getNextYear(new Date(), -1));
-                if (carryFwdVacation.longValue() >= 40) {
-                    CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, new BigDecimal(40), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                if (carryFwdVacation.longValue() >= CorporateTimeConstants.carryForward.longValue()) {
+                    CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, CorporateTimeConstants.carryForward, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 } else {
                     CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, carryFwdVacation, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 }
@@ -141,25 +138,20 @@ public class TimeJobService {
     }
 
     /**
-     * This will create yearly sick,vacation and personal days for Consultant
+     * This will create yearly PTO,vacation days for Consultant
      * Employees
      */
     public void processConsultantEmpYearlyEarnedTimeSheets() {
-        //this is not correct you are creating time sheets for all  employees with consultant time reports role.
-        // and consultants does not have the role. you have find all employees with type="Employee" eg: getEmployeesByType.getEmployeesByType("Employee");
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             if (hasMoreThanOneYearService(emp)) {
-                //TODO externalize values of days/hours
-                //4 days(32 hours) Personal earned
-                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Personal_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
-                //4 days(32 hours) Sick earned
-                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Sick_Earned, new BigDecimal(32), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                //8 days(64 hours) PTO earned
+                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.PTO_Earned, ConsultantTimeContstants.ptoEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //10 days(80 hours) vacation earned
-                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, ConsultantTimeContstants.vacationEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 //Get Available Vacation in previous year and Create carry forword for max of 5days--> 40 hours
                 BigDecimal carryFwdVacation = ConsultantTimeService.instance().getYearlyVacationBalance(emp, DateUtils.getNextYear(new Date(), -1));
-                if (carryFwdVacation.longValue() >= 80) {
-                    ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, new BigDecimal(80), DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                if (carryFwdVacation.longValue() >= ConsultantTimeContstants.carryForward.longValue()) {
+                    ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, ConsultantTimeContstants.carryForward, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 } else {
                     ConsultantTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, carryFwdVacation, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
                 }
@@ -183,6 +175,11 @@ public class TimeJobService {
         } else {
             return false;
         }
+    }
+    
+    public void migrateToPTOCategory(){
+        CorporateTimeSheetDao.instance().migrateToPTOCategory();
+        ConsultantTimeSheetDao.instance().migrateToPTOCategory();
     }
 
     public static TimeJobService instance() {

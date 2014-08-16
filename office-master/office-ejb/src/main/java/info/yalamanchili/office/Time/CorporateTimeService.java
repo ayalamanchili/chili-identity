@@ -111,8 +111,7 @@ public class CorporateTimeService {
 
     public CorporateTimeSummary getYearlySummary(Employee employee) {
         CorporateTimeSummary summary = new CorporateTimeSummary();
-        summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
-        summary.setAvailableSickHours(getYearlySickBalance(employee));
+        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
         summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
@@ -135,15 +134,9 @@ public class CorporateTimeService {
         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
     }
 
-    public BigDecimal getYearlySickBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved, new Date());
-        BigDecimal spent = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Spent, TimeSheetStatus.Approved, new Date());
-        return earned.subtract(spent);
-    }
-
     public BigDecimal getYearlyPeronalBalance(Employee employee) {
-        BigDecimal earned = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved, new Date());
-        BigDecimal spent = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved, new Date());
+        BigDecimal earned = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date());
+        BigDecimal spent = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date());
         return earned.subtract(spent);
     }
 

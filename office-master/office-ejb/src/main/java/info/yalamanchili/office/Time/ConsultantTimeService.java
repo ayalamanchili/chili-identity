@@ -108,14 +108,10 @@ public class ConsultantTimeService {
         summary.setTotalVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date()));
         summary.setUsedVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date()));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
-        //Personal
-        summary.setTotalPersonalHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved, new Date()));
-        summary.setUsedPersonalHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved, new Date()));
-        summary.setAvailablePersonalHours(getYearlyPeronalBalance(employee));
-        //Sick
-        summary.setTotalSickHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved, new Date()));
-        summary.setUsedSickHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Spent, TimeSheetStatus.Approved, new Date()));
-        summary.setAvailableSickHours(getYearlySickBalance(employee));
+        //PTO
+        summary.setTotalPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date()));
+        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
         //Total
         summary.setTotalAccumulatedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()));
         summary.setTotalUsedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()));
@@ -127,15 +123,9 @@ public class ConsultantTimeService {
         return summary;
     }
 
-    public BigDecimal getYearlySickBalance(Employee employee) {
-        BigDecimal earned = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Earned, TimeSheetStatus.Approved, new Date());
-        BigDecimal spent = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Sick_Spent, TimeSheetStatus.Approved, new Date());
-        return earned.subtract(spent);
-    }
-
     public BigDecimal getYearlyPeronalBalance(Employee employee) {
-        BigDecimal earned = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Earned, TimeSheetStatus.Approved, new Date());
-        BigDecimal spent = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Personal_Spent, TimeSheetStatus.Approved, new Date());
+        BigDecimal earned = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date());
+        BigDecimal spent = consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date());
         return earned.subtract(spent);
     }
 

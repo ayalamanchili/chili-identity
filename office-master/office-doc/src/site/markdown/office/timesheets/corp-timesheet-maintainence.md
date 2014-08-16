@@ -19,11 +19,9 @@ Categories of time sheets
  -   Vacation_Earned - 10(days) Vacation leaves are earned by an employee for a calendar year. vacation carry forward leaves from previous year are also added to this
  -   Vacation_Spent - These are the vacation leaves spent by an employee in current calendar year
  -   Vacation_Carry Forward - Upto 5(days) unused vacation leaves of an employee are allowed to carry forward to next year
- -   Personal_Earned - 4(days) personal leaves are earned by an employee for a calendar year
- -   Personal_Spent - These are the personal leaves spent by an employee in current calendar year,
- -   Unpaid,
- -   Sick_Earned - 4(days) Sick leaves are earned by an employee for a calendar year,
- -   Sick_Spent - These are the sick leaves spent by an employee in current calendar year;
+ -   PTO_Earned - 8(days) PTO leaves are earned by an employee for a calendar year
+ -   PTO_Spent - These are the PTO leaves spent by an employee in current calendar year,
+ -   Unpaid
 
 Creating Corporate Employee Time Sheet
 --

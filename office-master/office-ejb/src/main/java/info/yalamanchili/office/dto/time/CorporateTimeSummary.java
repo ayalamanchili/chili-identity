@@ -21,9 +21,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class CorporateTimeSummary implements Serializable {
-
-    protected BigDecimal availableSickHours;
-    protected BigDecimal availablePersonalHours;
+    
+    protected BigDecimal availablePTOHours;
     protected BigDecimal availableVacationHours;
     protected BigDecimal usedUnpaidHours;
     protected String employee;
@@ -32,26 +31,17 @@ public class CorporateTimeSummary implements Serializable {
     public CorporateTimeSummary() {
     }
 
-    public CorporateTimeSummary(BigDecimal availableSickHours, BigDecimal availablePersonalHours, BigDecimal availableVacationHours) {
-        this.availableSickHours = availableSickHours;
-        this.availablePersonalHours = availablePersonalHours;
+    public CorporateTimeSummary( BigDecimal availablePTOHours, BigDecimal availableVacationHours) {
+        this.availablePTOHours = availablePTOHours;
         this.availableVacationHours = availableVacationHours;
     }
 
-    public BigDecimal getAvailableSickHours() {
-        return availableSickHours;
+    public BigDecimal getAvailablePTOHours() {
+        return availablePTOHours;
     }
 
-    public void setAvailableSickHours(BigDecimal availableSickHours) {
-        this.availableSickHours = availableSickHours;
-    }
-
-    public BigDecimal getAvailablePersonalHours() {
-        return availablePersonalHours;
-    }
-
-    public void setAvailablePersonalHours(BigDecimal availablePersonalHours) {
-        this.availablePersonalHours = availablePersonalHours;
+    public void setAvailablePTOHours(BigDecimal availablePTOHours) {
+        this.availablePTOHours = availablePTOHours;
     }
 
     public BigDecimal getAvailableVacationHours() {

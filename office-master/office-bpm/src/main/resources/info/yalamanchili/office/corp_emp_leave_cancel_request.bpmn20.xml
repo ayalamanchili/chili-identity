@@ -22,8 +22,7 @@
                 Hours         : #{entity.hours} 
                 Notes         : #{entity.notes}
                 Vacation Available when request submitted : #{summary.availableVacationHours}
-                Personal Available when request submitted : #{summary.availablePersonalHours}
-                Sick Available when request submitted     : #{summary.availableSickHours}
+                PTO Available when request submitted : #{summary.availablePTOHours}
             </documentation>
             <extensionElements>
                 <activiti:taskListener class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestCancelProcess" event="create"/>

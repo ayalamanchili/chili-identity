@@ -28,17 +28,11 @@ public class ConsultantTimeSummary implements Serializable {
     protected BigDecimal usedVacationHours;
     protected BigDecimal availableVacationHours;
     /**
-     * Personal
+     * PTO
      */
-    protected BigDecimal totalPersonalHours;
-    protected BigDecimal usedPersonalHours;
-    protected BigDecimal availablePersonalHours;
-    /**
-     * Sick
-     */
-    protected BigDecimal totalSickHours;
-    protected BigDecimal usedSickHours;
-    protected BigDecimal availableSickHours;
+    protected BigDecimal totalPTOHours;
+    protected BigDecimal usedPTOHours;
+    protected BigDecimal availablePTOHours;
     /**
      * total hours
      */
@@ -56,9 +50,8 @@ public class ConsultantTimeSummary implements Serializable {
     public ConsultantTimeSummary() {
     }
 
-    public ConsultantTimeSummary(BigDecimal availableSickHours, BigDecimal availablePersonalHours, BigDecimal availableVacationHours) {
-        this.availableSickHours = availableSickHours;
-        this.availablePersonalHours = availablePersonalHours;
+    public ConsultantTimeSummary( BigDecimal availablePTOHours ,BigDecimal availableVacationHours) {
+        this.availablePTOHours = availablePTOHours;
         this.availableVacationHours = availableVacationHours;
     }
 
@@ -86,52 +79,28 @@ public class ConsultantTimeSummary implements Serializable {
         this.availableVacationHours = availableVacationHours;
     }
 
-    public BigDecimal getTotalPersonalHours() {
-        return totalPersonalHours;
+    public BigDecimal getTotalPTOHours() {
+        return totalPTOHours;
     }
 
-    public void setTotalPersonalHours(BigDecimal totalPersonalHours) {
-        this.totalPersonalHours = totalPersonalHours;
+    public void setTotalPTOHours(BigDecimal totalPTOHours) {
+        this.totalPTOHours = totalPTOHours;
     }
 
-    public BigDecimal getUsedPersonalHours() {
-        return usedPersonalHours;
+    public BigDecimal getUsedPTOHours() {
+        return usedPTOHours;
     }
 
-    public void setUsedPersonalHours(BigDecimal usedPersonalHours) {
-        this.usedPersonalHours = usedPersonalHours;
+    public void setUsedPTOHours(BigDecimal usedPTOHours) {
+        this.usedPTOHours = usedPTOHours;
     }
 
-    public BigDecimal getAvailablePersonalHours() {
-        return availablePersonalHours;
+    public BigDecimal getAvailablePTOHours() {
+        return availablePTOHours;
     }
 
-    public void setAvailablePersonalHours(BigDecimal availablePersonalHours) {
-        this.availablePersonalHours = availablePersonalHours;
-    }
-
-    public BigDecimal getTotalSickHours() {
-        return totalSickHours;
-    }
-
-    public void setTotalSickHours(BigDecimal totalSickHours) {
-        this.totalSickHours = totalSickHours;
-    }
-
-    public BigDecimal getUsedSickHours() {
-        return usedSickHours;
-    }
-
-    public void setUsedSickHours(BigDecimal usedSickHours) {
-        this.usedSickHours = usedSickHours;
-    }
-
-    public BigDecimal getAvailableSickHours() {
-        return availableSickHours;
-    }
-
-    public void setAvailableSickHours(BigDecimal availableSickHours) {
-        this.availableSickHours = availableSickHours;
+    public void setAvailablePTOHours(BigDecimal availablePTOHours) {
+        this.availablePTOHours = availablePTOHours;
     }
 
     public BigDecimal getUsedUnpaidHours() {
