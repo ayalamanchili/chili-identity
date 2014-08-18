@@ -12,6 +12,7 @@ import info.chili.security.SecurityService;
 import info.chili.spring.SpringContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
+import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
 
 /**
@@ -71,5 +72,10 @@ public class OfficeSecurityConfiguration {
 
     public static OfficeSecurityConfiguration instance() {
         return SpringContext.getBean(OfficeSecurityConfiguration.class);
+    }
+
+    @ManagedOperation
+    public void reloadKeyStore() {
+        SecurityService.instance().initKeyStore(getKeyStoreType(), getKeyStoreName(), getKeyStorePassword(), getKeyStorePath());
     }
 }
