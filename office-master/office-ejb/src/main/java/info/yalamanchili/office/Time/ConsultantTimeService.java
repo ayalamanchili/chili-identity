@@ -9,28 +9,44 @@
 package info.yalamanchili.office.Time;
 
 import com.google.common.io.Files;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfSignatureAppearance;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.security.BouncyCastleDigest;
+import com.itextpdf.text.pdf.security.ExternalDigest;
+import com.itextpdf.text.pdf.security.ExternalSignature;
+import com.itextpdf.text.pdf.security.MakeSignature;
+import com.itextpdf.text.pdf.security.MakeSignature.CryptoStandard;
+import com.itextpdf.text.pdf.security.PrivateKeySignature;
 import info.chili.commons.PDFUtils;
 import info.chili.reporting.ReportGenerator;
+import info.chili.security.SecurityService;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
-import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.template.TemplateService;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -142,8 +158,19 @@ public class ConsultantTimeService {
     }
 
     public Response getReport(Long id) {
+        ConsultantTimeSheet ts = consultantTimeSheetDao.findById(id);
+        Employee emp = null;
+        if (ts.getApprovedBy() != null) {
+            emp = EmployeeDao.instance().findEmployeWithEmpId(ts.getApprovedBy());
+        }
         String report = TemplateService.instance().process("consultant-emp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
-        byte[] pdf = PDFUtils.convertToPDF(report);
+        byte[] pdf = null;
+        if (emp == null) {
+            pdf = PDFUtils.convertToPDF(report);
+        } else {
+            OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, null, securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
+        }
         return Response
                 .ok(pdf)
                 .header("content-disposition", "filename = timesheet.pdf")
@@ -151,6 +178,29 @@ public class ConsultantTimeService {
                 .build();
     }
 
+//    protected byte[] signPdf(byte[] pdf, String signatureUsername) {
+//        //TODO validate username and ingore for
+//        try {
+//            SecurityService securityService = SecurityService.instance();
+//            OfficeSecurityConfiguration securityConfig = OfficeSecurityConfiguration.instance();
+//            KeyStore KeyStore = securityService.getKeyStore(securityConfig.getKeyStoreName());
+//            PrivateKey pk = (PrivateKey) KeyStore.getKey(signatureUsername, securityConfig.getKeyStorePassword().toCharArray());
+//            Certificate[] chain = KeyStore.getCertificateChain(signatureUsername);
+//            PdfReader reader = new PdfReader(pdf);
+//            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//            PdfStamper stamper = PdfStamper.createSignature(reader, out, '\0');
+//            PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+//            appearance.setReason("I've written this.");
+//            appearance.setLocation("Foobar");
+//            appearance.setVisibleSignature(new Rectangle(72, 732, 144, 780), 1, "first");
+//            ExternalSignature es = new PrivateKeySignature(pk, "SHA-256", "BC");
+//            ExternalDigest digest = new BouncyCastleDigest();
+//            MakeSignature.signDetached(appearance, digest, es, chain, null, null, null, 0, CryptoStandard.CMS);
+//            return out.toByteArray();
+//        } catch (Exception ex) {
+//            throw new RuntimeException(ex);
+//        }
+//    }
     @Async
     @Transactional(readOnly = true)
     public void getAllConsultantEmployeesSummaryReport(Employee currentEmp) {
