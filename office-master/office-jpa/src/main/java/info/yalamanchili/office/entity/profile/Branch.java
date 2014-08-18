@@ -29,4 +29,8 @@ public enum Branch {
      * @generated
      */
     Herndon,
+    /**
+     * @generated
+     */
+    Dallas,
 }

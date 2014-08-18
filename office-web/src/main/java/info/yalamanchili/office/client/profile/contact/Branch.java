@@ -7,8 +7,6 @@
  */
 package info.yalamanchili.office.client.profile.contact;
 
-import static info.yalamanchili.office.client.profile.contact.Sex.values;
-
 /**
  *
  * @author Prasanthi.p
@@ -30,7 +28,11 @@ public enum Branch {
     /**
      * @generated
      */
-    Herndon;
+    Herndon,
+    /**
+     * @generated
+     */
+    Dallas;
 
     public static String[] names() {
         Branch[] values = values();
