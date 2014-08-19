@@ -13,8 +13,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -98,18 +98,28 @@ public class UpdateStatusReportPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Status Report Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(TreeEmployeePanel.instance().getEntityId()));
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadAllStatusReportPanel());
+        }
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(TreeEmployeePanel.instance().getEntityId()));
+        }
+
     }
 
     @Override
     protected void addListeners() {
     }
 
+    BooleanField submitForApprovalF;
+
     @Override
     protected void configure() {
         reportEditor.setHeight("350px");
         reportEditor.setWidth("100%");
+        submitForApprovalF = (BooleanField) fields.get("submitForApproval");
     }
 
     @Override
@@ -127,6 +137,8 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
+        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for approval Engagement Manager."));
+        addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -136,6 +148,6 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "statusreport";
+        return OfficeWelcome.constants.root_url() + "statusreport/save?submitForApproval=" + submitForApprovalF.getValue();
     }
 }

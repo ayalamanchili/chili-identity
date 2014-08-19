@@ -7,7 +7,7 @@
  */
 package info.yalamanchili.office.employee;
 
-import com.google.common.base.Strings;
+import info.chili.commons.DateUtils;
 import info.chili.commons.HtmlUtils;
 import info.chili.commons.PDFUtils;
 import info.chili.spring.SpringContext;
@@ -15,10 +15,13 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.employee.StatusReportDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.template.TemplateService;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,8 +81,19 @@ public class StatusReportService {
 
     //TODO move to commons
     public Response getReport(Long id) {
+        StatusReport statusReport = statusReportDao.findById(id);
+        Employee emp = null;
+        if (statusReport.getApprovedBy() != null) {
+            emp = EmployeeDao.instance().findEmployeWithEmpId(statusReport.getApprovedBy());
+        }
         String report = TemplateService.instance().process("status-report.xhtml", statusReportDao.findById(id));
-        byte[] pdf = PDFUtils.convertToPDF(report);
+        byte[] pdf = null;
+        if (emp == null) {
+            pdf = PDFUtils.convertToPDF(report);
+        } else {
+            OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(statusReport.getSubmittedDate()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
+        }
         return Response
                 .ok(pdf)
                 .header("content-disposition", "filename = status-report.pdf")
