@@ -176,11 +176,6 @@ public class TimeJobService {
             return false;
         }
     }
-    
-    public void migrateToPTOCategory(){
-        CorporateTimeSheetDao.instance().migrateToPTOCategory();
-        ConsultantTimeSheetDao.instance().migrateToPTOCategory();
-    }
 
     public static TimeJobService instance() {
         return SpringContext.getBean(TimeJobService.class);

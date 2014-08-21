@@ -95,7 +95,6 @@ public class OfficeStartup {
 //        TimeJobService.instance().syncTimeSheetPeriods();
         OfficeBPMIdentityService.instance().syncUsersAndRoles();
 //        NotificationGroupDao.instance().syncNotificationGroupsForRoles();
-        TimeJobService.instance().migrateToPTOCategory();
     }
 
     protected void initSecurity() {

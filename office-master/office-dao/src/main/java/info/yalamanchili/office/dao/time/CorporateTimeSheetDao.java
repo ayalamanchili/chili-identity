@@ -262,22 +262,4 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             this.entities = entities;
         }
     }
-
-    public void migrateToPTOCategory() {
-        for (CorporateTimeSheet ts : query(0, 100000)) {
-            if (ts.getCategory().equals(TimeSheetCategory.Personal_Earned)) {
-                ts.setCategory(TimeSheetCategory.PTO_Earned);
-            }
-            if (ts.getCategory().equals(TimeSheetCategory.Personal_Spent)) {
-                ts.setCategory(TimeSheetCategory.PTO_Spent);
-            }
-            if (ts.getCategory().equals(TimeSheetCategory.Sick_Earned)) {
-                ts.setCategory(TimeSheetCategory.PTO_Earned);
-            }
-            if (ts.getCategory().equals(TimeSheetCategory.Sick_Spent)) {
-                ts.setCategory(TimeSheetCategory.PTO_Spent);
-            }
-            getEntityManager().merge(ts);
-        }
-    }
 }
