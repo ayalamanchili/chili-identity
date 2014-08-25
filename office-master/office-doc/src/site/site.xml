@@ -67,6 +67,7 @@
                 <item name="New Vendor request" href="/office/bpm/vendor-request-process.html"/>
             </item>
             <item name="Portal Roles" href="/office/roles.html"/>
+            <item name="Email Notifications" href="/office/eamilnotifications.html"/>
             <item name="Employee Search/Reports" href="/office/employeesearch.html"/>           
             <item name="Self Service" href="/office/selfservice/open-ticket.html" collapse="true">
                 <item name="Open Ticket" href="/office/selfservice/open-ticket.html"/>
