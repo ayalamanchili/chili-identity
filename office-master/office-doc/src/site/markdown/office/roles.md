@@ -12,6 +12,20 @@ Explain about roles
     - An admin can update user roles.
     - Admin is the Super user who can access everything in the portal.
     - Creation,Updation,Deletion and deactivation of Employees
+    - Overtime Hours Pay Request by Employee
+    - Corporate Employee Unpaid Leave Final Approval Request
+    - Bulk Import Process Submit Task
+    - Review Bulk Import Task
+    - Advance Requisition Final Approval Task
+    - Add New Vendor Request Task
+    - Add New Skill Request Task
+    - Add New Client Request Task
+    - Add New Certification Request Task
+    - send New Company Post Notification  
+    - send Employee Deactivation Notification 
+    - send New User Created Notification
+    - send Over time Request Submitted Notification
+    - send Over time Request Approved Notification
 
 - HR 
     - Can Create new employees and Update their Information.
@@ -70,6 +84,8 @@ Explain about roles
     - support for leave reports for IT department employees
 
 - PAYROLL AND BENEFITS
+    - Advance Req Tree Panel and 
+    - corporate and consultant reports of corporate and consultant employees 
     - Leave Request Approval Task
     - consultant Employee Leave Request Cancel Task
     - update Address Payroll Task
