@@ -18,7 +18,6 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
-import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
@@ -94,7 +93,9 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
         if (cnts.size() > 0) {
-            task.addCandidateUser(cnts.get(0).getContact().getEmployeeId());
+            String reportsTo = cnts.get(0).getContact().getEmployeeId();
+            task.addCandidateUser(reportsTo);
+            task.setOwner(reportsTo);
         }
         task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
     }
