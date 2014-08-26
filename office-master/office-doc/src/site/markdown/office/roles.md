@@ -42,25 +42,53 @@ Explain about roles
     - Advance Requisition Payment Dispatch Task 
     - Advance Requisition related issues and Transaction creations 
 
+- CORPORATE TIME REPORTS
+    - only can view corporate employee time reports 
+
+- CONSULTANT TIME REPORTS
+    - only can view consultant employee time reports  
+
+- ROLE CORPORATE DATA
+    - only employees with Corporate Data role can view other corporate employees data.
+
+- EXPENSE
+    - Overtime Hours Pay Request by Employee
+    - New Client Info Accounting Department Task
+    - Client Information Correction Task
+    - Bulk Import Submit task
+    - Review Bulk Import Task
+    - Get Send Employee Deactivation Notification ,send Overtime Request Submitted Notification and send Overtime Request Approved Notification
+    - Transaction create update and delete
+
+- HR ADMINISTRATION 
+    - 
+
+- INVOICING
+    - in self service invoicing related issues is assigned to ROLE_INVOICING
+
+- IT DEVELOPER
+    - support for leave reports for IT department employees
+
+- PAYROLL AND BENEFITS
+    - Leave Request Approval Task
+    - consultant Employee Leave Request Cancel Task
+    - update Address Payroll Task
+    - assign Advance Requisition Task
+
+- ROLE_RECRUITER
+    - 
+
+- ROLE RELATIONSHIP
+    - 
+
+- SYSTEM AND NETWORK ADMIN
+    - in self service network related issue is created for SYSTEM AND NETWORK ADMIN
+    - and  Account Reset Task for also created for same role
+
 - ACCOUNTS RECEIVABLE
     - 
 
 - BILLING
-    - 
-
-- CORPORATE TIME REPORTS
-    - 
-
-- CONSULTANT TIME REPORTS
-    - 
-
-- ROLE CONTRACTS ADMIN
-    - 
-
-- ROLE CORPORATE DATA
-    - 
-
-- EXPENSE
     - 
 
 - GC IMMIGRATION
@@ -69,31 +97,13 @@ Explain about roles
 - H1B IMMIGRATION
     - 
 
-- HR ADMINISTRATION 
+- SALES AND MARKETING
     - 
 
 - INFORMATION TECHNOLOGY
     - 
 
-- INVOICING
-    - 
-
-- IT DEVELOPER
-    - 
-
-- PAYROLL AND BENEFITS
-    - 
-
-- ROLE_RECRUITER
-    - 
-
-- ROLE RELATIONSHIP
-    - 
-
-- SALES AND MARKETING
-    - 
-
-- SYSTEM AND NETWORK ADMIN
+- ROLE CONTRACTS ADMIN
     - 
 
 Portal Roles
