@@ -198,10 +198,10 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         StringBuilder reportQueryBuilder = new StringBuilder();
         reportQueryBuilder.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where ");
         if (dto.getStartDate() != null) {
-            reportQueryBuilder.append(" startDate>=:startDateParam ");
+            reportQueryBuilder.append(" startDate BETWEEN :startDateParam AND :endDateParam");
         }
         if (dto.getEndDate() != null) {
-            reportQueryBuilder.append(" and endDate<=:endDateParam ");
+            reportQueryBuilder.append(" or endDate BETWEEN :startDateParam AND :endDateParam");
         }
         if (dto.getStatus() != null) {
             reportQueryBuilder.append(" and status in (:statusParam) ");
