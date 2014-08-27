@@ -153,10 +153,10 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         StringBuilder reportQueryBuilder = new StringBuilder();
         reportQueryBuilder.append("from ").append(ConsultantTimeSheet.class.getCanonicalName()).append(" where ");
         if (dto.getStartDate() != null) {
-            reportQueryBuilder.append(" startDate BETWEEN :startDateParam AND :endDateParam");
+            reportQueryBuilder.append("(startDate BETWEEN :startDateParam AND :endDateParam");
         }
         if (dto.getEndDate() != null) {
-            reportQueryBuilder.append(" or endDate BETWEEN :startDateParam AND :endDateParam");
+            reportQueryBuilder.append(" or endDate BETWEEN :startDateParam AND :endDateParam)");
         }
         if (dto.getStatus() != null) {
             reportQueryBuilder.append(" and status in (:statusParam) ");
