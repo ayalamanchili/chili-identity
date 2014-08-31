@@ -9,7 +9,6 @@ package info.yalamanchili.office.client.profile.statusreport;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
@@ -75,6 +74,7 @@ public class ReadStatusReportPanel extends ReadComposite {
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
         populateComments();
     }
 
@@ -99,8 +99,10 @@ public class ReadStatusReportPanel extends ReadComposite {
         addEnumField("status", true, true, ProjectStatus.names(), Alignment.HORIZONTAL);
         addField("report", true, true, DataType.RICH_TEXT_AREA);
         addField("preparedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("submittedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("approvedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+
         alignFields();
     }
 

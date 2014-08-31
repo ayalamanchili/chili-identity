@@ -45,12 +45,12 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
@@ -64,6 +64,7 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("createdTimeStamp", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -85,6 +86,7 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
         addField("notes", true, false, DataType.TEXT_AREA_FIELD);
         addField("approvedBy", true, false, DataType.STRING_FIELD);
         addField("createdTimeStamp", true, false, DataType.DATE_FIELD);
+        addField("approvedDate", true, false, DataType.DATE_FIELD);
     }
 
     @Override

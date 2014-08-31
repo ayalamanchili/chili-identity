@@ -83,6 +83,11 @@ public class StatusReport extends AbstractEntity {
     /**
      *
      */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date approvedDate;
+    /**
+     *
+     */
     @ManyToOne
     @ForeignKey(name = "FK_PROJECT_STATUS_RPTS")
     @NotNull(message = "{project.not.empty.msg}")
@@ -161,6 +166,14 @@ public class StatusReport extends AbstractEntity {
 
     public void setSubmittedDate(Date submittedDate) {
         this.submittedDate = submittedDate;
+    }
+
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
     }
 
     @XmlElement

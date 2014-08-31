@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
+import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -53,6 +54,7 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
             ts.setStatus(TimeSheetStatus.Approved);
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             ts.setApprovedBy(currentUser.getEmployeeId());
+            ts.setApprovedDate(new Date());
         } else {
             ts.setStatus(TimeSheetStatus.Rejected);
             //TODO should this be deleted?

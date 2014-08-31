@@ -48,6 +48,7 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
             assignEntityValueFromField("approvedBy", entity);
             assignEntityValueFromField("createdTimeStamp", entity);
+            assignEntityValueFromField("approvedDate", entity);
         }
         return entity;
     }
@@ -80,6 +81,7 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("createdTimeStamp", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
         }
         employeeF.getListBox().setEnabled(false);
     }
@@ -112,6 +114,7 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
             addField("approvedBy", false, true, DataType.STRING_FIELD);
             addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
+            addField("approvedDate", false, true, DataType.DATE_FIELD);
         }
     }
 

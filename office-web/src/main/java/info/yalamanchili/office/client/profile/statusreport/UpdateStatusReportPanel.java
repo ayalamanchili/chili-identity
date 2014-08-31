@@ -52,6 +52,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignEntityValueFromField("approvedBy", entity);
         entity.put("report", new JSONString(reportEditor.getHTML()));
         assignEntityValueFromField("submittedDate", entity);
+        assignEntityValueFromField("approvedDate", entity);
         assignEntityValueFromField("project", entity);
         logger.info(entity.toString());
         return entity;
@@ -91,6 +92,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
         }
         populateComments();
     }
@@ -134,8 +136,9 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         entityFieldsPanel.add(reportEditor);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for approval Engagement Manager."));
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
