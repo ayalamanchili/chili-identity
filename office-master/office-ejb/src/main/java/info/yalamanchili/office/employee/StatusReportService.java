@@ -21,7 +21,6 @@ import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.template.TemplateService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
-import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +91,7 @@ public class StatusReportService {
             pdf = PDFUtils.convertToPDF(report);
         } else {
             OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(statusReport.getSubmittedDate()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
+            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(statusReport.getApprovedDate()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
         }
         return Response
                 .ok(pdf)

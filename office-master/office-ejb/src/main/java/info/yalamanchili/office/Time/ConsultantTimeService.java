@@ -154,7 +154,7 @@ public class ConsultantTimeService {
             pdf = PDFUtils.convertToPDF(report);
         } else {
             OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(ts.getCreatedTimeStamp()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
+            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(ts.getApprovedDate()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
         }
         return Response
                 .ok(pdf)
