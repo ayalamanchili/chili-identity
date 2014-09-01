@@ -53,16 +53,17 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("eeee" + entity);
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("rating", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("keyAccomplishments", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("managersComments", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("employeeComments", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("ceoComments", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("keyAccomplishments", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("employeeComments", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("ceoComments", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -80,16 +81,18 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
         addEnumField("type", false, true, EvaluationFrequencyType.names());
         addField("rating", false, true, DataType.INTEGER_FIELD);
-        addField("keyAccomplishments", false, false, DataType.STRING_FIELD);
-        addField("areasNeedImprovement", false, false, DataType.STRING_FIELD);
-        addField("managersComments", false, false, DataType.STRING_FIELD);
-        addField("employeeComments", false, false, DataType.STRING_FIELD);
-        addField("ceoComments", false, false, DataType.STRING_FIELD);
-        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl()));
+        addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
+        addField("areasNeedImprovement", false, false, DataType.RICH_TEXT_AREA);
+        addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
+        addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
+        addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name())));
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name())));
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name())));
     }
 
-    protected String getQuestionCommentsUrl() {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation/comments/" + getEntityId() + "?category=" + QuestionCategory.ATTITUDE.name() + "&context=" + QuestionContext.PERFORMANCE_EVALUATION_MANGER.name();
+    protected String getQuestionCommentsUrl(String category) {
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/comments/" + getEntityId() + "?category=" + category + "&context=" + QuestionContext.PERFORMANCE_EVALUATION_MANGER.name();
     }
 
     @Override

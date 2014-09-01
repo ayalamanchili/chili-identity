@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -122,8 +123,9 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         protected JSONObject populateEntity() {
             JSONObject entity = new JSONObject();
             entity.put("employeeId", new JSONString(employeeId));
-            JSONObject perfEval = perfEvalStartStep.getWidget().populateEntityFromFields();
-            entity.put("performanceEvaluation", perfEval);
+            JSONObject perfEvalStartObj = perfEvalStartStep.getWidget().populateEntityFromFields();
+            JSONObject perfEvalEndObj = perfEvalStartEnd.getWidget().populateEntityFromFields();
+            entity.put("performanceEvaluation",  JSONUtils.merge(perfEvalStartObj, perfEvalEndObj));
             JSONArray skillQuestions = skillQuestionsStep.getWidget().getValue();
             JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValue();
             JSONArray managementQuestions = managementQuestionsStep.getWidget().getValue();
