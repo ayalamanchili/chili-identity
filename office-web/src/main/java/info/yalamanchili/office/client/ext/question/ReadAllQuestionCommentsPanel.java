@@ -11,7 +11,6 @@ package info.yalamanchili.office.client.ext.question;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -28,7 +27,7 @@ import java.util.logging.Logger;
  */
 public class ReadAllQuestionCommentsPanel extends ALComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllQuestionCommentsPanel.class.getName());
+    protected static Logger logger = Logger.getLogger(ReadAllQuestionCommentsPanel.class.getName());
     protected FlowPanel basePanel = new FlowPanel();
     protected DisclosurePanel disclosurePanel;
     protected FlowPanel panel = new FlowPanel();
@@ -58,14 +57,16 @@ public class ReadAllQuestionCommentsPanel extends ALComposite {
                     @Override
                     public void onResponse(String arg0) {
                         logger.info(arg0);
-                        populateData(JSONUtils.toJSONArray(JSONParser.parseLenient(arg0)));
+                        if (JSONParser.parseLenient(arg0).isObject() != null) {
+                            populateData(JSONUtils.toJSONArray(JSONParser.parseLenient(arg0).isObject().get("QuestionAnswer")));
+                        }
                     }
                 });
     }
 
     protected void populateData(JSONArray questions) {
-        for (int i = 0; i <= questions.size(); i++) {
-            panel.add(new ReadQuestionCommentPanel(questions.get(i).isObject().get("QuestionAnswer").isObject()));
+        for (int i = 0; i < questions.size(); i++) {
+            panel.add(new ReadQuestionCommentPanel(questions.get(i).isObject()));
         }
     }
 

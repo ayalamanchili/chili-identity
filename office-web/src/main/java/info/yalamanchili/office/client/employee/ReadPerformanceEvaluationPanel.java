@@ -29,7 +29,6 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     private static ReadPerformanceEvaluationPanel instance;
     private static Logger logger = Logger.getLogger(ReadPerformanceEvaluationPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
-
     public static ReadPerformanceEvaluationPanel instance() {
         return instance;
     }
@@ -81,11 +80,11 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
         addEnumField("type", false, true, EvaluationFrequencyType.names());
         addField("rating", false, true, DataType.INTEGER_FIELD);
-        addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
-        addField("areasNeedImprovement", false, false, DataType.RICH_TEXT_AREA);
-        addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
-        addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
-        addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
+        addField("keyAccomplishments", true, false, DataType.RICH_TEXT_AREA);
+        addField("areasNeedImprovement", true, false, DataType.RICH_TEXT_AREA);
+        addField("managersComments", true, false, DataType.RICH_TEXT_AREA);
+        addField("employeeComments", true, false, DataType.RICH_TEXT_AREA);
+        addField("ceoComments", true, false, DataType.RICH_TEXT_AREA);
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name())));

@@ -1,6 +1,3 @@
-/**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,7 +7,7 @@ package info.yalamanchili.office.client.ext.question;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
-import info.chili.gwt.crud.ReadComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -20,17 +17,30 @@ import java.util.logging.Logger;
  *
  * @author ayalamanchili
  */
-public class ReadQuestionCommentPanel extends ReadComposite {
+public class UpdateQuestionCommentPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(ReadQuestionCommentPanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateQuestionCommentPanel.class.getName());
     protected HTML questionInfoL = new HTML("");
 
-    public ReadQuestionCommentPanel(JSONObject entity) {
-        initReadComposite(entity, "QuestionComment", OfficeWelcome.constants);
+    public UpdateQuestionCommentPanel(JSONObject entity) {
+        logger.info("aaaaaaaaaa"+entity);
+        initUpdateComposite(entity, "QuestionComment", OfficeWelcome.constants);
     }
 
     @Override
-    public void loadEntity(String entityId) {
+    protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("comment", entity);
+        assignEntityValueFromField("rating", entity);
+        return entity;
+    }
+
+    @Override
+    protected void updateButtonClicked() {
+
+    }
+
+    @Override
+    protected void postUpdateSuccess(String result) {
 
     }
 
@@ -53,8 +63,8 @@ public class ReadQuestionCommentPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(questionInfoL);
-        addField("comment", true, false, DataType.RICH_TEXT_AREA);
-        addField("rating", true, false, DataType.STRING_FIELD);
+        addField("comment", false, false, DataType.RICH_TEXT_AREA);
+        addField("rating", false, false, DataType.STRING_FIELD);
     }
 
     @Override

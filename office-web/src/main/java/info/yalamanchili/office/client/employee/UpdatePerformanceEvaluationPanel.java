@@ -15,6 +15,9 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.ext.question.QuestionCategory;
+import info.yalamanchili.office.client.ext.question.QuestionContext;
+import info.yalamanchili.office.client.ext.question.UpdateAllQuestionCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -26,6 +29,13 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdatePerformanceEvaluationPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
+    UpdateAllQuestionCommentsPanel updateSkillAptitudeCommentsPanel;
+    UpdateAllQuestionCommentsPanel updateAptitudeCommentsPanel;
+    UpdateAllQuestionCommentsPanel updateManagementCommentsPanel;
+
+    protected String getQuestionCommentsUrl(String category) {
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/comments/" + getEntityId() + "?category=" + category + "&context=" + QuestionContext.PERFORMANCE_EVALUATION_MANGER.name();
+    }
 
     public UpdatePerformanceEvaluationPanel(JSONObject entity) {
         initUpdateComposite(entity, "PerformanceEvaluation", OfficeWelcome.constants);
@@ -45,7 +55,6 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("managersComments", entity);
         assignEntityValueFromField("employeeComments", entity);
         assignEntityValueFromField("ceoComments", entity);
-        logger.info("ddd" + entity);
         return entity;
     }
 
@@ -97,6 +106,10 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        updateSkillAptitudeCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name()));
+        updateAptitudeCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name()));
+        updateManagementCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name()));
+        //
         addDropDown("employee", selectEmployeeWidgetF);
         addField("evaluationDate", false, false, DataType.DATE_FIELD);
         addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD);
@@ -108,6 +121,9 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
         addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
         addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
+        entityFieldsPanel.add(updateSkillAptitudeCommentsPanel);
+        entityFieldsPanel.add(updateAptitudeCommentsPanel);
+        entityFieldsPanel.add(updateManagementCommentsPanel);
     }
 
     @Override
