@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.TextAreaField;
@@ -35,8 +36,11 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected HTML questionL = new HTML();
     protected HTML questionDecriptionL = new HTML();
     TextAreaField commentTB = new TextAreaField(OfficeWelcome.constants, "comment", "Comment", false, true, Alignment.VERTICAL);
-    String[] rating = {"1", "2", "3", "4", "5"};
-    protected EnumField ratingF = new EnumField(OfficeWelcome.constants, "rating", "Rating", false, true, false, rating, Alignment.VERTICAL);
+    RadioButton radioButton1 = new RadioButton("rating", "1");
+    RadioButton radioButton2 = new RadioButton("rating", "2");
+    RadioButton radioButton3 = new RadioButton("rating", "3");
+    RadioButton radioButton4 = new RadioButton("rating", "4 ");
+    RadioButton radioButton5 = new RadioButton("rating", "5");
 
     public CreateQuestionCommentWidget(JSONObject question) {
         this.question = question;
@@ -45,7 +49,6 @@ public class CreateQuestionCommentWidget extends ALComposite {
 
     @Override
     protected void addListeners() {
-
     }
 
     protected JSONObject getQuestionComment() {
@@ -54,9 +57,7 @@ public class CreateQuestionCommentWidget extends ALComposite {
         if (!Strings.isNullOrEmpty(commentTB.getValue())) {
             entity.put("comment", new JSONString(commentTB.getValue()));
         }
-        if (!Strings.isNullOrEmpty(ratingF.getValue())) {
-            entity.put("rating", new JSONString(ratingF.getValue()));
-        }
+
         return entity;
     }
 
@@ -71,7 +72,6 @@ public class CreateQuestionCommentWidget extends ALComposite {
     }
 
     public void clearMessages() {
-        ratingF.clearMessage();
     }
 
     @Override
@@ -79,7 +79,12 @@ public class CreateQuestionCommentWidget extends ALComposite {
         panel.add(questionL);
         panel.add(questionDecriptionL);
         panel.add(commentTB);
-        panel.add(ratingF);
+        panel.add(radioButton1);
+        panel.add(radioButton2);
+        panel.add(radioButton3);
+        panel.add(radioButton4);
+        panel.add(radioButton5);
+
         captionPanel.setContentWidget(panel);
     }
 }
