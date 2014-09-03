@@ -64,7 +64,8 @@ public class CorpEmpLeaveRequestProcessBean {
         email.setBody("Your leave request has been rejected due to insufficient leaves");
         messagingService.sendEmail(email);
     }
-
+    
+//TODO is this needed
     public void saveApprovedLeaveRequest(DelegateExecution execution, String leaveRequestApprovalTaskNotes) {
         CorporateTimeSheet ts = getTimeSheetFromExecution(execution);
         if (ts == null) {
