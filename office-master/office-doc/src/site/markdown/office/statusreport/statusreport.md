@@ -1,6 +1,9 @@
 Projects Reports
 ===========
 
+How to submit a Status Report
+----
+
  - Employees should submit the current project status report on a regular basis. 
  - Navigate to Home --> My Reports --> Projects Reports --> Click Submit Project Status Report.
  - Enter all required information in status report.
