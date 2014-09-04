@@ -37,10 +37,10 @@
         <property name="password" value="${db.password}" />
     </bean>
     
-    <!-- used to run liquibase change sets-->
+<!--     used to run liquibase change sets
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
         <property name="dataSource" ref="officeSecurityDataSource" />
         <property name="changeLog" value="classpath:db_changelogs/office.changelog.xml" />
-        <!--<property name="defaultSchema" value="office" />-->
-    </bean>
+        <property name="defaultSchema" value="office" />
+    </bean>-->
 </beans>
