@@ -20,9 +20,9 @@ Vacation Available 40 hours
 PTO Available 10 hours
 you have taken leave for 60 hours
 submit
- - vacation request for 40 hours
- - pto request for 10 hours
- - unpaid request for 10 hours
+ - PTO request for 10 hours
+ - Vacation request for 40 hours
+ - balanse as Unpaid request for 10 hours
 ```
      
 

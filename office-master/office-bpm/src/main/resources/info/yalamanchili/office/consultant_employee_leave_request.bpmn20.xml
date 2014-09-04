@@ -42,8 +42,8 @@
                      activiti:expression="#{consultantEmpLeaveRequestProcessBean.sendLeaveRequestRejectedEmail(currentEmployee)}" />
         <sequenceFlow  sourceRef="sendValidationFailedRejectionEmail" targetRef="consultantEmpLeaveRequestEnd" />
         <userTask id="consultantEmpLeaveRequestTask" 
-                  name="Leave Request Approval Task For ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_PAYROLL_AND_BENIFITS">
+                  name="Leave Request submitted for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_CONSULTANT_TIME_ADMIN">
             <documentation>
                 Employee Leave Request
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
@@ -51,6 +51,7 @@
                 End Date      : #{leaveRequest.endDate} 
                 Category      : #{leaveRequest.category} 
                 Hours         : #{leaveRequest.hours} 
+                Submited Date    : #{leaveRequest.createdTimeStamp}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />

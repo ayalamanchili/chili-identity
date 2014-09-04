@@ -8,8 +8,10 @@
  */
 package info.yalamanchili.office.client.time.consultant;
 
+import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -25,20 +27,20 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.SelectConsultantEmployeeWidget;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
 import info.yalamanchili.office.client.time.corp.CorporateTimeSummarySidePanel;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -53,7 +55,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
-    SelectConsultantEmployeeWidget empWidget = new SelectConsultantEmployeeWidget("Employee", false, false);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     EnumField categoryField = new EnumField(OfficeWelcome.constants, "category", "ConsultantTimeSheet",
             false, false, TimeSheetCategory.names());
     EnumField statusField = new EnumField(OfficeWelcome.constants, "status", "ConsultantTimeSheet",
@@ -99,6 +101,20 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         timesheetsForEmpCaptionPanel.setCaptionHTML("Time Summary");
         reportsCaptionPanel.setCaptionHTML("Reports");
         TabPanel.instance().timePanel.sidePanelTop.setHeight("100%");
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
+    }
+
+    protected String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Employee");
     }
 
     @Override
@@ -108,7 +124,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {
             //employee
-            timesheetsForEmpPanel.add(empWidget);
+            timesheetsForEmpPanel.add(employeeSB);
             timesheetsForEmpPanel.add(categoryField);
             timesheetsForEmpPanel.add(statusField);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
@@ -133,10 +149,10 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             TabPanel.instance().timePanel.entityPanel.clear();
             TabPanel.instance().timePanel.entityPanel.add(new CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
         }
-        if (empWidget.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
+        if (!Strings.isNullOrEmpty(employeeSB.getKey()) && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
-            TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel(empWidget.getSelectedObjectId()));
-            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(empWidget.getSelectedObjectId()));
+            TabPanel.instance().getTimePanel().entityPanel.add(new ConsultantTimeSummaryPanel(employeeSB.getKey()));
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeSB.getKey()));
         }
         if (event.getSource().equals(viewReportsB)) {
             viewReport();

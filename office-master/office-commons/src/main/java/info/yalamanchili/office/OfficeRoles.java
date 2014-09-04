@@ -44,6 +44,7 @@ public class OfficeRoles {
         ROLE_SYSTEM_AND_NETWORK_ADMIN,
         ROLE_CORPORATE_TIME_REPORTS,
         ROLE_CONSULTANT_TIME_REPORTS,
+        ROLE_CONSULTANT_TIME_ADMIN,
         ROLE_IT_DEVELOPER,
         ROLE_CORPORATE_DATA
     }
@@ -73,6 +74,7 @@ public class OfficeRoles {
         rolesMessages.put(OfficeRole.ROLE_INFORMATION_TECHNOLOGY.name(), "Information Technology");
         rolesMessages.put(OfficeRole.ROLE_SYSTEM_AND_NETWORK_ADMIN.name(), "System and Network Administration");
         rolesMessages.put(OfficeRole.ROLE_CORPORATE_TIME_REPORTS.name(), "Corporate Time Reports");
+        rolesMessages.put(OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name(), "Consultant Time Admin");
         rolesMessages.put(OfficeRole.ROLE_CONSULTANT_TIME_REPORTS.name(), "Consultant Time Reports");
         rolesMessages.put(OfficeRole.ROLE_IT_DEVELOPER.name(), "IT Developer");
         rolesMessages.put(OfficeRole.ROLE_CORPORATE_DATA.name(), "Corporate Data");

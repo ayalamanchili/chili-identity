@@ -55,7 +55,6 @@ public class CreateConsultantTimeSheetPanel extends CreateComposite {
             assignEntityValueFromField("approvedBy", entity);
             assignEntityValueFromField("createdTimeStamp", entity);
         }
-        logger.info("dddddddd"+entity);
         return entity;
     }
 

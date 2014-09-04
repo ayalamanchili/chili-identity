@@ -41,6 +41,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("createdTimeStamp", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("notes", entity);
@@ -97,6 +98,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names());
+        addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD);
     }
 
