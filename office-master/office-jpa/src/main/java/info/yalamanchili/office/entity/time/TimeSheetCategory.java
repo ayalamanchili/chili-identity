@@ -41,6 +41,9 @@ public enum TimeSheetCategory {
         res.add(PTO_Spent);
         res.add(Unpaid);
         res.add(JuryDuty);
+        res.add(Bereavement);
+        res.add(Maternity);
+        res.add(Other);
         return res;
     }
 
@@ -48,6 +51,7 @@ public enum TimeSheetCategory {
         List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();
         res.add(Vacation_Earned);
         res.add(PTO_Earned);
+        res.add(Vacation_CarryForward);
         return res;
     }
 }
