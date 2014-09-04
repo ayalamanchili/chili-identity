@@ -16,9 +16,10 @@ import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import org.activiti.engine.delegate.DelegateExecution;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,16 @@ public class ConsultantEmpLeaveRequestProcessBean {
 
     public boolean validateLeaveRequest(Employee employee, ConsultantTimeSheet entity) {
         //TODO
-        return true;
+        if (noValidationsCategories.contains(entity.getCategory())) {
+            return true;
+        }
+        BigDecimal earned = ConsultantTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved, new Date());
+        BigDecimal spent = ConsultantTimeSheetDao.instance().getHoursInYear(employee, entity.getCategory(), TimeSheetStatus.Approved, new Date());
+        if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) <= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
     protected static Set<TimeSheetCategory> noValidationsCategories = new HashSet<TimeSheetCategory>();
 
@@ -55,8 +65,6 @@ public class ConsultantEmpLeaveRequestProcessBean {
         email.setBody("Your leave request has been rejected due to insufficient leaves");
         messagingService.sendEmail(email);
     }
-
-
 
     public static ConsultantEmpLeaveRequestProcessBean instance() {
         return SpringContext.getBean(ConsultantEmpLeaveRequestProcessBean.class);
