@@ -56,24 +56,7 @@ public class ConsultantEmpLeaveRequestProcessBean {
         messagingService.sendEmail(email);
     }
 
-//TODO is this needed
-    public void saveApprovedLeaveRequest(DelegateExecution execution, String leaveRequestApprovalTaskNotes) {
-        ConsultantTimeSheet ts = getTimeSheetFromExecution(execution);
-        if (ts == null) {
-            return;
-        }
-        ts.setStatus(TimeSheetStatus.Approved);
-        //TODO append approved task notes
-        ConsultantTimeSheetDao.instance().save(ts);
-    }
 
-    protected ConsultantTimeSheet getTimeSheetFromExecution(DelegateExecution execution) {
-        Long tsId = (Long) execution.getVariable("entityId");
-        if (tsId != null) {
-            return ConsultantTimeSheetDao.instance().findById(tsId);
-        }
-        return null;
-    }
 
     public static ConsultantEmpLeaveRequestProcessBean instance() {
         return SpringContext.getBean(ConsultantEmpLeaveRequestProcessBean.class);
