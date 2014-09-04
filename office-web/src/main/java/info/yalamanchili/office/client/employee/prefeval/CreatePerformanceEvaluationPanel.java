@@ -95,6 +95,8 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
             addField("areasNeedImprovement", false, false, DataType.RICH_TEXT_AREA);
             addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
+            addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
+            addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
         }
     }
 
