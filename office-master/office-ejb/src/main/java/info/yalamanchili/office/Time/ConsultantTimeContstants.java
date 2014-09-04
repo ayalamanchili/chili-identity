@@ -26,7 +26,7 @@ public interface ConsultantTimeContstants {
     BigDecimal ptoEarned = new BigDecimal("64");
 
     /**
-     * Carryforword 10 days
+     * Carryforword 5 days
      */
-    BigDecimal carryForward = new BigDecimal("80");
+    BigDecimal carryForward = new BigDecimal("40");
 }
