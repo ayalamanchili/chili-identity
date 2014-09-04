@@ -129,7 +129,7 @@ public class ProfileNotificationService {
             tos.add(emp.getPrimaryEmail().getEmail());
         }
         email.setTos(tos);
-        email.setSubject("Portal Message: " + msg.getSubject() + " :From:" + msg.getFromEmp().getFirstName() + "," + msg.getFromEmp().getFirstName());
+        email.setSubject("Portal Message: " + msg.getSubject() + " :From:" + msg.getFromEmp().getFirstName() + "," + msg.getFromEmp().getLastName());
         email.setBody(msg.getMessage());
         email.setHtml(true);
         email.setRichText(Boolean.TRUE);
