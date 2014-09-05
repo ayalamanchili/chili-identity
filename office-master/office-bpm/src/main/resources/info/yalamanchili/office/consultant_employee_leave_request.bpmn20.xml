@@ -11,7 +11,7 @@
     xmlns:activiti="http://activiti.org/bpmn">
  
     <process id="consultant_emp_leave_request_process">
-        <startEvent id="leaveRequestStart"/>
+         <startEvent id="leaveRequestStart"/>
         <!-- Validate leave Request-->
         <sequenceFlow  sourceRef="leaveRequestStart" targetRef="validateLeaveRequestTask" />
         <serviceTask id="validateLeaveRequestTask" 
@@ -70,35 +70,6 @@
             </extensionElements> 
         </userTask>
         <sequenceFlow  sourceRef="consultantEmpLeaveRequestTask" targetRef="consultantEmpLeaveRequestEnd" />
-        <userTask id="unpaidLeaveFinalApprovalTask" 
-                  name="Unpaid Leave Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION,">
-            <documentation>
-                Corporate Employee Unpaid Leave Final Approval Request
-                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Start Date          : #{entity.startDate}
-                End Date            : #{entity.endDate} 
-                Category            : #{entity.category} 
-                Hours               : #{entity.hours} 
-                Notes               : #{entity.notes}
-                Approval Task Notes : #{leaveRequestApprovalTaskNotes}
-            </documentation>
-            <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />
-                <activiti:formProperty id="status" 
-                                       name="Approved?"
-                                       required="true"
-                                       type="enum">
-                    <activiti:value id="approved" name="approved"/>
-                    <activiti:value id="rejected" name="rejected"/>
-                </activiti:formProperty>
-                <activiti:formProperty id="unpaidLeaveFinalApprovalNotes" 
-                                       name="Notes"
-                                       required="false" 
-                                       type="string" />
-            </extensionElements> 
-        </userTask>
         <!-- Task escalation email after 2 days-->
         <boundaryEvent id="emailEscalationTimer"
                        cancelActivity="false" 
