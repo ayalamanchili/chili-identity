@@ -54,26 +54,14 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
         }
     }
 
-    public Comment addComment(String comment, Double rating, Long tagetId, AbstractEntity target) {
+    public Comment addComment(String comment, Double rating, AbstractEntity source, AbstractEntity target) {
         if (Strings.isNullOrEmpty(comment)) {
             return null;
         } else {
             Comment cmnt = new Comment();
             cmnt.setRating(rating);
             cmnt.setComment(comment);
-            cmnt.setSourceEntityId(tagetId);
-            return save(cmnt, target);
-        }
-    }
-
-    public Comment findBySourceEntityId(Long sourceId) {
-        TypedQuery<Comment> query = getEntityManager().createQuery("from " + Comment.class.getCanonicalName() + " where sourceEntityId=:sourceEntityIdParam", Comment.class);
-        query.setParameter("sourceEntityIdParam",sourceId);
-        if (query.getResultList().size() > 0) {
-            return query.getResultList().get(0);
-        } else {
-            //TODO throw exception
-            return null;
+            return save(cmnt, source, target);
         }
     }
 

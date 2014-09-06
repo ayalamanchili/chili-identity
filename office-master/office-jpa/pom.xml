@@ -158,5 +158,49 @@
                 </filters>
             </build>
         </profile>
+        <profile>
+            <id>db-diff</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.version}</version>
+                        <configuration>
+                            <propertyFile>target/classes/liquibase-diff.properties</propertyFile>
+                            <changeLogFile>target/classes/db_changelogs/office_master_changelog.xml</changeLogFile>
+                            <diffChangeLogFile>src/main/resources/db_changelogs/9-6-2014_changelog.xml</diffChangeLogFile>
+                            <logging>info</logging>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-db-prev</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                                <configuration>
+                                    <dropFirst>true</dropFirst>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>generate-db-diff</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>diff</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>mysql</groupId>
+                                <artifactId>mysql-connector-java</artifactId>
+                                <version>5.1.20</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>

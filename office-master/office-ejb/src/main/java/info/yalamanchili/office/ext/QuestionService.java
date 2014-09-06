@@ -14,6 +14,7 @@ import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
+import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
@@ -55,9 +56,10 @@ public class QuestionService {
 
     public List<QuestionComment> getQuestionComments(Long perfEvalId, QuestionCategory category, QuestionContext context) {
         List<QuestionComment> res = new ArrayList<QuestionComment>();
+        PerformanceEvaluation perfEval = PerformanceEvaluationDao.instance().findById(perfEvalId);
         CommentDao commentDao = CommentDao.instance();
         for (Question q : PerformanceEvaluationDao.instance().getQuestions(perfEvalId, category, context)) {
-            Comment cmmt = commentDao.findBySourceEntityId(q.getId());
+            Comment cmmt = commentDao.find(perfEval, q);
             QuestionComment qc = new QuestionComment();
             qc.setQuestion(messagesUtils.get(q.getQuestionKey()));
             qc.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));

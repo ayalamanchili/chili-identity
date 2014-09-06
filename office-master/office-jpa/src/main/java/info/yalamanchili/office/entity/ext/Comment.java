@@ -44,10 +44,6 @@ public class Comment extends AbstractHandleEntity {
     /**
      *
      */
-    protected Long sourceEntityId;
-    /**
-     *
-     */
     protected String updatedBy;
     /**
      *
@@ -79,14 +75,6 @@ public class Comment extends AbstractHandleEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Long getSourceEntityId() {
-        return sourceEntityId;
-    }
-
-    public void setSourceEntityId(Long sourceEntityId) {
-        this.sourceEntityId = sourceEntityId;
     }
 
     public String getUpdatedBy() {

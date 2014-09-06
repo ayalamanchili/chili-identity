@@ -38,9 +38,9 @@
     </bean>
     
     <!-- used to run liquibase change sets-->
-<!--    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-        <property name="dataSource" ref="officeSecurityDataSource" />
-        <property name="changeLog" value="classpath:db_changelogs/office.changelog.xml" />
+    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <property name="dataSource" ref="officeLiquibaseDataSource" />
+        <property name="changeLog" value="classpath:db_changelogs/office_master_changelog.xml" />
     </bean>
     
     <bean id="officeLiquibaseDataSource"
@@ -50,5 +50,5 @@
         <property name="url" value="${db.url}" />
         <property name="username" value="${db.liqibase.username}" />
         <property name="password" value="${db.liqibase.password}" />
-    </bean> -->
+    </bean> 
 </beans>

@@ -52,7 +52,7 @@ public class PerformanceEvaluationService {
         for (QuestionComment comment : comments) {
             Question qes = QuestionDao.instance().findById(comment.getId());
             perfEval.addQuestion(qes);
-            CommentDao.instance().addComment(comment.getComment(), comment.getRating(), qes.getId(), perfEval);
+            CommentDao.instance().addComment(comment.getComment(), comment.getRating(), perfEval, qes);
         }
     }
 
