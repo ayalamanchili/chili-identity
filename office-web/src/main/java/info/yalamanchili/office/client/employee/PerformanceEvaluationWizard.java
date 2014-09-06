@@ -18,6 +18,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.AbstractWizard.AbstractStep;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel.CreatePerformanceEvaluationPanelType;
@@ -92,13 +93,6 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             return widget.populateEntityFromFields();
         }
 
-        @Override
-        protected void next(boolean isLastStep) {
-            if (isLastStep) {
-                complete();
-            }
-        }
-
         protected void complete() {
             HttpService.HttpServiceAsync.instance().doPut(getCompleteUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
@@ -125,7 +119,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             entity.put("employeeId", new JSONString(employeeId));
             JSONObject perfEvalStartObj = perfEvalStartStep.getWidget().populateEntityFromFields();
             JSONObject perfEvalEndObj = perfEvalStartEnd.getWidget().populateEntityFromFields();
-            entity.put("performanceEvaluation",  JSONUtils.merge(perfEvalStartObj, perfEvalEndObj));
+            entity.put("performanceEvaluation", JSONUtils.merge(perfEvalStartObj, perfEvalEndObj));
             JSONArray skillQuestions = skillQuestionsStep.getWidget().getValue();
             JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValue();
             JSONArray managementQuestions = managementQuestionsStep.getWidget().getValue();
@@ -154,10 +148,6 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
                 return "Complete";
             }
             return "Next";
-        }
-
-        @Override
-        protected void previous() {
         }
 
         @Override
@@ -216,16 +206,6 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         public JSONValue getValue() {
             return widget.getValue();
-        }
-
-        @Override
-        protected void next(boolean isLastStep) {
-
-        }
-
-        @Override
-        protected void previous() {
-
         }
 
         @Override

@@ -40,8 +40,8 @@ public class PerformanceEvaluationService {
     public void savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
         PerformanceEvaluation entity = dto.getPerformanceEvaluation();
         entity.setEmployee(EmployeeDao.instance().findById(dto.getEmployeeId()));
+        entity = performanceEvaluationDao.getEntityManager().merge(entity);
         saveQuestionComments(entity, dto.getComments());
-        performanceEvaluationDao.getEntityManager().merge(entity);
     }
 
     public List<QuestionDto> getQuestions(QuestionCategory category) {
@@ -52,12 +52,12 @@ public class PerformanceEvaluationService {
         for (QuestionComment comment : comments) {
             Question qes = QuestionDao.instance().findById(comment.getId());
             perfEval.addQuestion(qes);
-            CommentDao.instance().addComment(comment.getComment(), comment.getRating(), qes);
+            CommentDao.instance().addComment(comment.getComment(), comment.getRating(), qes.getId(), perfEval);
         }
     }
 
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
-        return QuestionService.instance().mapQuestionComments(performanceEvaluationDao.getQuestions(id, category, context));
+        return QuestionService.instance().getQuestionComments(id, category, context);
     }
 
     public static PerformanceEvaluationService instance() {

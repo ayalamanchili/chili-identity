@@ -83,4 +83,10 @@ public interface OfficeImages extends ClientBundle {
 
     @Source("images/reply_icon_16_16.png")
     ImageResource replyIcon_16_16();
+
+    @Source("images/star.png")
+    ImageResource star();
+
+    @Source("images/empty_star.png")
+    ImageResource empty_star();
 }

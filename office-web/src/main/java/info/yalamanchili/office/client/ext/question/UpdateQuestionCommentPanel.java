@@ -9,11 +9,13 @@
 package info.yalamanchili.office.client.ext.question;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.gwt.RatingWidget;
 import java.util.logging.Logger;
 
 /**
@@ -24,16 +26,18 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateQuestionCommentPanel.class.getName());
     protected HTML questionInfoL = new HTML("");
+    protected RatingWidget ratingWidget = new RatingWidget();
 
     public UpdateQuestionCommentPanel(JSONObject entity) {
-        logger.info("aaaaaaaaaa"+entity);
         initUpdateComposite(entity, "QuestionComment", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("comment", entity);
-        assignEntityValueFromField("rating", entity);
+        if (ratingWidget.getRating() > 0) {
+            entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
+        }
         return entity;
     }
 
@@ -51,7 +55,11 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         questionInfoL.setHTML(entity.get("questionInfo").isString().stringValue());
         assignFieldValueFromEntity("comment", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("rating", entity, DataType.STRING_FIELD);
+        if (JSONUtils.toString(entity, "rating").isEmpty()) {
+            ratingWidget.setRating(0);
+        } else {
+            ratingWidget.setRating(Double.valueOf(JSONUtils.toString(entity, "rating")).intValue());
+        }
     }
 
     @Override
@@ -67,7 +75,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     protected void addWidgets() {
         entityFieldsPanel.add(questionInfoL);
         addField("comment", false, false, DataType.RICH_TEXT_AREA);
-        addField("rating", false, false, DataType.STRING_FIELD);
+        entityFieldsPanel.add(ratingWidget);
     }
 
     @Override
