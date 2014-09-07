@@ -19,8 +19,7 @@ public enum LeaveRequestTimeCategory {
     Unpaid,
     JuryDuty,
     Bereavement,
-    Maternity,
-    Other;
+    Maternity;
 
     public static String[] names() {
         LeaveRequestTimeCategory[] values = values();
