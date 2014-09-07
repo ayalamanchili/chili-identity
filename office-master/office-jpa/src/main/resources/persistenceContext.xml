@@ -40,7 +40,7 @@
     <!-- used to run liquibase change sets-->
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
         <property name="dataSource" ref="officeLiquibaseDataSource" />
-        <property name="changeLog" value="classpath:db_changelogs/office_master_changelog.xml" />
+        <property name="changeLog" value="classpath:db_changelogs/${liquibase.master.changelog}_master_changelog.xml" />
     </bean>
     
     <bean id="officeLiquibaseDataSource"
