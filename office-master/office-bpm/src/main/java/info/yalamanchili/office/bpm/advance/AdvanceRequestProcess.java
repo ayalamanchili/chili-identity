@@ -59,7 +59,12 @@ public class AdvanceRequestProcess implements TaskListener {
         }
         //Amount
         String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
-        BigDecimal approvedAmount = new BigDecimal(approvedAmountVar);
+        BigDecimal approvedAmount;
+        try {
+            approvedAmount = new BigDecimal(approvedAmountVar);
+        } catch (NumberFormatException ex) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approved.amount", "Approved amount must be a valid amount");
+        }
         entity.setAmount(approvedAmount);
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
