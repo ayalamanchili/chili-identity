@@ -9,6 +9,11 @@ Advance Request Process
  - Accounts Payable team can validate enter payment information and complete it and email notification will be sent to employee
  - If it is rejected a denial  email will be sent to employee with description.
 
+View Advance Requisition Details.
+----
+![alt text](../../images/expense/advance-request-details.png "Advance Requisition")
+
+
 Advance Requisition Process
 ----
 ![alt text](../../images/expense/advance-form.png "Advance Requisition")
