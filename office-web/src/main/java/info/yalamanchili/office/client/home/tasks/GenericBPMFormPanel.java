@@ -19,6 +19,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.rpc.HttpService;
@@ -62,6 +63,11 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                 LongField longField = (LongField) fields.get(key);
                 value.put("value", new JSONString(longField.getValue()));
                 type.put("name", new JSONString("long"));
+            }
+            if (fields.get(key) instanceof CurrencyField) {
+                CurrencyField field = (CurrencyField) fields.get(key);
+                value.put("value", new JSONString(field.getValue()));
+                type.put("name", new JSONString("currency"));
             }
             if (fields.get(key) instanceof DateField) {
                 DateField field = (DateField) fields.get(key);
@@ -139,6 +145,9 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("long")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.LONG_FIELD);
             }
+            if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("currency")) {
+                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.CURRENCY_FIELD);
+            }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("date")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.DATE_FIELD);
             }
@@ -177,6 +186,13 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                 if (field instanceof LongField) {
                     LongField fld = (LongField) field;
                     if (fld.getLong() == null) {
+                        fld.setMessage("value is required");
+                        valid = false;
+                    }
+                }
+                if (field instanceof CurrencyField) {
+                    CurrencyField fld = (CurrencyField) field;
+                    if (fld.getValue() == null) {
                         fld.setMessage("value is required");
                         valid = false;
                     }
