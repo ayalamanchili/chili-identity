@@ -45,12 +45,12 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override
@@ -61,6 +61,7 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
 
     }
@@ -81,6 +82,7 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
         addField("endDate", true, false, DataType.DATE_FIELD);
         addEnumField("status", true, false, TimeSheetStatus.names());
         addField("hours", true, false, DataType.FLOAT_FIELD);
+        addField("approvedBy", true, false, DataType.STRING_FIELD);
         addField("notes", true, false, DataType.TEXT_AREA_FIELD);
     }
 

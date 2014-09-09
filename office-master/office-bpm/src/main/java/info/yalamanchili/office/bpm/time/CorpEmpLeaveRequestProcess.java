@@ -93,7 +93,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
         if (cnts.size() > 0) {
-            String reportsTo=cnts.get(0).getContact().getEmployeeId();
+            String reportsTo = cnts.get(0).getContact().getEmployeeId();
             task.addCandidateUser(reportsTo);
             task.setOwner(reportsTo);
         }
@@ -145,6 +145,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.timesheet", "You cannot approve your timesheet");
         }
         if (CorpEmpLeaveRequestProcessBean.instance().validateLeaveRequest(ts.getEmployee(), ts)) {
+            ts.setApprovedBy(currentUser.getEmployeeId());
             sendLeaveRequestStatusNotification("Approved", task);
         } else {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.enough.leaves", "No Enough leaves for employee. Please verify time summary and reject the task");

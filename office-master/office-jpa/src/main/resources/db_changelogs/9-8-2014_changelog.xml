@@ -11,6 +11,16 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <include file="db_changelogs/9-6-2014_changelog.xml"/> 
-    <include file="db_changelogs/9-8-2014_changelog.xml"/> 
+    <changeSet author="ayalamanchili" id="addApproveByoCorpTimesheet">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="CorporateTimeSheet">
+            <column name="approvedBy" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="CorporateTimeSheet_aud">
+            <column name="approvedBy" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

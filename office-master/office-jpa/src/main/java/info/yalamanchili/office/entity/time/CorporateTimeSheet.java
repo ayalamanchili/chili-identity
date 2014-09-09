@@ -43,7 +43,6 @@ public class CorporateTimeSheet extends AbstractEntity {
 
     @Transient
     private static final long serialVersionUID = 99991L;
-
     @NotNull(message = "{corp.ts.hours.not.empty.msg}")
     @Digits(integer = 3, fraction = 2, message = "{tmesheet.hours.format.invalid.msg}")
     protected BigDecimal hours;
@@ -104,6 +103,18 @@ public class CorporateTimeSheet extends AbstractEntity {
      */
     @Transient
     protected List<Entry> notifyEmployees;
+    /**
+     * approved by employee
+     */
+    protected String approvedBy;
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
 
     /**
      *

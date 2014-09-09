@@ -88,8 +88,8 @@
                                         <td th:text="${entity.notes}" />
                                     </tr>
                                 </table></div>
-                            <div style="float: left" >
-                                <p >I, <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />  understand that this leave will be treated as an unpaid
+                            <div style="float: left " >
+                                <p >I,   <span  th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}"> </span>.  understand that this leave will be treated as an unpaid
                                     Leave if I do not have any leave balance left. (See notes below)</p>
 
                                 <br></br>
@@ -100,7 +100,7 @@
                                 <br></br>
                                 <tr>
                                     <th style="width:150px ">  Approver's Signature :</th>
-                                    <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
+                                    <td th:text="${entity.approvedBy}" />
                                 </tr>
 
 
