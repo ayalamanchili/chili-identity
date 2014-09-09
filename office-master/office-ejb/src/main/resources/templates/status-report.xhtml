@@ -19,7 +19,7 @@
 
 
             <div class="content" style="width:700px;height:650px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
-                    <h4>Monthly Task Report by user user --- (for System Soft Technologies LLC)</h4>
+                    <h4>Monthly Task Report by <span th:text="${entity.preparedBy}" > </span>--- (for System Soft Technologies LLC)</h4>
                 </div>
                 <div>
                     <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:10px;" >
@@ -34,7 +34,7 @@
                                 <tr>
                                     <th style="width:150px ">Project Description</th>
                                     <td> :  </td>
-                                     <td><div th:utext="${entity.project.description}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" ></div></td>
+                                    <td><div th:utext="${entity.project.description}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" ></div></td>
                                 </tr>                                
                                 <tr>
                                     <th>Report Start Date</th>
@@ -70,12 +70,12 @@
                         </table> 
                     </div>    
 
-                    <div  style="text-align:center; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:10px;" >
+                    <div  style="text-align:center; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                         <h4> 
                             WORK ACCOMPLISHMENTS
                         </h4>
 
-                        <td th:utext="${entity.report}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" ></td>
+                        <span  th:utext="${entity.report}" style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;border:2px ridge; border-radius:5px;" > </span>
 
                     </div> 
 
@@ -94,5 +94,6 @@
             </div>
 
         </div>
+        <div class="footer"  style="width:700px;margin:0px; padding: 0px;height:50px;background-color:#ebebe4;margin-left:auto;margin-right:auto;text-align:center;font-family:Tahoma, Geneva, sans-serif;font-size:10px;line-height:75px;clear:both;border-bottom-right-radius:10px;border-bottom-left-radius:10px;"><p>COPYRIGHT ï¿½ 2014 sstech.us - All Rights Reserved</p></div>
     </body>
 </html>
