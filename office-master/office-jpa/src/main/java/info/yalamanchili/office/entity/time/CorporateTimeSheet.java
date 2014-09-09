@@ -108,14 +108,6 @@ public class CorporateTimeSheet extends AbstractEntity {
      */
     protected String approvedBy;
 
-    public String getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(String approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
     /**
      *
      */
@@ -193,6 +185,14 @@ public class CorporateTimeSheet extends AbstractEntity {
 
     public void setCreatedTimeStamp(Date createdTimeStamp) {
         this.createdTimeStamp = createdTimeStamp;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
     }
 
     @XmlElement
