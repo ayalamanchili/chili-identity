@@ -89,7 +89,7 @@
                 <activiti:formProperty id="approvedAmount" 
                                        name="Approved Amount"
                                        required="true" 
-                                       type="long" />
+                                       type="string" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"
