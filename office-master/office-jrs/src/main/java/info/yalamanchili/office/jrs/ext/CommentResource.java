@@ -21,10 +21,12 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
 import java.util.List;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -37,11 +39,20 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author ayalamanchili
  */
+
+
+
+
+
+
+
 @Path("secured/comment")
 @Component
 @Transactional
 @Scope("request")
 //TODO create abstractREsource for ext
+@Produces("application/json")
+@Consumes("application/json")
 public class CommentResource {
 
     @Autowired
