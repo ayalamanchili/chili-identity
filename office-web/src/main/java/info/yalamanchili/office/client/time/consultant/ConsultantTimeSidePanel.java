@@ -68,9 +68,9 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
             "startDate", "ConsultantTimeSheet", false, true);
     DateField endDateF = new DateField(OfficeWelcome.constants,
             "endDate", "ConsultantTimeSheet", false, true);
-    EnumField reportStatusField = new EnumField(OfficeWelcome.constants, "status", "CorporateTimeSheet",
+    EnumField reportStatusField = new EnumField(OfficeWelcome.constants, "status", "ConsultantTimeSheet",
             false, false, true, TimeSheetStatus.names(), Alignment.VERTICAL);
-    EnumField reportCategoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
+    EnumField reportCategoryField = new EnumField(OfficeWelcome.constants, "category", "ConsultantTimeSheet",
             false, false, true, TimeSheetCategory.names(), Alignment.VERTICAL);
 
     Button viewReportsB = new Button("View");
