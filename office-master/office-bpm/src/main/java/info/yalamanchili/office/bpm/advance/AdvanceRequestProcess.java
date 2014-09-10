@@ -63,7 +63,7 @@ public class AdvanceRequestProcess implements TaskListener {
         try {
             approvedAmount = new BigDecimal(approvedAmountVar);
         } catch (NumberFormatException ex) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approved.amount", "Approved amount must be a valid amount");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approved.amount", "Approved amount must be a valid amount eg: 99.99 ");
         }
         entity.setAmount(approvedAmount);
         //Notes

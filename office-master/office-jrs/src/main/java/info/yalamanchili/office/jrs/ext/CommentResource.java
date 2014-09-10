@@ -39,13 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author ayalamanchili
  */
-
-
-
-
-
-
-
 @Path("secured/comment")
 @Component
 @Transactional
