@@ -119,7 +119,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.isCorporateEmployee()) {
             addFirstChildLink("Privacy", PRIVACY_NODE);
         }
-        if (Auth.isAdmin() && Auth.isEmployee(entity)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN) && Auth.isEmployee(entity)) {
             addFirstChildLink("Deactivation", DEACTIVATION_USER_NODE);
         }
         this.rootItem.setState(true);

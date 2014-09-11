@@ -88,7 +88,7 @@ public class AdminResource {
 
     @Path("/deactivateuser/{empId}")
     @PUT
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
         @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)
@@ -101,7 +101,7 @@ public class AdminResource {
     @Path("/createuser")
     @PUT
     @Produces("application/text")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @CacheEvict(value = "employees", allEntries = true)
     public String createUser(EmployeeCreateDto employee) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
