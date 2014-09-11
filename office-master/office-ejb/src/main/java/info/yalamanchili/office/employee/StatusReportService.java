@@ -85,7 +85,7 @@ public class StatusReportService {
         if (statusReport.getApprovedBy() != null) {
             emp = EmployeeDao.instance().findEmployeWithEmpId(statusReport.getApprovedBy());
         }
-        String report = TemplateService.instance().process("status-report.xhtml", statusReportDao.findById(id));
+        String report = TemplateService.instance().process("status-report.xhtml", statusReport);
         byte[] pdf = null;
         if (emp == null) {
             pdf = PDFUtils.convertToPDF(report);

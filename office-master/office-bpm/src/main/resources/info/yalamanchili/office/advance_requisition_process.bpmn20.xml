@@ -119,7 +119,7 @@
                       targetRef="finalApprovalTaskGateway" />
         <exclusiveGateway id="finalApprovalTaskGateway" />
         <sequenceFlow sourceRef="finalApprovalTaskGateway" 
-                      targetRef="advanceRequisitionPaymentDispatchTask">
+                      targetRef="advanceRequisitionEnd">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
@@ -130,28 +130,6 @@
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <userTask id="advanceRequisitionPaymentDispatchTask" 
-                  name="Advance Requisition Payment Dispatch Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
-            <documentation>
-                Advance Requisition Payment Dispatch Task
-                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Amount     : #{entity.amount}
-                Purpose    : #{entity.purpose}
-                Needed By Date :#{entity.neededBy}
-                Please enter the form of payment information and complete the task.
-            </documentation>
-            <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.advance.AdvanceRequestProcess" />
-                <activiti:formProperty id="notes" 
-                                       name="Notes"
-                                       required="true" 
-                                       type="string" />
-            </extensionElements> 
-        </userTask>        
-        <sequenceFlow sourceRef="advanceRequisitionPaymentDispatchTask" 
-                      targetRef="advanceRequisitionEnd" />
         <endEvent id="advanceRequisitionEnd" />
     </process>
 </definitions>

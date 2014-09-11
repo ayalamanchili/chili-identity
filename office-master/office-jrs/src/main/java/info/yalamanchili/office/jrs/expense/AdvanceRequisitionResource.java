@@ -9,6 +9,7 @@ package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
+import info.yalamanchili.office.employee.StatusReportService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.Transaction;
 import info.yalamanchili.office.expense.AdvanceRequisitionService;
@@ -19,6 +20,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -97,6 +101,13 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
         AdvanceRequisitionService.instance().delete(id);
     }
 
+    @GET
+    @Path("/report")
+    @Produces({"application/pdf"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return AdvanceRequisitionService.instance().getReport(id);
+    }
+
     @Override
     public CRUDDao getDao() {
         return advanceRequisitionDao;
@@ -104,7 +115,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @XmlRootElement
     @XmlType
-    public static class AdvanceRequisitionTable implements java.io.Serializable{
+    public static class AdvanceRequisitionTable implements java.io.Serializable {
 
         protected Long size;
         protected List<AdvanceRequisition> entities;
