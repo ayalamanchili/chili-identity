@@ -5,12 +5,13 @@ How to submit a Status Report
 ----
 
  - Employees should submit the current project status report on a regular basis. 
+ - [Login to Portal](../../office/forgot-password.html "Login")
  - Navigate to Home --> My Reports --> Projects Reports --> Click Submit Project Status Report.
  - Enter all required information in status report.
  - Please select the  *Submit For Approval* check box if you are ready to submit the report for review to the Engagement Manager. Otherwise just create it and you can come back to update and submit for approval.
  - Once submitted the request it will send to the appropriate  department (Engagement) for approval and you will receive a email about the final decision. 
- - if client and project is not present please submit a request under service ticket .
- - GO TO **Home-->Self Service-->open ticket with other type ="other "and enter the details ** ticket goes to Engagement team.
+ - If client and project is not present please submit a request under service ticket .
+ - Navigate to **Home-->Self Service-->open ticket with other type ="other "and enter the details ** ticket goes to Engagement team.
  - Once the ticket is resolved by entering the information you will receive a email and you can logback in to submit your reports.
 
 Reports updates
@@ -22,7 +23,7 @@ Reports updates
 
 How To Submit Project Status Report
 ----
-![alt text](../../images/statusreport/create-status-report.png "Crate Status Report")
+![alt text](../../images/statusreport/create-status-report.png "Create Status Report")
 
 Submit Project Status Report
 ----

@@ -2,7 +2,7 @@ Project Status Process
 ==========
 
  - When a employee submits Status Report
- - the approval Task is sent to Engagement team
+ - The approval Task is sent to Engagement team
  - Engagement team can validate and complete it and email notification will be sent to employee
 
 Project Report Process
