@@ -31,7 +31,7 @@ public abstract class TreePanelComposite extends Composite implements SelectionH
     protected ConstantsWithLookup constants;
     protected FlowPanel panel = new FlowPanel();
     protected Tree tree = new Tree();
-    protected TreeItem rootItem = new TreeItem("root");
+    protected TreeItem rootItem = new TreeItem();
     protected Map<String, TreePanelComposite> childTreeWidgets = new HashMap<String, TreePanelComposite>();
 
     public String getEntityId() {

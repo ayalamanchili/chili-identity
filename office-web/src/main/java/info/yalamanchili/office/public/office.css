@@ -439,8 +439,7 @@ body{
 
 /* Logo Image*/
 .y-gwt-AbstractStatusPanel-LogoImage {
-    height:55px;
-    width:180px;
+    
 }
 .y-gwt-ResponseStatusBar {
     background-color: #FFA54F;
