@@ -56,15 +56,16 @@ public class ReportsWidget extends ALComposite {
         formatLB.addItem("PDF", "pdf");
         formatLB.addItem("HTML", "html");
         formatLB.addItem("XML", "xml");
+        formatLB.addItem("EXCEL", "xls");
         reportsPanel.add(formatLB);
         reportsPanel.add(generateRepB);
         reportsDP.setContent(reportsPanel);
     }
 
-    
-    public void setVisible(boolean visible){
+    public void setVisible(boolean visible) {
         reportsDP.setVisible(visible);
     }
+
     public String getReportFormat() {
         return formatLB.getValue(formatLB.getSelectedIndex());
     }

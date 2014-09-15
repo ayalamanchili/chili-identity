@@ -39,7 +39,7 @@ public class MessagingService {
         }
     }
 
-    public void emailReport(String fileName, byte[] reportData, String... tos) {
+    public void emailReport(String fileName, String... tos) {
         Email email = new Email();
         for (String to : tos) {
             email.addTo(to);

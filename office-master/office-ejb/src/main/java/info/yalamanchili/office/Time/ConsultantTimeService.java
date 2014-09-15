@@ -183,7 +183,7 @@ public class ConsultantTimeService {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        MessagingService.instance().emailReport(fileName, PDFUtils.convertToPDF(report), currentEmp.getPrimaryEmail().getEmail());
+        MessagingService.instance().emailReport(fileName, currentEmp.getPrimaryEmail().getEmail());
     }
 
     public static ConsultantTimeService instance() {
