@@ -20,37 +20,37 @@ import info.yalamanchili.office.client.OfficeWelcome;
  * @author ayalamanchili
  */
 public class ProfileReportsSidePanel extends ALComposite implements ClickHandler {
-
+    
     protected FlowPanel panel = new FlowPanel();
-
+    
     ClickableLink profileBasicReportL = new ClickableLink("Basic Profile Report");
-
+    
     public ProfileReportsSidePanel() {
         init(panel);
     }
-
+    
     @Override
     protected void addListeners() {
         profileBasicReportL.addClickHandler(this);
     }
-
+    
     @Override
     protected void configure() {
-
+        profileBasicReportL.setTitle("report with name, email, phone, start date of all employees");
     }
-
+    
     @Override
     protected void addWidgets() {
         panel.add(profileBasicReportL);
     }
-
+    
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(profileBasicReportL)) {
             generateBasicInfoReport();
         }
     }
-
+    
     protected void generateBasicInfoReport() {
         HttpService.HttpServiceAsync.instance().doGet(getBasicInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -60,9 +60,9 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
                     }
                 });
     }
-
+    
     protected String getBasicInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "profile-reports/employee-basic-info-report";
     }
-
+    
 }
