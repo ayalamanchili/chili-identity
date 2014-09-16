@@ -118,8 +118,8 @@ public class EmailService {
     }
 
     protected void processAttchments(MimeMessageHelper message, Email email) throws MessagingException {
-        for (String attachmentPath : email.getAttachments()) {
-            File attachment = new File(officeServiceConfiguration.getContentManagementLocationRoot() + attachmentPath);
+        for (String attachmentName : email.getAttachments()) {
+            File attachment = new File(officeServiceConfiguration.getContentManagementLocationRoot() + attachmentName);
             if (attachment.exists()) {
                 message.addAttachment(attachment.getName(), attachment);
             }

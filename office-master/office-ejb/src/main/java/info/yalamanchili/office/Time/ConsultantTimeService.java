@@ -106,19 +106,19 @@ public class ConsultantTimeService {
     public ConsultantTimeSummary getYearlySummary(Employee employee) {
         ConsultantTimeSummary summary = new ConsultantTimeSummary();
         //vacation
-        summary.setTotalVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date()));
-        summary.setUsedVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date()));
-        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
+        summary.setTotalVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setUsedVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()).floatValue());
         //PTO
-        summary.setTotalPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date()));
-        summary.setUsedPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date()));
-        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
+        summary.setTotalPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setUsedPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee).floatValue());
         //Total
-        summary.setTotalAccumulatedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()));
-        summary.setTotalUsedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()));
-        summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
+        summary.setTotalAccumulatedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setTotalUsedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
+//        summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
 
-        summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()).floatValue());
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
         return summary;
@@ -176,14 +176,7 @@ public class ConsultantTimeService {
                 return dto1.getEmployee().compareTo(dto2.getEmployee());
             }
         });
-        String report = TemplateService.instance().process("cons-emp-summary.xhtml", summary);
-        String fileName = "all-consultants-report" + UUID.randomUUID().toString() + ".pdf";
-        try {
-            Files.write(PDFUtils.convertToPDF(report), new File(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + fileName));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        MessagingService.instance().emailReport(fileName, currentEmp.getPrimaryEmail().getEmail());
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "consultants-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), currentEmp.getPrimaryEmail().getEmail());
     }
 
     public static ConsultantTimeService instance() {

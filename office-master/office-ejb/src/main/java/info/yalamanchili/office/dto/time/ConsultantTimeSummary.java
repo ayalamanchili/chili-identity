@@ -8,7 +8,6 @@
 package info.yalamanchili.office.dto.time;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -24,90 +23,90 @@ public class ConsultantTimeSummary implements Serializable {
     /**
      * Vacation
      */
-    protected BigDecimal totalVacationHours;
-    protected BigDecimal usedVacationHours;
-    protected BigDecimal availableVacationHours;
+    protected Float totalVacationHours;
+    protected Float usedVacationHours;
+    protected Float availableVacationHours;
     /**
      * PTO
      */
-    protected BigDecimal totalPTOHours;
-    protected BigDecimal usedPTOHours;
-    protected BigDecimal availablePTOHours;
+    protected Float totalPTOHours;
+    protected Float usedPTOHours;
+    protected Float availablePTOHours;
     /**
      * total hours
      */
-    protected BigDecimal totalAccumulatedHours;
-    protected BigDecimal totalUsedHours;
-    protected BigDecimal totalAvailableHours;
+    protected Float totalAccumulatedHours;
+    protected Float totalUsedHours;
+    protected Float totalAvailableHours;
     /**
      *
      *
      */
-    protected BigDecimal usedUnpaidHours;
+    protected Float usedUnpaidHours;
     protected String employee;
     protected Date startDate;
 
     public ConsultantTimeSummary() {
     }
 
-    public ConsultantTimeSummary( BigDecimal availablePTOHours ,BigDecimal availableVacationHours) {
+    public ConsultantTimeSummary( Float availablePTOHours ,Float availableVacationHours) {
         this.availablePTOHours = availablePTOHours;
         this.availableVacationHours = availableVacationHours;
     }
 
-    public BigDecimal getTotalVacationHours() {
+    public Float getTotalVacationHours() {
         return totalVacationHours;
     }
 
-    public void setTotalVacationHours(BigDecimal totalVacationHours) {
+    public void setTotalVacationHours(Float totalVacationHours) {
         this.totalVacationHours = totalVacationHours;
     }
 
-    public BigDecimal getUsedVacationHours() {
+    public Float getUsedVacationHours() {
         return usedVacationHours;
     }
 
-    public void setUsedVacationHours(BigDecimal usedVacationHours) {
+    public void setUsedVacationHours(Float usedVacationHours) {
         this.usedVacationHours = usedVacationHours;
     }
 
-    public BigDecimal getAvailableVacationHours() {
+    public Float getAvailableVacationHours() {
         return availableVacationHours;
     }
 
-    public void setAvailableVacationHours(BigDecimal availableVacationHours) {
+    public void setAvailableVacationHours(Float availableVacationHours) {
         this.availableVacationHours = availableVacationHours;
     }
 
-    public BigDecimal getTotalPTOHours() {
+    public Float getTotalPTOHours() {
         return totalPTOHours;
     }
 
-    public void setTotalPTOHours(BigDecimal totalPTOHours) {
+    public void setTotalPTOHours(Float totalPTOHours) {
         this.totalPTOHours = totalPTOHours;
     }
 
-    public BigDecimal getUsedPTOHours() {
+    public Float getUsedPTOHours() {
         return usedPTOHours;
     }
 
-    public void setUsedPTOHours(BigDecimal usedPTOHours) {
+    public void setUsedPTOHours(Float usedPTOHours) {
         this.usedPTOHours = usedPTOHours;
     }
 
-    public BigDecimal getAvailablePTOHours() {
+    public Float getAvailablePTOHours() {
         return availablePTOHours;
     }
 
-    public void setAvailablePTOHours(BigDecimal availablePTOHours) {
+    public void setAvailablePTOHours(Float availablePTOHours) {
         this.availablePTOHours = availablePTOHours;
     }
 
-    public BigDecimal getUsedUnpaidHours() {
+    public Float getUsedUnpaidHours() {
         return usedUnpaidHours;
     }
 
-    public void setUsedUnpaidHours(BigDecimal usedUnpaidHours) {
+    public void setUsedUnpaidHours(Float usedUnpaidHours) {
         this.usedUnpaidHours = usedUnpaidHours;
     }
 
@@ -127,27 +126,27 @@ public class ConsultantTimeSummary implements Serializable {
         this.startDate = startDate;
     }
 
-    public BigDecimal getTotalAccumulatedHours() {
+    public Float getTotalAccumulatedHours() {
         return totalAccumulatedHours;
     }
 
-    public void setTotalAccumulatedHours(BigDecimal totalAccumulatedHours) {
+    public void setTotalAccumulatedHours(Float totalAccumulatedHours) {
         this.totalAccumulatedHours = totalAccumulatedHours;
     }
 
-    public BigDecimal getTotalUsedHours() {
+    public Float getTotalUsedHours() {
         return totalUsedHours;
     }
 
-    public void setTotalUsedHours(BigDecimal totalUsedHours) {
+    public void setTotalUsedHours(Float totalUsedHours) {
         this.totalUsedHours = totalUsedHours;
     }
 
-    public BigDecimal getTotalAvailableHours() {
+    public Float getTotalAvailableHours() {
         return totalAvailableHours;
     }
 
-    public void setTotalAvailableHours(BigDecimal totalAvailableHours) {
+    public void setTotalAvailableHours(Float totalAvailableHours) {
         this.totalAvailableHours = totalAvailableHours;
     }
 }
