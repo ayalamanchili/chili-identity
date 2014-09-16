@@ -32,7 +32,7 @@ public class ReportsMenu extends Composite {
 
     protected void configureReportsMenu() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
-            reportsMenuBar.addItem("Contracts", profileReportsMaintainenceCmd);
+            reportsMenuBar.addItem("Profile Reports", profileReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_EXPENSE, ROLE.ROLE_TIME, ROLE.ROLE_ACCOUNT_VIEW)) {
             reportsMenuBar.addItem("Contracts", contractingMaintainenceCmd);
