@@ -8,10 +8,7 @@
  */
 package info.yalamanchili.office.employee;
 
-import info.chili.commons.DateUtils;
-import info.chili.commons.PDFUtils;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
@@ -20,14 +17,12 @@ import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
+import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
-import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
-import info.yalamanchili.office.template.TemplateService;
 import java.util.List;
-import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -39,29 +34,40 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class PerformanceEvaluationService {
-
+    
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
-
-    public void savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+    
+    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+        performanceEvaluationDao.save(dto.getPerformanceEvaluation());
+        for (QuestionComment qc : dto.getComments()) {
+            Comment cmt = new Comment();
+            cmt.setId(qc.getId());
+            cmt.setComment(qc.getComment());
+            cmt.setRating(qc.getRating());
+            CommentDao.instance().save(cmt);
+        }
+    }
+    
+    public void createPerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
         PerformanceEvaluation entity = dto.getPerformanceEvaluation();
         entity.setEmployee(EmployeeDao.instance().findById(dto.getEmployeeId()));
         entity = performanceEvaluationDao.getEntityManager().merge(entity);
-        saveQuestionComments(entity, dto.getComments());
+        createQuestionComments(entity, dto.getComments());
     }
-
+    
     public List<QuestionDto> getQuestions(QuestionCategory category) {
         return QuestionService.instance().getQuestions(category, QuestionContext.PERFORMANCE_EVALUATION_MANGER, 0, 100);
     }
-
-    public void saveQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
+    
+    public void createQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
         for (QuestionComment comment : comments) {
             Question qes = QuestionDao.instance().findById(comment.getId());
             perfEval.addQuestion(qes);
             CommentDao.instance().addComment(comment.getComment(), comment.getRating(), perfEval, qes);
         }
     }
-
+    
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
         return QuestionService.instance().getQuestionComments(id, category, context);
     }
@@ -87,7 +93,6 @@ public class PerformanceEvaluationService {
 //                .header("Content-Length", pdf.length)
 //                .build();
 //    }
-
     public static PerformanceEvaluationService instance() {
         return SpringContext.getBean(PerformanceEvaluationService.class);
     }

@@ -53,9 +53,15 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @PUT
-    @Path("/save")
+    @Path("/create")
     public void savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluationService.instance().savePerformanceEvaluation(dto);
+        PerformanceEvaluationService.instance().createPerformanceEvaluation(dto);
+    }
+
+    @PUT
+    @Path("/update")
+    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+        PerformanceEvaluationService.instance().updatePerformanceEvaluation(dto);
     }
 
     @GET

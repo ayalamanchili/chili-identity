@@ -111,7 +111,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         protected String getCompleteUrl() {
-            return OfficeWelcome.constants.root_url() + "performance-evaluation/save";
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/create";
         }
 
         protected JSONObject populateEntity() {
