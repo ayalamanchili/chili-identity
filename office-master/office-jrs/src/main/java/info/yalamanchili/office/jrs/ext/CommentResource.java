@@ -63,8 +63,18 @@ public class CommentResource {
     }
 
     @PUT
+    public void save(Comment comment) {
+        Comment entity = commentDao.find(comment.getId());
+        entity.setComment(comment.getComment());
+        entity.setRating(comment.getRating());
+        //TODO set notify emps
+        commentDao.save(entity);
+    }
+
+    @PUT
     @Path("{targetClassName}/{id}")
-    public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment) {
+    public void save(@PathParam("targetClassName") String targetClassName, @PathParam("id") Long id, Comment comment
+    ) {
         sendCommentNotification(comment);
         if (Strings.isNullOrEmpty(comment.getUpdatedBy())) {
             comment.setUpdatedBy(SecurityUtils.getCurrentUser());

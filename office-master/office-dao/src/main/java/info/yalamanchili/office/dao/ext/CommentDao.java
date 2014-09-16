@@ -18,7 +18,6 @@ import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -55,14 +54,10 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
     }
 
     public Comment addComment(String comment, Double rating, AbstractEntity source, AbstractEntity target) {
-        if (Strings.isNullOrEmpty(comment)) {
-            return null;
-        } else {
-            Comment cmnt = new Comment();
-            cmnt.setRating(rating);
-            cmnt.setComment(comment);
-            return save(cmnt, source, target);
-        }
+        Comment cmnt = new Comment();
+        cmnt.setRating(rating);
+        cmnt.setComment(comment);
+        return save(cmnt, source, target);
     }
 
     @Override

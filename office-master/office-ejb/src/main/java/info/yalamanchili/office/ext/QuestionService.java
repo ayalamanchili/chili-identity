@@ -33,12 +33,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class QuestionService {
-
+    
     @Autowired
     protected MessagesUtils messagesUtils;
     @Autowired
     protected QuestionDao questionDao;
-
+    
     public List<QuestionDto> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit) {
         List<QuestionDto> questions = new ArrayList<QuestionDto>();
         for (Question q : questionDao.getQuestions(category, context, start, limit)) {
@@ -53,7 +53,7 @@ public class QuestionService {
         }
         return questions;
     }
-
+    
     public List<QuestionComment> getQuestionComments(Long perfEvalId, QuestionCategory category, QuestionContext context) {
         List<QuestionComment> res = new ArrayList<QuestionComment>();
         PerformanceEvaluation perfEval = PerformanceEvaluationDao.instance().findById(perfEvalId);
@@ -64,6 +64,7 @@ public class QuestionService {
             qc.setQuestion(messagesUtils.get(q.getQuestionKey()));
             qc.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
             if (cmmt != null) {
+                qc.setId(cmmt.getId());
                 qc.setComment(cmmt.getComment());
                 qc.setRating(cmmt.getRating());
             }
@@ -71,9 +72,9 @@ public class QuestionService {
         }
         return res;
     }
-
+    
     public static QuestionService instance() {
         return SpringContext.getBean(QuestionService.class);
     }
-
+    
 }
