@@ -47,11 +47,12 @@ public class PerformanceEvaluationService {
     public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
         performanceEvaluationDao.save(dto.getPerformanceEvaluation());
         for (QuestionComment qc : dto.getComments()) {
-            Comment cmt = new Comment();
-            cmt.setId(qc.getId());
-            cmt.setComment(qc.getComment());
-            cmt.setRating(qc.getRating());
-            CommentDao.instance().save(cmt);
+            if (qc.getId() != null) {
+                Comment cmt = CommentDao.instance().find(qc.getId());
+                cmt.setComment(qc.getComment());
+                cmt.setRating(qc.getRating());
+                CommentDao.instance().save(cmt);
+            }
         }
     }
 
