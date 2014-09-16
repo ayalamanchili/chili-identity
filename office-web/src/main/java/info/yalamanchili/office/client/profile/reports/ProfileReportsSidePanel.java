@@ -7,11 +7,11 @@ package info.yalamanchili.office.client.profile.reports;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 
@@ -23,7 +23,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
 
     protected FlowPanel panel = new FlowPanel();
 
-    Anchor profileBasicReportL = new Anchor("Profile Basic Report");
+    ClickableLink profileBasicReportL = new ClickableLink("Basic Profile Report");
 
     public ProfileReportsSidePanel() {
         init(panel);
@@ -41,13 +41,13 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
 
     @Override
     protected void addWidgets() {
-
+        panel.add(profileBasicReportL);
     }
 
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(profileBasicReportL)) {
-
+            generateBasicInfoReport();
         }
     }
 

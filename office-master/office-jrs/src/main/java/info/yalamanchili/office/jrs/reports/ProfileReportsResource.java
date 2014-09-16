@@ -37,7 +37,7 @@ public class ProfileReportsResource {
 
     @GET
     @Path("/employee-basic-info-report")
-    public void basicEmployeeInfoReport(SkillSetSearchDto searchDto) {
+    public void basicEmployeeInfoReport() {
         profileReportsService.generateEmployeBasicInfoReport(OfficeSecurityService.instance().getCurrentUser());
     }
 }
