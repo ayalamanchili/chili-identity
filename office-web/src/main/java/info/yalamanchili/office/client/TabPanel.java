@@ -35,6 +35,7 @@ import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.drive.SearchDrivePanel;
 import info.yalamanchili.office.client.expense.ExpenseMenu;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
+import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
 import info.yalamanchili.office.client.profile.skill.SkillSidePanel;
@@ -266,9 +267,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         reportingPanel.entityPanel.clear();
         reportingPanel.sidePanelTop.clear();
         reportingPanel.entityTitlePanel.add(new ReportsMenu());
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_EXPENSE, ROLE.ROLE_TIME, ROLE.ROLE_ACCOUNT_VIEW)) {
-            reportingPanel.entityPanel.add(new ReadAllContractsPanel());
-            reportingPanel.sidePanelTop.add(new ContractsSidePanel());
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+            reportingPanel.sidePanelTop.add(new ProfileReportsSidePanel());
         }
     }
 
