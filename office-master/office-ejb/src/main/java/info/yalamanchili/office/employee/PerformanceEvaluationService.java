@@ -27,7 +27,9 @@ import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
 import info.yalamanchili.office.template.TemplateService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -83,10 +85,12 @@ public class PerformanceEvaluationService {
     public Response getReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
         Employee emp = null;
-//        if (evaluation.getApprovedBy() != null) {
-//            emp = EmployeeDao.instance().findEmployeWithEmpId(evaluation.getApprovedBy());
-//        }
-        String report = TemplateService.instance().process("performance-evaluation.xhtml", evaluation);
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entity", evaluation);
+        vars.put("attitudeComments", getQuestionComments(id, QuestionCategory.ATTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER));
+        vars.put("managementComments", getQuestionComments(id, QuestionCategory.MANAGEMENT, QuestionContext.PERFORMANCE_EVALUATION_MANGER));
+        vars.put("skillComments", getQuestionComments(id, QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER));
+        String report = TemplateService.instance().process("performance-evaluation.xhtml", vars);
         byte[] pdf = null;
         if (emp == null) {
             pdf = PDFUtils.convertToPDF(report);
