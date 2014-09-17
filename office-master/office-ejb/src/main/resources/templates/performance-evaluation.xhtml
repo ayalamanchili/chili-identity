@@ -95,239 +95,37 @@
 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                                 <h4 align="center">Skill/Aptitude:   </h4>
-                                <tbody align="left">                                      
-                                    <tr>									                                  
-                                        <th >ADAPTABILITY:</th>											
-                                        <td >Adjusts to changes, open to new ideas and responsibilities.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>																								
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >INTERPERSONAL/COMMUNICATION SKILLS:</th>												
-                                        <td >Verbally communicates clearly and correctly.  Written communication is clear and concise.  Listens and understands others well.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>													
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >DECISION MAKING:</th>											
-                                        <td >Considers relevant alternatives before making decisions.  Shows timeliness and confidence in making recommendations and decisions that withstand critical examination.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >INNOVATION/CREATIVITY:</th>											
-                                        <td >Generates workable ideas, concepts, and techniques.  Willing to attempt new approaches.  Simplifies and/or improves procedures, techniques, and processes.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>													
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >JOB KNOWLEDGE/TECHNICAL APPLICATION:</th>											
-                                        <td >Applies technical, professional knowledge to job requirements. Uses past experience and industry information to solve problems.  </td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >ORGANIZATION AND PLANNING:</th>											
-                                        <td >Sets priorities to optimize time usage. Engages in short and long term planning. Proposes milestones which allow progress to be adequately measured. Adheres to schedules and plans. Anticipates problems and is proactive vs. reactive.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >PROBLEM SOLVING:</th>											
-                                        <td >Recognizes and prevents potential problems. Systematically gathers and analyzes information from problem's development. Proposes well thought out solutions, develops alternative courses of action, selects best alternative, and evaluates the outcome.  Participates constructively in group problem solving.  .</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >QUALITY OF WORK: </th>											
-                                        <td >Completes high quality work using thoroughness and accuracy to achieve results.  Thoroughly follows standards and procedures. Pays attention to detail.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >SALES SKILLS/GOALS (If applicable): </th>											
-                                        <td >Understands marketplace, works to meet prospect/customer needs, effective closing technique. Respects and achieves sales plan goals, strives to maintain quota.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>													
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >SELF DEVELOPMENT: </th>											
-                                        <td >Looks for opportunities to increase knowledge, works to increase responsibility, and strives to achieve personal goals.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 												
-                                </tbody>        								
+                                <tbody align="left">
+                                    <tr th:each="comment : ${skillComments}">
+                                        <td th:text="${comment.question}"></td>
+                                        <td th:text="${comment.questionInfo}"></td>
+                                        <td th:text="${comment.comment}"></td>
+                                        <td th:text="${comment.rating}"></td>
+                                    </tr>
+                                </tbody>       								
                             </table> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <h4 align="center">Attitude:  </h4>
-                                <tbody align="left">                                      
-                                    <tr>									                                  
-                                        <th >CUSTOMER SERVICE:</th>											
-                                        <td >Works well with vendors/customers, promotes a positive image of the company.  Strives to resolve issues raised by vendors/customers.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >RESULTS DRIVEN:</th>												
-                                        <td >Collaborates with team and manager to define appropriate goals, works toward achieving goals, articulates vision and steps for achievement.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >INITIATIVE:</th>											
-                                        <td >Motivated to begin or to follow through energetically with a plan or task to completion. Seeks new opportunities to improve or propose ways of doing it better.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >INNOVATION/CREATIVITY:</th>											
-                                        <td >Generates workable ideas, concepts, and techniques.  Willing to attempt new approaches.  Simplifies and/or improves procedures, techniques, and processes.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>											
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >TEAMWORK:</th>											
-                                        <td >Accountable to team, works to meet established deliverables, appreciates view of team members, respectful.  </td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >DEPENDABILITY:</th>											
-                                        <td >Meets deadlines, works independently, accountable, maintains focus, punctual, good attendance record.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                </tbody>        								
+                                <h4 align="center">Attitude:   </h4>
+                                <tbody align="left">
+                                    <tr th:each="comment : ${attitudeComments}">
+                                        <td th:text="${comment.question}"></td>
+                                        <td th:text="${comment.questionInfo}"></td>
+                                        <td th:text="${comment.comment}"></td>
+                                        <td th:text="${comment.rating}"></td>
+                                    </tr>
+                                </tbody>       								
                             </table> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <h4 align="center">Management (Applicable to Managers w/Direct Reports only):  </h4>
-                                <tbody align="left">                                      
-                                    <tr>									                                  
-                                        <th >BUDGETING SKILLS:</th>											
-                                        <td >Uses resources efficiently, strives to reduce cost, part of the budgeting process.  Finds a way to complete objectives even with limited budget or staff.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >CONFLICT MANAGEMENT:</th>												
-                                        <td >Good listener, committed to finding solutions to problems, works well with difficult people.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >EMPLOYEE DEVELOPMENT/MENTORING:</th>											
-                                        <td >Offers feedback, coaches employees appropriately, rewards employees wisely, takes mentoring role, challenges and develops employees, offers opportunity.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >EMPLOYEE MANAGEMENT: </th>											
-                                        <td >Defines responsibilities, motivates employees, and delegates well, rewards appropriately.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >LEADERSHIP:</th>											
-                                        <td >Provides strong leadership, sets a good example, skilled decision maker, motivator, encourager.  </td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>												
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 	
-                                    <tr>									                                  
-                                        <th >STRATEGIC THOUGHT:</th>											
-                                        <td >Works to establish and articulate vision, shows creativity when defining solutions. Proposes long term solutions for problems.</td >
-                                    </tr> 
-                                    <tr>									                                  
-                                        <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
-                                            2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
-                                        </th>													
-                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
-                                    </tr> 							
-                                </tbody>        								
-                            </table> 
+                                <h4 align="center">Management:   </h4>
+                                <tbody align="left">
+                                    <tr th:each="comment : ${managementComments}">
+                                        <td th:text="${comment.question}"></td>
+                                        <td th:text="${comment.questionInfo}"></td>
+                                        <td th:text="${comment.comment}"></td>
+                                        <td th:text="${comment.rating}"></td>
+                                    </tr>
+                                </tbody>       								
+                            </table>                            							
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                                 <tbody align="left">                                      
                                     <tr>									                                  
