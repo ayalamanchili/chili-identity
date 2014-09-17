@@ -168,8 +168,22 @@
     </build>
     <profiles>
         <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/logging-dev.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
             <id>test</id>
             <build> 
+                <filters>
+                    <filter>src/main/resources/env/logging-test.properties</filter>
+                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -185,6 +199,9 @@
         <profile>
             <id>prod</id>
             <build> 
+                <filters>
+                    <filter>src/main/resources/env/logging-prod.properties</filter>
+                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

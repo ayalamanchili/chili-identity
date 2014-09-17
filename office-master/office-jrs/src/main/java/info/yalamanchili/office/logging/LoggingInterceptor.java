@@ -4,7 +4,10 @@
 package info.yalamanchili.office.logging;
 
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,25 +30,39 @@ public class LoggingInterceptor {
 
     @Before("execution(* info.yalamanchili.office..*.*(..))")
     public void logBefore(JoinPoint joinPoint) {
-        //dont log call to OfficeServiceConfiguration.EnableLogginIntereptor
-        if (joinPoint.getSignature().toShortString().contains("EnableLoginInterceptor")) {
+        if (ignoreMethod(joinPoint.getSignature().toShortString())) {
             return;
         }
         if (officeServiceConfiguration.getEnableLoginInterceptor()) {
-            if (log.isInfoEnabled()) {
-                log.info("-------------- invoking ---------------- :" + joinPoint.getSignature());
+            if (log.isDebugEnabled()) {
+                log.debug("-------------- invoking ---------------- :" + joinPoint.getSignature());
                 for (Object input : joinPoint.getArgs()) {
                     if (input != null) {
                         // if entity dont use Reflection to print tostring as it causes hibernate session closing exception with async methods
                         if (isEntity(input)) {
                             input.toString();
                         } else {
-                            log.info("with input:" + ReflectionToStringBuilder.toString(input));
+                            log.debug("with input:" + ReflectionToStringBuilder.toString(input));
                         }
                     }
                 }
             }
         }
+    }
+    protected static List<String> ignoreMethods = new ArrayList<String>();
+
+    static {
+        ignoreMethods.add("EnableLoginInterceptor");
+        ignoreMethods.add("TemplateService");
+    }
+
+    protected boolean ignoreMethod(String name) {
+        for (String key : ignoreMethods) {
+            if (name.contains(key)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected boolean isEntity(Object obj) {
@@ -54,14 +71,26 @@ public class LoggingInterceptor {
 
     @AfterReturning(pointcut = "execution(* info.yalamanchili.office..*.*(..))", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
-        //dont log call to OfficeServiceConfiguration.EnableLogginIntereptor
-        if (joinPoint.getSignature().toShortString().contains("EnableLoginInterceptor")) {
+        if (ignoreMethod(joinPoint.getSignature().toShortString())) {
             return;
         }
-        if (log.isInfoEnabled()) {
-            log.info("------------ returning------------------ :" + joinPoint.getSignature() + "------------ with result :"
-                    + ReflectionToStringBuilder.toString(result));
+        if (log.isDebugEnabled()) {
+            if (logResultType(result)) {
+                log.debug("------------ returning------------------ :" + joinPoint.getSignature() + "------------ with result :"
+                        + ReflectionToStringBuilder.toString(result));
+            } else {
+                log.debug("------------ returning------------------ :" + joinPoint.getSignature() + "------------");
+            }
         }
+    }
+
+    protected boolean logResultType(Object res) {
+        if (res instanceof Response) {
+            return false;
+        } else if (res instanceof byte[]) {
+            return false;
+        }
+        return true;
     }
 
     @Around("execution(* info.yalamanchili.office..*.*(..))")
@@ -69,8 +98,10 @@ public class LoggingInterceptor {
         long start = System.currentTimeMillis();
         Object output = pjp.proceed();
         long elapsedTime = System.currentTimeMillis() - start;
-        if (!pjp.getSignature().toShortString().contains("EnableLoginInterceptor")) {
-            log.info("Method " + pjp.getSignature().toShortString() + " execution time: " + elapsedTime + " milliseconds.");
+        if (log.isDebugEnabled()) {
+            if (!pjp.getSignature().toShortString().contains("EnableLoginInterceptor")) {
+                log.debug("Method " + pjp.getSignature().toShortString() + " execution time: " + elapsedTime + " milliseconds.");
+            }
         }
         return output;
     }
