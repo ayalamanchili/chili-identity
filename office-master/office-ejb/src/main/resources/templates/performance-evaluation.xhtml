@@ -26,29 +26,33 @@
                         <table   border= "1" style="width:600px;height:5px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                             <thead align="left">
                                 <tr>
-                                    <th >Employee Name: </th>                                   
-                                    <th >Evaluation Date: </th>                                   
+                                    <th >Employee Name:
+                                        <span  th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}"> </span>.
+                                    </th>                                   
+                                    <th >Evaluation Date: 
+                                        <span  th:text="${entity.evaluationDate }"> </span>.
+                                    </th>                                   
                                     <th  colspan="3">Evaluation Period: </th>   
                                 </tr>
                                 <tr>									
-                                    <th rowspan="2">Evaluation Type:</th>                                 
+                                    <th rowspan="2">Evaluation Type:
+                                        <span  th:text="${entity.type }"> </span>.
+                                    </th>                                 
                                     <th rowspan="2">Present Position: </th>   	
                                     <td  colspan="2">From</td> 
-                                    <td  colspan="2"></td> 											
+                                    <td  th:text="${entity.evaluationPeriodStartDate}"></td> 											
                                 </tr>
                                 <tr>									                                  
                                     <td  colspan="2">To</td> 
-                                    <td  colspan="2"></td> 											
+                                    <td  th:text="${entity.evaluationPeriodEndDate}"></td> 											
                                 </tr>										
                             </thead>
                         </table> 
-                        <br></br> 
                         <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
 
                             <td >
                                 Employee Rating Definitions (Final rating must be placed on page 3):
                             </td >
-                            <br></br> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                                 <tbody align="left">                                      
                                     <tr>									                                  
@@ -100,7 +104,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>																								
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >INTERPERSONAL/COMMUNICATION SKILLS:</th>												
@@ -110,7 +114,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>													
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >DECISION MAKING:</th>											
@@ -120,7 +124,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >INNOVATION/CREATIVITY:</th>											
@@ -130,7 +134,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>													
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >JOB KNOWLEDGE/TECHNICAL APPLICATION:</th>											
@@ -140,7 +144,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >ORGANIZATION AND PLANNING:</th>											
@@ -150,7 +154,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >PROBLEM SOLVING:</th>											
@@ -160,7 +164,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >QUALITY OF WORK: </th>											
@@ -170,7 +174,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >SALES SKILLS/GOALS (If applicable): </th>											
@@ -180,7 +184,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>													
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >SELF DEVELOPMENT: </th>											
@@ -190,7 +194,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 												
                                 </tbody>        								
                             </table> 
@@ -205,7 +209,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >RESULTS DRIVEN:</th>												
@@ -215,7 +219,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >INITIATIVE:</th>											
@@ -225,7 +229,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >INNOVATION/CREATIVITY:</th>											
@@ -235,7 +239,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>											
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >TEAMWORK:</th>											
@@ -245,7 +249,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >DEPENDABILITY:</th>											
@@ -255,7 +259,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                 </tbody>        								
                             </table> 
@@ -270,7 +274,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >CONFLICT MANAGEMENT:</th>												
@@ -280,7 +284,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >EMPLOYEE DEVELOPMENT/MENTORING:</th>											
@@ -290,7 +294,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >EMPLOYEE MANAGEMENT: </th>											
@@ -300,7 +304,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >LEADERSHIP:</th>											
@@ -310,7 +314,7 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>												
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 	
                                     <tr>									                                  
                                         <th >STRATEGIC THOUGHT:</th>											
@@ -320,12 +324,11 @@
                                         <th >5<input type="checkbox" />4<input type="checkbox" />3<input type="checkbox" />
                                             2<input type="checkbox" />1<input type="checkbox" />0<input type="checkbox" />N/A<input type="checkbox" />
                                         </th>													
-                                        <th >Comments: </th >
+                                        <th >Comments: <span  th:text="${entity.comment }"> </span>.</th >
                                     </tr> 							
                                 </tbody>        								
                             </table> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <br></br>
                                 <tbody align="left">                                      
                                     <tr>									                                  
                                         <th >Key Results/Accomplishments </th>	
@@ -337,7 +340,6 @@
                                 </tbody>        								
                             </table> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <br></br>
                                 <tbody align="left">                                      
                                     <tr>									                                  
                                         <th >Areas Needing Improvement  </th>											
@@ -348,7 +350,6 @@
                                 </tbody>        								
                             </table> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <br></br>
                                 <tbody align="left">                                      
                                     <tr>									                                  
                                         <th >Manager Comments: </th>											                                               
@@ -359,7 +360,6 @@
                                 </tbody>        								
                             </table> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <br></br>
                                 <tbody align="left">                                      
                                     <tr>									                                  
                                         <th >Employee Comments (Employee May Attach Separate Sheet): </th>	
@@ -401,7 +401,6 @@
                                 </tbody>        								
                             </table> 
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <br></br>
                                 <tbody align="left">                                      
                                     <tr>									                                  
                                         <th >FY 2013 Key Work, Skill, and/or Knowledge Objectives</th>
@@ -415,7 +414,6 @@
                                 </tbody>   
                             </table>
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <br></br>
                                 <tbody align="left">                                      
                                     <tr>									                                  
                                         <th >Manager</th>
@@ -441,7 +439,6 @@
                                 </tbody>   
                             </table>
                             <table   border= "1" style="width:700px;height:10px;margin-left:auto;margin-right:auto;border-style:solid;border-width:1px;border-color:#000000;border-radius:2px; text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                                <br></br>
                                 <tbody align="left">                                      
                                     <tr>									                                  
                                         <th >CEO  Comments (If so desired):</th>	 	
