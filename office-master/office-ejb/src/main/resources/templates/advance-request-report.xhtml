@@ -24,49 +24,49 @@
                     <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                         <table>
                             <div> 
-                                <table border="0">
+                                <table >
                                     <tr>
                                         <th style="width:150px ">Employee </th>    
                                         <td>:</td>
                                         <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
                                     </tr>
                                     <tr>
-                                        <th>Requested Amount</th>  
+                                        <th style="width:150px ">Requested Amount</th>  
                                         <td>:</td>
                                         <td th:text="${entity.amount}" />
                                     </tr>
                                     <tr>
-                                        <th>Advance Purpose</th>
+                                        <th style="width:150px ">Advance Purpose</th>
                                         <td>:</td>
                                         <td th:text="${entity.purpose}" />
                                     </tr>
                                     <tr>
-                                        <th>Date Advance, needed by</th>
+                                        <th style="width:150px ">Date Advance, needed by</th>
                                         <td>:</td>
                                         <td th:text="${entity.neededBy}" />
                                     </tr>
                                     <tr>
-                                        <th>Date of Request</th>
+                                        <th style="width:150px ">Date of Request</th>
                                         <td>:</td>
                                         <td th:text="${entity.dateRequested}" />
                                     </tr>
                                     <tr>
-                                        <th>Department</th>  
+                                        <th style="width:150px ">Department</th>  
                                         <td>:</td>
                                         <td th:text="${entity.amount}" />
                                     </tr>
                                     <tr>
-                                        <th>Payroll File Number</th>  
+                                        <th style="width:150px ">Payroll File Number</th>  
                                         <td>:</td>
                                         <td th:text="${entity.payrollFileNumber}" />
                                     </tr>
                                     <tr>
-                                        <th>Status</th>  
+                                        <th style="width:150px ">Status</th>  
                                         <td>:</td>
                                         <td th:text="${entity.status}" />
                                     </tr>
                                     <tr>
-                                        <th>Notes</th>    
+                                        <th style="width:150px ">Notes</th>    
                                         <td>:</td>
                                         <td th:text="${entity.notes}" />
                                     </tr>
@@ -75,42 +75,42 @@
                             <table th:if="${check != null}">
                                 <thead>
                                     <tr>
-                                        <th>Check </th>
+                                        <th style="width:150px ">Check </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th>Check Payable To</th>    
+                                        <th style="width:150px ">Check Payable To</th>    
                                         <td>:</td>
                                         <td th:text="${check.payableTo}" />
                                     </tr>
                                     <tr>
-                                        <th>Check Amount</th>    
+                                        <th style="width:150px ">Check Amount</th>    
                                         <td>:</td>
                                         <td th:text="${check.checkAmount}" />
                                     </tr>
                                     <tr>
-                                        <th>Check Mailing Address Street1</th>    
+                                        <th style="width:150px ">Check Address Street1</th>    
                                         <td>:</td>
                                         <td th:text="${checkAddress.street1}" />
                                     </tr>
                                     <tr>
-                                        <th>Check Address Street2</th>    
+                                        <th style="width:150px ">Check Address Street2</th>    
                                         <td>:</td>
                                         <td th:text="${checkAddress.street2}" />
                                     </tr>
                                     <tr>
-                                        <th>Check Address City</th>    
+                                        <th style="width:150px ">Check Address City</th>    
                                         <td>:</td>
                                         <td th:text="${checkAddress.city}" />
                                     </tr>
                                     <tr>
-                                        <th>Check Address State</th>    
+                                        <th style="width:150px ">Check Address State</th>    
                                         <td>:</td>
                                         <td th:text="${checkAddress.state}" />
                                     </tr>
                                     <tr>
-                                        <th>Check Address Zip</th>    
+                                        <th style="width:150px ">Check Address Zip</th>    
                                         <td>:</td>
                                         <td th:text="${checkAddress.zip}" />
                                     </tr>
@@ -119,34 +119,34 @@
                             <table th:if="${bankAccount != null}">
                                 <thead>
                                     <tr>
-                                        <th>Account Number </th>
+                                        <th style="width:150px ">Account Number </th>
                                         <td>:</td>
                                         <td th:text="${bankAccount.bankAccountNumber}" />
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th>Bank Name</th>    
+                                        <th style="width:150px ">Bank Name</th>    
                                         <td>:</td>
                                         <td th:text="${bankAccount.bankName}" />
                                     </tr>
                                     <tr>
-                                        <th>Account First Name</th>    
+                                        <th style="width:150px ">Account First Name</th>    
                                         <td>:</td>
                                         <td th:text="${bankAccount.accountFirstName}" />
                                     </tr>
                                     <tr>
-                                        <th>Account Last Name</th>    
+                                        <th style="width:150px ">Account Last Name</th>    
                                         <td>:</td>
                                         <td th:text="${bankAccount.accountLastName}" />
                                     </tr>
                                     <tr>
-                                        <th>ACH Bank RT Number</th>    
+                                        <th style="width:150px ">ACH Bank RT Number</th>    
                                         <td>:</td>
                                         <td th:text="${bankAccount.bankRoutingNumber}" />
                                     </tr>
                                     <tr>
-                                        <th>Account Number</th>    
+                                        <th style="width:150px ">Account Number</th>    
                                         <td>:</td>
                                         <td th:text="${bankAccount.bankAccountNumber}" />
                                     </tr>
@@ -171,57 +171,58 @@
                             </table>
                         </table>
                         <p >
-                            I,    <span  th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}"> </span>. hereby certify that I am solely responsible for repayment of the above requested advance amount, to System Soft Technologies,as per agreed terms and conditions or on-demand.
+                            I,   <u> <span  th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}"> </span> </u>. hereby certify that I am solely responsible for repayment of the above requested advance amount, to System Soft Technologies,as per agreed terms and conditions or on-demand.
                         </p>
                         <br></br>
 
                         <tr>
                             <th style="width:150px ">  Employee Signature :</th>
-                            <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
+                          <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" /> 
                         </tr>
-                        <div align="center"> 
-                            <h4>For Accounts Department Use</h4>
-                            <table border="0" align="center">
+                        <div style="text-align:center; font-family: Arial,Helvetica,sans-serif; font-size:10pt;"> 
+                            <h4 aligen="center">For Accounts Department Use</h4>
+                                                     </div>
+
+                            <table  align="left">
 
                                 <tr>
-                                    <th>Request Received On</th>  
+                                    <th style="width:150px ">Request Received On</th>  
                                     <td>:</td>
                                     <td th:text="${entity.neededBy}" />
                                 </tr>
                                 <tr>
-                                    <th>Advance Approved for</th>
+                                    <th style="width:150px ">Advance Approved for</th>
                                     <td>:</td>
                                     <td th:text="${entity.amount}" />
 
                                 </tr>
                                 <tr>
-                                    <th>Approver Comments</th>
+                                    <th style="width:150px ">Approver Comments</th>
                                     <td>:</td>
                                     <td th:text="${entity.notes}" />
                                 </tr>
                                 <tr>
-                                    <th>Approver Signature</th>
+                                    <th style="width:150px ">Approver Signature</th>
                                     <td>:</td>
-                                    <!--<td th:text="${entity.approvedBy}" />-->
+                                <u>    <!--<td th:text="${entity.approvedBy}" />--></u>
                                 </tr>
                                 <tr>
-                                    <th>Prepared  Accounted by</th>  
+                                    <th style="width:150px ">Prepared  Accounted by</th>  
                                     <td>:</td>
                                     <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
                                 </tr>
                                 <tr>
-                                    <th>Date</th>  
+                                    <th style="width:150px ">Date</th>  
                                     <td>:</td>
                                     <td th:text="${entity.neededBy}" />
                                 </tr>
                                 <tr>
-                                    <th>Paid Date</th>  
+                                    <th style="width:150px ">Paid Date</th>  
                                     <td>:</td>
                                     <td th:text="${entity.neededBy}" />
                                 </tr>
 
                             </table>
-                        </div>
                     </div>      
                 </div>
             </div>
