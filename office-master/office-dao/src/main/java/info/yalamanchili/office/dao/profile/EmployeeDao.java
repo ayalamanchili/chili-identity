@@ -61,6 +61,14 @@ public class EmployeeDao extends CRUDDao<Employee> {
         super(Employee.class);
     }
 
+    @Transactional(readOnly = true)
+    public List<Employee> query(int start, int limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " where user.enabled=true", entityCls);
+        findAllQuery.setFirstResult(start);
+        findAllQuery.setMaxResults(limit);
+        return findAllQuery.getResultList();
+    }
+
     //TODO temp method remove later
     @Transactional
     public void syncCorpEmployeeRoles() {

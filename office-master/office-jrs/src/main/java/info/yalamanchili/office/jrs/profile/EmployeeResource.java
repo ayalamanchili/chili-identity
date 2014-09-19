@@ -119,7 +119,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
         EmployeeTable tableObj = new EmployeeTable();
-        for (Object empObj : getDao().query(start, limit)) {
+        for (Object empObj : employeeDao.query(start, limit)) {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         tableObj.setEntities(employees);
@@ -398,10 +398,11 @@ public class EmployeeResource extends CRUDResource<Employee> {
         return employees;
     }
 //TODO user super class search
+
     @POST
     @Path("/search_employee_report")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Response searchEmployeeReport(EmployeeSearchDto entity,@QueryParam("reportName") String reportName, @QueryParam("format") String format) {
+    public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("reportName") String reportName, @QueryParam("format") String format) {
         List<EmployeeDto> data = new ArrayList<EmployeeDto>();
         Long size;
         if (entity.getCompanyContacts().size() > 0) {
@@ -415,7 +416,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             data.addAll(searchEmployee(entity, start, limit));
             start = start + limit;
         } while ((start + limit) < size);
-            return ReportGenerator.generateReport(data,reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        return ReportGenerator.generateReport(data, reportName, format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
     }
 
     @Override
