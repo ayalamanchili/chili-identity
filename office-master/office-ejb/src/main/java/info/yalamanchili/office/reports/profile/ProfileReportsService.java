@@ -11,6 +11,7 @@ package info.yalamanchili.office.reports.profile;
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
@@ -39,5 +40,22 @@ public class ProfileReportsService {
             res.add(mapper.map(emp, EmployeeBasicInfoReportDto.class));
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), currentEmp.getPrimaryEmail().getEmail());
+    }
+
+    @Async
+    public void generateEmployeClientInfoReport(Employee currentEmp) {
+        List<EmployeeClientInfoReportDto> res = new ArrayList<EmployeeClientInfoReportDto>();
+        for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
+            for (ClientInformation ci : emp.getClientInformations()) {
+                EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
+                dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+                dto.setClientName(ci.getClient().getName());
+                dto.setVendorName(ci.getVendor().getName());
+                dto.setBillingRate(ci.getBillingRate());
+                dto.setStartDate(ci.getStartDate());
+                dto.setEndDate(ci.getEndDate());
+            }
+        }
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), currentEmp.getPrimaryEmail().getEmail());
     }
 }

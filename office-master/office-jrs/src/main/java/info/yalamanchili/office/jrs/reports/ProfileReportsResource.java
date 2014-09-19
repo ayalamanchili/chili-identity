@@ -40,4 +40,10 @@ public class ProfileReportsResource {
     public void basicEmployeeInfoReport() {
         profileReportsService.generateEmployeBasicInfoReport(OfficeSecurityService.instance().getCurrentUser());
     }
+
+    @GET
+    @Path("/employee-client-info-report")
+    public void employeeclientInfoReport() {
+        profileReportsService.generateEmployeClientInfoReport(OfficeSecurityService.instance().getCurrentUser());
+    }
 }
