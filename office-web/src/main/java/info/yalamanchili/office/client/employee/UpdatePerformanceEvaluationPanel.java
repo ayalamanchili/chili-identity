@@ -58,21 +58,21 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         perfEval.put("performanceEvaluation", entity);
         JSONArray questionComments = new JSONArray();
         JSONArray skillQuestions = updateSkillAptitudeCommentsPanel.getQuestions();
-        JSONArray attitudeQuestions = updateAptitudeCommentsPanel.getQuestions();
-        JSONArray managementQuestions = updateManagementCommentsPanel.getQuestions();
+//        JSONArray attitudeQuestions = updateAptitudeCommentsPanel.getQuestions();
+//        JSONArray managementQuestions = updateManagementCommentsPanel.getQuestions();
         int x = 0;
         for (int i = 0; i < skillQuestions.size(); i++) {
             questionComments.set(x, skillQuestions.get(i));
             x++;
         }
-        for (int i = 0; i < questionComments.size(); i++) {
-            questionComments.set(x, questionComments.get(i));
-            x++;
-        }
-        for (int i = 0; i < managementQuestions.size(); i++) {
-            questionComments.set(x, managementQuestions.get(i));
-            x++;
-        }
+//        for (int i = 0; i < questionComments.size(); i++) {
+//            questionComments.set(x, questionComments.get(i));
+//            x++;
+//        }
+//        for (int i = 0; i < managementQuestions.size(); i++) {
+//            questionComments.set(x, managementQuestions.get(i));
+//            x++;
+//        }
         perfEval.put("comments", questionComments);
         perfEval.put("employeeId", new JSONString("0"));
         logger.info(perfEval.toString());

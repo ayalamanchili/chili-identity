@@ -27,6 +27,7 @@ import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
 import info.yalamanchili.office.template.TemplateService;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,7 @@ public class PerformanceEvaluationService {
     public void createPerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
         PerformanceEvaluation entity = dto.getPerformanceEvaluation();
         entity.setEmployee(EmployeeDao.instance().findById(dto.getEmployeeId()));
+        entity.setEvaluationDate(new Date());
         entity = performanceEvaluationDao.getEntityManager().merge(entity);
         createQuestionComments(entity, dto.getComments());
     }

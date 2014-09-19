@@ -81,6 +81,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     @Override
     protected void configure() {
         entityCaptionPanel.setCaptionHTML("<b>" + JSONUtils.toString(entity, "question") + "</b>");
+        setButtonText("save");
     }
 
     @Override
@@ -93,7 +94,6 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "comment";
