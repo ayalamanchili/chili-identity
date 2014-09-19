@@ -78,6 +78,6 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
     }
     
     protected String getReportURL() {
-        return OfficeWelcome.constants.root_url() + "employee-client-info-report" + "?format=" + getReportFormat();
+        return OfficeWelcome.constants.root_url() + "contract/report" + "?format=" + getReportFormat();
     }
 }
