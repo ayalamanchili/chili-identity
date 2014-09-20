@@ -26,6 +26,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
 
     protected FlowPanel panel = new FlowPanel();
     ClickableLink profileBasicReportL = new ClickableLink("Basic Profile Report");
+    ClickableLink clientInfoReportL = new ClickableLink("Client Information Report");
 
     public ProfileReportsSidePanel() {
         init(panel);
@@ -44,6 +45,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
     @Override
     protected void addWidgets() {
         panel.add(profileBasicReportL);
+        panel.add(profileBasicReportL);
     }
 
     @Override
@@ -51,19 +53,36 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
         if (event.getSource().equals(profileBasicReportL)) {
             generateBasicInfoReport();
         }
+        if (event.getSource().equals(clientInfoReportL)) {
+            generateClientInfoReport();
+        }
     }
 
     protected void generateBasicInfoReport() {
         HttpService.HttpServiceAsync.instance().doGet(getBasicInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Report will be emailed to your primary email");
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
+    protected void generateClientInfoReport() {
+        HttpService.HttpServiceAsync.instance().doGet(getClientInformationReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
     }
 
     protected String getBasicInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "profile-reports/employee-basic-info-report";
+    }
+
+    protected String getClientInformationReportUrl() {
+        return OfficeWelcome.constants.root_url() + "profile-reports/employee-client-info-report";
     }
 }
