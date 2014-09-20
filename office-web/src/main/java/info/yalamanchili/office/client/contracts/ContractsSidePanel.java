@@ -29,10 +29,7 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ContractsSidePanel.class.getName());
     protected FlowPanel panel = new FlowPanel();
-    protected Button generateRepB = new Button("Generate");
-    protected Label formatL = new Label("Format");
-    protected ListBox formatLB = new ListBox();
-    ClickableLink profileBasicReportL = new ClickableLink("Client Infomatin  Report");
+    ClickableLink clientBasicReportL = new ClickableLink("Client Information Report");
 
     public ContractsSidePanel() {
         init(panel);
@@ -40,31 +37,26 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        generateRepB.addClickHandler(this);
-        profileBasicReportL.addClickHandler(this);
+        clientBasicReportL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        clientBasicReportL.setTitle("report with employeeName, clientName, vendorName, billingRate,startDate,endDate of all employees");
+
     }
 
     @Override
     protected void addWidgets() {
-        panel.add(formatL);
-        formatLB.addItem("PDF", "pdf");
-        formatLB.addItem("HTML", "html");
-        formatLB.addItem("XML", "xml");
-        panel.add(formatLB);
-        panel.add(generateRepB);
-        panel.add(profileBasicReportL);
+        panel.add(clientBasicReportL);
+
         panel.add(new SearchContractsPanel());
 
     }
 
     @Override
     public void onClick(ClickEvent event) {
-
-        if (event.getSource().equals(profileBasicReportL)) {
+        if (event.getSource().equals(clientBasicReportL)) {
             generateBasicInfoReport();
         }
     }
@@ -80,14 +72,6 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
     }
 
     protected String getBasicInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "profile-reports/employee-basic-info-report";
-    }
-
-    protected String getReportFormat() {
-        return formatLB.getValue(formatLB.getSelectedIndex());
-    }
-
-    protected String getReportURL() {
-        return OfficeWelcome.constants.root_url() + "contract/report" + "?format=" + getReportFormat();
+        return OfficeWelcome.constants.root_url() + "contract-report/employee-client-info-report";
     }
 }
