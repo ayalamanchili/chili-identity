@@ -35,17 +35,21 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
     @Override
     protected void addListeners() {
         profileBasicReportL.addClickHandler(this);
+        clientInfoReportL.addClickHandler(this);
+
     }
 
     @Override
     protected void configure() {
         profileBasicReportL.setTitle("report with name, email, phone, start date of all employees");
+        clientInfoReportL.setTitle("report with employeeName, clientName, clientName, billingRate,startDate,endDate of all employees");
+
     }
 
     @Override
     protected void addWidgets() {
         panel.add(profileBasicReportL);
-        panel.add(profileBasicReportL);
+        panel.add(clientInfoReportL);
     }
 
     @Override
@@ -61,21 +65,21 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
     protected void generateBasicInfoReport() {
         HttpService.HttpServiceAsync.instance().doGet(getBasicInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Report will be emailed to your primary email");
+            }
+        });
     }
 
     protected void generateClientInfoReport() {
         HttpService.HttpServiceAsync.instance().doGet(getClientInformationReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Report will be emailed to your primary email");
+            }
+        });
     }
 
     protected String getBasicInfoReportUrl() {

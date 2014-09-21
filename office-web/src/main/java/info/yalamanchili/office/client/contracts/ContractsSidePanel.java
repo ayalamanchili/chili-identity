@@ -9,15 +9,16 @@ package info.yalamanchili.office.client.contracts;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.ResponseStatusWidget;
+
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
 
@@ -29,7 +30,9 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ContractsSidePanel.class.getName());
     protected FlowPanel panel = new FlowPanel();
-    ClickableLink clientBasicReportL = new ClickableLink("Client Information Report");
+    protected Button generateRepB = new Button("Generate");
+    protected Label formatL = new Label("Format");
+    protected ListBox formatLB = new ListBox();
 
     public ContractsSidePanel() {
         init(panel);
@@ -37,41 +40,45 @@ public class ContractsSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     protected void addListeners() {
-        clientBasicReportL.addClickHandler(this);
+        generateRepB.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        clientBasicReportL.setTitle("report with employeeName, clientName, vendorName, billingRate,startDate,endDate of all employees");
-
     }
 
     @Override
     protected void addWidgets() {
-        panel.add(clientBasicReportL);
-
+        panel.add(formatL);
+        formatLB.addItem("PDF", "pdf");
+        formatLB.addItem("HTML", "html");
+        formatLB.addItem("XML", "xml");
+        panel.add(formatLB);
+        panel.add(generateRepB);
         panel.add(new SearchContractsPanel());
-
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(clientBasicReportL)) {
-            generateBasicInfoReport();
-        }
-    }
-
-    protected void generateBasicInfoReport() {
-        HttpService.HttpServiceAsync.instance().doGet(getBasicInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getReportURL(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
             @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Report will be emailed to your primary email");
+            public void onFailure(Throwable arg0) {
+                Window.alert(arg0.getLocalizedMessage());
+            }
+
+            @Override
+            public void onSuccess(String resp) {
+                Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + resp, "_blank", "");
             }
         });
     }
 
-    protected String getBasicInfoReportUrl() {
-        return OfficeWelcome.constants.root_url() + "contract-report/employee-client-info-report";
+    protected String getReportFormat() {
+        return formatLB.getValue(formatLB.getSelectedIndex());
+    }
+
+    protected String getReportURL() {
+        return OfficeWelcome.constants.root_url() + "contract/report" + "?format=" + getReportFormat();
     }
 }
