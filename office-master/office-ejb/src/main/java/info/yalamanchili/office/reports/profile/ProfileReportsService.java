@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -43,6 +44,7 @@ public class ProfileReportsService {
     }
 
     @Async
+    @Transactional
     public void generateEmployeClientInfoReport(Employee currentEmp) {
         List<EmployeeClientInfoReportDto> res = new ArrayList<EmployeeClientInfoReportDto>();
         for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
