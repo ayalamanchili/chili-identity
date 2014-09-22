@@ -10,7 +10,6 @@ import info.chili.security.SecurityService;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
-import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -943,5 +942,30 @@ public class OfficeStartup {
         q21.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q21.setSortOrder(21);
         em.persist(q21);
+        //Self Review Questions
+        Question q22 = new Question();
+        q22.setQuestionKey("performance.review.self.question1");
+        q22.setCategory(QuestionCategory.SELF);
+        q22.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
+        q22.setSortOrder(41);
+        em.persist(q22);
+        Question q23 = new Question();
+        q23.setQuestionKey("performance.review.self.question2");
+        q23.setCategory(QuestionCategory.SELF);
+        q23.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
+        q23.setSortOrder(42);
+        em.persist(q23);
+        Question q24 = new Question();
+        q24.setQuestionKey("performance.review.self.question3");
+        q24.setCategory(QuestionCategory.SELF);
+        q24.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
+        q24.setSortOrder(43);
+        em.persist(q24);
+        Question q25 = new Question();
+        q25.setQuestionKey("performance.review.self.question4");
+        q25.setCategory(QuestionCategory.SELF);
+        q25.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
+        q25.setSortOrder(44);
+        em.persist(q25);
     }
 }

@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.employee;
+package info.yalamanchili.office.client.employee.prefeval;
 
 import com.google.gwt.json.client.JSONArray;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel;
@@ -20,6 +20,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.employee.AbstractWizard;
 import info.yalamanchili.office.client.employee.AbstractWizard.AbstractStep;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel.CreatePerformanceEvaluationPanelType;
 import info.yalamanchili.office.client.employee.prefeval.CreateQuestionCommentsWidget;
@@ -120,9 +121,9 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             JSONObject perfEvalStartObj = perfEvalStartStep.getWidget().populateEntityFromFields();
             JSONObject perfEvalEndObj = perfEvalStartEnd.getWidget().populateEntityFromFields();
             entity.put("performanceEvaluation", JSONUtils.merge(perfEvalStartObj, perfEvalEndObj));
-            JSONArray skillQuestions = skillQuestionsStep.getWidget().getValue();
-            JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValue();
-            JSONArray managementQuestions = managementQuestionsStep.getWidget().getValue();
+            JSONArray skillQuestions = skillQuestionsStep.getWidget().getValues();
+            JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValues();
+            JSONArray managementQuestions = managementQuestionsStep.getWidget().getValues();
             JSONArray questionComments = new JSONArray();
             int x = 0;
             for (int i = 0; i < attitudeQuestions.size(); i++) {
@@ -205,7 +206,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         public JSONValue getValue() {
-            return widget.getValue();
+            return widget.getValues();
         }
 
         @Override

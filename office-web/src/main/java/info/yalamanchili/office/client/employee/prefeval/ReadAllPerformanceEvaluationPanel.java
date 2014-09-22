@@ -5,16 +5,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.employee;
+package info.yalamanchili.office.client.employee.prefeval;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -33,6 +31,11 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllPerformanceEvaluationPanel.class.getName());
     public static ReadAllPerformanceEvaluationPanel instance;
+
+    public ReadAllPerformanceEvaluationPanel() {
+        instance = this;
+        initTable("PerformanceEvaluation", OfficeWelcome.constants);
+    }
 
     public ReadAllPerformanceEvaluationPanel(String employeeId) {
         instance = this;
@@ -57,18 +60,25 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted PerformanceEvaluation Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(parentId));
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(parentId));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
+        }
+
     }
 
     @Override
@@ -81,23 +91,20 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("EvaluationPeriodStartDate"));
-        table.setText(0, 2, getKeyValue("EvaluationPeriodEndDate"));
-        table.setText(0, 3, getKeyValue("Type"));
-        table.setText(0, 4, getKeyValue("Rating"));
-        table.setText(0, 5, getKeyValue("Print"));
-
+        table.setText(0, 1, getKeyValue("Evaluation Fiscal Year"));
+        table.setText(0, 2, getKeyValue("Rating"));
+        table.setText(0, 3, getKeyValue("Print"));
     }
 
     @Override
@@ -105,12 +112,10 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evaluationPeriodStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evaluationPeriodEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 3, JSONUtils.toString(entity.get("type"), "name"));
-            table.setText(i, 4, JSONUtils.toString(entity, "rating"));
+            table.setText(i, 1, JSONUtils.toString(entity, "evaluationFYYear"));
+            table.setText(i, 2, JSONUtils.toString(entity, "rating"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 5, reportL);
+            table.setWidget(i, 3, reportL);
         }
     }
 
@@ -128,8 +133,14 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     }
 
     private String getURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation/" + start.toString() + "/"
-                + limit.toString() + "?employeeId=" + parentId;
+        if (parentId == null) {
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/" + start.toString() + "/"
+                    + limit.toString();
+        } else {
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/" + start.toString() + "/"
+                    + limit.toString() + "?employeeId=" + parentId;
+        }
+
     }
 
     @Override
@@ -138,11 +149,24 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
             createButton.setText("Create Performance Evaluation");
             createButton.setVisible(true);
         }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            createButton.setText("Create Self Evaluation");
+            createButton.setVisible(true);
+        }
     }
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(TreeEmployeePanel.instance().getEntityId()));
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            //Create perf eval
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(TreeEmployeePanel.instance().getEntityId()));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            //Create self reivew
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new PeformanceSelfEvaluationPanel());
+        }
+
     }
 }

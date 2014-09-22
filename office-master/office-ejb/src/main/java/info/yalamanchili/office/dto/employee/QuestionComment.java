@@ -38,6 +38,11 @@ public class QuestionComment {
      */
     protected String questionInfo;
 
+    /**
+     *
+     */
+    protected int sortOrder;
+
     public QuestionComment() {
     }
 
@@ -79,6 +84,14 @@ public class QuestionComment {
 
     public void setQuestionInfo(String questionInfo) {
         this.questionInfo = questionInfo;
+    }
+
+    public int getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(int sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
 }

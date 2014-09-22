@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.employee;
+package info.yalamanchili.office.client.employee.prefeval;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -29,6 +29,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     private static ReadPerformanceEvaluationPanel instance;
     private static Logger logger = Logger.getLogger(ReadPerformanceEvaluationPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
+
     public static ReadPerformanceEvaluationPanel instance() {
         return instance;
     }
@@ -85,13 +86,14 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("managersComments", true, false, DataType.RICH_TEXT_AREA);
         addField("employeeComments", true, false, DataType.RICH_TEXT_AREA);
         addField("ceoComments", true, false, DataType.RICH_TEXT_AREA);
-        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name())));
-        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name())));
-        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name())));
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SELF.name(), getQuestionCommentsUrl(QuestionCategory.SELF.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name())));
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
     }
 
-    protected String getQuestionCommentsUrl(String category) {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation/comments/" + getEntityId() + "?category=" + category + "&context=" + QuestionContext.PERFORMANCE_EVALUATION_MANGER.name();
+    protected String getQuestionCommentsUrl(String category, String context) {
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/comments/" + getEntityId() + "?category=" + category + "&context=" + context;
     }
 
     @Override

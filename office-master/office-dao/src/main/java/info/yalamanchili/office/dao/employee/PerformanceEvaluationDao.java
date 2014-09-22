@@ -50,12 +50,12 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         return query.getResultList();
     }
 
-    public Set<Question> getQuestions(Long id, QuestionCategory category, QuestionContext context) {
+    public List<Question> getQuestions(Long id, QuestionCategory category, QuestionContext context) {
         TypedQuery<Question> query = getEntityManager().createQuery("select question from " + PerformanceEvaluation.class.getCanonicalName() + " pe inner join pe.questions question where pe.id=:idPraam and question.category =:categoryParam and question.context =:contextParam order by question.sortOrder ASC", Question.class);
         query.setParameter("idPraam", id);
         query.setParameter("categoryParam", category);
         query.setParameter("contextParam", context);
-        return new HashSet<Question>(query.getResultList());
+        return query.getResultList();
     }
 
     public PerformanceEvaluationDao() {

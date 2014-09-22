@@ -63,6 +63,7 @@ public class QuestionService {
             QuestionComment qc = new QuestionComment();
             qc.setQuestion(messagesUtils.get(q.getQuestionKey()));
             qc.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
+            qc.setSortOrder(q.getSortOrder());
             if (cmmt != null) {
                 qc.setId(cmmt.getId());
                 qc.setComment(cmmt.getComment());

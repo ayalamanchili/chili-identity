@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.entity.employee;
 
+import info.chili.commons.DateUtils;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -21,6 +22,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -214,5 +216,16 @@ public class PerformanceEvaluation extends AbstractEntity {
             return;
         }
         getQuestions().add(entity);
+    }
+
+    protected String evaluationFYYear;
+
+    public void setEvaluationFYYear(String evaluationFYYear) {
+        this.evaluationFYYear = evaluationFYYear;
+    }
+
+    @Transient
+    public String getEvaluationFYYear() {
+        return DateUtils.getYearFromDate(getEvaluationPeriodStartDate()).toString();
     }
 }

@@ -25,14 +25,30 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class PerformanceEvaluationSaveDto implements Serializable {
 
-    @NotNull
+    protected String year;
+    /**
+     *
+     */
     protected Long employeeId;
-    @Valid
+    /**
+     *
+     */
     protected PerformanceEvaluation performanceEvaluation;
+    /**
+     *
+     */
     @Valid
     protected List<QuestionComment> comments;
 
     public PerformanceEvaluationSaveDto() {
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public Long getEmployeeId() {

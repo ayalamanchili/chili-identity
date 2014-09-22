@@ -13,7 +13,9 @@ package info.yalamanchili.office.entity.ext;
  * @author anuyalamanchili
  */
 public enum QuestionCategory {
+
     SKILL_AND_APTITUDE,
     ATTITUDE,
-    MANAGEMENT,   
+    MANAGEMENT,
+    SELF
 }

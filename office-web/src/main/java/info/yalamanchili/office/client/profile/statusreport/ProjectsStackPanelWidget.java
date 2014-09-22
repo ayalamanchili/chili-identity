@@ -15,41 +15,49 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.employee.prefeval.ReadAllPerformanceEvaluationPanel;
 
 /**
  *
  * @author anuyalamanchili
  */
 public class ProjectsStackPanelWidget extends ALComposite implements ClickHandler {
-    
+
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink projectReportsL = new ClickableLink("Projects Reports");
-    
+    protected ClickableLink perfEvalReportsL = new ClickableLink("Performance Evaluation Reports");
+
     public ProjectsStackPanelWidget() {
         init(panel);
     }
-    
+
     @Override
     protected void addListeners() {
         projectReportsL.addClickHandler(this);
+        perfEvalReportsL.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         mainPanel.add(projectReportsL);
+        mainPanel.add(perfEvalReportsL);
         panel.add(mainPanel);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(projectReportsL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllStatusReportPanel());
+        }
+        if (event.getSource().equals(perfEvalReportsL)) {
+            TabPanel.instance().getHomePanel().entityPanel.clear();
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel());
         }
     }
 }

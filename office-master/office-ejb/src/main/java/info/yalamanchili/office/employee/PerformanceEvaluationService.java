@@ -16,9 +16,11 @@ import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
+import info.yalamanchili.office.entity.employee.EvaluationFrequencyType;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.ext.Question;
@@ -27,10 +29,14 @@ import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
 import info.yalamanchili.office.template.TemplateService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -47,6 +53,16 @@ public class PerformanceEvaluationService {
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
 
+    /**
+     * Create Manager Evaluation
+     *
+     * @param dto
+     */
+    public void createPerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), EmployeeDao.instance().findById(dto.getEmployeeId()));
+        createQuestionComments(entity, dto.getComments());
+    }
+
     public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
         performanceEvaluationDao.save(dto.getPerformanceEvaluation());
         for (QuestionComment qc : dto.getComments()) {
@@ -59,12 +75,40 @@ public class PerformanceEvaluationService {
         }
     }
 
-    public void createPerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluation entity = dto.getPerformanceEvaluation();
-        entity.setEmployee(EmployeeDao.instance().findById(dto.getEmployeeId()));
-        entity.setEvaluationDate(new Date());
-        entity = performanceEvaluationDao.getEntityManager().merge(entity);
+    /**
+     * Create Self Evaluation
+     *
+     * @param dto
+     */
+    public void createPerformanceSelfEvaluation(PerformanceEvaluationSaveDto dto) {
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), OfficeSecurityService.instance().getCurrentUser());
         createQuestionComments(entity, dto.getComments());
+    }
+
+    protected PerformanceEvaluation getEvaluationForYear(String year, Employee emp) {
+        Date date;
+        try {
+            date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse(year);
+        } catch (ParseException ex) {
+            throw new RuntimeException(ex);
+        }
+        Date startDate = DateUtils.getFirstDayOfYear(date);
+        Date endDate = DateUtils.getLastDayOfYear(date);
+        TypedQuery<PerformanceEvaluation> query = performanceEvaluationDao.getEntityManager().createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + " where evaluationPeriodStartDate=:startDateParam and evaluationPeriodEndDate=:endDateParam and employee=:employeeParam", PerformanceEvaluation.class);
+        query.setParameter("startDateParam", startDate);
+        query.setParameter("endDateParam", endDate);
+        query.setParameter("employeeParam", emp);
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            PerformanceEvaluation peval = new PerformanceEvaluation();
+            peval.setEmployee(emp);
+            peval.setEvaluationPeriodStartDate(startDate);
+            peval.setEvaluationPeriodEndDate(endDate);
+            peval.setEvaluationDate(new Date());
+            peval.setType(EvaluationFrequencyType.Annual);
+            return performanceEvaluationDao.getEntityManager().merge(peval);
+        }
     }
 
     public List<QuestionDto> getQuestions(QuestionCategory category) {

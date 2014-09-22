@@ -11,7 +11,7 @@ package info.yalamanchili.office.client.profile.employee;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.employee.ReadAllPerformanceEvaluationPanel;
+import info.yalamanchili.office.client.employee.prefeval.ReadAllPerformanceEvaluationPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import info.yalamanchili.office.client.profile.statusreport.ReadAllStatusReportPanel;
 import java.util.logging.Logger;

@@ -66,6 +66,12 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
         PerformanceEvaluationService.instance().updatePerformanceEvaluation(dto);
     }
 
+    @PUT
+    @Path("/create-selfreview")
+    public void savePerformanceSelfEvaluation(PerformanceEvaluationSaveDto dto) {
+        PerformanceEvaluationService.instance().createPerformanceSelfEvaluation(dto);
+    }
+
     @GET
     @Path("/comments/{id}")
     public List<QuestionComment> getQuestionComments(@PathParam("id") Long id, @QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context) {

@@ -35,10 +35,22 @@ public class CreateQuestionCommentsWidget extends Composite {
     List<CreateQuestionCommentWidget> commentWidgets = new ArrayList<CreateQuestionCommentWidget>();
     protected QuestionCategory category;
     protected QuestionContext context;
+    protected boolean displayRating = true;
+    protected boolean useRichTextEditor = false;
 
     public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context) {
         this.category = category;
         this.context = context;
+        initWidget(captionPanel);
+        captionPanel.setCaptionHTML(category.name());
+        captionPanel.setContentWidget(panel);
+    }
+
+    public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context, boolean displayRating, boolean useRichTextEditor) {
+        this.category = category;
+        this.context = context;
+        this.displayRating = displayRating;
+        this.useRichTextEditor = useRichTextEditor;
         initWidget(captionPanel);
         captionPanel.setCaptionHTML(category.name());
         captionPanel.setContentWidget(panel);
@@ -68,13 +80,18 @@ public class CreateQuestionCommentsWidget extends Composite {
     protected void populateQuestion(JSONArray questions) {
         for (int i = 0; i < questions.size(); i++) {
             JSONObject obj = (JSONObject) questions.get(i);
-            CreateQuestionCommentWidget commentwidget = new CreateQuestionCommentWidget(obj);
+            CreateQuestionCommentWidget commentwidget;
+            if (useRichTextEditor) {
+                commentwidget = new CreateQuestionCommentWidget(obj, displayRating, useRichTextEditor);
+            } else {
+                commentwidget = new CreateQuestionCommentWidget(obj);
+            }
             commentWidgets.add(commentwidget);
             panel.add(commentwidget);
         }
     }
 
-    public JSONArray getValue() {
+    public JSONArray getValues() {
         JSONArray questionComments = new JSONArray();
         int i = 0;
         for (CreateQuestionCommentWidget widget : commentWidgets) {

@@ -15,7 +15,8 @@ public enum QuestionCategory {
 
     SKILL_AND_APTITUDE,
     ATTITUDE,
-    MANAGEMENT;
+    MANAGEMENT,
+    SELF;
 
     public static String[] names() {
         QuestionCategory[] values = values();

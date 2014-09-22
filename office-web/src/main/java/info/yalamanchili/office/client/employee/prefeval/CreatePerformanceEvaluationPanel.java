@@ -14,7 +14,6 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.employee.EvaluationFrequencyType;
 import java.util.logging.Logger;
 
 /**
