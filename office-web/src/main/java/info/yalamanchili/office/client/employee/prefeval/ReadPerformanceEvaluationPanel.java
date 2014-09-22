@@ -86,7 +86,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("managersComments", true, false, DataType.RICH_TEXT_AREA);
         addField("employeeComments", true, false, DataType.RICH_TEXT_AREA);
         addField("ceoComments", true, false, DataType.RICH_TEXT_AREA);
-        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SELF.name(), getQuestionCommentsUrl(QuestionCategory.SELF.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name())));
+        entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
