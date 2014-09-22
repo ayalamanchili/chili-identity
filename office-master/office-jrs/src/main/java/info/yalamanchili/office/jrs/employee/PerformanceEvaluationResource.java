@@ -54,6 +54,12 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
         return performanceEvaluationDao;
     }
 
+    @GET
+    @Path("/{employeeId}/{year}")
+    public PerformanceEvaluation getPerformanceEvaluation(@PathParam("employeeId") Long employeeId, @PathParam("year") String year) {
+        return PerformanceEvaluationService.instance().getEvaluationForYear(year, EmployeeDao.instance().findById(employeeId));
+    }
+
     @PUT
     @Path("/create")
     public void savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {

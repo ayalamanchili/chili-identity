@@ -24,6 +24,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreatePerformanceEvaluationPanel.class.getName());
     protected String employeeId;
+    protected String year;
 
     public enum CreatePerformanceEvaluationPanelType {
 
@@ -34,6 +35,14 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     public CreatePerformanceEvaluationPanel(String employeeId, CreatePerformanceEvaluationPanelType type) {
         super(CreateCompositeType.CREATE);
         this.employeeId = employeeId;
+        this.type = type;
+        initCreateComposite("PerformanceEvaluation", OfficeWelcome.constants);
+    }
+
+    public CreatePerformanceEvaluationPanel(String employeeId, String year, CreatePerformanceEvaluationPanelType type) {
+        super(CreateCompositeType.CREATE);
+        this.employeeId = employeeId;
+        this.year = year;
         this.type = type;
         initCreateComposite("PerformanceEvaluation", OfficeWelcome.constants);
     }
@@ -106,6 +115,10 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation";
+    }
+
+    protected String getDataUrl() {
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/" + employeeId + "/" + year;
     }
 
     public void validate() {

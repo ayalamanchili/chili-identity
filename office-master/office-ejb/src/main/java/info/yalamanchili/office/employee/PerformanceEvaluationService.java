@@ -85,7 +85,7 @@ public class PerformanceEvaluationService {
         createQuestionComments(entity, dto.getComments());
     }
 
-    protected PerformanceEvaluation getEvaluationForYear(String year, Employee emp) {
+    public PerformanceEvaluation getEvaluationForYear(String year, Employee emp) {
         Date date;
         try {
             date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse(year);
