@@ -94,6 +94,7 @@ public class MailUtils {
         } catch (UnknownHostException ex) {
             subject.append("UNKNOWN");
         }
+        subject.append(e.getMessage());
         email.setSubject(subject.toString());
         email.setBody(ExceptionUtils.getStackTrace(e));
         MessagingService.instance().sendEmail(email);
