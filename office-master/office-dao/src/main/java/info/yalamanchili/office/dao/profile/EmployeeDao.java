@@ -67,12 +67,6 @@ public class EmployeeDao extends CRUDDao<Employee> {
         Query findAllQuery = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " where user.enabled=true", entityCls);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
-        List<Employee> emp = new ArrayList<Employee>();
-        Collections.sort(emp, new Comparator<Employee>() {
-            public int compare(Employee one, Employee other) {
-                return one.getEmployeeType().getName().compareTo(other.getEmployeeType().getName());
-            }
-        });
         return findAllQuery.getResultList();
 
     }
