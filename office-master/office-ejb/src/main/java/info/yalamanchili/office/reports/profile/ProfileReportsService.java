@@ -36,17 +36,17 @@ public class ProfileReportsService {
 
     @Async
     @Transactional
-    public void generateEmployeBasicInfoReport(Employee currentEmp) {
+    public void generateEmployeBasicInfoReport(String email) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<EmployeeBasicInfoReportDto>();
         for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
             res.add(mapper.map(emp, EmployeeBasicInfoReportDto.class));
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), currentEmp.getPrimaryEmail().getEmail());
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()),email);
     }
 
     @Async
     @Transactional
-    public void generateEmployeClientInfoReport(Employee currentEmp) {
+    public void generateEmployeClientInfoReport(String email) {
         List<EmployeeClientInfoReportDto> res = new ArrayList<EmployeeClientInfoReportDto>();
         for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
             for (ClientInformation ci : emp.getClientInformations()) {
@@ -63,6 +63,6 @@ public class ProfileReportsService {
                 dto.setEndDate(ci.getEndDate());
             }
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), currentEmp.getPrimaryEmail().getEmail());
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 }

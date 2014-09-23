@@ -38,12 +38,12 @@ public class ProfileReportsResource {
     @GET
     @Path("/employee-basic-info-report")
     public void basicEmployeeInfoReport() {
-        profileReportsService.generateEmployeBasicInfoReport(OfficeSecurityService.instance().getCurrentUser());
+        profileReportsService.generateEmployeBasicInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @GET
     @Path("/employee-client-info-report")
     public void employeeclientInfoReport() {
-        profileReportsService.generateEmployeClientInfoReport(OfficeSecurityService.instance().getCurrentUser());
+        profileReportsService.generateEmployeClientInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }
