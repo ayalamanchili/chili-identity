@@ -52,8 +52,12 @@ public class ProfileReportsService {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
-                dto.setClientName(ci.getClient().getName());
-                dto.setVendorName(ci.getVendor().getName());
+                if (ci.getClient() != null) {
+                    dto.setClientName(ci.getClient().getName());
+                }
+                if (ci.getVendor() != null) {
+                    dto.setVendorName(ci.getVendor().getName());
+                }
                 dto.setBillingRate(ci.getBillingRate());
                 dto.setStartDate(ci.getStartDate());
                 dto.setEndDate(ci.getEndDate());
