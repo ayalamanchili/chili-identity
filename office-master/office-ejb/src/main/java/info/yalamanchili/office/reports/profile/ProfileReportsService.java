@@ -35,6 +35,7 @@ public class ProfileReportsService {
     protected Mapper mapper;
 
     @Async
+    @Transactional
     public void generateEmployeBasicInfoReport(Employee currentEmp) {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<EmployeeBasicInfoReportDto>();
         for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
