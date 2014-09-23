@@ -63,8 +63,9 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<Employee> query(int start, int limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.user.enabled=true order by emp.firstName ASC", entityCls);
+        Query findAllQuery = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.user.enabled=true order by upper(emp.firstName) ASC", entityCls);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
