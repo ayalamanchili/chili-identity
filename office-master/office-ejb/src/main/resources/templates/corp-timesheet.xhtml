@@ -65,12 +65,12 @@
                                     <tr>
                                         <th>Start Date</th>
                                         <td>:</td>
-                                        <td th:text="${entity.StartDate}" />
+                                       <td th:text="${#dates.format(entity.startDate, 'dd-MMM-yyyy')}" />
                                     </tr>
                                     <tr>
                                         <th>End Date</th>
                                         <td>:</td>
-                                        <td th:text="${entity.endDate}" />
+                                        <td th:text="${#dates.format(entity.endDate, 'dd-MMM-yyyy')}" />
                                     </tr>
                                     <tr>
                                         <th>Category</th>
