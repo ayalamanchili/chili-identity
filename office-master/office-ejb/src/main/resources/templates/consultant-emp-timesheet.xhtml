@@ -37,17 +37,17 @@
                                     <tr>
                                         <th> Requested Date </th>
                                         <td> :  </td>
-                                        <td th:text="${entity.CreatedTimeStamp}" />
+                                        <td th:text="${#dates.format(entity.CreatedTimeStamp , 'dd-MMM-yyyy')}" />
                                     </tr>
                                     <tr>
                                         <th>Start Date </th>
                                         <td> : </td>
-                                        <td th:text="${entity.StartDate}" />                                      
+                                        <td th:text="${#dates.format(entity.StartDate, 'dd-MMM-yyyy')}" />                                      
                                     </tr>
                                     <tr>
                                         <th> End Date </th>
                                         <td> :  </td>
-                                        <td th:text="${entity.endDate}" />                                                                              
+                                        <td th:text="${#dates.format(entity.endDate, 'dd-MMM-yyyy')}" />                                                                              
                                     </tr>
 
                                     <tr>

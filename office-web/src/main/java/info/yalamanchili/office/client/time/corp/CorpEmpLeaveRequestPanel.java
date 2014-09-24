@@ -17,6 +17,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
@@ -63,17 +64,17 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -114,10 +115,15 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
+        FloatField hourF = (FloatField) fields.get("hours");
         DateField startDateF = (DateField) fields.get("startDate");
         DateField endDateF = (DateField) fields.get("endDate");
         if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
             endDateF.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        if (hourF.getFloat() != null || hourF.getFloat() % 4 == 0) {
+            hourF.setMessage("Check if the intiger is multiple of 4");
             return false;
         }
         return true;
@@ -131,7 +137,6 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-timesheet/submit-leave-request";
     }
-
     MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
         @Override
         public void initTosSuggesBox() {
