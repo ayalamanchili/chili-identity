@@ -9,7 +9,6 @@
 package info.yalamanchili.office.client.employee.prefeval;
 
 import com.google.gwt.json.client.JSONArray;
-import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -23,7 +22,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.AbstractWizard;
 import info.yalamanchili.office.client.employee.AbstractWizard.AbstractStep;
 import info.yalamanchili.office.client.employee.prefeval.CreatePerformanceEvaluationPanel.CreatePerformanceEvaluationPanelType;
-import info.yalamanchili.office.client.employee.prefeval.CreateQuestionCommentsWidget;
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
 import java.util.logging.Logger;

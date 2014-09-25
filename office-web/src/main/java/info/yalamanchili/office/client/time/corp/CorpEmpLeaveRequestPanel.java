@@ -122,8 +122,8 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
             endDateF.setMessage("End Date must be equal to or after Start Date");
             return false;
         }
-        if (hourF.getFloat() != null || hourF.getFloat() % 4 == 0) {
-            hourF.setMessage("Check if the intiger is multiple of 4");
+        if (hourF.getFloat()%4!=0) {
+            hourF.setMessage("Leave request can only be applied for half or full days");
             return false;
         }
         return true;
