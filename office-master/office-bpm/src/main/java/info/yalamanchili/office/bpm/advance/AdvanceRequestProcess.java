@@ -104,7 +104,7 @@ public class AdvanceRequestProcess implements TaskListener {
 
     protected void assignAdvanceRequisitionTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        if (emp.getEmployeeType().equals("Employee")) {
+        if (emp.getEmployeeType().getName().equals("Corporate Employee")) {
             task.addCandidateUser(CompanyContactDao.instance().getReportsToContactForEmployee(emp).getEmployeeId());
         } else {
             task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
