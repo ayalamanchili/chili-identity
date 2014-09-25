@@ -45,8 +45,8 @@ public class ProfileReportsService {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }
             res.add(dto);
-            MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
         }
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-basic-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     @Async
