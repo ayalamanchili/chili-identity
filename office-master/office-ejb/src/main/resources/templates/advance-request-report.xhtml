@@ -33,7 +33,7 @@
                     <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                         <table>
                             <div> 
-                                <table>
+                                <table  width="100%">
                                     <tr>
                                         <th class="s1">Date of Request</th>
                                         <td>:</td>
@@ -69,14 +69,9 @@
                                         <td>:</td>
                                         <td class="underline"  th:text="${entity.status}" />
                                     </tr>
-                                    <tr>
-                                        <th class="s1">Notes</th>    
-                                        <td>:</td>
-                                        <td class="underline"  th:text="${entity.notes}" />
-                                    </tr>
                                 </table>
                             </div>
-                            <table th:if="${check != null}">
+                            <table th:if="${check != null}"  width="100%">
                                 <thead>
                                     <tr>
                                         <th>Check </th>
@@ -120,7 +115,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <table th:if="${bankAccount != null}">
+                            <table th:if="${bankAccount != null}"  width="100%">
                                 <thead>
                                     <tr>
                                         <th class="s1">Account Number </th>
@@ -197,23 +192,19 @@
                             <tr>
                                 <th class="s1">Advance Approved for</th>
                                 <td>:</td>
-                                <td th:text="${entity.amount}" />
-
+                                <td><span th:inline="text">$ [[${#numbers.formatDecimal(entity.amount, 0, 'COMMA', 2, 'POINT')}]]</span></td>
                             </tr>
                             <tr>
                                 <th class="s1">Approver Comments</th>
                                 <td>:</td>
-                                <td th:text="${entity.notes}" />
                             </tr>
                             <tr>
                                 <th class="s1">Approver Signature</th>
                                 <td>:</td>
-                            <u>    <!--<td th:text="${entity.approvedBy}" />--></u>
                             </tr>
                             <tr>
                                 <th class="s1">Prepared  Accounted by</th>  
                                 <td>:</td>
-                                <td th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}" />
                             </tr>
                             <tr>
                                 <th class="s1">Date</th>  
@@ -223,7 +214,6 @@
                             <tr>
                                 <th class="s1">Paid Date</th>  
                                 <td>:</td>
-                                <td th:text="${entity.neededBy}" />
                             </tr>
 
                         </table>
