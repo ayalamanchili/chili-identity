@@ -75,7 +75,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             assignEntityValueFromField("evaluationPeriodStartDate", entity);
             assignEntityValueFromField("evaluationPeriodEndDate", entity);
             assignEntityValueFromField("type", entity);
-            assignEntityValueFromField("rating", entity);
+            assignEntityValueFromField("evaluationFYYear", entity);
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             assignEntityValueFromField("keyAccomplishments", entity);
@@ -115,8 +115,8 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         if (CreatePerformanceEvaluationPanelType.Start.equals(type)) {
             addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD);
             addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
+            addEnumField("evaluationFYYear", false, false, SelectYearWidget.yearValuesArray);
             addEnumField("type", false, false, EvaluationFrequencyType.names());
-            addField("rating", false, true, DataType.INTEGER_FIELD);
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);

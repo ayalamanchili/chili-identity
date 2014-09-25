@@ -22,7 +22,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 public class SelectYearWidget extends ALComposite {
 
     protected FlowPanel panel = new FlowPanel();
-    String[] yearValuesArray = new String[]{"2012", "2013", "2014", "2015", "2016", "2017", "2018"};
+    public static String[] yearValuesArray = new String[]{"2012", "2013", "2014", "2015", "2016", "2017", "2018"};
     protected EnumField yearField = new EnumField(OfficeWelcome.constants, "year", "PerformanceEvaluation",
             false, false, yearValuesArray, Alignment.HORIZONTAL);
 

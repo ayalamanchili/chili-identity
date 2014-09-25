@@ -151,6 +151,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void onLoad() {
+            widget.loadData();
         }
 
         @Override
