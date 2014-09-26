@@ -7,6 +7,8 @@
  */
 package info.yalamanchili.office.client.employee.prefeval;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -16,6 +18,7 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -27,7 +30,7 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
+public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadAllPerformanceEvaluationPanel.class.getName());
     public static ReadAllPerformanceEvaluationPanel instance;
@@ -102,9 +105,12 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Evaluation Fiscal Year"));
-        table.setText(0, 2, getKeyValue("Rating"));
-        table.setText(0, 3, getKeyValue("Print"));
+        table.setText(0, 1, "Options");
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            table.setText(0, 2, getKeyValue("Evaluation Fiscal Year"));
+        }
+        table.setText(0, 3, getKeyValue("Rating"));
+        table.setText(0, 4, getKeyValue("Print"));
     }
 
     @Override
@@ -112,11 +118,43 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "evaluationFYYear"));
-            table.setText(i, 2, JSONUtils.toString(entity, "rating"));
+            if (enableCreateManagerReview(entity)) {
+                ClickableLink managerReviewL = new ClickableLink("Create Manager Review");
+                managerReviewL.setTitle(JSONUtils.toString(entity, "evaluationFYYear"));
+                managerReviewL.addClickHandler(this);
+                table.setWidget(i, 1, managerReviewL);
+            }
+            table.setText(i, 2, JSONUtils.toString(entity, "evaluationFYYear"));
+            table.setText(i, 3, JSONUtils.toString(entity, "rating"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 3, reportL);
+            table.setWidget(i, 4, reportL);
         }
+    }
+
+    protected boolean enableCreateManagerReview(JSONObject entity) {
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource() instanceof ClickableLink) {
+            ClickableLink link = (ClickableLink) event.getSource();
+            if (link.getText().contains("Manager")) {
+                createManagerReview(link.getTitle());
+            }
+        } else {
+            super.onClick(event);
+        }
+    }
+
+    protected void createManagerReview(String year) {
+        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+        logger.info("year" + year);
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(TreeEmployeePanel.instance().getEntityId(), year));
     }
 
     @Override

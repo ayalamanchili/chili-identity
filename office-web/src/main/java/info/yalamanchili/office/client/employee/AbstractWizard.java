@@ -39,11 +39,15 @@ public abstract class AbstractWizard extends ALComposite implements ClickHandler
     protected Button previousB = new Button("Previous");
 
     public AbstractWizard() {
+
+    }
+
+    protected void initWizard() {
         initSteps();
         currentStep = steps.get(0);
-        currentStep.onLoad();
         currentStepNumber = 0;
         init(captionPanel);
+        currentStep.onLoad();
     }
 
     protected abstract void initSteps();

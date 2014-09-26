@@ -34,14 +34,30 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
     private static Logger logger = Logger.getLogger(PerformanceEvaluationWizard.class.getName());
     protected String employeeId;
+    protected String year;
     protected CreatePerformanceEvaluationStep perfEvalStartStep;
     protected CreatePerformanceEvaluationStep perfEvalStartEnd;
     CreateQuestionCommentsWidgetStep skillQuestionsStep;
     CreateQuestionCommentsWidgetStep attitudeQuestionsStep;
     CreateQuestionCommentsWidgetStep managementQuestionsStep;
 
+    private static PerformanceEvaluationWizard instance;
+
+    public static PerformanceEvaluationWizard instance() {
+        return instance;
+    }
+
     public PerformanceEvaluationWizard(String employeeId) {
+        instance = this;
         this.employeeId = employeeId;
+        initWizard();
+    }
+
+    public PerformanceEvaluationWizard(String employeeId, String year) {
+        instance = this;
+        this.employeeId = employeeId;
+        this.year = year;
+        initWizard();
     }
 
     @Override
@@ -69,10 +85,10 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         public CreatePerformanceEvaluationPanel getWidget() {
             if (widget == null) {
                 if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name())) {
-                    widget = new CreatePerformanceEvaluationPanel(employeeId, CreatePerformanceEvaluationPanelType.Start);
+                    widget = new CreatePerformanceEvaluationPanel(CreatePerformanceEvaluationPanelType.Start);
                 }
                 if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
-                    widget = new CreatePerformanceEvaluationPanel(employeeId, CreatePerformanceEvaluationPanelType.End);
+                    widget = new CreatePerformanceEvaluationPanel(CreatePerformanceEvaluationPanelType.End);
                 }
             }
             return widget;

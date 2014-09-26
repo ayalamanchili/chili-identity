@@ -23,49 +23,43 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class CreatePerformanceEvaluationPanel extends CreateComposite {
-    
+
     private static Logger logger = Logger.getLogger(CreatePerformanceEvaluationPanel.class.getName());
-    protected String employeeId;
-    protected String year;
-    
+
     public enum CreatePerformanceEvaluationPanelType {
-        
+
         Start, End
     }
     protected CreatePerformanceEvaluationPanelType type;
-    
-    public CreatePerformanceEvaluationPanel(String employeeId, CreatePerformanceEvaluationPanelType type) {
+
+    public CreatePerformanceEvaluationPanel(CreatePerformanceEvaluationPanelType type) {
         super(CreateCompositeType.CREATE);
-        this.employeeId = employeeId;
         this.type = type;
         initCreateComposite("PerformanceEvaluation", OfficeWelcome.constants);
     }
-    
-    public CreatePerformanceEvaluationPanel(String employeeId, String year, CreatePerformanceEvaluationPanelType type) {
-        super(CreateCompositeType.CREATE);
-        this.employeeId = employeeId;
-        this.year = year;
-        this.type = type;
-        initCreateComposite("PerformanceEvaluation", OfficeWelcome.constants);
-    }
-    
+
     protected void loadData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDataUrl(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        logger.info("read=resp" + arg0);
-                        if (arg0 != null) {
-                            populateFieldsFromEntity(JSONParser.parseLenient(arg0).isObject());
+        if (CreatePerformanceEvaluationPanelType.Start.equals(type) && PerformanceEvaluationWizard.instance().year != null) {
+            HttpService.HttpServiceAsync.instance().doGet(getDataUrl(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            logger.info("read=resp" + arg0);
+                            if (arg0 != null) {
+                                populateFieldsFromEntity(JSONParser.parseLenient(arg0).isObject());
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
-    
+
     protected void populateFieldsFromEntity(JSONObject entity) {
-        
+        assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("evaluationFYYear", entity, DataType.ENUM_FIELD);
     }
-    
+
     @Override
     public JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
@@ -87,29 +81,29 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         logger.info("ddd" + entity);
         return entity;
     }
-    
+
     @Override
     protected void createButtonClicked() {
-        
+
     }
-    
+
     @Override
     protected void addButtonClicked() {
     }
-    
+
     @Override
     protected void postCreateSuccess(String result) {
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
         create.setVisible(false);
     }
-    
+
     @Override
     protected void addWidgets() {
         if (CreatePerformanceEvaluationPanelType.Start.equals(type)) {
@@ -126,34 +120,20 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
         }
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation";
     }
-    
+
     protected String getDataUrl() {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation/read/" + employeeId + "/" + year;
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/read/" + PerformanceEvaluationWizard.instance().employeeId + "/" + PerformanceEvaluationWizard.instance().year;
     }
-    
-    public void validate() {
-        HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
-                    
-                    @Override
-                    public void onSuccess(String arg0) {
-                    }
-                });
-    }
-    
+
     protected String getValidateUrl() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation/validate";
     }
