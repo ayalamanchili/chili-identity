@@ -59,7 +59,7 @@ public class PerformanceEvaluationService {
      * @param dto
      */
     public void createPerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), EmployeeDao.instance().findById(dto.getEmployeeId()));
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYear(), EmployeeDao.instance().findById(dto.getEmployeeId()));
         createQuestionComments(entity, dto.getComments());
     }
 

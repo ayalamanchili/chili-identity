@@ -172,24 +172,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void validate() {
-            if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
-                nextClicked();
-                return;
-            }
-            getWidget().clearMessages();
-            HttpService.HttpServiceAsync.instance().doPut(getValidateUrl(), getWidget().populateEntityFromFields().toString(), OfficeWelcome.instance().getHeaders(), true,
-                    new AsyncCallback<String>() {
-                        @Override
-                        public void onFailure(Throwable res) {
-                            getWidget().handleErrorResponse(res);
-                        }
-
-                        @Override
-                        public void onSuccess(String res) {
-                            getWidget().clearMessages();
-                            nextClicked();
-                        }
-                    });
+            nextClicked();
         }
 
         protected String getValidateUrl() {

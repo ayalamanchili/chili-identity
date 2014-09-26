@@ -10,10 +10,10 @@ package info.yalamanchili.office.client.employee.prefeval;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
@@ -107,10 +107,15 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         if (CreatePerformanceEvaluationPanelType.Start.equals(type)) {
-            addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD);
-            addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
-            addEnumField("evaluationFYYear", false, false, SelectYearWidget.yearValuesArray);
-            addEnumField("type", false, false, EvaluationFrequencyType.names());
+
+            addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD);
+            addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD);
+            if (PerformanceEvaluationWizard.instance().year == null) {
+                addEnumField("evaluationFYYear", false, false, SelectYearWidget.yearValuesArray);
+            } else {
+                addEnumField("evaluationFYYear", true, false, SelectYearWidget.yearValuesArray);
+            }
+            addEnumField("type", true, false, EvaluationFrequencyType.names());
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
