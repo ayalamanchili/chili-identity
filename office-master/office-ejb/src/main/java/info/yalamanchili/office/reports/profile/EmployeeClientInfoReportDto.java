@@ -24,7 +24,6 @@ public class EmployeeClientInfoReportDto implements Serializable {
     protected String employeeName;
     protected String clientName;
     protected String vendorName;
-    protected BigDecimal billingRate;
     protected Date startDate;
     protected Date endDate;
 
@@ -50,14 +49,6 @@ public class EmployeeClientInfoReportDto implements Serializable {
 
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
-    }
-
-    public BigDecimal getBillingRate() {
-        return billingRate;
-    }
-
-    public void setBillingRate(BigDecimal billingRate) {
-        this.billingRate = billingRate;
     }
 
     public Date getStartDate() {

@@ -63,7 +63,6 @@ public class ProfileReportsService {
                 if (ci.getVendor() != null) {
                     dto.setVendorName(ci.getVendor().getName());
                 }
-                dto.setBillingRate(ci.getBillingRate());
                 dto.setStartDate(ci.getStartDate());
                 dto.setEndDate(ci.getEndDate());
                 res.add(dto);
