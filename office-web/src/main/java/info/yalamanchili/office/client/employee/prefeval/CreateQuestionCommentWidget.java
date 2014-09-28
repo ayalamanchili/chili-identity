@@ -63,19 +63,18 @@ public class CreateQuestionCommentWidget extends ALComposite {
         if (useRichTextEditor) {
             if (!Strings.isNullOrEmpty(((RichTextField) commentTB).getValue())) {
                 entity.put("comment", new JSONString(((RichTextField) commentTB).getValue()));
-                if (displayRating && ratingWidget.getRating() > 0) {
-                    entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
-                }
+            }
+            if (displayRating && ratingWidget.getRating() > 0) {
+                entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
             }
         } else {
             if (!Strings.isNullOrEmpty(((TextAreaField) commentTB).getValue())) {
                 entity.put("comment", new JSONString(((TextAreaField) commentTB).getValue()));
-                if (displayRating && ratingWidget.getRating() > 0) {
-                    entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
-                }
+            }
+            if (displayRating && ratingWidget.getRating() > 0) {
+                entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
             }
         }
-        logger.info("aaaaaaaaaa" + entity);
         return entity;
     }
 

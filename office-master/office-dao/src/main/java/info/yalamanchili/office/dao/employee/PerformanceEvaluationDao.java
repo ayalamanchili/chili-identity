@@ -39,10 +39,10 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         return em;
     }
 
-    @Override
-    public PerformanceEvaluation save(PerformanceEvaluation entity) {
-        return em.merge(entity);
-    }
+//    @Override
+//    public PerformanceEvaluation save(PerformanceEvaluation entity) {
+//        return em.merge(entity);
+//    }
 
     public List<PerformanceEvaluation> getPerformanceEvaluationsForEmp(Employee emp) {
         TypedQuery<PerformanceEvaluation> query = em.createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", PerformanceEvaluation.class);

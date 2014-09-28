@@ -11,6 +11,7 @@ package info.yalamanchili.office.employee;
 import info.chili.commons.DateUtils;
 import info.chili.commons.PDFUtils;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -38,6 +39,7 @@ import java.util.Locale;
 import java.util.Map;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Response;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -53,14 +55,25 @@ public class PerformanceEvaluationService {
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
 
-    /**
-     * Create Manager Evaluation
-     *
-     * @param dto
-     */
-    public void createPerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYear(), EmployeeDao.instance().findById(dto.getEmployeeId()));
+    public void createPerformanceEvaluation(Employee employee, PerformanceEvaluationSaveDto dto) {
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
         createQuestionComments(entity, dto.getComments());
+
+    }
+
+    public void saveAssociateReview(Employee employee, PerformanceEvaluationSaveDto dto, Boolean submitForApproval) {
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
+        createQuestionComments(entity, dto.getComments());
+        if (submitForApproval) {
+            startAssociatePerformanceEvaluationProcess(entity, employee);
+        }
+    }
+
+    protected void startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entity", entity);
+        vars.put("currentEmployee", emp);
+        OfficeBPMService.instance().startProcess("assoc_emp_perf_eval_process", vars);
     }
 
     public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
@@ -81,11 +94,11 @@ public class PerformanceEvaluationService {
      * @param dto
      */
     public void createPerformanceSelfEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), OfficeSecurityService.instance().getCurrentUser());
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), OfficeSecurityService.instance().getCurrentUser(), dto);
         createQuestionComments(entity, dto.getComments());
     }
 
-    public PerformanceEvaluation getEvaluationForYear(String year, Employee emp) {
+    public PerformanceEvaluation getEvaluationForYear(String year, Employee emp, PerformanceEvaluationSaveDto dto) {
         Date date;
         try {
             date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse(year);
@@ -100,8 +113,14 @@ public class PerformanceEvaluationService {
         query.setParameter("employeeParam", emp);
         if (query.getResultList().size() > 0) {
             return query.getResultList().get(0);
-        } else {
-            PerformanceEvaluation peval = new PerformanceEvaluation();
+        } else if (dto != null) {
+            PerformanceEvaluation peval;
+            if (dto.getPerformanceEvaluation() != null) {
+                Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+                peval = mapper.map(dto.getPerformanceEvaluation(), PerformanceEvaluation.class);
+            } else {
+                peval = new PerformanceEvaluation();
+            }
             peval.setEmployee(emp);
             peval.setEvaluationPeriodStartDate(startDate);
             peval.setEvaluationPeriodEndDate(endDate);
@@ -109,6 +128,7 @@ public class PerformanceEvaluationService {
             peval.setType(EvaluationFrequencyType.Annual);
             return performanceEvaluationDao.getEntityManager().merge(peval);
         }
+        return null;
     }
 
     public List<QuestionDto> getQuestions(QuestionCategory category) {
@@ -116,10 +136,17 @@ public class PerformanceEvaluationService {
     }
 
     public void createQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
+        CommentDao commentDao = CommentDao.instance();
         for (QuestionComment comment : comments) {
             Question qes = QuestionDao.instance().findById(comment.getId());
             perfEval.addQuestion(qes);
-            CommentDao.instance().addComment(comment.getComment(), comment.getRating(), perfEval, qes);
+            Comment cmt = commentDao.find(perfEval, qes);
+            if (cmt == null) {
+                commentDao.addComment(comment.getComment(), comment.getRating(), perfEval, qes);
+            } else {
+                cmt.setComment(comment.getComment());
+                cmt.setRating(comment.getRating());
+            }
         }
     }
 

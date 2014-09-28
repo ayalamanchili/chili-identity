@@ -10,7 +10,6 @@ package info.yalamanchili.office.client.employee.prefeval;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.rpc.HttpService;
@@ -33,10 +32,18 @@ import java.util.logging.Logger;
 public class PerformanceEvaluationWizard extends AbstractWizard {
 
     private static Logger logger = Logger.getLogger(PerformanceEvaluationWizard.class.getName());
+
+    public enum PerformanceEvaluationWizardType {
+
+        SELF_MANAGER, MANAGER;
+    }
+
+    protected PerformanceEvaluationWizardType type;
     protected String employeeId;
     protected String year;
     protected CreatePerformanceEvaluationStep perfEvalStartStep;
-    protected CreatePerformanceEvaluationStep perfEvalStartEnd;
+    protected CreatePerformanceEvaluationStep perfEvalEndStep;
+    CreateQuestionCommentsWidgetStep selfReviewQuestionsStep;
     CreateQuestionCommentsWidgetStep skillQuestionsStep;
     CreateQuestionCommentsWidgetStep attitudeQuestionsStep;
     CreateQuestionCommentsWidgetStep managementQuestionsStep;
@@ -47,9 +54,16 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         return instance;
     }
 
-    public PerformanceEvaluationWizard(String employeeId) {
+    public PerformanceEvaluationWizard(PerformanceEvaluationWizardType type) {
+        instance = this;
+        this.type = type;
+        initWizard();
+    }
+
+    public PerformanceEvaluationWizard(PerformanceEvaluationWizardType type, String employeeId) {
         instance = this;
         this.employeeId = employeeId;
+        this.type = type;
         initWizard();
     }
 
@@ -63,16 +77,22 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
     @Override
     protected void initSteps() {
         perfEvalStartStep = new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.Start.name(), CreatePerformanceEvaluationPanelType.Start.name());
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+            selfReviewQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.SELF_EVALUATION.name(), QuestionCategory.SELF_EVALUATION.name());
+        }
         skillQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionCategory.SKILL_AND_APTITUDE.name());
         attitudeQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.ATTITUDE.name(), QuestionCategory.ATTITUDE.name());
         managementQuestionsStep = new CreateQuestionCommentsWidgetStep(QuestionCategory.MANAGEMENT.name(), QuestionCategory.MANAGEMENT.name());
-        perfEvalStartEnd = new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.End.name(), CreatePerformanceEvaluationPanelType.End.name());
+        perfEvalEndStep = new CreatePerformanceEvaluationStep(CreatePerformanceEvaluationPanelType.End.name(), CreatePerformanceEvaluationPanelType.End.name());
 
         steps.add(perfEvalStartStep);
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+            steps.add(selfReviewQuestionsStep);
+        }
         steps.add(skillQuestionsStep);
         steps.add(attitudeQuestionsStep);
         steps.add(managementQuestionsStep);
-        steps.add(perfEvalStartEnd);
+        steps.add(perfEvalEndStep);
     }
 
     public class CreatePerformanceEvaluationStep extends AbstractStep<CreatePerformanceEvaluationPanel> {
@@ -126,20 +146,28 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
 
         protected String getCompleteUrl() {
-            return OfficeWelcome.constants.root_url() + "performance-evaluation/create";
+            if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+                return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + perfEvalEndStep.getWidget().getSubmitForApproval();
+            } else {
+                return OfficeWelcome.constants.root_url() + "performance-evaluation/create";
+            }
         }
 
         protected JSONObject populateEntity() {
             JSONObject entity = new JSONObject();
-            entity.put("employeeId", new JSONString(employeeId));
             JSONObject perfEvalStartObj = perfEvalStartStep.getWidget().populateEntityFromFields();
-            JSONObject perfEvalEndObj = perfEvalStartEnd.getWidget().populateEntityFromFields();
+            JSONObject perfEvalEndObj = perfEvalEndStep.getWidget().populateEntityFromFields();
             entity.put("performanceEvaluation", JSONUtils.merge(perfEvalStartObj, perfEvalEndObj));
+            JSONArray selfReviewQuestions = selfReviewQuestionsStep.getWidget().getValues();
             JSONArray skillQuestions = skillQuestionsStep.getWidget().getValues();
             JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValues();
             JSONArray managementQuestions = managementQuestionsStep.getWidget().getValues();
             JSONArray questionComments = new JSONArray();
             int x = 0;
+            for (int i = 0; i < selfReviewQuestions.size(); i++) {
+                questionComments.set(x, selfReviewQuestions.get(i));
+                x++;
+            }
             for (int i = 0; i < attitudeQuestions.size(); i++) {
                 questionComments.set(x, attitudeQuestions.get(i));
                 x++;
@@ -172,6 +200,10 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void validate() {
+            getWidget().clearMessages();
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name()) && perfEvalStartStep.getWidget().getYearField().getValue() == null) {
+                perfEvalStartStep.getWidget().getYearField().setMessage("Select a Year");
+            }
             nextClicked();
         }
 
@@ -189,6 +221,9 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         public CreateQuestionCommentsWidget getWidget() {
             if (widget == null) {
+                if (stepId.equals(QuestionCategory.SELF_EVALUATION.name())) {
+                    widget = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF);
+                }
                 if (stepId.equals(QuestionCategory.SKILL_AND_APTITUDE.name())) {
                     widget = new CreateQuestionCommentsWidget(QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER);
                 }

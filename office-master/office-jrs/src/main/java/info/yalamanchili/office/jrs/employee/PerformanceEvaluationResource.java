@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
+import info.chili.security.SecurityService;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -57,13 +58,21 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     @GET
     @Path("read/{employeeId}/{year}")
     public PerformanceEvaluation getPerformanceEvaluation(@PathParam("employeeId") Long employeeId, @PathParam("year") String year) {
-        return PerformanceEvaluationService.instance().getEvaluationForYear(year, EmployeeDao.instance().findById(employeeId));
+        return PerformanceEvaluationService.instance().getEvaluationForYear(year, EmployeeDao.instance().findById(employeeId), null);
+    }
+
+    @PUT
+    @Path("/associate/save-review")
+    public void createAssociateReview(PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        PerformanceEvaluationService.instance().saveAssociateReview(emp, dto, submitForApproval);
     }
 
     @PUT
     @Path("/create")
-    public void savePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluationService.instance().createPerformanceEvaluation(dto);
+    public void savePerformanceEvaluation(@QueryParam("employeeId") Long employeeId, PerformanceEvaluationSaveDto dto) {
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        PerformanceEvaluationService.instance().createPerformanceEvaluation(emp, dto);
     }
 
     @PUT

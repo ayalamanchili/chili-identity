@@ -13,6 +13,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
@@ -59,6 +60,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("rating", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("stage", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
@@ -76,11 +78,12 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("evaluationDate", false, false, DataType.DATE_FIELD);
-        addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD);
-        addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
-        addEnumField("type", false, true, EvaluationFrequencyType.names());
-        addField("rating", false, true, DataType.INTEGER_FIELD);
+        addField("evaluationDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("type", false, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
+        addField("rating", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("stage", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
         addField("keyAccomplishments", true, false, DataType.RICH_TEXT_AREA);
         addField("areasNeedImprovement", true, false, DataType.RICH_TEXT_AREA);
         addField("managersComments", true, false, DataType.RICH_TEXT_AREA);
@@ -90,6 +93,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
+        alignFields();
     }
 
     protected String getQuestionCommentsUrl(String category, String context) {

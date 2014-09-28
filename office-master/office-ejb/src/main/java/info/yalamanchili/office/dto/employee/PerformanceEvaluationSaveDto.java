@@ -12,7 +12,6 @@ import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import java.io.Serializable;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -26,10 +25,6 @@ import javax.xml.bind.annotation.XmlType;
 public class PerformanceEvaluationSaveDto implements Serializable {
 
     protected String year;
-    /**
-     *
-     */
-    protected Long employeeId;
     /**
      *
      */
@@ -49,14 +44,6 @@ public class PerformanceEvaluationSaveDto implements Serializable {
 
     public void setYear(String year) {
         this.year = year;
-    }
-
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
     }
 
     @XmlElement

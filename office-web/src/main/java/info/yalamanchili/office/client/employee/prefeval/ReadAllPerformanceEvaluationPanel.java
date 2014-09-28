@@ -23,6 +23,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -106,11 +107,10 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, "Options");
-        if (TabPanel.instance().myOfficePanel.isVisible()) {
-            table.setText(0, 2, getKeyValue("Evaluation Fiscal Year"));
-        }
+        table.setText(0, 2, getKeyValue("Evaluation Fiscal Year"));
         table.setText(0, 3, getKeyValue("Rating"));
-        table.setText(0, 4, getKeyValue("Print"));
+        table.setText(0, 4, getKeyValue("Stage"));
+        table.setText(0, 5, getKeyValue("Print"));
     }
 
     @Override
@@ -126,8 +126,9 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
             }
             table.setText(i, 2, JSONUtils.toString(entity, "evaluationFYYear"));
             table.setText(i, 3, JSONUtils.toString(entity, "rating"));
+            table.setText(i, 4, JSONUtils.toString(entity, "stage"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 4, reportL);
+            table.setWidget(i, 5, reportL);
         }
     }
 
@@ -198,12 +199,17 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             //Create perf eval
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(TreeEmployeePanel.instance().getEntityId()));
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(PerformanceEvaluationWizardType.MANAGER, TreeEmployeePanel.instance().getEntityId()));
         }
         if (TabPanel.instance().homePanel.isVisible()) {
-            //Create self reivew
-            TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new PeformanceSelfEvaluationPanel());
+            if (Auth.isCorporateEmployee()) {
+                TabPanel.instance().homePanel.entityPanel.clear();
+                TabPanel.instance().homePanel.entityPanel.add(new PeformanceSelfEvaluationPanel());
+            } else {
+                TabPanel.instance().homePanel.entityPanel.clear();
+                TabPanel.instance().homePanel.entityPanel.add(new PerformanceEvaluationWizard(PerformanceEvaluationWizardType.SELF_MANAGER, OfficeWelcome.instance().getCurrentUserEmpId()));
+            }
+
         }
 
     }

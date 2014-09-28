@@ -12,6 +12,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
@@ -104,18 +105,27 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         create.setVisible(false);
     }
 
+    public EnumField getYearField() {
+        return ((EnumField) fields.get("evaluationFYYear"));
+    }
+
+    public String getSubmitForApproval() {
+        return ((BooleanField) fields.get("submitForApproval")).getValue().toString();
+    }
+
     @Override
     protected void addWidgets() {
         if (CreatePerformanceEvaluationPanelType.Start.equals(type)) {
-
-            addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD);
-            addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD);
-            if (PerformanceEvaluationWizard.instance().year == null) {
-                addEnumField("evaluationFYYear", false, false, SelectYearWidget.yearValuesArray);
-            } else {
+            if (PerformanceEvaluationWizard.instance().year != null) {
+                //Manager review
+                addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD);
+                addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD);
                 addEnumField("evaluationFYYear", true, false, SelectYearWidget.yearValuesArray);
+                addEnumField("type", true, false, EvaluationFrequencyType.names());
+            } else {
+                //Create new review
+                addEnumField("evaluationFYYear", false, false, SelectYearWidget.yearValuesArray);
             }
-            addEnumField("type", true, false, EvaluationFrequencyType.names());
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
@@ -123,6 +133,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
             addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
             addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
+            addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
         }
     }
 
