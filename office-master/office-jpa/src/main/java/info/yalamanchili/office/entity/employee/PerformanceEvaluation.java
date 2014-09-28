@@ -67,7 +67,6 @@ public class PerformanceEvaluation extends AbstractEntity {
     /**
      *
      */
-//    @NotNull(message = "{rating.not.empty.msg}")
     protected Double rating;
     /**
      *
@@ -83,7 +82,7 @@ public class PerformanceEvaluation extends AbstractEntity {
      *
      */
     @Lob
-    protected String ManagersComments;
+    protected String managerComments;
     /**
      *
      */
@@ -106,6 +105,22 @@ public class PerformanceEvaluation extends AbstractEntity {
      */
     @ManyToMany
     protected Set<Question> questions;
+
+    /**
+     *
+     */
+    protected String approvedBy;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date approvedDate;
+
+    /**
+     * stage
+     */
+    @Enumerated(EnumType.STRING)
+    protected PerformanceEvaluationStage stage;
 
     public PerformanceEvaluation() {
     }
@@ -167,11 +182,11 @@ public class PerformanceEvaluation extends AbstractEntity {
     }
 
     public String getManagersComments() {
-        return ManagersComments;
+        return managerComments;
     }
 
     public void setManagersComments(String ManagersComments) {
-        this.ManagersComments = ManagersComments;
+        this.managerComments = ManagersComments;
     }
 
     public String getEmployeeComments() {
@@ -218,10 +233,39 @@ public class PerformanceEvaluation extends AbstractEntity {
         getQuestions().add(entity);
     }
 
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
+    }
+
+    public PerformanceEvaluationStage getStage() {
+        return stage;
+    }
+
+    public void setStage(PerformanceEvaluationStage stage) {
+        this.stage = stage;
+    }
+
     protected String evaluationFYYear;
 
     public void setEvaluationFYYear(String evaluationFYYear) {
         this.evaluationFYYear = evaluationFYYear;
+    }
+
+    @Transient
+    public String getEvaluationFYYearString() {
+        return evaluationFYYear;
     }
 
     @Transient

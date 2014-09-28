@@ -83,7 +83,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("type", false, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
         addField("rating", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addField("stage", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
+        addEnumField("stage", false, true,PerformanceEvaluationStage.names(), Alignment.HORIZONTAL);
         addField("keyAccomplishments", true, false, DataType.RICH_TEXT_AREA);
         addField("areasNeedImprovement", true, false, DataType.RICH_TEXT_AREA);
         addField("managersComments", true, false, DataType.RICH_TEXT_AREA);

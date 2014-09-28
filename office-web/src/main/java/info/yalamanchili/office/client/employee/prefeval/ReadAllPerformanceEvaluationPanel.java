@@ -87,8 +87,15 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(getEntity(entityId)));
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(getEntity(entityId)));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(getEntity(entityId)));
+        }
+
     }
 
     @Override
@@ -163,7 +170,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
         if (Auth.isAdmin() || Auth.isHR()) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         }
     }
 
