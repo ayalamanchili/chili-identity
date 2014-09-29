@@ -25,12 +25,12 @@
          <addColumn catalogName="office"
                    schemaName="public"
                    tableName="PerformanceEvaluation">
-            <column name="approvedDate" type="varchar(255)"/>
+            <column name="approvedDate" type="date"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="PerformanceEvaluation_aud">
-            <column name="approvedDate" type="varchar(255)"/>
+            <column name="approvedbyDate" type="date"/>
         </addColumn>
          <addColumn catalogName="office"
                    schemaName="public"
