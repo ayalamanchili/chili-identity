@@ -27,7 +27,6 @@ public class UpdateAllQuestionCommentsPanel extends ReadAllQuestionCommentsPanel
     
     @Override
     protected void populateData(JSONArray questions) {
-        logger.info("popuakltea" + questions);
         for (int i = 0; i < questions.size(); i++) {
             UpdateQuestionCommentPanel updatePanel = new UpdateQuestionCommentPanel(questions.get(i).isObject());
             updatePanels.add(updatePanel);

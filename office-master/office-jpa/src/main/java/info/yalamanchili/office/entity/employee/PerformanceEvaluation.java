@@ -26,6 +26,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -36,6 +37,7 @@ import org.hibernate.search.annotations.Indexed;
  */
 @Indexed
 @XmlRootElement
+@XmlType
 @Entity
 @Audited
 public class PerformanceEvaluation extends AbstractEntity {
@@ -257,6 +259,7 @@ public class PerformanceEvaluation extends AbstractEntity {
         this.stage = stage;
     }
 
+    @Transient
     protected String evaluationFYYear;
 
     public void setEvaluationFYYear(String evaluationFYYear) {
@@ -268,7 +271,6 @@ public class PerformanceEvaluation extends AbstractEntity {
         return evaluationFYYear;
     }
 
-    @Transient
     public String getEvaluationFYYear() {
         return DateUtils.getYearFromDate(getEvaluationPeriodStartDate()).toString();
     }

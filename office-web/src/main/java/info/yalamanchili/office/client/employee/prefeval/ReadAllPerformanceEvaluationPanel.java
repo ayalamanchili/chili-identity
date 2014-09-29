@@ -89,11 +89,11 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     public void updateClicked(String entityId) {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(getEntity(entityId)));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(PerformanceEvaluationWizardType.MANAGER, getEntity(entityId)));
         }
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(getEntity(entityId)));
+            TabPanel.instance().homePanel.entityPanel.add(new UpdatePerformanceEvaluationPanel(PerformanceEvaluationWizardType.SELF_MANAGER, getEntity(entityId)));
         }
 
     }

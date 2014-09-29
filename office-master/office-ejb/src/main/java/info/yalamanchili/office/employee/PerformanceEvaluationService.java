@@ -23,6 +23,7 @@ import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
 import info.yalamanchili.office.entity.employee.EvaluationFrequencyType;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
+import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
@@ -62,7 +63,13 @@ public class PerformanceEvaluationService {
     }
 
     public void saveAssociateReview(Employee employee, PerformanceEvaluationSaveDto dto, Boolean submitForApproval) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
+        PerformanceEvaluation entity;
+        if (dto.getPerformanceEvaluation().getId() != null) {
+            entity = PerformanceEvaluationDao.instance().findById(dto.getPerformanceEvaluation().getId());
+        } else {
+            entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
+            entity.setStage(PerformanceEvaluationStage.Self_Review);
+        }
         createQuestionComments(entity, dto.getComments());
         if (submitForApproval) {
             startAssociatePerformanceEvaluationProcess(entity, employee);

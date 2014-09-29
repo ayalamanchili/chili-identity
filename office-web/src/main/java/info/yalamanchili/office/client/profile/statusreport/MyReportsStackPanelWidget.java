@@ -21,14 +21,14 @@ import info.yalamanchili.office.client.employee.prefeval.ReadAllPerformanceEvalu
  *
  * @author anuyalamanchili
  */
-public class ProjectsStackPanelWidget extends ALComposite implements ClickHandler {
+public class MyReportsStackPanelWidget extends ALComposite implements ClickHandler {
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink projectReportsL = new ClickableLink("Projects Reports");
     protected ClickableLink perfEvalReportsL = new ClickableLink("Performance Evaluation Reports");
 
-    public ProjectsStackPanelWidget() {
+    public MyReportsStackPanelWidget() {
         init(panel);
     }
 

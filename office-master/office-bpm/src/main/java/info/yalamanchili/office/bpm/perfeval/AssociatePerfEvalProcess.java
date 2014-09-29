@@ -9,6 +9,7 @@
 package info.yalamanchili.office.bpm.perfeval;
 
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -63,11 +64,13 @@ public class AssociatePerfEvalProcess implements TaskListener {
         }
         if ("eemReviewTask".equals(task.getTaskDefinitionKey())) {
             String notes = (String) task.getExecution().getVariable("managerNotes");
+            Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+            entity.setApprovedBy(currentUser.getEmployeeId());
             entity.setManagersComments(notes);
         } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
             String notes = (String) task.getExecution().getVariable("hrNotes");
             //TODO add to manager notes
-             entity.setStage(PerformanceEvaluationStage.Complete);
+            entity.setStage(PerformanceEvaluationStage.Complete);
         }
         PerformanceEvaluationDao.instance().save(entity);
     }

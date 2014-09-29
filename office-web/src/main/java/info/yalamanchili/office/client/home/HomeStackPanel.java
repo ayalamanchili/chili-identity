@@ -20,7 +20,7 @@ import info.yalamanchili.office.client.home.tasks.TasksStackPanelWidget;
 import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
 import info.yalamanchili.office.client.profile.selfservice.CreateServiceTicketPanel;
 import info.yalamanchili.office.client.profile.selfservice.SelfServiceStackPanel;
-import info.yalamanchili.office.client.profile.statusreport.ProjectsStackPanelWidget;
+import info.yalamanchili.office.client.profile.statusreport.MyReportsStackPanelWidget;
 
 /**
  *
@@ -32,7 +32,7 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
     SelfServiceStackPanel selfServStackPanel = new SelfServiceStackPanel();
     TasksStackPanelWidget taskStackPanel = new TasksStackPanelWidget();
     MessageStackPanelWidget msgStackPanel = new MessageStackPanelWidget();
-    ProjectsStackPanelWidget projectsStackPanel = new ProjectsStackPanelWidget();
+    MyReportsStackPanelWidget projectsStackPanel = new MyReportsStackPanelWidget();
     TODOStackPanelWidget todoStackPanel = new TODOStackPanelWidget();
     AuditStackPanelWidget auditStackPanelWidget = new AuditStackPanelWidget();
 
