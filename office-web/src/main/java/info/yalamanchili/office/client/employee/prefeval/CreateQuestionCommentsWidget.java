@@ -35,8 +35,8 @@ public class CreateQuestionCommentsWidget extends Composite {
     List<CreateQuestionCommentWidget> commentWidgets = new ArrayList<CreateQuestionCommentWidget>();
     protected QuestionCategory category;
     protected QuestionContext context;
-    protected boolean displayRating = true;
-    protected boolean useRichTextEditor = false;
+    protected Boolean displayRating;
+    protected Boolean useRichTextEditor;
 
     public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context) {
         this.category = category;
@@ -81,7 +81,7 @@ public class CreateQuestionCommentsWidget extends Composite {
         for (int i = 0; i < questions.size(); i++) {
             JSONObject obj = (JSONObject) questions.get(i);
             CreateQuestionCommentWidget commentwidget;
-            if (useRichTextEditor) {
+            if (useRichTextEditor != null || displayRating != null) {
                 commentwidget = new CreateQuestionCommentWidget(obj, displayRating, useRichTextEditor);
             } else {
                 commentwidget = new CreateQuestionCommentWidget(obj);

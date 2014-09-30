@@ -38,8 +38,8 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected HTML questionDecriptionL = new HTML();
     protected BaseField commentTB;
     protected RatingWidget ratingWidget = new RatingWidget(5);
-    protected boolean displayRating = true;
-    protected boolean useRichTextEditor = false;
+    protected Boolean displayRating;
+    protected Boolean useRichTextEditor;
 
     public CreateQuestionCommentWidget(JSONObject question) {
         this.question = question;
@@ -60,20 +60,17 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected JSONObject getQuestionComment() {
         JSONObject entity = new JSONObject();
         entity.put("id", question.get("id").isString());
-        if (useRichTextEditor) {
+        if (useRichTextEditor != null && useRichTextEditor) {
             if (!Strings.isNullOrEmpty(((RichTextField) commentTB).getValue())) {
                 entity.put("comment", new JSONString(((RichTextField) commentTB).getValue()));
-            }
-            if (displayRating && ratingWidget.getRating() > 0) {
-                entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
             }
         } else {
             if (!Strings.isNullOrEmpty(((TextAreaField) commentTB).getValue())) {
                 entity.put("comment", new JSONString(((TextAreaField) commentTB).getValue()));
             }
-            if (displayRating && ratingWidget.getRating() > 0) {
-                entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
-            }
+        }
+        if (displayRating != null && displayRating && ratingWidget.getRating() > 0) {
+            entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
         }
         return entity;
     }
@@ -95,13 +92,13 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected void addWidgets() {
         panel.add(questionL);
         panel.add(questionDecriptionL);
-        if (useRichTextEditor) {
+        if (useRichTextEditor != null && useRichTextEditor) {
             commentTB = new RichTextField(OfficeWelcome.constants, "comment", "Comment", false, true, Alignment.VERTICAL);
         } else {
             commentTB = new TextAreaField(OfficeWelcome.constants, "comment", "Comment", false, true, Alignment.VERTICAL);
         }
         panel.add(commentTB);
-        if (displayRating) {
+        if (null == displayRating || displayRating) {
             panel.add(ratingWidget);
         }
         captionPanel.setContentWidget(panel);
