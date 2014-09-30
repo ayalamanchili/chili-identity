@@ -22,9 +22,9 @@
                    tableName="PerformanceEvaluation_aud">
             <column name="approvedBy" type="varchar(255)"/>
         </addColumn>
-         <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="PerformanceEvaluation">
+        <addColumn catalogName="office"
+                    schemaName="public"
+                    tableName="PerformanceEvaluation">
             <column name="approvedDate" type="date"/>
         </addColumn>
         <addColumn catalogName="office"
@@ -32,9 +32,9 @@
                    tableName="PerformanceEvaluation_aud">
             <column name="approvedbyDate" type="date"/>
         </addColumn>
-         <addColumn catalogName="office"
-                   schemaName="public"
-                   tableName="PerformanceEvaluation">
+        <addColumn catalogName="office"
+                    schemaName="public"
+                    tableName="PerformanceEvaluation">
             <column name="stage" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
@@ -42,5 +42,15 @@
                    tableName="PerformanceEvaluation_aud">
             <column name="stage" type="varchar(255)"/>
         </addColumn>
+        <addColumn catalogName="office"
+                    schemaName="public"
+                    tableName="PerformanceEvaluation">
+            <column name="hrComments" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="PerformanceEvaluation_aud">
+            <column name="hrComments" type="varchar(255)"/>
+        </addColumn>        
     </changeSet>
 </databaseChangeLog>

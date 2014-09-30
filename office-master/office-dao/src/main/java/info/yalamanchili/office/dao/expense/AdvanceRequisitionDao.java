@@ -10,6 +10,7 @@ package info.yalamanchili.office.dao.expense;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.BankAccount;
@@ -20,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,7 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
     }
 
     @Override
+    @CacheEvict(value = OfficeCacheKeys.ADVANCE_REQUSITON, allEntries = true)
     public AdvanceRequisition save(AdvanceRequisition entity) {
         Check check = entity.getCheck();
         BankAccount account = entity.getBankAccount();

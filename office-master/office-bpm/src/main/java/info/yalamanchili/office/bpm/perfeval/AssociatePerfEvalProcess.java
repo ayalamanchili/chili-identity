@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.bpm.perfeval;
 
+import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
+import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
@@ -33,10 +35,13 @@ public class AssociatePerfEvalProcess implements TaskListener {
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
             perfEvalTaskCreated(task);
+            new GenericTaskCreateNotification().notify(task);
         }
         if ("complete".equals(task.getEventName())) {
             perfEvalTaskCompleted(task);
+            new GenericTaskCompleteNotification().notify(task);
         }
+
     }
 
     protected void perfEvalTaskCreated(DelegateTask task) {
@@ -66,10 +71,10 @@ public class AssociatePerfEvalProcess implements TaskListener {
             String notes = (String) task.getExecution().getVariable("managerNotes");
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setApprovedBy(currentUser.getEmployeeId());
-            entity.setManagersComments(notes);
+            entity.setManagerComments(notes);
         } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
             String notes = (String) task.getExecution().getVariable("hrNotes");
-            //TODO add to manager notes
+            entity.setHrComments(notes);
             entity.setStage(PerformanceEvaluationStage.Complete);
         }
         PerformanceEvaluationDao.instance().save(entity);

@@ -94,6 +94,11 @@ public class PerformanceEvaluation extends AbstractEntity {
      *
      */
     @Lob
+    protected String hrComments;
+    /**
+     *
+     */
+    @Lob
     protected String ceoComments;
     /**
      * Employee
@@ -183,12 +188,12 @@ public class PerformanceEvaluation extends AbstractEntity {
         this.areasNeedImprovement = areasNeedImprovement;
     }
 
-    public String getManagersComments() {
+    public String getManagerComments() {
         return managerComments;
     }
 
-    public void setManagersComments(String ManagersComments) {
-        this.managerComments = ManagersComments;
+    public void setManagerComments(String managerComments) {
+        this.managerComments = managerComments;
     }
 
     public String getEmployeeComments() {
@@ -197,6 +202,14 @@ public class PerformanceEvaluation extends AbstractEntity {
 
     public void setEmployeeComments(String employeeComments) {
         this.employeeComments = employeeComments;
+    }
+
+    public String getHrComments() {
+        return hrComments;
+    }
+
+    public void setHrComments(String hrComments) {
+        this.hrComments = hrComments;
     }
 
     public String getCeoComments() {
