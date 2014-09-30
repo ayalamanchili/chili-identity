@@ -9,6 +9,7 @@ package info.yalamanchili.office.bpm.email;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.BPMUtils;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -29,6 +30,7 @@ public class GenericTaskCompleteNotification implements TaskListener {
         email.setTos(BPMUtils.getCandidateEmails(delegateTask));
         Employee employee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
         if (employee != null) {
+            employee=EmployeeDao.instance().findById(employee.getId());
             email.addTo(employee.getPrimaryEmail().getEmail());
         }
         String subjectText = "Task Complete:" + delegateTask.getName();

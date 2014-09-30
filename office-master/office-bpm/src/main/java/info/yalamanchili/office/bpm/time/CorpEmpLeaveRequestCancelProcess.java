@@ -28,11 +28,17 @@ import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author ayalamanchili
  */
+@Component
+@Scope("prototype")
+@Transactional
 public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
 
     @Override
