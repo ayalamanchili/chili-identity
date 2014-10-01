@@ -37,7 +37,7 @@
                                     <tr>
                                         <th> Requested Date </th>
                                         <td> :  </td>
-                                        <td th:text="${#dates.format(entity.CreatedTimeStamp , 'dd-MMM-yyyy')}" />
+                                        <td th:if="${check != entity.CreatedTimeStamp}" th:text="${#dates.format(entity.CreatedTimeStamp , 'dd-MMM-yyyy')}" />
                                     </tr>
                                     <tr>
                                         <th>Start Date </th>
