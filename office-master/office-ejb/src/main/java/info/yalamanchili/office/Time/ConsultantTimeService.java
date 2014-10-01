@@ -165,7 +165,7 @@ public class ConsultantTimeService {
 
     @Async
     @Transactional(readOnly = true)
-    public void getAllConsultantEmployeesSummaryReport(Employee currentEmp) {
+    public void getAllConsultantEmployeesSummaryReport(String email) {
         List<ConsultantTimeSummary> summary = new ArrayList<ConsultantTimeSummary>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             summary.add(getYearlySummary(emp));
@@ -176,7 +176,7 @@ public class ConsultantTimeService {
                 return dto1.getEmployee().compareTo(dto2.getEmployee());
             }
         });
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "consultants-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), currentEmp.getPrimaryEmail().getEmail());
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "consultants-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     public static ConsultantTimeService instance() {

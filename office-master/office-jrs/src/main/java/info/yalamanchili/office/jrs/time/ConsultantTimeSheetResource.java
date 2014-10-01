@@ -130,7 +130,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CONSULTANT_TIME_REPORTS')")
     @Transactional(readOnly = true)
     public void generateAllEmployeesSummaryReport() {
-        ConsultantTimeService.instance().getAllConsultantEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser());
+        ConsultantTimeService.instance().getAllConsultantEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @PUT
