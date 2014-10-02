@@ -59,12 +59,10 @@ public class Question extends AbstractEntity {
     /**
      *
      */
-    @Transient
     protected boolean questionCommentRequired;
     /**
      *
      */
-    @Transient
     protected boolean questionRatingRequired;
 
     public Question() {

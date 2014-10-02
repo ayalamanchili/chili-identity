@@ -948,24 +948,28 @@ public class OfficeStartup {
         q22.setCategory(QuestionCategory.SELF_EVALUATION);
         q22.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
         q22.setSortOrder(41);
+        q22.setQuestionCommentRequired(true);
         em.persist(q22);
         Question q23 = new Question();
         q23.setQuestionKey("performance.review.self.question2");
         q23.setCategory(QuestionCategory.SELF_EVALUATION);
         q23.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
         q23.setSortOrder(42);
+        q23.setQuestionCommentRequired(true);
         em.persist(q23);
         Question q24 = new Question();
         q24.setQuestionKey("performance.review.self.question3");
         q24.setCategory(QuestionCategory.SELF_EVALUATION);
         q24.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
         q24.setSortOrder(43);
+        q24.setQuestionCommentRequired(true);
         em.persist(q24);
         Question q25 = new Question();
         q25.setQuestionKey("performance.review.self.question4");
         q25.setCategory(QuestionCategory.SELF_EVALUATION);
         q25.setContext(QuestionContext.PERFORMANCE_EVALUATION_SELF);
         q25.setSortOrder(44);
+        q25.setQuestionCommentRequired(true);
         em.persist(q25);
     }
 }
