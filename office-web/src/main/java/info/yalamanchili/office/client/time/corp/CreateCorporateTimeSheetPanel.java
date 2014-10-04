@@ -7,18 +7,23 @@
  */
 package info.yalamanchili.office.client.time.corp;
 
+import com.google.gwt.http.client.URL;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -28,7 +33,8 @@ import java.util.logging.Logger;
 public class CreateCorporateTimeSheetPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateCorporateTimeSheetPanel.class.getName());
-    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
+//    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(false, true);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
 
     public CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -73,8 +79,8 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
         new ResponseStatusWidget().show("Corporate Timesheet Successfully Created");
         TabPanel.instance().timePanel.entityPanel.clear();
         TabPanel.instance().getTimePanel().entityPanel.clear();
-        TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeF.getSelectedObjectId()));
-        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeF.getSelectedObjectId()));
+        TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeSB.getKey()));
+        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeSB.getKey()));
     }
 
     @Override
@@ -83,11 +89,25 @@ public class CreateCorporateTimeSheetPanel extends CreateComposite {
 
     @Override
     protected void configure() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
+    }
+
+    protected String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", employeeF);
+        addSuggestField("employee", employeeSB);
         addEnumField("category", false, true, TimeSheetCategory.names());
         addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
