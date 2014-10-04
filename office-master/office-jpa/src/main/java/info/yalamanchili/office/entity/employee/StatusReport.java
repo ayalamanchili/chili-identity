@@ -104,6 +104,8 @@ public class StatusReport extends AbstractEntity {
      */
     protected String bpmProcessId;
 
+    protected String reportUrl;
+
     public String getBpmProcessId() {
         return bpmProcessId;
     }
@@ -192,6 +194,14 @@ public class StatusReport extends AbstractEntity {
 
     public void setClientInformation(ClientInformation clientInformation) {
         this.clientInformation = clientInformation;
+    }
+
+    public String getReportUrl() {
+        return reportUrl;
+    }
+
+    public void setReportUrl(String reportUrl) {
+        this.reportUrl = reportUrl;
     }
 
     @PrePersist

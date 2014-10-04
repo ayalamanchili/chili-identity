@@ -11,10 +11,16 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <include file="db_changelogs/9-6-2014_changelog.xml"/> 
-    <include file="db_changelogs/9-8-2014_changelog.xml"/> 
-    <include file="db_changelogs/9-29-2014_changelog.xml"/> 
-    <include file="db_changelogs/9-30-2014_changelog.xml"/> 
-    <include file="db_changelogs/10-2-2014_changelog.xml"/> 
-    <include file="db_changelogs/10-4-2014_changelog.xml"/> 
+    <changeSet author="ayalamanchili" id="addApproveByoPerformanceEvaluation">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="statusreport">
+            <column name="reportUrl" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="statusreport_aud">
+            <column name="reportUrl" type="varchar(255)"/>
+        </addColumn>        
+    </changeSet>
 </databaseChangeLog>
