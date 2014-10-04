@@ -9,6 +9,7 @@ package info.yalamanchili.office.client.time.corp;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -30,14 +31,15 @@ import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
-import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -52,7 +54,8 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
-    SelectCorpEmployeeWidget empWidget = new SelectCorpEmployeeWidget(false, false);
+//    SelectCorpEmployeeWidget empWidget = new SelectCorpEmployeeWidget(false, false);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     EnumField categoryField = new EnumField(OfficeWelcome.constants, "category", "CorporateTimeSheet",
             false, false, TimeSheetCategory.names());
     EnumField statusField = new EnumField(OfficeWelcome.constants, "status", "CorporateTimeSheet",
@@ -102,6 +105,16 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         timesheetsForEmpCaptionPanel.setCaptionHTML("Time Summary");
         reportsCaptionPanel.setCaptionHTML("Reports");
         TabPanel.instance().timePanel.sidePanelTop.setHeight("100%");
+         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
     }
 
     @Override
@@ -111,7 +124,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         }
         if (Auth.isCorporateEmployee()) {
             //time sheets for emp panel
-            timesheetsForEmpPanel.add(empWidget);
+            timesheetsForEmpPanel.add(employeeSB);
             timesheetsForEmpPanel.add(categoryField);
             timesheetsForEmpPanel.add(statusField);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
@@ -141,10 +154,10 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             TabPanel.instance().timePanel.entityPanel.clear();
             TabPanel.instance().timePanel.entityPanel.add(new CreateCorporateTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));
         }
-        if (empWidget.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
+        if (employeeSB.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
-            TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(empWidget.getSelectedObjectId()));
-            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(empWidget.getSelectedObjectId()));
+            TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeSB.getKey()));
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel(employeeSB.getKey()));
         }
         if (event.getSource().equals(viewReportsB)) {
             viewReport();
@@ -230,5 +243,9 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
 
     protected String getReportUrl() {
         return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/report/0/500";
+    }
+
+    private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
 }
