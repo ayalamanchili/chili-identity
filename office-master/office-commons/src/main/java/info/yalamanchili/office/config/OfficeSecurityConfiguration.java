@@ -34,6 +34,15 @@ public class OfficeSecurityConfiguration {
     @Value("#{officeProperties['keystore.path']}")
     protected String keyStorePath;
 
+    @Value("#{officeProperties['cert.signatureAlgorithm']}")
+    protected String certSignatureAlgorithm;
+
+    @Value("#{officeProperties['key.algorithm']}")
+    protected String keyAlgorithm;
+
+    @Value("#{officeProperties['key.size']}")
+    protected Integer keySize;
+
     @ManagedAttribute
     public String getKeyStoreType() {
         return keyStoreType;
@@ -70,12 +79,39 @@ public class OfficeSecurityConfiguration {
         this.keyStorePath = keyStorePath;
     }
 
-    public static OfficeSecurityConfiguration instance() {
-        return SpringContext.getBean(OfficeSecurityConfiguration.class);
+    @ManagedAttribute
+    public String getCertSignatureAlgorithm() {
+        return certSignatureAlgorithm;
+    }
+
+    public void setCertSignatureAlgorithm(String certSignatureAlgorithm) {
+        this.certSignatureAlgorithm = certSignatureAlgorithm;
+    }
+
+    @ManagedAttribute
+    public String getKeyAlgorithm() {
+        return keyAlgorithm;
+    }
+
+    public void setKeyAlgorithm(String keyAlgorithm) {
+        this.keyAlgorithm = keyAlgorithm;
+    }
+
+    @ManagedAttribute
+    public Integer getKeySize() {
+        return keySize;
+    }
+
+    public void setKeySize(Integer keySize) {
+        this.keySize = keySize;
     }
 
     @ManagedOperation
     public void reloadKeyStore() {
         SecurityService.instance().initKeyStore(getKeyStoreType(), getKeyStoreName(), getKeyStorePassword(), getKeyStorePath());
+    }
+
+    public static OfficeSecurityConfiguration instance() {
+        return SpringContext.getBean(OfficeSecurityConfiguration.class);
     }
 }

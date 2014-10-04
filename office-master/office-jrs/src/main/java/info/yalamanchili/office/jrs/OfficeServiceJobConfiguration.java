@@ -11,6 +11,7 @@ import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +55,16 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void sendTodaysLeaveNotifications() {
         TimeJobService.instance().sendTodaysLeaveNotifications();
+    }
+
+    @ManagedOperation
+    public void syncUserCerts() {
+        OfficeSecurityService.instance().syncUserCerts();
+    }
+
+    @ManagedOperation
+    public void createCert(String employeeId) {
+        OfficeSecurityService.instance().createUserCert(employeeId);
     }
 
     /**

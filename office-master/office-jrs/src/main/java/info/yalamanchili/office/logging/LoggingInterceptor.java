@@ -42,7 +42,7 @@ public class LoggingInterceptor {
                         if (isEntity(input)) {
                             input.toString();
                         } else {
-                            log.debug("with input:" + ReflectionToStringBuilder.toString(input));
+                            log.debug("with input:" + input.toString());
                         }
                     }
                 }
@@ -77,7 +77,7 @@ public class LoggingInterceptor {
         if (log.isDebugEnabled()) {
             if (logResultType(result)) {
                 log.debug("------------ returning------------------ :" + joinPoint.getSignature() + "------------ with result :"
-                        + ReflectionToStringBuilder.toString(result));
+                        + result.toString());
             } else {
                 log.debug("------------ returning------------------ :" + joinPoint.getSignature() + "------------");
             }

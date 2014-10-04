@@ -3,29 +3,38 @@
  */
 package info.yalamanchili.office.dao.security;
 
+import info.chili.commons.DateUtils;
 import info.chili.jpa.QueryUtils;
+import info.chili.security.SecurityService;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.*;
+import org.bouncycastle.jce.X509Principal;
 import org.dozer.Mapper;
 import org.jasypt.digest.StandardStringDigester;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Scope("prototype")
+@Transactional
 public class OfficeSecurityService {
 
     private final static Logger logger = Logger.getLogger(OfficeSecurityService.class.getName());
@@ -144,6 +153,43 @@ public class OfficeSecurityService {
 
     public CRole getRole(OfficeRole role) {
         return QueryUtils.findEntity(em, CRole.class, "rolename", role.name());
+    }
+
+    @Async
+    @Transactional
+    public void syncUserCerts() {
+        List<String> empTypes = new ArrayList<String>();
+        empTypes.add("Employee");
+        empTypes.add("Corporate Employee");
+        TypedQuery<Employee> empQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name in (:empTypeParam) and user.enabled=true", Employee.class);
+        empQuery.setParameter("empTypeParam", empTypes);
+        OfficeSecurityConfiguration securityconfig = OfficeSecurityConfiguration.instance();
+        SecurityService securityService = SecurityService.instance();
+        for (Employee emp : empQuery.getResultList()) {
+            createUserCert(emp, securityconfig, securityService);
+        }
+
+    }
+
+    @Transactional
+    public void createUserCert(String employeeId) {
+        createUserCert(EmployeeDao.instance().findEmployeWithEmpId(employeeId), null, null);
+    }
+
+    public void createUserCert(Employee emp, OfficeSecurityConfiguration securityconfig, SecurityService securityService) {
+        if (securityService == null) {
+            securityService = SecurityService.instance();
+        }
+        if (securityconfig == null) {
+            securityconfig = OfficeSecurityConfiguration.instance();
+        }
+        String employeeId = emp.getEmployeeId();
+        String subjectCN = emp.getFirstName() + " " + emp.getLastName();
+        X509Principal issuer = new X509Principal("CN=System Soft Portal, O=System Soft Technologies, L=Tampa, ST=FL, C= US");
+        //TODO use address and branch information from employee
+        X509Principal subject = new X509Principal("CN=" + subjectCN + ", O=System Soft Technologies");
+        securityService.createAndSaveCertToKS(securityconfig.getKeyStoreName(), securityconfig.getKeyStorePath(), employeeId, DateUtils.getNextYear(new Date(), 0), DateUtils.getNextYear(new Date(), 10),
+                securityconfig.getKeyStorePassword(), issuer, subject, securityconfig.getCertSignatureAlgorithm(), securityconfig.getKeyAlgorithm(), securityconfig.getKeySize());
     }
 
     public static OfficeSecurityService instance() {
