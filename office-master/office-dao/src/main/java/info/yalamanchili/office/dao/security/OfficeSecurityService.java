@@ -184,10 +184,11 @@ public class OfficeSecurityService {
             securityconfig = OfficeSecurityConfiguration.instance();
         }
         String employeeId = emp.getEmployeeId();
+        String email = emp.getPrimaryEmail().getEmail();
         String subjectCN = emp.getFirstName() + " " + emp.getLastName();
         X509Principal issuer = new X509Principal("CN=System Soft Portal, O=System Soft Technologies, L=Tampa, ST=FL, C= US");
         //TODO use address and branch information from employee
-        X509Principal subject = new X509Principal("CN=" + subjectCN + ", O=System Soft Technologies");
+        X509Principal subject = new X509Principal("CN=" + subjectCN + ",EmailAddress=" + email + ", O=System Soft Technologies");
         securityService.createAndSaveCertToKS(securityconfig.getKeyStoreName(), securityconfig.getKeyStorePath(), employeeId, DateUtils.getNextYear(new Date(), 0), DateUtils.getNextYear(new Date(), 10),
                 securityconfig.getKeyStorePassword(), issuer, subject, securityconfig.getCertSignatureAlgorithm(), securityconfig.getKeyAlgorithm(), securityconfig.getKeySize());
     }
