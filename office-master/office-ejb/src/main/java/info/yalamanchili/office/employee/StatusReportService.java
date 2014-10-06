@@ -7,20 +7,15 @@
  */
 package info.yalamanchili.office.employee;
 
-import info.chili.commons.DateUtils;
 import info.chili.commons.HtmlUtils;
-import info.chili.commons.PDFUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.employee.StatusReportDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.template.TemplateService;
-import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,25 +73,13 @@ public class StatusReportService {
         statusReportDao.delete(id);
     }
 
-    //TODO move to commons
     public Response getReport(Long id) {
         StatusReport statusReport = statusReportDao.findById(id);
-        Employee emp = null;
-        if (statusReport.getApprovedBy() != null) {
-            emp = EmployeeDao.instance().findEmployeWithEmpId(statusReport.getApprovedBy());
-        }
-        String report = TemplateService.instance().process("status-report.xhtml", statusReport);
-        byte[] pdf = null;
-        if (emp == null) {
-            pdf = PDFUtils.convertToPDF(report);
-        } else {
-            OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(statusReport.getApprovedDate()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
-        }
+        byte[] report = StatusReportGenerator.instance().generateStatusReport(statusReport);
         return Response
-                .ok(pdf)
+                .ok(report)
                 .header("content-disposition", "filename = status-report.pdf")
-                .header("Content-Length", pdf.length)
+                .header("Content-Length", report.length)
                 .build();
     }
 
