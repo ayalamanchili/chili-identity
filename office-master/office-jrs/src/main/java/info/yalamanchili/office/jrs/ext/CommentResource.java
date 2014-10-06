@@ -91,7 +91,10 @@ public class CommentResource {
         }
         Email email = new Email();
         for (Entry e : comment.getNotifyEmployees()) {
-            email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());
+            Employee emp = EmployeeDao.instance().findEmployeWithEmpId(e.getId());
+            if (emp != null) {
+                email.addTo(emp.getPrimaryEmail().getEmail());
+            }
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         email.setSubject("Comment added by:" + currentUser.getFirstName() + "" + currentUser.getLastName());
