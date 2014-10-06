@@ -7,7 +7,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.UpdateComposite;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
@@ -76,7 +75,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
             @Override
             public void onSuccess(String arg0) {
                 uploadImage(JSONUtils.toString(entity, "id"));
-
             }
         });
 

@@ -124,9 +124,10 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Project"));
         table.setText(0, 2, getKeyValue("Client Information"));
-        table.setText(0, 3, getKeyValue("Report Start Date"));
-        table.setText(0, 4, getKeyValue("Report End Date"));
-        table.setText(0, 5, getKeyValue("Print"));
+        table.setText(0, 3, getKeyValue("File"));
+        table.setText(0, 4, getKeyValue("Report Start Date"));
+        table.setText(0, 5, getKeyValue("Report End Date"));
+        table.setText(0, 6, getKeyValue("Print"));
     }
 
     @Override
@@ -136,10 +137,13 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity.get("project"), "name"));
             table.setText(i, 2, JSONUtils.toString(entity.get("clientInformation").isObject().get("client"), "name"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "reportUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            FileField fileField = new FileField(fileURL);
+            table.setWidget(i, 3, fileField);
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 5, reportL);
+            table.setWidget(i, 6, reportL);
         }
     }
 

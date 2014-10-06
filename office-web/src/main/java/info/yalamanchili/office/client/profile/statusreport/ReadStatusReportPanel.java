@@ -10,11 +10,14 @@ package info.yalamanchili.office.client.profile.statusreport;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
@@ -30,6 +33,7 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     private static ReadStatusReportPanel instance;
     private static Logger logger = Logger.getLogger(ReadStatusReportPanel.class.getName());
+    protected FileField fileField = new FileField("Report File", "Report File");
 
     public static ReadStatusReportPanel instance() {
         return instance;
@@ -72,6 +76,9 @@ public class ReadStatusReportPanel extends ReadComposite {
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "reportUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+        fileField.fileUrl = fileURL;
+
         assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
@@ -98,6 +105,7 @@ public class ReadStatusReportPanel extends ReadComposite {
         addField("reportEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", true, true, ProjectStatus.names(), Alignment.HORIZONTAL);
         addField("report", true, true, DataType.RICH_TEXT_AREA);
+        entityFieldsPanel.add(fileField);
         addField("preparedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("submittedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

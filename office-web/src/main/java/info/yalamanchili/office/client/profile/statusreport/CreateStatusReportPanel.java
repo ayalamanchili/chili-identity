@@ -12,14 +12,19 @@ import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.FileuploadField;
+import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -36,6 +41,13 @@ import java.util.logging.Logger;
 public class CreateStatusReportPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.CreateStatusReportPanel.class.getName());
+
+    FileuploadField statusReportUploadPanel = new FileuploadField(OfficeWelcome.constants, "StatusReport", "reportUrl", "StatusReport/reportUrl", false) {
+        @Override
+        public void onUploadComplete(String res) {
+            postCreateSuccess(null);
+        }
+    };
 
     protected Anchor missingInfoL = new Anchor("Client or Project not present?");
     protected CKEditor reportEditor = new CKEditor(CKConfig.full);
@@ -65,6 +77,9 @@ public class CreateStatusReportPanel extends CreateComposite {
         assignEntityValueFromField("submittedDate", status);
         assignEntityValueFromField("project", status);
         assignEntityValueFromField("clientInformation", status);
+        if (!statusReportUploadPanel.isEmpty()) {
+            status.put("reportUrl", statusReportUploadPanel.getFileName());
+        }
         return status;
     }
 
@@ -80,9 +95,13 @@ public class CreateStatusReportPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
+                        uploadImage(arg0);
                     }
                 });
+    }
+
+    protected void uploadImage(String entityId) {
+        statusReportUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -128,6 +147,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(statusReportUploadPanel);
         entityFieldsPanel.add(reportEditor);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -141,6 +161,16 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (reportEditor.getHTML() == null || reportEditor.getHTML().isEmpty()) {
+            new ResponseStatusWidget().show("Report Description is required");
+            return false;
+        }
+        return true;
     }
 
     @Override

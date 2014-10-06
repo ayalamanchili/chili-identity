@@ -42,7 +42,7 @@ public class LoggingInterceptor {
                         if (isEntity(input)) {
                             input.toString();
                         } else {
-                            log.debug("with input:" + input.toString());
+                            log.debug("with input:" + ReflectionToStringBuilder.toString(input));
                         }
                     }
                 }
@@ -66,7 +66,7 @@ public class LoggingInterceptor {
     }
 
     protected boolean isEntity(Object obj) {
-        return obj.getClass().getAnnotation(Entity.class) == null ? false : true;
+        return obj.getClass().getAnnotation(Entity.class) != null;
     }
 
     @AfterReturning(pointcut = "execution(* info.yalamanchili.office..*.*(..))", returning = "result")
@@ -75,9 +75,9 @@ public class LoggingInterceptor {
             return;
         }
         if (log.isDebugEnabled()) {
-            if (logResultType(result)) {
+            if (logResultType(result) && result != null) {
                 log.debug("------------ returning------------------ :" + joinPoint.getSignature() + "------------ with result :"
-                        + result.toString());
+                        + ReflectionToStringBuilder.toString(result));
             } else {
                 log.debug("------------ returning------------------ :" + joinPoint.getSignature() + "------------");
             }

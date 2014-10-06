@@ -54,8 +54,9 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
 
     @PUT
     @Path("/save")
-    public StatusReport saveReport(StatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
-        return StatusReportService.instance().save(entity, submitForApproval);
+    @Produces("application/text")
+    public String saveReport(StatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        return StatusReportService.instance().save(entity, submitForApproval).getId().toString();
     }
 
     @GET

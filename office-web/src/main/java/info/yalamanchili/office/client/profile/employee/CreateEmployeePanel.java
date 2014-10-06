@@ -14,7 +14,6 @@ import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;

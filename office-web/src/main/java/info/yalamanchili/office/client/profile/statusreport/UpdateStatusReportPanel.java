@@ -15,8 +15,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -37,6 +39,13 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     protected CKEditor reportEditor = new CKEditor(CKConfig.full);
 
+    FileuploadField statusReportUploadPanel = new FileuploadField(OfficeWelcome.constants, "StatusReport", "reportUrl", "StatusReport/reportUrl", false) {
+        @Override
+        public void onUploadComplete(String res) {
+            postUpdateSuccess(null);
+        }
+    };
+
     public UpdateStatusReportPanel(JSONObject entity) {
         initUpdateComposite(entity, "StatusReport", OfficeWelcome.constants);
     }
@@ -54,6 +63,9 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignEntityValueFromField("submittedDate", entity);
         assignEntityValueFromField("approvedDate", entity);
         assignEntityValueFromField("project", entity);
+        if (!statusReportUploadPanel.isEmpty()) {
+            entity.put("reportUrl", statusReportUploadPanel.getFileName());
+        }
         logger.info(entity.toString());
         return entity;
     }
@@ -69,9 +81,13 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
+                         uploadImage(arg0);
                     }
                 });
+    }
+
+    protected void uploadImage(String entityId) {
+          statusReportUploadPanel.upload(entityId.trim());
     }
 
     protected void populateComments() {
@@ -133,6 +149,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
+        entityFieldsPanel.add(statusReportUploadPanel);
         entityFieldsPanel.add(reportEditor);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
