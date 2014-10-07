@@ -8,10 +8,10 @@
  */
 package info.yalamanchili.office.Time;
 
-import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
 import info.chili.commons.PDFUtils;
 import info.chili.reporting.ReportGenerator;
+import info.chili.security.Signature;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -29,8 +29,6 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.template.TemplateService;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +37,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import javax.ws.rs.core.Response;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,7 +151,12 @@ public class ConsultantTimeService {
             pdf = PDFUtils.convertToPDF(report);
         } else {
             OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(ts.getApprovedDate()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
+            String branch = null;
+            if (emp.getBranch() != null) {
+                branch = emp.getBranch().name();
+            }
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(ts.getApprovedDate()), emp.getPrimaryEmail().getEmail(), branch);
+            pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), signature);
         }
         return Response
                 .ok(pdf)

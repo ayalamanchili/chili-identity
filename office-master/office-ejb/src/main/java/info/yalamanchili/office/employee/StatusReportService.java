@@ -7,15 +7,21 @@
  */
 package info.yalamanchili.office.employee;
 
+import info.chili.commons.DateUtils;
 import info.chili.commons.HtmlUtils;
+import info.chili.commons.PDFUtils;
+import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.dao.employee.StatusReportDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.template.TemplateService;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,11 +81,29 @@ public class StatusReportService {
 
     public Response getReport(Long id) {
         StatusReport statusReport = statusReportDao.findById(id);
-        byte[] report = StatusReportGenerator.instance().generateStatusReport(statusReport);
+        Employee approver = null;
+        Employee preparedBy = null;
+        if (statusReport.getApprovedBy() != null) {
+            approver = EmployeeDao.instance().findEmployeWithEmpId(statusReport.getApprovedBy());
+        }
+        if (statusReport.getPreparedBy() != null) {
+            preparedBy = EmployeeDao.instance().findEmployeWithEmpId(statusReport.getPreparedBy());
+        }
+        String report = TemplateService.instance().process("status-report.xhtml", statusReport);
+        byte[] pdf = null;
+        if (approver != null && preparedBy != null) {
+            OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+            String approvedByBranch = approver.getBranch() != null ? approver.getBranch().name() : null;
+            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), false, null, DateUtils.dateToCalendar(statusReport.getApprovedDate()), approver.getPrimaryEmail().getEmail(), approvedByBranch);
+            Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(statusReport.getSubmittedDate()), preparedBy.getPrimaryEmail().getEmail(), null);
+            pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), approvedBysignature, preparedBysignature);
+        } else {
+            pdf = PDFUtils.convertToPDF(report);
+        }
         return Response
-                .ok(report)
+                .ok(pdf)
                 .header("content-disposition", "filename = status-report.pdf")
-                .header("Content-Length", report.length)
+                .header("Content-Length", pdf.length)
                 .build();
     }
 

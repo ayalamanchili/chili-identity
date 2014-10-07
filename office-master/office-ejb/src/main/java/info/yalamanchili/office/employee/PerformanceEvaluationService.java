@@ -10,6 +10,7 @@ package info.yalamanchili.office.employee;
 
 import info.chili.commons.DateUtils;
 import info.chili.commons.PDFUtils;
+import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
@@ -176,7 +177,12 @@ public class PerformanceEvaluationService {
             pdf = PDFUtils.convertToPDF(report);
         } else {
             OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-            pdf = PDFUtils.convertToSignedPDF(report, (emp.getBranch() != null) ? emp.getBranch().name() : null, DateUtils.dateToCalendar(evaluation.getEvaluationDate()), securityConfiguration.getKeyStoreName(), emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword());
+            String branch = null;
+            if (emp.getBranch() != null) {
+                branch = emp.getBranch().name();
+            }
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(evaluation.getApprovedDate()), emp.getPrimaryEmail().getEmail(), branch);
+            pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), signature);
         }
         return Response
                 .ok(pdf)
