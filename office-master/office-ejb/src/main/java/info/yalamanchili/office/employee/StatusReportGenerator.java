@@ -52,6 +52,8 @@ public class StatusReportGenerator {
             //Now Insert Every Thing Into PDF Document           
             document.open();
             document.add(new Paragraph(entity.getReport()));
+            document.add(table);
+            document.newPage(); 
             document.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
