@@ -11,6 +11,7 @@ package info.yalamanchili.office.employee;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -32,6 +33,9 @@ public class StatusReportGenerator {
         try {
             Document document = new Document();
             PdfWriter.getInstance(document, out);
+            //Inserting Image in PDF
+            Image image = Image.getInstance("https://yalamanchili.googlecode.com/files/sst-logo.png");
+            image.scaleAbsolute(120f, 60f);//image width,height    
             //Inserting Table in PDF
             PdfPTable table = new PdfPTable(3);
 
@@ -51,9 +55,10 @@ public class StatusReportGenerator {
             table.setSpacingAfter(30.0f);
             //Now Insert Every Thing Into PDF Document           
             document.open();
+            document.add(image);
             document.add(new Paragraph(entity.getReport()));
             document.add(table);
-            document.newPage(); 
+            document.newPage();
             document.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
