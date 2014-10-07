@@ -8,8 +8,12 @@
  */
 package info.yalamanchili.office.employee;
 
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.employee.StatusReport;
@@ -28,6 +32,24 @@ public class StatusReportGenerator {
         try {
             Document document = new Document();
             PdfWriter.getInstance(document, out);
+            //Inserting Table in PDF
+            PdfPTable table = new PdfPTable(3);
+
+            PdfPCell cell = new PdfPCell(new Paragraph("Status Reports"));
+            cell.setColspan(3);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPadding(10.0f);
+            cell.setBackgroundColor(new BaseColor(140, 221, 8));
+            table.addCell(cell);
+            table.addCell("Employee");
+            table.addCell("Date of Request ");
+            table.addCell("Date Advance, needed by");
+            table.addCell("Requested Amount ");
+            table.addCell("Payroll File Number");
+            table.addCell("Advance Purpose ");
+            table.setSpacingBefore(30.0f);
+            table.setSpacingAfter(30.0f);
+            //Now Insert Every Thing Into PDF Document           
             document.open();
             document.add(new Paragraph(entity.getReport()));
             document.close();
