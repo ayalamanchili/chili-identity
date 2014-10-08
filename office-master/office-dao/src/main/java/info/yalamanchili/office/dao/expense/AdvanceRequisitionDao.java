@@ -22,6 +22,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
     protected EntityManager em;
 
     @Override
+    @Cacheable(OfficeCacheKeys.ADVANCE_REQUSITON)
     public AdvanceRequisition findById(Long id) {
         AdvanceRequisition entity = super.findById(id);
         if (entity == null) {
@@ -73,6 +75,7 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
         }
     }
 
+    @Cacheable(OfficeCacheKeys.ADVANCE_REQUSITON)
     protected List<AdvanceRequisition> queryAll(int start, int limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " order by dateRequested DESC", entityCls);
         findAllQuery.setFirstResult(start);
@@ -80,6 +83,7 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
         return findAllQuery.getResultList();
     }
 
+    @Cacheable(OfficeCacheKeys.ADVANCE_REQUSITON)
     public List<AdvanceRequisition> queryForEmployee(Long employeeId, int start, int limit) {
         Query findAllQuery = getEntityManager().createQuery("from " + entityCls.getCanonicalName() + " where employee.id=:employeeIdParam order by dateRequested DESC", entityCls);
         findAllQuery.setParameter("employeeIdParam", employeeId);

@@ -82,7 +82,6 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
 
     @GET
     @Path("/{start}/{limit}")
-    @Cacheable(OfficeCacheKeys.ADVANCE_REQUSITON)
     public AdvanceRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
         tableObj.setEntities(getDao().query(start, limit));
@@ -93,7 +92,6 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @GET
     @Path("/{employeeId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
-    @Cacheable(OfficeCacheKeys.ADVANCE_REQUSITON)
     public AdvanceRequisitionTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
         tableObj.setEntities(advanceRequisitionDao.queryForEmployee(employeeId, start, limit));
@@ -105,6 +103,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @Path("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.ADVANCE_REQUSITON, allEntries = true)
+    @Override
     public void delete(@PathParam("id") Long id) {
         AdvanceRequisitionService.instance().delete(id);
     }
