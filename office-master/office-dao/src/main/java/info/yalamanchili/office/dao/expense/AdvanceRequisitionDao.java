@@ -25,6 +25,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -90,6 +91,16 @@ public class AdvanceRequisitionDao extends CRUDDao<AdvanceRequisition> {
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Override
+    public Long size() {
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name())) {
+            return super.size();
+        } else {
+            return queryForEmployeeSize(OfficeSecurityService.instance().getCurrentUser().getId());
+        }
     }
 
     public Long queryForEmployeeSize(Long employeeId) {
