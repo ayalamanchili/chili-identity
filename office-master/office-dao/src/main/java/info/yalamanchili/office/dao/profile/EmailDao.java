@@ -70,6 +70,7 @@ public class EmailDao extends CRUDDao<Email> {
     public void delete(Long id) {
         Email email = em.find(Email.class, id);
         Contact contact = ContactDao.instance().findById(email.getContact().getId());
+        
         if (contact instanceof Employee) {
             Employee emp = (Employee) contact;
             if (emp.getEmails().size() == 1) {

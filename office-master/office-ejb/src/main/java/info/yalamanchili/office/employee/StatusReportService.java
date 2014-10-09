@@ -29,7 +29,6 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -84,19 +83,20 @@ public class StatusReportService {
         StatusReport statusReport = statusReportDao.findById(id);
         Employee approver = null;
         Employee preparedBy = null;
+        EmployeeDao employeeDao = EmployeeDao.instance();
         if (statusReport.getApprovedBy() != null) {
-            approver = EmployeeDao.instance().findEmployeWithEmpId(statusReport.getApprovedBy());
+            approver = employeeDao.findEmployeWithEmpId(statusReport.getApprovedBy());
         }
         if (statusReport.getPreparedBy() != null) {
-            preparedBy = EmployeeDao.instance().findEmployeWithEmpId(statusReport.getPreparedBy());
+            preparedBy = employeeDao.findEmployeWithEmpId(statusReport.getPreparedBy());
         }
         String report = TemplateService.instance().process("status-report.xhtml", statusReport);
         byte[] pdf = null;
         if (approver != null && preparedBy != null) {
             OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
             String approvedByBranch = approver.getBranch() != null ? approver.getBranch().name() : null;
-            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), false, null, DateUtils.dateToCalendar(statusReport.getApprovedDate()), approver.getPrimaryEmail().getEmail(), approvedByBranch);
-            Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), false, null, DateUtils.dateToCalendar(statusReport.getSubmittedDate()), preparedBy.getPrimaryEmail().getEmail(), null);
+            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), false, null, DateUtils.dateToCalendar(statusReport.getApprovedDate()), employeeDao.getPrimaryEmail(approver), approvedByBranch);
+            Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), false, null, DateUtils.dateToCalendar(statusReport.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
             pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), approvedBysignature, preparedBysignature);
         } else {
             pdf = PDFUtils.convertToPDF(report);

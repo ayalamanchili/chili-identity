@@ -187,6 +187,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
         return res;
     }
+//TODO cache this
+
+    public String getPrimaryEmail(Employee emp) {
+        TypedQuery<String> query = getEntityManager().createQuery("select email.email from " + Employee.class.getCanonicalName() + " emp, " + Email.class.getCanonicalName() + " email where emp=:employeeParam and email.primaryEmail = true", String.class);
+        query.setParameter("employeeParam", emp);
+        return query.getResultList().get(0);
+    }
 
     @Override
     public void delete(Long id) {

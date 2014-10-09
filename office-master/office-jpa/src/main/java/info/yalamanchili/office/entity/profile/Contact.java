@@ -269,7 +269,7 @@ public class Contact extends AbstractEntity {
         getPhones().add(entity);
         entity.setContact(this);
     }
-
+//replace with public String getPrimaryEmail(Employee emp) {
     @Transient
     public Email getPrimaryEmail() {
         //TODO use Query for better performance?

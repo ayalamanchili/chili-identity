@@ -91,7 +91,6 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
-     @Transactional
     public Response getReport(@QueryParam("id") Long id) {
         return StatusReportService.instance().getReport(id);
     }
