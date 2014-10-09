@@ -95,7 +95,7 @@ public class StatusReportService {
             OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
             String approvedByBranch = approver.getBranch() != null ? approver.getBranch().name() : null;
             Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), false, null, DateUtils.dateToCalendar(statusReport.getApprovedDate()), approver.getPrimaryEmail().getEmail(), approvedByBranch);
-            Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(statusReport.getSubmittedDate()), preparedBy.getPrimaryEmail().getEmail(), null);
+            Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), false, null, DateUtils.dateToCalendar(statusReport.getSubmittedDate()), preparedBy.getPrimaryEmail().getEmail(), null);
             pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), approvedBysignature, preparedBysignature);
         } else {
             pdf = PDFUtils.convertToPDF(report);
