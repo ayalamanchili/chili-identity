@@ -42,10 +42,11 @@ public class BPMUtils {
     }
 
     public static Set<String> getCandidateEmails(DelegateTask delegateTask) {
+        EmployeeDao employeeDao = EmployeeDao.instance();
         Set<String> emails = new HashSet<String>();
         if (delegateTask.getAssignee() != null && !delegateTask.getAssignee().isEmpty()) {
-            if (EmployeeDao.instance().findEmployeWithEmpId(delegateTask.getAssignee()) != null) {
-                emails.add(EmployeeDao.instance().findEmployeWithEmpId(delegateTask.getAssignee()).getPrimaryEmail().getEmail());
+            if (employeeDao.findEmployeWithEmpId(delegateTask.getAssignee()) != null) {
+                emails.add(EmployeeDao.instance().getPrimaryEmail(delegateTask.getAssignee()));
             }
         }
         List<String> roles = new ArrayList<String>();
@@ -56,7 +57,7 @@ public class BPMUtils {
             if (identityLink.getUserId() != null && !identityLink.getUserId().isEmpty()) {
                 Employee emp = MailUtils.instance().findEmployeWithEmpId(identityLink.getUserId());
                 if (emp != null && emp.getPrimaryEmail() != null) {
-                    emails.add(emp.getPrimaryEmail().getEmail());
+                    emails.add(employeeDao.getPrimaryEmail(emp));
                 }
             }
         }
@@ -70,9 +71,10 @@ public class BPMUtils {
     public static Set<String> getCandidateEmails(org.activiti.engine.task.Task task) {
         TaskService bpmTaskService = (TaskService) SpringContext.getBean("bpmTaskService");
         Set<String> emails = new HashSet<String>();
+        EmployeeDao employeeDao = EmployeeDao.instance();
         if (task.getAssignee() != null && !task.getAssignee().isEmpty()) {
-            if (EmployeeDao.instance().findEmployeWithEmpId(task.getAssignee()) != null) {
-                emails.add(EmployeeDao.instance().findEmployeWithEmpId(task.getAssignee()).getPrimaryEmail().getEmail());
+            if (employeeDao.findEmployeWithEmpId(task.getAssignee()) != null) {
+                emails.add(employeeDao.getPrimaryEmail(task.getAssignee()));
             }
         }
         List<String> roles = new ArrayList<String>();
@@ -83,8 +85,11 @@ public class BPMUtils {
             }
             if (identityLink.getUserId() != null && !identityLink.getUserId().isEmpty()) {
                 Employee emp = MailUtils.instance().findEmployeWithEmpId(identityLink.getUserId());
-                if (emp != null && emp.getPrimaryEmail() != null) {
-                    emails.add(emp.getPrimaryEmail().getEmail());
+                if (emp != null) {
+                    String primaryEmail = employeeDao.getPrimaryEmail(emp);
+                    if (primaryEmail != null) {
+                        emails.add(emp.getPrimaryEmail().getEmail());
+                    }
                 }
             }
         }

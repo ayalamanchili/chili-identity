@@ -10,6 +10,7 @@ package info.yalamanchili.office.contact;
 
 import info.chili.commons.PDFUtils;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeDto;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -34,12 +35,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ContactInfoReportingService {
-    
+
     @Autowired
     protected Mapper mapper;
     @PersistenceContext
     protected EntityManager em;
-    
+
     public Response getCorporateContactInfo() {
         List<EmployeeDto> res = new ArrayList<EmployeeDto>();
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
@@ -48,10 +49,10 @@ public class ContactInfoReportingService {
             dto.setLastName(emp.getLastName());
             dto.setJobTitle(emp.getJobTitle());
             dto.setBranch(emp.getBranch());
-            
-            
-            if (emp.getPrimaryEmail() != null) {
-                dto.setEmail(emp.getPrimaryEmail().getEmail());
+
+            String primaryEmail = EmployeeDao.instance().getPrimaryEmail(emp);
+            if (primaryEmail != null) {
+                dto.setEmail(primaryEmail);
             }
             for (Phone phone : emp.getPhones()) {
                 if (phone.getPhoneType() != null && "work".equalsIgnoreCase(phone.getPhoneType().getPhoneType())) {
@@ -75,7 +76,7 @@ public class ContactInfoReportingService {
                 .header("Content-Length", pdf.length)
                 .build();
     }
-    
+
     public static ContactInfoReportingService instance() {
         return SpringContext.getBean(ContactInfoReportingService.class);
     }

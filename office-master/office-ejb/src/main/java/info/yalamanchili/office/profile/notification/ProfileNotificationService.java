@@ -67,10 +67,7 @@ public class ProfileNotificationService {
         // Email Intimation for User
         Email newUserEmailObj = new Email();
         newUserEmailObj.setHtml(Boolean.TRUE);
-        info.yalamanchili.office.entity.profile.Email newUserEmail = employee.getPrimaryEmail();
-        Set<String> newUserEmails = new HashSet<String>();
-        newUserEmails.add(newUserEmail.getEmail());
-        newUserEmailObj.setTos(newUserEmails);
+        newUserEmailObj.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
         newUserEmailObj.setSubject("Welcome to System Soft Portal");
         String messageTextforuser = "Your Username and Employee Id is:" + employee.getEmployeeId() + ": \n Please follow the instructions to login https://apps.sstech.us/site/office/forgot-password.html";
         newUserEmailObj.setBody(messageTextforuser);
@@ -81,12 +78,11 @@ public class ProfileNotificationService {
     @Async
     public void sendForgotPasswordNotification(Employee emp, String tempPassword) {
         Email email = new Email();
-        Set<String> tos = new HashSet<String>();
-        if (emp.getPrimaryEmail() == null) {
+        String primaryEmail = EmployeeDao.instance().getPrimaryEmail(emp);
+        if (primaryEmail == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.email", "no primary email for employee");
         }
-        tos.add(emp.getPrimaryEmail().getEmail());
-        email.setTos(tos);
+        email.addTo(primaryEmail);
         email.setSubject("Employee Temp Password");
         email.setBody("you temp password is:" + tempPassword);
         messagingService.sendEmail(email);
@@ -97,12 +93,11 @@ public class ProfileNotificationService {
     public void sendResetPasswordNotification(Employee emp, String resetPassword) {
         emp = EmployeeDao.instance().findById(emp.getId());
         Email email = new Email();
-        Set<String> tos = new HashSet<String>();
-        if (emp.getPrimaryEmail() == null) {
+        String primaryEmail = EmployeeDao.instance().getPrimaryEmail(emp);
+        if (primaryEmail == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.email", "no primary email for employee");
         }
-        tos.add(emp.getPrimaryEmail().getEmail());
-        email.setTos(tos);
+        email.addTo(primaryEmail);
         email.setHtml(Boolean.TRUE);
         email.setSubject("Employee Password Reset");
         email.setBody("Your password has been reset \n Username: " + emp.getEmployeeId() + " \n password:" + resetPassword + "\n please change your password after you login from your profile");
@@ -124,11 +119,9 @@ public class ProfileNotificationService {
     @Async
     public void sendNewMessageNotification(Message msg) {
         Email email = new Email();
-        Set<String> tos = new HashSet<String>();
         for (Employee emp : msg.getTos()) {
-            tos.add(emp.getPrimaryEmail().getEmail());
+            email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
         }
-        email.setTos(tos);
         email.setSubject("Portal Message: " + msg.getSubject() + " :From:" + msg.getFromEmp().getFirstName() + "," + msg.getFromEmp().getLastName());
         email.setBody(msg.getMessage());
         email.setHtml(true);

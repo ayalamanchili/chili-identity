@@ -189,10 +189,26 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 //TODO cache this
 
+    public String getPrimaryEmail(String employeeId) {
+        return getPrimaryEmail(findEmployeWithEmpId(employeeId));
+    }
+
+    public String getPrimaryEmail(Long employeeId) {
+        TypedQuery<String> query = getEntityManager().createQuery("select email.email from " + Employee.class.getCanonicalName() + " emp, " + Email.class.getCanonicalName() + " email where emp.id=:employeeIdParam and email.primaryEmail = true", String.class);
+        query.setParameter("employeeIdParam", employeeId);
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
     public String getPrimaryEmail(Employee emp) {
-        TypedQuery<String> query = getEntityManager().createQuery("select email.email from " + Employee.class.getCanonicalName() + " emp, " + Email.class.getCanonicalName() + " email where emp=:employeeParam and email.primaryEmail = true", String.class);
-        query.setParameter("employeeParam", emp);
-        return query.getResultList().get(0);
+        if (emp != null && emp.getId() != null) {
+            return getPrimaryEmail(emp.getId());
+        } else {
+            return null;
+        }
     }
 
     @Override

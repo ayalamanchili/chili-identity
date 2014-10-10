@@ -181,7 +181,7 @@ public class PerformanceEvaluationService {
             if (emp.getBranch() != null) {
                 branch = emp.getBranch().name();
             }
-            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(evaluation.getApprovedDate()), emp.getPrimaryEmail().getEmail(), branch);
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(evaluation.getApprovedDate()), EmployeeDao.instance().getPrimaryEmail(emp), branch);
             pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), signature);
         }
         return Response

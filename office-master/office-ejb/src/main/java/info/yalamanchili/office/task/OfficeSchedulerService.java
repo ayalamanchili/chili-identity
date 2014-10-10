@@ -8,6 +8,7 @@
 package info.yalamanchili.office.task;
 
 import info.yalamanchili.office.Time.TimeJobService;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
@@ -37,8 +38,8 @@ public class OfficeSchedulerService {
     protected MessagingService messagingService;
 
     /**
-     * runs jan 1 at 2'0 clock every year to accumulate yearly earned PTO,
-     * PTO and vacation days for Employees
+     * runs jan 1 at 2'0 clock every year to accumulate yearly earned PTO, PTO
+     * and vacation days for Employees
      */
     @Scheduled(cron = "0 0 2 1 1 *")
     public void runYearlyEarnedTimeSheets() {
@@ -46,8 +47,8 @@ public class OfficeSchedulerService {
     }
 
     /**
-     * runs jan 1 at 3'0 clock every year to accumulate yearly earned PTO,
-     * PTO and vacation days for Consultants
+     * runs jan 1 at 3'0 clock every year to accumulate yearly earned PTO, PTO
+     * and vacation days for Consultants
      */
     @Scheduled(cron = "0 0 3 1 1 *")
     public void runConsultantsYearlyEarnedTimeSheets() {
@@ -89,7 +90,7 @@ public class OfficeSchedulerService {
             if (empres.isActive()) {
                 Set<String> emailto = new HashSet<String>();
                 Email email = new Email();
-                emailto.add(empres.getPrimaryEmail().getEmail());
+                emailto.add(EmployeeDao.instance().getPrimaryEmail(empres));
                 email.setTos(emailto);
                 email.setSubject("Birthday Wishes");
                 String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();

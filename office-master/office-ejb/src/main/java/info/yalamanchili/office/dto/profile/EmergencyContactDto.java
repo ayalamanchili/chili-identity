@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import javax.validation.constraints.Size;
@@ -155,9 +156,7 @@ public class EmergencyContactDto implements Serializable {
             }
 
         }
-        if (entity.getContact().getPrimaryEmail() != null) {
-            mapper.map(entity.getContact().getPrimaryEmail(), emergencyContact);
-        }
+        emergencyContact.setEmail(EmployeeDao.instance().getPrimaryEmail(entity.getContact().getId()));
         emergencyContact.setId(entity.getId());
         return emergencyContact;
     }

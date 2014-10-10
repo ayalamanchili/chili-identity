@@ -170,7 +170,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(task));
-        email.addTo(emp.getPrimaryEmail().getEmail());
+        email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
         email.setSubject(summary);
         StringBuilder messageBuilder = new StringBuilder();
@@ -195,7 +195,7 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
         Email email = new Email();
         if (notifyEmployees != null) {
             for (Entry e : notifyEmployees) {
-                email.addTo(EmployeeDao.instance().findEmployeWithEmpId(e.getId()).getPrimaryEmail().getEmail());
+                email.addTo(EmployeeDao.instance().getPrimaryEmail(e.getId()));
             }
         }
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");

@@ -226,14 +226,14 @@ public class SelfService {
         //employee who created the ticket;
         Employee emp = comment.getTicket().getEmployee();
 //        if (TicketStatus.Resolved.equals(comment.getTicket().getStatus()) || TicketStatus.Rejected.equals(comment.getTicket().getStatus())) {
-        notificationGroup.add(emp.getPrimaryEmail().getEmail());
+        notificationGroup.add(EmployeeDao.instance().getPrimaryEmail(emp));
 //        }
         // Role to which the ticket is assigned to 
         String role = comment.getTicket().getDepartmentAssigned().getRolename();
         notificationGroup.addAll(MailUtils.instance().getEmailsAddressesForRoles(role));
         //assigned to emp email
         if (comment.getTicket().getAssignedTo() != null) {
-            notificationGroup.add(comment.getTicket().getAssignedTo().getPrimaryEmail().getEmail());
+            notificationGroup.add(EmployeeDao.instance().getPrimaryEmail(comment.getTicket().getAssignedTo()));
         }
         //TODO get audited data emails also?
         return notificationGroup;

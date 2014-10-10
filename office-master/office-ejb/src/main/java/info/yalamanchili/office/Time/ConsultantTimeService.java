@@ -155,7 +155,7 @@ public class ConsultantTimeService {
             if (emp.getBranch() != null) {
                 branch = emp.getBranch().name();
             }
-            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(ts.getApprovedDate()), emp.getPrimaryEmail().getEmail(), branch);
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(ts.getApprovedDate()), EmployeeDao.instance().getPrimaryEmail(emp), branch);
             pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), signature);
         }
         return Response

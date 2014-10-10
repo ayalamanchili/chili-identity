@@ -184,7 +184,7 @@ public class OfficeSecurityService {
             securityconfig = OfficeSecurityConfiguration.instance();
         }
         String employeeId = emp.getEmployeeId();
-        String email = emp.getPrimaryEmail().getEmail();
+        String email = EmployeeDao.instance().getPrimaryEmail(emp);
         String subjectCN = emp.getFirstName() + " " + emp.getLastName();
         X509Principal issuer = new X509Principal("CN=System Soft Technologies, O=System Soft Technologies, OU=System Soft Portal, L=Tampa, ST=FL, C=US");
         //TODO use address and branch information from employee

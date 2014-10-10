@@ -105,7 +105,7 @@ public class TimeJobService {
         for (CorporateTimeSheet ts : query.getResultList()) {
             Employee emp = CompanyContactDao.instance().getReportsToContactForEmployee(ts.getEmployee());
             Email email = new Email();
-            email.addTo(emp.getPrimaryEmail().getEmail());
+            email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
             email.setSubject("Leave Remainder: " + ts.getEmployee().getFirstName() + " is on leave");
 //            String messageText = "TODO add timesheet details here";
             String messageText = "Time Sheet Hours" + ts.getHours() + ", Category" + ts.getCategory() + ", StartDate" + ts.getStartDate() + ", EndDate" + ts.getEndDate() + " details ";

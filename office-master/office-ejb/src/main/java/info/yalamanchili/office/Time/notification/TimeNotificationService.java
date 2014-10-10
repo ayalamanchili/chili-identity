@@ -9,6 +9,7 @@ package info.yalamanchili.office.Time.notification;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -55,7 +56,7 @@ public class TimeNotificationService {
         Email email = new Email();
         email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
         Set<String> tos = new HashSet<String>();
-        tos.add(emp.getPrimaryEmail().getEmail());
+        tos.add(EmployeeDao.instance().getPrimaryEmail(emp));
         email.setTos(tos);
         email.setSubject("Overtime Pay request was approved " + emp.getFirstName() + "," + emp.getLastName());
         email.setBody("reason is:" + reason);

@@ -30,8 +30,7 @@ public class GenericTaskCompleteNotification implements TaskListener {
         email.setTos(BPMUtils.getCandidateEmails(delegateTask));
         Employee employee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
         if (employee != null) {
-            employee=EmployeeDao.instance().findById(employee.getId());
-            email.addTo(employee.getPrimaryEmail().getEmail());
+            email.addTo(EmployeeDao.instance().getPrimaryEmail(employee.getId()));
         }
         String subjectText = "Task Complete:" + delegateTask.getName();
         String messageText = "Task Complete.  Details: \n Name: " + delegateTask.getName() + " \n Description:" + delegateTask.getDescription();

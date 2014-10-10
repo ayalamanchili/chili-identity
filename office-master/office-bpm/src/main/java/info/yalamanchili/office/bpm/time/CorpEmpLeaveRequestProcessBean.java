@@ -9,6 +9,7 @@
 package info.yalamanchili.office.bpm.time;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -59,7 +60,7 @@ public class CorpEmpLeaveRequestProcessBean {
     public void sendLeaveRequestRejectedEmail(Employee employee) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
-        email.addTo(employee.getPrimaryEmail().getEmail());
+        email.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
         email.setSubject("Leave Request Rejected");
         email.setBody("Your leave request has been rejected due to insufficient leaves");
         messagingService.sendEmail(email);

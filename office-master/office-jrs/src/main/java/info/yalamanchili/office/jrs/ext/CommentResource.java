@@ -93,7 +93,7 @@ public class CommentResource {
         for (Entry e : comment.getNotifyEmployees()) {
             Employee emp = EmployeeDao.instance().findEmployeWithEmpId(e.getId());
             if (emp != null) {
-                email.addTo(emp.getPrimaryEmail().getEmail());
+                email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
             }
         }
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();

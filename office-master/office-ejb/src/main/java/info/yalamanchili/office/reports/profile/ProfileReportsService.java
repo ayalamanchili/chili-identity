@@ -40,7 +40,7 @@ public class ProfileReportsService {
         List<EmployeeBasicInfoReportDto> res = new ArrayList<EmployeeBasicInfoReportDto>();
         for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
             EmployeeBasicInfoReportDto dto = mapper.map(emp, EmployeeBasicInfoReportDto.class);
-            dto.setEmail(emp.getPrimaryEmail().getEmail());
+            dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
             if (emp.getPhones().size() > 0) {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }

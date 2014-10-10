@@ -8,6 +8,7 @@
 package info.yalamanchili.office.dto.profile;
 
 import info.chili.security.SecurityUtils;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
@@ -200,9 +201,7 @@ public class EmployeeDto implements Serializable {
 
     public static EmployeeDto map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {
         EmployeeDto dto = mapper.map(entity, EmployeeDto.class);
-        if (entity.getPrimaryEmail() != null) {
-            dto.setEmail(entity.getPrimaryEmail().getEmail());
-        }
+        dto.setEmail(EmployeeDao.instance().getPrimaryEmail(entity));
         if (entity.getPhones().size() > 0) {
             Phone phone = entity.getPhones().get(0);
             dto.setPhoneNumber(phone.getPhoneNumber());
