@@ -143,8 +143,10 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity.get("project"), "name"));
             table.setText(i, 2, JSONUtils.toString(entity.get("clientInformation").isObject().get("client"), "name"));
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "reportUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
-            FileField fileField = new FileField(fileURL);
-            table.setWidget(i, 3, fileField);
+            if (fileURL.contains("entityId_")) {
+                FileField fileField = new FileField(fileURL);
+                table.setWidget(i, 3, fileField);
+            }
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
