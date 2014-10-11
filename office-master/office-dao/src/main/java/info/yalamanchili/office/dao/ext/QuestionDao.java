@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dao.ext;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
@@ -33,6 +34,15 @@ public class QuestionDao extends CRUDDao<Question> {
 
     public QuestionDao() {
         super(Question.class);
+    }
+
+    @Override
+    public Question save(Question entity) {
+        if (QueryUtils.findEntity(em, Question.class, "questionKey", entity.getQuestionKey()) == null) {
+            return super.save(entity);
+        } else {
+            return entity;
+        }
     }
 
     public List<Question> getQuestions(QuestionCategory category, QuestionContext context, int start, int limit) {

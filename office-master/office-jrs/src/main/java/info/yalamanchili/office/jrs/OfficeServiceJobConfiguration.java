@@ -33,6 +33,11 @@ public class OfficeServiceJobConfiguration {
     }
 
     @ManagedOperation
+    public void syncPerformanceEvaluationQuestions() {
+        TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
+    }
+
+    @ManagedOperation
     public void processConsYearlyEarnedTimeSheets() {
         TimeJobService.instance().processConsultantEmpYearlyEarnedTimeSheets();
     }
