@@ -44,11 +44,11 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -68,12 +68,12 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getQuestionURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -83,6 +83,8 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
         table.setText(0, 3, getKeyValue("QuestionCategory"));
         table.setText(0, 4, getKeyValue("QuestionContext"));
         table.setText(0, 5, getKeyValue("SortOrder"));
+        table.setText(0, 6, getKeyValue("Comment Required"));
+        table.setText(0, 7, getKeyValue("Rating Required"));
     }
 
     @Override
@@ -94,6 +96,8 @@ public class ReadAllQuestionPanel extends CRUDReadAllComposite {
             table.setText(i, 3, JSONUtils.toString(entity, "category"));
             table.setText(i, 4, JSONUtils.toString(entity, "context"));
             table.setText(i, 5, JSONUtils.toString(entity, "sortOrder"));
+            table.setText(i, 6, JSONUtils.toString(entity, "questionCommentRequired"));
+            table.setText(i, 7, JSONUtils.toString(entity, "questionRatingRequired"));
         }
     }
 

@@ -12,6 +12,7 @@ import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.SkillSetDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationQuestionsFactory;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +35,7 @@ public class OfficeServiceJobConfiguration {
 
     @ManagedOperation
     public void syncPerformanceEvaluationQuestions() {
-        TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
+        PerformanceEvaluationQuestionsFactory.instance().syncQuestions();
     }
 
     @ManagedOperation

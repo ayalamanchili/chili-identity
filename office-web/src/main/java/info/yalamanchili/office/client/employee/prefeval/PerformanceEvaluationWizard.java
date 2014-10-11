@@ -139,8 +139,13 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
                         @Override
                         public void onSuccess(String res) {
                             new ResponseStatusWidget().show("Successfully Created Performance Evaluation");
-                            TabPanel.instance().myOfficePanel.entityPanel.clear();
-                            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(employeeId));
+                            if (TabPanel.instance().myOfficePanel.isVisible()) {
+                                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(employeeId));
+                            } else if (TabPanel.instance().homePanel.isVisible()) {
+                                TabPanel.instance().homePanel.entityPanel.clear();
+                                TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(employeeId));
+                            }
                         }
                     });
         }

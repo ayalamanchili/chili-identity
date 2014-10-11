@@ -29,9 +29,13 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateQuestionCommentPanel.class.getName());
     protected HTML questionInfoL = new HTML("");
-    protected RatingWidget ratingWidget = new RatingWidget();
+    protected RatingWidget ratingWidget;
+    protected Boolean isRatingRequired;
+    protected Boolean isCommentRequired;
 
     public UpdateQuestionCommentPanel(JSONObject entity) {
+        isRatingRequired = JSONUtils.toBoolean(entity, "questionRatingRequired");
+        isCommentRequired = JSONUtils.toBoolean(entity, "questionCommentRequired");
         initUpdateComposite(entity, "QuestionComment", OfficeWelcome.constants);
     }
 
@@ -86,6 +90,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        ratingWidget = new RatingWidget(5, false, false);
         entityFieldsPanel.add(questionInfoL);
         addField("comment", false, false, DataType.RICH_TEXT_AREA);
         entityFieldsPanel.add(ratingWidget);
@@ -94,6 +99,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "comment";

@@ -20,6 +20,7 @@ import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.RatingWidget;
 import java.util.logging.Logger;
@@ -37,19 +38,18 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected HTML questionL = new HTML();
     protected HTML questionDecriptionL = new HTML();
     protected BaseField commentTB;
-    protected RatingWidget ratingWidget = new RatingWidget(5);
+    protected RatingWidget ratingWidget;
     protected Boolean displayRating;
     protected Boolean useRichTextEditor;
+    protected Boolean isRatingRequired;
+    protected Boolean isCommentRequired;
 
-    public CreateQuestionCommentWidget(JSONObject question) {
-        this.question = question;
-        init(captionPanel);
-    }
-
-    public CreateQuestionCommentWidget(JSONObject question, boolean displayRating, boolean useRichTextEditor) {
+    public CreateQuestionCommentWidget(JSONObject question, Boolean displayRating, Boolean useRichTextEditor) {
         this.question = question;
         this.displayRating = displayRating;
         this.useRichTextEditor = useRichTextEditor;
+        isRatingRequired = JSONUtils.toBoolean(question, "questionRatingRequired");
+        isCommentRequired = JSONUtils.toBoolean(question, "questionCommentRequired");
         init(captionPanel);
     }
 
@@ -60,7 +60,7 @@ public class CreateQuestionCommentWidget extends ALComposite {
     protected JSONObject getQuestionComment() {
         JSONObject entity = new JSONObject();
         entity.put("id", question.get("id").isString());
-        if (useRichTextEditor != null && useRichTextEditor) {
+        if (useRichTextEditor) {
             if (!Strings.isNullOrEmpty(((RichTextField) commentTB).getValue())) {
                 entity.put("comment", new JSONString(((RichTextField) commentTB).getValue()));
             }
@@ -69,7 +69,7 @@ public class CreateQuestionCommentWidget extends ALComposite {
                 entity.put("comment", new JSONString(((TextAreaField) commentTB).getValue()));
             }
         }
-        if (displayRating != null && displayRating && ratingWidget.getRating() > 0) {
+        if (displayRating && ratingWidget.getRating() > 0) {
             entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
         }
         return entity;
@@ -82,6 +82,24 @@ public class CreateQuestionCommentWidget extends ALComposite {
     }
 
     public boolean validate() {
+        if (isCommentRequired) {
+            if (useRichTextEditor) {
+                if (Strings.isNullOrEmpty(((RichTextField) commentTB).getValue())) {
+                    commentTB.setMessage("Please enter comments");
+                    return false;
+                }
+            } else {
+                if (Strings.isNullOrEmpty(((TextAreaField) commentTB).getValue())) {
+                    commentTB.setMessage("Please enter comments");
+                    return false;
+                }
+            }
+        }
+        if (isRatingRequired && ratingWidget.getRating() <= 0) {
+            new ResponseStatusWidget().show("Rating is required");
+            ratingWidget.setErrorStyle();
+            return false;
+        }
         return true;
     }
 
@@ -90,15 +108,16 @@ public class CreateQuestionCommentWidget extends ALComposite {
 
     @Override
     protected void addWidgets() {
+        ratingWidget = new RatingWidget(5, isRatingRequired, false);
         panel.add(questionL);
         panel.add(questionDecriptionL);
-        if (useRichTextEditor != null && useRichTextEditor) {
-            commentTB = new RichTextField(OfficeWelcome.constants, "comment", "Comment", false, true, Alignment.VERTICAL);
+        if (useRichTextEditor) {
+            commentTB = new RichTextField(OfficeWelcome.constants, "comment", "Comment", false, isCommentRequired, Alignment.VERTICAL);
         } else {
-            commentTB = new TextAreaField(OfficeWelcome.constants, "comment", "Comment", false, true, Alignment.VERTICAL);
+            commentTB = new TextAreaField(OfficeWelcome.constants, "comment", "Comment", false, isCommentRequired, Alignment.VERTICAL);
         }
         panel.add(commentTB);
-        if (null == displayRating || displayRating) {
+        if (displayRating) {
             panel.add(ratingWidget);
         }
         captionPanel.setContentWidget(panel);

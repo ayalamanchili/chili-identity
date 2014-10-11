@@ -84,7 +84,7 @@ public class CreateQuestionCommentsWidget extends Composite {
             if (useRichTextEditor != null || displayRating != null) {
                 commentwidget = new CreateQuestionCommentWidget(obj, displayRating, useRichTextEditor);
             } else {
-                commentwidget = new CreateQuestionCommentWidget(obj);
+                commentwidget = new CreateQuestionCommentWidget(obj, true, false);
             }
             commentWidgets.add(commentwidget);
             panel.add(commentwidget);

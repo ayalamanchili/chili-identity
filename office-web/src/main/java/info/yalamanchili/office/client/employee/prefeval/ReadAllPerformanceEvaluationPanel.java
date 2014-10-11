@@ -214,7 +214,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
                 TabPanel.instance().homePanel.entityPanel.add(new PeformanceSelfEvaluationPanel());
             } else {
                 TabPanel.instance().homePanel.entityPanel.clear();
-                TabPanel.instance().homePanel.entityPanel.add(new PerformanceEvaluationWizard(PerformanceEvaluationWizardType.SELF_MANAGER, OfficeWelcome.instance().getCurrentUserEmpId()));
+                TabPanel.instance().homePanel.entityPanel.add(new PerformanceEvaluationWizard(PerformanceEvaluationWizardType.SELF_MANAGER, OfficeWelcome.instance().employeeId));
             }
 
         }

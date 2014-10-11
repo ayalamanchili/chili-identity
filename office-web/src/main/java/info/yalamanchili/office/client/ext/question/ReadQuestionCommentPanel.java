@@ -22,20 +22,20 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class ReadQuestionCommentPanel extends ReadComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadQuestionCommentPanel.class.getName());
     protected HTML questionInfoL = new HTML("");
-    protected RatingWidget ratingWidget = new RatingWidget();
-    
+    protected RatingWidget ratingWidget = new RatingWidget(5, false, true);
+
     public ReadQuestionCommentPanel(JSONObject entity) {
         initReadComposite(entity, "QuestionComment", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
-        
+
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         questionInfoL.setHTML(entity.get("questionInfo").isString().stringValue());
@@ -46,27 +46,27 @@ public class ReadQuestionCommentPanel extends ReadComposite {
             ratingWidget.setRating(Double.valueOf(JSONUtils.toString(entity, "rating")).intValue());
         }
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
         entityCaptionPanel.setCaptionHTML("<b>" + JSONUtils.toString(entity, "question") + "</b>");
     }
-    
+
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(questionInfoL);
         addField("comment", true, false, DataType.RICH_TEXT_AREA);
         entityFieldsPanel.add(ratingWidget);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         return "";

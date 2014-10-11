@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.gwt;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
@@ -41,12 +40,12 @@ public class RatingWidget extends Composite {
     private Presenter presenter;
 
     private HTMLPanel container;
+    protected boolean required;
+    protected boolean readOnly;
 
-    public RatingWidget() {
-        this(5);
-    }
-
-    public RatingWidget(final int starCount) {
+    public RatingWidget(final int starCount, boolean required, boolean readOnly) {
+        this.required = required;
+        this.readOnly = readOnly;
         container = new HTMLPanel("");
         initWidget(container);
         getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
@@ -96,6 +95,7 @@ public class RatingWidget extends Composite {
                 starCounter++;
             }
         }
+        removeErrorStyle();
     }
 
     public void setPresenter(Presenter presenter) {
@@ -111,4 +111,11 @@ public class RatingWidget extends Composite {
         displayRating(rating);
     }
 
+    public void setErrorStyle() {
+        getElement().getStyle().setBackgroundColor("yellow");
+    }
+
+    public void removeErrorStyle() {
+        getElement().getStyle().clearBackgroundColor();
+    }
 }

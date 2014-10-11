@@ -21,36 +21,37 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class ReadQuestionPanel extends ReadComposite {
-
+    
     private static ReadQuestionPanel instance;
     private static Logger logger = Logger.getLogger(ReadQuestionPanel.class.getName());
-
+    
     public static ReadQuestionPanel instance() {
         return instance;
     }
-
+    
     public ReadQuestionPanel(JSONObject entity) {
         instance = this;
+        logger.info(entity.toString());
         initReadComposite(entity, "Question", OfficeWelcome.constants);
     }
-
+    
     public ReadQuestionPanel(String id) {
         initReadComposite(id, "Question", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("questionKey", entity, DataType.STRING_FIELD);
@@ -60,15 +61,15 @@ public class ReadQuestionPanel extends ReadComposite {
         assignFieldValueFromEntity("questionCommentRequired", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("questionRatingRequired", entity, DataType.BOOLEAN_FIELD);
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
     }
-
+    
     @Override
     protected void addWidgets() {
         addField("questionKey", true, false, DataType.STRING_FIELD);
@@ -78,11 +79,11 @@ public class ReadQuestionPanel extends ReadComposite {
         addField("questionCommentRequired", true, false, DataType.BOOLEAN_FIELD);
         addField("questionRatingRequired", true, false, DataType.BOOLEAN_FIELD);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "question";

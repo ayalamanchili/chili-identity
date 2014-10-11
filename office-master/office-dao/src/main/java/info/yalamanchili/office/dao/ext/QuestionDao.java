@@ -36,8 +36,7 @@ public class QuestionDao extends CRUDDao<Question> {
         super(Question.class);
     }
 
-    @Override
-    public Question save(Question entity) {
+    public Question create(Question entity) {
         if (QueryUtils.findEntity(em, Question.class, "questionKey", entity.getQuestionKey()) == null) {
             return super.save(entity);
         } else {

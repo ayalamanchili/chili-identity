@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -59,11 +58,11 @@ public class Question extends AbstractEntity {
     /**
      *
      */
-    protected boolean questionCommentRequired;
+    protected Boolean questionCommentRequired = false;
     /**
      *
      */
-    protected boolean questionRatingRequired;
+    protected Boolean questionRatingRequired = false;
 
     public Question() {
     }
@@ -100,19 +99,19 @@ public class Question extends AbstractEntity {
         this.context = context;
     }
 
-    public boolean isQuestionCommentRequired() {
-        return questionCommentRequired;
-    }
-
-    public void setQuestionCommentRequired(boolean questionCommentRequired) {
+    public void setQuestionCommentRequired(Boolean questionCommentRequired) {
         this.questionCommentRequired = questionCommentRequired;
     }
 
-    public boolean isQuestionRatingRequired() {
+    public Boolean getQuestionCommentRequired() {
+        return questionCommentRequired;
+    }
+
+    public Boolean getQuestionRatingRequired() {
         return questionRatingRequired;
     }
 
-    public void setQuestionRatingRequired(boolean questionRatingRequired) {
+    public void setQuestionRatingRequired(Boolean questionRatingRequired) {
         this.questionRatingRequired = questionRatingRequired;
     }
 }
