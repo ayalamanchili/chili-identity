@@ -19,10 +19,9 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class contains tasks that are triggered by scheduler
@@ -30,12 +29,11 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
+@Transactional
 public class OfficeSchedulerService {
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     public EntityManager em;
-    @Autowired
-    protected MessagingService messagingService;
 
     /**
      * runs jan 1 at 2'0 clock every year to accumulate yearly earned PTO, PTO
@@ -78,7 +76,7 @@ public class OfficeSchedulerService {
     public void birthdayNotification() {
         int monthb = Calendar.getInstance().get(Calendar.MONTH);
         monthb = monthb + 1;
-        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  day(dateOfBirth)=:date1 and month(dateOfBirth)=:month1 ");
+        javax.persistence.Query findUserQuery = em.createQuery("from " + Employee.class.getCanonicalName() + " where  user.enabled= TRUE and day(dateOfBirth)=:date1 and month(dateOfBirth)=:month1 ");
         findUserQuery.setParameter("date1", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         findUserQuery.setParameter("month1", monthb);
         List lstResult = findUserQuery.getResultList();
@@ -95,7 +93,7 @@ public class OfficeSchedulerService {
                 email.setSubject("Birthday Wishes");
                 String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
                 email.setBody(messageText);
-                messagingService.sendEmail(email);
+                MessagingService.instance().sendEmail(email);
             }
         }
     }
