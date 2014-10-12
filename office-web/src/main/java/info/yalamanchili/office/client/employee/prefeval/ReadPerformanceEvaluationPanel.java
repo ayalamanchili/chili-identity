@@ -65,7 +65,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("employeeComments", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("ceoComments", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("hrComments", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -78,17 +78,17 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("evaluationDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("type", false, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
-        addField("rating", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        addEnumField("stage", false, true,PerformanceEvaluationStage.names(), Alignment.HORIZONTAL);
+        addField("evaluationDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("type", true, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
+        addField("rating", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addEnumField("stage", true, true,PerformanceEvaluationStage.names(), Alignment.HORIZONTAL);
         addField("keyAccomplishments", true, false, DataType.RICH_TEXT_AREA);
         addField("areasNeedImprovement", true, false, DataType.RICH_TEXT_AREA);
         addField("managersComments", true, false, DataType.RICH_TEXT_AREA);
         addField("employeeComments", true, false, DataType.RICH_TEXT_AREA);
-        addField("ceoComments", true, false, DataType.RICH_TEXT_AREA);
+        addField("hrComments", true, false, DataType.RICH_TEXT_AREA);
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name())));

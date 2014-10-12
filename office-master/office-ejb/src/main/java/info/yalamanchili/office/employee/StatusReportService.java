@@ -51,6 +51,7 @@ public class StatusReportService {
     }
 
     public void startStatusReportProcess(StatusReport entity) {
+        OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "statusReportApprovalTask", true);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);

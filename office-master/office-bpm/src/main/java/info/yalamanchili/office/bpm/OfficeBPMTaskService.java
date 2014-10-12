@@ -107,6 +107,26 @@ public class OfficeBPMTaskService {
         }
     }
 
+    /**
+     * deleted exists tasks containing variable and matching taskdef. used to
+     * delete existing tasks when new task is set to be rolled out.eg: update
+     * timesheet task should cancel existing cancel requests
+     *
+     * @param variableName
+     * @param variableValue
+     * @param taskDefName
+     */
+    public void deleteTasksWithVariable(String variableName, Object variableValue, String taskDefName, boolean deleteProcess) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        List<org.activiti.engine.task.Task> tasks = taskService.findTasksWithVariable(variableName, variableValue);
+        for (org.activiti.engine.task.Task task : tasks) {
+            OfficeBPMService.instance().deleteProcessInstance(task.getProcessInstanceId());
+            if (task.getTaskDefinitionKey().equals(taskDefName)) {
+                taskService.deleteTask(task.getId());
+            }
+        }
+    }
+
     public Task getTaskForId(String taskId) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.createTaskQuery().taskId(taskId).singleResult();
         if (bpmTask != null) {

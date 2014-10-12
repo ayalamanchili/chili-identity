@@ -163,11 +163,18 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             JSONObject perfEvalStartObj = perfEvalStartStep.getWidget().populateEntityFromFields();
             JSONObject perfEvalEndObj = perfEvalEndStep.getWidget().populateEntityFromFields();
             entity.put("performanceEvaluation", JSONUtils.merge(perfEvalStartObj, perfEvalEndObj));
+            entity.put("comments", getQuestionComments());
+            logger.info(entity.toString());
+            return entity;
+        }
+
+        protected JSONArray getQuestionComments() {
+            JSONArray questionComments = new JSONArray();
             JSONArray selfReviewQuestions = selfReviewQuestionsStep.getWidget().getValues();
             JSONArray skillQuestions = skillQuestionsStep.getWidget().getValues();
             JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValues();
             JSONArray managementQuestions = managementQuestionsStep.getWidget().getValues();
-            JSONArray questionComments = new JSONArray();
+
             int x = 0;
             for (int i = 0; i < selfReviewQuestions.size(); i++) {
                 questionComments.set(x, selfReviewQuestions.get(i));
@@ -185,9 +192,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
                 questionComments.set(x, managementQuestions.get(i));
                 x++;
             }
-            entity.put("comments", questionComments);
-            logger.info(entity.toString());
-            return entity;
+            return questionComments;
         }
 
         @Override
@@ -262,4 +267,19 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
     }
 
+    public void getRating() {
+        JSONArray questions = perfEvalEndStep.getQuestionComments();
+        Double sum = 0.0;
+        Double size = 0.0;
+        for (int i = 0; i < questions.size(); i++) {
+            String ratingStr = JSONUtils.toString(questions.get(i), "rating");
+            logger.info("rating" + ratingStr);
+            if (!ratingStr.isEmpty()) {
+                size++;
+                sum = sum + Integer.valueOf(ratingStr);
+            }
+        }
+        Double avg = sum / size;
+        logger.info("avg rating" + avg);
+    }
 }

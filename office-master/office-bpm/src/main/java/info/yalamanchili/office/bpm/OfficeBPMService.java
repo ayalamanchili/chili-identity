@@ -59,7 +59,11 @@ public class OfficeBPMService {
     }
 
     public ProcessInstance findProcessInstance(String processInstanceId) {
-        return bpmRuntimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        if (processInstanceId != null) {
+            return bpmRuntimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        } else {
+            return null;
+        }
     }
 
     public String getDeployedProcessInfo() {

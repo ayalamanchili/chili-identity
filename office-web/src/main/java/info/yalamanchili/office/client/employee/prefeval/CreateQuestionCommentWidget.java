@@ -23,13 +23,14 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.RatingWidget;
+import info.yalamanchili.office.client.gwt.RatingWidget.Presenter;
 import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
-public class CreateQuestionCommentWidget extends ALComposite {
+public class CreateQuestionCommentWidget extends ALComposite implements Presenter {
 
     private static Logger logger = Logger.getLogger(CreateQuestionCommentWidget.class.getName());
     protected CaptionPanel captionPanel = new CaptionPanel();
@@ -109,6 +110,7 @@ public class CreateQuestionCommentWidget extends ALComposite {
     @Override
     protected void addWidgets() {
         ratingWidget = new RatingWidget(5, isRatingRequired, false);
+        ratingWidget.setPresenter(this);
         panel.add(questionL);
         panel.add(questionDecriptionL);
         if (useRichTextEditor) {
@@ -121,5 +123,10 @@ public class CreateQuestionCommentWidget extends ALComposite {
             panel.add(ratingWidget);
         }
         captionPanel.setContentWidget(panel);
+    }
+
+    @Override
+    public void onRatingChanged(int value) {
+        PerformanceEvaluationWizard.instance().getRating();
     }
 }

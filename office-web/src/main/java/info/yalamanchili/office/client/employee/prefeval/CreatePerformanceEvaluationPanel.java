@@ -17,6 +17,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
 import java.util.logging.Logger;
 
 /**
@@ -130,9 +131,10 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
             addField("areasNeedImprovement", false, false, DataType.RICH_TEXT_AREA);
-            addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
-            addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
-            addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
+            if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.SELF_MANAGER)) {
+                addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
+                addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
+            }
             addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
         }
     }

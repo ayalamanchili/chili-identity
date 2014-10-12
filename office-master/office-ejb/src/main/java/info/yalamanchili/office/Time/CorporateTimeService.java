@@ -77,12 +77,7 @@ public class CorporateTimeService {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         taskService.deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         //delete cancel request is exists
-        List<Task> tasks = taskService.findTasksWithVariable("entityId", entity.getId());
-        for (Task task : tasks) {
-            if (task.getTaskDefinitionKey().equals("corpEmpLeaveRequestCancelTask")) {
-                taskService.deleteTask(task.getId());
-            }
-        }
+        taskService.deleteTasksWithVariable("entityId", entity.getId(), "corpEmpLeaveRequestCancelTask", true);
         submitLeaveRequest(entity);
     }
 

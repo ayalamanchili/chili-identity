@@ -9,10 +9,12 @@
 package info.yalamanchili.office.employee.perfeval;
 
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class PerformanceEvaluationQuestionsFactory {
     /**
      * sync all performance evaluation questions
      */
+    @CacheEvict(value = OfficeCacheKeys.QUESTIONS, allEntries = true)
     public void syncQuestions() {
         QuestionDao questionDao = QuestionDao.instance();
         /*

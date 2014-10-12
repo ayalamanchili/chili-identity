@@ -13,6 +13,7 @@ import info.chili.commons.PDFUtils;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -78,7 +79,10 @@ public class PerformanceEvaluationService {
     }
 
     protected void startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
+        OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "eemReviewTask", true);
+        OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "hrFinalApprovalTask", true);
         Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entityId", entity.getId());
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
         OfficeBPMService.instance().startProcess("assoc_emp_perf_eval_process", vars);
@@ -146,14 +150,16 @@ public class PerformanceEvaluationService {
     public void createQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
         CommentDao commentDao = CommentDao.instance();
         for (QuestionComment comment : comments) {
-            Question qes = QuestionDao.instance().findById(comment.getId());
-            perfEval.addQuestion(qes);
-            Comment cmt = commentDao.find(perfEval, qes);
-            if (cmt == null) {
-                commentDao.addComment(comment.getComment(), comment.getRating(), perfEval, qes);
-            } else {
-                cmt.setComment(comment.getComment());
-                cmt.setRating(comment.getRating());
+            if (comment.getId() != null) {
+                Question qes = QuestionDao.instance().findById(comment.getId());
+                perfEval.addQuestion(qes);
+                Comment cmt = commentDao.find(perfEval, qes);
+                if (cmt == null) {
+                    commentDao.addComment(comment.getComment(), comment.getRating(), perfEval, qes);
+                } else {
+                    cmt.setComment(comment.getComment());
+                    cmt.setRating(comment.getRating());
+                }
             }
         }
     }

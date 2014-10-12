@@ -51,12 +51,13 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("rating", entity);
         assignEntityValueFromField("keyAccomplishments", entity);
         assignEntityValueFromField("areasNeedImprovement", entity);
-        assignEntityValueFromField("managersComments", entity);
-        assignEntityValueFromField("employeeComments", entity);
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+            assignEntityValueFromField("managersComments", entity);
+            assignEntityValueFromField("employeeComments", entity);
+        }
         assignEntityValueFromField("ceoComments", entity);
 
         JSONObject perfEval = new JSONObject();
-        logger.info("dddddddddddddddddddddddddddddddddddd" + entity.toString());
         perfEval.put("performanceEvaluation", entity);
         JSONArray questionComments = new JSONArray();
         JSONArray selfReviewQuestions = updateSelfReviewCommentsPanel.getQuestions();
@@ -114,16 +115,23 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("rating", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("employeeComments", entity, DataType.RICH_TEXT_AREA);
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+            assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
+            assignFieldValueFromEntity("employeeComments", entity, DataType.RICH_TEXT_AREA);
+        }
         assignFieldValueFromEntity("ceoComments", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully  Updated PerformanceEvaluation Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(getEntityId()));
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(getEntityId()));
+        } else if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
+        }
     }
 
     @Override
@@ -146,10 +154,9 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addField("rating", false, true, DataType.INTEGER_FIELD);
         addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
         addField("areasNeedImprovement", false, false, DataType.RICH_TEXT_AREA);
-        addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
-        addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
-        addField("ceoComments", false, false, DataType.RICH_TEXT_AREA);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+            addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
+            addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
             updateSelfReviewCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name()));
             entityFieldsPanel.add(updateSelfReviewCommentsPanel);
         }
