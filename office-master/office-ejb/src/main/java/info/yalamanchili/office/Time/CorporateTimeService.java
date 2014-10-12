@@ -119,7 +119,7 @@ public class CorporateTimeService {
         if (emp.getEmployeeId().equals(currentUser.getEmployeeId())) {
             return;
         }
-        Employee reportsToEmp = CompanyContactDao.instance().getReportsToContactForEmployee(emp);
+        Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
         if (reportsToEmp != null && currentUser.getEmployeeId().equals(reportsToEmp.getEmployeeId())) {
             return;
         }

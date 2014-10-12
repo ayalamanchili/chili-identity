@@ -89,13 +89,11 @@ public class CorpEmpLeaveRequestProcess implements TaskListener, JavaDelegate {
     }
 
     protected void assignLeaveRequestTask(DelegateTask task) {
-        //TODO use getReportsToContactForEmployee
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        List<CompanyContact> cnts = CompanyContactDao.instance().getCompanyContact(emp, "Reports_To");
-        if (cnts.size() > 0) {
-            String reportsTo = cnts.get(0).getContact().getEmployeeId();
-            task.addCandidateUser(reportsTo);
-            task.setOwner(reportsTo);
+        Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
+        if (manager != null) {
+            task.addCandidateUser(manager.getEmployeeId());
+            task.setOwner(manager.getEmployeeId());
         }
         task.addCandidateGroup(OfficeRole.ROLE_HR_ADMINSTRATION.name());
     }

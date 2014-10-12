@@ -103,7 +103,7 @@ public class TimeJobService {
         query.setParameter("categoryParam", TimeSheetCategory.getLeaveSpentCategories());
         query.setParameter("startDateParam", new Date(), TemporalType.DATE);
         for (CorporateTimeSheet ts : query.getResultList()) {
-            Employee emp = CompanyContactDao.instance().getReportsToContactForEmployee(ts.getEmployee());
+            Employee emp = CompanyContactDao.instance().getCompanyContactForEmployee(ts.getEmployee(), "Reports_To");
             Email email = new Email();
             email.addTo(EmployeeDao.instance().getPrimaryEmail(emp));
             email.setSubject("Leave Remainder: " + ts.getEmployee().getFirstName() + " is on leave");
@@ -115,8 +115,7 @@ public class TimeJobService {
     }
 
     /**
-     * This will create yearly PTO,vacation days for corp
-     * employees
+     * This will create yearly PTO,vacation days for corp employees
      */
     public void processCorpEmpYearlyEarnedTimeSheets() {
         //TODO also create prorate hours for emp who passed probation period
@@ -138,8 +137,7 @@ public class TimeJobService {
     }
 
     /**
-     * This will create yearly PTO,vacation days for Consultant
-     * Employees
+     * This will create yearly PTO,vacation days for Consultant Employees
      */
     public void processConsultantEmpYearlyEarnedTimeSheets() {
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {

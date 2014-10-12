@@ -48,8 +48,8 @@ public class CompanyContactDao extends CRUDDao<CompanyContact> {
         return query.getResultList();
     }
 
-    public Employee getReportsToContactForEmployee(Employee emp) {
-        List<CompanyContact> contacts = getCompanyContact(emp, "Reports_To");
+    public Employee getCompanyContactForEmployee(Employee emp, String companyContactType) {
+        List<CompanyContact> contacts = getCompanyContact(emp, companyContactType);
         if (contacts.size() > 0) {
             return contacts.get(0).getContact();
         } else {
