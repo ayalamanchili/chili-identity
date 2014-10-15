@@ -157,7 +157,8 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
 
     protected boolean enableUpdateRequest(JSONObject entity) {
         String category = JSONUtils.toString(entity, "category");
-        if (isMyTimeSheet(entity) && Arrays.asList(LeaveRequestTimeCategory.names()).contains(category)) {
+        String status = JSONUtils.toString(entity, "status");
+        if (isMyTimeSheet(entity) && Arrays.asList(LeaveRequestTimeCategory.names()).contains(category) && TimeSheetStatus.Pending.name().equals(status)) {
             return true;
         } else {
             return false;

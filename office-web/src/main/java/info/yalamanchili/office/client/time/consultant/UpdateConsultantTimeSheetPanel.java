@@ -42,7 +42,6 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("status", entity);
         assignEntityValueFromField("hours", entity);
         assignEntityValueFromField("notes", entity);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
@@ -57,16 +56,16 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -75,7 +74,6 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("notes", entity, DataType.TEXT_AREA_FIELD);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_CONSULTANT_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_RELATIONSHIP)) {
@@ -106,7 +104,6 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
     protected void addWidgets() {
         addDropDown("employee", employeeF);
         addEnumField("category", false, true, TimeSheetCategory.names());
-        addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
