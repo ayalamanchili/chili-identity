@@ -19,7 +19,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
-import info.yalamanchili.office.client.time.TimeSheetCategory;
+import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
 import java.util.Map;
 
 /**
@@ -61,7 +61,7 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     @Override
     protected void addWidgets() {
         addDropDown("employee", employeeF);
-        addEnumField("category", false, true, TimeSheetCategory.names());
+        addEnumField("category", false, true, LeaveRequestTimeCategory.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);
