@@ -40,6 +40,10 @@ public class ConsultantEmpLeaveRequestProcessBean {
             return true;
         }
         BigDecimal earned = ConsultantTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved, new Date());
+        if (entity.getCategory().equals(TimeSheetCategory.Vacation_Spent)) {
+            BigDecimal carryFwdHours = ConsultantTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, new Date());
+            earned = earned.add(carryFwdHours);
+        }
         BigDecimal spent = ConsultantTimeSheetDao.instance().getHoursInYear(employee, entity.getCategory(), TimeSheetStatus.Approved, new Date());
         if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) <= 0) {
             return true;

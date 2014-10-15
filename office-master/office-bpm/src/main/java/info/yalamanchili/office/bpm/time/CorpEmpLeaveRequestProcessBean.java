@@ -40,6 +40,10 @@ public class CorpEmpLeaveRequestProcessBean {
             return true;
         }
         BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved, new Date());
+        if (entity.getCategory().equals(TimeSheetCategory.Vacation_Spent)) {
+            BigDecimal carryFwdHours = CorporateTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, new Date());
+            earned = earned.add(carryFwdHours);
+        }
         BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInYear(employee, entity.getCategory(), TimeSheetStatus.Approved, new Date());
         if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) <= 0) {
             return true;
@@ -65,7 +69,7 @@ public class CorpEmpLeaveRequestProcessBean {
         email.setBody("Your leave request has been rejected due to insufficient leaves");
         messagingService.sendEmail(email);
     }
-    
+
 //TODO is this needed
     public void saveApprovedLeaveRequest(DelegateExecution execution, String leaveRequestApprovalTaskNotes) {
         CorporateTimeSheet ts = getTimeSheetFromExecution(execution);

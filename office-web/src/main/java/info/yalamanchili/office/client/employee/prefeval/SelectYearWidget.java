@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.employee.prefeval;
 
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.utils.Alignment;
@@ -25,6 +26,7 @@ public class SelectYearWidget extends ALComposite {
     public static String[] yearValuesArray = new String[]{"2012", "2013", "2014", "2015", "2016", "2017", "2018"};
     protected EnumField yearField = new EnumField(OfficeWelcome.constants, "year", "PerformanceEvaluation",
             false, false, yearValuesArray, Alignment.HORIZONTAL);
+    HTML message = new HTML("");
 
     public SelectYearWidget() {
         init(panel);
@@ -45,7 +47,15 @@ public class SelectYearWidget extends ALComposite {
         panel.add(yearField);
     }
 
+    public boolean validate() {
+        return true;
+    }
+
     protected JSONString getValue() {
-        return new JSONString(yearField.getValue());
+        if (yearField.getValue() == null) {
+            return null;
+        } else {
+            return new JSONString(yearField.getValue());
+        }
     }
 }

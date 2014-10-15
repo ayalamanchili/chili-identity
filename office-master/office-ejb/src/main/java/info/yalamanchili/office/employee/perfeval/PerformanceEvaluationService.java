@@ -58,12 +58,7 @@ public class PerformanceEvaluationService {
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
 
-    public void createPerformanceEvaluation(Employee employee, PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
-        createQuestionComments(entity, dto.getComments());
-
-    }
-
+//Associate Performance Review
     public void saveAssociateReview(Employee employee, PerformanceEvaluationSaveDto dto, Boolean submitForApproval) {
         PerformanceEvaluation entity;
         if (dto.getPerformanceEvaluation().getId() != null) {
@@ -88,6 +83,23 @@ public class PerformanceEvaluationService {
         OfficeBPMService.instance().startProcess("assoc_emp_perf_eval_process", vars);
     }
 
+//----------------------Corporate Employee Review----------------------------------
+    public void saveCorporatePerformanceEvaluation(Employee employee, PerformanceEvaluationSaveDto dto, boolean startProcess) {
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
+        createQuestionComments(entity, dto.getComments());
+        if (startProcess) {
+            startCorporatePerformanceEvaluationProcess(entity, employee);
+        }
+    }
+
+    protected void startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entityId", entity.getId());
+        vars.put("entity", entity);
+        vars.put("currentEmployee", emp);
+        OfficeBPMService.instance().startProcess("corp_emp_perf_eval_process", vars);
+    }
+
     public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
         performanceEvaluationDao.save(dto.getPerformanceEvaluation());
         for (QuestionComment qc : dto.getComments()) {
@@ -98,16 +110,6 @@ public class PerformanceEvaluationService {
                 CommentDao.instance().save(cmt);
             }
         }
-    }
-
-    /**
-     * Create Self Evaluation
-     *
-     * @param dto
-     */
-    public void createPerformanceSelfEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), OfficeSecurityService.instance().getCurrentUser(), dto);
-        createQuestionComments(entity, dto.getComments());
     }
 
     public PerformanceEvaluation getEvaluationForYear(String year, Employee emp, PerformanceEvaluationSaveDto dto) {

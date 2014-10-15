@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickHandler {
-    
+
     private static Logger logger = Logger.getLogger(PeformanceSelfEvaluationPanel.class.getName());
     protected CaptionPanel cp = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
@@ -38,23 +38,23 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     protected SelectYearWidget selectYearWidget = new SelectYearWidget();
     protected CreateQuestionCommentsWidget selfEvalCommentsPanel = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF, false, true);
     protected Button create = new Button("Create Self Evaluation");
-    
+
     public PeformanceSelfEvaluationPanel() {
         init(cp);
         selfEvalCommentsPanel.loadQuestions();
     }
-    
+
     @Override
     protected void addListeners() {
         create.addClickHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         cp.setCaptionHTML("Self Evaluation");
         selfEvalCommentsPanel.captionPanel.setCaptionHTML("For the following briefly describe:");
     }
-    
+
     @Override
     protected void addWidgets() {
         panel.add(purposeHtml);
@@ -63,27 +63,29 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
         panel.add(create);
         cp.setContentWidget(panel);
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(create)) {
             createSelfEvaluation();
         }
     }
-    
+
     protected void createSelfEvaluation() {
-        HttpService.HttpServiceAsync.instance().doPut(getUrl(), getEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Successfully Created Self Evaluation");
-                        TabPanel.instance().homePanel.entityPanel.clear();
-                        TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
-                    }
-                });
+        if (validate()) {
+            HttpService.HttpServiceAsync.instance().doPut(getUrl(), getEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Successfully Created Self Evaluation");
+                            TabPanel.instance().homePanel.entityPanel.clear();
+                            TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
+                        }
+                    });
+        }
     }
-    
+
     protected JSONObject getEntity() {
         JSONObject entity = new JSONObject();
         entity.put("year", selectYearWidget.getValue());
@@ -91,7 +93,15 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
         logger.info(entity.toString());
         return entity;
     }
-    
+
+    protected boolean validate() {
+        if (selectYearWidget.getValue() == null) {
+            selectYearWidget.yearField.setMessage("Please select a value");
+            return false;
+        }
+        return selfEvalCommentsPanel.validate();
+    }
+
     protected String getUrl() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation/create-selfreview";
     }

@@ -44,6 +44,7 @@ public class ProfileNotificationService {
     public EntityManager em;
 
     @Async
+    @Transactional
     public void skillSetUpdatedNotification(Employee emp) {
         String[] roles = {OfficeRole.ROLE_RECRUITER.name()};
         Email email = new Email();
@@ -55,6 +56,7 @@ public class ProfileNotificationService {
     }
 
     @Async
+    @Transactional
     public void sendNewUserCreatedNotification(Employee employee) {
         String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_RELATIONSHIP.name()};
         Email email = new Email();
@@ -76,6 +78,7 @@ public class ProfileNotificationService {
 
 //TODO remove not needed.
     @Async
+    @Transactional
     public void sendForgotPasswordNotification(Employee emp, String tempPassword) {
         Email email = new Email();
         String primaryEmail = EmployeeDao.instance().getPrimaryEmail(emp);
@@ -105,6 +108,7 @@ public class ProfileNotificationService {
     }
 
     @Async
+    @Transactional
     public void feedBackNotification(Feedback fb, String username) {
         Email email = new Email();
         Set<String> tos = new HashSet<String>();
@@ -117,6 +121,7 @@ public class ProfileNotificationService {
     }
 
     @Async
+    @Transactional
     public void sendNewMessageNotification(Message msg) {
         Email email = new Email();
         for (Employee emp : msg.getTos()) {
@@ -130,6 +135,7 @@ public class ProfileNotificationService {
     }
 
     @Async
+    @Transactional
     public void sendEmployeeDeactivationNotification(Employee emp) {
         String[] roles = {OfficeRole.ROLE_ADMIN.name(), OfficeRole.ROLE_HR.name(), OfficeRole.ROLE_EXPENSE.name()};
         Email email = new Email();
