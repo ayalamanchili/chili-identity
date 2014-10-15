@@ -21,6 +21,8 @@ import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.StatementOfWork;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.company.CompanyContact;
+import info.yalamanchili.office.entity.company.CompanyContactType;
 import info.yalamanchili.office.entity.drive.Folder;
 import info.yalamanchili.office.entity.expense.ExpenseCategory;
 import info.yalamanchili.office.entity.ext.Question;
@@ -667,6 +669,34 @@ public class OfficeStartup {
             return em.merge(employeetype);
         } else {
             return perdiemCategory;
+        }
+    }
+
+    protected CompanyContactType getCompanyContactReportsTo() {
+        Query getEmployeeTypeQuery = em.createQuery("from " + CompanyContactType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", "Reports_To");
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (CompanyContactType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            CompanyContactType CompanyContact = new CompanyContactType();
+            CompanyContact.setName("Reports_To");
+            CompanyContact.setDescription("Reports_To Manager");
+            return em.merge(CompanyContact);
+        }
+    }
+
+    protected CompanyContactType getCompanyContactPerf() {
+        Query getEmployeeTypeQuery = em.createQuery("from " + CompanyContactType.class.getCanonicalName()
+                + " where name=:nameParam");
+        getEmployeeTypeQuery.setParameter("nameParam", "Perf_Eval_Manager");
+        if (getEmployeeTypeQuery.getResultList().size() > 0) {
+            return (CompanyContactType) getEmployeeTypeQuery.getResultList().get(0);
+        } else {
+            CompanyContactType CompanyContact = new CompanyContactType();
+            CompanyContact.setName("Perf_Eval_Manager");
+            CompanyContact.setDescription("Perf_Eval_Manager");
+            return em.merge(CompanyContact);
         }
     }
 
