@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.expense;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSidePanel;
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
@@ -32,9 +33,15 @@ public class ExpenseMenu extends Composite {
     }
 
     protected void configureExpenseMenu() {
-//        expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
-//        expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
+
         expenseMenuBar.addItem("AdvanceRequisition", expensadvancerequisitionCmd);
+        expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+
+            expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
+            expenseMenuBar.addItem("ExpenseReports", expenseReportsMaintainenceCmd);
+            expenseMenuBar.addItem("ExpenseItem", expenseItemMaintainenceCmd);
+        }
 //        expenseMenuBar.addItem("Transaction", expensTransactionCmd);
         expenseMenuBar.addStyleName("entityMenuBar");
     }
@@ -68,6 +75,22 @@ public class ExpenseMenu extends Composite {
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
             TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTransactionPanel());
             TabPanel.instance().getExpensePanel().sidePanelTop.add(new TransactionSidePanel());
+        }
+    };
+    Command expenseReportsMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
+//            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTransactionPanel());
+//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new TransactionSidePanel());
+        }
+    };
+    Command expenseItemMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
+//            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTransactionPanel());
+//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new TransactionSidePanel());
         }
     };
 }
