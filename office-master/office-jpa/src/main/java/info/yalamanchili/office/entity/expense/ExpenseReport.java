@@ -18,7 +18,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -33,47 +32,61 @@ import org.hibernate.envers.Audited;
 @Audited
 @XmlRootElement
 @XmlType
-public class ExpenseReport {
+public class ExpenseReport extends AbstractEntity {
 
-    /**
-     * @return the serialVersionUID
-     */
-    @Transient
     protected static long serialVersionUID = 1L;
-
     /**
-     * @return the serialVersionUID
+     *
      */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    /**
-     * @param aSerialVersionUID the serialVersionUID to set
-     */
-    public static void setSerialVersionUID(long aSerialVersionUID) {
-        serialVersionUID = aSerialVersionUID;
-    }
-    @Id
     protected String name;
+    /**
+     *
+     */
     @Lob
     protected String description;
+    /**
+     *
+     */
     @NotNull
     @Temporal(javax.persistence.TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "EXP_RPT_STRT_DT")
     protected Date startDate;
+
     @NotNull
     @Temporal(javax.persistence.TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "EXP_RPT_END_DT")
     protected Date endDate;
+    /**
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
+    /**
+     *
+     */
     protected String department;
+    /**
+     *
+     */
     protected String approvedBy;
+    /**
+     *
+     */
     protected String approvedDate;
+    /**
+     *
+     */
     protected String paidDate;
+    /**
+     *
+     */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Employee_Expenses")
     @NotNull(message = "{employee.not.empty.msg}")
     protected Employee employee;
+    /**
+     *
+     */
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
     protected List<ExpenseItem> expenseItems;
 

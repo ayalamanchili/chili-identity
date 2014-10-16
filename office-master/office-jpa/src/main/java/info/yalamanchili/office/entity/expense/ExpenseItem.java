@@ -18,11 +18,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -34,22 +35,50 @@ import org.hibernate.search.annotations.Field;
 @XmlType
 public class ExpenseItem extends AbstractEntity {
 
+    protected static long serialVersionUID = 1L;
+    /**
+     *
+     */
     @org.hibernate.annotations.Index(name = "EXP_CATG")
     @Enumerated(EnumType.STRING)
-    @Field
     @OneToOne
     protected ExpenseCategory category;
+    /**
+     *
+     */
     @Lob
+    @NotEmpty
     protected String description;
+    /**
+     *
+     */
+    @NotNull
     protected BigDecimal amount;
+    /**
+     *
+     */
     @Lob
     protected String purpose;
+    /**
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
     protected Date itemStartDate;
+    /**
+     *
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
+    @NotNull
     protected Date itemEndDate;
+    /**
+     *
+     */
     @Lob
     protected String remarks;
+    /**
+     *
+     */
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_EXP_RPT_EXP_ITEMS")
     protected ExpenseReport expenseReport;
