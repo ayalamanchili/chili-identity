@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.time;
 
 import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
-import info.chili.commons.PDFUtils;
+import info.chili.commons.pdf.PDFUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;

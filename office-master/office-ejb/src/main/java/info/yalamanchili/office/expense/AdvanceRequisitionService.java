@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.expense;
 
-import info.chili.commons.PDFUtils;
+import info.chili.commons.pdf.PDFUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;

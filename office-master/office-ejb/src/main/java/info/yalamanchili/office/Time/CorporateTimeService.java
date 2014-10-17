@@ -9,7 +9,7 @@
 package info.yalamanchili.office.Time;
 
 import info.chili.commons.DateUtils;
-import info.chili.commons.PDFUtils;
+import info.chili.commons.pdf.PDFUtils;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;

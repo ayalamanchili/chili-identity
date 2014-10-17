@@ -9,7 +9,7 @@
 package info.yalamanchili.office.employee.perfeval;
 
 import info.chili.commons.DateUtils;
-import info.chili.commons.PDFUtils;
+import info.chili.commons.pdf.PDFUtils;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;

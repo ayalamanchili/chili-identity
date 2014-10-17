@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.contact;
 
-import info.chili.commons.PDFUtils;
+import info.chili.commons.pdf.PDFUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
