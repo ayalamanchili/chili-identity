@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet author="ayalamanchili" id="statusrptchanges-add">
+        <addForeignKeyConstraint baseColumnNames="employee_id"
+                                 baseTableName="statusreport"
+                                 constraintName="FK_EMP_STS_RPTS"
+                                 referencedColumnNames="id"
+                                 referencedTableName="contact"/>
+        <createIndex catalogName="office"
+                     indexName="RPT_START_DT_IDX"
+                     schemaName="public"
+                     tableName="statusreport"
+                     unique="true">
+            <column name="reportStartDate" type="date"/>
+        </createIndex>
+        <createIndex catalogName="office"
+                     indexName="RPT_END_DT_IDX"
+                     schemaName="public"
+                     tableName="statusreport"
+                     unique="true">
+            <column name="reportEndDate" type="date"/>
+        </createIndex>        
+    </changeSet>
+    <changeSet author="ayalamanchili" id="statusrptchanges-remove">       
+        <dropColumn catalogName="office"
+                    columnName="reportUrl"
+                    schemaName="public"
+                    tableName="statusReport"/>
+    </changeSet>
+</databaseChangeLog>
