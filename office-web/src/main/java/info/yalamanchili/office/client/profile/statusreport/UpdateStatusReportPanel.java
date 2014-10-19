@@ -8,7 +8,9 @@
 package info.yalamanchili.office.client.profile.statusreport;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
@@ -30,8 +32,24 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateStatusReportPanel.class.getName());
 
-    public UpdateStatusReportPanel(JSONObject entity) {
-        initUpdateComposite(entity, "StatusReport", OfficeWelcome.constants);
+    public UpdateStatusReportPanel(String id) {
+        initUpdateComposite(id, "StatusReport", OfficeWelcome.constants);
+    }
+
+    @Override
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
+    }
+
+    protected String getReadURI() {
+        return OfficeWelcome.constants.root_url() + "statusreport/" + entityId;
     }
 
     @Override

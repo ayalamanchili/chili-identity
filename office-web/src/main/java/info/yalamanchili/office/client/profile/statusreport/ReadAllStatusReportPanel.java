@@ -69,11 +69,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void viewClicked(String entityId) {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadStatusReportPanel(getEntity(entityId)));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadStatusReportPanel(entityId));
         }
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new ReadStatusReportPanel(getEntity(entityId)));
+            TabPanel.instance().homePanel.entityPanel.add(new ReadStatusReportPanel(entityId));
         }
     }
 
@@ -104,11 +104,11 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateStatusReportPanel(getEntity(entityId)));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateStatusReportPanel(entityId));
         }
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(getEntity(entityId)));
+            TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(entityId));
         }
 
     }

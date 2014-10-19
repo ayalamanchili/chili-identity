@@ -12,7 +12,6 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.FileField;
 import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -32,11 +31,6 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     public static ReadStatusReportPanel instance() {
         return instance;
-    }
-
-    public ReadStatusReportPanel(JSONObject entity) {
-        instance = this;
-        initReadComposite(entity, "StatusReport", OfficeWelcome.constants);
     }
 
     public ReadStatusReportPanel(String id) {
@@ -105,8 +99,6 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     protected void configure() {
-        RichTextField reportF = (RichTextField) fields.get("report");
-        reportF.setHeightAndWidth("400px", "100%");
     }
 
     @Override
@@ -144,6 +136,7 @@ public class ReadStatusReportPanel extends ReadComposite {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
     }
@@ -154,6 +147,6 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "statusreport";
+        return OfficeWelcome.constants.root_url() + "statusreport/" + entityId;
     }
 }

@@ -47,7 +47,7 @@ public class StatusReportService {
         StatusReport entity = statusReportDao.findById(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         StatusReportDto dto = mapper.map(entity, StatusReportDto.class);
-        mapper.map(new Gson().fromJson(entity.getReport(), StatusReport.class), dto);
+        mapper.map(new Gson().fromJson(entity.getReport(), StatusReportDto.class), dto);
         return dto;
     }
 
