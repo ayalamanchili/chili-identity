@@ -11,7 +11,7 @@ import info.chili.commons.HtmlUtils;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.client.Project;
-import info.yalamanchili.office.entity.employee.StatusReport;
+import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Scope;

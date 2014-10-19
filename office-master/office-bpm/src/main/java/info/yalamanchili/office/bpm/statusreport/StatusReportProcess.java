@@ -8,10 +8,10 @@
 package info.yalamanchili.office.bpm.statusreport;
 
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
-import info.yalamanchili.office.dao.employee.StatusReportDao;
+import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.employee.StatusReport;
+import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;

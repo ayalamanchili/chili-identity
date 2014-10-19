@@ -5,14 +5,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.entity.employee;
+package info.yalamanchili.office.entity.employee.statusreport;
 
 import com.google.common.base.Strings;
 import info.chili.jpa.AbstractEntity;
-import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.ProjectStatus;
-import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,7 +22,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlElement;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
@@ -64,17 +64,22 @@ public class StatusReport extends AbstractEntity {
     /**
      *
      */
+    @Lob
+    protected String report;
+    /**
+     * Employee
+     */
+    @ManyToOne
+    @ForeignKey(name = "FK_EMP_STS_RPTS")
+    protected Employee employee;
+    /**
+     *
+     */
     protected String preparedBy;
     /**
      *
      */
     protected String approvedBy;
-    /**
-     *
-     */
-    @Lob
-    @NotNull(message = "{report.not.empty.msg}")
-    protected String report;
     /**
      *
      */
@@ -86,33 +91,9 @@ public class StatusReport extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date approvedDate;
     /**
-     *
-     */
-    @ManyToOne
-    @ForeignKey(name = "FK_PROJECT_STATUS_RPTS")
-    @NotNull(message = "{project.not.empty.msg}")
-    protected Project project;
-    /**
-     * clientInformation
-     */
-    @ManyToOne
-    @ForeignKey(name = "FK_CLNT_INFO_SRV_TKTS")
-    @NotNull(message = "{clientInformation.not.empty.msg}")
-    protected ClientInformation clientInformation;
-    /**
      * bpmProcessId
      */
     protected String bpmProcessId;
-
-    protected String reportUrl;
-
-    public String getBpmProcessId() {
-        return bpmProcessId;
-    }
-
-    public void setBpmProcessId(String bpmProcessId) {
-        this.bpmProcessId = bpmProcessId;
-    }
 
     public Date getReportStartDate() {
         return reportStartDate;
@@ -138,6 +119,22 @@ public class StatusReport extends AbstractEntity {
         this.status = status;
     }
 
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
     public String getPreparedBy() {
         return preparedBy;
     }
@@ -152,14 +149,6 @@ public class StatusReport extends AbstractEntity {
 
     public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
-    }
-
-    public String getReport() {
-        return report;
-    }
-
-    public void setReport(String report) {
-        this.report = report;
     }
 
     public Date getSubmittedDate() {
@@ -178,30 +167,12 @@ public class StatusReport extends AbstractEntity {
         this.approvedDate = approvedDate;
     }
 
-    @XmlElement
-    public Project getProject() {
-        return project;
+    public String getBpmProcessId() {
+        return bpmProcessId;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    @XmlElement
-    public ClientInformation getClientInformation() {
-        return clientInformation;
-    }
-
-    public void setClientInformation(ClientInformation clientInformation) {
-        this.clientInformation = clientInformation;
-    }
-
-    public String getReportUrl() {
-        return reportUrl;
-    }
-
-    public void setReportUrl(String reportUrl) {
-        this.reportUrl = reportUrl;
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @PrePersist
@@ -216,8 +187,4 @@ public class StatusReport extends AbstractEntity {
         }
     }
 
-    @Override
-    public String toString() {
-        return "StatusReport{" + "reportStartDate=" + reportStartDate + ", reportEndDate=" + reportEndDate + ", preparedBy=" + preparedBy + ", approvedBy=" + approvedBy + ", statusReport=" + report + ", submittedDate=" + submittedDate + '}';
-    }
 }

@@ -10,19 +10,15 @@ package info.yalamanchili.office.client.profile.statusreport;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
-import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import java.util.logging.Logger;
 
 /**
@@ -33,7 +29,6 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     private static ReadStatusReportPanel instance;
     private static Logger logger = Logger.getLogger(ReadStatusReportPanel.class.getName());
-    protected FileField fileField = new FileField("Report File", "Report File");
 
     public static ReadStatusReportPanel instance() {
         return instance;
@@ -66,22 +61,41 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info(entity.toString());
-        if (TabPanel.instance().homePanel.isVisible()) {
-            assignFieldValueFromEntity("clientInformation", entity, null);
-        }
-        assignFieldValueFromEntity("project", entity, null);
+        assignFieldValueFromEntity("projectDescription", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
-        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "reportUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
-        fileField.fileUrl = fileURL;
 
-        assignFieldValueFromEntity("report", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("projectPhase1Name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Deliverable", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase1EndDate", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Status", entity, DataType.STRING_FIELD);
+
+        assignFieldValueFromEntity("projectPhase2Name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Deliverable", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase2EndDate", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Status", entity, DataType.STRING_FIELD);
+
+        assignFieldValueFromEntity("projectPhase3Name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Deliverable", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase3EndDate", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Status", entity, DataType.STRING_FIELD);
+
+        assignFieldValueFromEntity("projectPhase4Name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Deliverable", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase4EndDate", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Status", entity, DataType.STRING_FIELD);
+
+        assignFieldValueFromEntity("statusDescription", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("accomplishments", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("scheduledActivities", entity, DataType.TEXT_AREA_FIELD);
+
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
+        }
         populateComments();
     }
 
@@ -97,20 +111,40 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        if (TabPanel.instance().homePanel.isVisible()) {
-            addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
-        }
-        addDropDown("project", new SelectProjectWidget(getEntityId(), false, true));
-        addField("reportStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("reportEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("status", true, true, ProjectStatus.names(), Alignment.HORIZONTAL);
-        addField("report", true, true, DataType.RICH_TEXT_AREA);
-        entityFieldsPanel.add(fileField);
-        addField("preparedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("submittedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("approvedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("projectDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
 
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 1"));
+        addField("projectPhase1Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 2"));
+        addField("projectPhase2Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 3"));
+        addField("projectPhase3Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 4"));
+        addField("projectPhase4Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+
+        addField("statusDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
+            addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        }
         alignFields();
     }
 

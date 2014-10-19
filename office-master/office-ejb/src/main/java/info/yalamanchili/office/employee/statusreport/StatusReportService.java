@@ -5,10 +5,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.employee;
+package info.yalamanchili.office.employee.statusreport;
 
+import com.google.gson.Gson;
 import info.chili.commons.DateUtils;
-import info.chili.commons.HtmlUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
@@ -17,16 +17,17 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
-import info.yalamanchili.office.dao.employee.StatusReportDao;
+import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.entity.employee.StatusReport;
+import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.Response;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -42,13 +43,23 @@ public class StatusReportService {
     @Autowired
     protected StatusReportDao statusReportDao;
 
-    public StatusReport save(StatusReport entity, Boolean submitForApproval) {
-        entity.setReport(HtmlUtils.cleanData(entity.getReport()));
+    public StatusReportDto read(Long id) {
+        StatusReport entity = statusReportDao.findById(id);
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        StatusReportDto dto = mapper.map(entity, StatusReportDto.class);
+        mapper.map(new Gson().fromJson(entity.getReport(), StatusReport.class), dto);
+        return dto;
+    }
+
+    public void save(StatusReportDto dto, Boolean submitForApproval) {
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        StatusReport entity = mapper.map(dto, StatusReport.class);
+        Gson gson = new Gson();
+        entity.setReport(gson.toJson(dto));
         entity = statusReportDao.save(entity);
         if (submitForApproval) {
             startStatusReportProcess(entity);
         }
-        return entity;
     }
 
     public void startStatusReportProcess(StatusReport entity) {
@@ -98,14 +109,14 @@ public class StatusReportService {
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/status-report-template.pdf");
         data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC");
-        data.getData().put("projectDescription", entity.getProject().getDescription());
+//        data.getData().put("projectDescription", entity.getProject().getDescription());
         data.getData().put("projectStatus", entity.getStatus().name());
         data.getData().put("projectDuration", entity.getReportStartDate() + " - " + entity.getReportEndDate());
         data.getData().put("distribution", "System Soft Technologies LLC");
         data.getData().put("preparedBy", prepareByStr);
-        data.getData().put("status", entity.getReport());
-        data.getData().put("accomplishments", entity.getReport());
-        data.getData().put("scheduledActivities", entity.getReport());
+//        data.getData().put("status", entity.getReport());
+//        data.getData().put("accomplishments", entity.getReport());
+//        data.getData().put("scheduledActivities", entity.getReport());
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = status-report.pdf")

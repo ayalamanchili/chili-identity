@@ -127,12 +127,9 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Project"));
-        table.setText(0, 2, getKeyValue("Client Information"));
-        table.setText(0, 3, getKeyValue("File"));
-        table.setText(0, 4, getKeyValue("Report Start Date"));
-        table.setText(0, 5, getKeyValue("Report End Date"));
-        table.setText(0, 6, getKeyValue("Print"));
+        table.setText(0, 1, getKeyValue("Report Start Date"));
+        table.setText(0, 2, getKeyValue("Report End Date"));
+        table.setText(0, 3, getKeyValue("Print"));
     }
 
     @Override
@@ -140,17 +137,10 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity.get("project"), "name"));
-            table.setText(i, 2, JSONUtils.toString(entity.get("clientInformation").isObject().get("client"), "name"));
-            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "reportUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
-            if (fileURL.contains("entityId_")) {
-                FileField fileField = new FileField(fileURL);
-                table.setWidget(i, 3, fileField);
-            }
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
-            table.setText(i, 5, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 6, reportL);
+            table.setWidget(i, 3, reportL);
         }
     }
 

@@ -7,31 +7,18 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
-import com.axeiya.gwtckeditor.client.CKConfig;
-import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.DateField;
-import info.chili.gwt.fields.FileuploadField;
-import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.GenericPopup;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
-import info.yalamanchili.office.client.gwt.InformationWidget;
-import info.yalamanchili.office.client.profile.cllientinfo.SelectClientInfoWidget;
 import java.util.logging.Logger;
 
 /**
@@ -41,16 +28,6 @@ import java.util.logging.Logger;
 public class CreateStatusReportPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(info.yalamanchili.office.client.profile.statusreport.CreateStatusReportPanel.class.getName());
-
-    FileuploadField statusReportUploadPanel = new FileuploadField(OfficeWelcome.constants, "StatusReport", "reportUrl", "StatusReport/reportUrl", false) {
-        @Override
-        public void onUploadComplete(String res) {
-            postCreateSuccess(null);
-        }
-    };
-
-    protected Anchor missingInfoL = new Anchor("Client or Project not present?");
-    protected CKEditor reportEditor = new CKEditor(CKConfig.full);
 
     protected String employeeId;
 
@@ -68,18 +45,38 @@ public class CreateStatusReportPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject status = new JSONObject();
+        assignEntityValueFromField("projectDescription", status);
         assignEntityValueFromField("reportStartDate", status);
         assignEntityValueFromField("reportEndDate", status);
         assignEntityValueFromField("status", status);
+
+        assignEntityValueFromField("projectPhase1Name", status);
+        assignEntityValueFromField("projectPhase1Deliverable", status);
+        assignEntityValueFromField("projectPhase1EndDate", status);
+        assignEntityValueFromField("projectPhase1Status", status);
+
+        assignEntityValueFromField("projectPhase2Name", status);
+        assignEntityValueFromField("projectPhase2Deliverable", status);
+        assignEntityValueFromField("projectPhase2EndDate", status);
+        assignEntityValueFromField("projectPhase2Status", status);
+
+        assignEntityValueFromField("projectPhase3Name", status);
+        assignEntityValueFromField("projectPhase3Deliverable", status);
+        assignEntityValueFromField("projectPhase3EndDate", status);
+        assignEntityValueFromField("projectPhase3Status", status);
+
+        assignEntityValueFromField("projectPhase4Name", status);
+        assignEntityValueFromField("projectPhase4Deliverable", status);
+        assignEntityValueFromField("projectPhase4EndDate", status);
+        assignEntityValueFromField("projectPhase4Status", status);
+
+        assignEntityValueFromField("statusDescription", status);
+        assignEntityValueFromField("accomplishments", status);
+        assignEntityValueFromField("scheduledActivities", status);
+        
         assignEntityValueFromField("preparedBy", status);
         assignEntityValueFromField("approvedBy", status);
-        status.put("report", new JSONString(reportEditor.getHTML()));
         assignEntityValueFromField("submittedDate", status);
-        assignEntityValueFromField("project", status);
-        assignEntityValueFromField("clientInformation", status);
-        if (!statusReportUploadPanel.isEmpty()) {
-            status.put("reportUrl", statusReportUploadPanel.getFileName());
-        }
         return status;
     }
 
@@ -95,13 +92,9 @@ public class CreateStatusReportPanel extends CreateComposite {
 
                     @Override
                     public void onSuccess(String arg0) {
-                        uploadImage(arg0);
+                        postCreateSuccess(arg0);
                     }
                 });
-    }
-
-    protected void uploadImage(String entityId) {
-        statusReportUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -123,32 +116,47 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        missingInfoL.addClickHandler(this);
+
     }
 
     BooleanField submitForApprovalF;
 
     @Override
     protected void configure() {
-        reportEditor.setHeight("350px");
-        reportEditor.setWidth("100%");
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
     }
 
     @Override
     protected void addWidgets() {
-        if (employeeId != null) {
-            addDropDown("clientInformation", new SelectClientInfoWidget(employeeId, false, true));
-        } else {
-            addDropDown("clientInformation", new SelectClientInfoWidget(false, true));
-        }
-        addDropDown("project", new SelectProjectWidget(false, true));
-        entityFieldsPanel.add(missingInfoL);
+        addField("projectDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(statusReportUploadPanel);
-        entityFieldsPanel.add(reportEditor);
+
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 1"));
+        addField("projectPhase1Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 2"));
+        addField("projectPhase2Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 3"));
+        addField("projectPhase3Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Project Phase 4"));
+        addField("projectPhase4Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+
+        addField("statusDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -166,18 +174,11 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        if (reportEditor.getHTML() == null || reportEditor.getHTML().isEmpty()) {
-            new ResponseStatusWidget().show("Report Description is required");
-            return false;
-        }
         return true;
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(missingInfoL)) {
-            new GenericPopup(new InformationWidget("Please submit a <b>Service Ticket</b> under </br><b>Home-->Self Service-->Open Ticket with Type='Other'</b> and </br>enter the details of missing information. </br>eg: I am trying to submit my project status report and dont see my client and project inforation available. </br>You will get a email notification once the information is ready so you can go back to submit the status report.")).show();
-        }
         super.onClick(event);
     }
 

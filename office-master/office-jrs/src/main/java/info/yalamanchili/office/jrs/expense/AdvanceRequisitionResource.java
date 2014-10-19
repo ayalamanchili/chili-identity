@@ -10,7 +10,7 @@ package info.yalamanchili.office.jrs.expense;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
-import info.yalamanchili.office.employee.StatusReportService;
+import info.yalamanchili.office.employee.statusreport.StatusReportService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.Transaction;
 import info.yalamanchili.office.expense.AdvanceRequisitionService;
