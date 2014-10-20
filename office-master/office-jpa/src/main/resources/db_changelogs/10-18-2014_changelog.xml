@@ -12,6 +12,16 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
     <changeSet author="ayalamanchili" id="statusrptchanges-add">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="statusreport">
+            <column name="employee_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="statusreport_aud">
+            <column name="employee_id" type="bigint"/>
+        </addColumn>
         <addForeignKeyConstraint baseColumnNames="employee_id"
                                  baseTableName="statusreport"
                                  constraintName="FK_EMP_STS_RPTS"
@@ -37,5 +47,41 @@
                     columnName="reportUrl"
                     schemaName="public"
                     tableName="statusReport"/>
+        <dropColumn catalogName="office"
+                    columnName="reportUrl"
+                    schemaName="public"
+                    tableName="statusReport_aud"/>        
     </changeSet>
+    <changeSet author="ayalamanchili" id="statusrptchanges-remove-1"> 
+        <dropForeignKeyConstraint
+            baseTableName="statusReport"
+            constraintName="FK_CLNT_INFO_SRV_TKTS"/>  
+        <dropForeignKeyConstraint
+            baseTableName="statusReport"
+            constraintName="FK_PROJECT_STATUS_RPTS"/> 
+        <dropIndex catalogName="office"
+                   indexName="FK_CLNT_INFO_SRV_TKTS"
+                   schemaName="public"
+                   tableName="statusReport"/>
+        <dropIndex catalogName="office"
+                   indexName="FK_PROJECT_STATUS_RPTS"
+                   schemaName="public"
+                   tableName="statusReport"/>    
+        <dropColumn catalogName="office"
+                    columnName="clientinformation_id"
+                    schemaName="public"
+                    tableName="statusReport"/>
+        <dropColumn catalogName="office"
+                    columnName="clientinformation_id"
+                    schemaName="public"
+                    tableName="statusReport_aud"/>   
+        <dropColumn catalogName="office"
+                    columnName="project_id"
+                    schemaName="public"
+                    tableName="statusReport"/>
+        <dropColumn catalogName="office"
+                    columnName="project_id"
+                    schemaName="public"
+                    tableName="statusReport_aud"/>       
+    </changeSet>    
 </databaseChangeLog>
