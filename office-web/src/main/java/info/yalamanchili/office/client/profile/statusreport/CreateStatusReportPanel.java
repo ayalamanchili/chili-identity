@@ -13,6 +13,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.StringField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
@@ -73,7 +75,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         assignEntityValueFromField("statusDescription", status);
         assignEntityValueFromField("accomplishments", status);
         assignEntityValueFromField("scheduledActivities", status);
-        
+
         assignEntityValueFromField("preparedBy", status);
         assignEntityValueFromField("approvedBy", status);
         assignEntityValueFromField("submittedDate", status);
@@ -123,6 +125,12 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void configure() {
+        TextAreaField projectDescF = (TextAreaField) fields.get("projectDescription");
+        projectDescF.setBackgroundText();
+        projectDescF.getTextbox().setCharacterWidth(75);
+        projectDescF.getTextbox().setVisibleLines(4);
+        StringField projectPhase1NameF = (StringField) fields.get("projectPhase1Name");
+        projectPhase1NameF.setBackgroundText();
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
     }
 

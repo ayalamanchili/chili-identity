@@ -47,6 +47,14 @@
 }      
 .loginCenterPanel{
 }
+.backgroundTextStyle {
+    color: gray;
+    display: block;
+    font-size: small;   
+    padding-top: 3px;
+    position: relative;
+    text-indent: 5px;
+}
 
 /*   margin-left: 105px;*/
 
@@ -439,7 +447,7 @@ body{
 
 /* Logo Image*/
 .y-gwt-AbstractStatusPanel-LogoImage {
-    
+
 }
 .y-gwt-ResponseStatusBar {
     background-color: #FFA54F;
