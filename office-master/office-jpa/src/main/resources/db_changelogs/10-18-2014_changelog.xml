@@ -11,7 +11,9 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-    <changeSet author="ayalamanchili" id="statusrptchanges-add">
+    <changeSet author="ayalamanchili" id="statusrptchanges-add1">
+        <preConditions onFail="WARN"> 
+        </preConditions>
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="statusreport">
@@ -42,7 +44,9 @@
             <column name="reportEndDate" type="date"/>
         </createIndex>        
     </changeSet>
-    <changeSet author="ayalamanchili" id="statusrptchanges-remove">       
+    <changeSet author="ayalamanchili" id="statusrptchanges-remove1">       
+        <preConditions onFail="WARN"> 
+        </preConditions>
         <dropColumn catalogName="office"
                     columnName="reportUrl"
                     schemaName="public"
@@ -52,7 +56,9 @@
                     schemaName="public"
                     tableName="statusReport_aud"/>        
     </changeSet>
-    <changeSet author="ayalamanchili" id="statusrptchanges-remove-1"> 
+    <changeSet author="ayalamanchili" id="statusrptchanges-remove2"> 
+        <preConditions onFail="WARN"> 
+        </preConditions>
         <dropForeignKeyConstraint
             baseTableName="statusReport"
             constraintName="FK_CLNT_INFO_SRV_TKTS"/>  
