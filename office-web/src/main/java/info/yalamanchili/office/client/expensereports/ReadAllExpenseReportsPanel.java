@@ -1,0 +1,129 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package info.yalamanchili.office.client.expensereports;
+
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Prasanthi.p
+ */
+public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
+
+    private static Logger logger = Logger.getLogger(ReadAllExpenseReportsPanel.class.getName());
+    public static ReadAllExpenseReportsPanel instance;
+
+    public ReadAllExpenseReportsPanel() {
+        instance = this;
+        initTable("ExpenseReports", OfficeWelcome.constants);
+    }
+
+    public ReadAllExpenseReportsPanel(String parentId) {
+        instance = this;
+        this.parentId = parentId;
+        initTable("ExpenseReports", OfficeWelcome.constants);
+    }
+
+    public ReadAllExpenseReportsPanel(JSONArray array) {
+        instance = this;
+        initTable("ExpenseReports", array, OfficeWelcome.constants);
+    }
+
+    @Override
+    public void viewClicked(String entityId) {
+    }
+
+    @Override
+    public void deleteClicked(String entityId) {
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
+    }
+
+    @Override
+    public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully Deleted Expense Reports Information");
+        TabPanel.instance().expensePanel.entityPanel.clear();
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
+    }
+
+    @Override
+    public void updateClicked(String entityId) {
+        TabPanel.instance().expensePanel.entityPanel.clear();
+//        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportsPanel(getEntity(entityId)));
+    }
+
+    @Override
+    public void preFetchTable(int start) {
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseItemURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                logger.info("rrr:" + result);
+                postFetchTable(result);
+            }
+        });
+    }
+
+    @Override
+    public void createTableHeader() {
+        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 2, getKeyValue("Description"));
+        table.setText(0, 3, getKeyValue("StartDate"));
+        table.setText(0, 4, getKeyValue("EndDate"));
+        table.setText(0, 5, getKeyValue("SubmittedDate"));
+        table.setText(0, 6, getKeyValue("Department"));
+        table.setText(0, 7, getKeyValue("ExpenseReport"));
+        table.setText(0, 8, getKeyValue("PaidDate"));
+        table.setText(0, 9, getKeyValue("ExpenseItems"));
+        table.setText(0, 10, getKeyValue("Employee"));
+    }
+
+    @Override
+    public void fillData(JSONArray entities) {
+        for (int i = 1; i <= entities.size(); i++) {
+            JSONObject entity = (JSONObject) entities.get(i - 1);
+            addOptionsWidget(i, entity);
+            table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            table.setText(i, 2, JSONUtils.toString(entity, "description"));
+            table.setText(0, 3, getKeyValue("startDate"));
+            table.setText(0, 4, getKeyValue("endDate"));
+            table.setText(0, 5, getKeyValue("submittedDate"));
+            table.setText(0, 6, getKeyValue("department"));
+            table.setText(0, 7, getKeyValue("expenseReport"));
+            table.setText(0, 8, getKeyValue("paidDate"));
+            table.setText(0, 9, getKeyValue("expenseItems"));
+            table.setText(0, 10, getKeyValue("employee"));
+        }
+    }
+
+    @Override
+    protected void addOptionsWidget(int row, JSONObject entity) {
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+    }
+
+    private String getDeleteURL(String entityId) {
+        return OfficeWelcome.instance().constants.root_url() + "expensereport/delete/" + entityId;
+    }
+
+    private String getReadAllExpenseItemURL(Integer start, String tableSize) {
+        return OfficeWelcome.constants.root_url() + "expensereport/" + start.toString() + "/" + tableSize.toString();
+    }
+}

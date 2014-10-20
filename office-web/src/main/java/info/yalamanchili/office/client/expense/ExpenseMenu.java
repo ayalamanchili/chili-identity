@@ -16,6 +16,10 @@ import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSide
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
 import info.yalamanchili.office.client.expensecategory.ExpenseCategorySidePanel;
 import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
+import info.yalamanchili.office.client.expenseitem.ExpenseItemSidePanel;
+import info.yalamanchili.office.client.expenseitem.ReadAllEpenseItemPanel;
+import info.yalamanchili.office.client.expensereports.ExpenseReportsSidePanel;
+import info.yalamanchili.office.client.expensereports.ReadAllExpenseReportsPanel;
 import info.yalamanchili.office.client.transaction.ReadAllTransactionPanel;
 import info.yalamanchili.office.client.transaction.TransactionSidePanel;
 
@@ -81,16 +85,18 @@ public class ExpenseMenu extends Composite {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-//            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTransactionPanel());
-//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new TransactionSidePanel());
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpenseReportsPanel());
+            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseReportsSidePanel());
+
         }
     };
     Command expenseItemMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
             TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-//            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTransactionPanel());
-//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new TransactionSidePanel());
+            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllEpenseItemPanel());
+            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseItemSidePanel());
+
         }
     };
 }
