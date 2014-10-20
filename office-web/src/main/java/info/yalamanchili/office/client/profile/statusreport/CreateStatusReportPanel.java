@@ -21,6 +21,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 /**
@@ -125,13 +126,29 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected void configure() {
-        TextAreaField projectDescF = (TextAreaField) fields.get("projectDescription");
-        projectDescF.setBackgroundText();
-        projectDescF.getTextbox().setCharacterWidth(75);
-        projectDescF.getTextbox().setVisibleLines(4);
-        StringField projectPhase1NameF = (StringField) fields.get("projectPhase1Name");
-        projectPhase1NameF.setBackgroundText();
+        formatTextAreaFields();
+        formatStringFields();
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
+    }
+
+    protected void formatStringFields() {
+        for (Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof StringField) {
+                StringField textAreaField = (StringField) entry.getValue();
+                textAreaField.setBackgroundText();
+            }
+        }
+    }
+
+    protected void formatTextAreaFields() {
+        for (Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.setBackgroundText();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+        }
     }
 
     @Override
@@ -161,6 +178,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         addField("projectPhase4Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase4EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase4Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Status, Accomplishments and Scheduled Activities"));
 
         addField("statusDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -170,7 +188,7 @@ public class CreateStatusReportPanel extends CreateComposite {
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
-        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for approval Engagement Manager."));
+        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for HR Approval."));
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }

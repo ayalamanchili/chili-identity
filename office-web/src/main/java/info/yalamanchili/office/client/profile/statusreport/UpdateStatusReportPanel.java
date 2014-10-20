@@ -14,6 +14,8 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.StringField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -22,6 +24,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -173,7 +176,18 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
+        formatTextAreaFields();
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
+    }
+
+    protected void formatTextAreaFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+        }
     }
 
     @Override
@@ -213,7 +227,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
             addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
-        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for approval Engagement Manager."));
+        entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for HR approval."));
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }

@@ -12,7 +12,6 @@ import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.ProjectStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,7 +21,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
@@ -48,12 +46,14 @@ public class StatusReport extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{reportStartDate.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "RPT_START_DT_IDX")
     protected Date reportStartDate;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{reportEndDate.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "RPT_END_DT_IDX")
     protected Date reportEndDate;
     /**
      *
