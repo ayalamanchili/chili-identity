@@ -12,8 +12,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expensecategory.ExpenseCategorySidePanel;
-import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
+import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
+import info.yalamanchili.office.client.expensereports.SelectExpenseReportsWidget;
 import java.util.logging.Logger;
 
 /**
@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 public class CreateExpenseItemPanal extends CreateComposite {
 
     private Logger logger = Logger.getLogger(CreateExpenseItemPanal.class.getName());
+    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
+    SelectExpenseReportsWidget selectExpenseReportsWidgetF = new SelectExpenseReportsWidget(false, true);
 
     public CreateExpenseItemPanal(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -32,14 +34,14 @@ public class CreateExpenseItemPanal extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject ExpenseItem = new JSONObject();
-        assignEntityValueFromField("category", ExpenseItem);
+        entity.put("category", selectCategoryWidgetF.getSelectedObject());
+        entity.put("expenseReport", selectExpenseReportsWidgetF.getSelectedObject());
         assignEntityValueFromField("description", ExpenseItem);
         assignEntityValueFromField("amount", ExpenseItem);
         assignEntityValueFromField("purpose", ExpenseItem);
         assignEntityValueFromField("itemStartDate", ExpenseItem);
         assignEntityValueFromField("itemEndDate", ExpenseItem);
         assignEntityValueFromField("remarks", ExpenseItem);
-        assignEntityValueFromField("expenseReport", ExpenseItem);
         logger.info(ExpenseItem.toString());
         return ExpenseItem;
     }
@@ -84,14 +86,14 @@ public class CreateExpenseItemPanal extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("category", false, true, DataType.ENUM_FIELD);
+        addDropDown("category", selectCategoryWidgetF);
+        addDropDown("expenseReport", selectExpenseReportsWidgetF);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.INTEGER_FIELD);
         addField("purpose", false, false, DataType.STRING_FIELD);
         addField("itemStartDate", false, true, DataType.DATE_FIELD);
         addField("itemEndDate", false, false, DataType.DATE_FIELD);
         addField("remarks", false, true, DataType.STRING_FIELD);
-        addField("expenseReport", false, false, DataType.ENUM_FIELD);
     }
 
     @Override

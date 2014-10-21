@@ -25,7 +25,7 @@ public class ExpenseItemSidePanel extends ALComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ExpenseItemSidePanel.class.getName());
     public FlowPanel expenseCategoryItemSidePanel = new FlowPanel();
-    ClickableLink createExpenseItemLink = new ClickableLink("Create ExpenseItem");
+    ClickableLink createExpenseItemLink = new ClickableLink("Create Expense Item");
 
     public ExpenseItemSidePanel() {
         init(expenseCategoryItemSidePanel);
@@ -50,8 +50,8 @@ public class ExpenseItemSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createExpenseItemLink)) {
-            TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseItemPanal(CreateComposite.CreateCompositeType.CREATE));
+           TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().entityPanel.add(new CreateExpenseItemPanal(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

@@ -12,6 +12,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
+import info.yalamanchili.office.client.expensereports.SelectExpenseReportsWidget;
 import java.util.logging.Logger;
 
 /**
@@ -59,14 +61,14 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("expenseReport", entity, null);
+        assignFieldValueFromEntity("category", entity, null);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("itemStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("remarks", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("expenseReport", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -86,14 +88,14 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("category", false, true, DataType.ENUM_FIELD);
+        addDropDown("category", new SelectExpenseCategoryWidget(false, true));
+        addDropDown("expenseReport", new SelectExpenseReportsWidget(false, true));
         addField("description", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.INTEGER_FIELD);
         addField("purpose", false, false, DataType.STRING_FIELD);
         addField("itemStartDate", false, true, DataType.DATE_FIELD);
         addField("itemEndDate", false, false, DataType.DATE_FIELD);
         addField("remarks", false, true, DataType.STRING_FIELD);
-        addField("expenseReport", false, false, DataType.ENUM_FIELD);
     }
 
     @Override
