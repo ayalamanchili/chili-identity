@@ -33,16 +33,15 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
     @PersistenceContext
     protected EntityManager em;
 
-    
     @Override
     public StatusReport save(StatusReport entity) {
         if (!Strings.isNullOrEmpty(entity.getApprovedBy()) && EmployeeDao.instance().findEmployeWithEmpId(entity.getApprovedBy()) == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approvedById", "Approved By must be a employee Id");
         }
-        if (entity.getEmployee() == null) {
+        if (entity.getId() == null) {
             entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         }
-        return em.merge(entity);
+        return super.save(entity);
     }
 
     public List<StatusReport> getReports(Employee emp, int start, int limit) {
