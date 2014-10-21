@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
@@ -24,7 +25,7 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     private static Logger logger = Logger.getLogger(ExpenseReportsSidePanel.class.getName());
     public FlowPanel expenseCategoryReportsSidePanel = new FlowPanel();
-    ClickableLink createExpenseReportsLink = new ClickableLink("Expense Reports");
+    ClickableLink createExpenseReportsLink = new ClickableLink("Create Expense Reports");
 
     public ExpenseReportsSidePanel() {
         init(expenseCategoryReportsSidePanel);
@@ -50,7 +51,7 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createExpenseReportsLink)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-//            TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseReportsPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseReportsPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

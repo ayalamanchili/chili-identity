@@ -43,12 +43,12 @@ public class ReadStatusReportPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     protected void populateComments() {
@@ -116,40 +116,40 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("projectDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("reportStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("reportEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("status", false, true, ProjectStatus.names(), Alignment.HORIZONTAL);
+        addField("projectDescription", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("reportStartDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reportEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", true, false, ProjectStatus.names(), Alignment.HORIZONTAL);
 
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 1"));
-        addField("projectPhase1Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase1Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase1EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase1Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Deliverable", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1EndDate", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Status", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 2"));
-        addField("projectPhase2Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase2Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase2EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase2Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Deliverable", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2EndDate", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Status", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 3"));
-        addField("projectPhase3Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase3Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase3EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase3Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Deliverable", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3EndDate", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Status", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 4"));
-        addField("projectPhase4Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase4Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase4EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase4Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Name", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Deliverable", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4EndDate", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Status", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 
-        addField("statusDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("statusDescription", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("accomplishments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("scheduledActivities", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-            addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            addField("preparedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("submittedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            addField("approvedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
     }

@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
@@ -50,7 +51,7 @@ public class ExpenseItemSidePanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createExpenseItemLink)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-//            TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseItemPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseItemPanal(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }
