@@ -48,6 +48,8 @@ public class StatusReportService {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         StatusReportDto dto = mapper.map(entity, StatusReportDto.class);
         mapper.map(new Gson().fromJson(entity.getReport(), StatusReportDto.class), dto);
+        dto.setId(entity.getId());
+        dto.setVersion(entity.getVersion());
         return dto;
     }
 

@@ -82,6 +82,8 @@ public class StatusReportDto extends StatusReport implements Serializable {
     @Size(min = 3, max = 400)
     protected String scheduledActivities;
 
+    
+    
     public String getProjectDescription() {
         return projectDescription;
     }
@@ -241,7 +243,5 @@ public class StatusReportDto extends StatusReport implements Serializable {
     public void setScheduledActivities(String scheduledActivities) {
         this.scheduledActivities = scheduledActivities;
     }
-    
-    
-    
+
 }
