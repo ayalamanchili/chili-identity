@@ -87,16 +87,13 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Name"));
-        table.setText(0, 2, getKeyValue("Description"));
+        table.setText(0, 1, getKeyValue("Employee"));
+        table.setText(0, 2, getKeyValue("Name"));
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
         table.setText(0, 5, getKeyValue("SubmittedDate"));
         table.setText(0, 6, getKeyValue("Department"));
-        table.setText(0, 7, getKeyValue("ExpenseReport"));
-        table.setText(0, 8, getKeyValue("PaidDate"));
-        table.setText(0, 9, getKeyValue("ExpenseItems"));
-        table.setText(0, 10, getKeyValue("Employee"));
+        table.setText(0, 7, getKeyValue("PaidDate"));
     }
 
     @Override
@@ -104,16 +101,13 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "description"));
+            table.setText(0, 1, getKeyValue("employee"));
+            table.setText(i, 2, JSONUtils.toString(entity, "name"));
             table.setText(0, 3, getKeyValue("startDate"));
             table.setText(0, 4, getKeyValue("endDate"));
             table.setText(0, 5, getKeyValue("submittedDate"));
-            table.setText(0, 6, getKeyValue("department"));
-            table.setText(0, 7, getKeyValue("expenseReport"));
-            table.setText(0, 8, getKeyValue("paidDate"));
-            table.setText(0, 9, getKeyValue("expenseItems"));
-            table.setText(0, 10, getKeyValue("employee"));
+            table.setText(0, 6, getKeyValue("expenseReport"));
+            table.setText(0, 7, getKeyValue("paidDate"));
         }
     }
 
