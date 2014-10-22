@@ -41,9 +41,9 @@ public class CreateExpenseItemPanal extends CreateComposite {
         entity.put("expenseReport", selectExpenseReportsWidgetF.getSelectedObject());
         assignEntityValueFromField("description", ExpenseItem);
         assignEntityValueFromField("amount", ExpenseItem);
-        assignEntityValueFromField("purpose", ExpenseItem);
         assignEntityValueFromField("itemStartDate", ExpenseItem);
         assignEntityValueFromField("itemEndDate", ExpenseItem);
+        assignEntityValueFromField("purpose", ExpenseItem);
         assignEntityValueFromField("remarks", ExpenseItem);
         logger.info(ExpenseItem.toString());
         return ExpenseItem;
@@ -93,10 +93,10 @@ public class CreateExpenseItemPanal extends CreateComposite {
         addDropDown("expenseReport", selectExpenseReportsWidgetF);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.INTEGER_FIELD);
-        addField("purpose", false, false, DataType.STRING_FIELD);
         addField("itemStartDate", false, true, DataType.DATE_FIELD);
         addField("itemEndDate", false, false, DataType.DATE_FIELD);
-        addField("remarks", false, true, DataType.STRING_FIELD);
+        addField("purpose", false, false, DataType.RICH_TEXT_AREA);
+        addField("remarks", false, true, DataType.RICH_TEXT_AREA);
     }
 
     @Override

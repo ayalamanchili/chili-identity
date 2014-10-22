@@ -91,9 +91,6 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Name"));
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
-        table.setText(0, 5, getKeyValue("SubmittedDate"));
-        table.setText(0, 6, getKeyValue("Department"));
-        table.setText(0, 7, getKeyValue("PaidDate"));
     }
 
     @Override
@@ -105,9 +102,6 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
             table.setText(0, 3, getKeyValue("startDate"));
             table.setText(0, 4, getKeyValue("endDate"));
-            table.setText(0, 5, getKeyValue("submittedDate"));
-            table.setText(0, 6, getKeyValue("expenseReport"));
-            table.setText(0, 7, getKeyValue("paidDate"));
         }
     }
 
