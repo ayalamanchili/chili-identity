@@ -25,8 +25,6 @@ import java.util.logging.Logger;
  */
 public class UpdateExpenseItemPanel extends UpdateComposite {
 
-    private Logger logger = Logger.getLogger(UpdateExpenseItemPanel.class.getName());
-
     public UpdateExpenseItemPanel(JSONObject entity) {
         initUpdateComposite(entity, "ExpenseItem", OfficeWelcome.constants);
     }
@@ -42,7 +40,6 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
         assignEntityValueFromField("itemEndDate", ExpenseItem);
         assignEntityValueFromField("remarks", ExpenseItem);
         assignEntityValueFromField("expenseReport", ExpenseItem);
-        logger.info(ExpenseItem.toString());
         return ExpenseItem;
     }
 
