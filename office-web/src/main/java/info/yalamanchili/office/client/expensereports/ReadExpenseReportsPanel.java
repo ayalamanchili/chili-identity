@@ -5,55 +5,50 @@
 package info.yalamanchili.office.client.expensereports;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.UpdateComposite;
+import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expenseitem.ReadExpenseItemPanel;
 import info.yalamanchili.office.client.expenseitem.SelectExpenseItemWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Prasanthi.p
  */
-public class UpdateExpenseReportsPanel extends UpdateComposite {
+public class ReadExpenseReportsPanel extends ReadComposite {
 
-    public UpdateExpenseReportsPanel(JSONObject entity) {
-        initUpdateComposite(entity, "ExpenseReports", OfficeWelcome.constants);
-    }
+    private static ReadExpenseReportsPanel instance;
+    private static Logger logger = Logger.getLogger(ReadExpenseItemPanel.class.getName());
     SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
     SelectExpenseItemWidget selectExpenseItemWidgetF = new SelectExpenseItemWidget(false, true);
 
-    @Override
-    protected JSONObject populateEntityFromFields() {
-        JSONObject Expensereports = new JSONObject();
-        entity.put("employee", selectEmployeeWidgetF.getSelectedObject());
-        entity.put("expenseItems", selectExpenseItemWidgetF.getSelectedObject());
-        assignEntityValueFromField("name", Expensereports);
-        assignEntityValueFromField("description", Expensereports);
-        assignEntityValueFromField("startDate", Expensereports);
-        assignEntityValueFromField("endDate", Expensereports);
-        assignEntityValueFromField("submittedDate", Expensereports);
-        assignEntityValueFromField("department", Expensereports);
-        assignEntityValueFromField("paidDate", Expensereports);
-        return Expensereports;
+    public static ReadExpenseReportsPanel instance() {
+        return instance;
+    }
+
+    public ReadExpenseReportsPanel(JSONObject entity) {
+        instance = this;
+        initReadComposite(entity, "ExpenseReports", OfficeWelcome.constants);
+    }
+
+    public ReadExpenseReportsPanel(String id) {
+        initReadComposite(id, "ExpenseReports", OfficeWelcome.constants);
     }
 
     @Override
-    protected void updateButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
-                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
             @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
+            public void onResponse(String response) {
+                logger.info("read ec6 response" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
             }
         });
     }
@@ -69,13 +64,6 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
         assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("department", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("paidDate", entity, DataType.DATE_FIELD);
-    }
-
-    @Override
-    protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated Employee ExpenseCategory Information");
-        TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadAllExpenseReportsPanel());
     }
 
     @Override
