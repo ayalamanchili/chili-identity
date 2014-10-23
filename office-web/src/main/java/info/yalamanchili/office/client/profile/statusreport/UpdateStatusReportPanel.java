@@ -7,10 +7,13 @@
  */
 package info.yalamanchili.office.client.profile.statusreport;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Frame;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
@@ -18,6 +21,7 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -34,6 +38,12 @@ import java.util.logging.Logger;
 public class UpdateStatusReportPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateStatusReportPanel.class.getName());
+    protected boolean showPreview;
+
+    public UpdateStatusReportPanel(String id, Boolean preview) {
+        showPreview = preview;
+        initUpdateComposite(id, "StatusReport", OfficeWelcome.constants);
+    }
 
     public UpdateStatusReportPanel(String id) {
         initUpdateComposite(id, "StatusReport", OfficeWelcome.constants);
@@ -47,8 +57,19 @@ public class UpdateStatusReportPanel extends UpdateComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+
                     }
                 });
+        if (showPreview) {
+            showPreview();
+        }
+    }
+
+    protected void showPreview() {
+        Frame f = new Frame(ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + entityId);
+        f.setHeight("35em");
+        f.setWidth("50em");
+        new GenericPopup(f).show();
     }
 
     protected String getReadURI() {
@@ -170,20 +191,35 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected void addListeners() {
+        submitForApprovalF.getBox().addClickHandler(this);
+        previewF.getBox().addClickHandler(this);
     }
 
     BooleanField submitForApprovalF;
+    BooleanField previewF;
 
     @Override
     protected void configure() {
         formatTextAreaFields();
+        formatStringFields();
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
+        previewF = (BooleanField) fields.get("preview");
+    }
+
+    protected void formatStringFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof StringField) {
+                StringField textAreaField = (StringField) entry.getValue();
+                textAreaField.setBackgroundText();
+            }
+        }
     }
 
     protected void formatTextAreaFields() {
         for (Map.Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof TextAreaField) {
                 TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.setBackgroundText();
                 textAreaField.getTextbox().setCharacterWidth(75);
                 textAreaField.getTextbox().setVisibleLines(4);
             }
@@ -228,6 +264,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for HR approval."));
+        addField("preview", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
@@ -239,5 +276,19 @@ public class UpdateStatusReportPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "statusreport/save?submitForApproval=" + submitForApprovalF.getValue();
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (previewF.getValue() && submitForApprovalF.getValue()) {
+            setButtonText("Submit and Preview");
+        } else if (previewF.getValue()) {
+            setButtonText("Save and Preview");
+        } else if (submitForApprovalF.getValue()) {
+            setButtonText("Save and Submit");
+        } else {
+            setButtonText("Save");
+        }
+        super.onClick(event);
     }
 }

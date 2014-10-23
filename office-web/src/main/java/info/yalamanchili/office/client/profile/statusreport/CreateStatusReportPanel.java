@@ -112,23 +112,30 @@ public class CreateStatusReportPanel extends CreateComposite {
         }
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new ReadAllStatusReportPanel());
+            if (previewF.getValue()) {
+                TabPanel.instance().homePanel.entityPanel.add(new UpdateStatusReportPanel(result.trim(), true));
+            } else {
+                TabPanel.instance().homePanel.entityPanel.add(new ReadAllStatusReportPanel());
+            }
         }
 
     }
 
     @Override
     protected void addListeners() {
-
+        submitForApprovalF.getBox().addClickHandler(this);
+        previewF.getBox().addClickHandler(this);
     }
 
     BooleanField submitForApprovalF;
+    BooleanField previewF;
 
     @Override
     protected void configure() {
         formatTextAreaFields();
         formatStringFields();
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
+        previewF = (BooleanField) fields.get("preview");
     }
 
     protected void formatStringFields() {
@@ -189,6 +196,7 @@ public class CreateStatusReportPanel extends CreateComposite {
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(getLineSeperatorTag("Select this option if you are ready to submit this for HR Approval."));
+        addField("preview", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
@@ -205,6 +213,15 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     public void onClick(ClickEvent event) {
+        if (previewF.getValue() && submitForApprovalF.getValue()) {
+            setButtonText("Submit and Preview");
+        } else if (previewF.getValue()) {
+            setButtonText("Save and Preview");
+        } else if (submitForApprovalF.getValue()) {
+            setButtonText("Save and Submit");
+        } else {
+            setButtonText("Save");
+        }
         super.onClick(event);
     }
 

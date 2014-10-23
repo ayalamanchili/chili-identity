@@ -53,7 +53,7 @@ public class StatusReportService {
         return dto;
     }
 
-    public void save(StatusReportDto dto, Boolean submitForApproval) {
+    public String save(StatusReportDto dto, Boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         StatusReport entity = mapper.map(dto, StatusReport.class);
         Gson gson = new Gson();
@@ -62,6 +62,7 @@ public class StatusReportService {
         if (submitForApproval) {
             startStatusReportProcess(entity);
         }
+        return entity.getId().toString();
     }
 
     public void startStatusReportProcess(StatusReport entity) {
@@ -139,7 +140,7 @@ public class StatusReportService {
 
         data.getData().put("status", reportDto.getStatusDescription());
         data.getData().put("accomplishments", reportDto.getAccomplishments());
-        data.getData().put("acheduledActivities", reportDto.getScheduledActivities());
+        data.getData().put("scheduledActivities", reportDto.getScheduledActivities());
         data.getData().put("preparedBy", prepareByStr);
 
         byte[] pdf = PDFUtils.generatePdf(data);
