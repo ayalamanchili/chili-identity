@@ -23,6 +23,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +47,8 @@ public class StatusReportService {
     public StatusReportDto read(Long id) {
         StatusReport entity = statusReportDao.findById(id);
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        StatusReportDto dto = mapper.map(entity, StatusReportDto.class);
-        mapper.map(new Gson().fromJson(entity.getReport(), StatusReportDto.class), dto);
-        dto.setId(entity.getId());
-        dto.setVersion(entity.getVersion());
+        StatusReportDto dto = mapper.map(new Gson().fromJson(entity.getReport(), StatusReportDto.class), StatusReportDto.class);
+        mapper.map(entity, dto);
         return dto;
     }
 
@@ -59,20 +58,22 @@ public class StatusReportService {
         Gson gson = new Gson();
         entity.setReport(gson.toJson(dto));
         entity = statusReportDao.save(entity);
-        if (submitForApproval) {
-            startStatusReportProcess(entity);
+        if (submitForApproval && (StatusReportStage.Pending_Employee_Correction.equals(entity.getStage()) || StatusReportStage.Saved.equals(entity.getStage()))) {
+            entity.setStage(StatusReportStage.Pending_HR_Approval);
+            String bpmProcessId = startStatusReportProcess(entity);
+            entity.setBpmProcessId(bpmProcessId);
         }
         return entity.getId().toString();
     }
 
-    public void startStatusReportProcess(StatusReport entity) {
+    public String startStatusReportProcess(StatusReport entity) {
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "statusReportApprovalTask", true);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
-        OfficeBPMService.instance().startProcess("status_report_approval_process", vars);
+        return OfficeBPMService.instance().startProcess("status_report_approval_process", vars);
     }
 
     //TODO move to commons

@@ -9,6 +9,7 @@
 package info.yalamanchili.office.employee.statusreport;
 
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,6 +23,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class StatusReportDto extends StatusReport implements Serializable {
+
     /**
      *
      */
@@ -82,8 +84,6 @@ public class StatusReportDto extends StatusReport implements Serializable {
     @Size(min = 3, max = 400)
     protected String scheduledActivities;
 
-    
-    
     public String getProjectDescription() {
         return projectDescription;
     }
@@ -244,4 +244,8 @@ public class StatusReportDto extends StatusReport implements Serializable {
         this.scheduledActivities = scheduledActivities;
     }
 
+    @Override
+    public Employee getEmployee() {
+        return null;
+    }
 }

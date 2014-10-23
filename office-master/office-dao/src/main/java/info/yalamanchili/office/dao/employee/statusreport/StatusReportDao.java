@@ -14,6 +14,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
+import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -39,6 +40,7 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approvedById", "Approved By must be a employee Id");
         }
         if (entity.getId() == null) {
+            entity.setStage(StatusReportStage.Saved);
             entity.setEmployee(OfficeSecurityService.instance().getCurrentUser());
         }
         return super.save(entity);

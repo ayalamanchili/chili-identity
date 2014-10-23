@@ -129,7 +129,8 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Report Start Date"));
         table.setText(0, 2, getKeyValue("Report End Date"));
-        table.setText(0, 3, getKeyValue("Print"));
+        table.setText(0, 3, getKeyValue("Stage"));
+        table.setText(0, 4, getKeyValue("Print"));
     }
 
     @Override
@@ -139,8 +140,9 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportStartDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "reportEndDate"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 3, JSONUtils.toString(entity, "stage"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "statusreport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 3, reportL);
+            table.setWidget(i, 4, reportL);
         }
     }
 

@@ -12,6 +12,7 @@ import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
+import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
@@ -32,7 +33,15 @@ public class StatusReportProcess implements TaskListener {
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         String notes = (String) dt.getExecution().getVariable("notes");
         String status = (String) dt.getExecution().getVariable("status");
-        if (status.equalsIgnoreCase("approved")) {
+        if (dt.getTaskDefinitionKey().equals("statusReportHRApprovalTask")) {
+            if (status.equals("approved")) {
+                request.setStage(StatusReportStage.Pending_EEM_Approval);
+            } else {
+                request.setStage(StatusReportStage.Pending_Employee_Correction);
+            }
+        }
+        if (dt.getTaskDefinitionKey().equals("statusReportEEMApprovalTask")) {
+            request.setStage(StatusReportStage.Complete);
             request.setApprovedBy(currentUser.getEmployeeId());
             request.setApprovedDate(new Date());
         }

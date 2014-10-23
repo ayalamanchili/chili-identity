@@ -25,7 +25,7 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
 
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
-    protected ClickableLink projectReportsL = new ClickableLink("Projects Reports");
+    protected ClickableLink projectReportsL = new ClickableLink("Status Reports");
     protected ClickableLink perfEvalReportsL = new ClickableLink("Performance Evaluations");
 
     public MyReportsStackPanelWidget() {

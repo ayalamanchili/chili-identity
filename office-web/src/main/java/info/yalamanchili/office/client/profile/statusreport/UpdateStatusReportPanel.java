@@ -55,6 +55,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
+                        logger.info(response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
 
@@ -111,6 +112,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignEntityValueFromField("approvedBy", entity);
         assignEntityValueFromField("submittedDate", entity);
         assignEntityValueFromField("approvedDate", entity);
+        logger.info("Dddddd" + entity);
         return entity;
     }
 
@@ -131,7 +133,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
     }
 
     protected void populateComments() {
-        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.StatusReport"));
+        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.employee.statusreport.StatusReport"));
     }
 
     @Override
@@ -210,7 +212,6 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         for (Map.Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof StringField) {
                 StringField textAreaField = (StringField) entry.getValue();
-                textAreaField.setBackgroundText();
             }
         }
     }
@@ -219,7 +220,6 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         for (Map.Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof TextAreaField) {
                 TextAreaField textAreaField = (TextAreaField) entry.getValue();
-                textAreaField.setBackgroundText();
                 textAreaField.getTextbox().setCharacterWidth(75);
                 textAreaField.getTextbox().setVisibleLines(4);
             }
@@ -290,5 +290,15 @@ public class UpdateStatusReportPanel extends UpdateComposite {
             setButtonText("Save");
         }
         super.onClick(event);
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.statusreport.StatusReport" + "/" + getEntityId();
     }
 }

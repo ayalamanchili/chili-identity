@@ -11,6 +11,7 @@ import com.google.common.base.Strings;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.ProjectStatus;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,6 +74,12 @@ public class StatusReport extends AbstractEntity {
     @ManyToOne
     @ForeignKey(name = "FK_EMP_STS_RPTS")
     protected Employee employee;
+    /**
+     *
+     */
+    @Enumerated(EnumType.STRING)
+    @Field
+    protected StatusReportStage stage;
     /**
      *
      */
@@ -133,6 +141,14 @@ public class StatusReport extends AbstractEntity {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public StatusReportStage getStage() {
+        return stage;
+    }
+
+    public void setStage(StatusReportStage stage) {
+        this.stage = stage;
     }
 
     public String getPreparedBy() {
