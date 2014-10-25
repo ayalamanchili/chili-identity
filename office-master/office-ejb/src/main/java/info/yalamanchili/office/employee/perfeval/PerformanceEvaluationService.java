@@ -85,7 +85,7 @@ public class PerformanceEvaluationService {
 
 //----------------------Corporate Employee Review----------------------------------
     public void saveCorporatePerformanceEvaluation(Employee employee, PerformanceEvaluationSaveDto dto, boolean startProcess) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
+        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), employee, dto);
         createQuestionComments(entity, dto.getComments());
         if (startProcess) {
             startCorporatePerformanceEvaluationProcess(entity, employee);

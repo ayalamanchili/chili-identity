@@ -17,6 +17,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.employee.statusreport.StatusReportService;
 import java.util.List;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -38,6 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Path("secured/statusreport")
 @Component
+@Produces("application/json")
+@Consumes("application/json")
 @Transactional
 @Scope("request")
 public class StatusReportResource extends CRUDResource<StatusReport> {
