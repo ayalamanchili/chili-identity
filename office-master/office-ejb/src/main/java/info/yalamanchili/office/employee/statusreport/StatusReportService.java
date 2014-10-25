@@ -8,6 +8,7 @@
 package info.yalamanchili.office.employee.statusreport;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -55,7 +56,7 @@ public class StatusReportService {
     public String save(StatusReportDto dto, Boolean submitForApproval) {
         Mapper mapper = (Mapper) SpringContext.getBean("mapper");
         StatusReport entity = mapper.map(dto, StatusReport.class);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         entity.setReport(gson.toJson(dto));
         entity = statusReportDao.save(entity);
         if (submitForApproval && (StatusReportStage.Pending_Employee_Correction.equals(entity.getStage()) || StatusReportStage.Saved.equals(entity.getStage()))) {

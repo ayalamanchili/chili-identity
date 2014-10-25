@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.employee.statusreport;
 
+import com.google.gson.annotations.Expose;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
@@ -27,60 +28,68 @@ public class StatusReportDto extends StatusReport implements Serializable {
     /**
      *
      */
+    @Expose
     protected String projectDescription;
     /**
      * Project Phase 1
      */
+    @Expose
     protected String projectPhase1Name;
-
+    @Expose
     protected String projectPhase1Deliverable;
-
+    @Expose
     protected String projectPhase1EndDate;
-
+    @Expose
     protected String projectPhase1Status;
     /**
      * Project Phase 2
      */
+    @Expose
     protected String projectPhase2Name;
-
+    @Expose
     protected String projectPhase2Deliverable;
-
+    @Expose
     protected String projectPhase2EndDate;
-
+    @Expose
     protected String projectPhase2Status;
     /**
      * Project Phase 3
      */
+    @Expose
     protected String projectPhase3Name;
-
+    @Expose
     protected String projectPhase3Deliverable;
-
+    @Expose
     protected String projectPhase3EndDate;
-
+    @Expose
     protected String projectPhase3Status;
     /**
      * Project Phase 4
      */
+    @Expose
     protected String projectPhase4Name;
-
+    @Expose
     protected String projectPhase4Deliverable;
-
+    @Expose
     protected String projectPhase4EndDate;
-
+    @Expose
     protected String projectPhase4Status;
     /**
      *
      */
+    @Expose
     @Size(min = 3, max = 400)
     protected String statusDescription;
     /**
      *
      */
+    @Expose
     @Size(min = 3, max = 400)
     protected String accomplishments;
     /**
      *
      */
+    @Expose
     @Size(min = 3, max = 400)
     protected String scheduledActivities;
 
