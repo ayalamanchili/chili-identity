@@ -11,7 +11,7 @@
     xmlns:activiti="http://activiti.org/bpmn">
  
     <process id="consultant_emp_leave_request_process">
-         <startEvent id="leaveRequestStart"/>
+        <startEvent id="leaveRequestStart"/>
         <!-- Validate leave Request-->
         <sequenceFlow  sourceRef="leaveRequestStart" targetRef="validateLeaveRequestTask" />
         <serviceTask id="validateLeaveRequestTask" 
@@ -52,6 +52,8 @@
                 Category      : #{leaveRequest.category} 
                 Hours         : #{leaveRequest.hours} 
                 Submited Date    : #{leaveRequest.createdTimeStamp}
+                Vacation Available when request submitted : #{summary.availableVacationHours}
+                PTO Available when request submitted : #{summary.availablePTOHours}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />

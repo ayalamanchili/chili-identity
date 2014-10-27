@@ -61,6 +61,7 @@ public class ConsultantTimeService {
         request.setEmployee(emp);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("leaveRequest", request);
+        vars.put("summary", getYearlySummary(emp));
         vars.put("currentEmployee", emp);
         OfficeBPMService.instance().startProcess("consultant_emp_leave_request_process", vars);
     }
