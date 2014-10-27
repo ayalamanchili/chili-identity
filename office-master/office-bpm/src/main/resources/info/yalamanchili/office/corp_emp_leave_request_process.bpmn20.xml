@@ -124,8 +124,7 @@
                 Hours               : #{entity.hours} 
                 Notes               : #{entity.notes}
                 Approval Task Notes : #{leaveRequestApprovalTaskNotes}
-                Vacation Available when request submitted : #{summary.availableVacationHours}
-                PTO Available when request submitted : #{summary.availablePTOHours}
+               
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestProcess" />
