@@ -15,6 +15,8 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
@@ -36,8 +38,10 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     UpdateAllQuestionCommentsPanel updateManagementCommentsPanel;
 
     protected PerformanceEvaluationWizardType type;
+    protected String entityId;
 
     public UpdatePerformanceEvaluationPanel(PerformanceEvaluationWizardType type, JSONObject entity) {
+        this.entityId = getEntityId();
         this.type = type;
         initUpdateComposite(entity, "PerformanceEvaluation", OfficeWelcome.constants);
     }
@@ -55,35 +59,45 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             assignEntityValueFromField("managersComments", entity);
             assignEntityValueFromField("employeeComments", entity);
         }
-        assignEntityValueFromField("ceoComments", entity);
-
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR)) {
+            assignEntityValueFromField("hrComments", entity);
+        }
         JSONObject perfEval = new JSONObject();
         perfEval.put("performanceEvaluation", entity);
         JSONArray questionComments = new JSONArray();
-        JSONArray selfReviewQuestions = updateSelfReviewCommentsPanel.getQuestions();
-        JSONArray skillQuestions = updateSkillAptitudeCommentsPanel.getQuestions();
-        JSONArray attitudeQuestions = updateAptitudeCommentsPanel.getQuestions();
-        JSONArray managementQuestions = updateManagementCommentsPanel.getQuestions();
+        JSONArray selfReviewQuestions;
+        JSONArray skillQuestions;
+        JSONArray attitudeQuestions;
+        JSONArray managementQuestions;
         int x = 0;
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
-            logger.info("qqqq" + selfReviewQuestions.size());
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) && updateSelfReviewCommentsPanel != null) {
+            selfReviewQuestions = updateSelfReviewCommentsPanel.getQuestions();
             for (int i = 0; i < selfReviewQuestions.size(); i++) {
                 logger.info(entityId);
                 questionComments.set(x, selfReviewQuestions.get(i));
                 x++;
             }
         }
-        for (int i = 0; i < skillQuestions.size(); i++) {
-            questionComments.set(x, skillQuestions.get(i));
-            x++;
+        if (updateSkillAptitudeCommentsPanel != null) {
+            skillQuestions = updateSkillAptitudeCommentsPanel.getQuestions();
+            for (int i = 0; i < skillQuestions.size(); i++) {
+                questionComments.set(x, skillQuestions.get(i));
+                x++;
+            }
         }
-        for (int i = 0; i < attitudeQuestions.size(); i++) {
-            questionComments.set(x, attitudeQuestions.get(i));
-            x++;
+        if (updateAptitudeCommentsPanel != null) {
+            attitudeQuestions = updateAptitudeCommentsPanel.getQuestions();
+            for (int i = 0; i < attitudeQuestions.size(); i++) {
+                questionComments.set(x, attitudeQuestions.get(i));
+                x++;
+            }
         }
-        for (int i = 0; i < managementQuestions.size(); i++) {
-            questionComments.set(x, managementQuestions.get(i));
-            x++;
+        if (updateManagementCommentsPanel != null) {
+            managementQuestions = updateManagementCommentsPanel.getQuestions();
+            for (int i = 0; i < managementQuestions.size(); i++) {
+                questionComments.set(x, managementQuestions.get(i));
+                x++;
+            }
         }
         perfEval.put("comments", questionComments);
         logger.info("aaaaaaaaaa" + perfEval.toString());
@@ -119,7 +133,9 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
             assignFieldValueFromEntity("employeeComments", entity, DataType.RICH_TEXT_AREA);
         }
-        assignFieldValueFromEntity("ceoComments", entity, DataType.RICH_TEXT_AREA);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR)) {
+            assignFieldValueFromEntity("hrComments", entity, DataType.RICH_TEXT_AREA);
+        }
     }
 
     @Override
@@ -127,7 +143,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully  Updated PerformanceEvaluation Information");
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(entityId));
         } else if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
@@ -160,6 +176,9 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             updateSelfReviewCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name()));
             entityFieldsPanel.add(updateSelfReviewCommentsPanel);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR)) {
+            addField("hrComments", false, false, DataType.RICH_TEXT_AREA);
+        }
         entityFieldsPanel.add(updateSkillAptitudeCommentsPanel);
         entityFieldsPanel.add(updateAptitudeCommentsPanel);
         entityFieldsPanel.add(updateManagementCommentsPanel);
@@ -180,7 +199,13 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + getSubmitForApproval();
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + getSubmitForApproval();
+        } else if ((PerformanceEvaluationWizardType.MANAGER.equals(type))) {
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review";
+        } else {
+            return null;
+        }
 
     }
 }

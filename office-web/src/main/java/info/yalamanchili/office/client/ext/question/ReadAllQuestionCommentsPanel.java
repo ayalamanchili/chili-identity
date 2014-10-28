@@ -56,7 +56,7 @@ public class ReadAllQuestionCommentsPanel extends ALComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
-                        logger.info(arg0);
+                        logger.info("eeeeeeeeee" + arg0);
                         if (JSONParser.parseLenient(arg0).isObject() != null) {
                             populateData(JSONUtils.toJSONArray(JSONParser.parseLenient(arg0).isObject().get("QuestionAnswer")));
                         }

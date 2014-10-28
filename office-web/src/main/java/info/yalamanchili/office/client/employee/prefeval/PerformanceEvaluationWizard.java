@@ -67,10 +67,11 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         initWizard();
     }
 
-    public PerformanceEvaluationWizard(String employeeId, String year) {
+    public PerformanceEvaluationWizard(PerformanceEvaluationWizardType type, String employeeId, String year) {
         instance = this;
         this.employeeId = employeeId;
         this.year = year;
+        this.type = type;
         initWizard();
     }
 
@@ -128,6 +129,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             return widget.populateEntityFromFields();
         }
 
+        @Override
         protected void complete() {
             HttpService.HttpServiceAsync.instance().doPut(getCompleteUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
@@ -153,8 +155,10 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         protected String getCompleteUrl() {
             if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
                 return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + perfEvalEndStep.getWidget().getSubmitForApproval();
+            } else if ((PerformanceEvaluationWizardType.MANAGER.equals(type))) {
+                return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review";
             } else {
-                return OfficeWelcome.constants.root_url() + "performance-evaluation/create";
+                return null;
             }
         }
 
@@ -170,15 +174,20 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         protected JSONArray getQuestionComments() {
             JSONArray questionComments = new JSONArray();
-            JSONArray selfReviewQuestions = selfReviewQuestionsStep.getWidget().getValues();
+            JSONArray selfReviewQuestions = null;
+            if (selfReviewQuestionsStep != null) {
+                selfReviewQuestions = selfReviewQuestionsStep.getWidget().getValues();
+            }
             JSONArray skillQuestions = skillQuestionsStep.getWidget().getValues();
             JSONArray attitudeQuestions = attitudeQuestionsStep.getWidget().getValues();
             JSONArray managementQuestions = managementQuestionsStep.getWidget().getValues();
 
             int x = 0;
-            for (int i = 0; i < selfReviewQuestions.size(); i++) {
-                questionComments.set(x, selfReviewQuestions.get(i));
-                x++;
+            if (selfReviewQuestionsStep != null) {
+                for (int i = 0; i < selfReviewQuestions.size(); i++) {
+                    questionComments.set(x, selfReviewQuestions.get(i));
+                    x++;
+                }
             }
             for (int i = 0; i < attitudeQuestions.size(); i++) {
                 questionComments.set(x, attitudeQuestions.get(i));

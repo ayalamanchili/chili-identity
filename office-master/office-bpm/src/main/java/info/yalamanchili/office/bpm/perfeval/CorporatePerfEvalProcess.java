@@ -49,7 +49,7 @@ public class CorporatePerfEvalProcess implements TaskListener {
 
     protected void savePerformanceEvaluation(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        PerformanceEvaluation entity = (PerformanceEvaluation) task.getExecution().getVariable("entity");
+        PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
         if ("managerReviewTask".equals(task.getTaskDefinitionKey())) {
             entity.setStage(PerformanceEvaluationStage.Manager_Review);
         } else if ("employeeAcceptTask".equals(task.getTaskDefinitionKey())) {

@@ -50,7 +50,7 @@ public class AssociatePerfEvalProcess implements TaskListener {
 
     protected void savePerformanceEvaluation(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
-        PerformanceEvaluation entity = (PerformanceEvaluation) task.getExecution().getVariable("entity");
+        PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
         if ("eemReviewTask".equals(task.getTaskDefinitionKey())) {
             entity.setStage(PerformanceEvaluationStage.Manager_Review);
         } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {

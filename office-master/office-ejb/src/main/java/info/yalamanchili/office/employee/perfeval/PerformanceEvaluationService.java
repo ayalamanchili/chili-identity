@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.employee.perfeval;
 
+import info.chili.commons.BeanMapper;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.security.Signature;
@@ -54,7 +55,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class PerformanceEvaluationService {
-
+    
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
 
@@ -62,7 +63,7 @@ public class PerformanceEvaluationService {
     public void saveAssociateReview(Employee employee, PerformanceEvaluationSaveDto dto, Boolean submitForApproval) {
         PerformanceEvaluation entity;
         if (dto.getPerformanceEvaluation().getId() != null) {
-            entity = PerformanceEvaluationDao.instance().findById(dto.getPerformanceEvaluation().getId());
+            entity = PerformanceEvaluationDao.instance().save(dto.getPerformanceEvaluation());
         } else {
             entity = getEvaluationForYear(dto.getPerformanceEvaluation().getEvaluationFYYearString(), employee, dto);
             entity.setStage(PerformanceEvaluationStage.Self_Review);
@@ -72,7 +73,7 @@ public class PerformanceEvaluationService {
             startAssociatePerformanceEvaluationProcess(entity, employee);
         }
     }
-
+    
     protected void startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "eemReviewTask", true);
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "hrFinalApprovalTask", true);
@@ -85,13 +86,25 @@ public class PerformanceEvaluationService {
 
 //----------------------Corporate Employee Review----------------------------------
     public void saveCorporatePerformanceEvaluation(Employee employee, PerformanceEvaluationSaveDto dto, boolean startProcess) {
-        PerformanceEvaluation entity = getEvaluationForYear(dto.getYear(), employee, dto);
+        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
+        String year = dto.getYear();
+        if (year == null) {
+            year = dto.getPerformanceEvaluation().getEvaluationFYYear();
+        }
+        PerformanceEvaluation entity = getEvaluationForYear(year, employee, dto);
+        if (dto.getPerformanceEvaluation() != null) {
+            entity.setAreasNeedImprovement(dto.getPerformanceEvaluation().getAreasNeedImprovement());
+            entity.setKeyAccomplishments(dto.getPerformanceEvaluation().getKeyAccomplishments());
+            entity.setManagerComments(dto.getPerformanceEvaluation().getManagerComments());
+            entity.setEmployeeComments(dto.getPerformanceEvaluation().getEmployeeComments());
+            entity.setHrComments(dto.getPerformanceEvaluation().getHrComments());
+        }
         createQuestionComments(entity, dto.getComments());
         if (startProcess) {
             startCorporatePerformanceEvaluationProcess(entity, employee);
         }
     }
-
+    
     protected void startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
@@ -100,18 +113,17 @@ public class PerformanceEvaluationService {
         OfficeBPMService.instance().startProcess("corp_emp_perf_eval_process", vars);
     }
 
-    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        performanceEvaluationDao.save(dto.getPerformanceEvaluation());
-        for (QuestionComment qc : dto.getComments()) {
-            if (qc.getId() != null) {
-                Comment cmt = CommentDao.instance().find(qc.getId());
-                cmt.setComment(qc.getComment());
-                cmt.setRating(qc.getRating());
-                CommentDao.instance().save(cmt);
-            }
-        }
-    }
-
+//    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+//        performanceEvaluationDao.save(dto.getPerformanceEvaluation());
+//        for (QuestionComment qc : dto.getComments()) {
+//            if (qc.getId() != null) {
+//                Comment cmt = CommentDao.instance().find(qc.getId());
+//                cmt.setComment(qc.getComment());
+//                cmt.setRating(qc.getRating());
+//                CommentDao.instance().save(cmt);
+//            }
+//        }
+//    }
     public PerformanceEvaluation getEvaluationForYear(String year, Employee emp, PerformanceEvaluationSaveDto dto) {
         Date date;
         try {
@@ -144,16 +156,16 @@ public class PerformanceEvaluationService {
         }
         return null;
     }
-
+    
     public List<QuestionDto> getQuestions(QuestionCategory category) {
         return QuestionService.instance().getQuestions(category, QuestionContext.PERFORMANCE_EVALUATION_MANGER, 0, 100);
     }
-
+    
     public void createQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
         CommentDao commentDao = CommentDao.instance();
         for (QuestionComment comment : comments) {
-            if (comment.getId() != null) {
-                Question qes = QuestionDao.instance().findById(comment.getId());
+            if (comment.getQuestionId() != null) {
+                Question qes = QuestionDao.instance().findById(comment.getQuestionId());
                 perfEval.addQuestion(qes);
                 Comment cmt = commentDao.find(perfEval, qes);
                 if (cmt == null) {
@@ -165,7 +177,7 @@ public class PerformanceEvaluationService {
             }
         }
     }
-
+    
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
         return QuestionService.instance().getQuestionComments(id, category, context);
     }
@@ -198,7 +210,7 @@ public class PerformanceEvaluationService {
                 .header("Content-Length", pdf.length)
                 .build();
     }
-
+    
     public static PerformanceEvaluationService instance() {
         return SpringContext.getBean(PerformanceEvaluationService.class);
     }

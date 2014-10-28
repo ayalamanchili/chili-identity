@@ -70,16 +70,16 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
 
     @PUT
     @Path("/corporate/save-review")
-    public void createAssociateReview(PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
+    public void createCorporateReview(PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         PerformanceEvaluationService.instance().saveCorporatePerformanceEvaluation(emp, dto, submitForApproval);
     }
 
-    @PUT
-    @Path("/update")
-    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-        PerformanceEvaluationService.instance().updatePerformanceEvaluation(dto);
-    }
+//    @PUT
+//    @Path("/update")
+//    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
+//        PerformanceEvaluationService.instance().updatePerformanceEvaluation(dto);
+//    }
 
     @GET
     @Path("/comments/{id}")

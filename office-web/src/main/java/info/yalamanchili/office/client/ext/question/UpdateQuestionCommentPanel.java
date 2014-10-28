@@ -47,6 +47,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
         }
         entity.put("targetEntityName", new JSONString("dummy"));
         entity.put("targetEntityId", new JSONString("0"));
+        entity.put("id", entity.get("commentId").isString());
         return entity;
     }
 

@@ -60,7 +60,7 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
 
     protected JSONObject getQuestionComment() {
         JSONObject entity = new JSONObject();
-        entity.put("id", question.get("id").isString());
+        entity.put("questionId", question.get("id").isString());
         if (useRichTextEditor) {
             if (!Strings.isNullOrEmpty(((RichTextField) commentTB).getValue())) {
                 entity.put("comment", new JSONString(((RichTextField) commentTB).getValue()));

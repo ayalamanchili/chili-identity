@@ -19,7 +19,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class QuestionComment {
 
-    protected Long id;
+    /**
+     *
+     */
+    protected Long commentId;
+    /**
+     *
+     */
+    protected Long questionId;
     /**
      *
      */
@@ -46,12 +53,20 @@ public class QuestionComment {
     public QuestionComment() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getCommentId() {
+        return commentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
     }
 
     public String getComment() {

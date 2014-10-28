@@ -65,7 +65,8 @@ public class QuestionService {
             qc.setQuestionInfo(messagesUtils.get(q.getQuestionKey() + "_info"));
             qc.setSortOrder(q.getSortOrder());
             if (cmmt != null) {
-                qc.setId(cmmt.getId());
+                qc.setCommentId(cmmt.getId());
+                qc.setQuestionId(q.getId());
                 qc.setComment(cmmt.getComment());
                 qc.setRating(cmmt.getRating());
             }

@@ -279,7 +279,6 @@ public class PerformanceEvaluation extends AbstractEntity {
         this.evaluationFYYear = evaluationFYYear;
     }
 
-    @Transient
     public String getEvaluationFYYearString() {
         return evaluationFYYear;
     }

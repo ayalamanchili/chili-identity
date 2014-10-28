@@ -36,6 +36,7 @@ public class UpdateAllQuestionCommentsPanel extends ReadAllQuestionCommentsPanel
     
     public JSONArray getQuestions() {
         for (int i = 0; i < updatePanels.size(); i++) {
+            logger.info( updatePanels.get(i).populateEntityFromFields().toString());
             questions.set(i, updatePanels.get(i).populateEntityFromFields());
         }
         return questions;
