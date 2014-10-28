@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -47,12 +46,11 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    @NotNull
+    @NotNull(message = "{expenseitem.startDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
     @org.hibernate.annotations.Index(name = "EXP_RPT_STRT_DT")
     protected Date startDate;
-
-    @NotNull
+    @NotNull(message = "{expenseitem.endDate.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
     @org.hibernate.annotations.Index(name = "EXP_RPT_END_DT")
     protected Date endDate;

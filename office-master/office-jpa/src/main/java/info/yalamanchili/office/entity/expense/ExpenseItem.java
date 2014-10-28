@@ -47,12 +47,12 @@ public class ExpenseItem extends AbstractEntity {
      *
      */
     @Lob
-    @NotEmpty
+    @NotEmpty(message = "{description.not.empty.msg}")
     protected String description;
     /**
      *
      */
-    @NotNull
+    @NotNull(message = "{expenseitem.amount.not.empty.msg}")
     protected BigDecimal amount;
     /**
      *
@@ -63,13 +63,13 @@ public class ExpenseItem extends AbstractEntity {
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{itemStartDate.not.empty.msg}")
     protected Date itemStartDate;
     /**
      *
      */
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @NotNull(message = "{itemEndDate.not.empty.msg}")
     protected Date itemEndDate;
     /**
      *

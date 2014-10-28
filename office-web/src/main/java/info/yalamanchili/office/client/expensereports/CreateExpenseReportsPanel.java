@@ -46,7 +46,6 @@ public class CreateExpenseReportsPanel extends CreateComposite {
         assignEntityValueFromField("submittedDate", Expensereports);
         assignEntityValueFromField("department", Expensereports);
         assignEntityValueFromField("paidDate", Expensereports);
-        assignEntityValueFromField("expenseItems", Expensereports);
         logger.info(Expensereports.toString());
         return Expensereports;
     }
@@ -93,13 +92,13 @@ public class CreateExpenseReportsPanel extends CreateComposite {
     protected void addWidgets() {
         addDropDown("employee", selectEmployeeWidgetF);
         addDropDown("expenseItems", selectExpenseItemWidgetF);
-        addField("name", false, true, DataType.ENUM_FIELD);
+        addField("name", false, false, DataType.ENUM_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, false, DataType.DATE_FIELD);
-        addField("submittedDate", false, true, DataType.DATE_FIELD);
+        addField("submittedDate", false, false, DataType.DATE_FIELD);
         addField("department", false, false, DataType.STRING_FIELD);
-        addField("paidDate", false, true, DataType.DATE_FIELD);
+        addField("paidDate", false, false, DataType.DATE_FIELD);
     }
 
     @Override

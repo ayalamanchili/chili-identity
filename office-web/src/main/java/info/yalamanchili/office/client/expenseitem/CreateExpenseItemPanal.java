@@ -91,12 +91,12 @@ public class CreateExpenseItemPanal extends CreateComposite {
     protected void addWidgets() {
         addDropDown("category", selectCategoryWidgetF);
         addDropDown("expenseReport", selectExpenseReportsWidgetF);
-        addField("description", false, false, DataType.STRING_FIELD);
+        addField("description", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.INTEGER_FIELD);
         addField("itemStartDate", false, true, DataType.DATE_FIELD);
         addField("itemEndDate", false, false, DataType.DATE_FIELD);
         addField("purpose", false, false, DataType.RICH_TEXT_AREA);
-        addField("remarks", false, true, DataType.RICH_TEXT_AREA);
+        addField("remarks", false, false, DataType.RICH_TEXT_AREA);
     }
 
     @Override
