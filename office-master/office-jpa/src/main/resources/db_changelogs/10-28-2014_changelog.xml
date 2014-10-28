@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="ayalamanchili" id="addexpenseitem">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem">
+            <column name="category" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="category" type="varchar(255)"/>
+        </addColumn>     
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem">
+            <column name="description" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="description" type="varchar(255)"/>
+        </addColumn> 
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem">
+            <column name="amount" type="numeric"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="amount" type="numeric"/>
+        </addColumn>        
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem">
+            <column name="purpose" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="purpose" type="varchar(255)"/>
+        </addColumn>        
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem">
+            <column name="itemStartDate" type="date"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="itemStartDate" type="date"/>
+        </addColumn>     
+        <addColumn catalogName="office"
+                    schemaName="public"
+                    tableName="expenseitem">
+            <column name="itemEndDate" type="date"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="itemEndDate" type="date"/>
+        </addColumn>  
+        <addColumn catalogName="office"
+                    schemaName="public"
+                    tableName="expenseitem">
+            <column name="remarks" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="remarks" type="varchar(255)"/>
+        </addColumn>   
+        <addColumn catalogName="office"
+                    schemaName="public"
+                    tableName="expenseitem">
+            <column name="expenseReport" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expenseitem_aud">
+            <column name="expenseReport" type="varchar(255)"/>
+        </addColumn>        
+    </changeSet>
+</databaseChangeLog>
