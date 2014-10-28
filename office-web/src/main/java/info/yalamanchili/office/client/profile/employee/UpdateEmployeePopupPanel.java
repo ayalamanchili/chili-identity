@@ -47,7 +47,7 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
         addEnumField("sex", true, true, Sex.names(), Alignment.HORIZONTAL);
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("branch", true, true, Branch.names(), Alignment.HORIZONTAL);
+        addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }

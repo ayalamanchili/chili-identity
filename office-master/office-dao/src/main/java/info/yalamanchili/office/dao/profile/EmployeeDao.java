@@ -148,7 +148,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         }
     }
 
-    @Cacheable(value = OfficeCacheKeys.EMAILS, key = "{#root.methodName,#employeeId}")
+    @Cacheable(value = OfficeCacheKeys.EMPLOYEES, key = "{#root.methodName,#employeeId}")
     public Employee findEmployeWithEmpId(String employeeId) {
         Query getEmployeQ = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp where emp.employeeId=:empIdParam and emp.user.enabled=true");
         getEmployeQ.setParameter("empIdParam", employeeId);

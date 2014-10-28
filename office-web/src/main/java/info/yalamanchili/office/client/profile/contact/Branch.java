@@ -32,7 +32,11 @@ public enum Branch {
     /**
      * @generated
      */
-    Dallas;
+    Dallas,
+    /**
+     *
+     */
+    Tampa;
 
     public static String[] names() {
         Branch[] values = values();
