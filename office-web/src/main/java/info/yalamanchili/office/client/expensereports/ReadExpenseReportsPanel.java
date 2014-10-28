@@ -81,13 +81,13 @@ public class ReadExpenseReportsPanel extends ReadComposite {
     protected void addWidgets() {
         addDropDown("employee", selectEmployeeWidgetF);
         addDropDown("expenseItems", selectExpenseItemWidgetF);
-        addField("name", false, true, DataType.ENUM_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
+        addField("name", true, true, DataType.ENUM_FIELD);
+        addField("description", true, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
-        addField("submittedDate", false, true, DataType.DATE_FIELD);
-        addField("department", false, false, DataType.STRING_FIELD);
-        addField("paidDate", false, true, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("submittedDate", true, true, DataType.DATE_FIELD);
+        addField("department", true, true, DataType.STRING_FIELD);
+        addField("paidDate", true, true, DataType.DATE_FIELD);
     }
 
     @Override

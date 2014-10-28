@@ -95,7 +95,7 @@ public class CreateExpenseReportsPanel extends CreateComposite {
         addField("name", false, false, DataType.ENUM_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
         addField("submittedDate", false, false, DataType.DATE_FIELD);
         addField("department", false, false, DataType.STRING_FIELD);
         addField("paidDate", false, false, DataType.DATE_FIELD);

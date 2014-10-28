@@ -57,13 +57,13 @@ public class ReadExpenseItemPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("expenseReport", entity, null);
         assignFieldValueFromEntity("category", entity, null);
+        assignFieldValueFromEntity("expenseReport", entity, null);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("itemStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemEndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("remarks", entity, DataType.STRING_FIELD);
     }
 
@@ -77,14 +77,14 @@ public class ReadExpenseItemPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("category", new SelectExpenseCategoryWidget(false, true));
-        addDropDown("expenseReport", new SelectExpenseReportsWidget(false, true));
-        addField("description", false, false, DataType.STRING_FIELD);
+        addDropDown("category", new SelectExpenseCategoryWidget(true, true));
+        addDropDown("expenseReport", new SelectExpenseReportsWidget(true, true));
+        addField("description", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.INTEGER_FIELD);
-        addField("purpose", false, false, DataType.STRING_FIELD);
         addField("itemStartDate", false, true, DataType.DATE_FIELD);
-        addField("itemEndDate", false, false, DataType.DATE_FIELD);
-        addField("remarks", false, true, DataType.STRING_FIELD);
+        addField("itemEndDate", false, true, DataType.DATE_FIELD);
+        addField("purpose", true, false, DataType.STRING_FIELD);
+        addField("remarks", true, true, DataType.STRING_FIELD);
     }
 
     @Override

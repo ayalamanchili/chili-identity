@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 public class CreateExpenseItemPanal extends CreateComposite {
 
     private Logger logger = Logger.getLogger(CreateExpenseItemPanal.class.getName());
-    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
-    SelectExpenseReportsWidget selectExpenseReportsWidgetF = new SelectExpenseReportsWidget(false, true);
+    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, false);
+    SelectExpenseReportsWidget selectExpenseReportsWidgetF = new SelectExpenseReportsWidget(false, false);
 
     public CreateExpenseItemPanal(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -94,7 +94,7 @@ public class CreateExpenseItemPanal extends CreateComposite {
         addField("description", false, true, DataType.STRING_FIELD);
         addField("amount", false, true, DataType.INTEGER_FIELD);
         addField("itemStartDate", false, true, DataType.DATE_FIELD);
-        addField("itemEndDate", false, false, DataType.DATE_FIELD);
+        addField("itemEndDate", false, true, DataType.DATE_FIELD);
         addField("purpose", false, false, DataType.RICH_TEXT_AREA);
         addField("remarks", false, false, DataType.RICH_TEXT_AREA);
     }

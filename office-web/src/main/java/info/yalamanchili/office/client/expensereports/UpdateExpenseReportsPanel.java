@@ -96,7 +96,7 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
         addField("name", false, true, DataType.ENUM_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, false, DataType.DATE_FIELD);
+        addField("endDate", false, true, DataType.DATE_FIELD);
         addField("submittedDate", false, true, DataType.DATE_FIELD);
         addField("department", false, false, DataType.STRING_FIELD);
         addField("paidDate", false, true, DataType.DATE_FIELD);
