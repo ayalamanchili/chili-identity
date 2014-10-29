@@ -2,7 +2,7 @@ Project Status Process
 ==========
 
  - When a employee submits Status Report
- - The approval Task is sent to Engagement team
+ - The approval Task is sent to H1B_IMMIGRATION and final review  for Engagement team
  - Engagement team can validate and complete it and email notification will be sent to employee
 
 Project Report Process
@@ -12,7 +12,7 @@ Project Report Process
 
 Status Report Review Process
 ----
- - HR or EEM can add comments to the status report to provide feedback and select the employee to a notification is send to them.
+ - H1B_IMMIGRATION or EEM can add comments to the status report to provide feedback and select the employee to a notification is send to them.
  - Employee can log back in to update the report based on your comments.
 
 Status Report Review Steps
