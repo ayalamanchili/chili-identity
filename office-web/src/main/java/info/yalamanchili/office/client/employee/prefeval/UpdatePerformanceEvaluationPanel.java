@@ -127,14 +127,14 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("rating", entity, DataType.INTEGER_FIELD);
-        assignFieldValueFromEntity("keyAccomplishments", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
-            assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
-            assignFieldValueFromEntity("employeeComments", entity, DataType.RICH_TEXT_AREA);
+            assignFieldValueFromEntity("managersComments", entity, DataType.TEXT_AREA_FIELD);
+            assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR)) {
-            assignFieldValueFromEntity("hrComments", entity, DataType.RICH_TEXT_AREA);
+            assignFieldValueFromEntity("hrComments", entity, DataType.TEXT_AREA_FIELD);
         }
     }
 
@@ -168,16 +168,16 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
         addEnumField("type", false, true, EvaluationFrequencyType.names());
         addField("rating", false, true, DataType.INTEGER_FIELD);
-        addField("keyAccomplishments", false, false, DataType.RICH_TEXT_AREA);
-        addField("areasNeedImprovement", false, false, DataType.RICH_TEXT_AREA);
+        addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD);
+        addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
-            addField("managersComments", false, false, DataType.RICH_TEXT_AREA);
-            addField("employeeComments", false, false, DataType.RICH_TEXT_AREA);
+            addField("managersComments", false, false, DataType.TEXT_AREA_FIELD);
+            addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD);
             updateSelfReviewCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name()));
             entityFieldsPanel.add(updateSelfReviewCommentsPanel);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR)) {
-            addField("hrComments", false, false, DataType.RICH_TEXT_AREA);
+            addField("hrComments", false, false, DataType.TEXT_AREA_FIELD);
         }
         entityFieldsPanel.add(updateSkillAptitudeCommentsPanel);
         entityFieldsPanel.add(updateAptitudeCommentsPanel);
