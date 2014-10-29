@@ -41,7 +41,8 @@ public class ExpenseItem extends AbstractEntity {
      */
     @org.hibernate.annotations.Index(name = "EXP_CATG")
     @Enumerated(EnumType.STRING)
-    @OneToOne
+    @ForeignKey(name = "FK_EXP_CAT_EXP_ITMS")
+    @ManyToOne
     protected ExpenseCategory category;
     /**
      *

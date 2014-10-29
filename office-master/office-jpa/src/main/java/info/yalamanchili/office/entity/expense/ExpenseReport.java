@@ -83,7 +83,8 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-    protected String paidDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date paidDate;
     /**
      *
      */
@@ -171,11 +172,11 @@ public class ExpenseReport extends AbstractEntity {
         this.approvedDate = approvedDate;
     }
 
-    public String getPaidDate() {
+    public Date getPaidDate() {
         return paidDate;
     }
 
-    public void setPaidDate(String paidDate) {
+    public void setPaidDate(Date paidDate) {
         this.paidDate = paidDate;
     }
 
