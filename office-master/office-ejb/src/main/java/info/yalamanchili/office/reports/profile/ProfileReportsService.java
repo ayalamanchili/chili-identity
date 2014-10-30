@@ -13,6 +13,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.PhoneDao;
+import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -61,7 +62,10 @@ public class ProfileReportsService {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
-
+                dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
+                if (emp.getPhones().size() > 0) {
+                    dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
+                }
                 if (ci.getClient() != null) {
                     dto.setClientName(ci.getClient().getName());
                 }
@@ -74,6 +78,7 @@ public class ProfileReportsService {
                 if (ci.getVendorLocation() != null) {
                     dto.setVendorLocation(ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
                 }
+                dto.setVersionStatus(VersionStatus.ACTIVE);
                 dto.setBillingRate(ci.getBillingRate());
                 dto.setStartDate(ci.getStartDate());
                 dto.setEndDate(ci.getEndDate());

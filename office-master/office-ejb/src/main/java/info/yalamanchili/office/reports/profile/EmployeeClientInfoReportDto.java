@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.reports.profile;
 
+import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.io.Serializable;
@@ -28,9 +29,36 @@ public class EmployeeClientInfoReportDto implements Serializable {
     protected String vendorName;
     protected Date startDate;
     protected Date endDate;
+    protected String phoneNumber;
+    protected String email;
     protected String clientLocation;
     protected String vendorLocation;
     protected BigDecimal billingRate;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    protected VersionStatus versionStatus;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public VersionStatus getVersionStatus() {
+        return versionStatus;
+    }
+
+    public void setVersionStatus(VersionStatus versionStatus) {
+        this.versionStatus = versionStatus;
+    }
 
     public String getEmployeeName() {
         return employeeName;

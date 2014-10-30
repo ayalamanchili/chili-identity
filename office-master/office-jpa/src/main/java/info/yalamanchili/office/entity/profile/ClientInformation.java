@@ -4,6 +4,7 @@
 package info.yalamanchili.office.entity.profile;
 
 import info.chili.jpa.AbstractEntity;
+import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.ClientInfoComment;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
@@ -22,6 +23,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -110,7 +113,6 @@ public class ClientInformation extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_VendorContact_ClientInformations")
     protected Contact vendorContact;
-
     /**
      * Vendor AP Contact
      */
@@ -154,7 +156,6 @@ public class ClientInformation extends AbstractEntity {
      */
     @OneToMany(mappedBy = "clientInformation", cascade = CascadeType.ALL)
     protected List<BillingRate> billingRates;
-
     /**
      * billingRateDuration
      */
@@ -720,10 +721,27 @@ public class ClientInformation extends AbstractEntity {
     public void setHrOrientation(Boolean hrOrientation) {
         this.hrOrientation = hrOrientation;
     }
+    protected VersionStatus versionStatus;
+
+    public VersionStatus getVersionStatus() {
+        return versionStatus;
+    }
+
+    public void setVersionStatus(VersionStatus versionStatus) {
+        this.versionStatus = versionStatus;
+    }
+
+    @PrePersist
+    @PreUpdate
+    protected void preSave() {
+        //TODO invoke validator also
+        if (this.versionStatus == null) {
+            this.versionStatus = VersionStatus.ACTIVE;
+        }
+    }
 
     @Override
     public String toString() {
         return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", clientContact=" + clientContact + ", clientLocation=" + clientLocation + ", vendor=" + vendor + ", vendorContact=" + vendorContact + ", vendorLocation=" + vendorLocation + ", employee=" + employee + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRateDuration=" + billingRateDuration + ", overTimeRateDuration=" + overTimeRateDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", recruiter=" + recruiter + ", visaStatus=" + visaStatus + ", notes=" + notes + ", comments=" + comments + ", accountVerificationDocs=" + accountVerificationDocs + ", signedCopyOfWorkOrder=" + signedCopyOfWorkOrder + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + ", joiningReport=" + joiningReport + ", logisticsPreparation=" + logisticsPreparation + ", hrOrientation=" + hrOrientation + '}';
     }
-    
 }
