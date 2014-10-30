@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.reporting.ReportGenerator;
@@ -29,6 +30,8 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.template.TemplateService;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,7 +140,15 @@ public class ConsultantTimeService {
 
     public Response getReport(SearchConsultantTimeSheetDto dto) {
         String html = TemplateService.instance().process("consultant-time-report.xhtml", consultantTimeSheetDao.getReport(dto, 0, 10000));
-        return ReportGenerator.createPDFReportFromHtml(html, "consultant-time-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot());
+        byte[] pdf = PDFUtils.convertToPDF(html);
+        File file = new File(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "consultant-time-report.pdf");
+        try {
+            Files.write(pdf, file);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        return Response.ok("consultant-time-report.pdf".getBytes()).header("content-disposition", "filename = consultant-time-report.pdf")
+                .header("Content-Length", "consultant-time-report.pdf".length()).build();
     }
 
     public Response getReport(Long id) {
