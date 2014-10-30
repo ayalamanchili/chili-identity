@@ -1,22 +1,22 @@
-Projects Reports
+Status Reports
 ===========
 
 How to submit a Status Report
 ----
-
- - Employees should submit the current project status report on a regular basis. 
  - [Login to Portal](../../office/forgot-password.html "Login")
- - Navigate to Home --> My Reports --> Projects Reports --> Click Submit Project Status Report.
- - Enter all required information in status report.
- - Please select the  *Submit For Approval* check box if you are ready to submit the report for review to the H1B_IMMIGRATION and final review goes to Engagement Manager. Otherwise just create it and you can come back to update and submit for approval.
- - Once submitted the request it will send to the appropriate  department (Engagement) for approval and you will receive a email about the final decision. 
+ - Navigate to Home --> My Reports --> Status Reports --> Click Submit Project Status Report.
+ - Enter the necessary information as necessary following the sample data.
+ - Please select *Preview* checkbox to click *Save and Preview* to review the report and its format.
+ - Once ready select *Submit For Approval* check box and click "Save and Submit* to send it for approval for HR Immigration Team followed by Engagement Manager's approval.
+ - Please keep a watch on your emails for any comments and updates on your report. The HR and the EEM team can add commments based on the review. 
+ - Once the review is complete you will be receiving a email notifications about the confirmation.
 
 Reports updates
 ----
 
- - Once submitted Engagement and H1B_IMMIGRATION Team can review and provide feedback with comments. you should be receiving a email about the comments.
+ - Once submitted Engagement and HR Team can review and provide feedback with comments. you should be receiving a email about the comments.
  - You can log back to portal and update your report to accordingly and save it.
- - once done you can also add back a comment notifying your Engagement Manager.
+ - once done you can also add back a comment notifying your HR team member .
 
 How To Submit Project Status Report
 ----
@@ -29,6 +29,10 @@ Submit Project Status Report
 Update Status Report in response to Comment
 ----
 ![alt text](../../images/statusreport/update-report.png "Update Status Report")
+
+Add Comment
+----
+![alt text](../../images/statusreport/add-comment.png "Add comment")
 
 Print Status Report
 ===========
