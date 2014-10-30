@@ -25,7 +25,7 @@ How To Submit Project Status Report
 Submit Project Status Report
 ----
 
-Once Employee Fill The All Required Details. Emplyee Can save the preview and Save the data .
+Once Employee Fill The All Required Details. Emplyee Can save the data and  preview data .
 ![alt text](../../images/statusreport/Status_Report.png "Submit Status Report")
 
 Update Status Report in response to Comment
