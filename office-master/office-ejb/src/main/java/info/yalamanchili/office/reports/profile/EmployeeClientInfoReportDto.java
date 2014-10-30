@@ -7,6 +7,8 @@
  */
 package info.yalamanchili.office.reports.profile;
 
+import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Contact;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,6 +28,9 @@ public class EmployeeClientInfoReportDto implements Serializable {
     protected String vendorName;
     protected Date startDate;
     protected Date endDate;
+    protected String clientLocation;
+    protected String vendorLocation;
+    protected BigDecimal billingRate;
 
     public String getEmployeeName() {
         return employeeName;
@@ -65,5 +70,33 @@ public class EmployeeClientInfoReportDto implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getClientLocation() {
+        return clientLocation;
+    }
+
+    public void setClientLocation(String clientLocation) {
+        this.clientLocation = clientLocation;
+    }
+
+    public String getVendorLocation() {
+        return vendorLocation;
+    }
+
+    public void setVendorLocation(String vendorLocation) {
+        this.vendorLocation = vendorLocation;
+    }
+
+    public BigDecimal getBillingRate() {
+        return billingRate;
+    }
+
+    public void setBillingRate(BigDecimal billingRate) {
+        this.billingRate = billingRate;
+    }
+
+    void setClientLocation() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

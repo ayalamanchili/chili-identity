@@ -10,9 +10,13 @@ package info.yalamanchili.office.reports.profile;
 
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.PhoneDao;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,15 +61,25 @@ public class ProfileReportsService {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+
                 if (ci.getClient() != null) {
                     dto.setClientName(ci.getClient().getName());
                 }
                 if (ci.getVendor() != null) {
                     dto.setVendorName(ci.getVendor().getName());
                 }
+                if (ci.getClientLocation() != null) {
+                    dto.setClientLocation(ci.getClientLocation().getCity() + " " + ci.getClientLocation().getState());
+                }
+                if (ci.getVendorLocation() != null) {
+                    dto.setVendorLocation(ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
+                }
+                dto.setBillingRate(ci.getBillingRate());
                 dto.setStartDate(ci.getStartDate());
                 dto.setEndDate(ci.getEndDate());
                 res.add(dto);
+
+
             }
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
