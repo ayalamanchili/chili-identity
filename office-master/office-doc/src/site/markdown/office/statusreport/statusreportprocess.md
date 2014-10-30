@@ -11,12 +11,12 @@ Project Status Process
  How to view Report.
 ----
 ![alt text](../../images/statusreport/review-report-1.png "Status Report")
-![alt text](../../images/statusreport/review-report-2.png "Status Report")
+![alt text](../../images/statusreport/Status_Report_view.png "Status Report")
 
- How to Review Report
+ How to Review Report and Add Comment
 ----
  
-![alt text](../../images/statusreport/add-comment.png "Status Report")
+![alt text](../../images/statusreport/Add_Hr_Comment.png "Status Report")
 
 How to Approve Status Report
 ----
