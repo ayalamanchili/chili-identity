@@ -78,13 +78,15 @@ public class ProfileReportsService {
                 if (ci.getVendorLocation() != null) {
                     dto.setVendorLocation(ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
                 }
-                dto.setVersionStatus(VersionStatus.ACTIVE);
+                if (emp.getUser().isEnabled()) {
+                    dto.setVersionStatus(VersionStatus.ACTIVE);
+                } else {
+                    dto.setVersionStatus(VersionStatus.INACTIVE);
+                }
                 dto.setBillingRate(ci.getBillingRate());
                 dto.setStartDate(ci.getStartDate());
                 dto.setEndDate(ci.getEndDate());
                 res.add(dto);
-
-
             }
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "employee-client-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
