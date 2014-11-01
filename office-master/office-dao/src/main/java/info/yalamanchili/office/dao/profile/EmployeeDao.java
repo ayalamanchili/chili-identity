@@ -71,6 +71,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return findAllQuery.getResultList();
 
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Long size() {
+        Query sizeQuery = getEntityManager().createQuery("select count (*) from " + Employee.class.getCanonicalName() + " emp where emp.user.enabled=true");
+        return (Long) sizeQuery.getSingleResult();
+    }
     //TODO temp method remove later
 
     @Transactional
@@ -217,10 +224,10 @@ public class EmployeeDao extends CRUDDao<Employee> {
         PrivacySettingDao.instance().deleteAll(PrivacySettingDao.instance().getPrivacySettings(emp));
         CompanyContactDao.instance().deleteAll(CompanyContactDao.instance().getEmployeeCompanyContacts(id));
         EmployeeDocumentDao.instance().deleteAll(EmployeeDocumentDao.instance().getDocuments(id));
-        ServiceTicketDao.instance().deleteAll(ServiceTicketDao.instance().getTickets(emp, 0, 1000));
-        ConsultantTimeSheetDao.instance().deleteAll(ConsultantTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 1000));
-        CorporateTimeSheetDao.instance().deleteAll(CorporateTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 1000));
-        AdvanceRequisitionDao.instance().deleteAll(AdvanceRequisitionDao.instance().queryForEmployee(emp.getId(), 0, 1000));
+        ServiceTicketDao.instance().deleteAll(ServiceTicketDao.instance().getTickets(emp, 0, 10000));
+        ConsultantTimeSheetDao.instance().deleteAll(ConsultantTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 10000));
+        CorporateTimeSheetDao.instance().deleteAll(CorporateTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 10000));
+        AdvanceRequisitionDao.instance().deleteAll(AdvanceRequisitionDao.instance().queryForEmployee(emp.getId(), 0, 10000));
         /*
          Expenses
          AdjustmentHours

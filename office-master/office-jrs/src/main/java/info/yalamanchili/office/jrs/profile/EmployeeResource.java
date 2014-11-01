@@ -123,7 +123,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
             employees.add(info.yalamanchili.office.dto.profile.EmployeeDto.map(mapper, (Employee) empObj));
         }
         tableObj.setEntities(employees);
-        tableObj.setSize(getDao().size());
+        tableObj.setSize(employeeDao.size());
         return tableObj;
     }
 
