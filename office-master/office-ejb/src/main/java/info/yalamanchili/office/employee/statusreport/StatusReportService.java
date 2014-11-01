@@ -25,6 +25,7 @@ import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,7 +118,7 @@ public class StatusReportService {
         data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC");
         data.getData().put("projectDescription", reportDto.getProjectDescription());
         data.getData().put("projectStatus", entity.getStatus().name());
-        data.getData().put("projectDuration", entity.getReportStartDate() + " - " + entity.getReportEndDate());
+        data.getData().put("projectDuration", new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportStartDate()) + " - " + new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportEndDate()));
         data.getData().put("distribution", "System Soft Technologies LLC");
         //Phase 1
         data.getData().put("projectPhase1Name", reportDto.getProjectPhase1Name());

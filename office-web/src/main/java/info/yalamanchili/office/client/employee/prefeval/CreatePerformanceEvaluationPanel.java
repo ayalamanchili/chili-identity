@@ -15,9 +15,11 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -104,6 +106,18 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
     @Override
     protected void configure() {
         create.setVisible(false);
+        formatTextAreaFields();
+    }
+
+    protected void formatTextAreaFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.setBackgroundText();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+        }
     }
 
     public EnumField getYearField() {

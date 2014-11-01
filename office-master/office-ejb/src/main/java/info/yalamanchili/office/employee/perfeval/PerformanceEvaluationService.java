@@ -55,7 +55,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class PerformanceEvaluationService {
-    
+
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
 
@@ -73,7 +73,7 @@ public class PerformanceEvaluationService {
             startAssociatePerformanceEvaluationProcess(entity, employee);
         }
     }
-    
+
     protected void startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "eemReviewTask", true);
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "hrFinalApprovalTask", true);
@@ -104,7 +104,7 @@ public class PerformanceEvaluationService {
             startCorporatePerformanceEvaluationProcess(entity, employee);
         }
     }
-    
+
     protected void startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
@@ -156,11 +156,11 @@ public class PerformanceEvaluationService {
         }
         return null;
     }
-    
+
     public List<QuestionDto> getQuestions(QuestionCategory category) {
         return QuestionService.instance().getQuestions(category, QuestionContext.PERFORMANCE_EVALUATION_MANGER, 0, 100);
     }
-    
+
     public void createQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
         CommentDao commentDao = CommentDao.instance();
         for (QuestionComment comment : comments) {
@@ -176,8 +176,25 @@ public class PerformanceEvaluationService {
                 }
             }
         }
+        calculatRating(perfEval);
     }
-    
+
+    protected void calculatRating(PerformanceEvaluation perfEval) {
+        Double sum = 0.0;
+        Double size = 0.0;
+        for (Question qes : perfEval.getQuestions()) {
+            Comment cmt = CommentDao.instance().find(qes);
+            if (cmt != null && cmt.getRating() != null) {
+                if (cmt.getRating() > 0) {
+                    sum = sum + cmt.getRating();
+                    size++;
+                }
+            }
+        }
+        Double avg = sum / size;
+        perfEval.setRating(avg);
+    }
+
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
         return QuestionService.instance().getQuestionComments(id, category, context);
     }
@@ -210,7 +227,7 @@ public class PerformanceEvaluationService {
                 .header("Content-Length", pdf.length)
                 .build();
     }
-    
+
     public static PerformanceEvaluationService instance() {
         return SpringContext.getBean(PerformanceEvaluationService.class);
     }
