@@ -7,10 +7,13 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -43,6 +46,7 @@ public class EmployeeCreateDto implements Serializable {
     @NotEmpty(message = "{email.not.empty.msg}")
     protected String email;
     protected String phoneNumber;
+    protected Branch branch;
     protected String jobTitle;
     @NotNull(message = "{employeetype.not.null.msg}")
     protected EmployeeType employeeType;
@@ -122,6 +126,14 @@ public class EmployeeCreateDto implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 
     public String getJobTitle() {
