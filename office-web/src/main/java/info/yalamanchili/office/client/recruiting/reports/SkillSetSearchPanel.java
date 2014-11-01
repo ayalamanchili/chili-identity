@@ -138,15 +138,15 @@ public class SkillSetSearchPanel extends SearchComposite {
     }
 
     protected String getSkillsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "skill/dropdown/0/1000?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "skill/dropdown/0/10000?column=id&column=name";
     }
 
     protected String getCertificationsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "certification/dropdown/0/1000?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "certification/dropdown/0/10000?column=id&column=name";
     }
 
     protected String getTagsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "skillsettag/dropdown/0/1000?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "skillsettag/dropdown/0/10000?column=id&column=name";
     }
 
 }

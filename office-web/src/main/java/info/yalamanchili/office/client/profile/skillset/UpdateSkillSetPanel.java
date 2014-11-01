@@ -264,7 +264,7 @@ public class UpdateSkillSetPanel extends UpdateComposite implements KeyPressHand
     }
 
     protected String getTagsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "skillsettag/dropdown/0/1000?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "skillsettag/dropdown/0/10000?column=id&column=name";
     }
 
     @Override

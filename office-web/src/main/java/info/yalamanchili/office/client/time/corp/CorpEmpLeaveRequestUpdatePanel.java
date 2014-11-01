@@ -99,7 +99,7 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     };
 
     protected String getEmployeeIdsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=employeeId&column=firstName&column=lastName";
     }
 
     @Override

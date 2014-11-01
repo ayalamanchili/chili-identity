@@ -130,10 +130,10 @@ public class CreateMessagePanel extends CreateComposite {
     }
 
     protected String getEmployeeIdsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/1000?column=employeeId&column=firstName&column=lastName";
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=employeeId&column=firstName&column=lastName";
     }
 
     protected String getNotoficationGroupDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "notification/dropdown/0/1000?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "notification/dropdown/0/10000?column=id&column=name";
     }
 }
