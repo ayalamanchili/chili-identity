@@ -15,8 +15,6 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.composite.BaseField;
-import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -38,7 +36,7 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
     protected JSONObject question;
     protected HTML questionL = new HTML();
     protected HTML questionDecriptionL = new HTML();
-    protected BaseField commentTB;
+    protected TextAreaField commentTB;
     protected RatingWidget ratingWidget;
     protected Boolean displayRating;
     protected Boolean useRichTextEditor;
@@ -61,14 +59,9 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
     protected JSONObject getQuestionComment() {
         JSONObject entity = new JSONObject();
         entity.put("questionId", question.get("id").isString());
-        if (useRichTextEditor) {
-            if (!Strings.isNullOrEmpty(((RichTextField) commentTB).getValue())) {
-                entity.put("comment", new JSONString(((RichTextField) commentTB).getValue()));
-            }
-        } else {
-            if (!Strings.isNullOrEmpty(((TextAreaField) commentTB).getValue())) {
-                entity.put("comment", new JSONString(((TextAreaField) commentTB).getValue()));
-            }
+
+        if (!Strings.isNullOrEmpty((commentTB).getValue())) {
+            entity.put("comment", new JSONString(((TextAreaField) commentTB).getValue()));
         }
         if (displayRating && ratingWidget.getRating() > 0) {
             entity.put("rating", new JSONString(ratingWidget.getRating().toString()));
@@ -84,16 +77,9 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
 
     public boolean validate() {
         if (isCommentRequired) {
-            if (useRichTextEditor) {
-                if (Strings.isNullOrEmpty(((RichTextField) commentTB).getValue())) {
-                    commentTB.setMessage("Please enter comments");
-                    return false;
-                }
-            } else {
-                if (Strings.isNullOrEmpty(((TextAreaField) commentTB).getValue())) {
-                    commentTB.setMessage("Please enter comments");
-                    return false;
-                }
+            if (Strings.isNullOrEmpty(((TextAreaField) commentTB).getValue())) {
+                commentTB.setMessage("Please enter comments");
+                return false;
             }
         }
         if (isRatingRequired && ratingWidget.getRating() <= 0) {
@@ -109,15 +95,13 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
 
     @Override
     protected void addWidgets() {
+        commentTB = new TextAreaField(OfficeWelcome.constants, "comment", "Comment", false, isCommentRequired, Alignment.VERTICAL);
+        commentTB.getTextbox().setCharacterWidth(75);
+        commentTB.getTextbox().setVisibleLines(4);
         ratingWidget = new RatingWidget(5, isRatingRequired, false);
         ratingWidget.setPresenter(this);
         panel.add(questionL);
         panel.add(questionDecriptionL);
-        if (useRichTextEditor) {
-            commentTB = new RichTextField(OfficeWelcome.constants, "comment", "Comment", false, isCommentRequired, Alignment.VERTICAL);
-        } else {
-            commentTB = new TextAreaField(OfficeWelcome.constants, "comment", "Comment", false, isCommentRequired, Alignment.VERTICAL);
-        }
         panel.add(commentTB);
         if (displayRating) {
             panel.add(ratingWidget);

@@ -192,7 +192,7 @@ public class PerformanceEvaluationService {
             }
         }
         Double avg = sum / size;
-        perfEval.setRating(avg);
+        perfEval.setRating(new Double(Math.round(avg)));
     }
 
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {

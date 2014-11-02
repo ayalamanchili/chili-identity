@@ -63,7 +63,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         assignFieldValueFromEntity("stage", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.RICH_TEXT_AREA);
-        assignFieldValueFromEntity("managersComments", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("managerComments", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("employeeComments", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("hrComments", entity, DataType.RICH_TEXT_AREA);
     }
@@ -86,7 +86,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addEnumField("stage", true, true,PerformanceEvaluationStage.names(), Alignment.HORIZONTAL);
         addField("keyAccomplishments", true, false, DataType.RICH_TEXT_AREA);
         addField("areasNeedImprovement", true, false, DataType.RICH_TEXT_AREA);
-        addField("managersComments", true, false, DataType.RICH_TEXT_AREA);
+        addField("managerComments", true, false, DataType.RICH_TEXT_AREA);
         addField("employeeComments", true, false, DataType.RICH_TEXT_AREA);
         addField("hrComments", true, false, DataType.RICH_TEXT_AREA);
         entityFieldsPanel.add(new ReadAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name())));

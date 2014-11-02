@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.bpm.perfeval;
 
+import com.google.common.base.Strings;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
@@ -71,13 +72,18 @@ public class AssociatePerfEvalProcess implements TaskListener {
             String notes = (String) task.getExecution().getVariable("managerNotes");
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setApprovedBy(currentUser.getEmployeeId());
-            entity.setManagerComments(notes);
+            if (!Strings.isNullOrEmpty(notes)) {
+                entity.setManagerComments(notes);
+            }
         } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
             String notes = (String) task.getExecution().getVariable("hrNotes");
-            entity.setHrComments(notes);
+            if (!Strings.isNullOrEmpty(notes)) {
+                entity.setHrComments(notes);
+            }
             entity.setStage(PerformanceEvaluationStage.Complete);
+
+            PerformanceEvaluationDao.instance().save(entity);
         }
-        PerformanceEvaluationDao.instance().save(entity);
     }
 
     protected PerformanceEvaluation getPerformanceEvaluationFromTask(DelegateTask task) {
