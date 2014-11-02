@@ -149,7 +149,9 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
                 addField("managerComments", false, false, DataType.TEXT_AREA_FIELD);
                 addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD);
             }
-            addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
+            if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.SELF_MANAGER)) {
+                addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
+            }
         }
     }
 

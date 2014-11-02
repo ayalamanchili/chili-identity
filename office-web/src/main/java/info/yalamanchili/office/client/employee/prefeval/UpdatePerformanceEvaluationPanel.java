@@ -13,7 +13,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -21,6 +23,7 @@ import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWi
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
 import info.yalamanchili.office.client.ext.question.UpdateAllQuestionCommentsPanel;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -149,6 +152,17 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
+        formatTextAreaFields();
+    }
+
+    protected void formatTextAreaFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+        }
     }
 
     @Override
@@ -156,10 +170,10 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         updateSkillAptitudeCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SKILL_AND_APTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.SKILL_AND_APTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name()));
         updateAptitudeCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name()));
         updateManagementCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name()));
-        addField("evaluationDate", false, false, DataType.DATE_FIELD);
-        addField("evaluationPeriodStartDate", false, true, DataType.DATE_FIELD);
-        addField("evaluationPeriodEndDate", false, true, DataType.DATE_FIELD);
-        addEnumField("type", false, true, EvaluationFrequencyType.names());
+        addField("evaluationDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("type", true, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
         addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD);
         addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
@@ -173,6 +187,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         entityFieldsPanel.add(updateAptitudeCommentsPanel);
         entityFieldsPanel.add(updateManagementCommentsPanel);
         addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
+        alignFields();
     }
 
     public String getSubmitForApproval() {
