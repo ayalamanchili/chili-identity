@@ -8,8 +8,6 @@
 package info.yalamanchili.office.reports.profile;
 
 import info.yalamanchili.office.entity.VersionStatus;
-import info.yalamanchili.office.entity.profile.Address;
-import info.yalamanchili.office.entity.profile.Contact;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class EmployeeClientInfoReportDto implements Serializable {
 
+    protected boolean active;
     protected String employeeName;
     protected String clientName;
     protected String vendorName;
@@ -35,29 +34,12 @@ public class EmployeeClientInfoReportDto implements Serializable {
     protected String vendorLocation;
     protected BigDecimal billingRate;
 
-    public String getEmail() {
-        return email;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    protected VersionStatus versionStatus;
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public VersionStatus getVersionStatus() {
-        return versionStatus;
-    }
-
-    public void setVersionStatus(VersionStatus versionStatus) {
-        this.versionStatus = versionStatus;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getEmployeeName() {
@@ -100,6 +82,22 @@ public class EmployeeClientInfoReportDto implements Serializable {
         this.endDate = endDate;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getClientLocation() {
         return clientLocation;
     }
@@ -124,7 +122,4 @@ public class EmployeeClientInfoReportDto implements Serializable {
         this.billingRate = billingRate;
     }
 
-    void setClientLocation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

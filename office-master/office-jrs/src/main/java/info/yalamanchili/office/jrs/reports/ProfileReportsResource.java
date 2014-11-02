@@ -10,7 +10,6 @@ package info.yalamanchili.office.jrs.reports;
 
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.reports.profile.ProfileReportsService;
-import info.yalamanchili.office.reports.recruiting.SkillSetSearchDto;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

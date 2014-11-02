@@ -78,11 +78,7 @@ public class ProfileReportsService {
                 if (ci.getVendorLocation() != null) {
                     dto.setVendorLocation(ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
                 }
-                if (emp.getUser().isEnabled()) {
-                    dto.setVersionStatus(VersionStatus.ACTIVE);
-                } else {
-                    dto.setVersionStatus(VersionStatus.INACTIVE);
-                }
+                dto.setActive(emp.getUser().isEnabled());
                 dto.setBillingRate(ci.getBillingRate());
                 dto.setStartDate(ci.getStartDate());
                 dto.setEndDate(ci.getEndDate());
