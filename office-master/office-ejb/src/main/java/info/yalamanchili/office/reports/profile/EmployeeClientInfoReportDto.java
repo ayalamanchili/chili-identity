@@ -24,15 +24,20 @@ public class EmployeeClientInfoReportDto implements Serializable {
 
     protected boolean active;
     protected String employeeName;
-    protected String clientName;
-    protected String vendorName;
-    protected Date startDate;
-    protected Date endDate;
     protected String phoneNumber;
     protected String email;
+    protected Date startDate;
+    protected String jobTitle;
+    protected String clientName;
+    protected String vendorName;
+    protected Date projectStartDate;
+    protected Date projectEndDate;
     protected String clientLocation;
     protected String vendorLocation;
     protected BigDecimal billingRate;
+
+    public EmployeeClientInfoReportDto() {
+    }
 
     public boolean isActive() {
         return active;
@@ -48,6 +53,38 @@ public class EmployeeClientInfoReportDto implements Serializable {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public String getClientName() {
@@ -66,36 +103,20 @@ public class EmployeeClientInfoReportDto implements Serializable {
         this.vendorName = vendorName;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getProjectStartDate() {
+        return projectStartDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setProjectStartDate(Date projectStartDate) {
+        this.projectStartDate = projectStartDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getProjectEndDate() {
+        return projectEndDate;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setProjectEndDate(Date projectEndDate) {
+        this.projectEndDate = projectEndDate;
     }
 
     public String getClientLocation() {

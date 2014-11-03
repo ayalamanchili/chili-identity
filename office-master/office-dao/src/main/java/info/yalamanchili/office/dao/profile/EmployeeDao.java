@@ -73,6 +73,15 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     @Transactional(readOnly = true)
+    public List<Employee> queryAll(int start, int limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + Employee.class.getCanonicalName() + " emp", entityCls);
+        findAllQuery.setFirstResult(start);
+        findAllQuery.setMaxResults(limit);
+        return findAllQuery.getResultList();
+
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public Long size() {
         Query sizeQuery = getEntityManager().createQuery("select count (*) from " + Employee.class.getCanonicalName() + " emp where emp.user.enabled=true");

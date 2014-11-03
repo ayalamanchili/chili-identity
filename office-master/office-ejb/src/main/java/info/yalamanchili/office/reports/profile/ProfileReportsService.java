@@ -58,10 +58,12 @@ public class ProfileReportsService {
     @Transactional
     public void generateEmployeClientInfoReport(String email) {
         List<EmployeeClientInfoReportDto> res = new ArrayList<EmployeeClientInfoReportDto>();
-        for (Employee emp : EmployeeDao.instance().query(0, 2000)) {
+        for (Employee emp : EmployeeDao.instance().queryAll(0, 2000)) {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+                dto.setStartDate(emp.getStartDate());
+                dto.setJobTitle(emp.getJobTitle());
                 dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
                 if (emp.getPhones().size() > 0) {
                     dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
@@ -80,8 +82,8 @@ public class ProfileReportsService {
                 }
                 dto.setActive(emp.getUser().isEnabled());
                 dto.setBillingRate(ci.getBillingRate());
-                dto.setStartDate(ci.getStartDate());
-                dto.setEndDate(ci.getEndDate());
+                dto.setProjectStartDate(ci.getStartDate());
+                dto.setProjectEndDate(ci.getEndDate());
                 res.add(dto);
             }
         }

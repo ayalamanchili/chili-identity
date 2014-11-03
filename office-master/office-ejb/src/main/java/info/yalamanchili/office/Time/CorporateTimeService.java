@@ -16,7 +16,9 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.time.CorporateTimeSummary;
@@ -24,6 +26,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -37,7 +40,9 @@ import javax.ws.rs.core.Response;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -156,9 +161,11 @@ public class CorporateTimeService {
                 .build();
     }
 
-    public Response getAllEmployeesSummaryReport() {
+    @Async
+    @Transactional(readOnly = true)
+    public void getAllEmployeesSummaryReport(String email) {
         List<CorporateTimeSummary> summary = new ArrayList<CorporateTimeSummary>();
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             summary.add(getYearlySummary(emp));
         }
         Collections.sort(summary, new Comparator<CorporateTimeSummary>() {
@@ -167,8 +174,7 @@ public class CorporateTimeService {
                 return dto1.getEmployee().compareTo(dto2.getEmployee());
             }
         });
-        String report = TemplateService.instance().process("corp-emp-summary.xhtml", summary);
-        return ReportGenerator.generatePDFReportFromHtml(report, "corp-emp-summary");
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "corporate-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     public static CorporateTimeService instance() {

@@ -148,8 +148,8 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @GET
     @Path("/all-emp-summary-report")
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CORPORATE_TIME_REPORTS')")
-    public Response getAllEmployeesSummaryReport() {
-        return CorporateTimeService.instance().getAllEmployeesSummaryReport();
+    public void getAllEmployeesSummaryReport() {
+        CorporateTimeService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     protected CorporateTimeSheetTable getCorporateTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
