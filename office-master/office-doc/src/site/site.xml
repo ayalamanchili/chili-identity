@@ -78,9 +78,11 @@
                 <item name="Submit Status Report" href="/office/statusreport/statusreport.html" />
                 <item name="Status Report Approval Process" href="/office/statusreport/statusreportprocess.html"/>
             </item>
-            <item name="Performance Evaluations" href="/office/perf-eval/associate-process-overview.html"  collapse="true">
-                <item name="Overview" href="/office/perf-eval/associate-process-overview.html" />
-                <item name="How to Create Performance Self Evaluation" href="/office/perf-eval/create-review.html"/>
+            <item name="Performance Evaluations" href="/office/perf-eval/assoc-submit-review.html"  collapse="true">
+                <item name="Submit Associate Review" href="/office/perf-eval/assoc-submit-review.html" />
+                <item name="Associate Review Process" href="/office/perf-eval/assoc-approval-process.html"/>
+                <item name="Submit Self Review" href="/office/perf-eval/corp-submit-review.html"/>
+                <item name="Corporate Review Process" href="/office/perf-eval/corp-approval-process.html"/>
             </item>
             <item name="Expense" href="/office/expense/advance.html" collapse="true">
                 <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
