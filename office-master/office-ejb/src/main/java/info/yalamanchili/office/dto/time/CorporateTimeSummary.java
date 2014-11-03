@@ -21,9 +21,28 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class CorporateTimeSummary implements Serializable {
-    
+
+    /**
+     * PTO
+     */
+    protected BigDecimal totalPTOHours;
+    protected BigDecimal usedPTOHours;
     protected BigDecimal availablePTOHours;
+    /**
+     * Vacation
+     */
+    protected BigDecimal totalVacationHours;
+    protected BigDecimal usedVacationHours;
     protected BigDecimal availableVacationHours;
+    /**
+     * total hours
+     */
+    protected BigDecimal totalAccumulatedHours;
+    protected BigDecimal totalUsedHours;
+    protected BigDecimal totalAvailableHours;
+    /**
+     *
+     */
     protected BigDecimal usedUnpaidHours;
     protected String employee;
     protected Date startDate;
@@ -31,7 +50,7 @@ public class CorporateTimeSummary implements Serializable {
     public CorporateTimeSummary() {
     }
 
-    public CorporateTimeSummary( BigDecimal availablePTOHours, BigDecimal availableVacationHours) {
+    public CorporateTimeSummary(BigDecimal availablePTOHours, BigDecimal availableVacationHours) {
         this.availablePTOHours = availablePTOHours;
         this.availableVacationHours = availableVacationHours;
     }
@@ -76,4 +95,101 @@ public class CorporateTimeSummary implements Serializable {
         this.startDate = startDate;
     }
 
+    /**
+     * @return the totalPTOHours
+     */
+    public BigDecimal getTotalPTOHours() {
+        return totalPTOHours;
+    }
+
+    /**
+     * @param totalPTOHours the totalPTOHours to set
+     */
+    public void setTotalPTOHours(BigDecimal totalPTOHours) {
+        this.totalPTOHours = totalPTOHours;
+    }
+
+    /**
+     * @return the usedPTOHours
+     */
+    public BigDecimal getUsedPTOHours() {
+        return usedPTOHours;
+    }
+
+    /**
+     * @param usedPTOHours the usedPTOHours to set
+     */
+    public void setUsedPTOHours(BigDecimal usedPTOHours) {
+        this.usedPTOHours = usedPTOHours;
+    }
+
+    /**
+     * @return the totalVacationHours
+     */
+    public BigDecimal getTotalVacationHours() {
+        return totalVacationHours;
+    }
+
+    /**
+     * @param totalVacationHours the totalVacationHours to set
+     */
+    public void setTotalVacationHours(BigDecimal totalVacationHours) {
+        this.totalVacationHours = totalVacationHours;
+    }
+
+    /**
+     * @return the usedVacationHours
+     */
+    public BigDecimal getUsedVacationHours() {
+        return usedVacationHours;
+    }
+
+    /**
+     * @param usedVacationHours the usedVacationHours to set
+     */
+    public void setUsedVacationHours(BigDecimal usedVacationHours) {
+        this.usedVacationHours = usedVacationHours;
+    }
+
+    /**
+     * @return the totalAccumulatedHours
+     */
+    public BigDecimal getTotalAccumulatedHours() {
+        return totalAccumulatedHours;
+    }
+
+    /**
+     * @param totalAccumulatedHours the totalAccumulatedHours to set
+     */
+    public void setTotalAccumulatedHours(BigDecimal totalAccumulatedHours) {
+        this.totalAccumulatedHours = totalAccumulatedHours;
+    }
+
+    /**
+     * @return the totalUsedHours
+     */
+    public BigDecimal getTotalUsedHours() {
+        return totalUsedHours;
+    }
+
+    /**
+     * @param totalUsedHours the totalUsedHours to set
+     */
+    public void setTotalUsedHours(BigDecimal totalUsedHours) {
+        this.totalUsedHours = totalUsedHours;
+    }
+
+    /**
+     * @return the totalAvailableHours
+     */
+    public BigDecimal getTotalAvailableHours() {
+        return totalAvailableHours;
+    }
+
+    /**
+     * @param totalAvailableHours the totalAvailableHours to set
+     */
+    public void setTotalAvailableHours(BigDecimal totalAvailableHours) {
+        this.totalAvailableHours = totalAvailableHours;
+    }
 }

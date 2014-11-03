@@ -111,6 +111,18 @@ public class CorporateTimeService {
 
     public CorporateTimeSummary getYearlySummary(Employee employee) {
         CorporateTimeSummary summary = new CorporateTimeSummary();
+        //vacation
+        summary.setTotalVacationHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedVacationHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date()));
+        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
+        //PTO
+        summary.setTotalPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date()));
+        summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date()));
+        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
+        //Total
+//         summary.setTotalAccumulatedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
+//        summary.setTotalUsedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
+//        summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
         summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
         summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
         summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
