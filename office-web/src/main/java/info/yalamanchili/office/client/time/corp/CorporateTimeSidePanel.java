@@ -98,6 +98,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         viewReportsB.addClickHandler(this);
         clearReportsL.addClickHandler(this);
         reportsB.addClickHandler(this);
+        summaryReportL.addClickHandler(this);
     }
 
     @Override
@@ -105,7 +106,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         timesheetsForEmpCaptionPanel.setCaptionHTML("Time Summary");
         reportsCaptionPanel.setCaptionHTML("Reports");
         TabPanel.instance().timePanel.sidePanelTop.setHeight("100%");
-         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 logger.info(entityString);
@@ -168,6 +169,9 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
         if (event.getSource().equals(reportsB)) {
             pdfReport();
         }
+        if (event.getSource().equals(summaryReportL)) {
+            processSummaryReports();
+        }
 
     }
 
@@ -192,21 +196,21 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             TabPanel.instance().getTimePanel().entityPanel.clear();
             HttpService.HttpServiceAsync.instance().doPut(getReportUrl(), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    TabPanel.instance().getTimePanel().entityPanel.clear();
-                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                        new ResponseStatusWidget().show("no results");
-                    } else {
-                        //TODO use size and entities attributes
-                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                        String key = (String) resObj.keySet().toArray()[0];
-                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                        @Override
+                        public void onResponse(String result) {
+                            TabPanel.instance().getTimePanel().entityPanel.clear();
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("no results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
 
-                        TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel("Time Sheet Report Results", results));
-                    }
-                }
-            });
+                                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllCorporateTimeSheetPanel("Time Sheet Report Results", results));
+                            }
+                        }
+                    });
         }
     }
 
@@ -239,6 +243,20 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             search.put("role", new JSONString(roleF.getValue()));
         }
         return search;
+    }
+
+    protected void processSummaryReports() {
+        HttpService.HttpServiceAsync.instance().doGet(getSummaryReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+
+    protected String getSummaryReportUrl() {
+        return OfficeWelcome.constants.root_url() + "corporate-timesheet/all-emp-summary-report";
     }
 
     protected String getReportUrl() {
