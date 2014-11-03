@@ -23,6 +23,9 @@ import info.yalamanchili.office.template.TemplateService;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -147,6 +150,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, int start, int limit) {
+        List<SearchCorporateTimeSheetDto> summary = new ArrayList<SearchCorporateTimeSheetDto>();
         List<Employee> emps = null;
         if (dto.getRole() != null) {
             emps = OfficeSecurityService.instance().getUsersWithRoles(0, 2000, dto.getRole().name());
@@ -156,6 +160,12 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         query = (TypedQuery<CorporateTimeSheet>) getReportQueryWithParams(queryStr, query, dto, emps);
         query.setFirstResult(start);
         query.setMaxResults(limit);
+        Collections.sort(summary, new Comparator<SearchCorporateTimeSheetDto>() {
+            @Override
+            public int compare(SearchCorporateTimeSheetDto dto1, SearchCorporateTimeSheetDto dto2) {
+                return dto1.getEmployee().compareTo(dto2.getEmployee());
+            }
+        });
         return query.getResultList();
     }
 

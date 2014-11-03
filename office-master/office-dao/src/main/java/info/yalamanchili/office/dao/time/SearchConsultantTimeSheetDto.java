@@ -28,6 +28,15 @@ public class SearchConsultantTimeSheetDto implements Serializable {
     protected Date endDate;
     protected List<TimeSheetStatus> status;
     protected List<TimeSheetCategory> category;
+    protected String employee;
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -60,5 +69,4 @@ public class SearchConsultantTimeSheetDto implements Serializable {
     public void setCategory(List<TimeSheetCategory> category) {
         this.category = category;
     }
-
 }

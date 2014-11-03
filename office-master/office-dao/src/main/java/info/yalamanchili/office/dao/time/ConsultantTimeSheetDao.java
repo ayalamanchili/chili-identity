@@ -20,6 +20,9 @@ import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -125,11 +128,18 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
     }
 
     public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, int start, int limit) {
+        List<SearchConsultantTimeSheetDto> summary = new ArrayList<SearchConsultantTimeSheetDto>();
         String queryStr = getReportQueryString(dto);
         TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery(queryStr, ConsultantTimeSheet.class);
         query = (TypedQuery<ConsultantTimeSheet>) getReportQueryWithParams(queryStr, query, dto);
         query.setFirstResult(start);
         query.setMaxResults(limit);
+        Collections.sort(summary, new Comparator<SearchConsultantTimeSheetDto>() {
+            @Override
+            public int compare(SearchConsultantTimeSheetDto dto1, SearchConsultantTimeSheetDto dto2) {
+                return dto1.getEmployee().compareTo(dto2.getEmployee());
+            }
+        });
         return query.getResultList();
     }
 

@@ -32,6 +32,15 @@ public class SearchCorporateTimeSheetDto implements Serializable {
     protected List<TimeSheetStatus> status;
     protected Branch branch;
     protected OfficeRole role;
+    protected String employee;
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -80,5 +89,4 @@ public class SearchCorporateTimeSheetDto implements Serializable {
     public void setRole(OfficeRole role) {
         this.role = role;
     }
-
 }
