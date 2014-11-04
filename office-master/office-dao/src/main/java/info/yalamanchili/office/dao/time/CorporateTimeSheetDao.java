@@ -248,6 +248,10 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return SpringContext.getBean(CorporateTimeSheetDao.class);
     }
 
+    public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> leaveSpentCheckedCategories, TimeSheetStatus timeSheetStatus, Date date) {
+        return getHoursInYear(employee, leaveSpentCheckedCategories, timeSheetStatus, date);
+    }
+
     @XmlRootElement
     @XmlType
     public static class CorporateTimeSheetTable implements java.io.Serializable {

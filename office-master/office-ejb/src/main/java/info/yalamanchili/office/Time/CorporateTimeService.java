@@ -120,11 +120,11 @@ public class CorporateTimeService {
         summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date()));
         summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
         //Total
-//         summary.setTotalAccumulatedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
-//        summary.setTotalUsedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setTotalAccumulatedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()));
+        summary.setTotalUsedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()));
 //        summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
-        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
-        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
+//        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
+//        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
         summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
