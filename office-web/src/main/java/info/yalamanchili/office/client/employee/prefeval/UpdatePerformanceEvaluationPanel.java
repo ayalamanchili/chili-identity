@@ -56,6 +56,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("type", entity);
         assignEntityValueFromField("keyAccomplishments", entity);
         assignEntityValueFromField("areasNeedImprovement", entity);
+        assignEntityValueFromField("nextYearObjectives", entity);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
             assignEntityValueFromField("managerComments", entity);
             assignEntityValueFromField("employeeComments", entity);
@@ -127,6 +128,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
             assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
             assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
@@ -176,6 +178,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addEnumField("type", true, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
         addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD);
         addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD);
+        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
             addField("managerComments", false, false, DataType.TEXT_AREA_FIELD);
             addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD);

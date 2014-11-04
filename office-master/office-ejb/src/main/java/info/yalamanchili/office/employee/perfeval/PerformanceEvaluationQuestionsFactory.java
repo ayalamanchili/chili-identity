@@ -40,6 +40,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q1.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q1.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q1.setSortOrder(1);
+        q1.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q1);
 
         Question q2 = new Question();
@@ -47,6 +48,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q2.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q2.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q2.setSortOrder(2);
+        q2.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q2);
 
         Question q3 = new Question();
@@ -54,12 +56,14 @@ public class PerformanceEvaluationQuestionsFactory {
         q3.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q3.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q3.setSortOrder(3);
+        q3.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q3);
 
         Question q4 = new Question();
         q4.setQuestionKey("performance.review.skill.aptitude.question4");
         q4.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q4.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
+        q4.setQuestionRatingRequired(Boolean.TRUE);
         q4.setSortOrder(4);
         questionDao.create(q4);
 
@@ -68,6 +72,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q5.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q5.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q5.setSortOrder(5);
+        q5.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q5);
 
         Question q6 = new Question();
@@ -75,6 +80,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q6.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q6.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q6.setSortOrder(6);
+        q6.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q6);
 
         Question q7 = new Question();
@@ -82,6 +88,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q7.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q7.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q7.setSortOrder(7);
+        q7.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q7);
 
         Question q8 = new Question();
@@ -89,6 +96,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q8.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q8.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q8.setSortOrder(8);
+        q8.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q8);
 
         Question q9 = new Question();
@@ -96,6 +104,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q9.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q9.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q9.setSortOrder(9);
+        q9.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q9);
 
         Question q10 = new Question();
@@ -103,6 +112,7 @@ public class PerformanceEvaluationQuestionsFactory {
         q10.setCategory(QuestionCategory.SKILL_AND_APTITUDE);
         q10.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q10.setSortOrder(10);
+        q10.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q10);
         /*
          ATTITUDE
@@ -112,30 +122,39 @@ public class PerformanceEvaluationQuestionsFactory {
         q11.setCategory(QuestionCategory.ATTITUDE);
         q11.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q11.setSortOrder(11);
+        q11.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q11);
+
         Question q12 = new Question();
         q12.setQuestionKey("performance.review.attitude.question12");
         q12.setCategory(QuestionCategory.ATTITUDE);
         q12.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q12.setSortOrder(12);
+        q12.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q12);
+
         Question q13 = new Question();
         q13.setQuestionKey("performance.review.attitude.question13");
         q13.setCategory(QuestionCategory.ATTITUDE);
         q13.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q13.setSortOrder(13);
+        q13.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q13);
+
         Question q14 = new Question();
         q14.setQuestionKey("performance.review.attitude.question14");
         q14.setCategory(QuestionCategory.ATTITUDE);
         q14.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q14.setSortOrder(14);
+        q14.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q14);
+
         Question q15 = new Question();
         q15.setQuestionKey("performance.review.attitude.question15");
         q15.setCategory(QuestionCategory.ATTITUDE);
         q15.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q15.setSortOrder(15);
+        q15.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q15);
 
         /*
@@ -146,36 +165,42 @@ public class PerformanceEvaluationQuestionsFactory {
         q16.setCategory(QuestionCategory.MANAGEMENT);
         q16.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q16.setSortOrder(16);
+        q16.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q16);
         Question q17 = new Question();
         q17.setQuestionKey("performance.review.managenet.question17");
         q17.setCategory(QuestionCategory.MANAGEMENT);
         q17.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q17.setSortOrder(17);
+        q17.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q17);
         Question q18 = new Question();
         q18.setQuestionKey("performance.review.managenet.question18");
         q18.setCategory(QuestionCategory.MANAGEMENT);
         q18.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q18.setSortOrder(18);
+        q18.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q18);
         Question q19 = new Question();
         q19.setQuestionKey("performance.review.managenet.question19");
         q19.setCategory(QuestionCategory.MANAGEMENT);
         q19.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q19.setSortOrder(19);
+        q19.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q19);
         Question q20 = new Question();
         q20.setQuestionKey("performance.review.managenet.question20");
         q20.setCategory(QuestionCategory.MANAGEMENT);
         q20.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q20.setSortOrder(20);
+        q20.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q20);
         Question q21 = new Question();
         q21.setQuestionKey("performance.review.managenet.question21");
         q21.setCategory(QuestionCategory.MANAGEMENT);
         q21.setContext(QuestionContext.PERFORMANCE_EVALUATION_MANGER);
         q21.setSortOrder(21);
+        q21.setQuestionRatingRequired(Boolean.TRUE);
         questionDao.create(q21);
         /*
          Self Review Questions

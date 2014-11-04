@@ -78,6 +78,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             assignEntityValueFromField("keyAccomplishments", entity);
             assignEntityValueFromField("areasNeedImprovement", entity);
+            assignEntityValueFromField("nextYearObjectives", entity);
             assignEntityValueFromField("managerComments", entity);
             assignEntityValueFromField("employeeComments", entity);
             assignEntityValueFromField("ceoComments", entity);
@@ -145,6 +146,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD);
             addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD);
+            addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD);
             if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.SELF_MANAGER)) {
                 addField("managerComments", false, false, DataType.TEXT_AREA_FIELD);
                 addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD);

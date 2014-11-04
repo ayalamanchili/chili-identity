@@ -140,7 +140,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     }
 
     protected boolean enableCreateManagerReview(JSONObject entity) {
-        if (TabPanel.instance().myOfficePanel.isVisible() && JSONUtils.toString(entity, "stage").equals(PerformanceEvaluationStage.Manager_Review.name())) {
+        if (JSONUtils.toString(entity, "enableManagerReview").equals("true") && TabPanel.instance().myOfficePanel.isVisible()) {
             return true;
         } else {
             return false;
@@ -162,7 +162,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     protected void createManagerReview(String year) {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         logger.info("year" + year);
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(PerformanceEvaluationWizardType.MANAGER,TreeEmployeePanel.instance().getEntityId(), year));
+        TabPanel.instance().getMyOfficePanel().entityPanel.add(new PerformanceEvaluationWizard(PerformanceEvaluationWizardType.MANAGER, TreeEmployeePanel.instance().getEntityId(), year));
     }
 
     @Override

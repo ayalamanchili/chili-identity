@@ -101,6 +101,11 @@ public class PerformanceEvaluation extends AbstractEntity {
     @Lob
     protected String ceoComments;
     /**
+     *
+     */
+    @Lob
+    protected String nextYearObjectives;
+    /**
      * Employee
      */
     @ManyToOne
@@ -220,6 +225,14 @@ public class PerformanceEvaluation extends AbstractEntity {
         this.ceoComments = ceoComments;
     }
 
+    public String getNextYearObjectives() {
+        return nextYearObjectives;
+    }
+
+    public void setNextYearObjectives(String nextYearObjectives) {
+        this.nextYearObjectives = nextYearObjectives;
+    }
+
     @XmlTransient
     public Employee getEmployee() {
         return employee;
@@ -281,6 +294,17 @@ public class PerformanceEvaluation extends AbstractEntity {
 
     public String getEvaluationFYYearString() {
         return evaluationFYYear;
+    }
+
+    protected boolean enableManagerReview;
+
+    @Transient
+    public boolean isEnableManagerReview() {
+        return enableManagerReview;
+    }
+
+    public void setEnableManagerReview(boolean enableManagerReview) {
+        this.enableManagerReview = enableManagerReview;
     }
 
     public String getEvaluationFYYear() {
