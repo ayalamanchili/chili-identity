@@ -25,17 +25,17 @@ public class OfficeClientConfigTest implements OfficeClientConfig {
 
     @Override
     public String getFileUploadUrl() {
-        return "http://202.153.35.254:9090/office-web/office/rpc/fileService";
+        return "http://70.169.165.199:9090/office-web/office/rpc/fileService";
     }
 
     @Override
     public String getFileDownloadUrl() {
-        return "http://202.153.35.254:9090/office-web/office/rpc/fileService?path=";
+        return "http://70.169.165.199:9090/office-web/office/rpc/fileService?path=";
     }
 
     @Override
     public String getPortalDocumentationSiteUrl() {
-        return "http://202.153.35.254:9090/site/office/";
+        return "http://70.169.165.199:9090/site/office/";
     }
 
     @Override
