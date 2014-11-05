@@ -131,11 +131,13 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         @Override
         protected void complete() {
+            nextB.setEnabled(false);
             HttpService.HttpServiceAsync.instance().doPut(getCompleteUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new AsyncCallback<String>() {
                         @Override
                         public void onFailure(Throwable res) {
                             getWidget().handleErrorResponse(res);
+                            nextB.setEnabled(true);
                         }
 
                         @Override
