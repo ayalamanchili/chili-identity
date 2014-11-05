@@ -23,6 +23,8 @@
                 Report Start Date   : #{entity.reportStartDate}
                 Report End Date     : #{entity.reportEndDate} 
                 Status              : #{entity.status} 
+                Please follow the instructions below to review and complete the approval.
+                https://apps.sstech.us/site/office/statusreport/statusreportprocess.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -80,6 +82,8 @@
                 Report Start Date   : #{entity.reportStartDate}
                 Report End Date     : #{entity.reportEndDate} 
                 Status              : #{entity.status} 
+                Please follow the instructions below to review and complete the approval.
+                https://apps.sstech.us/site/office/statusreport/statusreportprocess.html                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
