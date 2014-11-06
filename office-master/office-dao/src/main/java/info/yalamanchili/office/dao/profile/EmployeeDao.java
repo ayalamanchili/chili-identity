@@ -193,6 +193,12 @@ public class EmployeeDao extends CRUDDao<Employee> {
         return query.getResultList();
     }
 
+    public List<Employee> getAllEmployeesByType(String type) {
+        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:employeeTypeParam", Employee.class);
+        query.setParameter("employeeTypeParam", type);
+        return query.getResultList();
+    }
+
     public Map<String, String> getEmpByRoleEntityMap(int start, int limit, String role) {
         Map<String, String> res = new HashMap<String, String>();
         CRole crole = QueryUtils.findEntity(getEntityManager(), CRole.class, "rolename", role);

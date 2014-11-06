@@ -58,7 +58,8 @@ public class ProfileReportsService {
     @Transactional
     public void generateEmployeClientInfoReport(String email) {
         List<EmployeeClientInfoReportDto> res = new ArrayList<EmployeeClientInfoReportDto>();
-        for (Employee emp : EmployeeDao.instance().queryAll(0, 2000)) {
+        //TODO using paging
+        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType("Employee")) {
             for (ClientInformation ci : emp.getClientInformations()) {
                 EmployeeClientInfoReportDto dto = new EmployeeClientInfoReportDto();
                 dto.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
