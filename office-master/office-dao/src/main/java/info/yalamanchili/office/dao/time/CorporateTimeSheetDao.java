@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.dao.time;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
@@ -126,8 +127,16 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return queryStr.toString();
     }
 
-    public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory category, TimeSheetStatus status, Date yearDate) {
-        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam and status=:statusParam and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
+    public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
+        return getHoursInYear(employee, Lists.newArrayList(timeSheetCategory), Lists.newArrayList(timeSheetStatus), yearDate);
+    }
+
+    public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
+        return getHoursInYear(employee, timeSheetCategory, Lists.newArrayList(timeSheetStatus), yearDate);
+    }
+
+    public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> category, List<TimeSheetStatus> status, Date yearDate) {
+        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category in (:categoryParam) and status in (:statusParam) and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
         query.setParameter("employeeParam", employee);
         query.setParameter("categoryParam", category);
         query.setParameter("statusParam", status);
@@ -246,10 +255,6 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
 
     public static CorporateTimeSheetDao instance() {
         return SpringContext.getBean(CorporateTimeSheetDao.class);
-    }
-
-    public BigDecimal getHoursInYear(Employee employee, List<TimeSheetCategory> leaveSpentCheckedCategories, TimeSheetStatus timeSheetStatus, Date date) {
-        return getHoursInYear(employee, leaveSpentCheckedCategories, timeSheetStatus, date);
     }
 
     @XmlRootElement
