@@ -79,39 +79,41 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("projectDescription", entity);
+        JSONObject report = new JSONObject();
+        assignEntityValueFromField("projectDescription", report);
         assignEntityValueFromField("reportStartDate", entity);
         assignEntityValueFromField("reportEndDate", entity);
         assignEntityValueFromField("status", entity);
 
-        assignEntityValueFromField("projectPhase1Name", entity);
-        assignEntityValueFromField("projectPhase1Deliverable", entity);
-        assignEntityValueFromField("projectPhase1EndDate", entity);
-        assignEntityValueFromField("projectPhase1Status", entity);
+        assignEntityValueFromField("projectPhase1Name", report);
+        assignEntityValueFromField("projectPhase1Deliverable", report);
+        assignEntityValueFromField("projectPhase1EndDate", report);
+        assignEntityValueFromField("projectPhase1Status", report);
 
-        assignEntityValueFromField("projectPhase2Name", entity);
-        assignEntityValueFromField("projectPhase2Deliverable", entity);
-        assignEntityValueFromField("projectPhase2EndDate", entity);
-        assignEntityValueFromField("projectPhase2Status", entity);
+        assignEntityValueFromField("projectPhase2Name", report);
+        assignEntityValueFromField("projectPhase2Deliverable", report);
+        assignEntityValueFromField("projectPhase2EndDate", report);
+        assignEntityValueFromField("projectPhase2Status", report);
 
-        assignEntityValueFromField("projectPhase3Name", entity);
-        assignEntityValueFromField("projectPhase3Deliverable", entity);
-        assignEntityValueFromField("projectPhase3EndDate", entity);
-        assignEntityValueFromField("projectPhase3Status", entity);
+        assignEntityValueFromField("projectPhase3Name", report);
+        assignEntityValueFromField("projectPhase3Deliverable", report);
+        assignEntityValueFromField("projectPhase3EndDate", report);
+        assignEntityValueFromField("projectPhase3Status", report);
 
-        assignEntityValueFromField("projectPhase4Name", entity);
-        assignEntityValueFromField("projectPhase4Deliverable", entity);
-        assignEntityValueFromField("projectPhase4EndDate", entity);
-        assignEntityValueFromField("projectPhase4Status", entity);
+        assignEntityValueFromField("projectPhase4Name", report);
+        assignEntityValueFromField("projectPhase4Deliverable", report);
+        assignEntityValueFromField("projectPhase4EndDate", report);
+        assignEntityValueFromField("projectPhase4Status", report);
 
-        assignEntityValueFromField("statusDescription", entity);
-        assignEntityValueFromField("accomplishments", entity);
-        assignEntityValueFromField("scheduledActivities", entity);
+        assignEntityValueFromField("statusDescription", report);
+        assignEntityValueFromField("accomplishments", report);
+        assignEntityValueFromField("scheduledActivities", report);
 
         assignEntityValueFromField("preparedBy", entity);
         assignEntityValueFromField("approvedBy", entity);
         assignEntityValueFromField("submittedDate", entity);
         assignEntityValueFromField("approvedDate", entity);
+        entity.put("reportDocument", report);
         logger.info("Dddddd" + entity);
         return entity;
     }
@@ -138,35 +140,35 @@ public class UpdateStatusReportPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-
-        assignFieldValueFromEntity("projectDescription", entity, DataType.TEXT_AREA_FIELD);
+        JSONObject reportDocument = entity.get("reportDocument").isObject();
+        assignFieldValueFromEntity("projectDescription", reportDocument, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
 
-        assignFieldValueFromEntity("projectPhase1Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase1Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase1EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase1Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase1EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase2Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase2Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase2EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase2Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase2EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase3Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase3Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase3EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase3Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase3EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase4Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase4Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase4EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase4Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase4EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("statusDescription", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("accomplishments", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("scheduledActivities", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("statusDescription", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("accomplishments", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("scheduledActivities", reportDocument, DataType.TEXT_AREA_FIELD);
 
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);

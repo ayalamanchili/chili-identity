@@ -47,40 +47,42 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject status = new JSONObject();
-        assignEntityValueFromField("projectDescription", status);
-        assignEntityValueFromField("reportStartDate", status);
-        assignEntityValueFromField("reportEndDate", status);
-        assignEntityValueFromField("status", status);
+        JSONObject entity = new JSONObject();
+        JSONObject report = new JSONObject();
+        assignEntityValueFromField("projectDescription", report);
+        assignEntityValueFromField("reportStartDate", entity);
+        assignEntityValueFromField("reportEndDate", entity);
+        assignEntityValueFromField("status", entity);
 
-        assignEntityValueFromField("projectPhase1Name", status);
-        assignEntityValueFromField("projectPhase1Deliverable", status);
-        assignEntityValueFromField("projectPhase1EndDate", status);
-        assignEntityValueFromField("projectPhase1Status", status);
+        assignEntityValueFromField("projectPhase1Name", report);
+        assignEntityValueFromField("projectPhase1Deliverable", report);
+        assignEntityValueFromField("projectPhase1EndDate", report);
+        assignEntityValueFromField("projectPhase1Status", report);
 
-        assignEntityValueFromField("projectPhase2Name", status);
-        assignEntityValueFromField("projectPhase2Deliverable", status);
-        assignEntityValueFromField("projectPhase2EndDate", status);
-        assignEntityValueFromField("projectPhase2Status", status);
+        assignEntityValueFromField("projectPhase2Name", report);
+        assignEntityValueFromField("projectPhase2Deliverable", report);
+        assignEntityValueFromField("projectPhase2EndDate", report);
+        assignEntityValueFromField("projectPhase2Status", report);
 
-        assignEntityValueFromField("projectPhase3Name", status);
-        assignEntityValueFromField("projectPhase3Deliverable", status);
-        assignEntityValueFromField("projectPhase3EndDate", status);
-        assignEntityValueFromField("projectPhase3Status", status);
+        assignEntityValueFromField("projectPhase3Name", report);
+        assignEntityValueFromField("projectPhase3Deliverable", report);
+        assignEntityValueFromField("projectPhase3EndDate", report);
+        assignEntityValueFromField("projectPhase3Status", report);
 
-        assignEntityValueFromField("projectPhase4Name", status);
-        assignEntityValueFromField("projectPhase4Deliverable", status);
-        assignEntityValueFromField("projectPhase4EndDate", status);
-        assignEntityValueFromField("projectPhase4Status", status);
+        assignEntityValueFromField("projectPhase4Name", report);
+        assignEntityValueFromField("projectPhase4Deliverable", report);
+        assignEntityValueFromField("projectPhase4EndDate", report);
+        assignEntityValueFromField("projectPhase4Status", report);
 
-        assignEntityValueFromField("statusDescription", status);
-        assignEntityValueFromField("accomplishments", status);
-        assignEntityValueFromField("scheduledActivities", status);
+        assignEntityValueFromField("statusDescription", report);
+        assignEntityValueFromField("accomplishments", report);
+        assignEntityValueFromField("scheduledActivities", report);
 
-        assignEntityValueFromField("preparedBy", status);
-        assignEntityValueFromField("approvedBy", status);
-        assignEntityValueFromField("submittedDate", status);
-        return status;
+        assignEntityValueFromField("preparedBy", entity);
+        assignEntityValueFromField("approvedBy", entity);
+        assignEntityValueFromField("submittedDate", entity);
+        entity.put("reportDocument", report);
+        return entity;
     }
 
     @Override

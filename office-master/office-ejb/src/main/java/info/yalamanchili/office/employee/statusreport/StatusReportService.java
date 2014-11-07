@@ -8,7 +8,6 @@
 package info.yalamanchili.office.employee.statusreport;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -24,6 +23,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.entity.employee.statusreport.ReportDocument;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -46,19 +46,15 @@ public class StatusReportService {
     @Autowired
     protected StatusReportDao statusReportDao;
 
-    public StatusReportDto read(Long id) {
+    public StatusReport read(Long id) {
         StatusReport entity = statusReportDao.findById(id);
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        StatusReportDto dto = mapper.map(new Gson().fromJson(entity.getReport(), StatusReportDto.class), StatusReportDto.class);
-        mapper.map(entity, dto);
-        return dto;
+        entity.setReportDocument(new Gson().fromJson(entity.getReport(), ReportDocument.class));
+        return entity;
     }
 
-    public String save(StatusReportDto dto, Boolean submitForApproval) {
-        Mapper mapper = (Mapper) SpringContext.getBean("mapper");
-        StatusReport entity = mapper.map(dto, StatusReport.class);
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        entity.setReport(gson.toJson(dto));
+    public String save(StatusReport entity, Boolean submitForApproval) {
+        Gson gson = new Gson();
+        entity.setReport(gson.toJson(entity.getReportDocument()));
         entity = statusReportDao.save(entity);
         if (submitForApproval && (StatusReportStage.Pending_Employee_Correction.equals(entity.getStage()) || StatusReportStage.Saved.equals(entity.getStage()))) {
             entity.setStage(StatusReportStage.Pending_HR_Approval);
@@ -100,7 +96,7 @@ public class StatusReportService {
 
     public Response getReport(Long id) {
         StatusReport entity = statusReportDao.findById(id);
-        StatusReportDto reportDto = new Gson().fromJson(entity.getReport(), StatusReportDto.class);
+        ReportDocument reportDocument = new Gson().fromJson(entity.getReport(), ReportDocument.class);
         PdfDocumentData data = new PdfDocumentData();
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
@@ -116,34 +112,34 @@ public class StatusReportService {
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/status-report-template.pdf");
         data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC");
-        data.getData().put("projectDescription", reportDto.getProjectDescription());
+        data.getData().put("projectDescription", reportDocument.getProjectDescription());
         data.getData().put("projectStatus", entity.getStatus().name());
         data.getData().put("projectDuration", new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportStartDate()) + " - " + new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportEndDate()));
         data.getData().put("distribution", "System Soft Technologies LLC");
         //Phase 1
-        data.getData().put("projectPhase1Name", reportDto.getProjectPhase1Name());
-        data.getData().put("projectPhase1Deliverrable", reportDto.getProjectPhase1Deliverable());
-        data.getData().put("projectPhase1ComplationDate", reportDto.getProjectPhase1EndDate());
-        data.getData().put("projectPhase1Status", reportDto.getProjectPhase1Status());
+        data.getData().put("projectPhase1Name", reportDocument.getProjectPhase1Name());
+        data.getData().put("projectPhase1Deliverrable", reportDocument.getProjectPhase1Deliverable());
+        data.getData().put("projectPhase1ComplationDate", reportDocument.getProjectPhase1EndDate());
+        data.getData().put("projectPhase1Status", reportDocument.getProjectPhase1Status());
         //Phase 2
-        data.getData().put("projectPhase2Name", reportDto.getProjectPhase2Name());
-        data.getData().put("projectPhase2Deliverrable", reportDto.getProjectPhase2Deliverable());
-        data.getData().put("projectPhase2ComplationDate", reportDto.getProjectPhase2EndDate());
-        data.getData().put("projectPhase2Status", reportDto.getProjectPhase2Status());
+        data.getData().put("projectPhase2Name", reportDocument.getProjectPhase2Name());
+        data.getData().put("projectPhase2Deliverrable", reportDocument.getProjectPhase2Deliverable());
+        data.getData().put("projectPhase2ComplationDate", reportDocument.getProjectPhase2EndDate());
+        data.getData().put("projectPhase2Status", reportDocument.getProjectPhase2Status());
         //Phase 3
-        data.getData().put("projectPhase3Name", reportDto.getProjectPhase3Name());
-        data.getData().put("projectPhase3Deliverrable", reportDto.getProjectPhase3Deliverable());
-        data.getData().put("projectPhase3ComplationDate", reportDto.getProjectPhase3EndDate());
-        data.getData().put("projectPhase3Status", reportDto.getProjectPhase3Status());
+        data.getData().put("projectPhase3Name", reportDocument.getProjectPhase3Name());
+        data.getData().put("projectPhase3Deliverrable", reportDocument.getProjectPhase3Deliverable());
+        data.getData().put("projectPhase3ComplationDate", reportDocument.getProjectPhase3EndDate());
+        data.getData().put("projectPhase3Status", reportDocument.getProjectPhase3Status());
         //Phase 4
-        data.getData().put("projectPhase4Name", reportDto.getProjectPhase4Name());
-        data.getData().put("projectPhase4Deliverrable", reportDto.getProjectPhase4Deliverable());
-        data.getData().put("projectPhase4ComplationDate", reportDto.getProjectPhase4EndDate());
-        data.getData().put("projectPhase4Status", reportDto.getProjectPhase4Status());
+        data.getData().put("projectPhase4Name", reportDocument.getProjectPhase4Name());
+        data.getData().put("projectPhase4Deliverrable", reportDocument.getProjectPhase4Deliverable());
+        data.getData().put("projectPhase4ComplationDate", reportDocument.getProjectPhase4EndDate());
+        data.getData().put("projectPhase4Status", reportDocument.getProjectPhase4Status());
 
-        data.getData().put("status", reportDto.getStatusDescription());
-        data.getData().put("accomplishments", reportDto.getAccomplishments());
-        data.getData().put("scheduledActivities", reportDto.getScheduledActivities());
+        data.getData().put("status", reportDocument.getStatusDescription());
+        data.getData().put("accomplishments", reportDocument.getAccomplishments());
+        data.getData().put("scheduledActivities", reportDocument.getScheduledActivities());
         data.getData().put("preparedBy", prepareByStr);
 
         byte[] pdf = PDFUtils.generatePdf(data);

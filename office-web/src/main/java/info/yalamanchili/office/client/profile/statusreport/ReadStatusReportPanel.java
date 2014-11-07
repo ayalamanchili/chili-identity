@@ -57,34 +57,35 @@ public class ReadStatusReportPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("projectDescription", entity, DataType.TEXT_AREA_FIELD);
+        JSONObject reportDocument = entity.get("reportDocument").isObject();
+        assignFieldValueFromEntity("projectDescription", reportDocument, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("reportStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("reportEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
 
-        assignFieldValueFromEntity("projectPhase1Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase1Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase1EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase1Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase1EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase1Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase2Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase2Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase2EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase2Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase2EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase2Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase3Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase3Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase3EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase3Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase3EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase3Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("projectPhase4Name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase4Deliverable", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("projectPhase4EndDate", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("projectPhase4Status", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Name", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Deliverable", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("projectPhase4EndDate", reportDocument, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("projectPhase4Status", reportDocument, DataType.STRING_FIELD);
 
-        assignFieldValueFromEntity("statusDescription", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("accomplishments", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("scheduledActivities", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("statusDescription", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("accomplishments", reportDocument, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("scheduledActivities", reportDocument, DataType.TEXT_AREA_FIELD);
 
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);

@@ -11,7 +11,6 @@ import com.google.common.base.Strings;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.client.ProjectStatus;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -189,6 +189,17 @@ public class StatusReport extends AbstractEntity {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+    
+    @Transient
+    protected ReportDocument reportDocument;
+
+    public ReportDocument getReportDocument() {
+        return reportDocument;
+    }
+
+    public void setReportDocument(ReportDocument reportDocument) {
+        this.reportDocument = reportDocument;
     }
 
     @PrePersist

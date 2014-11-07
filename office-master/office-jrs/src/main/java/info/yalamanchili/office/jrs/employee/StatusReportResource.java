@@ -11,7 +11,6 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.employee.statusreport.StatusReportDto;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -57,15 +56,15 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @Path("/{id}")
     @Transactional(readOnly = true)
     @Override
-    public StatusReportDto read(@PathParam("id") Long id) {
+    public StatusReport read(@PathParam("id") Long id) {
         return StatusReportService.instance().read(id);
     }
 
     @PUT
     @Path("/save")
     @Produces("application/text")
-    public String saveReport(StatusReportDto dto, @QueryParam("submitForApproval") Boolean submitForApproval) {
-        return StatusReportService.instance().save(dto, submitForApproval);
+    public String saveReport(StatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
+        return StatusReportService.instance().save(entity, submitForApproval);
     }
 
     @GET

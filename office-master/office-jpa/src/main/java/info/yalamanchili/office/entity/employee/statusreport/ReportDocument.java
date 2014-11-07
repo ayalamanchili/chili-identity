@@ -2,15 +2,10 @@
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Transfer object to pass json based report string
  */
-package info.yalamanchili.office.employee.statusreport;
+package info.yalamanchili.office.entity.employee.statusreport;
 
-import com.google.gson.annotations.Expose;
-import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
-import info.yalamanchili.office.entity.profile.Employee;
 import java.io.Serializable;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,73 +18,89 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType
-public class StatusReportDto extends StatusReport implements Serializable {
+public class ReportDocument implements Serializable {
 
     /**
      *
      */
-    @Expose
     protected String projectDescription;
     /**
      * Project Phase 1
      */
-    @Expose
     protected String projectPhase1Name;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase1Deliverable;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase1EndDate;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase1Status;
     /**
      * Project Phase 2
      */
-    @Expose
     protected String projectPhase2Name;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase2Deliverable;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase2EndDate;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase2Status;
     /**
      * Project Phase 3
      */
-    @Expose
     protected String projectPhase3Name;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase3Deliverable;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase3EndDate;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase3Status;
     /**
      * Project Phase 4
      */
-    @Expose
     protected String projectPhase4Name;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase4Deliverable;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase4EndDate;
-    @Expose
+    /**
+     *
+     */
     protected String projectPhase4Status;
     /**
      *
      */
-    @Expose
     @Size(min = 3, max = 400)
     protected String statusDescription;
     /**
      *
      */
-    @Expose
     @Size(min = 3, max = 400)
     protected String accomplishments;
     /**
      *
      */
-    @Expose
     @Size(min = 3, max = 400)
     protected String scheduledActivities;
 
@@ -251,10 +262,5 @@ public class StatusReportDto extends StatusReport implements Serializable {
 
     public void setScheduledActivities(String scheduledActivities) {
         this.scheduledActivities = scheduledActivities;
-    }
-
-    @Override
-    public Employee getEmployee() {
-        return null;
     }
 }
