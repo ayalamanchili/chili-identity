@@ -35,7 +35,7 @@ public class EmergencyContactDto implements Serializable {
     @NotEmpty(message = "{lastName.not.empty.msg}")
     protected String lastName;
     protected Sex sex;
-    @Email(message = "Enter a valid email asddress")
+    @Email(message = "Enter a valid email address")
 //    @NotEmpty(message = "{emergencycontact.email.not.empty.msg}")
     protected String email;
     @Size(min = 0, max = 4, message = "{emergnecycontact.countryCode.length.invalid.msg}")
