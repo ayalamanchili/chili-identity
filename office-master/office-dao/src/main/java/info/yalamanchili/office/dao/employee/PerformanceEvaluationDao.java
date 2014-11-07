@@ -44,7 +44,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         return em;
     }
 
-    @AccessCheck(roles = {"ROLE_HR_ADMINSTRATION"}, companyContacts = {"Perf_Eval_Manager", "Reports_To"})
+    @AccessCheck(roles = {"ROLE_HR_ADMINSTRATION", "ROLE_RELATIONSHIP"}, companyContacts = {"Perf_Eval_Manager", "Reports_To"})
     public List<PerformanceEvaluation> getPerformanceEvaluationsForEmp(Employee emp) {
         List<PerformanceEvaluation> performanceEvaluations = new ArrayList<PerformanceEvaluation>();
         TypedQuery<PerformanceEvaluation> query = em.createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", PerformanceEvaluation.class);

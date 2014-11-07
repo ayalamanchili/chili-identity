@@ -25,7 +25,7 @@ public class OfficeClientConfigTest implements OfficeClientConfig {
 
     @Override
     public String getFileUploadUrl() {
-        return "http://70.169.165.20//office-web/office/rpc/fileService";
+        return "http://70.169.165.20/office-web/office/rpc/fileService";
     }
 
     @Override
