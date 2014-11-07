@@ -113,17 +113,6 @@ public class PerformanceEvaluationService {
         OfficeBPMService.instance().startProcess("corp_emp_perf_eval_process", vars);
     }
 
-//    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-//        performanceEvaluationDao.save(dto.getPerformanceEvaluation());
-//        for (QuestionComment qc : dto.getComments()) {
-//            if (qc.getId() != null) {
-//                Comment cmt = CommentDao.instance().find(qc.getId());
-//                cmt.setComment(qc.getComment());
-//                cmt.setRating(qc.getRating());
-//                CommentDao.instance().save(cmt);
-//            }
-//        }
-//    }
     public PerformanceEvaluation getEvaluationForYear(String year, Employee emp, PerformanceEvaluationSaveDto dto) {
         Date date;
         try {

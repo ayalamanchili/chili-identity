@@ -7,10 +7,11 @@
  */
 package info.yalamanchili.office.dao.employee;
 
+import com.google.common.collect.Lists;
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
@@ -18,6 +19,7 @@ import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -42,10 +44,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         return em;
     }
 
-//    @Override
-//    public PerformanceEvaluation save(PerformanceEvaluation entity) {
-//        return em.merge(entity);
-//    }
+    @AccessCheck(roles = {"ROLE_HR_ADMINSTRATION"}, companyContacts = {"Perf_Eval_Manager", "Reports_To"})
     public List<PerformanceEvaluation> getPerformanceEvaluationsForEmp(Employee emp) {
         List<PerformanceEvaluation> performanceEvaluations = new ArrayList<PerformanceEvaluation>();
         TypedQuery<PerformanceEvaluation> query = em.createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", PerformanceEvaluation.class);
@@ -55,7 +54,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             isCorporateEmployee = true;
         }
         for (PerformanceEvaluation perfEval : query.getResultList()) {
-            if (PerformanceEvaluationStage.Manager_Review.equals(perfEval.getStage()) && isCorporateEmployee && checkPermission(emp)) {
+            if (PerformanceEvaluationStage.Manager_Review.equals(perfEval.getStage()) && isCorporateEmployee) {
                 perfEval.setEnableManagerReview(true);
             } else {
                 perfEval.setEnableManagerReview(false);
@@ -63,23 +62,6 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             performanceEvaluations.add(perfEval);
         }
         return performanceEvaluations;
-    }
-
-    protected boolean checkPermission(Employee emp) {
-        
-        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
-            return true;
-        }
-        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
-        if (perfEvalMgr != null && perfEvalMgr.getId().equals(currentUser.getId())) {
-            return true;
-        }
-        Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-        if (reportsToEmp != null && reportsToEmp.getId().equals(currentUser.getId())) {
-            return true;
-        }
-        return false;
     }
 
     public List<Question> getQuestions(Long id, QuestionCategory category, QuestionContext context) {

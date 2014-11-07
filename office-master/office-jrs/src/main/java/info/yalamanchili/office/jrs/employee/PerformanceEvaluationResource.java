@@ -75,12 +75,6 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
         PerformanceEvaluationService.instance().saveCorporatePerformanceEvaluation(emp, dto, submitForApproval);
     }
 
-//    @PUT
-//    @Path("/update")
-//    public void updatePerformanceEvaluation(PerformanceEvaluationSaveDto dto) {
-//        PerformanceEvaluationService.instance().updatePerformanceEvaluation(dto);
-//    }
-
     @GET
     @Path("/comments/{id}")
     public List<QuestionComment> getQuestionComments(@PathParam("id") Long id, @QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context) {

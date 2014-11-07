@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.dao.security;
 
+import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.jpa.QueryUtils;
 import info.chili.security.SecurityService;
@@ -10,8 +11,10 @@ import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -103,7 +106,7 @@ public class OfficeSecurityService {
     public boolean hasRole(String role) {
         return hasAnyRole(role);
     }
-
+    
     public boolean isValidEmployeeId(String employeeId) {
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", employeeId);

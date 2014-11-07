@@ -44,9 +44,8 @@ public class TreeEmpReportsPanel extends TreePanelComposite {
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
             addFirstChildLink("Status Reports", PROJECTS_REPORTS_NODE);
-            //TODO check permissions
-            addFirstChildLink("Performance Reports", PERFORMANCE_REPORTS_NODE);
         }
+        addFirstChildLink("Performance Reports", PERFORMANCE_REPORTS_NODE);
     }
 
     @Override
