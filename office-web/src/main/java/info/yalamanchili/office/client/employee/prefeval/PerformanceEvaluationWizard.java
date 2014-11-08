@@ -158,7 +158,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
                 return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + perfEvalEndStep.getWidget().getSubmitForApproval();
             } else if ((PerformanceEvaluationWizardType.MANAGER.equals(type))) {
-                return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review";
+                return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review?employeeId=" + employeeId;
             } else {
                 return null;
             }

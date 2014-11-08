@@ -70,8 +70,14 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
 
     @PUT
     @Path("/corporate/save-review")
-    public void createCorporateReview(PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+    public void createCorporateReview(@QueryParam("employeeId") Long employeeId, PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
+        Employee emp = null;
+        if (employeeId != null) {
+            emp = EmployeeDao.instance().findById(employeeId);
+        }
+        if (emp == null) {
+            emp = OfficeSecurityService.instance().getCurrentUser();
+        }
         PerformanceEvaluationService.instance().saveCorporatePerformanceEvaluation(emp, dto, submitForApproval);
     }
 
