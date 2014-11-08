@@ -176,13 +176,13 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("type", true, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
-        addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD);
-        addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD);
-        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD);
+        addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
-            addField("managerComments", false, false, DataType.TEXT_AREA_FIELD);
-            addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD);
-            addField("hrComments", false, false, DataType.TEXT_AREA_FIELD);
+            addField("managerComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addField("hrComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             updateSelfReviewCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.SELF_EVALUATION.name(), getQuestionCommentsUrl(QuestionCategory.SELF_EVALUATION.name(), QuestionContext.PERFORMANCE_EVALUATION_SELF.name()));
             entityFieldsPanel.add(updateSelfReviewCommentsPanel);
         }
