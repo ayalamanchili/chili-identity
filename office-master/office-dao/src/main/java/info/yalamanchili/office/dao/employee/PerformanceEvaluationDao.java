@@ -54,7 +54,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             isCorporateEmployee = true;
         }
         for (PerformanceEvaluation perfEval : query.getResultList()) {
-            if (PerformanceEvaluationStage.Manager_Review.equals(perfEval.getStage()) && isCorporateEmployee) {
+            if (PerformanceEvaluationStage.Manager_Review.equals(perfEval.getStage()) && isCorporateEmployee && perfEval.getQuestions().size() <= 4) {
                 perfEval.setEnableManagerReview(true);
             } else {
                 perfEval.setEnableManagerReview(false);
