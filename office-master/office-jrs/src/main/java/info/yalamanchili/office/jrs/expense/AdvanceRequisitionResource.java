@@ -8,11 +8,13 @@
 package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
-import info.yalamanchili.office.employee.statusreport.StatusReportService;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.Transaction;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.AdvanceRequisitionService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.expense.TransactionResource.TransactionTable;
@@ -29,7 +31,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -84,7 +85,14 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @Path("/{start}/{limit}")
     public AdvanceRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
-        tableObj.setEntities(getDao().query(start, limit));
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name())) {
+            tableObj.setEntities(advanceRequisitionDao.queryAll(start, limit));
+            tableObj.setSize(advanceRequisitionDao.size());
+        } else {
+            Employee currentEmp = OfficeSecurityService.instance().getCurrentUser();
+            tableObj.setEntities(advanceRequisitionDao.queryForEmployee(currentEmp.getId(), start, limit));
+            tableObj.setSize(advanceRequisitionDao.size(currentEmp.getId()));
+        }
         tableObj.setSize(getDao().size());
         return tableObj;
     }
@@ -95,7 +103,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     public AdvanceRequisitionTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
         tableObj.setEntities(advanceRequisitionDao.queryForEmployee(employeeId, start, limit));
-        tableObj.setSize(advanceRequisitionDao.queryForEmployeeSize(employeeId));
+        tableObj.setSize(advanceRequisitionDao.size(employeeId));
         return tableObj;
     }
 

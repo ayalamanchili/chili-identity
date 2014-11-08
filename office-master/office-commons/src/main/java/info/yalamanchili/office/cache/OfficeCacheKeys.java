@@ -33,7 +33,7 @@ public interface OfficeCacheKeys {
     String SOCIAL = "social";
     String ROLES = "roles";
     String QUESTIONS = "questions";
-    String ADVANCE_REQUSITON = "adv-req";
+    String ADVANCE_REQUSITON = "advReq";
     /**
      * holds key values for email messaging with address
      */
