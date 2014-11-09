@@ -39,7 +39,7 @@ public class ReadQuestionCommentPanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         questionInfoL.setHTML(entity.get("questionInfo").isString().stringValue());
-        assignFieldValueFromEntity("comment", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
         if (JSONUtils.toString(entity, "rating").isEmpty()) {
             ratingWidget.setRating(0);
         } else {
@@ -59,7 +59,7 @@ public class ReadQuestionCommentPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(questionInfoL);
-        addField("comment", true, false, DataType.RICH_TEXT_AREA);
+        addField("comment", true, false, DataType.TEXT_AREA_FIELD);
         entityFieldsPanel.add(ratingWidget);
     }
 

@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.employee.perfeval;
 
-import info.chili.commons.BeanMapper;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.security.Signature;
@@ -20,7 +19,6 @@ import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
@@ -172,7 +170,7 @@ public class PerformanceEvaluationService {
         Double sum = 0.0;
         Double size = 0.0;
         for (Question qes : perfEval.getQuestions()) {
-            Comment cmt = CommentDao.instance().find(qes);
+            Comment cmt = CommentDao.instance().find(perfEval, qes);
             if (cmt != null && cmt.getRating() != null) {
                 if (cmt.getRating() > 0) {
                     sum = sum + cmt.getRating();

@@ -23,6 +23,7 @@ import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWi
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
 import info.yalamanchili.office.client.ext.question.UpdateAllQuestionCommentsPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -39,10 +40,8 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     UpdateAllQuestionCommentsPanel updateManagementCommentsPanel;
 
     protected PerformanceEvaluationWizardType type;
-    protected String entityId;
 
     public UpdatePerformanceEvaluationPanel(PerformanceEvaluationWizardType type, JSONObject entity) {
-        this.entityId = getEntityId();
         this.type = type;
         initUpdateComposite(entity, "PerformanceEvaluation", OfficeWelcome.constants);
     }
@@ -141,7 +140,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully  Updated PerformanceEvaluation Information");
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(entityId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel(TreeEmployeePanel.instance().getEntityId()));
         } else if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
@@ -210,10 +209,9 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
             return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + getSubmitForApproval();
         } else if ((PerformanceEvaluationWizardType.MANAGER.equals(type))) {
-            return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review";
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review?employeeId=" + TreeEmployeePanel.instance().getEntityId();
         } else {
             return null;
         }
-
     }
 }

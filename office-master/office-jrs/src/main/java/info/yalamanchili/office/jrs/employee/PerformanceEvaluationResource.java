@@ -89,7 +89,6 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public PerformanceEvaluationTable table(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = null;
         if (employeeId != null) {
