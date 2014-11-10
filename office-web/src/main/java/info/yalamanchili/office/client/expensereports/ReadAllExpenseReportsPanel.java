@@ -10,8 +10,10 @@ package info.yalamanchili.office.client.expensereports;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -91,6 +93,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("Name"));
         table.setText(0, 3, getKeyValue("StartDate"));
         table.setText(0, 4, getKeyValue("EndDate"));
+        table.setText(0, 5, getKeyValue("Print"));
     }
 
     @Override
@@ -102,6 +105,8 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
             table.setText(0, 3, getKeyValue("startDate"));
             table.setText(0, 4, getKeyValue("endDate"));
+            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
+            table.setWidget(i, 5, reportL);
         }
     }
 

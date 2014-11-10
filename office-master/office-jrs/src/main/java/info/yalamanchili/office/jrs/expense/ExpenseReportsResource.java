@@ -10,11 +10,15 @@ package info.yalamanchili.office.jrs.expense;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
 import info.yalamanchili.office.entity.expense.ExpenseReport;
+import info.yalamanchili.office.expense.ExpenseReportsService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -43,6 +47,13 @@ public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @GET
+    @Path("/report")
+    @Produces({"application/pdf"})
+    public Response getReport(@QueryParam("id") Long id) {
+        return ExpenseReportsService.instance().getReport(id);
     }
 
     @Override
