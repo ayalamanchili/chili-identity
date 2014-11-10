@@ -15,7 +15,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expenseitem.ReadExpenseItemPanel;
-import info.yalamanchili.office.client.expenseitem.SelectExpenseItemWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -27,8 +26,6 @@ public class ReadExpenseReportsPanel extends ReadComposite {
 
     private static ReadExpenseReportsPanel instance;
     private static Logger logger = Logger.getLogger(ReadExpenseItemPanel.class.getName());
-    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
-    SelectExpenseItemWidget selectExpenseItemWidgetF = new SelectExpenseItemWidget(false, true);
 
     public static ReadExpenseReportsPanel instance() {
         return instance;
@@ -79,8 +76,6 @@ public class ReadExpenseReportsPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", selectEmployeeWidgetF);
-        addDropDown("expenseItems", selectExpenseItemWidgetF);
         addField("name", true, true, DataType.ENUM_FIELD);
         addField("description", true, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);

@@ -15,7 +15,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expenseitem.SelectExpenseItemWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 
 /**
@@ -27,14 +26,10 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
     public UpdateExpenseReportsPanel(JSONObject entity) {
         initUpdateComposite(entity, "ExpenseReports", OfficeWelcome.constants);
     }
-    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
-    SelectExpenseItemWidget selectExpenseItemWidgetF = new SelectExpenseItemWidget(false, true);
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject Expensereports = new JSONObject();
-        entity.put("employee", selectEmployeeWidgetF.getSelectedObject());
-        entity.put("expenseItems", selectExpenseItemWidgetF.getSelectedObject());
         assignEntityValueFromField("name", Expensereports);
         assignEntityValueFromField("description", Expensereports);
         assignEntityValueFromField("startDate", Expensereports);
@@ -49,16 +44,16 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -91,8 +86,6 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", selectEmployeeWidgetF);
-        addDropDown("expenseItems", selectExpenseItemWidgetF);
         addField("name", false, true, DataType.ENUM_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);

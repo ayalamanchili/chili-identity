@@ -15,8 +15,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expenseitem.SelectExpenseItemWidget;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -26,8 +24,6 @@ import java.util.logging.Logger;
 public class CreateExpenseReportsPanel extends CreateComposite {
 
     private Logger logger = Logger.getLogger(CreateExpenseReportsPanel.class.getName());
-    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
-    SelectExpenseItemWidget selectExpenseItemWidgetF = new SelectExpenseItemWidget(false, true);
 
     public CreateExpenseReportsPanel(CreateComposite.CreateCompositeType type) {
         super(type);
@@ -37,8 +33,6 @@ public class CreateExpenseReportsPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject Expensereports = new JSONObject();
-        entity.put("employee", selectEmployeeWidgetF.getSelectedObject());
-        entity.put("expenseItems", selectExpenseItemWidgetF.getSelectedObject());
         assignEntityValueFromField("name", Expensereports);
         assignEntityValueFromField("description", Expensereports);
         assignEntityValueFromField("startDate", Expensereports);
@@ -54,17 +48,17 @@ public class CreateExpenseReportsPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -90,8 +84,6 @@ public class CreateExpenseReportsPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employee", selectEmployeeWidgetF);
-        addDropDown("expenseItems", selectExpenseItemWidgetF);
         addField("name", false, false, DataType.ENUM_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
