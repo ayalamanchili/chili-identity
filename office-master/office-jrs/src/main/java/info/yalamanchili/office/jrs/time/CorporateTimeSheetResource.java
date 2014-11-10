@@ -20,6 +20,7 @@ import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -59,9 +60,9 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/summary/{empId}")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
     public CorporateTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
-        CorporateTimeService.instance().checkAccessToEmployeeTime(emp);
         return CorporateTimeService.instance().getYearlySummary(emp);
     }
 
@@ -110,9 +111,9 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
 
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
     public CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
-        CorporateTimeService.instance().checkAccessToEmployeeTime(emp);
         return getCorporateTimeSheets(emp, status, category, start, limit);
     }
 

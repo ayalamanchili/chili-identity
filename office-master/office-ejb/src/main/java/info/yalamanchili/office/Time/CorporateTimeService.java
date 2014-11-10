@@ -131,21 +131,6 @@ public class CorporateTimeService {
         return summary;
     }
 
-    public void checkAccessToEmployeeTime(Employee emp) {
-        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-        if (emp.getEmployeeId().equals(currentUser.getEmployeeId())) {
-            return;
-        }
-        Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
-        if (reportsToEmp != null && currentUser.getEmployeeId().equals(reportsToEmp.getEmployeeId())) {
-            return;
-        }
-        if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRole.ROLE_CORPORATE_TIME_REPORTS.name())) {
-            return;
-        }
-        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
-    }
-
     public BigDecimal getYearlyPeronalBalance(Employee employee) {
         BigDecimal earned = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date());
         BigDecimal spent = corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date());

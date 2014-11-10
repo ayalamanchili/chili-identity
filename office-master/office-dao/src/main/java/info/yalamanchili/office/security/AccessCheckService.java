@@ -10,6 +10,7 @@ package info.yalamanchili.office.security;
 
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -25,7 +26,15 @@ import org.springframework.stereotype.Component;
 public class AccessCheckService {
 
     public boolean performAccessCheck(ProceedingJoinPoint joinPoint, AccessCheck accessCheck) {
-        Employee employee = (Employee) joinPoint.getArgs()[0];
+        Employee employee = null;
+        if (joinPoint.getArgs()[0] instanceof Employee) {
+            employee = (Employee) joinPoint.getArgs()[0];
+        } else if (joinPoint.getArgs()[0] instanceof Long) {
+            employee = EmployeeDao.instance().findById((Long) joinPoint.getArgs()[0]);
+        }
+        if (employee == null) {
+            throw new RuntimeException("Invalid Access Check Method param");
+        }
         return performAccessCheck(employee, accessCheck);
     }
 
