@@ -16,6 +16,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -154,6 +155,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     @Override
     protected void configure() {
         formatTextAreaFields();
+
     }
 
     protected void formatTextAreaFields() {
@@ -188,12 +190,28 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         entityFieldsPanel.add(updateSkillAptitudeCommentsPanel);
         entityFieldsPanel.add(updateAptitudeCommentsPanel);
         entityFieldsPanel.add(updateManagementCommentsPanel);
-        addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
+        if (renderSubmitForApproval()) {
+            addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
+        }
         alignFields();
     }
 
+    protected boolean renderSubmitForApproval() {
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+            return true;
+        }
+        if (PerformanceEvaluationWizardType.MANAGER.equals(type) && JSONUtils.toString(entity, "stage").equals(PerformanceEvaluationStage.Manager_Review.name())) {
+            return true;
+        }
+        return false;
+    }
+
     public String getSubmitForApproval() {
-        return ((BooleanField) fields.get("submitForApproval")).getValue().toString();
+        if (fields.containsKey("submitForApproval")) {
+            return ((BooleanField) fields.get("submitForApproval")).getValue().toString();
+        } else {
+            return "false";
+        }
     }
 
     @Override

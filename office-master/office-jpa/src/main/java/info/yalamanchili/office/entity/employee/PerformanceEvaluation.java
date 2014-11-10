@@ -295,7 +295,7 @@ public class PerformanceEvaluation extends AbstractEntity {
     public String getEvaluationFYYearString() {
         return evaluationFYYear;
     }
-    
+
     @Transient
     protected boolean enableManagerReview;
 

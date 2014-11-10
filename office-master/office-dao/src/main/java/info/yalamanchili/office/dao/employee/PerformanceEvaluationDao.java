@@ -7,11 +7,12 @@
  */
 package info.yalamanchili.office.dao.employee;
 
-import com.google.common.collect.Lists;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluation;
 import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
@@ -19,7 +20,6 @@ import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -44,8 +44,8 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         return em;
     }
 
-    @AccessCheck(roles = {"ROLE_HR_ADMINSTRATION", "ROLE_RELATIONSHIP"}, companyContacts = {"Perf_Eval_Manager", "Reports_To"})
     public List<PerformanceEvaluation> getPerformanceEvaluationsForEmp(Employee emp) {
+        acceccCheck(emp);
         List<PerformanceEvaluation> performanceEvaluations = new ArrayList<PerformanceEvaluation>();
         TypedQuery<PerformanceEvaluation> query = em.createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", PerformanceEvaluation.class);
         query.setParameter("employeeParam", emp);
@@ -62,6 +62,37 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             performanceEvaluations.add(perfEval);
         }
         return performanceEvaluations;
+    }
+
+    protected void acceccCheck(Employee employee) {
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+        if (employee.getId().equals(currentUser.getId())) {
+            return;
+        }
+        boolean isCorporateEmployee = false;
+        if (OfficeSecurityService.instance().getUserRoles(employee).contains(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            isCorporateEmployee = true;
+        }
+        //this is a corp emp review
+        if (isCorporateEmployee) {
+            if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
+                return;
+            }
+            Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
+            if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
+                return;
+            }
+            Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
+            if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
+                return;
+            }
+        } //Consultant employee review
+        else {
+            if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_RELATIONSHIP.name(), OfficeRole.ROLE_H1B_IMMIGRATION.name())) {
+                return;
+            }
+        }
+        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "permission.error", "you do not have permission to view this information");
     }
 
     public List<Question> getQuestions(Long id, QuestionCategory category, QuestionContext context) {
