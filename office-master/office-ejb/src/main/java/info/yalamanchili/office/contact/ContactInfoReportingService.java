@@ -62,6 +62,7 @@ public class ContactInfoReportingService {
             }
             res.add(dto);
             Collections.sort(res, new Comparator<EmployeeDto>() {
+                @Override
                 public int compare(EmployeeDto dto1, EmployeeDto dto2) {
                     return dto1.getFirstName().compareTo(dto2.getFirstName());
                 }

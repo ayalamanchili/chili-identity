@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -79,7 +80,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
     ClickableLink clearReportsL = new ClickableLink("clear");
     Button viewReportsB = new Button("View");
     Button reportsB = new Button("Report");
-    FileField summaryReportL = new FileField("Summary Report", ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/all-emp-summary-report" + "&passthrough=true");
+    Anchor summaryReportL = new Anchor("Summary Report");
     protected static CorporateTimeSidePanel instance;
 
     public static CorporateTimeSidePanel instance() {

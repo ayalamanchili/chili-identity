@@ -159,7 +159,6 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, int start, int limit) {
-        List<SearchCorporateTimeSheetDto> summary = new ArrayList<SearchCorporateTimeSheetDto>();
         List<Employee> emps = null;
         if (dto.getRole() != null) {
             emps = OfficeSecurityService.instance().getUsersWithRoles(0, 2000, dto.getRole().name());
@@ -169,12 +168,6 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         query = (TypedQuery<CorporateTimeSheet>) getReportQueryWithParams(queryStr, query, dto, emps);
         query.setFirstResult(start);
         query.setMaxResults(limit);
-        Collections.sort(summary, new Comparator<SearchCorporateTimeSheetDto>() {
-            @Override
-            public int compare(SearchCorporateTimeSheetDto dto1, SearchCorporateTimeSheetDto dto2) {
-                return dto1.getEmployee().compareTo(dto2.getEmployee());
-            }
-        });
         return query.getResultList();
     }
 
@@ -234,7 +227,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         if (dto.getBranch() != null) {
             reportQueryBuilder.append(" and employee.branch in (:branchParam) ");
         }
-        reportQueryBuilder.append(" order by startDate DESC ");
+        reportQueryBuilder.append(" order by employee.firstName, startDate DESC ");
         return reportQueryBuilder.toString();
     }
 

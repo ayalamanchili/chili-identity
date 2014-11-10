@@ -180,12 +180,6 @@ public class CorporateTimeService {
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             summary.add(getYearlySummary(emp));
         }
-        Collections.sort(summary, new Comparator<CorporateTimeSummary>() {
-            @Override
-            public int compare(CorporateTimeSummary dto1, CorporateTimeSummary dto2) {
-                return dto1.getEmployee().compareTo(dto2.getEmployee());
-            }
-        });
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(summary, "corporate-time-summary", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 

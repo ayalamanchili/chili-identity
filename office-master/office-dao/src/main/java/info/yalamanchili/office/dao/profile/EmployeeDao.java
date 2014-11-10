@@ -188,13 +188,13 @@ public class EmployeeDao extends CRUDDao<Employee> {
     }
 
     public List<Employee> getEmployeesByType(String type) {
-        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where user.enabled=true and employeeType.name=:employeeTypeParam", Employee.class);
+        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where user.enabled=true and employeeType.name=:employeeTypeParam order by firstName", Employee.class);
         query.setParameter("employeeTypeParam", type);
         return query.getResultList();
     }
 
     public List<Employee> getAllEmployeesByType(String type) {
-        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:employeeTypeParam", Employee.class);
+        TypedQuery<Employee> query = em.createQuery("from " + Employee.class.getCanonicalName() + " where employeeType.name=:employeeTypeParam order by firstName", Employee.class);
         query.setParameter("employeeTypeParam", type);
         return query.getResultList();
     }
