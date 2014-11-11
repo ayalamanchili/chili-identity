@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="expense_report_process">
+        <startEvent id="expenseReportStart"/>
+        
+        <!-- Manager approval task-->
+        <sequenceFlow  sourceRef="expenseReportStart" targetRef="expenseReportApprovalTask" />
+        <userTask id="expenseReportApprovalTask" 
+                  name="Expense Report Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Employee Expense Report Approval Task
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Purpose    : #{entity.department}
+               
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportRequestProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportRequestProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="expenseReportApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="expenseReportApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="expenseReportApprovalTaskEscalationTimer" 
+                      targetRef="expenseReportApprovalTaskEscalation" />
+        <serviceTask id="expenseReportApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="expenseReportApprovalTask" 
+                      targetRef="approvalGateway" />
+        <exclusiveGateway id="approvalGateway" />
+        <endEvent id="expenseReportEnd" />
+    </process>
+</definitions>
