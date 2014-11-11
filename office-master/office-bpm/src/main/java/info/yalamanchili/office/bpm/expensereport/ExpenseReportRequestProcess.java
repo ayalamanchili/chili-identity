@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.ExpenseReport;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -59,10 +60,11 @@ public class ExpenseReportRequestProcess implements TaskListener {
         Employee emp = (Employee) dt.getExecution().getVariable("currentEmployee");
         ExpenseReportsDao dao = ExpenseReportsDao.instance();
         ExpenseReport entity = (ExpenseReport) dt.getExecution().getVariable("entity");
-        String expenseReport = "Expense Report Department:" + entity.getDepartment() + "Report Description :" + entity.getDescription();
-//        entity.setBpmProcessId(dt.getExecution().getProcessInstanceId());
-//        entity.setStatus(AdvanceRequisitionStatus.Pending);
+        String expenseReport = "Expense Report Department:" + entity.getName() + "Repayment Notes:" + entity.getDescription();
+        entity.setBpmProcessId(dt.getExecution().getProcessInstanceId());
         entity.setEmployee(emp);
+        entity.setStartDate(new Date());
+        entity.setEndDate(new Date());
         entity = dao.save(entity);
         dt.getExecution().setVariable("entity", entity);
         dt.getExecution().setVariable("entityId", entity.getId());
