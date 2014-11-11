@@ -71,7 +71,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-//        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportsPanel(getEntity(entityId)));
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportsPanel(getEntity(entityId)));
     }
 
     @Override
@@ -89,11 +89,10 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Employee"));
-        table.setText(0, 2, getKeyValue("Name"));
-        table.setText(0, 3, getKeyValue("StartDate"));
-        table.setText(0, 4, getKeyValue("EndDate"));
-        table.setText(0, 5, getKeyValue("Print"));
+        table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 2, getKeyValue("StartDate"));
+        table.setText(0, 3, getKeyValue("EndDate"));
+        table.setText(0, 4, getKeyValue("Print"));
     }
 
     @Override
@@ -101,12 +100,11 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(0, 1, getKeyValue("employee"));
-            table.setText(i, 2, JSONUtils.toString(entity, "name"));
-            table.setText(0, 3, getKeyValue("startDate"));
-            table.setText(0, 4, getKeyValue("endDate"));
+            table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            table.setText(0, 2, getKeyValue("startDate"));
+            table.setText(0, 3, getKeyValue("endDate"));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 5, reportL);
+            table.setWidget(i, 4, reportL);
         }
     }
 

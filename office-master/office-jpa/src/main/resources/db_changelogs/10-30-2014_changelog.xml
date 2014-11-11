@@ -12,10 +12,20 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet author="ayalamanchili" id="exp-rpt-1">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expensereport">
+            <column name="bpmProcessId" type=" varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="expensereport_aud">
+            <column name="bpmProcessId" type=" varchar(255)"/>
+        </addColumn>
         <sqlFile dbms="mysql"
-             path="sql/expense-report.sql"
-             relativeToChangelogFile="true"
-             splitStatements="true"
-             stripComments="true"/>
+                 path="sql/expense-report.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
     </changeSet>
 </databaseChangeLog>
