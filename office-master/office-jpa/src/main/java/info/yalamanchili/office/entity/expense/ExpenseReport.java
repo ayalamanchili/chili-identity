@@ -97,6 +97,10 @@ public class ExpenseReport extends AbstractEntity {
      */
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
     protected List<ExpenseItem> expenseItems;
+    /**
+     *
+     */
+    protected String bpmProcessId;
 
     public ExpenseReport() {
     }
@@ -199,4 +203,17 @@ public class ExpenseReport extends AbstractEntity {
         this.expenseItems = expenseItems;
     }
 
+    /**
+     * @return the bpmProcessId
+     */
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    /**
+     * @param bpmProcessId the bpmProcessId to set
+     */
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
+    }
 }
