@@ -18,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -95,8 +94,8 @@ public class ExpenseReport extends AbstractEntity {
     /**
      *
      */
-//    @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
-//    protected List<ExpenseItem> expenseItems;
+    @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
+    protected List<ExpenseItem> expenseItems;
     /**
      *
      */
@@ -194,14 +193,14 @@ public class ExpenseReport extends AbstractEntity {
         this.employee = employee;
     }
 
-//    @XmlElement
-//    public List<ExpenseItem> getExpenseItems() {
-//        return expenseItems;
-//    }
-//
-//    public void setExpenseItems(List<ExpenseItem> expenseItems) {
-//        this.expenseItems = expenseItems;
-//    }
+    @XmlTransient
+    public List<ExpenseItem> getExpenseItems() {
+        return expenseItems;
+    }
+
+    public void setExpenseItems(List<ExpenseItem> expenseItems) {
+        this.expenseItems = expenseItems;
+    }
 
     /**
      * @return the bpmProcessId

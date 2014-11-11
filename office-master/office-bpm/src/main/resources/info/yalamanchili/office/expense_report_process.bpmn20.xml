@@ -20,8 +20,11 @@
             <documentation>
                 Employee Expense Report Approval Task
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Purpose    : #{entity.name}
-               
+                Name          : #{entity.name}
+                Description   : #{entity.description}
+                Start Date    : #{entity.startDate}
+                End Date      : #{entity.endDate}
+
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportRequestProcess" />

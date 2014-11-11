@@ -32,14 +32,14 @@ public class CreateExpenseReportPanel extends CreateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject Expensereports = new JSONObject();
-        assignEntityValueFromField("name", Expensereports);
-        assignEntityValueFromField("description", Expensereports);
-        assignEntityValueFromField("startDate", Expensereports);
-        assignEntityValueFromField("endDate", Expensereports);
-        assignEntityValueFromField("department", Expensereports);
-        logger.info(Expensereports.toString());
-        return Expensereports;
+        JSONObject entity = new JSONObject();
+        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("department", entity);
+        logger.info(entity.toString());
+        return entity;
     }
 
     @Override
@@ -82,11 +82,10 @@ public class CreateExpenseReportPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, false, DataType.ENUM_FIELD);
+        addField("name", false, false, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("department", false, false, DataType.STRING_FIELD);
     }
 
     @Override
