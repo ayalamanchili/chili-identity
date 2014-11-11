@@ -9,8 +9,11 @@ package info.yalamanchili.office.expense;
 
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.ExpenseReport;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.template.TemplateService;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +32,21 @@ public class ExpenseReportsService {
 
     @Autowired
     protected ExpenseReportsDao expenseReportsDao;
+
+    public void submit(ExpenseReport entity) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entity", entity);
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        vars.put("currentEmployee", emp);
+        OfficeBPMService.instance().startProcess("expense_report_process", vars);
+    }
+
+    public void delete(Long id) {
+        ExpenseReport entity = expenseReportsDao.findById(id);
+        //TODO use processid
+//        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getApprovedBy(), true);
+        expenseReportsDao.delete(id);
+    }
 
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);

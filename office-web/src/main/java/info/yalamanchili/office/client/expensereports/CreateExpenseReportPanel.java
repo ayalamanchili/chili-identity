@@ -21,11 +21,11 @@ import java.util.logging.Logger;
  *
  * @author Prasanthi.p
  */
-public class CreateExpenseReportsPanel extends CreateComposite {
+public class CreateExpenseReportPanel extends CreateComposite {
 
-    private Logger logger = Logger.getLogger(CreateExpenseReportsPanel.class.getName());
+    private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
 
-    public CreateExpenseReportsPanel(CreateComposite.CreateCompositeType type) {
+    public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("ExpenseReports", OfficeWelcome.constants);
     }
@@ -37,9 +37,7 @@ public class CreateExpenseReportsPanel extends CreateComposite {
         assignEntityValueFromField("description", Expensereports);
         assignEntityValueFromField("startDate", Expensereports);
         assignEntityValueFromField("endDate", Expensereports);
-        assignEntityValueFromField("submittedDate", Expensereports);
         assignEntityValueFromField("department", Expensereports);
-        assignEntityValueFromField("paidDate", Expensereports);
         logger.info(Expensereports.toString());
         return Expensereports;
     }
@@ -88,9 +86,7 @@ public class CreateExpenseReportsPanel extends CreateComposite {
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("submittedDate", false, false, DataType.DATE_FIELD);
         addField("department", false, false, DataType.STRING_FIELD);
-        addField("paidDate", false, false, DataType.DATE_FIELD);
     }
 
     @Override
@@ -99,7 +95,7 @@ public class CreateExpenseReportsPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expensereport";
+        return OfficeWelcome.constants.root_url() + "expensereport/submit";
 
     }
 }

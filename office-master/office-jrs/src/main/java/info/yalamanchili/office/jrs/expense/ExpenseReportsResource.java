@@ -8,12 +8,14 @@
 package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
 import info.yalamanchili.office.entity.expense.ExpenseReport;
 import info.yalamanchili.office.expense.ExpenseReportsService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -23,7 +25,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +41,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
 
-    @Autowired
-    public ExpenseReportsDao expenseReportsDao;
+    @PUT
+    @Path("/submit")
+    @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
+    public void submit(ExpenseReport entity) {
+        ExpenseReportsService.instance().submit(entity);
+    }
+
+    @PUT
+    @Override
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
+    public ExpenseReport save(ExpenseReport entity) {
+        return super.save(entity);
+    }
 
     @GET
     @Path("/{start}/{limit}")
@@ -47,6 +63,15 @@ public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        ExpenseReportsService.instance().delete(id);
     }
 
     @GET
@@ -58,7 +83,7 @@ public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
 
     @Override
     public CRUDDao getDao() {
-        return expenseReportsDao;
+        return ExpenseReportsDao.instance();
     }
 
     @XmlRootElement

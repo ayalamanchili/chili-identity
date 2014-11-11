@@ -51,7 +51,7 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createExpenseReportsLink)) {
             TabPanel.instance().expensePanel.entityPanel.clear();
-            TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseReportsPanel(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().expensePanel.entityPanel.add(new CreateExpenseReportPanel(CreateComposite.CreateCompositeType.CREATE));
         }
     }
 }

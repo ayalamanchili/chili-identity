@@ -34,6 +34,7 @@ public interface OfficeCacheKeys {
     String ROLES = "roles";
     String QUESTIONS = "questions";
     String ADVANCE_REQUSITON = "advReq";
+    String EXPENSE = "expense";
     /**
      * holds key values for email messaging with address
      */
