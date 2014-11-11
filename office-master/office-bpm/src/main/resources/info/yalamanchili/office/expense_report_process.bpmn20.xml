@@ -20,7 +20,7 @@
             <documentation>
                 Employee Expense Report Approval Task
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Purpose    : #{entity.department}
+                Purpose    : #{entity.name}
                
             </documentation>
             <extensionElements>

@@ -1,9 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
 <!--
 
     System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
@@ -34,7 +28,7 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <div class="wrapper" style="width:700px;height:2800px;margin-left:auto;margin-right:auto;border-style:solid;border-width:2px;border-color:#000000;border-radius:10px;">
+        <div class="wrapper" style="width:700px;height:700px;margin-left:auto;margin-right:auto;border-style:solid;border-width:2px;border-color:#000000;border-radius:10px;">
             <div class="header" style="width:700px;height:100px;border-top-left-radius:10px;">
                 <div class="logo" style="width:200px;height:75px;float:left;padding-top:25px;padding-left:30px;" ><img src="http://sstech.us/images/systemsoft-logo.jpg" /></div>
             </div>
@@ -50,28 +44,30 @@ and open the template in the editor.
                             <thead align="left">
                                 <tr>
                                     <th >Date Submitted:
-                                        <span  th:text="${#dates.format(entity.startDate , 'dd-MMM-yyyy') }"> </span>
                                     </th>
+                                    <td  th:text="${#dates.format(entity.startDate, 'dd-MMM-yyyy')}"></td> 	
                                 </tr> 
                                 <tr>                                  
                                     <th >Employee Name: 
 
-                                        <span  th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}"> </span>
                                     </th>                                   
-                                    <th>  </th>   
+                                    <td  th:text="${entity.employee.firstName} + ' ' + ${entity.employee.lastName}"></td> 
                                 </tr>
                                 <tr>									
                                     <th >Department:
-                                        <span  th:text="${entity.department }"> </span>
                                     </th> 
+                                    <td ></td> 
                                 </tr>
                                 <tr>									
                                     <th >Expense Amount:  </th>   	
-                            <span  th:text="${entity.department }"> </span>                                </tr>
-                            <tr>									
-                                <th >Payroll File Number:  </th>   	
 
-                            <span  th:text="${entity.department }"> </span>                                </tr>
+                                    <td  ></td> 											
+                                </tr>
+                                <tr>									
+                                    <th >Payroll File Number:  </th>   	
+
+                                    <td  ></td> 											
+                                </tr>
 
                             </thead>
                         </table> 
@@ -80,7 +76,7 @@ and open the template in the editor.
                             <table  style="width:700px;height:5px;margin-left:auto; margin-right:auto;   text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
                                 <thead align="left">
                                     <tr>
-                                        <th >Bill and InvoiceDate</th>                                   
+                                        <th >Bill and InvoiceDate </th>                                   
                                         <th >Description </th>                                   
                                         <th  >Purpose </th>   
                                         <th  >Amount ($) </th>   
@@ -93,15 +89,20 @@ and open the template in the editor.
                                         <td style="border:none;"></td>
                                         <td style="border:none;">Expense(s) Total:</td>
                                         <td> </td> 
+
+
+
                                     </tr>
+
                                 </thead>
                             </table> 
                             <br></br>
                             <td > (Please attach receipts. Without proper receipts expense accounting or reimbursement may get delayed and subjected 
                                 to possible rejections. Always obtain prior approval, for any foreseeable expenses)</td>
                             <br></br>
+
                             <p align="left">Employee Signature: _____________</p> 
-                            <p> ____________________________________________________________________________________________________</p>
+                            <p> __________________________________________________________________________________________________</p>
                             <h4>For Accounts Department Use</h4>
                             <p align="left" >Request Received On: _____________</p> 
                             <p align="left" >Approver Comments: __________________________________________________________________________ </p> 
@@ -112,7 +113,7 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
+       <div class="footer"  style="width:700px;margin:0px; padding: 0px;height:50px;background-color:#ebebe4;margin-left:auto;margin-right:auto;text-align:center;font-family:Tahoma, Geneva, sans-serif;font-size:10px;line-height:75px;clear:both;border-bottom-right-radius:10px;border-bottom-left-radius:10px;"><p>COPYRIGHT ï¿½ 2014 sstech.us - All Rights Reserved</p></div>
     </body>
 </html>
-
 
