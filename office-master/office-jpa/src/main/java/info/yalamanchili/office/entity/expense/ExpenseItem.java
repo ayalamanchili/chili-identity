@@ -16,10 +16,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -185,6 +185,7 @@ public class ExpenseItem extends AbstractEntity {
     /**
      * @return the expenseReport
      */
+    @XmlTransient
     public ExpenseReport getExpenseReport() {
         return expenseReport;
     }
