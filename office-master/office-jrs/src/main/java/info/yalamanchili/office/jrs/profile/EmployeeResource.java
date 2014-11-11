@@ -134,7 +134,9 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Override
     public void delete(@PathParam("id") Long id) {
         Employee emp = EmployeeDao.instance().findById(id);
-        OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());
+        if (emp.getUser() != null) {
+            OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());
+        }
         super.delete(id);
     }
 
