@@ -15,7 +15,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,50 +23,47 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
  */
 public class UpdateExpenseReportsPanel extends UpdateComposite {
 
+    private Logger logger = Logger.getLogger(UpdateExpenseReportsPanel.class.getName());
+
     public UpdateExpenseReportsPanel(JSONObject entity) {
         initUpdateComposite(entity, "ExpenseReports", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject Expensereports = new JSONObject();
-        assignEntityValueFromField("name", Expensereports);
-        assignEntityValueFromField("description", Expensereports);
-        assignEntityValueFromField("startDate", Expensereports);
-        assignEntityValueFromField("endDate", Expensereports);
-        assignEntityValueFromField("submittedDate", Expensereports);
-        assignEntityValueFromField("department", Expensereports);
-        assignEntityValueFromField("paidDate", Expensereports);
-        return Expensereports;
+        JSONObject entity = new JSONObject();
+        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("startDate", entity);
+        assignEntityValueFromField("endDate", entity);
+        assignEntityValueFromField("department", entity);
+        logger.info(entity.toString());
+        return entity;
     }
 
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employee", entity, null);
-        assignFieldValueFromEntity("expenseItems", entity, null);
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("department", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("paidDate", entity, DataType.DATE_FIELD);
+
     }
 
     @Override
@@ -86,13 +83,10 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, true, DataType.ENUM_FIELD);
+        addField("name", false, false, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("submittedDate", false, true, DataType.DATE_FIELD);
-        addField("department", false, false, DataType.STRING_FIELD);
-        addField("paidDate", false, true, DataType.DATE_FIELD);
     }
 
     @Override

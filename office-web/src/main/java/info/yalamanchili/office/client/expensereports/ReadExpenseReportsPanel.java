@@ -15,7 +15,6 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expenseitem.ReadExpenseItemPanel;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -55,15 +54,10 @@ public class ReadExpenseReportsPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employee", entity, null);
-        assignFieldValueFromEntity("expenseItems", entity, null);
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("department", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("paidDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -76,13 +70,10 @@ public class ReadExpenseReportsPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", true, true, DataType.ENUM_FIELD);
+        addField("name", true, false, DataType.STRING_FIELD);
         addField("description", true, false, DataType.STRING_FIELD);
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("submittedDate", true, true, DataType.DATE_FIELD);
-        addField("department", true, true, DataType.STRING_FIELD);
-        addField("paidDate", true, true, DataType.DATE_FIELD);
+        addField("startDate", true, false, DataType.DATE_FIELD);
+        addField("endDate", true, true, DataType.DATE_FIELD);
     }
 
     @Override
