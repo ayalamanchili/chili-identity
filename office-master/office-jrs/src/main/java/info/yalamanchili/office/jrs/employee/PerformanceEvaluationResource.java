@@ -8,7 +8,6 @@
 package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
-import info.chili.security.SecurityService;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -33,7 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,8 +104,8 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
-    public Response getReport(@QueryParam("id") Long id) {
-        return PerformanceEvaluationService.instance().getReport(id);
+    public Response getReport(@QueryParam("id") Long id, @QueryParam("type") String type) {
+        return PerformanceEvaluationService.instance().getReport(id, type);
     }
 
     @XmlRootElement

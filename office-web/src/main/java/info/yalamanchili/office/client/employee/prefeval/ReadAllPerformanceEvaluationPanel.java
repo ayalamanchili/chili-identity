@@ -119,6 +119,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
         table.setText(0, 3, getKeyValue("Rating"));
         table.setText(0, 4, getKeyValue("Stage"));
         table.setText(0, 5, getKeyValue("Print"));
+        table.setText(0, 6, getKeyValue("Print"));
     }
 
     @Override
@@ -135,8 +136,10 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
             table.setText(i, 2, JSONUtils.toString(entity, "evaluationFYYear"));
             table.setText(i, 3, JSONUtils.toString(entity, "rating"));
             table.setText(i, 4, JSONUtils.toString(entity, "stage"));
-            FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
-            table.setWidget(i, 5, reportL);
+            FileField selfReviewP = new FileField("Self Review", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=self");
+            table.setWidget(i, 5, selfReviewP);
+            FileField managerReviewP = new FileField("Manager Review", ChiliClientConfig.instance().getFileDownloadUrl() + "performance-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=manager");
+            table.setWidget(i, 6, managerReviewP);
         }
     }
 
@@ -175,7 +178,6 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         }
-
     }
 
     private String getDeleteURL(String entityId) {
@@ -183,7 +185,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     }
 
     private String getURL(Integer start, String limit) {
-        logger.info("aaaadddd"+parentId);
+        logger.info("aaaadddd" + parentId);
         if (parentId == null) {
             return OfficeWelcome.constants.root_url() + "performance-evaluation/" + start.toString() + "/"
                     + limit.toString();
@@ -219,6 +221,5 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
             }
 
         }
-
     }
 }

@@ -10,15 +10,14 @@ package info.yalamanchili.office.employee.perfeval;
 
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
-import info.chili.security.Signature;
+import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
-import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
@@ -31,7 +30,6 @@ import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
-import info.yalamanchili.office.template.TemplateService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -189,31 +187,76 @@ public class PerformanceEvaluationService {
     }
     //TODO move to commons
 
-    public Response getReport(Long id) {
-        PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
-        Employee emp = null;
-        Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put("entity", evaluation);
-        vars.put("attitudeComments", getQuestionComments(id, QuestionCategory.ATTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER));
-        vars.put("managementComments", getQuestionComments(id, QuestionCategory.MANAGEMENT, QuestionContext.PERFORMANCE_EVALUATION_MANGER));
-        vars.put("skillComments", getQuestionComments(id, QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER));
-        String report = TemplateService.instance().process("performance-evaluation.xhtml", vars);
-        byte[] pdf = null;
-        if (emp == null) {
-            pdf = PDFUtils.convertToPDF(report);
+    public Response getReport(Long id, String type) {
+        if ("self".equals(type)) {
+            return generateSelfReviewReport(id);
         } else {
-            OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-            String branch = null;
-            if (emp.getBranch() != null) {
-                branch = emp.getBranch().name();
-            }
-            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(evaluation.getApprovedDate()), EmployeeDao.instance().getPrimaryEmail(emp), branch);
-            pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), signature);
+            return generateManagerReviewReport(id);
         }
-        return Response
-                .ok(pdf)
-                .header("content-disposition", "filename = performance-evaluation.pdf")
-                .header("Content-Length", pdf.length)
+    }
+
+    protected Response generateManagerReviewReport(Long id) {
+        PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
+        Employee employee = evaluation.getEmployee();
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/manger-review-template.pdf");
+        data.getData().put("fyYear", evaluation.getEvaluationFYYear());
+        data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
+        data.getData().put("employeeTitle", employee.getJobTitle());
+        data.getData().put("startDate", evaluation.getEvaluationPeriodStartDate().toString());
+        data.getData().put("endDate", evaluation.getEvaluationPeriodEndDate().toString());
+        Integer i = 1;
+        for (QuestionComment qc : getQuestionComments(id, QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER)) {
+            data.getData().put("sa-q" + i + "-question", qc.getQuestion());
+            data.getData().put("sa-q" + i + "-questionInfo", qc.getQuestionInfo());
+            if (qc.getRating() != null) {
+                data.getData().put("sa-q" + i + "-rating", qc.getRating().toString());
+            }
+            data.getData().put("sa-q" + i + "-comment", qc.getComment());
+            i++;
+        }
+        i = 1;
+        for (QuestionComment qc : getQuestionComments(id, QuestionCategory.ATTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER)) {
+            data.getData().put("a-q" + i + "-question", qc.getQuestion());
+            data.getData().put("a-q" + i + "-questionInfo", qc.getQuestionInfo());
+            if (qc.getRating() != null) {
+                data.getData().put("a-q" + i + "-rating", qc.getRating().toString());
+            }
+            data.getData().put("a-q" + i + "-comment", qc.getComment());
+            i++;
+        }
+        i = 1;
+        for (QuestionComment qc : getQuestionComments(id, QuestionCategory.MANAGEMENT, QuestionContext.PERFORMANCE_EVALUATION_MANGER)) {
+            data.getData().put("m-q" + i + "-question", qc.getQuestion());
+            data.getData().put("m-q" + i + "-questionInfo", qc.getQuestionInfo());
+            if (qc.getRating() != null) {
+                data.getData().put("m-q" + i + "-rating", qc.getRating().toString());
+            }
+            data.getData().put("m-q" + i + "-comment", qc.getComment());
+            i++;
+        }
+        byte[] pdf = PDFUtils.generatePdf(data);
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = manager-review.pdf")
+                .header("Content-Length", pdf)
+                .build();
+    }
+
+    protected Response generateSelfReviewReport(Long id) {
+        PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/self-review-template.pdf");
+        data.getData().put("fyYear", evaluation.getEvaluationFYYear());
+        Integer i = 1;
+        for (QuestionComment qc : getQuestionComments(id, QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF)) {
+            data.getData().put("question" + i, qc.getQuestion());
+            data.getData().put("answer" + i, qc.getComment());
+            i++;
+        }
+        byte[] pdf = PDFUtils.generatePdf(data);
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = self-review.pdf")
+                .header("Content-Length", pdf)
                 .build();
     }
 
