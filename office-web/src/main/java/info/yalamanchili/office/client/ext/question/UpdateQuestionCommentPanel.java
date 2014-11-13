@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -26,19 +27,19 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class UpdateQuestionCommentPanel extends UpdateComposite {
-
+    
     private static Logger logger = Logger.getLogger(UpdateQuestionCommentPanel.class.getName());
     protected HTML questionInfoL = new HTML("");
     protected RatingWidget ratingWidget;
     protected Boolean isRatingRequired;
     protected Boolean isCommentRequired;
-
+    
     public UpdateQuestionCommentPanel(JSONObject entity) {
         isRatingRequired = JSONUtils.toBoolean(entity, "questionRatingRequired");
         isCommentRequired = JSONUtils.toBoolean(entity, "questionCommentRequired");
         initUpdateComposite(entity, "QuestionComment", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("comment", entity);
@@ -50,57 +51,60 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
         entity.put("id", entity.get("commentId").isString());
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-
+                    
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("Successfuly update comment");
                     }
                 });
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
-
+        
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         questionInfoL.setHTML(entity.get("questionInfo").isString().stringValue());
-        assignFieldValueFromEntity("comment", entity, DataType.RICH_TEXT_AREA);
+        assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
         if (JSONUtils.toString(entity, "rating").isEmpty()) {
             ratingWidget.setRating(0);
         } else {
             ratingWidget.setRating(Double.valueOf(JSONUtils.toString(entity, "rating")).intValue());
         }
     }
-
+    
     @Override
     protected void addListeners() {
     }
-
+    
     @Override
     protected void configure() {
+        TextAreaField commentF = (TextAreaField) fields.get("comment");
+        commentF.getTextbox().setCharacterWidth(75);
+        commentF.getTextbox().setVisibleLines(4);
         entityCaptionPanel.setCaptionHTML("<b>" + JSONUtils.toString(entity, "question") + "</b>");
-        setButtonText("save");
+        update.setVisible(false);
     }
-
+    
     @Override
     protected void addWidgets() {
         ratingWidget = new RatingWidget(5, false, false);
         entityFieldsPanel.add(questionInfoL);
-        addField("comment", false, false, DataType.RICH_TEXT_AREA);
+        addField("comment", false, false, DataType.TEXT_AREA_FIELD);
         entityFieldsPanel.add(ratingWidget);
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "comment";

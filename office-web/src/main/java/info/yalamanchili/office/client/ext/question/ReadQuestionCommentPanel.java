@@ -12,6 +12,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.gwt.RatingWidget;
@@ -53,6 +54,9 @@ public class ReadQuestionCommentPanel extends ReadComposite {
 
     @Override
     protected void configure() {
+        TextAreaField commentF = (TextAreaField) fields.get("comment");
+        commentF.getTextbox().setCharacterWidth(75);
+        commentF.getTextbox().setVisibleLines(4);
         entityCaptionPanel.setCaptionHTML("<b>" + JSONUtils.toString(entity, "question") + "</b>");
     }
 
