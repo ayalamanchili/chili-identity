@@ -21,6 +21,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -192,8 +193,9 @@ public class StatusReport extends AbstractEntity {
     }
     
     @Transient
+    @Valid
     protected ReportDocument reportDocument;
-
+    
     public ReportDocument getReportDocument() {
         return reportDocument;
     }
