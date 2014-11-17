@@ -8,11 +8,9 @@
  */
 package info.yalamanchili.office.client.employee.prefeval;
 
-import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.SelectComposite;
+import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 
@@ -20,42 +18,37 @@ import info.yalamanchili.office.client.OfficeWelcome;
  *
  * @author ayalamanchili
  */
-public class SelectYearWidget extends ALComposite {
+public class SelectYearWidget extends SelectComposite {
 
-    protected FlowPanel panel = new FlowPanel();
-    public static String[] yearValuesArray = new String[]{"2012", "2013", "2014", "2015", "2016", "2017", "2018"};
-    protected EnumField yearField = new EnumField(OfficeWelcome.constants, "year", "PerformanceEvaluation",
-            false, false, yearValuesArray, Alignment.HORIZONTAL);
-    HTML message = new HTML("");
+    protected String employeeId;
 
-    public SelectYearWidget() {
-        init(panel);
+    public SelectYearWidget(String employeeId, Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "Year", readOnly, isRequired, Alignment.HORIZONTAL);
+        this.employeeId = employeeId;
     }
 
     @Override
-    protected void addListeners() {
-
+    protected void fetchDropDownData() {
+        HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "year "),
+                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String entityString) {
+                        processData(entityString);
+                    }
+                });
     }
 
     @Override
-    protected void configure() {
-
+    protected void validate() {
     }
 
     @Override
-    protected void addWidgets() {
-        panel.add(yearField);
-    }
-
-    public boolean validate() {
-        return true;
-    }
-
-    protected JSONString getValue() {
-        if (yearField.getValue() == null) {
-            return null;
+    protected String getDropDownURL(Integer start, Integer limit, String... columns) {
+        if (employeeId == null) {
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/years";
         } else {
-            return new JSONString(yearField.getValue());
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/years?employeeId=" + employeeId;
         }
+
     }
 }

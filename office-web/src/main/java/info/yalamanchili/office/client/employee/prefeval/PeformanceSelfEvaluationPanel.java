@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -35,7 +36,7 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     protected CaptionPanel cp = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     protected HTML purposeHtml = new HTML("<b>Instructions: </b></br> Your manager will utilize the information you provide to the following questions for </br>your FY performance review.");
-    protected SelectYearWidget selectYearWidget = new SelectYearWidget();
+    protected SelectYearWidget selectYearWidget = new SelectYearWidget(null, false, true);
     protected CreateQuestionCommentsWidget selfEvalCommentsPanel = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF, false, false);
     protected Button create = new Button("Create Self Evaluation");
 
@@ -88,15 +89,15 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
 
     protected JSONObject getEntity() {
         JSONObject entity = new JSONObject();
-        entity.put("year", selectYearWidget.getValue());
+        entity.put("year", selectYearWidget.getSelectedObject().get("id").isString());
         entity.put("comments", selfEvalCommentsPanel.getValues());
         logger.info(entity.toString());
         return entity;
     }
 
     protected boolean validate() {
-        if (selectYearWidget.getValue() == null) {
-            selectYearWidget.yearField.setMessage("Please select a value");
+        if (selectYearWidget.getSelectedObject() == null) {
+            selectYearWidget.setMessage("Please select a value");
             return false;
         }
         return selfEvalCommentsPanel.validate();

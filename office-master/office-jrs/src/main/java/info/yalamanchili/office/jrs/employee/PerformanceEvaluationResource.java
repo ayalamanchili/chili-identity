@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -77,6 +78,19 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
         PerformanceEvaluationService.instance().saveCorporatePerformanceEvaluation(emp, dto, submitForApproval);
+    }
+
+    @GET
+    @Path("/years")
+    public List<Entry> getFYYears(@QueryParam("employeeId") Long employeeId) {
+        Employee emp = null;
+        if (employeeId != null) {
+            emp = EmployeeDao.instance().findById(employeeId);
+        }
+        if (emp == null) {
+            emp = OfficeSecurityService.instance().getCurrentUser();
+        }
+        return PerformanceEvaluationService.instance().getFYYears(emp);
     }
 
     @GET

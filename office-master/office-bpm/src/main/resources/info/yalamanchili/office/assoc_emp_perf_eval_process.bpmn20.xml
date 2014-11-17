@@ -14,10 +14,10 @@
         <startEvent id="start"/>
         
         <!-- Manager approval task-->
-        <sequenceFlow  sourceRef="start" targetRef="eemReviewTask" />
-        <userTask id="eemReviewTask" 
+        <sequenceFlow  sourceRef="start" targetRef="hrReviewTask" />
+        <userTask id="hrReviewTask" 
                   name="Performance Evaluation Review Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
-                  activiti:candidateGroups="ROLE_RELATIONSHIP">
+                  activiti:candidateGroups="ROLE_H1B_IMMIGRATION,ROLE_GC_IMMIGRATION">
             <documentation>
                 Performance Evaluation Review Task
                 Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
@@ -42,22 +42,22 @@
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="eemReviewTaskEscalationTimer"
+        <boundaryEvent id="hrReviewTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="eemReviewTask">
+                       attachedToRef="hrReviewTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="eemReviewTaskEscalationTimer" 
-                      targetRef="eemReviewTaskEscalation" />
-        <serviceTask id="eemReviewTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="hrReviewTaskEscalationTimer" 
+                      targetRef="hrReviewTaskEscalation" />
+        <serviceTask id="hrReviewTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="eemReviewTask" 
+        <sequenceFlow sourceRef="hrReviewTask" 
                       targetRef="approvalGateway" />
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
-                      targetRef="hrFinalApprovalTask">
+                      targetRef="eemApprovalTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
@@ -68,11 +68,11 @@
                 ${status == 'rejected'}
             </conditionExpression>
         </sequenceFlow>
-        <userTask id="hrFinalApprovalTask" 
-                  name="Performance Evaluation Final HR Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_H1B_IMMIGRATION,ROLE_GC_IMMIGRATION">
+        <userTask id="eemApprovalTask" 
+                  name="Performance Evaluation Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_RELATIONSHIP">
             <documentation>
-                Performance Evaluation Final HR Approval Task
+                Performance Evaluation Engagement Task
                 Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Evaluation Fiscal Year     : #{entity.evaluationFYYear}
                 Rating                     : #{entity.rating}
@@ -87,17 +87,17 @@
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
-        <boundaryEvent id="finalHRApprovalTaskEscalationTimer"
+        <boundaryEvent id="eemApprovalTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="hrFinalApprovalTask">
+                       attachedToRef="eemApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="finalHRApprovalTaskEscalationTimer" 
-                      targetRef="finalHRApprovalTaskEscalation" />
-        <serviceTask id="finalHRApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <sequenceFlow  sourceRef="hrFinalApprovalTask" targetRef="end" />
+        <sequenceFlow sourceRef="eemApprovalTaskEscalationTimer" 
+                      targetRef="eemApprovalTaskEscalation" />
+        <serviceTask id="eemApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow  sourceRef="eemApprovalTask" targetRef="end" />
         <endEvent id="end" />
     </process>
 </definitions>

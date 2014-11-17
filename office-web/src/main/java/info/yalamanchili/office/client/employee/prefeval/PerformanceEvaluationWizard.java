@@ -222,7 +222,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         protected void validate() {
             getWidget().clearMessages();
-            if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name()) && perfEvalStartStep.getWidget().getYearField().getValue() == null) {
+            if (stepId.equals(CreatePerformanceEvaluationPanelType.Start.name()) && perfEvalStartStep.getWidget().getYearField() != null && perfEvalStartStep.getWidget().getYearField().getSelectedObject() == null) {
                 perfEvalStartStep.getWidget().getYearField().setMessage("Select a Year");
             }
             nextClicked();

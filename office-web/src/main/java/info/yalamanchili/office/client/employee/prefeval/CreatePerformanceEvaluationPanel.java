@@ -11,10 +11,10 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -61,7 +61,9 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("evaluationFYYear", entity, DataType.ENUM_FIELD);
+        if (fields.containsKey("evaluationFYYear")) {
+            assignFieldValueFromEntity("evaluationFYYear", entity, null);
+        }
     }
 
     @Override
@@ -73,7 +75,10 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             assignEntityValueFromField("evaluationPeriodStartDate", entity);
             assignEntityValueFromField("evaluationPeriodEndDate", entity);
             assignEntityValueFromField("type", entity);
-            assignEntityValueFromField("evaluationFYYear", entity);
+            if (fields.containsKey("evaluationFYYear")) {
+                SelectComposite yearF = (SelectComposite) fields.get("evaluationFYYear");
+                entity.put("evaluationFYYear", yearF.getSelectedObject().get("id").isString());
+            }
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             assignEntityValueFromField("keyAccomplishments", entity);
@@ -121,8 +126,12 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         }
     }
 
-    public EnumField getYearField() {
-        return ((EnumField) fields.get("evaluationFYYear"));
+    public SelectComposite getYearField() {
+        if (fields.containsKey("evaluationFYYear")) {
+            return ((SelectComposite) fields.get("evaluationFYYear"));
+        } else {
+            return null;
+        }
     }
 
     public String getSubmitForApproval() {
@@ -136,11 +145,10 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
                 //Manager review
                 addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD);
                 addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD);
-                addEnumField("evaluationFYYear", true, false, SelectYearWidget.yearValuesArray);
                 addEnumField("type", true, false, EvaluationFrequencyType.names());
             } else {
                 //Create new review
-                addEnumField("evaluationFYYear", false, false, SelectYearWidget.yearValuesArray);
+                addDropDown("evaluationFYYear", new SelectYearWidget(null, false, false));
             }
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {

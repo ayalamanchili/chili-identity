@@ -12,6 +12,7 @@ import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
+import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -35,11 +36,14 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
@@ -188,7 +192,31 @@ public class PerformanceEvaluationService {
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
         return QuestionService.instance().getQuestionComments(id, category, context);
     }
-    //TODO move to commons
+
+    public List<Entry> getFYYears(Employee emp) {
+        List<Entry> res = new ArrayList<Entry>();
+        Set<String> years = getFYYears();
+        for (PerformanceEvaluation pe : performanceEvaluationDao.getPerformanceEvaluationsForEmp(emp)) {
+            years.remove(pe.getEvaluationFYYear());
+        }
+        for (String str : years) {
+            Entry e = new Entry();
+            e.setId(str);
+            e.setValue(str);
+            res.add(e);
+        }
+        return res;
+    }
+
+    public Set<String> getFYYears() {
+        Set<String> fyYears = new HashSet<String>();
+        fyYears.add("2012");
+        fyYears.add("2013");
+        fyYears.add("2014");
+        fyYears.add("2015");
+        fyYears.add("2016");
+        return fyYears;
+    }
 
     public Response getReport(Long id, String type) {
         if ("self".equals(type)) {

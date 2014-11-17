@@ -52,9 +52,9 @@ public class AssociatePerfEvalProcess implements TaskListener {
     protected void savePerformanceEvaluation(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
-        if ("eemReviewTask".equals(task.getTaskDefinitionKey())) {
+        if ("eemApprovalTask".equals(task.getTaskDefinitionKey())) {
             entity.setStage(PerformanceEvaluationStage.Manager_Review);
-        } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
+        } else if ("hrReviewTask".equals(task.getTaskDefinitionKey())) {
             entity.setStage(PerformanceEvaluationStage.HR_Approval);
         }
         entity.setEvaluationDate(new Date());
@@ -68,22 +68,21 @@ public class AssociatePerfEvalProcess implements TaskListener {
         if (entity == null) {
             return;
         }
-        if ("eemReviewTask".equals(task.getTaskDefinitionKey())) {
+        if ("eemApprovalTask".equals(task.getTaskDefinitionKey())) {
             String notes = (String) task.getExecution().getVariable("managerNotes");
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setApprovedBy(currentUser.getEmployeeId());
             if (!Strings.isNullOrEmpty(notes)) {
                 entity.setManagerComments(notes);
             }
-        } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
+            entity.setStage(PerformanceEvaluationStage.Complete);
+        } else if ("hrReviewTask".equals(task.getTaskDefinitionKey())) {
             String notes = (String) task.getExecution().getVariable("hrNotes");
             if (!Strings.isNullOrEmpty(notes)) {
                 entity.setHrComments(notes);
             }
-            entity.setStage(PerformanceEvaluationStage.Complete);
-
-            PerformanceEvaluationDao.instance().save(entity);
         }
+        PerformanceEvaluationDao.instance().save(entity);
     }
 
     protected PerformanceEvaluation getPerformanceEvaluationFromTask(DelegateTask task) {
