@@ -91,17 +91,17 @@ public class ReportDocument implements Serializable {
     /**
      *
      */
-    @Size(min = 3, max = 400)
+    @Size(min = 3, max = 400, message="{reportDocument.statusDescription.length.invalid.msg}")
     protected String statusDescription;
     /**
      *
      */
-    @Size(min = 3, max = 400)
+    @Size(min = 3, max = 400, message="{reportDocument.accomplishments.length.invalid.msg}")
     protected String accomplishments;
     /**
      *
      */
-    @Size(min = 3, max = 400)
+   @Size(min = 3, max = 400, message="{reportDocument.scheduledActivities.length.invalid.msg}")
     protected String scheduledActivities;
 
     public String getProjectDescription() {
