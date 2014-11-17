@@ -109,9 +109,10 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
         } else {
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
+        PerformanceEvaluationDao.instance().acceccCheck(emp);
         PerformanceEvaluationTable tableObj = new PerformanceEvaluationTable();
         tableObj.setEntities(performanceEvaluationDao.getPerformanceEvaluationsForEmp(emp));
-        tableObj.setSize(getDao().size());
+        tableObj.setSize(performanceEvaluationDao.size(emp));
         return tableObj;
     }
 

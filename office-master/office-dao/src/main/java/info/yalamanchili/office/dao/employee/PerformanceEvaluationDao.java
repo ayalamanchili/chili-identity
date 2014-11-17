@@ -24,9 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -45,7 +48,6 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
     }
 
     public List<PerformanceEvaluation> getPerformanceEvaluationsForEmp(Employee emp) {
-        acceccCheck(emp);
         List<PerformanceEvaluation> performanceEvaluations = new ArrayList<PerformanceEvaluation>();
         TypedQuery<PerformanceEvaluation> query = em.createQuery("from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", PerformanceEvaluation.class);
         query.setParameter("employeeParam", emp);
@@ -64,7 +66,14 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         return performanceEvaluations;
     }
 
-    protected void acceccCheck(Employee employee) {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public Long size(Employee emp) {
+        TypedQuery<Long> sizeQuery = em.createQuery("select count (*) from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", Long.class);
+        sizeQuery.setParameter("employeeParam", emp);
+        return (Long) sizeQuery.getSingleResult();
+    }
+
+    public void acceccCheck(Employee employee) {
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (employee.getId().equals(currentUser.getId())) {
             return;
