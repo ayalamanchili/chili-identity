@@ -10,7 +10,6 @@ package info.yalamanchili.office.client.config;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.i18n.client.constants.TimeZoneConstants;
-import java.util.Date;
 
 /**
  *
@@ -37,7 +36,7 @@ public class OfficeClientConfigDev implements OfficeClientConfig {
 
     @Override
     public String getPortalDocumentationSiteUrl() {
-        return "http://localhost/site/office/";
+        return "https://apps.sstech.us/site/office/";
     }
 
     @Override

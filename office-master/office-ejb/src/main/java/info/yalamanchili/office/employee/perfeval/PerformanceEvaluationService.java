@@ -228,9 +228,12 @@ public class PerformanceEvaluationService {
 
     protected Response generateManagerReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
+        OfficeServiceConfiguration serviceConfig = OfficeServiceConfiguration.instance();
+        OfficeSecurityConfiguration securityConfig = OfficeSecurityConfiguration.instance();
         Employee employee = evaluation.getEmployee();
         PdfDocumentData data = new PdfDocumentData();
-        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/manger-review-template.pdf");
+        data.setKeyStoreName(securityConfig.getKeyStoreName());
+        data.setTemplateUrl(serviceConfig.getContentManagementLocationRoot() + "/templates/manger-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
         data.getData().put("employeeTitle", employee.getJobTitle());
@@ -266,6 +269,36 @@ public class PerformanceEvaluationService {
             data.getData().put("m-q" + i + "-comment", qc.getComment());
             i++;
         }
+        data.getData().put("keyResults", evaluation.getKeyAccomplishments());
+        data.getData().put("areasNeedImp", evaluation.getAreasNeedImprovement());
+        data.getData().put("managerComments", evaluation.getManagerComments());
+        data.getData().put("employeeComments", evaluation.getEmployeeComments());
+        data.getData().put("areasNeedImp", evaluation.getAreasNeedImprovement());
+        if (evaluation.getRating() != null) {
+            data.getData().put("rating", evaluation.getRating().toString());
+        }
+        data.getData().put("nextFYObjectives", evaluation.getNextYearObjectives());
+        EmployeeDao employeeDao = EmployeeDao.instance();
+        //Manager 
+        if (evaluation.getApprovedBy() != null) {
+            Employee manager = employeeDao.findEmployeWithEmpId(evaluation.getApprovedBy());
+            Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "managerSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(manager), null);
+            data.getSignatures().add(approvedBysignature);
+            data.getData().put("managerTitle", manager.getJobTitle());
+            data.getData().put("managerName", manager.getFirstName() + " " + manager.getLastName());
+        }
+        //HR 
+        if (evaluation.getHrApprovalBy() != null) {
+            Employee hr = employeeDao.findEmployeWithEmpId(evaluation.getHrApprovalBy());
+            Signature hrSignature = new Signature(hr.getEmployeeId(), hr.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "hrSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(hr), null);
+            data.getSignatures().add(hrSignature);
+            data.getData().put("hrTitle", hr.getJobTitle());
+            data.getData().put("hrName", hr.getFirstName() + " " + hr.getLastName());
+        }
+        //Employee
+        Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(employee), null);
+        data.getSignatures().add(employeeSignature);
+        data.getData().put("employeeTitle", employee.getJobTitle());
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = manager-review.pdf")

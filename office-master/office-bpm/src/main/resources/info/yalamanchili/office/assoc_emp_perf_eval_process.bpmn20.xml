@@ -69,7 +69,7 @@
             </conditionExpression>
         </sequenceFlow>
         <userTask id="eemApprovalTask" 
-                  name="Engagement Performance Evaluation Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  name="Engagement Manager Performance Evaluation Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
                   activiti:candidateGroups="ROLE_RELATIONSHIP">
             <documentation>
                 Performance Evaluation Engagement Task

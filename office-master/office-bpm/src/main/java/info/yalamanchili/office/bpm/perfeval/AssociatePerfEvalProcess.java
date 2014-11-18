@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class AssociatePerfEvalProcess implements TaskListener {
-
+    
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -42,13 +42,13 @@ public class AssociatePerfEvalProcess implements TaskListener {
             perfEvalTaskCompleted(task);
             new GenericTaskCompleteNotification().notify(task);
         }
-
+        
     }
-
+    
     protected void perfEvalTaskCreated(DelegateTask task) {
         savePerformanceEvaluation(task);
     }
-
+    
     protected void savePerformanceEvaluation(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
@@ -62,7 +62,7 @@ public class AssociatePerfEvalProcess implements TaskListener {
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
     }
-
+    
     protected void perfEvalTaskCompleted(DelegateTask task) {
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
         if (entity == null) {
@@ -72,19 +72,23 @@ public class AssociatePerfEvalProcess implements TaskListener {
             String notes = (String) task.getExecution().getVariable("managerNotes");
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setApprovedBy(currentUser.getEmployeeId());
+            entity.setApprovedDate(new Date());
             if (!Strings.isNullOrEmpty(notes)) {
                 entity.setManagerComments(notes);
             }
             entity.setStage(PerformanceEvaluationStage.Complete);
         } else if ("hrReviewTask".equals(task.getTaskDefinitionKey())) {
             String notes = (String) task.getExecution().getVariable("hrNotes");
+            Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+            entity.setHrApprovalBy(currentUser.getEmployeeId());
+            entity.setHrApprovalDate(new Date());
             if (!Strings.isNullOrEmpty(notes)) {
                 entity.setHrComments(notes);
             }
         }
         PerformanceEvaluationDao.instance().save(entity);
     }
-
+    
     protected PerformanceEvaluation getPerformanceEvaluationFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {

@@ -19,12 +19,15 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
+import info.chili.gwt.widgets.DocumentationWidget;
+import info.chili.gwt.composite.LocalStorage;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -107,6 +110,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
                     public void onResponse(String result) {
                         logger.info(result);
                         postFetchTable(result);
+                        autoShowDocumentation();
                     }
                 });
     }
@@ -222,4 +226,24 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
 
         }
     }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        if (Auth.isCorporateEmployee()) {
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "perf-eval/associate-process-overview.html";
+        } else {
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "perf-eval/associate-process-overview.html";
+        }
+    }
+
+    @Override
+    protected boolean autoShowDocumentation() {
+        return true;
+    }
+
 }
