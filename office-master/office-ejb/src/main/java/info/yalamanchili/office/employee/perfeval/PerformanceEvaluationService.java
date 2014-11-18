@@ -246,7 +246,7 @@ public class PerformanceEvaluationService {
             if (qc.getRating() != null) {
                 data.getData().put("sa-q" + i + "-rating", qc.getRating().toString());
             }
-            data.getData().put("sa-q" + i + "-comment", qc.getComment());
+            data.getData().put("sa-q" + i + "-comment", "Comments: " + qc.getComment());
             i++;
         }
         i = 1;
@@ -256,7 +256,7 @@ public class PerformanceEvaluationService {
             if (qc.getRating() != null) {
                 data.getData().put("a-q" + i + "-rating", qc.getRating().toString());
             }
-            data.getData().put("a-q" + i + "-comment", qc.getComment());
+            data.getData().put("a-q" + i + "-comment", "Comments: " + qc.getComment());
             i++;
         }
         i = 1;
@@ -266,7 +266,7 @@ public class PerformanceEvaluationService {
             if (qc.getRating() != null) {
                 data.getData().put("m-q" + i + "-rating", qc.getRating().toString());
             }
-            data.getData().put("m-q" + i + "-comment", qc.getComment());
+            data.getData().put("m-q" + i + "-comment", "Comments: " + qc.getComment());
             i++;
         }
         data.getData().put("keyResults", evaluation.getKeyAccomplishments());
