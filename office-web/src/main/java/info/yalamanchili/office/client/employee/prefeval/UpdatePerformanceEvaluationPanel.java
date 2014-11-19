@@ -18,6 +18,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
@@ -53,7 +55,6 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("evaluationDate", entity);
         assignEntityValueFromField("evaluationPeriodStartDate", entity);
         assignEntityValueFromField("evaluationPeriodEndDate", entity);
-        assignEntityValueFromField("type", entity);
         assignEntityValueFromField("keyAccomplishments", entity);
         assignEntityValueFromField("areasNeedImprovement", entity);
         assignEntityValueFromField("nextYearObjectives", entity);
@@ -62,7 +63,12 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             assignEntityValueFromField("employeeComments", entity);
             assignEntityValueFromField("hrComments", entity);
         }
-
+        if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_RELATIONSHIP)) {
+            assignEntityValueFromField("approvedBy", entity);
+            assignEntityValueFromField("approvedDate", entity);
+            assignEntityValueFromField("hrApprovalBy", entity);
+            assignEntityValueFromField("hrApprovalDate", entity);
+        }
         perfEval.put("performanceEvaluation", entity);
         JSONArray questionComments = new JSONArray();
         JSONArray selfReviewQuestions;
@@ -125,7 +131,6 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
@@ -133,6 +138,12 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
             assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
             assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
             assignFieldValueFromEntity("hrComments", entity, DataType.TEXT_AREA_FIELD);
+        }
+        if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_RELATIONSHIP)) {
+            assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("hrApprovalBy", entity, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("hrApprovalDate", entity, DataType.DATE_FIELD);
         }
     }
 
@@ -176,7 +187,12 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addField("evaluationDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("type", true, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
+        if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_RELATIONSHIP)) {
+            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+            addField("hrApprovalBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            addField("hrApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        }
         addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -225,9 +241,9 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     @Override
     protected String getURI() {
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
-            return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + getSubmitForApproval();
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/save?submitForApproval=" + getSubmitForApproval();
         } else if ((PerformanceEvaluationWizardType.MANAGER.equals(type))) {
-            return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review?employeeId=" + TreeEmployeePanel.instance().getEntityId();
+            return OfficeWelcome.constants.root_url() + "performance-evaluation/save?employeeId=" + TreeEmployeePanel.instance().getEntityId();
         } else {
             return null;
         }

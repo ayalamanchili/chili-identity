@@ -104,6 +104,6 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     }
 
     protected String getUrl() {
-        return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review?submitForApproval=true";
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/save?submitForApproval=true";
     }
 }

@@ -9,6 +9,7 @@ package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -61,14 +62,7 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @PUT
-    @Path("/associate/save-review")
-    public void createAssociateReview(PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") Boolean submitForApproval) {
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        PerformanceEvaluationService.instance().saveAssociateReview(emp, dto, submitForApproval);
-    }
-
-    @PUT
-    @Path("/corporate/save-review")
+    @Path("/save")
     public void createCorporateReview(@QueryParam("employeeId") Long employeeId, PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
         Employee emp = null;
         if (employeeId != null) {
@@ -77,7 +71,12 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
         if (emp == null) {
             emp = OfficeSecurityService.instance().getCurrentUser();
         }
-        PerformanceEvaluationService.instance().saveCorporatePerformanceEvaluation(emp, dto, submitForApproval);
+        if (OfficeSecurityService.instance().getUserRoles(emp).contains(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            PerformanceEvaluationService.instance().saveCorporatePerformanceEvaluation(emp, dto, submitForApproval);
+        } else {
+            PerformanceEvaluationService.instance().saveAssociateReview(emp, dto, submitForApproval);
+        }
+
     }
 
     @GET

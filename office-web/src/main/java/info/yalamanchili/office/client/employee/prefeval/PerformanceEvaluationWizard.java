@@ -156,9 +156,9 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
 
         protected String getCompleteUrl() {
             if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
-                return OfficeWelcome.constants.root_url() + "performance-evaluation/associate/save-review?submitForApproval=" + perfEvalEndStep.getWidget().getSubmitForApproval();
+                return OfficeWelcome.constants.root_url() + "performance-evaluation/save?submitForApproval=" + perfEvalEndStep.getWidget().getSubmitForApproval();
             } else if ((PerformanceEvaluationWizardType.MANAGER.equals(type))) {
-                return OfficeWelcome.constants.root_url() + "performance-evaluation/corporate/save-review?employeeId=" + employeeId;
+                return OfficeWelcome.constants.root_url() + "performance-evaluation/save?employeeId=" + employeeId;
             } else {
                 return null;
             }

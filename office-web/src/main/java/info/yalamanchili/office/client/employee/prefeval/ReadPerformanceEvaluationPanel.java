@@ -60,9 +60,12 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("type", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("rating", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("stage", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("hrApprovalBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("hrApprovalDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
@@ -95,9 +98,12 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("evaluationDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("type", true, true, EvaluationFrequencyType.names(), Alignment.HORIZONTAL);
         addField("rating", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addEnumField("stage", true, true, PerformanceEvaluationStage.names(), Alignment.HORIZONTAL);
+        addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("approvedDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("hrApprovalBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("hrApprovalDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("keyAccomplishments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("areasNeedImprovement", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("nextYearObjectives", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
