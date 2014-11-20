@@ -26,8 +26,8 @@
                 Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Evaluation Fiscal Year     : #{entity.evaluationFYYear}
                 
-                Follow instructions from below:
-                https://apps.sstech.us/site/office/perfeval/corp-emp-perf-eval-process.html
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
@@ -56,11 +56,13 @@
                   name="Performance Evaluation Accept with comments Task"
                   activiti:assignee="${currentEmployee.employeeId}" >
             <documentation>
-                Your manager has completed your performance review and its ready for your comments.
+                Your manager has completed your performance review and its ready for your comments and acceptance.
                 1) Please review your evaluation under Home--> My Reports--> Performance Evaluations
                 2) Once review is complete please go to My Tasks--> to add your comment and complete it.
                 Evaluation Fiscal Year     : #{entity.evaluationFYYear}
-                Rating                     : #{entity.rating}                
+                Rating                     : #{entity.rating}   
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/perf-eval/corp-submit-review.html                             
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
@@ -95,11 +97,14 @@
             <documentation>
                 Performance Evaluation Final HR Approval Task
                 Employee has accepted the performance review.
-                Please add comments to complete the review.
+                Please add comments to task (My Tasks) to complete review.
                 Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Evaluation Fiscal Year     : #{entity.evaluationFYYear}
                 Rating                     : #{entity.rating}
                 
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html
+                                
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />

@@ -121,6 +121,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Complete");
+
     }
 
     @Override
@@ -160,6 +161,12 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                     enumVals.put(JSONUtils.toString(enm, "id"), JSONUtils.toString(enm, "value"));
                 }
                 addEnumField(JSONUtils.toString(formProperty, "id"), false, isRequired, enumVals);
+            }
+        }
+        for (String str : fields.keySet()) {
+            if (fields.get(str) instanceof StringField) {
+                StringField sf = (StringField) fields.get(str);
+                sf.getTextbox().setVisibleLength(60);
             }
         }
     }
