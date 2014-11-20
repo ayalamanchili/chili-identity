@@ -138,6 +138,14 @@ public class CreateStatusReportPanel extends CreateComposite {
         formatStringFields();
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
         previewF = (BooleanField) fields.get("preview");
+        StringField p1 = (StringField) fields.get("projectPhase1Deliverable");
+        p1.getTextbox().setVisibleLength(90);
+        StringField p2 = (StringField) fields.get("projectPhase2Deliverable");
+        p2.getTextbox().setVisibleLength(90);
+        StringField p3 = (StringField) fields.get("projectPhase3Deliverable");
+        p3.getTextbox().setVisibleLength(90);
+        StringField p4 = (StringField) fields.get("projectPhase4Deliverable");
+        p4.getTextbox().setVisibleLength(90);
     }
 
     protected void formatStringFields() {
@@ -169,22 +177,22 @@ public class CreateStatusReportPanel extends CreateComposite {
 
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 1"));
         addField("projectPhase1Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase1Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase1Deliverable", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase1EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase1Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 2"));
         addField("projectPhase2Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase2Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase2Deliverable", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase2EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase2Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 3"));
         addField("projectPhase3Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase3Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase3Deliverable", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase3EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase3Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Phase 4"));
         addField("projectPhase4Name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("projectPhase4Deliverable", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("projectPhase4Deliverable", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase4EndDate", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("projectPhase4Status", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Status, Accomplishments and Scheduled Activities"));
@@ -210,7 +218,51 @@ public class CreateStatusReportPanel extends CreateComposite {
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
-        return true;
+        boolean valid = true;
+        boolean focus = true;
+        TextAreaField projectDescriptionF = (TextAreaField) fields.get("projectDescription");
+        if (numberOfLines(projectDescriptionF) > 5) {
+            projectDescriptionF.setMessage("Cannot exceed more than 5 lines");
+            valid = false;
+            if (focus) {
+                projectDescriptionF.focus(focus);
+            }
+            focus = false;
+        }
+        TextAreaField statusDescriptionF = (TextAreaField) fields.get("statusDescription");
+        if (numberOfLines(statusDescriptionF) > 5) {
+            statusDescriptionF.setMessage("Cannot exceed more than 5 lines");
+            valid = false;
+            if (focus) {
+                statusDescriptionF.focus(focus);
+            }
+            focus = false;
+        }
+        TextAreaField accomplishmentsF = (TextAreaField) fields.get("accomplishments");
+        if (numberOfLines(accomplishmentsF) > 5) {
+            accomplishmentsF.setMessage("Cannot exceed more than 5 lines");
+            valid = false;
+            if (focus) {
+                accomplishmentsF.focus(focus);
+            }
+            focus = false;
+        }
+
+        TextAreaField scheduledActivitiesF = (TextAreaField) fields.get("scheduledActivities");
+        if (numberOfLines(scheduledActivitiesF) > 5) {
+            scheduledActivitiesF.setMessage("Cannot exceed more than 5 lines");
+            valid = false;
+            if (focus) {
+                scheduledActivitiesF.focus(focus);
+            }
+        }
+        return valid;
+    }
+
+    protected int numberOfLines(TextAreaField textArea) {
+        String[] lines = textArea.getTextbox().getText().split("\r\n|\r|\n");
+        return lines.length;
+
     }
 
     @Override

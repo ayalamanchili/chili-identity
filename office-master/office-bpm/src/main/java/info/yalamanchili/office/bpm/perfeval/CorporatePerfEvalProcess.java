@@ -26,7 +26,7 @@ import org.activiti.engine.delegate.TaskListener;
  * @author ayalamanchili
  */
 public class CorporatePerfEvalProcess implements TaskListener {
-    
+
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -37,16 +37,16 @@ public class CorporatePerfEvalProcess implements TaskListener {
             perfEvalTaskCompleted(task);
             new GenericTaskCompleteNotification().notify(task);
         }
-        
+
     }
-    
+
     protected void perfEvalTaskCreated(DelegateTask task) {
         savePerformanceEvaluation(task);
         if (task.getTaskDefinitionKey().equals("managerReviewTask")) {
             assignManagerReviewTask(task);
         }
     }
-    
+
     protected void savePerformanceEvaluation(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
@@ -62,7 +62,7 @@ public class CorporatePerfEvalProcess implements TaskListener {
         task.getExecution().setVariable("entity", entity);
         task.getExecution().setVariable("entityId", entity.getId());
     }
-    
+
     protected void assignManagerReviewTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
@@ -72,10 +72,10 @@ public class CorporatePerfEvalProcess implements TaskListener {
         if (manager != null) {
             task.addCandidateUser(manager.getEmployeeId());
         } else {
-            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR.name());
+            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
         }
     }
-    
+
     protected void perfEvalTaskCompleted(DelegateTask task) {
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
         if (entity == null) {
@@ -100,7 +100,7 @@ public class CorporatePerfEvalProcess implements TaskListener {
         }
         PerformanceEvaluationDao.instance().save(entity);
     }
-    
+
     protected PerformanceEvaluation getPerformanceEvaluationFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {

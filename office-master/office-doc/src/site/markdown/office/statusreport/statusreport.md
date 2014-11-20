@@ -11,6 +11,8 @@ How to submit a Status Report
  - Please keep a watch on your emails for any comments and updates on your report. The HR and the EEM team can add commments based on the review. 
  - Once the review is complete you will be receiving a email notifications about the confirmation.
 
+###  It is very important to click "Print or Preview" to review the format of the report before you submit.
+
 Reports updates
 ----
 
@@ -26,12 +28,7 @@ Submit Project Status Report
 ----
 
 Once Employee Fill The All Required Details. Emplyee Can save the data and  preview data .
-![alt text](../../images/statusreport/Status_Report.png "Submit Status Report")
-
-Update Status Report in response to Comment
-----
-![alt text](../../images/statusreport/Add_Hr_Comment.png "Status Report")
-
+![alt text](../../images/statusreport/preview-report.png "Submit Status Report")
 
 Print Status Report
 ===========
@@ -40,4 +37,8 @@ Navigate to Home --> My Projects --> Projects Reports --> Print
 Print the Status Report
 ----
 ![alt text](../../images/statusreport/print-status-report.png "Status Report")
+
+Update Status Report in response to Comment
+----
+![alt text](../../images/statusreport/Add_Hr_Comment.png "Status Report")
 

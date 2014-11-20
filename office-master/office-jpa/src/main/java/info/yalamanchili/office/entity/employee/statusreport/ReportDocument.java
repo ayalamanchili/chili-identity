@@ -23,85 +23,102 @@ public class ReportDocument implements Serializable {
     /**
      *
      */
+    @Size(min = 3, max = 370)
     protected String projectDescription;
     /**
      * Project Phase 1
      */
+    @Size(max = 40)
     protected String projectPhase1Name;
     /**
      *
      */
+    @Size(max = 90)
     protected String projectPhase1Deliverable;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase1EndDate;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase1Status;
     /**
      * Project Phase 2
      */
+    @Size(max = 40)
     protected String projectPhase2Name;
     /**
      *
      */
+    @Size(max = 90)
     protected String projectPhase2Deliverable;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase2EndDate;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase2Status;
     /**
      * Project Phase 3
      */
+    @Size(max = 40)
     protected String projectPhase3Name;
     /**
      *
      */
+    @Size(max = 90)
     protected String projectPhase3Deliverable;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase3EndDate;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase3Status;
     /**
      * Project Phase 4
      */
+    @Size(max = 40)
     protected String projectPhase4Name;
     /**
      *
      */
+    @Size(max = 90)
     protected String projectPhase4Deliverable;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase4EndDate;
     /**
      *
      */
+    @Size(max = 20)
     protected String projectPhase4Status;
     /**
      *
      */
-    @Size(min = 3, max = 400, message="{reportDocument.statusDescription.length.invalid.msg}")
+    @Size(min = 3, max = 400, message = "{reportDocument.statusDescription.length.invalid.msg}")
     protected String statusDescription;
     /**
      *
      */
-    @Size(min = 3, max = 400, message="{reportDocument.accomplishments.length.invalid.msg}")
+    @Size(min = 3, max = 400, message = "{reportDocument.accomplishments.length.invalid.msg}")
     protected String accomplishments;
     /**
      *
      */
-   @Size(min = 3, max = 400, message="{reportDocument.scheduledActivities.length.invalid.msg}")
+    @Size(min = 3, max = 400, message = "{reportDocument.scheduledActivities.length.invalid.msg}")
     protected String scheduledActivities;
 
     public String getProjectDescription() {

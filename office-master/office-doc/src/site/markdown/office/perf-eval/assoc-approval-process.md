@@ -7,13 +7,15 @@ Associate Performance Evaluation Process
 HR (h1b) Review and Approve Task.
 -----
 
- - When the employee submits the review you will Task and email to review the evaluation and approve it.
+ - When the employee submits the review HR (H1b) will get a Task and email to review the evaluation and approve it.
+ - Please navigate to MyOffice-->Search-->Employee>View-->Reports--> Performance Evaluations--> View to review
+ - Click on *Print Self Review* and *Print Manager Review* to verify the report.
+ - Once review is complete Navigate to Home--> My Tasks to approve it with apprioriate comments.
 
-![alt text](../../images/perf-eval/assoc-view-review-1.png "Self Service")
-![alt text](../../images/perf-eval/assoc-view-review-2.png "Self Service")
+![alt text](../../images/perf-eval/assoc-view-review.png "Self Service")
 
-![alt text](../../images/perf-eval/assoc-eem-review-1.png "Self Service")
-![alt text](../../images/perf-eval/assoc-eem-review-2.png "Self Service")
+![alt text](../../images/perf-eval/assoc-review-approve-1.png "Self Service")
+![alt text](../../images/perf-eval/assoc-review-approve-2.png "Self Service")
 
 Engagement Manager Review and Approve Task.
 -----

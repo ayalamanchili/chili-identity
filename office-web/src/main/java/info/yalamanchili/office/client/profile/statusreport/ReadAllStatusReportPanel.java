@@ -174,6 +174,15 @@ public class ReadAllStatusReportPanel extends CRUDReadAllComposite {
 
     @Override
     protected String getDocumentationLink() {
-        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "statusreport/statusreport.html";
+        if (Auth.isCorporateEmployee()) {
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "statusreport/statusreportprocess.html";
+        } else {
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "statusreport/statusreport.html";
+        }
+    }
+
+    @Override
+    protected boolean autoShowDocumentation() {
+        return true;
     }
 }

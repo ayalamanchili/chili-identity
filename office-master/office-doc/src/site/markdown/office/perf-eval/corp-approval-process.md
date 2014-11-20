@@ -18,7 +18,7 @@ Manager Review and Approve Task.
 
 
 
-HR Review and Approve Task.
+HR (HR Admin) Review and Approve Task.
 -----
 
- - Once manager completes the task a HR task is created for final approval.
+ - Once manager completes a final approval is needed from HR Administration Team to complete the review.

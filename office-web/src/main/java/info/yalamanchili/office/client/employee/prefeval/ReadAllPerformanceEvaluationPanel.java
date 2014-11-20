@@ -235,9 +235,9 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     @Override
     protected String getDocumentationLink() {
         if (Auth.isCorporateEmployee()) {
-            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "perf-eval/associate-process-overview.html";
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "perf-eval/corp-submit-review.html";
         } else {
-            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "perf-eval/associate-process-overview.html";
+            return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "perf-eval/assoc-submit-review.html";
         }
     }
 

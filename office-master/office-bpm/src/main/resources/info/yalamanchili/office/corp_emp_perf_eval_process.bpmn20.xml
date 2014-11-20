@@ -91,7 +91,7 @@
         <sequenceFlow  sourceRef="employeeAcceptTask" targetRef="hrFinalApprovalTask" />
         <userTask id="hrFinalApprovalTask" 
                   name="Performance Evaluation Final HR Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
-                  activiti:candidateGroups="ROLE_HR">
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
                 Performance Evaluation Final HR Approval Task
                 Employee has accepted the performance review.
