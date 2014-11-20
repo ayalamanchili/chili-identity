@@ -237,8 +237,8 @@ public class PerformanceEvaluationService {
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
         data.getData().put("employeeTitle", employee.getJobTitle());
-        data.getData().put("startDate", evaluation.getEvaluationPeriodStartDate().toString());
-        data.getData().put("endDate", evaluation.getEvaluationPeriodEndDate().toString());
+        data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodStartDate()));
+        data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodEndDate()));
         Integer i = 1;
         for (QuestionComment qc : getQuestionComments(id, QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER)) {
             data.getData().put("sa-q" + i + "-question", qc.getQuestion());
@@ -312,7 +312,7 @@ public class PerformanceEvaluationService {
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/self-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
-        data.getData().put("submittedDate", evaluation.getEvaluationDate().toString());
+        data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         Employee employee = evaluation.getEmployee();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
