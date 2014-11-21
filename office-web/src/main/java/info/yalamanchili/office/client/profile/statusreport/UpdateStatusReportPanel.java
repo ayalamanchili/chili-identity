@@ -170,7 +170,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("accomplishments", reportDocument, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("scheduledActivities", reportDocument, DataType.TEXT_AREA_FIELD);
 
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
             assignFieldValueFromEntity("preparedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
@@ -271,7 +271,7 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("statusDescription", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
             addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
