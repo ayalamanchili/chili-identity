@@ -111,13 +111,11 @@ public class PerformanceEvaluation extends AbstractEntity {
     @ManyToOne
     @ForeignKey(name = "FK_EMP_PERF_EVALS")
     protected Employee employee;
-
     /**
      * questions
      */
     @ManyToMany
     protected Set<Question> questions;
-
     /**
      *
      */
@@ -127,7 +125,6 @@ public class PerformanceEvaluation extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date approvedDate;
-
     /**
      *
      */
@@ -142,6 +139,7 @@ public class PerformanceEvaluation extends AbstractEntity {
      */
     @Enumerated(EnumType.STRING)
     protected PerformanceEvaluationStage stage;
+    protected String bpmProcessId;
 
     public PerformanceEvaluation() {
     }
@@ -309,7 +307,6 @@ public class PerformanceEvaluation extends AbstractEntity {
     public void setStage(PerformanceEvaluationStage stage) {
         this.stage = stage;
     }
-
     @Transient
     protected String evaluationFYYear;
 
@@ -320,7 +317,6 @@ public class PerformanceEvaluation extends AbstractEntity {
     public String getEvaluationFYYearString() {
         return evaluationFYYear;
     }
-
     @Transient
     protected boolean enableManagerReview;
 
@@ -334,5 +330,19 @@ public class PerformanceEvaluation extends AbstractEntity {
 
     public String getEvaluationFYYear() {
         return DateUtils.getYearFromDate(getEvaluationPeriodStartDate()).toString();
+    }
+
+    /**
+     * @return the bpmProcessId
+     */
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    /**
+     * @param bpmProcessId the bpmProcessId to set
+     */
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 }

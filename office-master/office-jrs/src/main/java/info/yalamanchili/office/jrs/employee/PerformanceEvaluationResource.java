@@ -115,6 +115,13 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
         return tableObj;
     }
 
+    @PUT
+    @Path("/delete/{id}")
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        PerformanceEvaluationService.instance().delete(id);
+    }
+
     @GET
     @Path("/report")
     @Produces({"application/pdf"})

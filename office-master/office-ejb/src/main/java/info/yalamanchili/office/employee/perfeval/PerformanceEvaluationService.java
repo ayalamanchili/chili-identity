@@ -16,6 +16,7 @@ import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
@@ -329,6 +330,26 @@ public class PerformanceEvaluationService {
                 .header("content-disposition", "filename = self-review.pdf")
                 .header("Content-Length", pdf)
                 .build();
+    }
+
+    //TODO move to commons
+    protected Task getTaskForTicket(PerformanceEvaluation evaluation) {
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        List<Task> tasks = taskService.getTasksForProcessId(evaluation.getBpmProcessId());
+        if (tasks.size() > 0) {
+            return tasks.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public void delete(Long id) {
+        PerformanceEvaluation ticket = performanceEvaluationDao.findById(id);
+        Task task = getTaskForTicket(ticket);
+        if (task != null) {
+            OfficeBPMTaskService.instance().deleteTask(task.getId());
+        }
+        performanceEvaluationDao.delete(id);
     }
 
     public static PerformanceEvaluationService instance() {
