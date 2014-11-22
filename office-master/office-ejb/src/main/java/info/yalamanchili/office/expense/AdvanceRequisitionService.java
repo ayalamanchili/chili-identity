@@ -21,6 +21,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.Check;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.security.AccessCheck;
 import info.yalamanchili.office.template.TemplateService;
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +69,8 @@ public class AdvanceRequisitionService {
         advanceRequisitionDao.delete(id);
     }
 
-    public Response getReport(Long id) {
-        AdvanceRequisition entity = advanceRequisitionDao.findById(id);
+    @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"})
+    public Response getReport(AdvanceRequisition entity) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", entity);
         Check check = CheckDao.instance().find(entity);

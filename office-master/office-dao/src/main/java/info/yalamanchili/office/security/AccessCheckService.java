@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.security;
 
+import com.google.common.base.Strings;
+import info.chili.commons.ReflectionUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -27,7 +29,9 @@ public class AccessCheckService {
 
     public boolean performAccessCheck(ProceedingJoinPoint joinPoint, AccessCheck accessCheck) {
         Employee employee = null;
-        if (joinPoint.getArgs()[0] instanceof Employee) {
+        if (!Strings.isNullOrEmpty(accessCheck.employeePropertyName())) {
+            employee = (Employee) ReflectionUtils.callGetter(joinPoint.getArgs()[0], accessCheck.employeePropertyName());
+        } else if (joinPoint.getArgs()[0] instanceof Employee) {
             employee = (Employee) joinPoint.getArgs()[0];
         } else if (joinPoint.getArgs()[0] instanceof Long) {
             employee = EmployeeDao.instance().findById((Long) joinPoint.getArgs()[0]);
@@ -46,10 +50,17 @@ public class AccessCheckService {
         if (OfficeSecurityService.instance().hasAnyRole((String[]) accessCheck.roles())) {
             return true;
         }
+        boolean flag = false;
         for (String cc : accessCheck.companyContacts()) {
             Employee companyContact = CompanyContactDao.instance().getCompanyContactForEmployee(employee, cc);
-            if (companyContact != null && companyContact.getId().equals(currentUser.getId())) {
-                return true;
+            if (companyContact != null) {
+                flag = true;
+                if (companyContact.getId().equals(currentUser.getId())) {
+                    return true;
+                }
+            }
+            if (flag) {
+                break;
             }
         }
         return false;

@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.employee.perfeval;
 
+import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
@@ -229,13 +230,15 @@ public class PerformanceEvaluationService {
 
     protected Response generateManagerReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
+        Employee employee = evaluation.getEmployee();
+        performanceEvaluationDao.acceccCheck(employee);
         OfficeServiceConfiguration serviceConfig = OfficeServiceConfiguration.instance();
         OfficeSecurityConfiguration securityConfig = OfficeSecurityConfiguration.instance();
-        Employee employee = evaluation.getEmployee();
         PdfDocumentData data = new PdfDocumentData();
         data.setKeyStoreName(securityConfig.getKeyStoreName());
         data.setTemplateUrl(serviceConfig.getContentManagementLocationRoot() + "/templates/manger-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
+        data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
         data.getData().put("employeeTitle", employee.getJobTitle());
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodStartDate()));
@@ -247,7 +250,9 @@ public class PerformanceEvaluationService {
             if (qc.getRating() != null) {
                 data.getData().put("sa-q" + i + "-rating", qc.getRating().toString());
             }
-            data.getData().put("sa-q" + i + "-comment", "Comments: " + qc.getComment());
+            if (!Strings.isNullOrEmpty(qc.getComment())) {
+                data.getData().put("sa-q" + i + "-comment", "Comments: " + qc.getComment());
+            }
             i++;
         }
         i = 1;
@@ -257,7 +262,9 @@ public class PerformanceEvaluationService {
             if (qc.getRating() != null) {
                 data.getData().put("a-q" + i + "-rating", qc.getRating().toString());
             }
-            data.getData().put("a-q" + i + "-comment", "Comments: " + qc.getComment());
+            if (!Strings.isNullOrEmpty(qc.getComment())) {
+                data.getData().put("a-q" + i + "-comment", "Comments: " + qc.getComment());
+            }
             i++;
         }
         i = 1;
@@ -267,7 +274,9 @@ public class PerformanceEvaluationService {
             if (qc.getRating() != null) {
                 data.getData().put("m-q" + i + "-rating", qc.getRating().toString());
             }
-            data.getData().put("m-q" + i + "-comment", "Comments: " + qc.getComment());
+            if (!Strings.isNullOrEmpty(qc.getComment())) {
+                data.getData().put("m-q" + i + "-comment", "Comments: " + qc.getComment());
+            }
             i++;
         }
         data.getData().put("keyResults", evaluation.getKeyAccomplishments());
@@ -309,13 +318,15 @@ public class PerformanceEvaluationService {
 
     protected Response generateSelfReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
+        Employee employee = evaluation.getEmployee();
+        performanceEvaluationDao.acceccCheck(employee);
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/self-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-        Employee employee = evaluation.getEmployee();
+
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Signature preparedBysignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), EmployeeDao.instance().getPrimaryEmail(employee), null);
         data.getSignatures().add(preparedBysignature);

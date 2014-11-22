@@ -27,6 +27,7 @@ import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.security.AccessCheck;
 import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -144,8 +145,8 @@ public class CorporateTimeService {
         return vacationEarned.add(vacationCarryForward).subtract(spent);
     }
 
-    public Response getReport(Long id) {
-        CorporateTimeSheet ts = corporateTimeSheetDao.findById(id);
+    @AccessCheck(employeePropertyName = "employee", companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
+    public Response getReport(CorporateTimeSheet ts) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entity", ts);
         vars.put("summary", getYearlySummary(ts.getEmployee()));

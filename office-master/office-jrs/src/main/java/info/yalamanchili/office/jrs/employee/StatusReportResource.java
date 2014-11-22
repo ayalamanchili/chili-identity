@@ -15,6 +15,7 @@ import info.yalamanchili.office.entity.employee.statusreport.StatusReport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.employee.statusreport.StatusReportService;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -43,15 +44,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class StatusReportResource extends CRUDResource<StatusReport> {
-    
+
     @Autowired
     public StatusReportDao statusReportDao;
-    
+
     @Override
     public CRUDDao getDao() {
         return statusReportDao;
     }
-    
+
     @GET
     @Path("/{id}")
     @Transactional(readOnly = true)
@@ -59,21 +60,21 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     public StatusReport read(@PathParam("id") Long id) {
         return StatusReportService.instance().read(id);
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @Override
     public void delete(@PathParam("id") Long id) {
         StatusReportService.instance().delete(id);
     }
-    
+
     @PUT
     @Path("/save")
     @Produces("application/text")
     public String saveReport(StatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
         return StatusReportService.instance().save(entity, submitForApproval);
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     public StatusReportTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -94,29 +95,29 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
-        return StatusReportService.instance().getReport(id);
+        return StatusReportService.instance().getReport(statusReportDao.findById(id));
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class StatusReportTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<StatusReport> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<StatusReport> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<StatusReport> entities) {
             this.entities = entities;
         }

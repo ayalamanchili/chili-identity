@@ -18,6 +18,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.AdvanceRequisitionService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.expense.TransactionResource.TransactionTable;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -120,7 +121,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
-        return AdvanceRequisitionService.instance().getReport(id);
+        return AdvanceRequisitionService.instance().getReport(advanceRequisitionDao.findById(id));
     }
 
     @Override

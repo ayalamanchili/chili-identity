@@ -25,6 +25,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.employee.statusreport.ReportDocument;
 import info.yalamanchili.office.entity.employee.statusreport.StatusReportStage;
+import info.yalamanchili.office.security.AccessCheck;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -93,8 +94,8 @@ public class StatusReportService {
         statusReportDao.delete(id);
     }
 
-    public Response getReport(Long id) {
-        StatusReport entity = statusReportDao.findById(id);
+    @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_H1B_IMMIGRATION", "ROLE_RELATIONSHIP"})
+    public Response getReport(StatusReport entity) {
         ReportDocument reportDocument = new Gson().fromJson(entity.getReport(), ReportDocument.class);
         PdfDocumentData data = new PdfDocumentData();
         EmployeeDao employeeDao = EmployeeDao.instance();

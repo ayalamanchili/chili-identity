@@ -21,6 +21,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AccessCheck {
 
+    String employeePropertyName() default "";
+
     String[] roles();
 
     String[] companyContacts();

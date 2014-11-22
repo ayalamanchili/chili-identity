@@ -29,6 +29,7 @@ import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.security.AccessCheck;
 import info.yalamanchili.office.template.TemplateService;
 import java.io.File;
 import java.io.IOException;
@@ -151,13 +152,13 @@ public class ConsultantTimeService {
                 .header("Content-Length", "consultant-time-report.pdf".length()).build();
     }
 
-    public Response getReport(Long id) {
-        ConsultantTimeSheet ts = consultantTimeSheetDao.findById(id);
+    @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_H1B_IMMIGRATION", "ROLE_CONSULTANT_TIME_REPORTS", "ROLE_CONSULTANT_TIME_ADMIN"})
+    public Response getReport(ConsultantTimeSheet ts) {
         Employee emp = null;
         if (ts.getApprovedBy() != null) {
             emp = EmployeeDao.instance().findEmployeWithEmpId(ts.getApprovedBy());
         }
-        String report = TemplateService.instance().process("consultant-emp-timesheet.xhtml", consultantTimeSheetDao.findById(id));
+        String report = TemplateService.instance().process("consultant-emp-timesheet.xhtml", ts);
         byte[] pdf = null;
         if (emp == null) {
             pdf = PDFUtils.convertToPDF(report);
