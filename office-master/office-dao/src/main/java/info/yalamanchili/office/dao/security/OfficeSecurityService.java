@@ -39,21 +39,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class OfficeSecurityService {
-
+    
     private final static Logger logger = Logger.getLogger(OfficeSecurityService.class.getName());
     @PersistenceContext
     protected EntityManager em;
 
 //TODO move to chili-security OfficeSecurityService
     public CUser createCuser(CUser user) {
-        return em.merge(user);
+        user = em.merge(user);
+        createUserCert(user.getUsername());
+        return user;
     }
-
+    
     public EmployeeLoginDto login(CUser user) {
         TypedQuery<Employee> query = em.createQuery("from Employee emp where emp.user.username=:userNameParam and emp.user.passwordHash=:passwordParam", Employee.class);
         query.setParameter("userNameParam", user.getUsername().toLowerCase());
         query.setParameter("passwordParam", SecurityUtils.encodePassword(user.getPasswordHash(), null));
-
+        
         try {
             Mapper mapper = (Mapper) SpringContext.getBean("mapper");
             Employee emp = query.getSingleResult();
@@ -69,7 +71,7 @@ public class OfficeSecurityService {
             throw new RuntimeException(e);
         }
     }
-
+    
     public Employee getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
@@ -82,7 +84,7 @@ public class OfficeSecurityService {
             return null;
         }
     }
-
+    
     public boolean hasAnyRole(String... roles) {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
@@ -92,7 +94,7 @@ public class OfficeSecurityService {
         if (authentication == null) {
             return false;
         }
-
+        
         for (GrantedAuthority auth : authentication.getAuthorities()) {
             for (String role : roles) {
                 if (role.equals(auth.getAuthority())) {
@@ -102,7 +104,7 @@ public class OfficeSecurityService {
         }
         return false;
     }
-
+    
     public boolean hasRole(String role) {
         return hasAnyRole(role);
     }
@@ -116,7 +118,7 @@ public class OfficeSecurityService {
             return false;
         }
     }
-
+    
     public Employee findEmployee(String employeeId) {
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", employeeId);
@@ -126,12 +128,12 @@ public class OfficeSecurityService {
             return null;
         }
     }
-
+    
     public Employee findEmployeeBySSN(String ssn) {
         StandardStringDigester officeStringDigester = (StandardStringDigester) SpringContext.getBean("officeStringDigester");
         return QueryUtils.findEntity(em, Employee.class, "ssnHash", officeStringDigester.digest(ssn));
     }
-
+    
     public List<String> getUserRoles(Employee employee) {
         List<String> roles = new ArrayList<String>();
         for (CRole role : employee.getUser().getRoles()) {
@@ -139,7 +141,7 @@ public class OfficeSecurityService {
         }
         return roles;
     }
-
+    
     public List<Employee> getUsersWithRoles(int start, int limit, String role) {
         CRole crole = QueryUtils.findEntity(em, CRole.class, "rolename", role);
         Query query = em.createNativeQuery("SELECT * from CONTACT emp INNER JOIN CUSER cuser ON cuser.userId=emp.user_userId INNER JOIN USERROLES userRoles ON userRoles.UserId=cuser.userId where cuser.enabled= TRUE and userRoles.RoleId=" + crole.getRoleId(), Employee.class);
@@ -147,17 +149,17 @@ public class OfficeSecurityService {
         query.setMaxResults(limit);
         return query.getResultList();
     }
-
+    
     public void syncOfficeRoles() {
         for (OfficeRole role : OfficeRole.values()) {
             CRoleDao.instance().createRole(role.name());
         }
     }
-
+    
     public CRole getRole(OfficeRole role) {
         return QueryUtils.findEntity(em, CRole.class, "rolename", role.name());
     }
-
+    
     @Async
     @Transactional
     public void syncUserCerts() {
@@ -171,14 +173,16 @@ public class OfficeSecurityService {
         for (Employee emp : empQuery.getResultList()) {
             createUserCert(emp, securityconfig, securityService);
         }
-
+        
     }
-
+    
     @Transactional
     public void createUserCert(String employeeId) {
         createUserCert(EmployeeDao.instance().findEmployeWithEmpId(employeeId), null, null);
     }
-
+    
+    @Async
+    @Transactional
     public void createUserCert(Employee emp, OfficeSecurityConfiguration securityconfig, SecurityService securityService) {
         if (securityService == null) {
             securityService = SecurityService.instance();
@@ -194,8 +198,9 @@ public class OfficeSecurityService {
         X509Principal subject = new X509Principal("CN=" + subjectCN + ",EmailAddress=" + email + ", O=System Soft Technologies");
         securityService.createAndSaveCertToKS(securityconfig.getKeyStoreName(), securityconfig.getKeyStorePath(), employeeId, DateUtils.getNextYear(new Date(), 0), DateUtils.getNextYear(new Date(), 10),
                 securityconfig.getKeyStorePassword(), issuer, subject, securityconfig.getCertSignatureAlgorithm(), securityconfig.getKeyAlgorithm(), securityconfig.getKeySize());
+        securityService.initKeyStore(securityconfig.getKeyStoreType(), securityconfig.getKeyStoreName(), securityconfig.getKeyStorePassword(), securityconfig.getKeyStorePath());
     }
-
+    
     public static OfficeSecurityService instance() {
         return SpringContext.getBean(OfficeSecurityService.class);
     }
