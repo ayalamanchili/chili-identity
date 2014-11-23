@@ -49,7 +49,8 @@ public class StatusReportDao extends CRUDDao<StatusReport> {
     public List<StatusReport> getReports(Employee emp, int start, int limit) {
         TypedQuery<StatusReport> query = em.createQuery("from " + StatusReport.class.getCanonicalName() + " where employee=:empParam", StatusReport.class);
         query.setParameter("empParam", emp);
-        //TODO filter report attribute
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
         return query.getResultList();
     }
 
