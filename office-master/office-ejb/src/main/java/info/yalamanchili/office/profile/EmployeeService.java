@@ -92,7 +92,9 @@ public class EmployeeService {
         email.setPrimaryEmail(true);
         emp.addEmail(email);
         emp = EmployeeDao.instance().save(emp);
-        em.merge(emp);
+        emp = em.merge(emp);
+        //create cert
+        OfficeSecurityService.instance().createUserCert(emp, null, null);
         //Email notification
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
             profileNotificationService.sendNewUserCreatedNotification(emp);
