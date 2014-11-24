@@ -10,12 +10,15 @@ package info.yalamanchili.office.Time;
 
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
+import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.reporting.ReportGenerator;
+import info.chili.security.Signature;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -30,6 +33,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.security.AccessCheck;
 import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -146,17 +150,34 @@ public class CorporateTimeService {
     }
 
     @AccessCheck(employeePropertyName = "employee", companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
-    public Response getReport(CorporateTimeSheet ts) {
-        Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put("entity", ts);
-        vars.put("summary", getYearlySummary(ts.getEmployee()));
-        String report = TemplateService.instance().process("corp-timesheet.xhtml", vars);
-        byte[] pdf = PDFUtils.convertToPDF(report);
-        return Response
-                .ok(pdf)
-                .header("content-disposition", "filename = corp-timesheet.pdf")
-                .header("Content-Length", pdf.length)
+    public Response getReport(CorporateTimeSheet entity) {
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/corp-ts-template.pdf");
+        EmployeeDao employeeDao = EmployeeDao.instance();
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+        Employee preparedBy = entity.getEmployee();
+        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getCreatedTimeStamp()), employeeDao.getPrimaryEmail(preparedBy), null);
+        data.getSignatures().add(preparedBysignature);
+        String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+        data.getData().put("employeeName", prepareByStr);
+        if (entity.getCreatedTimeStamp() != null) {
+            data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
+        }
+        data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
+        data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
+        data.getData().put("purpose", entity.getNotes());
+        if (entity.getApprovedBy() != null) {
+            Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
+            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getCreatedTimeStamp()), employeeDao.getPrimaryEmail(approver), null);
+            data.getSignatures().add(approvedBysignature);
+        }
+        byte[] pdf = PDFUtils.generatePdf(data);
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = leave-request.pdf")
+                .header("Content-Length", pdf)
                 .build();
+
     }
 
     @Async
