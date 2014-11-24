@@ -75,18 +75,18 @@ public class PerformanceEvaluationService {
         }
         createQuestionComments(entity, dto.getComments());
         if (submitForApproval) {
-            startAssociatePerformanceEvaluationProcess(entity, employee);
+            entity.setBpmProcessId(startAssociatePerformanceEvaluationProcess(entity, employee));
         }
     }
 
-    protected void startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
+    protected String startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "eemReviewTask", true);
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "hrFinalApprovalTask", true);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
-        OfficeBPMService.instance().startProcess("assoc_emp_perf_eval_process", vars);
+        return OfficeBPMService.instance().startProcess("assoc_emp_perf_eval_process", vars);
     }
 
 //----------------------Corporate Employee Review----------------------------------
@@ -106,16 +106,16 @@ public class PerformanceEvaluationService {
         }
         createQuestionComments(entity, dto.getComments());
         if (startProcess) {
-            startCorporatePerformanceEvaluationProcess(entity, employee);
+            entity.setBpmProcessId(startCorporatePerformanceEvaluationProcess(entity, employee));
         }
     }
 
-    protected void startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
+    protected String startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
         vars.put("entity", entity);
         vars.put("currentEmployee", emp);
-        OfficeBPMService.instance().startProcess("corp_emp_perf_eval_process", vars);
+        return OfficeBPMService.instance().startProcess("corp_emp_perf_eval_process", vars);
     }
 
     public PerformanceEvaluation getEvaluationForYear(String year, Employee emp, PerformanceEvaluationSaveDto dto) {
