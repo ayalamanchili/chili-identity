@@ -11,6 +11,7 @@ package info.yalamanchili.office.Time;
 import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
+import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.reporting.ReportGenerator;
 import info.chili.security.Signature;
 import info.chili.service.jrs.exception.ServiceException;
@@ -34,9 +35,8 @@ import info.yalamanchili.office.template.TemplateService;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -153,28 +153,32 @@ public class ConsultantTimeService {
     }
 
     @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_H1B_IMMIGRATION", "ROLE_CONSULTANT_TIME_REPORTS", "ROLE_CONSULTANT_TIME_ADMIN"})
-    public Response getReport(ConsultantTimeSheet ts) {
-        Employee emp = null;
-        if (ts.getApprovedBy() != null) {
-            emp = EmployeeDao.instance().findEmployeWithEmpId(ts.getApprovedBy());
+    public Response getReport(ConsultantTimeSheet entity) {
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/assoc-ts-template.pdf");
+        EmployeeDao employeeDao = EmployeeDao.instance();
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+        Employee preparedBy = entity.getEmployee();
+        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getCreatedTimeStamp()), employeeDao.getPrimaryEmail(preparedBy), null);
+        data.getSignatures().add(preparedBysignature);
+        String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+        data.getData().put("employeeName", prepareByStr);
+        if (entity.getCreatedTimeStamp() != null) {
+            data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
         }
-        String report = TemplateService.instance().process("consultant-emp-timesheet.xhtml", ts);
-        byte[] pdf = null;
-        if (emp == null) {
-            pdf = PDFUtils.convertToPDF(report);
-        } else {
-            OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-            String branch = null;
-            if (emp.getBranch() != null) {
-                branch = emp.getBranch().name();
-            }
-            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, null, DateUtils.dateToCalendar(ts.getApprovedDate()), EmployeeDao.instance().getPrimaryEmail(emp), branch);
-            pdf = PDFUtils.convertToSignedPDF(report, securityConfiguration.getKeyStoreName(), signature);
+        data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
+        data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
+        data.getData().put("purpose", entity.getNotes());
+        if (entity.getApprovedBy() != null) {
+            Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
+            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(approver), null);
+            data.getSignatures().add(approvedBysignature);
         }
-        return Response
-                .ok(pdf)
-                .header("content-disposition", "filename = timesheet.pdf")
-                .header("Content-Length", pdf.length)
+        byte[] pdf = PDFUtils.generatePdf(data);
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = leave-request.pdf")
+                .header("Content-Length", pdf)
                 .build();
     }
 
