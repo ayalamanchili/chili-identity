@@ -50,8 +50,8 @@ public class ExpenseItemSidePanel extends ALComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(createExpenseItemLink)) {
-           TabPanel.instance().getExpensePanel().entityPanel.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new CreateExpenseItemPanal(CreateComposite.CreateCompositeType.CREATE));
+            TabPanel.instance().getExpensePanel().entityPanel.clear();
+            TabPanel.instance().getExpensePanel().entityPanel.add(new CreateExpenseItemPanel());
         }
     }
 }

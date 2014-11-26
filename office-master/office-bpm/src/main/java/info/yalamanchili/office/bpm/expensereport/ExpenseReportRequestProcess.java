@@ -12,11 +12,12 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
+import info.yalamanchili.office.dao.expense.ExpenseItemDao;
 import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.expense.ExpenseItem;
 import info.yalamanchili.office.entity.expense.ExpenseReport;
 import info.yalamanchili.office.entity.profile.Employee;
-import java.util.Date;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -38,7 +39,6 @@ public class ExpenseReportRequestProcess implements TaskListener {
 
     private void expenseReportTaskCreated(DelegateTask dt) {
         if (dt.getTaskDefinitionKey().equals("expenseReportApprovalTask")) {
-            saveExpenseReport(dt);
             assignExpenseReportTask(dt);
         }
         new GenericTaskCreateNotification().notify(dt);
@@ -54,20 +54,6 @@ public class ExpenseReportRequestProcess implements TaskListener {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");
         }
         new GenericTaskCompleteNotification().notify(dt);
-    }
-
-    private void saveExpenseReport(DelegateTask dt) {
-        Employee emp = (Employee) dt.getExecution().getVariable("currentEmployee");
-        ExpenseReportsDao dao = ExpenseReportsDao.instance();
-        ExpenseReport entity = (ExpenseReport) dt.getExecution().getVariable("entity");
-        String expenseReport = "Expense Report Department:" + entity.getName() + "Repayment Notes:" + entity.getDescription();
-        entity.setBpmProcessId(dt.getExecution().getProcessInstanceId());
-        entity.setEmployee(emp);
-        entity.setStartDate(new Date());
-        entity.setEndDate(new Date());
-        entity = dao.save(entity);
-        dt.getExecution().setVariable("entity", entity);
-        dt.getExecution().setVariable("entityId", entity.getId());
     }
 
     private void assignExpenseReportTask(DelegateTask dt) {

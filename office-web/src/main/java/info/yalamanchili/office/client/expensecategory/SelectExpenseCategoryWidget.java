@@ -11,6 +11,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 
 /**
  *
@@ -19,7 +20,7 @@ import info.chili.gwt.rpc.HttpService;
 public class SelectExpenseCategoryWidget extends SelectComposite {
 
     public SelectExpenseCategoryWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "ExpenseCategory", readOnly, isRequired);
+        super(OfficeWelcome.constants, "ExpenseCategory", readOnly, isRequired, Alignment.HORIZONTAL);
     }
 
     @Override

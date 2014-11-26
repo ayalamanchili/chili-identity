@@ -11,6 +11,7 @@ import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
 import info.yalamanchili.office.entity.expense.ExpenseReport;
+import info.yalamanchili.office.expense.ExpeneseReportSaveDto;
 import info.yalamanchili.office.expense.ExpenseReportsService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -42,18 +43,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
 
     @PUT
-    @Path("/submit")
+    @Path("/save")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
-    public void submit(ExpenseReport entity) {
-        ExpenseReportsService.instance().submit(entity);
-    }
-
-    @PUT
-    @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
-    public ExpenseReport save(ExpenseReport entity) {
-        return super.save(entity);
+    public ExpenseReport save(ExpeneseReportSaveDto dto) {
+        return ExpenseReportsService.instance().save(dto);
     }
 
     @GET

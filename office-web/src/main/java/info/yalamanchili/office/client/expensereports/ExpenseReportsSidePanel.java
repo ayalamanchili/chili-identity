@@ -25,7 +25,7 @@ public class ExpenseReportsSidePanel extends ALComposite implements ClickHandler
 
     private static Logger logger = Logger.getLogger(ExpenseReportsSidePanel.class.getName());
     public FlowPanel expenseCategoryReportsSidePanel = new FlowPanel();
-    ClickableLink createExpenseReportsLink = new ClickableLink("Create Expense Reports");
+    ClickableLink createExpenseReportsLink = new ClickableLink("Create Expense Report");
 
     public ExpenseReportsSidePanel() {
         init(expenseCategoryReportsSidePanel);

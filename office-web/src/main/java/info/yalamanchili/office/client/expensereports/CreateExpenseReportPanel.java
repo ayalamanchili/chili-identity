@@ -7,14 +7,21 @@
  */
 package info.yalamanchili.office.client.expensereports;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -24,10 +31,12 @@ import java.util.logging.Logger;
 public class CreateExpenseReportPanel extends CreateComposite {
 
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
+    protected Anchor addItemL = new Anchor("Add Expense Item");
+    protected List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList<CreateExpenseItemPanel>();
 
     public CreateExpenseReportPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("ExpenseReports", OfficeWelcome.constants);
+        initCreateComposite("ExpenseReport", OfficeWelcome.constants);
     }
 
     @Override
@@ -38,6 +47,13 @@ public class CreateExpenseReportPanel extends CreateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
         assignEntityValueFromField("department", entity);
+        JSONArray items = new JSONArray();
+        int i = 0;
+        for (CreateExpenseItemPanel panel : expenseItemPanels) {
+            items.set(i, panel.populateEntityFromFields());
+            i++;
+        }
+        entity.put("expenseItems", items);
         logger.info(entity.toString());
         return entity;
     }
@@ -64,6 +80,16 @@ public class CreateExpenseReportPanel extends CreateComposite {
     }
 
     @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(addItemL)) {
+            CreateExpenseItemPanel panel = new CreateExpenseItemPanel();
+            expenseItemPanels.add(panel);
+            entityFieldsPanel.add(panel);
+        }
+        super.onClick(event);
+    }
+
+    @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully ExpenseReports Created");
         TabPanel.instance().expensePanel.sidePanelTop.clear();
@@ -74,18 +100,22 @@ public class CreateExpenseReportPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
+        addItemL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        setButtonText("Submit");
     }
 
     @Override
     protected void addWidgets() {
-        addField("name", false, false, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("name", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(addItemL);
+        alignFields();
     }
 
     @Override
@@ -94,7 +124,7 @@ public class CreateExpenseReportPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expensereport/submit";
+        return OfficeWelcome.constants.root_url() + "expensereport/save";
 
     }
 }

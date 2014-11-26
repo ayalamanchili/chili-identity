@@ -9,6 +9,7 @@ package info.yalamanchili.office.entity.expense;
 
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -95,6 +97,7 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
+    @Valid
     protected List<ExpenseItem> expenseItems;
     /**
      *
@@ -195,6 +198,9 @@ public class ExpenseReport extends AbstractEntity {
 
     @XmlTransient
     public List<ExpenseItem> getExpenseItems() {
+        if (this.expenseItems == null) {
+            this.expenseItems = new ArrayList<ExpenseItem>();
+        }
         return expenseItems;
     }
 
