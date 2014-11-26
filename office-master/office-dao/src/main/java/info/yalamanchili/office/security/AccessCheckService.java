@@ -29,7 +29,9 @@ public class AccessCheckService {
 
     public boolean performAccessCheck(ProceedingJoinPoint joinPoint, AccessCheck accessCheck) {
         Employee employee = null;
-        if (!Strings.isNullOrEmpty(accessCheck.employeePropertyName())) {
+        if (joinPoint.getArgs()[0] == null) {
+            return false;
+        } else if (!Strings.isNullOrEmpty(accessCheck.employeePropertyName())) {
             employee = (Employee) ReflectionUtils.callGetter(joinPoint.getArgs()[0], accessCheck.employeePropertyName());
         } else if (joinPoint.getArgs()[0] instanceof Employee) {
             employee = (Employee) joinPoint.getArgs()[0];
