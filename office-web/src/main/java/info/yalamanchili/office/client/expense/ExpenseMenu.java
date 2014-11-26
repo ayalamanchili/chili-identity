@@ -44,7 +44,7 @@ public class ExpenseMenu extends Composite {
 
             expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
             expenseMenuBar.addItem("ExpenseReports", expenseReportsMaintainenceCmd);
-            expenseMenuBar.addItem("ExpenseItem", expenseItemMaintainenceCmd);
+//            expenseMenuBar.addItem("ExpenseItem", expenseItemMaintainenceCmd);
         }
 //        expenseMenuBar.addItem("Transaction", expensTransactionCmd);
         expenseMenuBar.addStyleName("entityMenuBar");
@@ -90,13 +90,13 @@ public class ExpenseMenu extends Composite {
 
         }
     };
-    Command expenseItemMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getExpensePanel().entityPanel.clear();
-            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllEpenseItemPanel());
-            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseItemSidePanel());
-
-        }
-    };
+//    Command expenseItemMaintainenceCmd = new Command() {
+//        public void execute() {
+//            TabPanel.instance().getExpensePanel().entityPanel.clear();
+//            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
+//            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllEpenseItemPanel());
+//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseItemSidePanel());
+//
+//        }
+//    };
 }
