@@ -41,6 +41,7 @@ public class ExpenseItem extends AbstractEntity {
      */
     @ForeignKey(name = "FK_EXP_ITM_EXP_CAT")
     @ManyToOne
+    @NotNull(message = "{expenseitem.category.not.empty.msg}")
     protected ExpenseCategory category;
     /**
      *
