@@ -166,7 +166,16 @@ public class CorporateTimeService {
         }
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
-        data.getData().put("purpose", entity.getNotes());
+        if (entity.getHours() != null) {
+            data.getData().put("hours", entity.getHours().toString());
+        }
+        if (entity.getStatus() != null) {
+            data.getData().put("status", entity.getStatus().toString());
+        }
+        if (entity.getCategory() != null) {
+            data.getData().put("category", entity.getCategory().toString());
+        }
+        data.getData().put("notes", entity.getNotes());
         if (entity.getApprovedBy() != null) {
             Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
             Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getCreatedTimeStamp()), employeeDao.getPrimaryEmail(approver), null);
