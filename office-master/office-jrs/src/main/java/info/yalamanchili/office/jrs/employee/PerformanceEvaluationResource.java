@@ -58,6 +58,7 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
+    @Validate
     @Path("read/{employeeId}/{year}")
     public PerformanceEvaluation getPerformanceEvaluation(@PathParam("employeeId") Long employeeId, @PathParam("year") String year) {
         return PerformanceEvaluationService.instance().getEvaluationForYear(year, EmployeeDao.instance().findById(employeeId), null);

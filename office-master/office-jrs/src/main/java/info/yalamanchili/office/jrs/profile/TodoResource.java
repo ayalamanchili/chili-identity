@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.TodoDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -42,12 +43,14 @@ public class TodoResource extends CRUDResource<Todo> {
     protected TodoDao todoDao;
 
     @PUT
+    @Validate
     @Override
     public Todo save(Todo entity) {
         return todoService.save(entity);
     }
 
     @GET
+    @Validate
     @Path("/{start}/{limit}")
     public TodoTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
