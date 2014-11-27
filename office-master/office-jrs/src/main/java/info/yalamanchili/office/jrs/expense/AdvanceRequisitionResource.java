@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
@@ -51,6 +52,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     public AdvanceRequisitionDao advanceRequisitionDao;
 
     @PUT
+    @Validate
     @Path("/submit-advance-requisition-request")
     @CacheEvict(value = OfficeCacheKeys.ADVANCE_REQUSITON, allEntries = true)
     public void submitAdvanceRequisitionRequest(AdvanceRequisition entity) {
@@ -58,6 +60,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     }
 
     @PUT
+    @Validate
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.ADVANCE_REQUSITON, allEntries = true)
@@ -66,6 +69,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     }
 
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     @Path("/transaction/{id}")
     public void addTransaction(@PathParam("id") Long id, Transaction transaction) {
@@ -73,6 +77,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     }
 
     @GET
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     @Path("/transactions/{id}/{start}/{limit}")
     public TransactionTable getTransactions(@PathParam("id") Long id, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -83,6 +88,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     }
 
     @GET
+    @Validate
     @Path("/{start}/{limit}")
     public AdvanceRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
@@ -99,6 +105,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     }
 
     @GET
+    @Validate
     @Path("/{employeeId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     public AdvanceRequisitionTable getAdvanceRequisitionsForEmployee(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -118,6 +125,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     }
 
     @GET
+    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {

@@ -9,6 +9,7 @@
 package info.yalamanchili.office.jrs.time;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.Time.ConsultantTimeService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -50,12 +51,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeSheet> {
 
     @GET
+    @Validate
     @Path("/summary")
     public ConsultantTimeSummary getConsultantTimeSummary() {
         return ConsultantTimeService.instance().getYearlySummary(OfficeSecurityService.instance().getCurrentUser());
     }
 
     @GET
+    @Validate
     @Path("/summary/{empId}")
     public ConsultantTimeSummary getConsultantTimeSummary(@PathParam("empId") Long empId) {
         Employee emp = EmployeeDao.instance().findById(empId);
@@ -63,6 +66,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @PUT
+    @Validate
     @Path("/submit-leave-request")
     public void submitLeaveRequest(ConsultantTimeSheet request) {
         ConsultantTimeService.instance().submitLeaveRequest(request);
@@ -79,18 +83,21 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @GET
+    @Validate
     @Path("/current-leaves")
     public List<ConsultantTimeSheet> currentLeaves() {
         return consultantTimeSheetDao.getCurrentCompanyLeaves();
     }
 
     @PUT
+    @Validate
     @Path("/update-leave-request")
     public void updateLeaveRequest(ConsultantTimeSheet entity) {
         ConsultantTimeService.instance().updateLeaveRequest(entity);
     }
 
     @GET
+    @Validate
     @Path("/cancel-leave-request/{timesheetId}")
     public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId, @QueryParam("cancelReason") String cancelReason) {
         ConsultantTimeService.instance().cancelLeaveRequest(timesheetId, cancelReason);
@@ -98,6 +105,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
 
     @Override
     @PUT
+    @Validate
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
     public void delete(@PathParam("id") Long id) {
@@ -105,6 +113,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @GET
+    @Validate
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_REPORTS')")
     public ConsultantTimeSheetTable getConsultantTimeSheet(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category) {
@@ -113,6 +122,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @GET
+    @Validate
     @Path("/currentuser/{start}/{limit}")
     public ConsultantTimeSheetTable getConsultantTimeSheet(@PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
@@ -127,6 +137,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @GET
+    @Validate
     @Path("/all-cons-summary-report")
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CONSULTANT_TIME_REPORTS')")
     @Transactional(readOnly = true)
@@ -135,6 +146,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @PUT
+    @Validate
     @Path("/report/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_REPORTS')")
     public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -150,6 +162,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @GET
+    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {

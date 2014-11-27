@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -47,6 +48,7 @@ public class AddressResource extends CRUDResource<Address> {
     }
 
     @PUT
+    @Validate
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
         processAddressUpdateNotification(entity, null);
@@ -75,7 +77,7 @@ public class AddressResource extends CRUDResource<Address> {
 
     @XmlRootElement
     @XmlType
-    public static class AddressTable implements java.io.Serializable{
+    public static class AddressTable implements java.io.Serializable {
 
         protected Long size;
         protected List<Address> entities;

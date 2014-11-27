@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.privacy;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.privacy.PrivacySettingDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -47,6 +48,7 @@ public class PrivacyResource extends CRUDResource<PrivacySetting> {
     }
 
     @GET
+    @Validate
     @Path("/{employeeId}/{start}/{limit}")
     public PrivacyTable table(@PathParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
@@ -58,12 +60,14 @@ public class PrivacyResource extends CRUDResource<PrivacySetting> {
     }
 
     @PUT
+    @Validate
     @Override
     public PrivacySetting save(PrivacySetting entity) {
         return super.save(entity);
     }
 
     @PUT
+    @Validate
     @Path("/delete/{id}")
     @Override
     public void delete(@PathParam("id") Long id) {
@@ -71,6 +75,7 @@ public class PrivacyResource extends CRUDResource<PrivacySetting> {
     }
 
     @GET
+    @Validate
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
     @Override

@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.expense.ExpenseDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.entity.expense.Expense;
@@ -43,6 +44,7 @@ public class ExpenseResource extends CRUDResource<Expense> {
     }
 
     @GET
+    @Validate
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR')")
     public ExpenseTable table(@PathParam("start") int start, @PathParam("limit") int limit) {

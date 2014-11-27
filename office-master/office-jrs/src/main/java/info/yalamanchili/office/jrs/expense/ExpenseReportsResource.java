@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
 import info.yalamanchili.office.entity.expense.ExpenseReport;
@@ -43,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
 
     @PUT
+    @Validate
     @Path("/save")
     @CacheEvict(value = OfficeCacheKeys.EXPENSE, allEntries = true)
     public ExpenseReport save(ExpeneseReportSaveDto dto) {

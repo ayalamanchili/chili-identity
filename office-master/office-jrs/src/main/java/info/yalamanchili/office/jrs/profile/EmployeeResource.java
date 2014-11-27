@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.profile;
 import info.chili.commons.SearchUtils;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
@@ -103,6 +104,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/save")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
@@ -114,6 +116,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @GET
+    @Validate
     @Path("/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public EmployeeTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -141,6 +144,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @GET
+    @Validate
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
@@ -152,6 +156,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 //TODO make this generic
 
     @GET
+    @Validate
     @Path("/employees-by-type/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
@@ -166,6 +171,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @GET
+    @Validate
     @Path("/employees-by-role/dropdown/{role}/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.EMPLOYEES)
     public List<Entry> getEmployeesWithRoleDropDown(@PathParam("role") String role, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -179,6 +185,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     /* Address */
     @GET
+    @Validate
     @Path("/addresses/{id}/{start}/{limit}")
     @PrivacyAware(key = PrivacyData.ADDRESSES)
     public AddressTable getAddresses(@PathParam("id") long id, @PathParam("start") int start,
@@ -191,6 +198,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/address/{empId}")
     public void addAddress(@PathParam("empId") Long empId, Address address) {
         Employee emp = (Employee) getDao().findById(empId);
@@ -205,6 +213,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     /* SkillSet */
     @GET
+    @Validate
     @Path("/skillset/{empId}")
     @PrivacyAware(key = PrivacyData.SKILL_SET)
     public SkillSet getSkillSet(@PathParam("empId") long empId) {
@@ -219,6 +228,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/skillset/{empId}")
     @Produces("application/text")
     public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
@@ -248,6 +258,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     /* Preferences*/
 
     @GET
+    @Validate
     @Path("/preferences/{empId}")
     public Preferences getPreferences(@PathParam("empId") long empId) {
         Employee emp = (Employee) getDao().findById(empId);
@@ -257,6 +268,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     /* Email */
     @GET
+    @Validate
     @Path("/emails/{id}/{start}/{limit}")
     @PrivacyAware(key = PrivacyData.EMAILS)
     public EmailTable getEmails(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -268,6 +280,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/email/{empId}")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
@@ -287,6 +300,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     /* Phone */
     @GET
+    @Validate
     @Path("/phones/{id}/{start}/{limit}")
     @PrivacyAware(key = PrivacyData.PHONES)
     public PhoneTable getPhones(@PathParam("id") long id, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -298,6 +312,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/phone/{empId}")
     @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     public void addPhone(@PathParam("empId") Long empId, Phone phone) {
@@ -318,6 +333,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
      * @return
      */
     @GET
+    @Validate
     @Path("/clientinformation/{id}/{start}/{limit}")
     @PrivacyAware(key = PrivacyData.CLIENT_INFORMATION)
     public ClientInformationTable getClientInformations(@PathParam("id") long id, @PathParam("start") int start,
@@ -340,6 +356,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
      * @param clientInformation
      */
     @PUT
+    @Validate
     @Path("/clientinformation/{empId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
     public void addClientInformation(@PathParam("empId") Long empId, ClientInformation clientInformation) {
@@ -349,6 +366,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 
     /* Emergency Contact */
     @GET
+    @Validate
     @Path("/emergencycontacts/{id}/{start}/{limit}")
     @PrivacyAware(key = PrivacyData.EMERGENCY_CONTACTS)
     public EmergencyContactTable getEmergencyContacts(@PathParam("id") long id, @PathParam("start") int start,
@@ -365,6 +383,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/emergencycontact/{empId}")
     public void addEmergencyContact(@PathParam("empId") Long empId, EmergencyContactDto ecDto) {
         EmergencyContactService emergencyContactService = (EmergencyContactService) SpringContext.getBean("emergencyContactService");
@@ -372,6 +391,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @GET
+    @Validate
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(@PathParam("start") int start,
             @PathParam("limit") int limit, @QueryParam("text") String text, @QueryParam("column") List<String> columns) {
@@ -383,6 +403,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/searchEmployee/{start}/{limit}")
     public List<info.yalamanchili.office.dto.profile.EmployeeDto> searchEmployee(EmployeeSearchDto entity, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<info.yalamanchili.office.dto.profile.EmployeeDto> employees = new ArrayList<info.yalamanchili.office.dto.profile.EmployeeDto>();
@@ -402,6 +423,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
 //TODO user super class search
 
     @POST
+    @Validate
     @Path("/search_employee_report")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response searchEmployeeReport(EmployeeSearchDto entity, @QueryParam("reportName") String reportName, @QueryParam("format") String format) {

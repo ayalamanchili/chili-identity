@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.company;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -42,6 +43,7 @@ public class CompanyContactResource extends CRUDResource<CompanyContact> {
     }
 
     @GET
+    @Validate
     @Path("/employeecontacts/{empId}/{start}/{limit}")
     public CompanyContactResource.CompanyContactTable table(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         List<CompanyContact> cnts = companyContactDao.getEmployeeCompanyContacts(empId);
@@ -52,6 +54,7 @@ public class CompanyContactResource extends CRUDResource<CompanyContact> {
     }
 
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_HR_ADMINSTRATION')")
     @Override
     public CompanyContact save(CompanyContact entity) {
