@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.jrs.CRUDResource;

@@ -10,6 +10,7 @@ package info.yalamanchili.office.jrs.client;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -80,6 +81,7 @@ public class ClientResource extends CRUDResource<Client> {
     }
 
     @PUT
+    @Validate
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)

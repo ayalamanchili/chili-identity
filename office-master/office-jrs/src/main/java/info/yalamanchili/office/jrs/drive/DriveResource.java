@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.drive;
 
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.drive.DriveService;
@@ -62,6 +63,7 @@ public class DriveResource {
     }
 
     @PUT
+    @Validate
     @Path("/addfolder/{parentFolderId}")
     @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public void addFolder(@PathParam("parentFolderId") Long parentFolderId, FolderDto folder) {
@@ -69,6 +71,7 @@ public class DriveResource {
     }
 
     @PUT
+    @Validate
     @Path("/addfile/{folderId}")
     @Produces("application/text")
     @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)

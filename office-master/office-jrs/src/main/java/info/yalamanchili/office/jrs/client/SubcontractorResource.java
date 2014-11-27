@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
@@ -79,6 +80,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     }
 
     @PUT
+    @Validate
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     @CacheEvict(value = OfficeCacheKeys.SUB_CONTRACTOR, allEntries = true)

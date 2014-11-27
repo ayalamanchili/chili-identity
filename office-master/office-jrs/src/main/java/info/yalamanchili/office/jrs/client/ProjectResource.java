@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.client.ProjectDao;
 
 import info.yalamanchili.office.entity.client.Project;
@@ -63,6 +64,7 @@ public class ProjectResource extends CRUDResource<Project> {
     }
 
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     @Override
     public Project save(Project entity) {

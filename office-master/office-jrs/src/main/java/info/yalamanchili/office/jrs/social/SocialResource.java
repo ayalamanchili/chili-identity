@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.jrs.social;
 
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.social.SocialDao;
 import info.yalamanchili.office.entity.social.Post;
@@ -63,6 +64,7 @@ public class SocialResource {
 //TODO change this to create employee post and also update ui url
 
     @PUT
+    @Validate
     @Path("/createpost")
     @CacheEvict(value = OfficeCacheKeys.SOCIAL, allEntries = true)
     public Post createPost(Post post) {

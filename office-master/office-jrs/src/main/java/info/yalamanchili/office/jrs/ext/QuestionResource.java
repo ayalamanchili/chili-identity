@@ -9,6 +9,7 @@
 package info.yalamanchili.office.jrs.ext;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dto.ext.QuestionDto;
@@ -64,6 +65,7 @@ public class QuestionResource extends CRUDResource<Question> {
     }
 
     @PUT
+    @Validate
     @Override
     @CacheEvict(value = OfficeCacheKeys.QUESTIONS, allEntries = true)
     public Question save(Question entity) {

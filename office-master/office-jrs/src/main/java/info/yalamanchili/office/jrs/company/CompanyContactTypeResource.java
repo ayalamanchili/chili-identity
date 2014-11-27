@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.company;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.company.CompanyContactTypeDao;
@@ -60,6 +61,7 @@ public class CompanyContactTypeResource extends CRUDResource<CompanyContactType>
 
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Validate
     @Override
     @CacheEvict(value = OfficeCacheKeys.CONTACT_TYPE, allEntries = true)
     public CompanyContactType save(CompanyContactType entity) {

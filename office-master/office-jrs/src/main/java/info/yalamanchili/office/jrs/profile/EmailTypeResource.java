@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.EmailTypeDao;
@@ -55,6 +56,7 @@ public class EmailTypeResource extends CRUDResource<EmailType> {
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.EMAIL_TYPES, allEntries = true)
+    @Validate
     @Override
     public EmailType save(EmailType entity) {
         return super.save(entity);
