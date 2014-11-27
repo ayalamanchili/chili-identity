@@ -112,8 +112,8 @@ public class CreateAddressPanel extends CreateComposite {
         }
         if (CreateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
-            addField("notifyChange", false, false, DataType.BOOLEAN_FIELD);
-            addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD);
+            addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
     }

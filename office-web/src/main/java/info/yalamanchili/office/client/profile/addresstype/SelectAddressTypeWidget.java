@@ -7,11 +7,12 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.rpc.HttpService.HttpServiceAsync;
+import info.chili.gwt.utils.Alignment;
 
 public class SelectAddressTypeWidget extends SelectComposite {
 
     public SelectAddressTypeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "AddressType", readOnly, isRequired);
+        super(OfficeWelcome.constants, "AddressType", readOnly, isRequired, Alignment.HORIZONTAL);
     }
 
     @Override

@@ -8,21 +8,28 @@
  */
 package info.yalamanchili.office.expense;
 
+import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
+import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.expense.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.expense.CheckDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.Check;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.AccessCheck;
 import info.yalamanchili.office.template.TemplateService;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,22 +78,37 @@ public class AdvanceRequisitionService {
 
     @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"})
     public Response getReport(AdvanceRequisition entity) {
-        Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put("entity", entity);
-        Check check = CheckDao.instance().find(entity);
-        vars.put("check", check);
-        if (check != null) {
-            vars.put("checkAddress", check.getCheckMalingAddress());
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/advacne-Requisition-template.pdf");
+        EmployeeDao employeeDao = EmployeeDao.instance();
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+        Employee preparedBy = entity.getEmployee();
+//        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getCreatedTimeStamp()), employeeDao.getPrimaryEmail(preparedBy), null);
+//        data.getSignatures().add(preparedBysignature);
+        String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+        data.getData().put("employeeName", prepareByStr);
+        data.getData().put("dateRequested", new SimpleDateFormat("MM-dd-yyyy").format(entity.getDateRequested()));
+        data.getData().put("neededBy", new SimpleDateFormat("MM-dd-yyyy").format(entity.getNeededBy()));
+        if (entity.getAmount() != null) {
+            data.getData().put("amount", entity.getAmount().toString());
         }
-        vars.put("bankAccount", BankAccountDao.instance().find(entity));
-        vars.put("comments", CommentDao.instance().findAll(entity.getId(), AdvanceRequisition.class.getCanonicalName()));
-        String report = TemplateService.instance().process("advance-request-report.xhtml", vars);
-        byte[] pdf = PDFUtils.convertToPDF(report);
-        return Response
-                .ok(pdf)
-                .header("content-disposition", "filename = advance-request-report.pdf")
-                .header("Content-Length", pdf.length)
+        if (entity.getPayrollFileNumber()!= null) {
+            data.getData().put("payrollFileNumber", entity.getPayrollFileNumber().toString());
+        }
+        data.getData().put("purpose", entity.getPurpose());
+
+//        if (entity.getApprovedBy() != null) {
+//            Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
+//            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getCreatedTimeStamp()), employeeDao.getPrimaryEmail(approver), null);
+//            data.getSignatures().add(approvedBysignature);
+//        }
+        byte[] pdf = PDFUtils.generatePdf(data);
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = advacne-requisition.pdf")
+                .header("Content-Length", pdf)
                 .build();
+
     }
 
     public static AdvanceRequisitionService instance() {
