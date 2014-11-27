@@ -28,8 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class AccessCheckInterceptor {
 
-    //TODO Should this be restricted to certain packages
-    @Pointcut(value = "execution(public * *(..))")
+    @Pointcut(value = "execution(* info.yalamanchili.office..*.*(..))")
     public void anyPublicMethod() {
     }
 

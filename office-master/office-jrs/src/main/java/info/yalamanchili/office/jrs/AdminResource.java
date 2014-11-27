@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import info.chili.jpa.validation.Validate;
 import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
@@ -103,6 +104,7 @@ public class AdminResource {
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @CacheEvict(value = "employees", allEntries = true)
+    @Validate
     public String createUser(EmployeeCreateDto employee) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.createUser(employee);

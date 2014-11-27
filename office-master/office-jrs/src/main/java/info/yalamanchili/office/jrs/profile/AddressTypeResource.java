@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.AddressTypeDao;
 import info.yalamanchili.office.entity.profile.AddressType;
@@ -56,6 +57,7 @@ public class AddressTypeResource extends CRUDResource<AddressType> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @CacheEvict(value = OfficeCacheKeys.ADDRESS_TYPES, allEntries = true)
     @Override
+    @Validate
     public AddressType save(AddressType entity) {
         return super.save(entity);
     }
@@ -81,7 +83,7 @@ public class AddressTypeResource extends CRUDResource<AddressType> {
 
     @XmlRootElement
     @XmlType
-    public static class AddressTypeTable implements java.io.Serializable{
+    public static class AddressTypeTable implements java.io.Serializable {
 
         protected Long size;
         protected List<AddressType> entities;

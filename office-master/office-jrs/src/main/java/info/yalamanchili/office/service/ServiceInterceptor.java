@@ -3,10 +3,10 @@
  */
 package info.yalamanchili.office.service;
 
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
-import info.yalamanchili.office.dao.security.LoginSuccessListener;
 import info.yalamanchili.office.email.MailUtils;
 
 import javax.validation.ConstraintViolation;
@@ -22,10 +22,12 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * this interceptor will handle invocation validates the input params to process
@@ -45,18 +47,15 @@ public class ServiceInterceptor {
     @Autowired
     protected ServiceMessages serviceMessages;
 
-    //should this ebe executed for all crud dao and resource operations
-    @Around("execution(* info.yalamanchili.office.jrs..*.*(..)) || execution(* info.yalamanchili.office.dao..*.*(..)) || execution(* info.chili.dao..*.*(..))")
-    public Object aroundInvoke(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Pointcut(value = "execution(* info.yalamanchili.office..*.*(..))")
+    public void anyPublicMethod() {
+    }
+
+    @Around("anyPublicMethod() && @annotation(validate)")
+    @Transactional(readOnly = true)
+    public Object process(ProceedingJoinPoint joinPoint, Validate validate) throws Throwable {
         Object result = null;
-        //TODO make the excluded methods configurable
-        if (joinPoint.getSignature().toShortString().contains("login")) {
-            LoginSuccessListener.instance().logLogin();
-        }
-        /* skip validation for search and login methods */
-        if (!joinPoint.getSignature().toShortString().contains("search") && !joinPoint.getSignature().toShortString().contains("login")) {
-            validate(joinPoint);
-        }
+        validate(joinPoint);
         try {
             result = joinPoint.proceed();
         } catch (ServiceException se) {

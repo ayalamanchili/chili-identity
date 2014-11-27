@@ -24,12 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("request")
 public class PrivacyInterceptor {
-//TODO Should this be restricted to certain packages
 
-    @Pointcut(value = "execution(public * *(..))")
+    @Pointcut(value = "execution(* info.yalamanchili.office..*.*(..))")
     public void anyPublicMethod() {
     }
-//TODO Should this be restricted to certain packages
 
     @Around("anyPublicMethod() && @annotation(privacyAware)")
     @Transactional(readOnly = true)

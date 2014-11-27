@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.PhoneTypeDao;
@@ -57,6 +58,7 @@ public class PhoneTypeResource extends CRUDResource<PhoneType> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     @CacheEvict(value = OfficeCacheKeys.PHONE_TYPE, allEntries = true)
+    @Validate
     public PhoneType save(PhoneType entity) {
         return super.save(entity);
     }
@@ -82,7 +84,7 @@ public class PhoneTypeResource extends CRUDResource<PhoneType> {
 
     @XmlRootElement
     @XmlType
-    public static class PhoneTypeTable implements java.io.Serializable{
+    public static class PhoneTypeTable implements java.io.Serializable {
 
         protected Long size;
         protected List<PhoneType> entities;
