@@ -151,6 +151,7 @@ public class CorporateTimeService {
 
     @AccessCheck(employeePropertyName = "employee", companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
     public Response getReport(CorporateTimeSheet entity) {
+        CorporateTimeSummary summary = getYearlySummary(entity.getEmployee());
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/corp-ts-template.pdf");
         EmployeeDao employeeDao = EmployeeDao.instance();
@@ -161,6 +162,7 @@ public class CorporateTimeService {
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("employeeName", prepareByStr);
+//        data.getData().put("totalPTOHours", summary);
         if (entity.getCreatedTimeStamp() != null) {
             data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
         }
@@ -176,6 +178,33 @@ public class CorporateTimeService {
             data.getData().put("category", entity.getCategory().toString());
         }
         data.getData().put("notes", entity.getNotes());
+        if (summary.getTotalPTOHours() != null) {
+            data.getData().put("totalPTOHours", summary.getTotalPTOHours().toString());
+        }
+        if (summary.getAvailablePTOHours() != null) {
+            data.getData().put("availablePTOHours", summary.getAvailablePTOHours().toString());
+        }
+        if (summary.getUsedPTOHours() != null) {
+            data.getData().put("usedPTOHours", summary.getUsedPTOHours().toString());
+        }
+        if (summary.getTotalVacationHours() != null) {
+            data.getData().put("totalVacationHours", summary.getTotalVacationHours().toString());
+        }
+        if (summary.getAvailableVacationHours() != null) {
+            data.getData().put("availableVacationHours", summary.getAvailableVacationHours().toString());
+        }
+        if (summary.getUsedVacationHours() != null) {
+            data.getData().put("usedVacationHours", summary.getUsedVacationHours().toString());
+        }
+        if (summary.getTotalAccumulatedHours() != null) {
+            data.getData().put("totalAccumulatedHours", summary.getTotalAccumulatedHours().toString());
+        }
+        if (summary.getTotalAvailableHours() != null) {
+            data.getData().put("totalAvailableHours", summary.getTotalAvailableHours().toString());
+        }
+        if (summary.getTotalUsedHours() != null) {
+            data.getData().put("totalUsedHours", summary.getTotalUsedHours().toString());
+        }
         if (entity.getApprovedBy() != null) {
             Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
             Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getCreatedTimeStamp()), employeeDao.getPrimaryEmail(approver), null);
