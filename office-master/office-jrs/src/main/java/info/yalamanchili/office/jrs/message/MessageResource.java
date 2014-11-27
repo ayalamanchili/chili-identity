@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.message;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dto.message.MessageDto;
 import info.yalamanchili.office.dao.message.MessageDao;
@@ -53,6 +54,7 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @PUT
+    @Validate
     @Override
     public MessageDto save(MessageDto entity) {
         return messageService.save(entity);
@@ -66,6 +68,7 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @GET
+    @Validate
     @Path("/mymessages/{start}/{limit}")
     public List<MessageReadDto> myMessages(@PathParam("start") int start, @PathParam("limit") int limit) {
         return messageService.myMessages(start, limit);
@@ -78,6 +81,7 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @GET
+    @Validate
     @Path("/getreplies/{messageId}")
     public List<MessageReadDto> getReplies(@PathParam("messageId") Long messageId) {
         return messageService.getReplies(messageId);

@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
@@ -63,6 +64,7 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @PUT
+    @Validate
     @Path("/save")
     public void createCorporateReview(@QueryParam("employeeId") Long employeeId, PerformanceEvaluationSaveDto dto, @QueryParam("submitForApproval") boolean submitForApproval) {
         Employee emp = null;
@@ -81,6 +83,7 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
+    @Validate
     @Path("/years")
     public List<Entry> getFYYears(@QueryParam("employeeId") Long employeeId) {
         Employee emp = null;
@@ -94,12 +97,14 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
+    @Validate
     @Path("/comments/{id}")
     public List<QuestionComment> getQuestionComments(@PathParam("id") Long id, @QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context) {
         return PerformanceEvaluationService.instance().getQuestionComments(id, category, context);
     }
 
     @GET
+    @Validate
     @Path("/{start}/{limit}")
     public PerformanceEvaluationTable table(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = null;
@@ -124,6 +129,7 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
+    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id, @QueryParam("type") String type) {

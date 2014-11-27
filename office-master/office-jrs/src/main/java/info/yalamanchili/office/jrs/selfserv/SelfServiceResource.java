@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.jrs.selfserv;
 
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
@@ -47,12 +48,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class SelfServiceResource {
 
     @PUT
+    @Validate
     @Path("/create-ticket/{empid}")
     public String createServiceTicket(@PathParam("empid") long empid, ServiceTicket ticket) {
         return SelfService.instance().createServiceTicket(EmployeeDao.instance().findById(empid), ticket);
     }
 
     @PUT
+    @Validate
     @Path("/create-ticket/currentuser")
     public String createServiceTicket(ServiceTicket ticket) {
         return SelfService.instance().createServiceTicket(OfficeSecurityService.instance().getCurrentUser(), ticket);
@@ -81,6 +84,7 @@ public class SelfServiceResource {
     }
 
     @GET
+    @Validate
     @Path("/tickets/{empid}/{start}/{limit}")
     //TODO add roles check
     public ServiceTicketTable getTickets(@PathParam("empid") long empid, @PathParam("start") int start,

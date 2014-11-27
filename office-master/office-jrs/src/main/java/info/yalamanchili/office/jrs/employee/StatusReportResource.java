@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -17,6 +18,7 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.employee.statusreport.StatusReportService;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
+import javax.validation.Validation;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -69,6 +71,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     }
 
     @PUT
+    @Validate
     @Path("/save")
     @Produces("application/text")
     public String saveReport(StatusReport entity, @QueryParam("submitForApproval") Boolean submitForApproval) {
@@ -76,6 +79,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     }
 
     @GET
+    @Validate
     @Path("/{start}/{limit}")
     public StatusReportTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = null;
@@ -92,6 +96,7 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
 
     //TODO move to abstract resource
     @GET
+    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
