@@ -116,6 +116,7 @@ public class VendorResource extends CRUDResource<Vendor> {
      *
      */
     @PUT
+    @Validate
     @Path("/vendorcontact/{vendorId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addvendorContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
@@ -125,6 +126,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     }
 
     @PUT
+    @Validate
     @Path("/acct-pay-contact/{vendorId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addvendorAcctPayContact(@PathParam("vendorId") Long vendorId, ContactDto dto) {
@@ -233,6 +235,7 @@ public class VendorResource extends CRUDResource<Vendor> {
      *
      */
     @PUT
+    @Validate
     @Path("/vendorlocation/{vendorId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addvendorlocation(@PathParam("vendorId") Long vendorId, Address address) {

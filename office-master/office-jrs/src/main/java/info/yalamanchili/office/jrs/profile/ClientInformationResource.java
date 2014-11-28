@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;

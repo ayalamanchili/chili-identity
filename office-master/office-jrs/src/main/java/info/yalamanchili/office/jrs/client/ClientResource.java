@@ -139,6 +139,7 @@ public class ClientResource extends CRUDResource<Client> {
      * @param dto
      */
     @PUT
+    @Validate
     @Path("/clientcontact/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addclientContact(@PathParam("clientId") Long clientId, ContactDto contactDto) {
@@ -218,6 +219,7 @@ public class ClientResource extends CRUDResource<Client> {
      * @param address
      */
     @PUT
+    @Validate
     @Path("/clientlocation/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addclientlocation(@PathParam("clientId") Long clientId, Address address) {

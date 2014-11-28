@@ -115,6 +115,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
      *
      */
     @PUT
+    @Validate
     @Path("/contact/add/{subcontractorId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addContact(@PathParam("subcontractorId") Long subcontractorId, ContactDto dto) {
@@ -187,6 +188,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
      *
      */
     @PUT
+    @Validate
     @Path("/location/add/{subcontractorId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addlocation(@PathParam("subcontractorId") Long subcontractorId, Address address) {
