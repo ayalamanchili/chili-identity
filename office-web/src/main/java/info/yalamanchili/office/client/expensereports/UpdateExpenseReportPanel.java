@@ -12,6 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -21,22 +22,20 @@ import java.util.logging.Logger;
  *
  * @author Prasanthi.p
  */
-public class UpdateExpenseReportsPanel extends UpdateComposite {
+public class UpdateExpenseReportPanel extends UpdateComposite {
 
-    private Logger logger = Logger.getLogger(UpdateExpenseReportsPanel.class.getName());
+    private Logger logger = Logger.getLogger(UpdateExpenseReportPanel.class.getName());
 
-    public UpdateExpenseReportsPanel(JSONObject entity) {
+    public UpdateExpenseReportPanel(JSONObject entity) {
         initUpdateComposite(entity, "ExpenseReports", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("department", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -45,16 +44,16 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -83,10 +82,11 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", false, false, DataType.STRING_FIELD);
-        addField("description", false, false, DataType.STRING_FIELD);
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
+        addField("name", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("description", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override
@@ -95,6 +95,6 @@ public class UpdateExpenseReportsPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expensereport";
+        return OfficeWelcome.constants.root_url() + "expensereport/save";
     }
 }

@@ -26,7 +26,6 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
-public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
+public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
 
     @PUT
     @Validate
@@ -51,10 +50,17 @@ public class ExpenseReportsResource extends CRUDResource<ExpenseReport> {
         return ExpenseReportsService.instance().save(dto);
     }
 
+    @PUT
+    @Validate
+    @Override
+    public ExpenseReport save(ExpenseReport entity) {
+        throw new UnsupportedOperationException();
+    }
+
     @GET
     @Path("/{start}/{limit}")
-    public ExpenseReportsResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
-        ExpenseReportsResource.ExpenseReportsTable tableObj = new ExpenseReportsResource.ExpenseReportsTable();
+    public ExpenseReportResource.ExpenseReportsTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
+        ExpenseReportResource.ExpenseReportsTable tableObj = new ExpenseReportResource.ExpenseReportsTable();
         tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
