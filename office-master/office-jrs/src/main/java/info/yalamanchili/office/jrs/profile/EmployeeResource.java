@@ -193,6 +193,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/address/{empId}")
     public void addAddress(@PathParam("empId") Long empId, Address address) {
         Employee emp = (Employee) getDao().findById(empId);
@@ -221,6 +222,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/skillset/{empId}")
     @Produces("application/text")
     public String addSkillSet(@PathParam("empId") Long empId, SkillSetDto skillset) {
@@ -270,6 +272,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     }
 
     @PUT
+    @Validate
     @Path("/email/{empId}")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
@@ -343,6 +346,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
      * @param clientInformation
      */
     @PUT
+    @Validate
     @Path("/clientinformation/{empId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
     public void addClientInformation(@PathParam("empId") Long empId, ClientInformation clientInformation) {
