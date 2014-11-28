@@ -68,7 +68,6 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @GET
-    @Validate
     @Path("/mymessages/{start}/{limit}")
     public List<MessageReadDto> myMessages(@PathParam("start") int start, @PathParam("limit") int limit) {
         return messageService.myMessages(start, limit);
@@ -81,7 +80,6 @@ public class MessageResource extends CRUDResource<MessageDto> {
     }
 
     @GET
-    @Validate
     @Path("/getreplies/{messageId}")
     public List<MessageReadDto> getReplies(@PathParam("messageId") Long messageId) {
         return messageService.getReplies(messageId);

@@ -50,7 +50,6 @@ public class TodoResource extends CRUDResource<Todo> {
     }
 
     @GET
-    @Validate
     @Path("/{start}/{limit}")
     public TodoTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();

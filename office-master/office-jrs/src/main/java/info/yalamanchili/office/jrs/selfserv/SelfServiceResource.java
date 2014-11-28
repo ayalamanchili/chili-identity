@@ -84,7 +84,6 @@ public class SelfServiceResource {
     }
 
     @GET
-    @Validate
     @Path("/tickets/{empid}/{start}/{limit}")
     //TODO add roles check
     public ServiceTicketTable getTickets(@PathParam("empid") long empid, @PathParam("start") int start,

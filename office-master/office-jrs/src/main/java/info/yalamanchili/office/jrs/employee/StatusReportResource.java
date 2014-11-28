@@ -79,7 +79,6 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
     }
 
     @GET
-    @Validate
     @Path("/{start}/{limit}")
     public StatusReportTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = null;
@@ -96,7 +95,6 @@ public class StatusReportResource extends CRUDResource<StatusReport> {
 
     //TODO move to abstract resource
     @GET
-    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {

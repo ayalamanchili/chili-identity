@@ -58,7 +58,6 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
-    @Validate
     @Path("read/{employeeId}/{year}")
     public PerformanceEvaluation getPerformanceEvaluation(@PathParam("employeeId") Long employeeId, @PathParam("year") String year) {
         return PerformanceEvaluationService.instance().getEvaluationForYear(year, EmployeeDao.instance().findById(employeeId), null);
@@ -84,7 +83,6 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
-    @Validate
     @Path("/years")
     public List<Entry> getFYYears(@QueryParam("employeeId") Long employeeId) {
         Employee emp = null;
@@ -98,14 +96,12 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
-    @Validate
     @Path("/comments/{id}")
     public List<QuestionComment> getQuestionComments(@PathParam("id") Long id, @QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context) {
         return PerformanceEvaluationService.instance().getQuestionComments(id, category, context);
     }
 
     @GET
-    @Validate
     @Path("/{start}/{limit}")
     public PerformanceEvaluationTable table(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = null;
@@ -130,7 +126,6 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     }
 
     @GET
-    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id, @QueryParam("type") String type) {

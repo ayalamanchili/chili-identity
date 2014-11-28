@@ -48,21 +48,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet> {
 
     @GET
-    @Validate
     @Path("/summary")
     public CorporateTimeSummary getCorporateTimeSummary() {
         return CorporateTimeService.instance().getYearlySummary(OfficeSecurityService.instance().getCurrentUser());
     }
 
     @GET
-    @Validate
     @Path("/current-leaves")
     public List<CorporateTimeSheet> currentLeaves() {
         return corporateTimeSheetDao.getCurrentCompanyLeaves();
     }
 
     @GET
-    @Validate
     @Path("/summary/{empId}")
     @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
     public CorporateTimeSummary getCorporateTimeSummary(@PathParam("empId") Long empId) {
@@ -85,7 +82,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @GET
-    @Validate
     @Path("/cancel-leave-request/{timesheetId}")
     public void cancelLeaveRequest(@PathParam("timesheetId") Long timesheetId, @QueryParam("cancelReason") String cancelReason) {
         CorporateTimeService.instance().cancelLeaveRequest(timesheetId, cancelReason);
@@ -117,7 +113,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @GET
-    @Validate
     @Path("/employee/{empId}/{start}/{limit}")
     @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_HR_ADMINSTRATION", "ROLE_CORPORATE_TIME_REPORTS"})
     public CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -126,7 +121,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @GET
-    @Validate
     @Path("/currentuser/{start}/{limit}")
     public CorporateTimeSheetTable getCorporateTimeSheet(@QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
@@ -134,7 +128,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @PUT
-    @Validate
     @Path("/report/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CORPORATE_TIME_REPORTS')")
     public List<CorporateTimeSheet> getReport(SearchCorporateTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -142,7 +135,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @POST
-    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CORPORATE_TIME_REPORTS')")
@@ -151,7 +143,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @GET
-    @Validate
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
@@ -159,7 +150,6 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @GET
-    @Validate
     @Path("/all-emp-summary-report")
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION','ROLE_CORPORATE_TIME_REPORTS')")
     public void getAllEmployeesSummaryReport() {
