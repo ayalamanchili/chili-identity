@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.message;
 
 import info.chili.commons.CollectionsUtils;
+import info.chili.jpa.validation.Validate;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -45,6 +46,7 @@ public class NotificationResource extends CRUDResource<NotificationGroup> {
 
     @Path("/group/save")
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void saveNotificationGroup(NotificationGroup group) {
         String groupName = group.getName();

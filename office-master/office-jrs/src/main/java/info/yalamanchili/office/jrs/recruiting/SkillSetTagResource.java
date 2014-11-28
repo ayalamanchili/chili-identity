@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.recruiting;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.recruiting.SkillSetTagDao;
@@ -75,6 +76,7 @@ public class SkillSetTagResource extends CRUDResource<SkillSetTag> {
     }
 
     @PUT
+    @Validate
     @Override
     @CacheEvict(value = OfficeCacheKeys.SKILL_SET_TAG, allEntries = true)
     public SkillSetTag save(SkillSetTag entity) {

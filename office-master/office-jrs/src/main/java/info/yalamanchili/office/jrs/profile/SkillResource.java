@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.SkillDao;
@@ -45,6 +46,7 @@ public class SkillResource extends CRUDResource<Skill> {
     public SkillDao skillDao;
 
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
     @CacheEvict(value = OfficeCacheKeys.SKILL, allEntries = true)
     @Override

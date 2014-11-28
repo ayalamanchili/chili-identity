@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
@@ -45,6 +46,7 @@ public class EmployeeDocumentResource extends CRUDResource<EmployeeDocument> {
     public EmployeeDocumentDao employeeDocumentDao;
 
     @PUT
+    @Validate
     @Path("/{empId}")
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP','ROLE_TIME')")

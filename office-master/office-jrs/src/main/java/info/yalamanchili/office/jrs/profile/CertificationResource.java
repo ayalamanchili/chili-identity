@@ -12,6 +12,7 @@ import info.yalamanchili.office.dao.profile.CertificationDao;
 import info.yalamanchili.office.entity.profile.Certification;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import java.util.List;
@@ -61,6 +62,7 @@ public class CertificationResource extends CRUDResource<Certification> {
     }
 
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_RELATIONSHIP')")
     @CacheEvict(value = OfficeCacheKeys.CERTIFICATION, allEntries = true)
     @Override

@@ -112,6 +112,7 @@ public class ClientResource extends CRUDResource<Client> {
      * Client Projects
      */
     @PUT
+    @Validate
     @Path("/project/{clientId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TIME','ROLE_EXPENSE')")
     public void addProject(@PathParam("clientId") Long clientId, Project project) {

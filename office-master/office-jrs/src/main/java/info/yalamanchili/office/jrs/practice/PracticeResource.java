@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.practice;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.practice.PracticeDao;
@@ -59,6 +60,7 @@ public class PracticeResource extends CRUDResource<Practice> {
     }
 
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER')")
     @CacheEvict(value = OfficeCacheKeys.PRACTICE, allEntries = true)
     @Override
