@@ -10,7 +10,7 @@ package info.yalamanchili.office.dao.expense;
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
 import info.yalamanchili.office.entity.expense.Expense;
-import info.yalamanchili.office.entity.expense.ExpenseCategory;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.profile.Employee;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

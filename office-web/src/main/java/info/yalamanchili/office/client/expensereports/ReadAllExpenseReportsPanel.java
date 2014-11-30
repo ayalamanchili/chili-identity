@@ -51,7 +51,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new ReadExpenseReportsPanel(getEntity(entityId)));
+        TabPanel.instance().expensePanel.entityPanel.add(new ReadExpenseReportsPanel(entityId));
 
     }
 
@@ -59,11 +59,11 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -76,19 +76,19 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().expensePanel.entityPanel.clear();
-        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(getEntity(entityId)));
+        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(entityId));
     }
 
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseItemURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info("rrr:" + result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info("rrr:" + result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override

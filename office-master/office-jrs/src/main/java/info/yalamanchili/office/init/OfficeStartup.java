@@ -24,7 +24,7 @@ import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.company.CompanyContactType;
 import info.yalamanchili.office.entity.drive.Folder;
-import info.yalamanchili.office.entity.expense.ExpenseCategory;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;

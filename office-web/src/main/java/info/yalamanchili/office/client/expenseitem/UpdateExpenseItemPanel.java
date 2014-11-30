@@ -12,12 +12,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
-import info.yalamanchili.office.client.expensereports.SelectExpenseReportsWidget;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,45 +29,42 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
     }
 
     @Override
-    protected JSONObject populateEntityFromFields() {
-        JSONObject ExpenseItem = new JSONObject();
-        assignEntityValueFromField("category", ExpenseItem);
-        assignEntityValueFromField("expenseReport", ExpenseItem);
-        assignEntityValueFromField("description", ExpenseItem);
-        assignEntityValueFromField("amount", ExpenseItem);
-        assignEntityValueFromField("itemStartDate", ExpenseItem);
-        assignEntityValueFromField("itemEndDate", ExpenseItem);
-        assignEntityValueFromField("purpose", ExpenseItem);
-        assignEntityValueFromField("remarks", ExpenseItem);
-        return ExpenseItem;
+    public JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("category", entity);
+        assignEntityValueFromField("description", entity);
+        assignEntityValueFromField("amount", entity);
+        assignEntityValueFromField("itemStartDate", entity);
+        assignEntityValueFromField("itemEndDate", entity);
+        assignEntityValueFromField("purpose", entity);
+        assignEntityValueFromField("remarks", entity);
+        return entity;
     }
 
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("category", entity, null);
-        assignFieldValueFromEntity("expenseReport", entity, null);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("description", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("itemStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemEndDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("remarks", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("purpose", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("remarks", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -84,18 +80,19 @@ public class UpdateExpenseItemPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
+        update.setVisible(false);
     }
 
     @Override
     protected void addWidgets() {
         addDropDown("category", new SelectExpenseCategoryWidget(false, false));
-        addDropDown("expenseReport", new SelectExpenseReportsWidget(false, false));
-        addField("description", false, true, DataType.STRING_FIELD);
-        addField("amount", false, true, DataType.INTEGER_FIELD);
-        addField("itemStartDate", false, true, DataType.DATE_FIELD);
-        addField("itemEndDate", false, true, DataType.DATE_FIELD);
-        addField("purpose", false, false, DataType.STRING_FIELD);
-        addField("remarks", false, true, DataType.STRING_FIELD);
+        addField("description", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("amount", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("itemStartDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("itemEndDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("purpose", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("remarks", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override

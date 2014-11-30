@@ -46,7 +46,6 @@ public class CreateExpenseReportPanel extends CreateComposite {
         assignEntityValueFromField("description", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("department", entity);
         if (expenseItemPanels.size() > 0) {
             JSONArray items = new JSONArray();
             int i = 0;

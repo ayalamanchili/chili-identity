@@ -5,15 +5,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.expense;
+package info.yalamanchili.office.jrs.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.dao.expense.ExpenseReportsDao;
-import info.yalamanchili.office.entity.expense.ExpenseReport;
-import info.yalamanchili.office.expense.ExpeneseReportSaveDto;
-import info.yalamanchili.office.expense.ExpenseReportsService;
+import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
+import info.yalamanchili.office.expense.expenserpt.ExpeneseReportSaveDto;
+import info.yalamanchili.office.expense.expenserpt.ExpenseReportsService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -55,6 +55,14 @@ public class ExpenseReportResource extends CRUDResource<ExpenseReport> {
     @Override
     public ExpenseReport save(ExpenseReport entity) {
         throw new UnsupportedOperationException();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+    public ExpeneseReportSaveDto read(@PathParam("id") Long id) {
+        return ExpenseReportsService.instance().read(id);
     }
 
     @GET

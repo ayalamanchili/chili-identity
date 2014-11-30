@@ -5,13 +5,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.dao.expense;
+package info.yalamanchili.office.dao.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.entity.expense.ExpenseCategory;
-import info.yalamanchili.office.entity.expense.ExpenseItem;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.cache.annotation.CacheEvict;

@@ -6,10 +6,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.expense;
+package info.yalamanchili.office.expense.expenserpt;
 
-import info.yalamanchili.office.entity.expense.ExpenseItem;
-import info.yalamanchili.office.entity.expense.ExpenseReport;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;

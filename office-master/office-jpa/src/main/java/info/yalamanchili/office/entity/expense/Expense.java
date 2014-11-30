@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.entity.expense;
 
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;

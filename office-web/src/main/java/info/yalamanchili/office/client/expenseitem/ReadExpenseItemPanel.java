@@ -13,9 +13,9 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expensecategory.SelectExpenseCategoryWidget;
-import info.yalamanchili.office.client.expensereports.SelectExpenseReportsWidget;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +27,6 @@ public class ReadExpenseItemPanel extends ReadComposite {
     private static ReadExpenseItemPanel instance;
     private static Logger logger = Logger.getLogger(ReadExpenseItemPanel.class.getName());
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
-    SelectExpenseReportsWidget selectExpenseReportsWidgetF = new SelectExpenseReportsWidget(false, true);
 
     public static ReadExpenseItemPanel instance() {
         return instance;
@@ -46,25 +45,24 @@ public class ReadExpenseItemPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("category", entity, null);
-        assignFieldValueFromEntity("expenseReport", entity, null);
-        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("description", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("amount", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("itemStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("itemEndDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("purpose", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("remarks", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("purpose", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("remarks", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -78,13 +76,13 @@ public class ReadExpenseItemPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addDropDown("category", new SelectExpenseCategoryWidget(true, true));
-        addDropDown("expenseReport", new SelectExpenseReportsWidget(true, true));
-        addField("description", false, true, DataType.STRING_FIELD);
-        addField("amount", false, true, DataType.INTEGER_FIELD);
-        addField("itemStartDate", false, true, DataType.DATE_FIELD);
-        addField("itemEndDate", false, true, DataType.DATE_FIELD);
-        addField("purpose", true, false, DataType.STRING_FIELD);
-        addField("remarks", true, true, DataType.STRING_FIELD);
+        addField("description", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("amount", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("itemStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("itemEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("purpose", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("remarks", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override
@@ -93,6 +91,6 @@ public class ReadExpenseItemPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "expenseitem";
+        return OfficeWelcome.constants.root_url() + "expenseitem/" + entityId;
     }
 }

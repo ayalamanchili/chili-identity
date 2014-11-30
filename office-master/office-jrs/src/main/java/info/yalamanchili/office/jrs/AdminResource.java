@@ -74,6 +74,7 @@ public class AdminResource {
 
     @Path("/changepassword/{empId}")
     @PUT
+    @Validate
     public CUser changePassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");
         return employeeService.changePassword(empId, user);
@@ -81,6 +82,7 @@ public class AdminResource {
 
     @Path("/resetpassword/{empId}")
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RELATIONSHIP')")
     public CUser resetPassword(@PathParam("empId") Long empId, User user) {
         EmployeeService employeeService = (EmployeeService) SpringContext.getBean("employeeService");

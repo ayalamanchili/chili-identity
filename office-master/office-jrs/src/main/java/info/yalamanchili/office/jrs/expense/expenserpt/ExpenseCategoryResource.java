@@ -5,11 +5,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.jrs.expense;
+package info.yalamanchili.office.jrs.expense.expenserpt;
 
 import info.chili.dao.CRUDDao;
-import info.yalamanchili.office.dao.expense.ExpenseCategoryDao;
-import info.yalamanchili.office.entity.expense.ExpenseCategory;
+import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
 import javax.ws.rs.GET;

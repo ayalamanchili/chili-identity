@@ -16,12 +16,8 @@ import info.yalamanchili.office.client.advancerequisition.AdvanceRequisitionSide
 import info.yalamanchili.office.client.advancerequisition.ReadAllAdvanceRequisitionPanel;
 import info.yalamanchili.office.client.expensecategory.ExpenseCategorySidePanel;
 import info.yalamanchili.office.client.expensecategory.ReadAllExpenseCategoryPanel;
-import info.yalamanchili.office.client.expenseitem.ExpenseItemSidePanel;
-import info.yalamanchili.office.client.expenseitem.ReadAllEpenseItemPanel;
 import info.yalamanchili.office.client.expensereports.ExpenseReportsSidePanel;
 import info.yalamanchili.office.client.expensereports.ReadAllExpenseReportsPanel;
-import info.yalamanchili.office.client.transaction.ReadAllTransactionPanel;
-import info.yalamanchili.office.client.transaction.TransactionSidePanel;
 
 /**
  *
@@ -39,24 +35,13 @@ public class ExpenseMenu extends Composite {
     protected void configureExpenseMenu() {
 
         expenseMenuBar.addItem("AdvanceRequisition", expensadvancerequisitionCmd);
-        expenseMenuBar.addItem("Expense", expenseMaintainenceCmd);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-
-            expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
             expenseMenuBar.addItem("ExpenseReports", expenseReportsMaintainenceCmd);
-//            expenseMenuBar.addItem("ExpenseItem", expenseItemMaintainenceCmd);
+            expenseMenuBar.addItem("ExpenseCategories", expenseCategoriesMaintainenceCmd);
         }
-//        expenseMenuBar.addItem("Transaction", expensTransactionCmd);
         expenseMenuBar.addStyleName("entityMenuBar");
     }
-    Command expenseMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getExpensePanel().entityPanel.clear();
-            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllExpensesPanel());
-            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpensesSidePanel());
-        }
-    };
+
     Command expenseCategoriesMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
@@ -73,14 +58,7 @@ public class ExpenseMenu extends Composite {
             TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
         }
     };
-    Command expensTransactionCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getExpensePanel().entityPanel.clear();
-            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllTransactionPanel());
-            TabPanel.instance().getExpensePanel().sidePanelTop.add(new TransactionSidePanel());
-        }
-    };
+
     Command expenseReportsMaintainenceCmd = new Command() {
         public void execute() {
             TabPanel.instance().getExpensePanel().entityPanel.clear();
@@ -90,13 +68,4 @@ public class ExpenseMenu extends Composite {
 
         }
     };
-//    Command expenseItemMaintainenceCmd = new Command() {
-//        public void execute() {
-//            TabPanel.instance().getExpensePanel().entityPanel.clear();
-//            TabPanel.instance().getExpensePanel().sidePanelTop.clear();
-//            TabPanel.instance().getExpensePanel().entityPanel.add(new ReadAllEpenseItemPanel());
-//            TabPanel.instance().getExpensePanel().sidePanelTop.add(new ExpenseItemSidePanel());
-//
-//        }
-//    };
 }

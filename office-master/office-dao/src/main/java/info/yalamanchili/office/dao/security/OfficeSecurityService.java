@@ -134,8 +134,10 @@ public class OfficeSecurityService {
 
     public List<String> getUserRoles(Employee employee) {
         List<String> roles = new ArrayList<String>();
-        for (CRole role : employee.getUser().getRoles()) {
-            roles.add(role.getRolename());
+        if (employee.getUser() != null) {
+            for (CRole role : employee.getUser().getRoles()) {
+                roles.add(role.getRolename());
+            }
         }
         return roles;
     }
