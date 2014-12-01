@@ -44,7 +44,7 @@ public class Check extends AbstractHandleEntity {
     /**
      * amount
      */
-    @NotNull
+    @NotNull (message = "{checkAmount.not.empty.msg}")
     protected BigDecimal checkAmount;
     /**
      *

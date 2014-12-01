@@ -41,12 +41,12 @@ public class BankAccount extends AbstractHandleEntity {
     /**
      *
      */
-    @NotEmpty
+    @NotEmpty (message = "{bankRoutingNumber.not.empty.msg}")
     protected String bankRoutingNumber;
     /**
      *
      */
-    @NotEmpty
+    @NotEmpty (message = "{bankAccountNumber.not.empty.msg}")
     protected String bankAccountNumber;
 
     public BankAccount() {
