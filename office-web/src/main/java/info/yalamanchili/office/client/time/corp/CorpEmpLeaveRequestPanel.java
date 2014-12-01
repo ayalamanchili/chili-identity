@@ -64,17 +64,17 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -122,7 +122,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
             endDateF.setMessage("End Date must be equal to or after Start Date");
             return false;
         }
-        if (hourF.getFloat()%4!=0) {
+        if (hourF.getFloat() != null && hourF.getFloat() % 4 != 0) {
             hourF.setMessage("Leave request can only be applied for half or full days");
             return false;
         }

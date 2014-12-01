@@ -130,15 +130,17 @@ public class AdvanceRequisitionRequestPanel extends CreateComposite implements C
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
+        boolean flag = true;
         IntegerField repaymentMonths = (IntegerField) fields.get("repaymentMonths");
         if (repaymentMonths.getInteger() == null) {
             repaymentMonths.setMessage("Value is required");
+            flag = false;
         }
         if (!passBankAcctInfo.getValue() && !passCheckInfo.getValue() && !useCurrentPayrollInfo.getValue()) {
             Window.alert("choose a Receive Payment Information");
-            return false;
+            flag = false;
         }
-        return true;
+        return flag;
     }
 
     @Override

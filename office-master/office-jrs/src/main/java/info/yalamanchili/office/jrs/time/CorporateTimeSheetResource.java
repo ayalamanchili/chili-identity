@@ -88,6 +88,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     }
 
     @Override
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public CorporateTimeSheet save(CorporateTimeSheet entity) {
         if (entity.getId() == null) {
