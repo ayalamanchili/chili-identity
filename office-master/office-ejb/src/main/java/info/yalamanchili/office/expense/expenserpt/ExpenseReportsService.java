@@ -58,7 +58,11 @@ public class ExpenseReportsService {
         vars.put("entity", entity);
         vars.put("entityId", entity.getId());
         vars.put("currentEmployee", emp);
-        entity.setBpmProcessId(OfficeBPMService.instance().startProcess("expense_report_process", vars));
+        if (OfficeSecurityService.instance().hasRole(info.yalamanchili.office.OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("corp_emp_expense_report_process", vars));
+        } else {
+            entity.setBpmProcessId(OfficeBPMService.instance().startProcess("assoc_emp_expense_report_process", vars));
+        }
         return entity;
     }
 

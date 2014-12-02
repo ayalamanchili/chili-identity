@@ -10,15 +10,16 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
  
-    <process id="expense_report_process">
+    <process id="assoc_emp_expense_report_process">
         <startEvent id="expenseReportStart"/>
         
         <!-- Manager approval task-->
-        <sequenceFlow  sourceRef="expenseReportStart" targetRef="expenseReportApprovalTask" />
-        <userTask id="expenseReportApprovalTask" 
-                  name="Expense Report Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+        <sequenceFlow  sourceRef="expenseReportStart" targetRef="expenseReportPayrollApprovalTask" />
+        <userTask id="expenseReportPayrollApprovalTask" 
+                  name="Expense Report Payroll Dept Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
-                Employee Expense Report Approval Task
+                Employee Expense Report Payroll Dept Approval Task
                 Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Name          : #{entity.name}
                 Description   : #{entity.description}
@@ -27,8 +28,8 @@
 
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportRequestProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportRequestProcess" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.AssocEmpExpenseReportProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.AssocEmpExpenseReportProcess" />
                 
                 <activiti:formProperty id="status" 
                                        name="Approved?"
@@ -46,7 +47,7 @@
         <!-- Task escalation email after 48 hours-->
         <boundaryEvent id="expenseReportApprovalTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="expenseReportApprovalTask">
+                       attachedToRef="expenseReportPayrollApprovalTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
@@ -55,7 +56,7 @@
                       targetRef="expenseReportApprovalTaskEscalation" />
         <serviceTask id="expenseReportApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <!--desision-->
-        <sequenceFlow sourceRef="expenseReportApprovalTask" 
+        <sequenceFlow sourceRef="expenseReportPayrollApprovalTask" 
                       targetRef="approvalGateway" />
         <exclusiveGateway id="approvalGateway" />
         <sequenceFlow sourceRef="approvalGateway" 
@@ -82,8 +83,8 @@
                 End Date      : #{entity.endDate}
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportRequestProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportRequestProcess" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.AssocEmpExpenseReportProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.AssocEmpExpenseReportProcess" />
                 <activiti:formProperty id="status" 
                                        name="Approved?"
                                        required="true"

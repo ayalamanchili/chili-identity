@@ -2,7 +2,8 @@
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package info.yalamanchili.office.bpm.expensereport;
@@ -21,9 +22,9 @@ import org.activiti.engine.delegate.TaskListener;
 
 /**
  *
- * @author prasanthi.p
+ * @author ayalamanchili
  */
-public class ExpenseReportRequestProcess implements TaskListener {
+public class CorpEmpExpenseReportProcess implements TaskListener {
 
     @Override
     public void notify(DelegateTask dt) {
@@ -36,7 +37,7 @@ public class ExpenseReportRequestProcess implements TaskListener {
     }
 
     private void expenseReportTaskCreated(DelegateTask dt) {
-        if (dt.getTaskDefinitionKey().equals("expenseReportApprovalTask")) {
+        if (dt.getTaskDefinitionKey().equals("expenseReportMgrApprovalTask")) {
             assignExpenseReportTask(dt);
         }
         new GenericTaskCreateNotification().notify(dt);
@@ -60,7 +61,7 @@ public class ExpenseReportRequestProcess implements TaskListener {
         if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
             dt.addCandidateUser(reportsToEmp.getEmployeeId());
         } else {
-            dt.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
+            dt.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
         }
     }
 
