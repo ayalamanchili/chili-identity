@@ -52,6 +52,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
 
     @PUT
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_RECRUITER','ROLE_TIME','ROLE_RELATIONSHIP')")
+    @Validate
     @Override
     public ClientInformation save(ClientInformation entity) {
         return clientInformationService.update(entity);
@@ -100,6 +101,7 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     }
 
     @PUT
+    @Validate
     @Path("/update-billing-rate/{id}")
     public void updateBillingRate(@PathParam("id") Long id, BillingRate billingRate) {
         clientInformationService.updateBillingRate(id, billingRate);
