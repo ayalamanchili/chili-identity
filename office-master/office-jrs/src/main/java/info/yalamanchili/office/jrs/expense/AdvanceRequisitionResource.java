@@ -69,6 +69,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     }
 
     @PUT
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PAYROLL_AND_BENIFITS','ROLE_ACCOUNTS_PAYABLE')")
     @Path("/transaction/{id}")
     public void addTransaction(@PathParam("id") Long id, Transaction transaction) {
