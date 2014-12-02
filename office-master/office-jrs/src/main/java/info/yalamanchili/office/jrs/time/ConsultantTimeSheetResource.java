@@ -71,6 +71,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
     }
 
     @Override
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
     public ConsultantTimeSheet save(ConsultantTimeSheet entity) {
         if (entity.getId() == null) {
@@ -101,7 +102,6 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
 
     @Override
     @PUT
-    @Validate
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS')")
     public void delete(@PathParam("id") Long id) {
