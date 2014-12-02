@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -101,11 +102,13 @@ public class AdvanceRequisition extends AbstractEntity {
      *
      */
     @Transient
+    @Valid
     protected Check check;
     /**
      *
      */
     @Transient
+    @Valid
     protected BankAccount bankAccount;
     /**
      *

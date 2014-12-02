@@ -40,6 +40,7 @@ public class ContactResource extends CRUDResource<ContactDto> {
 
     @PUT
     @Override
+    @Validate
     public ContactDto save(ContactDto dto) {
         contactService.save(dto);
         return dto;
