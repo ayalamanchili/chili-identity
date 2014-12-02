@@ -80,6 +80,7 @@ public class DriveResource {
     }
 
     @PUT
+    @Validate
     @Path("/update-file")
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_DRIVE')")
