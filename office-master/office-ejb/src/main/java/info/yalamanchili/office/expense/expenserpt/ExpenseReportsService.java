@@ -9,9 +9,12 @@
 package info.yalamanchili.office.expense.expenserpt;
 
 import info.chili.commons.pdf.PDFUtils;
+import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.config.OfficeSecurityConfiguration;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseItemDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
@@ -73,15 +76,19 @@ public class ExpenseReportsService {
 
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
-        Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put("entity", entity);
+        Employee employee = entity.getEmployee();
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/expense-report-template.pdf");
+        data.getData().put("description", entity.getDescription());
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+//        Signature preparedBysignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), EmployeeDao.instance().getPrimaryEmail(employee), null);
+//        data.getSignatures().add(preparedBysignature);
 
-        String report = TemplateService.instance().process("expense-report.xhtml", vars);
-        byte[] pdf = PDFUtils.convertToPDF(report);
-        return Response
-                .ok(pdf)
-                .header("content-disposition", "filename = expense-report.pdf")
-                .header("Content-Length", pdf.length)
+        byte[] pdf = PDFUtils.generatePdf(data);
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = self-review.pdf")
+                .header("Content-Length", pdf)
                 .build();
     }
 
