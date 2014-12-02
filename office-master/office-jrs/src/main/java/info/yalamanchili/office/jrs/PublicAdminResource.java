@@ -61,7 +61,7 @@ public class PublicAdminResource {
         user.setUserName(empId);
         user.setNewPassword(tempPassword);
         employeeService.resetPassword(emp.getId(), user);
-        return emp.getPrimaryEmail().getEmail();
+        return EmployeeDao.instance().getPrimaryEmail(emp);
     }
 
     @Path("/account_reset")
