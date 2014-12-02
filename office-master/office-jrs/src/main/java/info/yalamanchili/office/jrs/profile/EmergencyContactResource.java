@@ -4,6 +4,7 @@
 package info.yalamanchili.office.jrs.profile;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmergencyContactDao;
 import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -41,6 +42,7 @@ public class EmergencyContactResource extends CRUDResource<EmergencyContactDto> 
     }
 
     @PUT
+    @Validate
     public EmergencyContactDto save(EmergencyContactDto entity) {
         return emergencyContactService.update(entity);
     }
