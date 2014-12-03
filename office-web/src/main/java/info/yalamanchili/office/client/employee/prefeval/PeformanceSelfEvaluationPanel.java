@@ -68,6 +68,7 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(create)) {
+            create.setEnabled(false);
             createSelfEvaluation();
         }
     }
@@ -96,11 +97,17 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     }
 
     protected boolean validate() {
+        boolean flag = true;
         if (selectYearWidget.getSelectedObject() == null) {
             selectYearWidget.setMessage("Please select a value");
-            return false;
+            flag = false;
         }
-        return selfEvalCommentsPanel.validate();
+        flag = flag && selfEvalCommentsPanel.validate();
+        if (!flag) {
+            create.setEnabled(true);
+        }
+        return flag;
+
     }
 
     protected String getUrl() {
