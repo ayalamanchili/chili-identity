@@ -79,6 +79,8 @@ public class AdvanceRequisitionService {
     @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"})
     public Response getReport(AdvanceRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
+        CheckDao.instance().find(entity);
+        BankAccountDao.instance().find(entity);
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/advacne-Requisition-template.pdf");
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
