@@ -37,7 +37,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     protected List<UpdateExpenseItemPanel> updateItemPanels = new ArrayList<UpdateExpenseItemPanel>();
 
     public UpdateExpenseReportPanel(String id) {
-        initUpdateComposite(id, "ExpenseReports", OfficeWelcome.constants);
+        initUpdateComposite(id, "ExpenseReport", OfficeWelcome.constants);
     }
 
     @Override

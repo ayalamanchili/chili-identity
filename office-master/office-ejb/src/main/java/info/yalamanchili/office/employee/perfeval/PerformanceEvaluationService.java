@@ -238,6 +238,7 @@ public class PerformanceEvaluationService {
         data.setKeyStoreName(securityConfig.getKeyStoreName());
         data.setTemplateUrl(serviceConfig.getContentManagementLocationRoot() + "/templates/manger-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
+        data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
         data.getData().put("employeeTitle", employee.getJobTitle());
