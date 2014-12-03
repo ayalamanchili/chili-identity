@@ -8,8 +8,10 @@
  */
 package info.yalamanchili.office.expense.expenserpt;
 
+import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -18,6 +20,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseCategoryDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseItemDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseCategory;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseItem;
@@ -81,14 +84,22 @@ public class ExpenseReportsService {
     public Response getReport(Long id) {
         ExpenseReport entity = expenseReportsDao.findById(id);
         Employee employee = entity.getEmployee();
+        EmployeeDao employeeDao = EmployeeDao.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/expense-report-template.pdf");
         data.getData().put("description", entity.getDescription());
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
-//        Signature preparedBysignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), EmployeeDao.instance().getPrimaryEmail(employee), null);
-//        data.getSignatures().add(preparedBysignature);
-
+        Employee preparedBy = entity.getEmployee();
+        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
+        data.getSignatures().add(preparedBysignature);
+        String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
+        data.getData().put("employeeName", prepareByStr);
+        if (entity.getApprovedBy() != null) {
+            Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
+            Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(approver), null);
+            data.getSignatures().add(approvedBysignature);
+        }
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = self-review.pdf")

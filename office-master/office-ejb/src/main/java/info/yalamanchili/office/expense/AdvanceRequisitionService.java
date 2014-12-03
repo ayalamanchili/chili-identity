@@ -95,7 +95,7 @@ public class AdvanceRequisitionService {
         if (entity.getAmount() != null) {
             data.getData().put("amount", entity.getAmount().toString());
         }
-        if (entity.getPayrollFileNumber()!= null) {
+        if (entity.getPayrollFileNumber() != null) {
             data.getData().put("payrollFileNumber", entity.getPayrollFileNumber().toString());
         }
         data.getData().put("purpose", entity.getPurpose());
