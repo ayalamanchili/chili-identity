@@ -105,6 +105,7 @@ public class ExpenseReport extends AbstractEntity {
      *
      */
     protected String bpmProcessId;
+    private ExpenseReportStatus status;
 
     public ExpenseReport() {
     }
@@ -222,5 +223,19 @@ public class ExpenseReport extends AbstractEntity {
      */
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    /**
+     * @return the status
+     */
+    public ExpenseReportStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(ExpenseReportStatus status) {
+        this.status = status;
     }
 }

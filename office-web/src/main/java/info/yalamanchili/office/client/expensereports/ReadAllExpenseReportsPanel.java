@@ -59,11 +59,11 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -83,12 +83,12 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllExpenseItemURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info("rrr:" + result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info("rrr:" + result);
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -98,6 +98,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
         table.setText(0, 2, getKeyValue("StartDate"));
         table.setText(0, 3, getKeyValue("EndDate"));
         table.setText(0, 4, getKeyValue("Print"));
+        table.setText(0, 5, getKeyValue("Status"));
     }
 
     @Override
@@ -110,6 +111,7 @@ public class ReadAllExpenseReportsPanel extends CRUDReadAllComposite {
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             FileField reportL = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "expensereport/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id"));
             table.setWidget(i, 4, reportL);
+            table.setText(i, 5, JSONUtils.toString(entity, "status"));
         }
     }
 
