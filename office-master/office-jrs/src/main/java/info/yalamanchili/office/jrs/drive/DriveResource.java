@@ -84,7 +84,6 @@ public class DriveResource {
     @Path("/update-file")
     @Produces("application/text")
     @PreAuthorize("hasAnyRole('ROLE_DRIVE')")
-    @Validate
     @CacheEvict(value = OfficeCacheKeys.DRIVE, allEntries = true)
     public String updateFile(FileDto file) {
         return driveService.updateFile(file);
