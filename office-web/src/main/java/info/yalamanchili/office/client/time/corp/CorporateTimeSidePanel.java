@@ -221,7 +221,7 @@ public class CorporateTimeSidePanel extends ALComposite implements ClickHandler 
             startDateF.setMessage("required");
             return null;
         }
-        if (startDateF.getDate() == null) {
+        if (endDateF.getDate() == null) {
             endDateF.setMessage("required");
             return null;
         }

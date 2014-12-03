@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.expense;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.expense.TransactionDao;
 import info.yalamanchili.office.entity.expense.Transaction;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -40,6 +41,7 @@ public class TransactionResource extends CRUDResource<Transaction> {
 
     @PUT
     @Override
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_EXPENSE')")
     public Transaction save(Transaction entity) {
         return super.save(entity);
@@ -62,7 +64,7 @@ public class TransactionResource extends CRUDResource<Transaction> {
 
     @XmlRootElement
     @XmlType
-    public static class TransactionTable implements java.io.Serializable{
+    public static class TransactionTable implements java.io.Serializable {
 
         protected Long size;
         protected List<Transaction> entities;

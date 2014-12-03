@@ -12,6 +12,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -20,7 +22,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import info.yalamanchili.office.client.expenseitem.UpdateExpenseItemPanel;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +89,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
                         postUpdateSuccess(arg0);
                     }
                 });
+    }
+
+    @Override
+    protected CRUDComposite getChildWidget(int childIndexWidget) {
+        return updateItemPanels.get(childIndexWidget);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -32,6 +33,11 @@ public abstract class UpdateContactPanel extends UpdateComposite {
     protected List<UpdatePhonePanel> updatePhoneWidgets = new ArrayList<UpdatePhonePanel>();
     protected ClickableLink addPhoneL = new ClickableLink("add Phone");
     protected JSONArray phones = new JSONArray();
+
+    @Override
+    protected CRUDComposite getChildWidget(int childIndexWidget) {
+        return updatePhoneWidgets.get(childIndexWidget);
+    }
 
     public UpdateContactPanel(JSONObject entity) {
         if (entity.get("phones") != null) {

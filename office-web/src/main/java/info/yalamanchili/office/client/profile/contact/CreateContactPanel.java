@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -34,6 +35,11 @@ public abstract class CreateContactPanel extends CreateComposite {
     public CreateContactPanel(CreateCompositeType type) {
         super(type);
         initCreateComposite("Contact", OfficeWelcome.constants);
+    }
+
+    @Override
+    protected CRUDComposite getChildWidget(int childIndexWidget) {
+        return createPhoneWidgets.get(childIndexWidget);
     }
 
     @Override

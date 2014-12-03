@@ -139,6 +139,7 @@ public class ConsultantTimeSheetResource extends CRUDResource<ConsultantTimeShee
 
     @PUT
     @Path("/report/{start}/{limit}")
+    @Validate
     @PreAuthorize("hasAnyRole('ROLE_RELATIONSHIP','ROLE_PAYROLL_AND_BENIFITS','ROLE_CONSULTANT_TIME_REPORTS')")
     public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
         return consultantTimeSheetDao.getReport(dto, start, limit);

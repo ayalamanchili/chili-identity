@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -120,7 +121,7 @@ public class CreateExpenseReportPanel extends CreateComposite {
     }
 
     @Override
-    protected CreateComposite getChildWidget(int childIndexWidget) {
+    protected CRUDComposite getChildWidget(int childIndexWidget) {
         return expenseItemPanels.get(childIndexWidget);
     }
 
