@@ -166,7 +166,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         for (String str : fields.keySet()) {
             if (fields.get(str) instanceof StringField) {
                 StringField sf = (StringField) fields.get(str);
-                sf.getTextbox().setVisibleLength(60);
+                sf.getTextbox().setVisibleLength(80);
             }
         }
     }

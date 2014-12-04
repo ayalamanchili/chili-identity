@@ -205,6 +205,8 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
         if (TabPanel.instance().homePanel.isVisible()) {
             createButton.setText("Create Self Evaluation");
             createButton.setVisible(true);
+        }else{
+            createButton.setVisible(false);
         }
     }
 
