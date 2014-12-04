@@ -15,5 +15,6 @@ public enum ExpenseReportStatus {
 
     Pending_Approval,
     Pending_Dispatch_Approval,
-    Complete;
+    Rejected,
+    Completed;
 }

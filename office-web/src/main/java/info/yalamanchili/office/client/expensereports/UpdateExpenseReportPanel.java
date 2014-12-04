@@ -44,14 +44,14 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
 
-                    }
-                });
+            }
+        });
     }
 
     protected String getReadURI() {
@@ -71,6 +71,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
             i++;
         }
         entity.put("expenseItems", items);
+        assignEntityValueFromField("status", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -79,16 +80,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -103,6 +104,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get("expenseItems"));
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         populateExpenseItems(expenseItems);
     }
 
@@ -137,6 +139,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite {
         addField("description", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("status", false, false, ExpenseReportStatus.names());
         alignFields();
     }
 

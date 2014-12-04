@@ -16,6 +16,7 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.expenserpt.ExpenseReportsDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
+import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -51,6 +52,21 @@ public class CorpEmpExpenseReportProcess implements TaskListener {
         Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.expenseReport", "You cannot approve your expenseReport task");
+        }
+        //Status
+        String status = (String) dt.getExecution().getVariable("status");
+        if (status.equalsIgnoreCase("approved")) {
+            entity.setStatus(ExpenseReportStatus.Pending_Approval);
+        } else {
+            entity.setStatus(ExpenseReportStatus.Rejected);
+        }
+        if (dt.getTaskDefinitionKey().equals("expenseReportPayrollApprovalTask") && ExpenseReportStatus.Pending_Dispatch_Approval.equals(entity.getStatus())) {
+            entity.setStatus(ExpenseReportStatus.Completed);
+        }
+        ExpenseReportsDao.instance().save(entity);
+        if (dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.Pending_Approval.equals(entity.getStatus())
+                || dt.getTaskDefinitionKey().equals("expenseReportFinalApprovalTask") && ExpenseReportStatus.Pending_Approval.equals(entity.getStatus())) {
+            return;
         }
         new GenericTaskCompleteNotification().notify(dt);
     }
