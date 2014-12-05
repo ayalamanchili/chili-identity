@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.bpm.perfeval;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
@@ -82,6 +83,9 @@ public class CorporatePerfEvalProcess implements TaskListener {
             return;
         }
         if ("managerReviewTask".equals(task.getTaskDefinitionKey())) {
+            if (entity.getQuestions().size() <= 4) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.complete.mgr.eval..task", "Please go to MyOffice-->Employee-->Reports-->Performance Evaluations to complete Manager Review before completing the task.");
+            }
             String notes = (String) task.getExecution().getVariable("managerNotes");
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setApprovedBy(currentUser.getEmployeeId());
