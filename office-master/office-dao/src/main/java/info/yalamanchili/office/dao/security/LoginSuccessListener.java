@@ -12,6 +12,7 @@ import info.yalamanchili.office.dao.audit.LoginActivityDao;
 import info.yalamanchili.office.entity.audit.LoginActivity;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.Date;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 //TODO move this along with OfficeSecurityService to EJB layer
 public class LoginSuccessListener {
 
-    public void logLogin() {
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+    @Async
+    @Transactional
+    public void logLogin(String username) {
+        Employee emp = OfficeSecurityService.instance().findEmployee(username);
         LoginActivity loginActivity = new LoginActivity();
         loginActivity.setName(emp.getFirstName() + " " + emp.getLastName());
         loginActivity.setEmployeeId(emp.getEmployeeId());

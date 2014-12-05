@@ -7,6 +7,8 @@ import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
+import info.yalamanchili.office.dao.security.LoginSuccessListener;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.MailUtils;
 
 import javax.validation.ConstraintViolation;
@@ -55,7 +57,11 @@ public class ServiceInterceptor {
     @Transactional(readOnly = true)
     public Object process(ProceedingJoinPoint joinPoint, Validate validate) throws Throwable {
         Object result = null;
-        validate(joinPoint);
+        if (joinPoint.getSignature().toShortString().contains("login")) {
+            LoginSuccessListener.instance().logLogin(OfficeSecurityService.instance().getCurrentUserName());
+        } else {
+            validate(joinPoint);
+        }
         try {
             result = joinPoint.proceed();
         } catch (ServiceException se) {

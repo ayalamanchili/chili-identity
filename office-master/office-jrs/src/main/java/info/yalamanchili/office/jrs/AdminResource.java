@@ -67,6 +67,7 @@ public class AdminResource {
 
     @Path("/login")
     @PUT
+    @Validate
     @Cacheable(value = OfficeCacheKeys.LOGIN, key = "#user.username")
     public EmployeeLoginDto login(CUser user) {
         return mapper.map(securityService.login(user), EmployeeLoginDto.class);

@@ -51,17 +51,19 @@ public class CorporatePerfEvalProcess implements TaskListener {
     protected void savePerformanceEvaluation(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         PerformanceEvaluation entity = getPerformanceEvaluationFromTask(task);
-        if ("managerReviewTask".equals(task.getTaskDefinitionKey())) {
-            entity.setStage(PerformanceEvaluationStage.Manager_Review);
-        } else if ("employeeAcceptTask".equals(task.getTaskDefinitionKey())) {
-            entity.setStage(PerformanceEvaluationStage.Employee_Acceptance);
-        } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
-            entity.setStage(PerformanceEvaluationStage.HR_Approval);
+        if (entity != null) {
+            if ("managerReviewTask".equals(task.getTaskDefinitionKey())) {
+                entity.setStage(PerformanceEvaluationStage.Manager_Review);
+            } else if ("employeeAcceptTask".equals(task.getTaskDefinitionKey())) {
+                entity.setStage(PerformanceEvaluationStage.Employee_Acceptance);
+            } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
+                entity.setStage(PerformanceEvaluationStage.HR_Approval);
+            }
+            entity.setEvaluationDate(new Date());
+            entity = PerformanceEvaluationDao.instance().save(entity);
+            task.getExecution().setVariable("entity", entity);
+            task.getExecution().setVariable("entityId", entity.getId());
         }
-        entity.setEvaluationDate(new Date());
-        entity = PerformanceEvaluationDao.instance().save(entity);
-        task.getExecution().setVariable("entity", entity);
-        task.getExecution().setVariable("entityId", entity.getId());
     }
 
     protected void assignManagerReviewTask(DelegateTask task) {

@@ -15,6 +15,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
@@ -128,5 +129,15 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation/" + entityId;
+    }
+    
+     @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.PerformanceEvaluation" + "/" + getEntityId();
     }
 }

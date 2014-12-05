@@ -3,7 +3,6 @@
  */
 package info.yalamanchili.office.dao.security;
 
-import com.google.common.base.Strings;
 import info.chili.commons.DateUtils;
 import info.chili.jpa.QueryUtils;
 import info.chili.security.SecurityService;
@@ -11,10 +10,8 @@ import info.chili.security.dao.CRoleDao;
 import info.chili.security.domain.CRole;
 import info.chili.security.domain.CUser;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
-import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -68,6 +65,14 @@ public class OfficeSecurityService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getCurrentUserName() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            return auth.getName();
+        }
+        return null;
     }
 
     public Employee getCurrentUser() {
