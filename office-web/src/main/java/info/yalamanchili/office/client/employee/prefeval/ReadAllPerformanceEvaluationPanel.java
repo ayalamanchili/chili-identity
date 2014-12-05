@@ -19,15 +19,12 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
-import info.chili.gwt.widgets.DocumentationWidget;
-import info.chili.gwt.composite.LocalStorage;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -177,8 +174,8 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        } else if (JSONUtils.toBoolean(entity, "")) {
-
+        } else if (TabPanel.instance().homePanel.isVisible() && Auth.isCorporateEmployee()) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         }
@@ -205,7 +202,7 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
         if (TabPanel.instance().homePanel.isVisible()) {
             createButton.setText("Create Self Evaluation");
             createButton.setVisible(true);
-        }else{
+        } else {
             createButton.setVisible(false);
         }
     }
