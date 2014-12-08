@@ -209,7 +209,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         @Override
         protected String nextButtonText() {
             if (stepId.equals(CreatePerformanceEvaluationPanelType.End.name())) {
-                return "Complete";
+                return "Save";
             }
             return "Next";
         }

@@ -71,7 +71,7 @@
                                        name="Accept?"
                                        required="true"
                                        type="enum">
-                    <activiti:value id="accept" name="Accept"/>
+                    <activiti:value id="accept" name="Acknowledge"/>
                 </activiti:formProperty>                
                 <activiti:formProperty id="employeeNotes" 
                                        name="Comments"

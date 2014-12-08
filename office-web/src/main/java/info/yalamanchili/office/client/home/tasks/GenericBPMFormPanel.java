@@ -22,6 +22,7 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.LongField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -51,6 +52,11 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             //TODO currently support string and enum fields
             if (fields.get(key) instanceof StringField) {
                 StringField stringField = (StringField) fields.get(key);
+                value.put("value", new JSONString(stringField.getValue()));
+                type.put("name", new JSONString("string"));
+            }
+            if (fields.get(key) instanceof TextAreaField) {
+                TextAreaField stringField = (TextAreaField) fields.get(key);
                 value.put("value", new JSONString(stringField.getValue()));
                 type.put("name", new JSONString("string"));
             }
@@ -138,7 +144,10 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                 isRequired = false;
             }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("string")) {
-                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.STRING_FIELD);
+                addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.TEXT_AREA_FIELD);
+                TextAreaField taf = (TextAreaField) fields.get(JSONUtils.toString(formProperty, "id"));
+                taf.getTextbox().setCharacterWidth(75);
+                taf.getTextbox().setVisibleLines(4);
             }
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("boolean")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.BOOLEAN_FIELD);
@@ -185,6 +194,13 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                 BaseField field = fields.get(JSONUtils.toString(formProperty, "id"));
                 if (field instanceof StringField) {
                     StringField stringField = (StringField) field;
+                    if (stringField.getValue() == null || stringField.getValue().isEmpty()) {
+                        stringField.setMessage("value is required");
+                        valid = false;
+                    }
+                }
+                if (field instanceof TextAreaField) {
+                    TextAreaField stringField = (TextAreaField) field;
                     if (stringField.getValue() == null || stringField.getValue().isEmpty()) {
                         stringField.setMessage("value is required");
                         valid = false;

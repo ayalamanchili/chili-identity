@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.employee.prefeval;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -83,7 +84,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             assignEntityValueFromField("keyAccomplishments", entity);
             assignEntityValueFromField("areasNeedImprovement", entity);
-            assignEntityValueFromField("nextYearObjectives", entity);
+//            assignEntityValueFromField("nextYearObjectives", entity);
             assignEntityValueFromField("managerComments", entity);
             assignEntityValueFromField("employeeComments", entity);
             assignEntityValueFromField("ceoComments", entity);
@@ -138,11 +139,38 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         return ((BooleanField) fields.get("submitForApproval")).getValue().toString();
     }
 
+    protected static HTML managerReviewStartInstructions = new HTML("<ul>\n"
+            + "	<li>\n"
+            + "	<h3>Manager Review consists of 4 steps</h3>\n"
+            + "\n"
+            + "	<ul>\n"
+            + "		<li>Skill and Aptitude Questions</li>\n"
+            + "		<li>Attitude Questions</li>\n"
+            + "		<li>Management Questions ( if applicable)</li>\n"
+            + "		<li>Feedback Comments</li>\n"
+            + "	</ul>\n"
+            + "	</li>\n"
+            + "	<li>\n"
+            + "	<h3>Once the review is complete. Navigate to Home--&gt; My Tasks--&gt; View Task--&gt; Complete Manager Review Task with comments.</h3>\n"
+            + "	</li>\n"
+            + "	<li>In case you want to save a partial review to be able to update it later..\n"
+            + "	<ul>\n"
+            + "		<li>Naviagate to the last step of the review by just entering the required ratings (step -1-2) and click <strong>Save </strong>on the last step.</li>\n"
+            + "		<li>When ready to complete you can click update and make changes to save them</li>\n"
+            + "		<li>Once you complete the review you need to complete the task under My Tasks to notify the employee about the completion.</li>\n"
+            + "	</ul>\n"
+            + "	</li>\n"
+            + "	<li><a href=\"https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html\">Detailed Instructions.</a></li>\n"
+            + "</ul>");
+
+    protected static HTML managerReviewEndInstructions = new HTML("<h3><strong>Please do not forget to complete the Manager Review Task under Home--&gt; My Tasks once the review is complete to notify the employee about completion.</strong></h3>");
+
     @Override
     protected void addWidgets() {
         if (CreatePerformanceEvaluationPanelType.Start.equals(type)) {
             if (PerformanceEvaluationWizard.instance().year != null) {
                 //Manager review
+                entityFieldsPanel.add(managerReviewStartInstructions);
                 addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD);
                 addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD);
                 addEnumField("type", true, false, EvaluationFrequencyType.names());
@@ -154,7 +182,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
             addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD);
             addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD);
-            addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD);
+//            addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD);
             if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.SELF_MANAGER)) {
                 addField("managerComments", false, false, DataType.TEXT_AREA_FIELD);
                 addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD);
@@ -162,6 +190,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             if (PerformanceEvaluationWizard.instance().type.equals(PerformanceEvaluationWizardType.SELF_MANAGER)) {
                 addField("submitForApproval", false, false, DataType.BOOLEAN_FIELD);
             }
+            entityFieldsPanel.add(managerReviewEndInstructions);
         }
     }
 

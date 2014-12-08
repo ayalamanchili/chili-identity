@@ -174,11 +174,15 @@ public class ReadAllPerformanceEvaluationPanel extends CRUDReadAllComposite impl
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        } else if (TabPanel.instance().homePanel.isVisible() && Auth.isCorporateEmployee()) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
-        } else {
+        } else if (enableUpdate(entity)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
+    }
+
+    protected boolean enableUpdate(JSONObject entity) {
+        return JSONUtils.toString(entity, "enableUpdate").equals("true");
     }
 
     private String getDeleteURL(String entityId) {

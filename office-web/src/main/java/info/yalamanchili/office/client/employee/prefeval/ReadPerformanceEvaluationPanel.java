@@ -69,7 +69,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         assignFieldValueFromEntity("hrApprovalDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
+//        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("hrComments", entity, DataType.TEXT_AREA_FIELD);
@@ -107,7 +107,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
         addField("hrApprovalDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("keyAccomplishments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("areasNeedImprovement", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("nextYearObjectives", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+//        addField("nextYearObjectives", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("managerComments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("employeeComments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("hrComments", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);

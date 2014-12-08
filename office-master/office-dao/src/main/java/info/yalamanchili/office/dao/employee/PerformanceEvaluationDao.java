@@ -61,6 +61,11 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             } else {
                 perfEval.setEnableManagerReview(false);
             }
+            if (isCorporateEmployee) {
+                perfEval.setEnableUpdate(enableUpdate(perfEval, emp));
+            } else {
+                perfEval.setEnableUpdate(true);
+            }
             performanceEvaluations.add(perfEval);
         }
         return performanceEvaluations;
@@ -71,6 +76,23 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
         TypedQuery<Long> sizeQuery = em.createQuery("select count (*) from " + PerformanceEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", Long.class);
         sizeQuery.setParameter("employeeParam", emp);
         return (Long) sizeQuery.getSingleResult();
+    }
+
+    public boolean enableUpdate(PerformanceEvaluation peval, Employee employee) {
+        boolean flag = false;
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
+            flag = true;
+        }
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+        Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
+        if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
+            flag = true;
+        }
+        Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
+        if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
+            flag = true;
+        }
+        return flag && PerformanceEvaluationStage.Manager_Review.equals(peval.getStage());
     }
 
     public void acceccCheck(Employee employee) {

@@ -328,6 +328,17 @@ public class PerformanceEvaluation extends AbstractEntity {
         this.enableManagerReview = enableManagerReview;
     }
 
+    @Transient
+    protected boolean enableUpdate;
+
+    public boolean isEnableUpdate() {
+        return enableUpdate;
+    }
+
+    public void setEnableUpdate(boolean enableUpdate) {
+        this.enableUpdate = enableUpdate;
+    }
+
     public String getEvaluationFYYear() {
         return DateUtils.getYearFromDate(getEvaluationPeriodStartDate()).toString();
     }

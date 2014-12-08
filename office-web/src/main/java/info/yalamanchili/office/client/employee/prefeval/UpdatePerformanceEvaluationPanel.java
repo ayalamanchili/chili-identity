@@ -57,7 +57,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("evaluationPeriodEndDate", entity);
         assignEntityValueFromField("keyAccomplishments", entity);
         assignEntityValueFromField("areasNeedImprovement", entity);
-        assignEntityValueFromField("nextYearObjectives", entity);
+//        assignEntityValueFromField("nextYearObjectives", entity);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
             assignEntityValueFromField("managerComments", entity);
             assignEntityValueFromField("employeeComments", entity);
@@ -133,7 +133,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
+//        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
             assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
             assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
@@ -195,7 +195,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         }
         addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+//        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
             addField("managerComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -214,9 +214,6 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
 
     protected boolean renderSubmitForApproval() {
         if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
-            return true;
-        }
-        if (PerformanceEvaluationWizardType.MANAGER.equals(type) && JSONUtils.toString(entity, "stage").equals(PerformanceEvaluationStage.Manager_Review.name())) {
             return true;
         }
         return false;
