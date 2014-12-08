@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -56,7 +55,7 @@ public class PerformanceEvaluationDao extends CRUDDao<PerformanceEvaluation> {
             isCorporateEmployee = true;
         }
         for (PerformanceEvaluation perfEval : query.getResultList()) {
-            if (PerformanceEvaluationStage.Manager_Review.equals(perfEval.getStage()) && isCorporateEmployee && perfEval.getQuestions().size() <= 4) {
+            if (enableUpdate(perfEval, emp)&& isCorporateEmployee && perfEval.getQuestions().size() <= 4) {
                 perfEval.setEnableManagerReview(true);
             } else {
                 perfEval.setEnableManagerReview(false);
