@@ -377,7 +377,9 @@ public class PerformanceEvaluationService {
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
             PerformanceEvaluation prefEval = getEvaluationForYear("2014", emp, null);
             //check for null
-            dto.setPhysicalYear(prefEval.getEvaluationFYYear());
+            if (prefEval.getRating() != null) {
+                dto.setPhysicalYear(prefEval.getEvaluationFYYear());
+            }
             if (prefEval.getRating() != null) {
                 dto.setRating(prefEval.getRating());
             }
