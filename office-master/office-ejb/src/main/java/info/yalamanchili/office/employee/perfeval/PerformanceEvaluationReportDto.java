@@ -7,9 +7,8 @@
  */
 package info.yalamanchili.office.employee.perfeval;
 
-import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
+import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
@@ -23,7 +22,7 @@ public class PerformanceEvaluationReportDto implements Serializable {
     /**
      *
      */
-    protected BigDecimal rating;
+    protected Double rating;
     /**
      *
      */
@@ -32,7 +31,7 @@ public class PerformanceEvaluationReportDto implements Serializable {
      *
      */
     @Enumerated(EnumType.STRING)
-    protected ExpenseReportStatus status;
+    protected PerformanceEvaluationStage stage;
 
     /**
      * @return the employee
@@ -46,20 +45,6 @@ public class PerformanceEvaluationReportDto implements Serializable {
      */
     public void setEmployee(String employee) {
         this.employee = employee;
-    }
-
-    /**
-     * @return the rating
-     */
-    public BigDecimal getRating() {
-        return rating;
-    }
-
-    /**
-     * @param rating the rating to set
-     */
-    public void setRating(BigDecimal rating) {
-        this.rating = rating;
     }
 
     /**
@@ -77,16 +62,30 @@ public class PerformanceEvaluationReportDto implements Serializable {
     }
 
     /**
-     * @return the status
+     * @return the rating
      */
-    public ExpenseReportStatus getStatus() {
-        return status;
+    public Double getRating() {
+        return rating;
     }
 
     /**
-     * @param status the status to set
+     * @param rating the rating to set
      */
-    public void setStatus(ExpenseReportStatus status) {
-        this.status = status;
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    /**
+     * @return the stage
+     */
+    public PerformanceEvaluationStage getStage() {
+        return stage;
+    }
+
+    /**
+     * @param stage the stage to set
+     */
+    public void setStage(PerformanceEvaluationStage stage) {
+        this.stage = stage;
     }
 }

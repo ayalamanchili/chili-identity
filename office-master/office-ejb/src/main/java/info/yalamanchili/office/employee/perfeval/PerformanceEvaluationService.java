@@ -375,9 +375,18 @@ public class PerformanceEvaluationService {
         for (Employee emp : EmployeeDao.instance().getAllEmployeesByType("Corporate Employee")) {
             PerformanceEvaluationReportDto dto = new PerformanceEvaluationReportDto();
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+            PerformanceEvaluation prefEval = getEvaluationForYear("2014", emp, null);
+            //check for null
+            dto.setPhysicalYear(prefEval.getEvaluationFYYear());
+            if (prefEval.getRating() != null) {
+                dto.setRating(prefEval.getRating());
+            }
+            if (prefEval.getStage() != null) {
+                dto.setStage(prefEval.getStage());
+            }
             report.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, "performance-evaluation-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, "Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     public static PerformanceEvaluationService instance() {
