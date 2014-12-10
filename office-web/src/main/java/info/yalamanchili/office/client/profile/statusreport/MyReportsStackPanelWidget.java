@@ -12,8 +12,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.ReadAllPerformanceEvaluationPanel;
 
@@ -27,6 +31,7 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink projectReportsL = new ClickableLink("Status Reports");
     protected ClickableLink perfEvalReportsL = new ClickableLink("Performance Evaluations");
+    protected ClickableLink perfEvaluationReportsL = new ClickableLink("Performance Evaluation Reports");
 
     public MyReportsStackPanelWidget() {
         init(panel);
@@ -36,10 +41,12 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
     protected void addListeners() {
         projectReportsL.addClickHandler(this);
         perfEvalReportsL.addClickHandler(this);
+        perfEvaluationReportsL.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        perfEvaluationReportsL.setTitle("report with employeeName of all employees");
     }
 
     @Override
@@ -47,6 +54,7 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
         mainPanel.add(projectReportsL);
         mainPanel.add(perfEvalReportsL);
         panel.add(mainPanel);
+        mainPanel.add(perfEvaluationReportsL);
     }
 
     @Override
@@ -59,5 +67,22 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel());
         }
+        if (event.getSource().equals(perfEvaluationReportsL)) {
+            generateperfEvaluationReport();
+        }
+    }
+
+    protected void generateperfEvaluationReport() {
+        HttpService.HttpServiceAsync.instance().doGet(getperfEvaluationReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Report will be emailed to your primary email");
+            }
+        });
+    }
+
+    private String getperfEvaluationReportUrl() {
+        return OfficeWelcome.constants.root_url() + "performance-evaluation/performance-evaluation-report";
     }
 }

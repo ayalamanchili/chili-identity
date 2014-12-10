@@ -51,6 +51,8 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
 
     @Autowired
     public PerformanceEvaluationDao performanceEvaluationDao;
+    @Autowired
+    protected PerformanceEvaluationService performanceEvaluationService;
 
     @Override
     public CRUDDao getDao() {
@@ -130,6 +132,12 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id, @QueryParam("type") String type) {
         return PerformanceEvaluationService.instance().getReport(id, type);
+    }
+
+    @GET
+    @Path("/performance-evaluation-report")
+    public void employeeperformanceEvaluationReport() {
+        performanceEvaluationService.getPerformanceEvaluationReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @XmlRootElement
