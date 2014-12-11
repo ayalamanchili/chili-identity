@@ -372,7 +372,7 @@ public class PerformanceEvaluationService {
     @Transactional(readOnly = true)
     public void getPerformanceEvaluationReport(String email) {
         List<PerformanceEvaluationReportDto> report = new ArrayList<PerformanceEvaluationReportDto>();
-        for (Employee emp : EmployeeDao.instance().getAllEmployeesByType("Corporate Employee")) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             PerformanceEvaluationReportDto dto = new PerformanceEvaluationReportDto();
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
             PerformanceEvaluation prefEval = getEvaluationForYear("2014", emp, null);
