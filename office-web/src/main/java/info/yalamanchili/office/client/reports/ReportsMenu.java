@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
+import info.yalamanchili.office.client.employee.prefeval.PerfEvaluationReportsSidePanel;
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 
 /**
@@ -37,6 +38,9 @@ public class ReportsMenu extends Composite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_EXPENSE, ROLE.ROLE_TIME, ROLE.ROLE_ACCOUNT_VIEW)) {
             reportsMenuBar.addItem("Contracts", contractingMaintainenceCmd);
         }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+            reportsMenuBar.addItem("Perf Evaluations", performanceEvaluationsReportsMaintainenceCmd);
+        }
         reportsMenuBar.addStyleName("entityMenuBar");
     }
 
@@ -56,6 +60,15 @@ public class ReportsMenu extends Composite {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new ProfileReportsSidePanel());
+        }
+    };
+
+    Command performanceEvaluationsReportsMaintainenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new PerfEvaluationReportsSidePanel());
         }
     };
 }

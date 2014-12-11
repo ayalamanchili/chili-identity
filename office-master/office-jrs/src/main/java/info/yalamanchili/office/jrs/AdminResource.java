@@ -92,7 +92,7 @@ public class AdminResource {
 
     @Path("/deactivateuser/{empId}")
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE.ROLE_RELATIONSHIP',ROLE_SYSTEM_AND_NETWORK_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR_ADMINSTRATION','ROLE_RELATIONSHIP','ROLE_SYSTEM_AND_NETWORK_ADMIN')")
     @Caching(evict = {
         @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true),
         @CacheEvict(value = OfficeCacheKeys.EMAILS, allEntries = true)

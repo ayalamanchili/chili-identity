@@ -136,8 +136,8 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
 
     @GET
     @Path("/performance-evaluation-report")
-    public void employeeperformanceEvaluationReport() {
-        performanceEvaluationService.getPerformanceEvaluationReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    public void employeeperformanceEvaluationReport(@QueryParam("year") String year) {
+        performanceEvaluationService.getPerformanceEvaluationReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), year);
     }
 
     @XmlRootElement

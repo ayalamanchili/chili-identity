@@ -9,8 +9,6 @@ package info.yalamanchili.office.employee.perfeval;
 
 import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 /**
  *
@@ -26,12 +24,11 @@ public class PerformanceEvaluationReportDto implements Serializable {
     /**
      *
      */
-    protected String physicalYear;
+    protected String evaluationFYYear;
     /**
      *
      */
-    @Enumerated(EnumType.STRING)
-    protected PerformanceEvaluationStage stage;
+    protected String stage;
 
     /**
      * @return the employee
@@ -48,17 +45,17 @@ public class PerformanceEvaluationReportDto implements Serializable {
     }
 
     /**
-     * @return the physicalYear
+     * @return the evaluationFYYear
      */
-    public String getPhysicalYear() {
-        return physicalYear;
+    public String getEvaluationFYYear() {
+        return evaluationFYYear;
     }
 
     /**
-     * @param physicalYear the physicalYear to set
+     * @param evaluationFYYear the evaluationFYYear to set
      */
-    public void setPhysicalYear(String physicalYear) {
-        this.physicalYear = physicalYear;
+    public void setEvaluationFYYear(String evaluationFYYear) {
+        this.evaluationFYYear = evaluationFYYear;
     }
 
     /**
@@ -78,14 +75,14 @@ public class PerformanceEvaluationReportDto implements Serializable {
     /**
      * @return the stage
      */
-    public PerformanceEvaluationStage getStage() {
+    public String getStage() {
         return stage;
     }
 
     /**
      * @param stage the stage to set
      */
-    public void setStage(PerformanceEvaluationStage stage) {
+    public void setStage(String stage) {
         this.stage = stage;
     }
 }

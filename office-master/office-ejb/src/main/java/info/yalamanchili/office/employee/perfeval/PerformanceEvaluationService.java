@@ -370,21 +370,20 @@ public class PerformanceEvaluationService {
 
     @Async
     @Transactional(readOnly = true)
-    public void getPerformanceEvaluationReport(String email) {
+    public void getPerformanceEvaluationReport(String email, String year) {
         List<PerformanceEvaluationReportDto> report = new ArrayList<PerformanceEvaluationReportDto>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             PerformanceEvaluationReportDto dto = new PerformanceEvaluationReportDto();
             dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
-            PerformanceEvaluation prefEval = getEvaluationForYear("2014", emp, null);
-            //check for null
-            if (prefEval.getRating() != null) {
-                dto.setPhysicalYear(prefEval.getEvaluationFYYear());
-            }
-            if (prefEval.getRating() != null) {
-                dto.setRating(prefEval.getRating());
-            }
-            if (prefEval.getStage() != null) {
-                dto.setStage(prefEval.getStage());
+            PerformanceEvaluation prefEval = getEvaluationForYear(year, emp, null);
+            dto.setEvaluationFYYear(year);
+            if (prefEval != null) {
+                if (prefEval.getRating() != null && prefEval.getRating() > 0) {
+                    dto.setRating(prefEval.getRating());
+                }
+                if (prefEval.getStage() != null) {
+                    dto.setStage(prefEval.getStage().name());
+                }
             }
             report.add(dto);
         }
