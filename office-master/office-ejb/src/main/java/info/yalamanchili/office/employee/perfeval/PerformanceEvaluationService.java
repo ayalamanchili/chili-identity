@@ -245,7 +245,6 @@ public class PerformanceEvaluationService {
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
-        data.getData().put("employeeTitle", employee.getJobTitle());
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodEndDate()));
         Integer i = 1;
@@ -311,7 +310,7 @@ public class PerformanceEvaluationService {
             data.getData().put("hrName", hr.getFirstName() + " " + hr.getLastName());
         }
         //Employee
-        Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(employee), null);
+        Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
         data.getSignatures().add(employeeSignature);
         data.getData().put("employeeTitle", employee.getJobTitle());
         byte[] pdf = PDFUtils.generatePdf(data);
