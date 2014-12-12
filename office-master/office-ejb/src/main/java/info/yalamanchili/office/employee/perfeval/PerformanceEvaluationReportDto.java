@@ -29,6 +29,10 @@ public class PerformanceEvaluationReportDto implements Serializable {
      *
      */
     protected String stage;
+    /**
+     *
+     */
+    protected String manager;
 
     /**
      * @return the employee
@@ -84,5 +88,13 @@ public class PerformanceEvaluationReportDto implements Serializable {
      */
     public void setStage(String stage) {
         this.stage = stage;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
     }
 }

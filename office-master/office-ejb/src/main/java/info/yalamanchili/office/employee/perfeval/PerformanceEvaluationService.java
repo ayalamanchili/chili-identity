@@ -21,6 +21,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
@@ -382,6 +383,15 @@ public class PerformanceEvaluationService {
                 }
                 if (prefEval.getStage() != null) {
                     dto.setStage(prefEval.getStage().name());
+                }
+            }
+            Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
+            if (perfEvalMgr != null) {
+                dto.setManager(perfEvalMgr.getFirstName() + " " + perfEvalMgr.getLastName());
+            } else {
+                Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
+                if (reportsToMgr != null) {
+                    dto.setManager(reportsToMgr.getFirstName() + " " + reportsToMgr.getLastName());
                 }
             }
             report.add(dto);
