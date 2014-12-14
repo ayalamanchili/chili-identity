@@ -384,6 +384,18 @@ public class PerformanceEvaluationService {
                 if (prefEval.getStage() != null) {
                     dto.setStage(prefEval.getStage().name());
                 }
+                if (prefEval.getQuestions().size() > 4) {
+                    dto.setManagerReviewStarted(Boolean.TRUE);
+                    if (Strings.isNullOrEmpty(prefEval.getBpmProcessId())) {
+                        for (Task task : OfficeBPMTaskService.instance().getTasksForProcessId(prefEval.getBpmProcessId())) {
+                            if(task.getId().equals("managerReviewTask")){
+                                dto.setManagerTaskComplete(Boolean.TRUE);
+                            }
+                        }
+                    }
+                } else {
+                    dto.setManagerReviewStarted(Boolean.FALSE);
+                }
             }
             Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
             if (perfEvalMgr != null) {

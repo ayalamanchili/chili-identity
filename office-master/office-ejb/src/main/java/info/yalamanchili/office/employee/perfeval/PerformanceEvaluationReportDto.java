@@ -33,6 +33,14 @@ public class PerformanceEvaluationReportDto implements Serializable {
      *
      */
     protected String manager;
+    /**
+     *
+     */
+    protected Boolean managerReviewStarted;
+    /**
+     *
+     */
+    protected Boolean managerTaskPending;
 
     /**
      * @return the employee
@@ -96,5 +104,21 @@ public class PerformanceEvaluationReportDto implements Serializable {
 
     public void setManager(String manager) {
         this.manager = manager;
+    }
+
+    public Boolean getManagerReviewStarted() {
+        return managerReviewStarted;
+    }
+
+    public void setManagerReviewStarted(Boolean managerReviewStarted) {
+        this.managerReviewStarted = managerReviewStarted;
+    }
+
+    public Boolean getManagerTaskComplete() {
+        return managerTaskPending;
+    }
+
+    public void setManagerTaskComplete(Boolean managerTaskComplete) {
+        this.managerTaskPending = managerTaskComplete;
     }
 }
