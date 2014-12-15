@@ -12,6 +12,11 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
+            <groupId>info.chili</groupId>
+            <artifactId>chili-commons</artifactId>
+            <version>${chili.version}</version>
+        </dependency> 
+        <dependency>
             <groupId>info.yalamanchili.office</groupId>
             <artifactId>office-ejb</artifactId>
             <version>${project.version}</version>

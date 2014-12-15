@@ -44,6 +44,11 @@ public class OfficeServiceConfiguration {
     /**
      *
      */
+    @Value("#{officeProperties['enableEventInterceptor']}")
+    protected Boolean enableEventInterceptor = true;
+    /**
+     *
+     */
     @Value("#{officeProperties['enableLoginInterceptor']}")
     protected Boolean enableLoginInterceptor = false;
     /**
@@ -143,6 +148,15 @@ public class OfficeServiceConfiguration {
 
     public void setEnableLoginInterceptor(Boolean enableLoginInterceptor) {
         this.enableLoginInterceptor = enableLoginInterceptor;
+    }
+
+    @ManagedAttribute
+    public Boolean getEnableEventInterceptor() {
+        return enableEventInterceptor;
+    }
+
+    public void setEnableEventInterceptor(Boolean enableEventInterceptor) {
+        this.enableEventInterceptor = enableEventInterceptor;
     }
 
     @ManagedAttribute
