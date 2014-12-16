@@ -18,6 +18,7 @@ import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWizard.PerformanceEvaluationWizardType;
 import java.util.Map;
@@ -150,20 +151,29 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             + "		<li>Feedback Comments</li>\n"
             + "	</ul>\n"
             + "	</li>\n"
+            + "	<li><strong>Tips</strong>:\n"
+            + "	<ul>\n"
+            + "		<li><span style=\"font-size: 13.3333330154419px; line-height: 27.7333316802979px;\">In case you want to save a partial review to be able to update it later. </span>\n"
+            + "		<ul>\n"
+            + "			<li>Naviagate to the last step of the review by just entering the required ratings (step -1-2) and click&nbsp;<strong>Save&nbsp;</strong>on the last step.</li>\n"
+            + "			<li>When ready to complete you can click update and make changes to save them</li>\n"
+            + "		</ul>\n"
+            + "		</li>\n"
+            + "		<li>You can view the self reivew comments by clicking on the view icon of the performance evalauation and exand the self evaluation section.</li>\n"
+            + "		<li>The final rating is automatically calcluated for you and is the average of all the ratings rounded to the nearest number.</li>\n"
+            + "	</ul>\n"
+            + "	</li>\n"
             + "	<li>\n"
             + "	<h3>Once the review is complete. Navigate to Home--&gt; My Tasks--&gt; View Task--&gt; Complete Manager Review Task with comments.</h3>\n"
             + "	</li>\n"
-            + "	<li>In case you want to save a partial review to be able to update it later..\n"
-            + "	<ul>\n"
-            + "		<li>Naviagate to the last step of the review by just entering the required ratings (step -1-2) and click <strong>Save </strong>on the last step.</li>\n"
-            + "		<li>When ready to complete you can click update and make changes to save them</li>\n"
-            + "		<li>Once you complete the review you need to complete the task under My Tasks to notify the employee about the completion.</li>\n"
-            + "	</ul>\n"
-            + "	</li>\n"
-            + "	<li><a href=\"https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html\">Detailed Instructions.</a></li>\n"
+            + "	<li><a href=\"\\https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html\\\">Detailed Instructions.</a></li>\n"
             + "</ul>");
 
-    protected static HTML managerReviewEndInstructions = new HTML("<h3><strong>Please do not forget to complete the Manager Review Task under Home--&gt; My Tasks once the review is complete to notify the employee about completion.</strong></h3>");
+    protected static HTML managerReviewEndInstructions = new HTML("<hr />\n"
+            + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong>Please do not forget to complete the Manager Review Task under Home --&gt;&nbsp;My Tasks once the review is complete to notify the employee about completion.</strong></p>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     @Override
     protected void addWidgets() {
@@ -180,6 +190,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             }
         }
         if (CreatePerformanceEvaluationPanelType.End.equals(type)) {
+            new ResponseStatusWidget().show("Estimated Final Rating: " + PerformanceEvaluationWizard.instance().getRating().toString());
             addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD);
             addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD);
 //            addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD);

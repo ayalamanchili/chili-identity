@@ -113,7 +113,7 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
     public void onRatingChanged(int value) {
         Double rating = PerformanceEvaluationWizard.instance().getRating();
         if (rating != null && rating > 0) {
-            new ResponseStatusWidget().show("Estimated Final Rating:" + PerformanceEvaluationWizard.instance().getRating().toString());
+            new ResponseStatusWidget().show("Estimated Final Rating: " + PerformanceEvaluationWizard.instance().getRating().toString());
         }
     }
 }
