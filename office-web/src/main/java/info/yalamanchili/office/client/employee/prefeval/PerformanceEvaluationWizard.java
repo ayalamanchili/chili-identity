@@ -278,7 +278,7 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
         }
     }
 
-    public void getRating() {
+    public Double getRating() {
         JSONArray questions = perfEvalEndStep.getQuestionComments();
         Double sum = 0.0;
         Double size = 0.0;
@@ -291,6 +291,6 @@ public class PerformanceEvaluationWizard extends AbstractWizard {
             }
         }
         Double avg = sum / size;
-        logger.info("avg rating" + avg);
+        return new Double(Math.round(avg));
     }
 }

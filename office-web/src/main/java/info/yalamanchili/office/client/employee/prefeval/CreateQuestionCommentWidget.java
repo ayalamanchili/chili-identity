@@ -111,6 +111,9 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
 
     @Override
     public void onRatingChanged(int value) {
-        PerformanceEvaluationWizard.instance().getRating();
+        Double rating = PerformanceEvaluationWizard.instance().getRating();
+        if (rating != null && rating > 0) {
+            new ResponseStatusWidget().show("Estimated Final Rating:" + PerformanceEvaluationWizard.instance().getRating().toString());
+        }
     }
 }
