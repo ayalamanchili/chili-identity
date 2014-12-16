@@ -140,9 +140,17 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
         return ((BooleanField) fields.get("submitForApproval")).getValue().toString();
     }
 
-    protected static HTML managerReviewStartInstructions = new HTML("<ul>\n"
+    protected static HTML managerReviewStartInstructions = new HTML("<!doctype html>\n"
+            + "<html>\n"
+            + "<head>\n"
+            + "	<title></title>\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "<h3 style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong>Instructions:</strong></h3>\n"
+            + "\n"
+            + "<ul>\n"
             + "	<li>\n"
-            + "	<h3>Manager Review consists of 4 steps</h3>\n"
+            + "	<p><strong>Manager Review consists of 4 steps</strong></p>\n"
             + "\n"
             + "	<ul>\n"
             + "		<li>Skill and Aptitude Questions</li>\n"
@@ -153,7 +161,7 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             + "	</li>\n"
             + "	<li><strong>Tips</strong>:\n"
             + "	<ul>\n"
-            + "		<li><span style=\"font-size: 13.3333330154419px; line-height: 27.7333316802979px;\">In case you want to save a partial review to be able to update it later. </span>\n"
+            + "		<li><span line-height:=\"\" style=\"\\font-size:\">In case you want to save a partial review to be able to update it later. </span>\n"
             + "		<ul>\n"
             + "			<li>Naviagate to the last step of the review by just entering the required ratings (step -1-2) and click&nbsp;<strong>Save&nbsp;</strong>on the last step.</li>\n"
             + "			<li>When ready to complete you can click update and make changes to save them</li>\n"
@@ -164,10 +172,13 @@ public class CreatePerformanceEvaluationPanel extends CreateComposite {
             + "	</ul>\n"
             + "	</li>\n"
             + "	<li>\n"
-            + "	<h3>Once the review is complete. Navigate to Home--&gt; My Tasks--&gt; View Task--&gt; Complete Manager Review Task with comments.</h3>\n"
+            + "	<p><strong>Once the review is complete. Navigate to Home--&gt; My Tasks--&gt; View Task--&gt; Complete Manager Review Task with comments</strong>.</p>\n"
             + "	</li>\n"
-            + "	<li><a href=\"\\https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html\\\">Detailed Instructions.</a></li>\n"
-            + "</ul>");
+            + "	<li><a href=\"\\\\\\https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html\\\\\\\">Detailed Instructions.</a>\n"
+            + "	<hr /></li>\n"
+            + "</ul>\n"
+            + "</body>\n"
+            + "</html>");
 
     protected static HTML managerReviewEndInstructions = new HTML("<hr />\n"
             + "<p style=\"border: 1px solid rgb(204, 204, 204); padding: 5px 10px; background: rgb(238, 238, 238);\"><strong>Please do not forget to complete the Manager Review Task under Home --&gt;&nbsp;My Tasks once the review is complete to notify the employee about completion.</strong></p>\n"
