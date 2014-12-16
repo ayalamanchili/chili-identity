@@ -30,7 +30,7 @@ public class SessionTimeoutMonitor {
 
     private SessionTimeoutMonitor() {
         int total_timeout = maxSessionTimeoutSeconds();
-        int timeout = 60 * 60;
+        int timeout = 120 * 60;
         if (timeout > total_timeout) {
             timeout = total_timeout / 2;
         }
@@ -48,8 +48,8 @@ public class SessionTimeoutMonitor {
             }
         };
         private long startTime = 0;
-        private int IDLE_SECONDS = 60 * 60;
-        private int TIMEOUT_SECONDS = 60 * 60;
+        private int IDLE_SECONDS = 120 * 60;
+        private int TIMEOUT_SECONDS = 120 * 60;
         private int reset_count = 0;
 
         public SessionTimeoutTimer(int idle, int timeout) {
