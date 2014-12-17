@@ -79,8 +79,9 @@ public class ReadAllEventPanel extends CRUDReadAllComposite {
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("evenTimeStamp"));
-        table.setText(0, 2, getKeyValue("Name"));
+        table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 2, getKeyValue("User"));
+        table.setText(0, 3, getKeyValue("EvenTimeStamp"));
     }
 
     @Override
@@ -89,6 +90,7 @@ public class ReadAllEventPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            table.setText(i, 1, JSONUtils.toString(entity, "user"));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evenTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
     }
@@ -99,10 +101,10 @@ public class ReadAllEventPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "event/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "analytics/delete/" + entityId;
     }
 
     private String getReadAllEventURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "event/" + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "analytics/" + start.toString() + "/" + limit.toString();
     }
 }
