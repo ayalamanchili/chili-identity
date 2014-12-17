@@ -9,6 +9,7 @@
 package info.yalamanchili.office.analytics;
 
 import info.chili.analytics.model.Event;
+import info.chili.analytics.service.EventsService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import java.util.Date;
@@ -19,8 +20,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +40,7 @@ public class EventInterceptor {
     protected OfficeSecurityService officeSecurityService;
 
     @Autowired
-    protected MongoOperations mongoTemplate;
+    protected EventsService eventsService;
 
     @Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
     public Object profile(ProceedingJoinPoint pjp) throws Throwable {
@@ -52,13 +51,8 @@ public class EventInterceptor {
         event.setInput(describeInput(pjp));
         Object output = pjp.proceed();
         event.setOutput(describeOutput(pjp, output));
-        sendEvent(event);
+        eventsService.saveEvents(event);
         return output;
-    }
-
-    @Async
-    protected void sendEvent(Event event) {
-        mongoTemplate.save(event);
     }
 
     protected String describeOutput(ProceedingJoinPoint pjp, Object result) {
