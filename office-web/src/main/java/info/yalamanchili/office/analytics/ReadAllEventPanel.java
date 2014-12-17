@@ -14,6 +14,7 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
 /**
@@ -43,6 +44,8 @@ public class ReadAllEventPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+//        TabPanel.instance().expensePanel.entityPanel.clear();
+//        TabPanel.instance().expensePanel.entityPanel.add(new ReadEventPanel(getEntity(entityId)));
     }
 
     @Override
