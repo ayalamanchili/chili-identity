@@ -15,7 +15,12 @@
             <groupId>info.chili</groupId>
             <artifactId>chili-commons</artifactId>
             <version>${chili.version}</version>
-        </dependency> 
+        </dependency>
+        <dependency>
+            <groupId>info.chili</groupId>
+            <artifactId>chili-analytics</artifactId>
+            <version>${chili.version}</version>
+        </dependency>          
         <dependency>
             <groupId>info.yalamanchili.office</groupId>
             <artifactId>office-ejb</artifactId>
