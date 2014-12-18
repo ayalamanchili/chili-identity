@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @Scope("request")
+//TODO move to chili-analytics
 public class EventResource extends CRUDResource<Event> {
 
     @Override

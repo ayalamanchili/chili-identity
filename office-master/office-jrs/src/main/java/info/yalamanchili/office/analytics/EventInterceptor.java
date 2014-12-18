@@ -14,12 +14,14 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Aspect
 @Component
 @Transactional
+@Order(10)
 public class EventInterceptor {
 
     @Autowired
@@ -42,12 +45,16 @@ public class EventInterceptor {
     @Autowired
     protected EventsService eventsService;
 
+    @Autowired(required = true)
+    private HttpServletRequest request;
+
     @Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
     public Object profile(ProceedingJoinPoint pjp) throws Throwable {
         Event event = new Event();
         event.setEvenTimeStamp(new Date());
         event.setUser(officeSecurityService.getCurrentUserName());
         event.setName(pjp.getSignature().toLongString());
+        event.setUserAgentInfo(request.getHeader("User-Agent-X"));
         event.setInput(describeInput(pjp));
         Object output = pjp.proceed();
         event.setOutput(describeOutput(pjp, output));
