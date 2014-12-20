@@ -135,6 +135,12 @@
             <version>1.2.14</version>
             <scope>runtime</scope>
         </dependency>
+        <!--embedded mongo-->
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>1.36</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>office</finalName>

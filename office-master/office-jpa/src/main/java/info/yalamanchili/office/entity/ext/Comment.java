@@ -8,12 +8,15 @@
  */
 package info.yalamanchili.office.entity.ext;
 
+import info.chili.commons.StringUtils;
 import info.chili.jpa.AbstractHandleEntity;
 import info.chili.service.jrs.types.Entry;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -101,4 +104,11 @@ public class Comment extends AbstractHandleEntity {
         this.notifyEmployees = notifyEmployees;
     }
 
+    @PrePersist
+    @PreUpdate
+    public void clean() {
+        if (!this.comment.isEmpty()) {
+            this.comment = StringUtils.convertToUTF8(comment);
+        }
+    }
 }
