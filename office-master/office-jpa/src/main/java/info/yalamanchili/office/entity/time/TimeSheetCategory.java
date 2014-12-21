@@ -26,7 +26,13 @@ public enum TimeSheetCategory {
     JuryDuty,
     Bereavement,
     Maternity,
-    Other;
+    Other,
+    /**
+     * There will be only one and one only PTO_ACRUED Time sheet that will be
+     * used to accumulate hours on a monthly basis
+     */
+    PTO_ACCRUED,
+    PTO_USED;
 
     public static List<TimeSheetCategory> getLeaveSpentCheckedCategories() {
         List<TimeSheetCategory> res = new ArrayList<TimeSheetCategory>();

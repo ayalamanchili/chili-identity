@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -31,6 +32,11 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void processYearlyEarnedTimeSheets() {
         TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
+    }
+
+    @ManagedOperation
+    public void processCorporateMonthlyTimeAccrual() {
+        CorporateTimeAccuralService.instance().accureMonthlyTime();
     }
 
     @ManagedOperation

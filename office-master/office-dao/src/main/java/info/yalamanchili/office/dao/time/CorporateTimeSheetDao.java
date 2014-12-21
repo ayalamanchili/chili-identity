@@ -24,12 +24,10 @@ import info.yalamanchili.office.template.TemplateService;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
@@ -125,6 +123,22 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             queryStr.append(" and category=:categoryParam");
         }
         return queryStr.toString();
+    }
+
+    public CorporateTimeSheet getPTOAccruedTimeSheet(Employee emp) {
+        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where category =:categoryParam", CorporateTimeSheet.class);
+        query.setParameter("categoryParam", TimeSheetCategory.PTO_ACCRUED);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            CorporateTimeSheet ts = new CorporateTimeSheet();
+            ts.setEmployee(emp);
+            ts.setCategory(TimeSheetCategory.PTO_ACCRUED);
+            ts.setCreatedTimeStamp(new Date());
+            ts.setHours(BigDecimal.ZERO);
+            ts.setStatus(TimeSheetStatus.Approved);
+            return getEntityManager().merge(ts);
+        }
     }
 
     public BigDecimal getHoursInYear(Employee employee, TimeSheetCategory timeSheetCategory, TimeSheetStatus timeSheetStatus, Date yearDate) {
