@@ -107,7 +107,7 @@ public class Comment extends AbstractHandleEntity {
     @PrePersist
     @PreUpdate
     public void clean() {
-        if (!this.comment.isEmpty()) {
+        if (comment !=null && (!comment.isEmpty())) {
             this.comment = StringUtils.convertToUTF8(comment);
         }
     }

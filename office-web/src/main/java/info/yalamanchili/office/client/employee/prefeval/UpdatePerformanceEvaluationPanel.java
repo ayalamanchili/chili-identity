@@ -52,7 +52,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("evaluationDate", entity);
-        assignEntityValueFromField("evaluationPeriodStartDate", entity);
+        assignEntityValueFromField("evaluationActualStartDate", entity);
         assignEntityValueFromField("evaluationPeriodEndDate", entity);
         assignEntityValueFromField("keyAccomplishments", entity);
         assignEntityValueFromField("areasNeedImprovement", entity);
@@ -128,7 +128,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("evaluationActualStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
@@ -184,7 +184,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         updateAptitudeCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.ATTITUDE.name(), getQuestionCommentsUrl(QuestionCategory.ATTITUDE.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name()));
         updateManagementCommentsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.MANAGEMENT.name(), getQuestionCommentsUrl(QuestionCategory.MANAGEMENT.name(), QuestionContext.PERFORMANCE_EVALUATION_MANGER.name()));
         addField("evaluationDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationActualStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_RELATIONSHIP)) {
             addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

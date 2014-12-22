@@ -247,7 +247,7 @@ public class PerformanceEvaluationService {
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
-        data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationStartDate()));
+        data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationActualStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodEndDate()));
         Integer i = 1;
         for (QuestionComment qc : getQuestionComments(id, QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER)) {

@@ -344,8 +344,15 @@ public class PerformanceEvaluation extends AbstractEntity {
         return DateUtils.getYearFromDate(getEvaluationPeriodStartDate()).toString();
     }
 
-    public Date getEvaluationStartDate() {
-        if (getEmployee().getStartDate() == null) {
+    @Transient
+    protected Date evaluationActualStartDate;
+
+    public void setEvaluationActualStartDate(Date evaluationActualStartDate) {
+        this.evaluationActualStartDate = evaluationActualStartDate;
+    }
+
+    public Date getEvaluationActualStartDate() {
+        if (getEmployee() == null || getEmployee().getStartDate() == null) {
             return getEvaluationPeriodStartDate();
         }
         Calendar evaluationCal = Calendar.getInstance();
