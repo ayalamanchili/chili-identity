@@ -15,11 +15,13 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -48,8 +50,12 @@ public class EventInterceptor {
     @Autowired(required = true)
     private HttpServletRequest request;
 
-    @Around("execution(* info.yalamanchili.office.jrs..*.*(..))")
-    public Object profile(ProceedingJoinPoint pjp) throws Throwable {
+    @Pointcut(value = "execution(* info.yalamanchili.office.jrs..*.*(..))")
+    public void anyJRSMethod() {
+    }
+
+     @Around("anyJRSMethod() && @annotation(path)")
+    public Object profile(ProceedingJoinPoint pjp,Path path) throws Throwable {
         Event event = new Event();
         event.setEvenTimeStamp(new Date());
         event.setUser(officeSecurityService.getCurrentUserName());

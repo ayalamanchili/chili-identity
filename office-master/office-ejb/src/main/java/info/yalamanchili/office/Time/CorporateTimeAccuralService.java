@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,17 +16,18 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import java.math.BigDecimal;
 import java.util.Date;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author anuyalamanchili
  */
 @Component
-@Scope("prototype")
+@Transactional
 public class CorporateTimeAccuralService {
 
     //TODO support for proration hours
@@ -67,7 +71,20 @@ public class CorporateTimeAccuralService {
                     }
                 }
                 BigDecimal afterHours = ptoAccruedTS.getHours();
+                        dao.getEntityManager().merge(ptoAccruedTS);
                 CommentDao.instance().addComment("System update on " + new Date() + " from: " + beforeHours + " hours to:" + afterHours + " hours :difference: " + afterHours.subtract(beforeHours), ptoAccruedTS);
+            }
+        }
+    }
+
+    public void convertCarryForwardToPTO() {
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            //Get Available Vacation in previous year and Create carry forword for max of 5days--> 40 hours
+            BigDecimal carryFwdVacation = CorporateTimeService.instance().getYearlyVacationBalance(emp, DateUtils.getNextYear(new Date(), -1));
+            if (carryFwdVacation.longValue() >= CorporateTimeConstants.carryForward.longValue()) {
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, CorporateTimeConstants.carryForward, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+            } else {
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, carryFwdVacation, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
             }
         }
     }

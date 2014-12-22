@@ -135,6 +135,8 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             ts.setEmployee(emp);
             ts.setCategory(TimeSheetCategory.PTO_ACCRUED);
             ts.setCreatedTimeStamp(new Date());
+            ts.setStartDate(emp.getStartDate());
+            ts.setEndDate(DateUtils.getNextYear(emp.getStartDate(), 100));
             ts.setHours(BigDecimal.ZERO);
             ts.setStatus(TimeSheetStatus.Approved);
             return getEntityManager().merge(ts);

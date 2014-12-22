@@ -44,6 +44,11 @@ public class OfficeServiceConfiguration {
     /**
      *
      */
+    @Value("#{officeProperties['initEmbeddedMongo']}")
+    protected Boolean initEmbeddedMongo = false;
+    /**
+     *
+     */
     @Value("#{officeProperties['enableEventInterceptor']}")
     protected Boolean enableEventInterceptor = true;
     /**
@@ -139,6 +144,15 @@ public class OfficeServiceConfiguration {
 
     public void setInitTestData(Boolean initTestData) {
         this.initTestData = initTestData;
+    }
+
+    @ManagedAttribute
+    public Boolean getInitEmbeddedMongo() {
+        return initEmbeddedMongo;
+    }
+
+    public void setInitEmbeddedMongo(Boolean initEmbeddedMongo) {
+        this.initEmbeddedMongo = initEmbeddedMongo;
     }
 
     @ManagedAttribute

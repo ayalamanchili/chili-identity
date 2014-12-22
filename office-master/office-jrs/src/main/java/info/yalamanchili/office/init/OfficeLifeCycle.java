@@ -47,7 +47,7 @@ public class OfficeLifeCycle implements SmartLifecycle {
         isRunning = true;
         officeStartup.startup();
         OfficeServiceConfiguration config = (OfficeServiceConfiguration) SpringContext.getBean("officeServiceConfiguration");
-        if (config.getInitTestData()) {
+        if (config.getInitEmbeddedMongo()) {
             try {
                 MongodStarter starter = MongodStarter.getDefaultInstance();
                 int port = 12345;

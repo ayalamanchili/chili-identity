@@ -77,6 +77,9 @@ public class OfficeSecurityService {
 
     public Employee getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            return null;
+        }
         TypedQuery<Employee> getUserQuery = em.createQuery("from " + Employee.class.getName() + " where employeeId=:employeeIdParam", Employee.class);
         getUserQuery.setParameter("employeeIdParam", auth.getName());
         try {
