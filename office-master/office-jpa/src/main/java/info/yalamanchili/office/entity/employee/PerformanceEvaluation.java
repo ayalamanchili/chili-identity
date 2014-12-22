@@ -12,6 +12,7 @@ import info.chili.commons.DateUtils;
 import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -341,6 +342,24 @@ public class PerformanceEvaluation extends AbstractEntity {
 
     public String getEvaluationFYYear() {
         return DateUtils.getYearFromDate(getEvaluationPeriodStartDate()).toString();
+    }
+
+    public Date getEvaluationStartDate() {
+        if (getEmployee().getStartDate() == null) {
+            return getEvaluationPeriodStartDate();
+        }
+        Calendar evaluationCal = Calendar.getInstance();
+        evaluationCal.setTime(getEvaluationPeriodStartDate());
+        Integer evaluationYear = evaluationCal.get(Calendar.YEAR);
+
+        Calendar empStartCal = Calendar.getInstance();
+        empStartCal.setTime(getEmployee().getStartDate());
+        Integer empStartYear = empStartCal.get(Calendar.YEAR);
+        if (empStartYear.toString().equals(evaluationYear.toString())) {
+            return empStartCal.getTime();
+        } else {
+            return getEvaluationPeriodStartDate();
+        }
     }
 
     /**

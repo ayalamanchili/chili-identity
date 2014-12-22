@@ -49,8 +49,8 @@ public class OfficeServiceConfiguration {
     /**
      *
      */
-    @Value("#{officeProperties['enableEventInterceptor']}")
-    protected Boolean enableEventInterceptor = true;
+    @Value("#{officeProperties['enableAnalytics']}")
+    protected Boolean enableAnalytics = false;
     /**
      *
      */
@@ -156,21 +156,21 @@ public class OfficeServiceConfiguration {
     }
 
     @ManagedAttribute
+    public Boolean getEnableAnalytics() {
+        return enableAnalytics;
+    }
+
+    public void setEnableAnalytics(Boolean enableAnalytics) {
+        this.enableAnalytics = enableAnalytics;
+    }
+
+    @ManagedAttribute
     public Boolean getEnableLoginInterceptor() {
         return enableLoginInterceptor;
     }
 
     public void setEnableLoginInterceptor(Boolean enableLoginInterceptor) {
         this.enableLoginInterceptor = enableLoginInterceptor;
-    }
-
-    @ManagedAttribute
-    public Boolean getEnableEventInterceptor() {
-        return enableEventInterceptor;
-    }
-
-    public void setEnableEventInterceptor(Boolean enableEventInterceptor) {
-        this.enableEventInterceptor = enableEventInterceptor;
     }
 
     @ManagedAttribute

@@ -54,17 +54,22 @@ public class EventInterceptor {
     public void anyJRSMethod() {
     }
 
-     @Around("anyJRSMethod() && @annotation(path)")
-    public Object profile(ProceedingJoinPoint pjp,Path path) throws Throwable {
-        Event event = new Event();
-        event.setEvenTimeStamp(new Date());
-        event.setUser(officeSecurityService.getCurrentUserName());
-        event.setName(pjp.getSignature().toLongString());
-        event.setUserAgentInfo(request.getHeader("User-Agent-X"));
-        event.setInput(describeInput(pjp));
-        Object output = pjp.proceed();
-        event.setOutput(describeOutput(pjp, output));
-        eventsService.saveEvents(event);
+    @Around("anyJRSMethod() && @annotation(path)")
+    public Object profile(ProceedingJoinPoint pjp, Path path) throws Throwable {
+        Object output;
+        if (officeServiceConfiguration.getEnableAnalytics()) {
+            Event event = new Event();
+            event.setEvenTimeStamp(new Date());
+            event.setUser(officeSecurityService.getCurrentUserName());
+            event.setName(pjp.getSignature().toLongString());
+            event.setUserAgentInfo(request.getHeader("User-Agent-X"));
+            event.setInput(describeInput(pjp));
+            output = pjp.proceed();
+            event.setOutput(describeOutput(pjp, output));
+            eventsService.saveEvents(event);
+        } else {
+            output = pjp.proceed();
+        }
         return output;
     }
 

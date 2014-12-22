@@ -59,7 +59,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("eeee" + entity);
         assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("evaluationPeriodStartDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("evaluationStartDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("evaluationPeriodEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("rating", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("stage", entity, DataType.ENUM_FIELD);
@@ -97,7 +97,7 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("evaluationDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("evaluationPeriodStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("evaluationStartDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("evaluationPeriodEndDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("rating", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addEnumField("stage", true, true, PerformanceEvaluationStage.names(), Alignment.HORIZONTAL);

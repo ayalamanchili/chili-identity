@@ -42,6 +42,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -246,7 +247,7 @@ public class PerformanceEvaluationService {
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
-        data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodStartDate()));
+        data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationPeriodEndDate()));
         Integer i = 1;
         for (QuestionComment qc : getQuestionComments(id, QuestionCategory.SKILL_AND_APTITUDE, QuestionContext.PERFORMANCE_EVALUATION_MANGER)) {
@@ -388,7 +389,7 @@ public class PerformanceEvaluationService {
                     dto.setManagerReviewStarted(Boolean.TRUE);
                     if (Strings.isNullOrEmpty(prefEval.getBpmProcessId())) {
                         for (Task task : OfficeBPMTaskService.instance().getTasksForProcessId(prefEval.getBpmProcessId())) {
-                            if(task.getId().equals("managerReviewTask")){
+                            if (task.getId().equals("managerReviewTask")) {
                                 dto.setManagerTaskComplete(Boolean.TRUE);
                             }
                         }
