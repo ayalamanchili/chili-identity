@@ -16,9 +16,11 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
-import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,21 +73,25 @@ public class CorporateTimeAccuralService {
                     }
                 }
                 BigDecimal afterHours = ptoAccruedTS.getHours();
-                        dao.getEntityManager().merge(ptoAccruedTS);
+                dao.getEntityManager().merge(ptoAccruedTS);
                 CommentDao.instance().addComment("System update on " + new Date() + " from: " + beforeHours + " hours to:" + afterHours + " hours :difference: " + afterHours.subtract(beforeHours), ptoAccruedTS);
             }
         }
     }
+//TODOtemp method needed only once 
 
-    public void convertCarryForwardToPTO() {
+    public void convertCarryForwardToPTO() throws ParseException {
+        CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
+        Date date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse("2014");
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            //Get Available Vacation in previous year and Create carry forword for max of 5days--> 40 hours
-            BigDecimal carryFwdVacation = CorporateTimeService.instance().getYearlyVacationBalance(emp, DateUtils.getNextYear(new Date(), -1));
-            if (carryFwdVacation.longValue() >= CorporateTimeConstants.carryForward.longValue()) {
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, CorporateTimeConstants.carryForward, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+            BigDecimal balance = CorporateTimeService.instance().getYearlyVacationBalance(emp, date);
+            CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
+            if (balance.compareTo(new BigDecimal("40.00")) >= 0) {
+                ptoAccruedTS.setHours(new BigDecimal("40.00"));
             } else {
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, carryFwdVacation, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                ptoAccruedTS.setHours(balance);
             }
+            dao.getEntityManager().merge(ptoAccruedTS);
         }
     }
 
