@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.task;
 
+import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -76,6 +77,14 @@ public class OfficeSchedulerService {
     @Scheduled(cron = "0 1 1 * * ?")
     public void accuredMonthlyTime() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
+    }
+
+    /**
+     * runs at 1'0 clock every month to accumulate monthly earned PTO,
+     */
+    @Scheduled(cron = "0 1 1 * * ?")
+    public void accureMonthlyConsTime() {
+        AssociateTimeAccuralService.instance().accureMonthlyConsTime();
     }
 
     /**

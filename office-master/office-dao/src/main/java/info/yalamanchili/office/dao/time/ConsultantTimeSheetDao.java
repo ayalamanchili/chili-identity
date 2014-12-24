@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
@@ -125,6 +126,25 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
             queryStr.append(" and category=:categoryParam");
         }
         return queryStr.toString();
+    }
+
+    public ConsultantTimeSheet getPTOAccruedConsTimeSheet(Employee emp) {
+        TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery("from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam", ConsultantTimeSheet.class);
+        query.setParameter("categoryParam", TimeSheetCategory.PTO_ACCRUED);
+        query.setParameter("employeeParam", emp);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            ConsultantTimeSheet ts = new ConsultantTimeSheet();
+            ts.setEmployee(emp);
+            ts.setCategory(TimeSheetCategory.PTO_ACCRUED);
+            ts.setCreatedTimeStamp(new Date());
+            ts.setStartDate(emp.getStartDate());
+            ts.setEndDate(DateUtils.getNextYear(emp.getStartDate(), 100));
+            ts.setHours(BigDecimal.ZERO);
+            ts.setStatus(TimeSheetStatus.Approved);
+            return getEntityManager().merge(ts);
+        }
     }
 
     public List<ConsultantTimeSheet> getReport(SearchConsultantTimeSheetDto dto, int start, int limit) {

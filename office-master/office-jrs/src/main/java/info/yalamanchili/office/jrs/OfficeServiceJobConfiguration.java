@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs;
 
+import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.dao.message.NotificationGroupDao;
@@ -38,11 +39,21 @@ public class OfficeServiceJobConfiguration {
     public void processCorporateMonthlyTimeAccrual() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
     }
+
+    @ManagedOperation
+    public void processConsutantMonthlyTimeAccrual() {
+        AssociateTimeAccuralService.instance().accureMonthlyConsTime();
+    }
 //TEMP
 
     @ManagedOperation
     public void convert2014CArryFwdHours() throws Exception {
         CorporateTimeAccuralService.instance().convertCarryForwardToPTO();
+    }
+
+    @ManagedOperation
+    public void convert2014ConsCArryFwdHours() throws Exception {
+        AssociateTimeAccuralService.instance().convertCarryForwardToPTO();
     }
 
     @ManagedOperation
