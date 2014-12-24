@@ -41,7 +41,7 @@ public class CorporateTimeAccuralService {
                 continue;
             }
             Date startDate = emp.getStartDate();
-            int numberOfMonthsCompleted = DateUtils.differenceInMonths(new Date(), startDate);
+            int numberOfMonthsCompleted = DateUtils.differenceInMonths(startDate, new Date());
             CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS != null) {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();

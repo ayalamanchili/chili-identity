@@ -26,8 +26,8 @@ public interface TimeAccuralConstants {
     /**
      * max hours accrual
      */
-    BigDecimal lessThanOneYearHoursAccuralMax = new BigDecimal("80.004");
+    BigDecimal lessThanOneYearHoursAccuralMax = new BigDecimal("80.00");
     BigDecimal twoToFourYearsHoursAccuralMax = new BigDecimal("144.00");
-    BigDecimal fiveToTenYearsHoursAccuralMax = new BigDecimal("176.004");
-    BigDecimal moreThanTenYearsHoursAccuralMax = new BigDecimal("200.004");
+    BigDecimal fiveToTenYearsHoursAccuralMax = new BigDecimal("176.00");
+    BigDecimal moreThanTenYearsHoursAccuralMax = new BigDecimal("200.00");
 }
