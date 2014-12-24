@@ -11,6 +11,7 @@ import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -35,7 +36,7 @@ public class AssociateTimeAccuralService {
     //TODO avoid duplicate creation
     public void accureMonthlyConsTime() {
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CONSULTANT_TIME_ADMIN.name())) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             if (emp.getStartDate() == null) {
                 continue;
             }
@@ -82,7 +83,7 @@ public class AssociateTimeAccuralService {
     public void convertCarryForwardToPTO() throws ParseException {
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
         Date date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse("2014");
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             BigDecimal balance = CorporateTimeService.instance().getYearlyVacationBalance(emp, date);
             ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedConsTimeSheet(emp);
             if (balance.compareTo(new BigDecimal("40.00")) >= 0) {
