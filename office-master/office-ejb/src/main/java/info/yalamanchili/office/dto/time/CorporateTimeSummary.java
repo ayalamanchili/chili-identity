@@ -29,12 +29,6 @@ public class CorporateTimeSummary implements Serializable {
     protected BigDecimal usedPTOHours;
     protected BigDecimal availablePTOHours;
     /**
-     * Vacation
-     */
-    protected BigDecimal totalVacationHours;
-    protected BigDecimal usedVacationHours;
-    protected BigDecimal availableVacationHours;
-    /**
      * total hours
      */
     protected BigDecimal totalAccumulatedHours;
@@ -52,7 +46,6 @@ public class CorporateTimeSummary implements Serializable {
 
     public CorporateTimeSummary(BigDecimal availablePTOHours, BigDecimal availableVacationHours) {
         this.availablePTOHours = availablePTOHours;
-        this.availableVacationHours = availableVacationHours;
     }
 
     public BigDecimal getAvailablePTOHours() {
@@ -61,14 +54,6 @@ public class CorporateTimeSummary implements Serializable {
 
     public void setAvailablePTOHours(BigDecimal availablePTOHours) {
         this.availablePTOHours = availablePTOHours;
-    }
-
-    public BigDecimal getAvailableVacationHours() {
-        return availableVacationHours;
-    }
-
-    public void setAvailableVacationHours(BigDecimal availableVacationHours) {
-        this.availableVacationHours = availableVacationHours;
     }
 
     public BigDecimal getUsedUnpaidHours() {
@@ -121,34 +106,6 @@ public class CorporateTimeSummary implements Serializable {
      */
     public void setUsedPTOHours(BigDecimal usedPTOHours) {
         this.usedPTOHours = usedPTOHours;
-    }
-
-    /**
-     * @return the totalVacationHours
-     */
-    public BigDecimal getTotalVacationHours() {
-        return totalVacationHours;
-    }
-
-    /**
-     * @param totalVacationHours the totalVacationHours to set
-     */
-    public void setTotalVacationHours(BigDecimal totalVacationHours) {
-        this.totalVacationHours = totalVacationHours;
-    }
-
-    /**
-     * @return the usedVacationHours
-     */
-    public BigDecimal getUsedVacationHours() {
-        return usedVacationHours;
-    }
-
-    /**
-     * @param usedVacationHours the usedVacationHours to set
-     */
-    public void setUsedVacationHours(BigDecimal usedVacationHours) {
-        this.usedVacationHours = usedVacationHours;
     }
 
     /**

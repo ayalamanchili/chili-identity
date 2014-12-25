@@ -15,12 +15,10 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.security.Signature;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -31,12 +29,9 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.security.AccessCheck;
-import info.yalamanchili.office.template.TemplateService;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -116,20 +111,15 @@ public class CorporateTimeService {
 
     public CorporateTimeSummary getYearlySummary(Employee employee) {
         CorporateTimeSummary summary = new CorporateTimeSummary();
-        //vacation
-        summary.setTotalVacationHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date()));
-        summary.setUsedVacationHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date()));
-        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
         //PTO
-        summary.setTotalPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date()));
-        summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date()));
-        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
+        summary.setUsedPTOHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()));
+        summary.setAvailablePTOHours(corporateTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours());
+        summary.setTotalPTOHours(summary.getAvailablePTOHours());
         //Total
         summary.setTotalAccumulatedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()));
         summary.setTotalUsedHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()));
         summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
-//        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee));
-//        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()));
+
         summary.setUsedUnpaidHours(corporateTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()));
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());
         summary.setStartDate(employee.getStartDate());
@@ -186,15 +176,6 @@ public class CorporateTimeService {
         }
         if (summary.getUsedPTOHours() != null) {
             data.getData().put("usedPTOHours", summary.getUsedPTOHours().toString());
-        }
-        if (summary.getTotalVacationHours() != null) {
-            data.getData().put("totalVacationHours", summary.getTotalVacationHours().toString());
-        }
-        if (summary.getAvailableVacationHours() != null) {
-            data.getData().put("availableVacationHours", summary.getAvailableVacationHours().toString());
-        }
-        if (summary.getUsedVacationHours() != null) {
-            data.getData().put("usedVacationHours", summary.getUsedVacationHours().toString());
         }
         if (summary.getTotalAccumulatedHours() != null) {
             data.getData().put("totalAccumulatedHours", summary.getTotalAccumulatedHours().toString());

@@ -39,7 +39,7 @@ public class CorpEmpLeaveRequestProcessBean {
         if (noValidationsCategories.contains(entity.getCategory())) {
             return true;
         }
-        BigDecimal earned = CorporateTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.valueOf(entity.getCategory().name().replace("Spent", "Earned")), TimeSheetStatus.Approved, new Date());
+        BigDecimal earned = CorporateTimeSheetDao.instance().getPTOAccruedTimeSheet(employee).getHours();
         if (entity.getCategory().equals(TimeSheetCategory.Vacation_Spent)) {
             BigDecimal carryFwdHours = CorporateTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, new Date());
             earned = earned.add(carryFwdHours);

@@ -14,8 +14,7 @@ package info.yalamanchili.office.client.time;
  */
 public enum LeaveRequestTimeCategory {
 
-    Vacation_Spent,
-    PTO_Spent,
+    PTO_USED,
     Unpaid,
     JuryDuty,
     Bereavement,

@@ -19,13 +19,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class ConsultantTimeSummary implements Serializable {
-
-    /**
-     * Vacation
-     */
-    protected Float totalVacationHours;
-    protected Float usedVacationHours;
-    protected Float availableVacationHours;
     /**
      * PTO
      */
@@ -49,33 +42,8 @@ public class ConsultantTimeSummary implements Serializable {
     public ConsultantTimeSummary() {
     }
 
-    public ConsultantTimeSummary( Float availablePTOHours ,Float availableVacationHours) {
+    public ConsultantTimeSummary( Float availablePTOHours) {
         this.availablePTOHours = availablePTOHours;
-        this.availableVacationHours = availableVacationHours;
-    }
-
-    public Float getTotalVacationHours() {
-        return totalVacationHours;
-    }
-
-    public void setTotalVacationHours(Float totalVacationHours) {
-        this.totalVacationHours = totalVacationHours;
-    }
-
-    public Float getUsedVacationHours() {
-        return usedVacationHours;
-    }
-
-    public void setUsedVacationHours(Float usedVacationHours) {
-        this.usedVacationHours = usedVacationHours;
-    }
-
-    public Float getAvailableVacationHours() {
-        return availableVacationHours;
-    }
-
-    public void setAvailableVacationHours(Float availableVacationHours) {
-        this.availableVacationHours = availableVacationHours;
     }
 
     public Float getTotalPTOHours() {

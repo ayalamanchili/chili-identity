@@ -107,18 +107,13 @@ public class ConsultantTimeService {
 
     public ConsultantTimeSummary getYearlySummary(Employee employee) {
         ConsultantTimeSummary summary = new ConsultantTimeSummary();
-        //vacation
-        summary.setTotalVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Earned, TimeSheetStatus.Approved, new Date()).floatValue());
-        summary.setUsedVacationHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Vacation_Spent, TimeSheetStatus.Approved, new Date()).floatValue());
-        summary.setAvailableVacationHours(getYearlyVacationBalance(employee, new Date()).floatValue());
         //PTO
-        summary.setTotalPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Earned, TimeSheetStatus.Approved, new Date()).floatValue());
-        summary.setUsedPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_Spent, TimeSheetStatus.Approved, new Date()).floatValue());
-        summary.setAvailablePTOHours(getYearlyPeronalBalance(employee).floatValue());
+        summary.setUsedPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()).floatValue());
+        summary.setAvailablePTOHours(consultantTimeSheetDao.getPTOAccruedConsTimeSheet(employee).getHours().floatValue());
+        summary.setTotalPTOHours(summary.getAvailablePTOHours());
         //Total
         summary.setTotalAccumulatedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
         summary.setTotalUsedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getLeaveSpentCheckedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());
-//        summary.setTotalAvailableHours(summary.getTotalAccumulatedHours().subtract(summary.getTotalUsedHours()));
 
         summary.setUsedUnpaidHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.Unpaid, TimeSheetStatus.Approved, new Date()).floatValue());
         summary.setEmployee(employee.getFirstName() + " " + employee.getLastName());

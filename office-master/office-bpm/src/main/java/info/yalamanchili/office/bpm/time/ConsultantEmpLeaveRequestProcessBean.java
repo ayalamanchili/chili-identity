@@ -35,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConsultantEmpLeaveRequestProcessBean {
 
     public boolean validateLeaveRequest(Employee employee, ConsultantTimeSheet entity) {
-        //TODO
         if (noValidationsCategories.contains(entity.getCategory())) {
             return true;
         }
