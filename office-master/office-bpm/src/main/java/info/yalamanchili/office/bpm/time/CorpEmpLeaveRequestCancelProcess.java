@@ -76,7 +76,9 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
 
     protected void leaveCancelRequestApproved(CorporateTimeSheet ts) {
         ts.setStatus(TimeSheetStatus.Canceled);
-        CorporateTimeSheetDao.instance().save(ts);
+        CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
+        dao.save(ts);
+        dao.addPTOUsedHours(ts);
         if (ts.getBpmProcessId() != null && !ts.getBpmProcessId().isEmpty()) {
             deleteApprovalTask(ts.getBpmProcessId());
         }

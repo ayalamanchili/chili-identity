@@ -109,7 +109,7 @@ public class ConsultantTimeService {
         ConsultantTimeSummary summary = new ConsultantTimeSummary();
         //PTO
         summary.setUsedPTOHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.PTO_USED, TimeSheetStatus.Approved, new Date()).floatValue());
-        summary.setAvailablePTOHours(consultantTimeSheetDao.getPTOAccruedConsTimeSheet(employee).getHours().floatValue());
+        summary.setAvailablePTOHours(consultantTimeSheetDao.getPTOAccruedTimeSheet(employee).getHours().floatValue());
         summary.setTotalPTOHours(summary.getAvailablePTOHours());
         //Total
         summary.setTotalAccumulatedHours(consultantTimeSheetDao.getHoursInYear(employee, TimeSheetCategory.getEarnedCategories(), TimeSheetStatus.Approved, new Date()).floatValue());

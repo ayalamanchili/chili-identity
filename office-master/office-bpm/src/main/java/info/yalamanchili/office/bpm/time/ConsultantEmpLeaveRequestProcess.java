@@ -50,11 +50,13 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
             return;
         }
         String status = (String) task.getExecution().getVariable("status");
+        ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
         if (status.equalsIgnoreCase("approved")) {
             ts.setStatus(TimeSheetStatus.Approved);
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             ts.setApprovedBy(currentUser.getEmployeeId());
             ts.setApprovedDate(new Date());
+            dao.addPTOUsedHours(ts);
         } else {
             ts.setStatus(TimeSheetStatus.Rejected);
             //TODO should this be deleted?

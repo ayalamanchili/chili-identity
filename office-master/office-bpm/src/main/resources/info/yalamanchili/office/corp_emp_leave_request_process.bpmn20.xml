@@ -52,7 +52,6 @@
                 Category      : #{entity.category} 
                 Hours         : #{entity.hours} 
                 Notes         : #{entity.notes}
-                Vacation Available when request submitted : #{summary.availableVacationHours}
                 PTO Available when request submitted : #{summary.availablePTOHours}
                 
                 Follow instructions from below:

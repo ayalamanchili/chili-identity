@@ -11,7 +11,6 @@ package info.yalamanchili.office.Time;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -72,13 +71,12 @@ public class CorporateTimeAccuralService {
                         ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.moreThanTenYearsHoursAccural));
                     }
                 }
-                BigDecimal afterHours = ptoAccruedTS.getHours();
                 dao.getEntityManager().merge(ptoAccruedTS);
-                CommentDao.instance().addComment("System update on " + new Date() + " from: " + beforeHours + " hours to:" + afterHours + " hours :difference: " + afterHours.subtract(beforeHours), ptoAccruedTS);
+                dao.addTimeSheetUpdateComment("System Montly Update: ", beforeHours, ptoAccruedTS);
             }
         }
     }
-//TODOtemp method needed only once 
+//TODO temp method needed only once 
 
     public void convertCarryForwardToPTO() throws ParseException {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();

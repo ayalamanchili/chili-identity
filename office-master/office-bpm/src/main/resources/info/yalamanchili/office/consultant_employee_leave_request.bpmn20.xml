@@ -52,7 +52,6 @@
                 Category      : #{leaveRequest.category} 
                 Hours         : #{leaveRequest.hours} 
                 Submited Date    : #{leaveRequest.createdTimeStamp}
-                Vacation Available when request submitted : #{summary.availableVacationHours}
                 PTO Available when request submitted : #{summary.availablePTOHours}
             </documentation>
             <extensionElements>

@@ -56,7 +56,7 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
     }
 
     protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.expense.AdvanceRequisition"));
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.time.CorporateTimeSheet"));
     }
 
     @Override

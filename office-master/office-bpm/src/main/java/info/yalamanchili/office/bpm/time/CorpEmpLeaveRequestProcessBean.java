@@ -18,7 +18,6 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -39,17 +38,9 @@ public class CorpEmpLeaveRequestProcessBean {
         if (noValidationsCategories.contains(entity.getCategory())) {
             return true;
         }
-        BigDecimal earned = CorporateTimeSheetDao.instance().getPTOAccruedTimeSheet(employee).getHours();
-        if (entity.getCategory().equals(TimeSheetCategory.Vacation_Spent)) {
-            BigDecimal carryFwdHours = CorporateTimeSheetDao.instance().getHoursInYear(employee, TimeSheetCategory.Vacation_CarryForward, TimeSheetStatus.Approved, new Date());
-            earned = earned.add(carryFwdHours);
-        }
-        BigDecimal spent = CorporateTimeSheetDao.instance().getHoursInYear(employee, entity.getCategory(), TimeSheetStatus.Approved, new Date());
-        if (spent.add(entity.getHours()).subtract(earned).compareTo(BigDecimal.ZERO) <= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        BigDecimal ptoAvailable = CorporateTimeSheetDao.instance().getPTOAccruedTimeSheet(employee).getHours();
+        //TODO add pending PTO used hours also?
+        return ptoAvailable.subtract(entity.getHours()).compareTo(BigDecimal.ZERO) <= 0;
     }
     protected static Set<TimeSheetCategory> noValidationsCategories = new HashSet<TimeSheetCategory>();
 
@@ -70,15 +61,16 @@ public class CorpEmpLeaveRequestProcessBean {
         messagingService.sendEmail(email);
     }
 
-//TODO is this needed
     public void saveApprovedLeaveRequest(DelegateExecution execution, String leaveRequestApprovalTaskNotes) {
         CorporateTimeSheet ts = getTimeSheetFromExecution(execution);
         if (ts == null) {
             return;
         }
         ts.setStatus(TimeSheetStatus.Approved);
+        CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         //TODO append approved task notes
-        CorporateTimeSheetDao.instance().save(ts);
+        dao.save(ts);
+        dao.deductPTOUsedHours(ts);
     }
 
     protected CorporateTimeSheet getTimeSheetFromExecution(DelegateExecution execution) {

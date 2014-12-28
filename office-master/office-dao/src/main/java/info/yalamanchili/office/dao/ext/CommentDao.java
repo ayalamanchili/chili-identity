@@ -63,10 +63,13 @@ public class CommentDao extends AbstractHandleEntityDao<Comment> {
     @Override
     public Comment save(Comment source, AbstractEntity target) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        if (emp == null) {
-            return null;
+        String updatedBy = null;
+        if (emp != null) {
+            updatedBy = emp.getFirstName() + " " + emp.getLastName();
+        } else {
+            updatedBy = "system";
         }
-        source.setUpdatedBy(emp.getFirstName() + " " + emp.getLastName());
+        source.setUpdatedBy(updatedBy);
         source.setUpdatedTS(new Date());
         return super.save(source, target);
     }

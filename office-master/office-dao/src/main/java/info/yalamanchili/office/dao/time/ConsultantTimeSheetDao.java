@@ -14,15 +14,13 @@ import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -128,7 +126,52 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         return queryStr.toString();
     }
 
-    public ConsultantTimeSheet getPTOAccruedConsTimeSheet(Employee emp) {
+    /**
+     * deducts PTO Used hours on approval
+     *
+     * @param ts
+     */
+    public void deductPTOUsedHours(ConsultantTimeSheet ts) {
+        ConsultantTimeSheet ptoAccruedTS = getPTOAccruedTimeSheet(ts.getEmployee());
+        BigDecimal currentPTOBalance = ptoAccruedTS.getHours();
+        ptoAccruedTS.setHours(ptoAccruedTS.getHours().subtract(ts.getHours()));
+        getEntityManager().merge(ptoAccruedTS);
+        addTimeSheetUpdateComment("System Update on approval", currentPTOBalance, ptoAccruedTS, ts);
+    }
+
+    /**
+     * adds PTO Used hours back on approval of cancel requests so the hours are
+     * added back to pool
+     *
+     * @param ts
+     */
+    public void addPTOUsedHours(ConsultantTimeSheet ts) {
+        ConsultantTimeSheet ptoAccruedTS = getPTOAccruedTimeSheet(ts.getEmployee());
+        BigDecimal currentPTOBalance = ptoAccruedTS.getHours();
+        ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(ts.getHours()));
+        getEntityManager().merge(ptoAccruedTS);
+        addTimeSheetUpdateComment("System Update on approval", currentPTOBalance, ptoAccruedTS, ts);
+    }
+
+    public void addTimeSheetUpdateComment(String message, BigDecimal currentBalance, ConsultantTimeSheet ptoAccruedTS, ConsultantTimeSheet ptoUsedTS) {
+        StringBuilder comment = new StringBuilder();
+        comment.append(message).append("\n");
+        comment.append("Current PTO Balance       : ").append(currentBalance).append("\n");
+        comment.append("Hours Updated             : ").append(ptoUsedTS.getHours()).append("\n");
+        comment.append("New  PTO Balance          : ").append(ptoAccruedTS.getHours()).append("\n");
+        CommentDao.instance().addComment(comment.toString(), ptoAccruedTS);
+    }
+
+    public void addTimeSheetUpdateComment(String message, BigDecimal currentBalance, ConsultantTimeSheet ptoAccruedTS) {
+        StringBuilder comment = new StringBuilder();
+        comment.append(message).append("\n");
+        comment.append("Current PTO Balance       : ").append(currentBalance).append("\n");
+        comment.append("Hours Updated             : ").append(ptoAccruedTS.getHours().subtract(currentBalance)).append("\n");
+        comment.append("New  PTO Balance          : ").append(ptoAccruedTS.getHours()).append("\n");
+        CommentDao.instance().addComment(comment.toString(), ptoAccruedTS);
+    }
+
+    public ConsultantTimeSheet getPTOAccruedTimeSheet(Employee emp) {
         TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery("from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam", ConsultantTimeSheet.class);
         query.setParameter("categoryParam", TimeSheetCategory.PTO_ACCRUED);
         query.setParameter("employeeParam", emp);

@@ -42,7 +42,7 @@ public class AssociateTimeAccuralService {
             }
             Date startDate = emp.getStartDate();
             int numberOfMonthsCompleted = DateUtils.differenceInMonths(startDate, new Date());
-            ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedConsTimeSheet(emp);
+            ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS != null) {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();
                 if (numberOfMonthsCompleted < 12) {
@@ -85,7 +85,7 @@ public class AssociateTimeAccuralService {
         Date date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse("2014");
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             BigDecimal balance = CorporateTimeService.instance().getYearlyVacationBalance(emp, date);
-            ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedConsTimeSheet(emp);
+            ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (balance.compareTo(new BigDecimal("40.00")) >= 0) {
                 ptoAccruedTS.setHours(new BigDecimal("40.00"));
             } else {
