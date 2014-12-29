@@ -36,6 +36,7 @@ public class AssociateTimeAccuralService {
     //TODO avoid duplicate creation
     public void accureMonthlyConsTime() {
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
+        Date today = new Date();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             if (emp.getStartDate() == null) {
                 continue;
@@ -45,27 +46,27 @@ public class AssociateTimeAccuralService {
             ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS != null) {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();
-                if (numberOfMonthsCompleted < 12) {
+                if (today.before(DateUtils.getNextYear(startDate, 1))) {
                     if (ptoAccruedTS.getHours().add(TimeAccuralConstants.lessThanOneYearHoursAccural).compareTo(TimeAccuralConstants.lessThanOneYearHoursAccuralMax) >= 0) {
                         ptoAccruedTS.setHours(TimeAccuralConstants.lessThanOneYearHoursAccuralMax);
                     } else {
                         ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.lessThanOneYearHoursAccural));
                     }
 
-                } else if (numberOfMonthsCompleted >= 12 && numberOfMonthsCompleted < 60) {
+                } else if (today.after(DateUtils.getNextYear(startDate, 1)) && today.before(DateUtils.getNextYear(startDate, 5))) {
                     if (ptoAccruedTS.getHours().add(TimeAccuralConstants.twoToFourYearsHoursAccural).compareTo(TimeAccuralConstants.twoToFourYearsHoursAccuralMax) >= 0) {
                         ptoAccruedTS.setHours(TimeAccuralConstants.twoToFourYearsHoursAccuralMax);
                     } else {
                         ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.twoToFourYearsHoursAccural));
                     }
-                } else if (numberOfMonthsCompleted >= 60 && numberOfMonthsCompleted < 120) {
+                } else if (today.after(DateUtils.getNextYear(startDate, 5)) && today.before(DateUtils.getNextYear(startDate, 10))) {
                     if (ptoAccruedTS.getHours().add(TimeAccuralConstants.fiveToTenYearsHoursAccural).compareTo(TimeAccuralConstants.fiveToTenYearsHoursAccuralMax) >= 0) {
                         ptoAccruedTS.setHours(TimeAccuralConstants.fiveToTenYearsHoursAccuralMax);
                     } else {
                         ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.fiveToTenYearsHoursAccural));
 
                     }
-                } else if (numberOfMonthsCompleted >= 120) {
+                } else if (today.after(DateUtils.getNextYear(startDate, 10))) {
                     if (ptoAccruedTS.getHours().add(TimeAccuralConstants.moreThanTenYearsHoursAccural).compareTo(TimeAccuralConstants.moreThanTenYearsHoursAccuralMax) >= 0) {
                         ptoAccruedTS.setHours(TimeAccuralConstants.moreThanTenYearsHoursAccuralMax);
                     } else {
@@ -84,6 +85,9 @@ public class AssociateTimeAccuralService {
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
         Date date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse("2014");
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
+            if (emp.getStartDate() == null) {
+                continue;
+            }
             BigDecimal balance = CorporateTimeService.instance().getYearlyVacationBalance(emp, date);
             ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (balance.compareTo(new BigDecimal("40.00")) >= 0) {
