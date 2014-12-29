@@ -38,7 +38,8 @@ public class ConsultantEmpLeaveRequestProcessBean {
         }
         BigDecimal ptoAvailable = ConsultantTimeSheetDao.instance().getPTOAccruedTimeSheet(employee).getHours();
         //TODO add pending PTO used hours also?
-        return ptoAvailable.subtract(entity.getHours()).compareTo(BigDecimal.ZERO) <= 0;
+        //TODO add comment on auto reject
+        return ptoAvailable.subtract(entity.getHours()).compareTo(BigDecimal.ZERO) >= 0;
     }
     protected static Set<TimeSheetCategory> noValidationsCategories = new HashSet<TimeSheetCategory>();
 
