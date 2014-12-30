@@ -130,10 +130,7 @@
                             <tbody>
                                 <tr th:each="summary : ${entity}">
                                     <td th:text="${summary.employee}" />
-                                    <td th:text="${summary.usedUnpaidHours}" />
-                                    <td th:text="${summary.totalVacationHours}" />
-                                    <td th:text="${summary.usedVacationHours}" />
-                                    <td th:text="${summary.availableVacationHours}" />
+                                    <td th:text="${summary.usedUnpaidHours}" />                                  
                                     <td th:text="${summary.totalPTOHours}"/>
                                     <td th:text="${summary.usedPTOHours}"/>
                                     <td th:text="${summary.availablePTOHours}" />

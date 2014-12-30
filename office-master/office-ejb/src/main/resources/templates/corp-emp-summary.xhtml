@@ -28,7 +28,6 @@
                                 <tr>
                                     <th>Employee Name</th>
                                     <th>Start Date</th>
-                                    <th>Vacation Available</th>
                                     <th>PTO Available</th>
                                     <th>Unpaid Used</th>
                                 </tr>
@@ -37,7 +36,6 @@
                                 <tr th:each="summary : ${entity}">
                                     <td th:text="${summary.employee}" />
                                     <td th:text="${summary.startDate}" />
-                                    <td th:text="${summary.availableVacationHours}" />
                                     <td th:text="${summary.availablePTOHours}" />
                                     <td th:text="${summary.usedUnpaidHours}" />
                                 </tr>
