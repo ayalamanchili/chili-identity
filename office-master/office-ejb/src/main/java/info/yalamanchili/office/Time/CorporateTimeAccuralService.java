@@ -90,9 +90,11 @@ public class CorporateTimeAccuralService {
             CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS.getId() != null) {
                 CorporateTimeSheet previousVersion = (CorporateTimeSheet) AuditService.instance().mostRecentVersion(CorporateTimeSheet.class, ptoAccruedTS.getId());
-                ptoAccruedTS.setHours(previousVersion.getHours());
-                dao.getEntityManager().merge(ptoAccruedTS);
-                dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                if (previousVersion != null) {
+                    ptoAccruedTS.setHours(previousVersion.getHours());
+                    dao.getEntityManager().merge(ptoAccruedTS);
+                    dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                }
             }
         }
 
@@ -114,6 +116,7 @@ public class CorporateTimeAccuralService {
                 ptoAccruedTS.setHours(balance);
             }
             dao.getEntityManager().merge(ptoAccruedTS);
+            dao.addTimeSheetUpdateComment("System adding Carry Forword Vacation from 2014: ", balance, ptoAccruedTS);
         }
     }
 

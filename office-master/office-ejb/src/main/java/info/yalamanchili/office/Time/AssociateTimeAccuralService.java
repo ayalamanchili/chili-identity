@@ -87,16 +87,18 @@ public class AssociateTimeAccuralService {
 
     public void revertRecentPTOAccruedChanges() {
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
             if (emp.getStartDate() == null) {
                 continue;
             }
             ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS.getId() != null) {
                 ConsultantTimeSheet previousVersion = (ConsultantTimeSheet) AuditService.instance().mostRecentVersion(ConsultantTimeSheet.class, ptoAccruedTS.getId());
-                ptoAccruedTS.setHours(previousVersion.getHours());
-                dao.getEntityManager().merge(ptoAccruedTS);
-                dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                if (previousVersion != null) {
+                    ptoAccruedTS.setHours(previousVersion.getHours());
+                    dao.getEntityManager().merge(ptoAccruedTS);
+                    dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+                }
             }
         }
 
@@ -118,6 +120,7 @@ public class AssociateTimeAccuralService {
                 ptoAccruedTS.setHours(balance);
             }
             dao.getEntityManager().merge(ptoAccruedTS);
+            dao.addTimeSheetUpdateComment("System adding Carry Forword Vacation from 2014: ", balance, ptoAccruedTS);
         }
 
     }
