@@ -81,7 +81,7 @@ public class AdvanceRequisitionService {
         PdfDocumentData data = new PdfDocumentData();
         CheckDao.instance().find(entity);
         BankAccountDao.instance().find(entity);
-        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/advacne-Requisition-template.pdf");
+        data.setTemplateUrl("/templates/pdf/advacne-Requisition-template.pdf");
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());

@@ -34,7 +34,7 @@ public class SkillSetDao extends CRUDDao<SkillSet> {
     @Transactional
     public void indexAllResumes() {
         for (SkillSet skillSet : query(0, 2000)) {
-            if (!skillSet.getResumeUrl().equalsIgnoreCase("ResumeUrl")) {
+            if (skillSet.getResumeUrl() != null && !skillSet.getResumeUrl().equalsIgnoreCase("ResumeUrl")) {
                 extractResumeContent(skillSet.getId());
             }
         }

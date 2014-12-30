@@ -242,7 +242,7 @@ public class PerformanceEvaluationService {
         OfficeSecurityConfiguration securityConfig = OfficeSecurityConfiguration.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setKeyStoreName(securityConfig.getKeyStoreName());
-        data.setTemplateUrl(serviceConfig.getContentManagementLocationRoot() + "/templates/manger-review-template.pdf");
+        data.setTemplateUrl("/templates/pdf/manger-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
@@ -327,7 +327,7 @@ public class PerformanceEvaluationService {
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
         PdfDocumentData data = new PdfDocumentData();
-        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/self-review-template.pdf");
+        data.setTemplateUrl( "/templates/pdf/self-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));

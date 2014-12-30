@@ -110,7 +110,7 @@ public class StatusReportService {
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "preparedBySignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
-        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/status-report-template.pdf");
+        data.setTemplateUrl("/templates/pdf/status-report-template.pdf");
         data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC");
         data.getData().put("projectDescription", reportDocument.getProjectDescription());
         data.getData().put("projectStatus", entity.getStatus().name());

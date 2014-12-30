@@ -143,7 +143,7 @@ public class CorporateTimeService {
     public Response getReport(CorporateTimeSheet entity) {
         CorporateTimeSummary summary = getYearlySummary(entity.getEmployee());
         PdfDocumentData data = new PdfDocumentData();
-        data.setTemplateUrl(OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + "/templates/corp-ts-template.pdf");
+        data.setTemplateUrl("/templates/pdf/corp-ts-template.pdf");
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
