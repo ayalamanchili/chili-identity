@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
@@ -45,7 +46,11 @@ public class CorporateTimeAccuralService {
             CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS != null) {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();
-                if (today.before(DateUtils.getNextYear(startDate, 1))) {
+                if (today.before(DateUtils.getNextDay(startDate, 30))) {
+                    //New employee less than a month
+                    Long daysWorkedInMonth = DateUtils.differenceInDays(startDate, today);
+                    ptoAccruedTS.setHours(DateUtils.getProratedHours(TimeAccuralConstants.lessThanOneYearHoursAccural, new BigDecimal("30"), new BigDecimal(daysWorkedInMonth)));
+                } else if (today.before(DateUtils.getNextYear(startDate, 1))) {
                     if (ptoAccruedTS.getHours().add(TimeAccuralConstants.lessThanOneYearHoursAccural).compareTo(TimeAccuralConstants.lessThanOneYearHoursAccuralMax) >= 0) {
                         ptoAccruedTS.setHours(TimeAccuralConstants.lessThanOneYearHoursAccuralMax);
                     } else {
@@ -74,6 +79,23 @@ public class CorporateTimeAccuralService {
                 dao.addTimeSheetUpdateComment("System Montly Update: ", beforeHours, ptoAccruedTS);
             }
         }
+    }
+
+    public void revertRecentPTOAccruedChanges() {
+        CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (emp.getStartDate() == null) {
+                continue;
+            }
+            CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
+            if (ptoAccruedTS.getId() != null) {
+                CorporateTimeSheet previousVersion = (CorporateTimeSheet) AuditService.instance().mostRecentVersion(CorporateTimeSheet.class, ptoAccruedTS.getId());
+                ptoAccruedTS.setHours(previousVersion.getHours());
+                dao.getEntityManager().merge(ptoAccruedTS);
+                dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+            }
+        }
+
     }
 //TODO temp method needed only once 
 

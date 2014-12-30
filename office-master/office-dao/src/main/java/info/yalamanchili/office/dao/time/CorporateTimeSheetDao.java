@@ -13,7 +13,9 @@ import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -140,7 +142,8 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     /**
-     * adds PTO Used hours back on approval of cancel requests so the hours are added back to pool
+     * adds PTO Used hours back on approval of cancel requests so the hours are
+     * added back to pool
      *
      * @param ts
      */
@@ -187,6 +190,16 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             ts.setHours(BigDecimal.ZERO);
             ts.setStatus(TimeSheetStatus.Approved);
             return getEntityManager().merge(ts);
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        CorporateTimeSheet ts = findById(id);
+        if (ts.getCategory().equals(TimeSheetCategory.PTO_ACCRUED) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.delete.pto_accrued.timesheet", "Cannot delete PTO Accrued timesheet ");
+        } else {
+            delete(ts);
         }
     }
 

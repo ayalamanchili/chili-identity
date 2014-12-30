@@ -26,49 +26,27 @@ import org.springframework.stereotype.Component;
 public class OfficeServiceJobConfiguration {
 
     @ManagedOperation
-    public void syncTimeSheetPeriods() {
-        TimeJobService.instance().syncTimeSheetPeriods();
-    }
-
-    @ManagedOperation
-    public void processYearlyEarnedTimeSheets() {
-        TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
-    }
-
-    @ManagedOperation
-    public void processCorporateMonthlyTimeAccrual() {
+    public void processMonthlyTimeAccrual() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
-    }
-
-    @ManagedOperation
-    public void processConsutantMonthlyTimeAccrual() {
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
     }
-//TEMP
 
     @ManagedOperation
-    public void convert2014CArryFwdHours() throws Exception {
-        CorporateTimeAccuralService.instance().convertCarryForwardToPTO();
+    public void revertRecentMonthlyTimeAccrual() {
+        CorporateTimeAccuralService.instance().revertRecentPTOAccruedChanges();
+        AssociateTimeAccuralService.instance().revertRecentPTOAccruedChanges();
     }
 
+//TEMP
     @ManagedOperation
-    public void convert2014ConsCArryFwdHours() throws Exception {
+    public void convert2014CarryFwdHours() throws Exception {
+        CorporateTimeAccuralService.instance().convertCarryForwardToPTO();
         AssociateTimeAccuralService.instance().convertCarryForwardToPTO();
     }
 
     @ManagedOperation
     public void syncPerformanceEvaluationQuestions() {
         PerformanceEvaluationQuestionsFactory.instance().syncQuestions();
-    }
-
-    @ManagedOperation
-    public void processConsYearlyEarnedTimeSheets() {
-        TimeJobService.instance().processConsultantEmpYearlyEarnedTimeSheets();
-    }
-
-    @ManagedOperation
-    public void approveNewCorpEmployeeTimeSheets() {
-        TimeJobService.instance().approveNewCorpEmployeeTimeSheets();
     }
 
     @ManagedOperation

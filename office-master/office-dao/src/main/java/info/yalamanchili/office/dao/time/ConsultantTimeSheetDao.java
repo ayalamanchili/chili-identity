@@ -14,8 +14,10 @@ import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -169,6 +171,16 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         comment.append("Hours Updated             : ").append(ptoAccruedTS.getHours().subtract(currentBalance)).append("\n");
         comment.append("New  PTO Balance          : ").append(ptoAccruedTS.getHours()).append("\n");
         CommentDao.instance().addComment(comment.toString(), ptoAccruedTS);
+    }
+
+    @Override
+    public void delete(Long id) {
+        ConsultantTimeSheet ts = findById(id);
+        if (ts.getCategory().equals(TimeSheetCategory.PTO_ACCRUED) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.delete.pto_accrued.timesheet", "Cannot delete PTO Accrued timesheet ");
+        } else {
+            delete(ts);
+        }
     }
 
     public ConsultantTimeSheet getPTOAccruedTimeSheet(Employee emp) {

@@ -38,32 +38,6 @@ public class OfficeSchedulerService {
     public EntityManager em;
 
     /**
-     * runs jan 1 at 2'0 clock every year to accumulate yearly earned PTO, PTO
-     * and vacation days for Employees
-     */
-    @Scheduled(cron = "0 0 2 1 1 *")
-    public void runYearlyEarnedTimeSheets() {
-        TimeJobService.instance().processCorpEmpYearlyEarnedTimeSheets();
-    }
-
-    /**
-     * runs jan 1 at 3'0 clock every year to accumulate yearly earned PTO, PTO
-     * and vacation days for Consultants
-     */
-    @Scheduled(cron = "0 0 3 1 1 *")
-    public void runConsultantsYearlyEarnedTimeSheets() {
-        TimeJobService.instance().processConsultantEmpYearlyEarnedTimeSheets();
-    }
-
-    /**
-     * runs every night at 1.05 AM
-     */
-    @Scheduled(cron = "0 5 1 * * ?")
-    public void approveNewCorpEmployeeTimeSheets() {
-        TimeJobService.instance().approveNewCorpEmployeeTimeSheets();
-    }
-
-    /**
      * runs every night at 1.07 AM
      */
     @Scheduled(cron = "0 7 1 * * ?")
@@ -77,13 +51,6 @@ public class OfficeSchedulerService {
     @Scheduled(cron = "0 1 1 * * ?")
     public void accuredMonthlyTime() {
         CorporateTimeAccuralService.instance().accureMonthlyTime();
-    }
-
-    /**
-     * runs at 1'0 clock every month to accumulate monthly earned PTO,
-     */
-    @Scheduled(cron = "0 1 1 * * ?")
-    public void accureMonthlyConsTime() {
         AssociateTimeAccuralService.instance().accureMonthlyConsTime();
     }
 

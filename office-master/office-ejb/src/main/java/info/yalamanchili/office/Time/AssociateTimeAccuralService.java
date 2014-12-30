@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
@@ -46,7 +47,11 @@ public class AssociateTimeAccuralService {
             ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS != null) {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();
-                if (today.before(DateUtils.getNextYear(startDate, 1))) {
+                if (today.before(DateUtils.getNextDay(startDate, 30))) {
+                    //New employee less than a month
+                    Long daysWorkedInMonth = DateUtils.differenceInDays(startDate, today);
+                    ptoAccruedTS.setHours(DateUtils.getProratedHours(TimeAccuralConstants.lessThanOneYearHoursAccural, new BigDecimal("30"), new BigDecimal(daysWorkedInMonth)));
+                } else if (today.before(DateUtils.getNextYear(startDate, 1))) {
                     if (ptoAccruedTS.getHours().add(TimeAccuralConstants.lessThanOneYearHoursAccural).compareTo(TimeAccuralConstants.lessThanOneYearHoursAccuralMax) >= 0) {
                         ptoAccruedTS.setHours(TimeAccuralConstants.lessThanOneYearHoursAccuralMax);
                     } else {
@@ -79,8 +84,25 @@ public class AssociateTimeAccuralService {
             }
         }
     }
-//TODOtemp method needed only once 
 
+    public void revertRecentPTOAccruedChanges() {
+        ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (emp.getStartDate() == null) {
+                continue;
+            }
+            ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
+            if (ptoAccruedTS.getId() != null) {
+                ConsultantTimeSheet previousVersion = (ConsultantTimeSheet) AuditService.instance().mostRecentVersion(ConsultantTimeSheet.class, ptoAccruedTS.getId());
+                ptoAccruedTS.setHours(previousVersion.getHours());
+                dao.getEntityManager().merge(ptoAccruedTS);
+                dao.addTimeSheetUpdateComment("System Reverting recent Change: ", previousVersion.getHours(), ptoAccruedTS);
+            }
+        }
+
+    }
+
+//TODOtemp method needed only once 
     public void convertCarryForwardToPTO() throws ParseException {
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
         Date date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse("2014");
