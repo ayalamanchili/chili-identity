@@ -1,3 +1,7 @@
+PTO Accrual
+-----
+ - [PTO Accrual Information](../../office/timesheets/leaves-accumulation.html "Leave Accumulation")
+
 Submitting Leave Request.
 -----
 - In Time tab, click on 'Submit Leave request' link which pop ups a leave request window. Fill the details and submit.
@@ -7,6 +11,10 @@ Submitting Leave Request.
 - If the Leave Category is Unpaid then there it will need a additional approval by admin.
 - If your Company Contacts under your profile does not reflect Manager **Reports_To**  employee information please [open a Self Service ticket](../../office/selfservice/open-ticket.html "Open Ticket") with "Other" as category.
 
+Update or Cancel Request.
+-----
+ - [Update or Cancel Leave Request information](../../office/timesheets/update-cancel-leave-request.html "Update or Cancel Leave")
+
 Tips
 ----
 
@@ -15,13 +23,11 @@ Tips
 
 ```
 Eg: 
-Vacation Available 40 hours
-PTO Available 10 hours
-you have taken leave for 60 hours
+PTO Available 40 hours
+you need leave for 60 hours
 submit
- - vacation request for 40 hours
- - pto request for 10 hours
- - unpaid request for 10 hours
+ - pto request for 40 hours
+ - unpaid request for 20 hours
 ```
 
 

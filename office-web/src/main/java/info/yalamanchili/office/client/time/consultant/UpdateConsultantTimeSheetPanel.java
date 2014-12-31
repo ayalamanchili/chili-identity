@@ -105,7 +105,7 @@ public class UpdateConsultantTimeSheetPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", employeeF);
-        addEnumField("category", false, true, TimeSheetCategory.names());
+        addEnumField("category", true, true, TimeSheetCategory.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("hours", false, true, DataType.FLOAT_FIELD);

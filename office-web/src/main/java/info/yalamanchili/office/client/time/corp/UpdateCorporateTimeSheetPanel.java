@@ -7,22 +7,17 @@
  */
 package info.yalamanchili.office.client.time.corp;
 
-import com.google.gwt.json.client.JSONArray;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.gwt.MultiSelectSuggestBox;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -98,7 +93,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employee", employeeF);
-        addEnumField("category", false, true, TimeSheetCategory.names());
+        addEnumField("category", true, true, TimeSheetCategory.names());
         addEnumField("status", false, true, TimeSheetStatus.names());
         addField("startDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);

@@ -14,12 +14,8 @@ package info.yalamanchili.office.client.time;
  */
 public enum TimeSheetCategory {
 
-    Regular,
-    Vacation_Earned,
-    Vacation_Spent,
-    Vacation_CarryForward,
-    PTO_Earned,
-    PTO_Spent,
+    PTO_ACCRUED,
+    PTO_USED,
     Unpaid,
     JuryDuty,
     Bereavement,

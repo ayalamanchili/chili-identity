@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class CorpEmpLeaveRequestProcessBean {
-
+    
     public boolean validateLeaveRequest(Employee employee, CorporateTimeSheet entity) {
         if (noValidationsCategories.contains(entity.getCategory())) {
             return true;
@@ -44,7 +44,7 @@ public class CorpEmpLeaveRequestProcessBean {
         return ptoAvailable.subtract(entity.getHours()).compareTo(BigDecimal.ZERO) >= 0;
     }
     protected static Set<TimeSheetCategory> noValidationsCategories = new HashSet<TimeSheetCategory>();
-
+    
     static {
         noValidationsCategories.add(TimeSheetCategory.Unpaid);
         noValidationsCategories.add(TimeSheetCategory.JuryDuty);
@@ -52,7 +52,7 @@ public class CorpEmpLeaveRequestProcessBean {
         noValidationsCategories.add(TimeSheetCategory.Maternity);
         noValidationsCategories.add(TimeSheetCategory.Other);
     }
-
+    
     public void sendLeaveRequestRejectedEmail(Employee employee) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
@@ -61,7 +61,7 @@ public class CorpEmpLeaveRequestProcessBean {
         email.setBody("Your leave request has been rejected due to insufficient leaves");
         messagingService.sendEmail(email);
     }
-
+    
     public void saveApprovedLeaveRequest(DelegateExecution execution, String leaveRequestApprovalTaskNotes) {
         CorporateTimeSheet ts = getTimeSheetFromExecution(execution);
         if (ts == null) {
@@ -71,9 +71,11 @@ public class CorpEmpLeaveRequestProcessBean {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         //TODO append approved task notes
         dao.save(ts);
-        dao.deductPTOUsedHours(ts);
+        if (ts.getCategory().equals(TimeSheetCategory.PTO_USED)) {
+            dao.deductPTOUsedHours(ts);
+        }
     }
-
+    
     protected CorporateTimeSheet getTimeSheetFromExecution(DelegateExecution execution) {
         Long tsId = (Long) execution.getVariable("entityId");
         if (tsId != null) {
@@ -81,7 +83,7 @@ public class CorpEmpLeaveRequestProcessBean {
         }
         return null;
     }
-
+    
     public static CorpEmpLeaveRequestProcessBean instance() {
         return SpringContext.getBean(CorpEmpLeaveRequestProcessBean.class);
     }

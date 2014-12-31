@@ -5,24 +5,14 @@ How to view a employee's all time sheets
 -----
 - Select employee and click on view in time sheet panel to see corporate time summary of an employee.
 
-Create a update time sheets manually
+How to view a PTO Accruals and Decuctions
 -----
-- Please note creating time sheets manually must be done with caution and when there is a exception**
-
-- Click on Enter Time Sheet link in side panel by navigating to above specified navigation.
-- Select employee,fill leave details and click on create.
+ - Click view icon on a PTO Accrued time sheet
+![alt text](../../images/timesheets/view-pto-accrued-1.PNG "Time")
+![alt text](../../images/timesheets/view-pto-accrued-2.PNG "Time")
 
 Categories of time sheets
 ----- 
-
- -   Regular
- -   Vacation_Earned - 10(days) Vacation leaves are earned by an employee for a calendar year. vacation carry forward leaves from previous year are also added to this
- -   Vacation_Spent - These are the vacation leaves spent by an employee in current calendar year
- -   Vacation_Carry Forward - Upto 5(days) unused vacation leaves of an employee are allowed to carry forward to next year
- -   PTO_Earned - 8(days) PTO leaves are earned by an employee for a calendar year
- -   PTO_Spent - These are the PTO leaves spent by an employee in current calendar year,
+ -   PTO Accrued - PTO Accrued timesheet will show the latest balance hours available. 
+ -   PTO Used    - PTO Used timesheets represent all the used PTO hours by the employee.
  -   Unpaid
-
-Creating Corporate Employee Time Sheet
---
-![alt text](../../images/timesheets/create-corp-time-sheet.png "Time")

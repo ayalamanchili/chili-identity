@@ -8,16 +8,19 @@
  */
 package info.yalamanchili.office.dao.time;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.QueryUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -54,6 +57,15 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         super(CorporateTimeSheet.class);
     }
 
+    @Override
+    public CorporateTimeSheet save(CorporateTimeSheet entity) {
+        if (entity.getCategory().equals(TimeSheetCategory.PTO_ACCRUED) && QueryUtils.findEntity(getEntityManager(), CorporateTimeSheet.class, "category", TimeSheetCategory.PTO_ACCRUED.name()) != null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.have.morethanone.pto-accrued", "Cannot have more than one PTO Accrued Timesheet");
+        }
+        return super.save(entity);
+    }
+//TODO remove
+
     public void saveTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         if (findTimeSheet(emp, category, hours, startDate, endDate) == null) {
             CorporateTimeSheet ts = new CorporateTimeSheet();
@@ -66,6 +78,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
             super.save(ts);
         }
     }
+//TODO remove
 
     public CorporateTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         StringBuilder queryStr = new StringBuilder();
@@ -102,7 +115,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
-        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category) + " order by startDate DESC ";
+        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category) + " order by endDate DESC ";
         Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
         if (queryStr.contains("statusParam")) {

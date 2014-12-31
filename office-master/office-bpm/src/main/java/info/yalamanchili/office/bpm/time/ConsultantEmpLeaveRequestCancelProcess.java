@@ -13,9 +13,9 @@ import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
-import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -60,7 +60,9 @@ public class ConsultantEmpLeaveRequestCancelProcess implements TaskListener {
         cts.setStatus(TimeSheetStatus.Canceled);
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
         dao.save(cts);
-        dao.addPTOUsedHours(cts);
+        if (cts.getCategory().equals(TimeSheetCategory.PTO_USED)) {
+            dao.addPTOUsedHours(cts);
+        }
         if (cts.getBpmProcessId() != null && !cts.getBpmProcessId().isEmpty()) {
             deleteApprovalTask(cts.getBpmProcessId());
         }

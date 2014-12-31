@@ -24,6 +24,7 @@ import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.util.List;
 import org.activiti.engine.delegate.DelegateTask;
@@ -78,7 +79,9 @@ public class CorpEmpLeaveRequestCancelProcess implements TaskListener {
         ts.setStatus(TimeSheetStatus.Canceled);
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         dao.save(ts);
-        dao.addPTOUsedHours(ts);
+        if (ts.getCategory().equals(TimeSheetCategory.PTO_USED)) {
+            dao.addPTOUsedHours(ts);
+        }
         if (ts.getBpmProcessId() != null && !ts.getBpmProcessId().isEmpty()) {
             deleteApprovalTask(ts.getBpmProcessId());
         }

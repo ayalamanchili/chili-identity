@@ -12,6 +12,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import info.chili.commons.DateUtils;
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.QueryUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
@@ -45,6 +46,7 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
     public ConsultantTimeSheetDao() {
         super(ConsultantTimeSheet.class);
     }
+//TODO remove
 
     public void saveTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         if (findTimeSheet(emp, category, hours, startDate, endDate) == null) {
@@ -63,25 +65,42 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
     public ConsultantTimeSheet save(ConsultantTimeSheet entity) {
         if (!Strings.isNullOrEmpty(entity.getApprovedBy()) && EmployeeDao.instance().findEmployeWithEmpId(entity.getApprovedBy()) == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approvedById", "Approved By must be a employee Id");
+        } else if (entity.getCategory().equals(TimeSheetCategory.PTO_ACCRUED) && QueryUtils.findEntity(getEntityManager(), ConsultantTimeSheet.class, "category", TimeSheetCategory.PTO_ACCRUED.name()) != null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.have.morethanone.pto-accrued", "Cannot have more than one PTO Accrued Timesheet");
         }
         return super.save(entity);
     }
+//TODO remove
 
     public ConsultantTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
         StringBuilder queryStr = new StringBuilder();
-        queryStr.append("from ").append(ConsultantTimeSheet.class.getCanonicalName()).append(" where");
-        queryStr.append(" category=:categoryParam");
-        queryStr.append(" and startDate=:startDateParam");
-        queryStr.append(" and endDate=:endDateParam");
-        queryStr.append(" and hours=:hoursParam");
-        queryStr.append(" and employee=:empParam");
+        queryStr
+                .append("from ").append(ConsultantTimeSheet.class
+                        .getCanonicalName()).append(" where");
+        queryStr.append(
+                " category=:categoryParam");
+        queryStr.append(
+                " and startDate=:startDateParam");
+        queryStr.append(
+                " and endDate=:endDateParam");
+        queryStr.append(
+                " and hours=:hoursParam");
+        queryStr.append(
+                " and employee=:empParam");
         TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery(queryStr.toString(), ConsultantTimeSheet.class);
-        query.setParameter("categoryParam", category);
-        query.setParameter("startDateParam", startDate, TemporalType.DATE);
-        query.setParameter("endDateParam", endDate, TemporalType.DATE);
-        query.setParameter("hoursParam", hours);
-        query.setParameter("empParam", emp);
-        if (query.getResultList().size() > 0) {
+
+        query.setParameter(
+                "categoryParam", category);
+        query.setParameter(
+                "startDateParam", startDate, TemporalType.DATE);
+        query.setParameter(
+                "endDateParam", endDate, TemporalType.DATE);
+        query.setParameter(
+                "hoursParam", hours);
+        query.setParameter(
+                "empParam", emp);
+        if (query.getResultList()
+                .size() > 0) {
             return query.getResultList().get(0);
         } else {
             return null;
@@ -102,7 +121,7 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
     }
 
     public List<ConsultantTimeSheet> getTimeSheetsEmployee(Employee employee, TimeSheetCategory category, TimeSheetStatus status, int start, int limit) {
-        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category) + " order by startDate DESC ";
+        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category) + " order by endDate DESC ";
         Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
         if (queryStr.contains("statusParam")) {
@@ -118,13 +137,18 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
 
     protected String getTimeSheetsForEmployeeQuery(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
         StringBuilder queryStr = new StringBuilder();
-        queryStr.append("from ").append(ConsultantTimeSheet.class.getCanonicalName()).append(" where employee=:employeeParam");
-        if (status != null) {
+        queryStr
+                .append("from ").append(ConsultantTimeSheet.class
+                        .getCanonicalName()).append(" where employee=:employeeParam");
+        if (status
+                != null) {
             queryStr.append(" and status=:statusParam ");
         }
-        if (category != null) {
+        if (category
+                != null) {
             queryStr.append(" and category=:categoryParam");
         }
+
         return queryStr.toString();
     }
 
@@ -183,10 +207,15 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
         }
     }
 
-    public ConsultantTimeSheet getPTOAccruedTimeSheet(Employee emp) {
-        TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery("from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam", ConsultantTimeSheet.class);
-        query.setParameter("categoryParam", TimeSheetCategory.PTO_ACCRUED);
-        query.setParameter("employeeParam", emp);
+    public ConsultantTimeSheet
+            getPTOAccruedTimeSheet(Employee emp) {
+        TypedQuery<ConsultantTimeSheet> query = getEntityManager().createQuery("from " + ConsultantTimeSheet.class
+                .getCanonicalName() + " where employee=:employeeParam and category =:categoryParam", ConsultantTimeSheet.class
+        );
+        query.setParameter(
+                "categoryParam", TimeSheetCategory.PTO_ACCRUED);
+        query.setParameter(
+                "employeeParam", emp);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
