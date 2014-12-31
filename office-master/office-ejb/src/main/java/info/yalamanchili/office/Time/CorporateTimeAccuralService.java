@@ -12,10 +12,13 @@ import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
+import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,6 +80,12 @@ public class CorporateTimeAccuralService {
                 }
                 dao.getEntityManager().merge(ptoAccruedTS);
                 dao.addTimeSheetUpdateComment("System Montly Update: ", beforeHours, ptoAccruedTS);
+                Email email = new Email();
+                email.addTo(OfficeServiceConfiguration.instance().getAdminEmail());
+                email.setSubject("Successfully complete Monthly Leave Accrual for " + new Date());
+                String messageText = "Mounthly Leaves Accrual for " + emp.getFirstName() + "," + emp.getLastName();
+                email.setBody(messageText);
+                MessagingService.instance().sendEmail(email);
             }
         }
     }
