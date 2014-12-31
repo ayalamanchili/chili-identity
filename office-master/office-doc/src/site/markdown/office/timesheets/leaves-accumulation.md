@@ -3,12 +3,6 @@ Leaves Accumulation.
  - On the first day of every month you will Accrue PTO hours based on the length of employee with System Soft Technologies.
  - Please refer to employee manual for complete details.
 
-How to view a PTO Accruals and Decuctions
------
- - Click view icon on a PTO Accrued time sheet
-![alt text](../../images/timesheets/view-pto-accrued-1.PNG "Time")
-![alt text](../../images/timesheets/view-pto-accrued-2.PNG "Time")
-
 
 <table align="center" border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<thead>
@@ -44,7 +38,11 @@ How to view a PTO Accruals and Decuctions
 
 
 
-
+How to view a PTO Accruals and Decuctions
+-----
+ - Click view icon on a PTO Accrued time sheet
+![alt text](../../images/timesheets/view-pto-accrued-1.PNG "Time")
+![alt text](../../images/timesheets/view-pto-accrued-2.PNG "Time")
 
 
 
