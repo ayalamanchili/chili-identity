@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class CorporateTimeAccuralService {
+
+    private final static Logger logger = Logger.getLogger(CorporateTimeAccuralService.class.getName());
 
     //TODO support for proration hours
     //TODO avoid duplicate creation
@@ -80,14 +83,17 @@ public class CorporateTimeAccuralService {
                 }
                 dao.getEntityManager().merge(ptoAccruedTS);
                 dao.addTimeSheetUpdateComment("System Montly Update: ", beforeHours, ptoAccruedTS);
-                Email email = new Email();
-                email.addTo(OfficeServiceConfiguration.instance().getAdminEmail());
-                email.setSubject("Successfully complete Monthly Leave Accrual for " + new Date());
-                String messageText = "Mounthly Leaves Accrual for " + emp.getFirstName() + "," + emp.getLastName();
-                email.setBody(messageText);
-                MessagingService.instance().sendEmail(email);
             }
+            sendEmailNotification("");
         }
+    }
+
+    protected void sendEmailNotification(String msg) {
+        Email email = new Email();
+        email.setTos(OfficeServiceConfiguration.instance().getFilteredEmailsAsSet());
+        email.setSubject("Successfully complete Monthly Leave Accrual on " + new Date());
+        email.setBody(msg);
+        MessagingService.instance().sendEmail(email);
     }
 
     public void revertRecentPTOAccruedChanges() {
@@ -117,15 +123,24 @@ public class CorporateTimeAccuralService {
             if (emp.getStartDate() == null) {
                 continue;
             }
+            StringBuilder notes = new StringBuilder();
             BigDecimal balance = CorporateTimeService.instance().getYearlyVacationBalance(emp, date);
+            notes.append("System adding Carry Forword Vacation from ").append(emp.getFirstName()).append(" ").append(emp.getLastName()).append("2014 Starting Balance: ").append(balance);
+            if (DateUtils.differenceInDays(emp.getStartDate(), new Date()) < 365 && balance.compareTo(BigDecimal.ZERO) > 0) {
+                notes.append("new employee so balance will be prorated ");
+                //if less than one year prorate carry forword
+                balance = DateUtils.getProratedHours(balance, new BigDecimal("365"), new BigDecimal(DateUtils.differenceInDays(emp.getStartDate(), new Date())));
+            }
             CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (balance.compareTo(new BigDecimal("40.00")) >= 0) {
                 ptoAccruedTS.setHours(new BigDecimal("40.00"));
             } else {
                 ptoAccruedTS.setHours(balance);
             }
+            notes.append(" final carry forword hours ").append(ptoAccruedTS.getHours());
+            notes.append("\n");
             dao.getEntityManager().merge(ptoAccruedTS);
-            dao.addTimeSheetUpdateComment("System adding Carry Forword Vacation from 2014: ", balance, ptoAccruedTS);
+            dao.addTimeSheetUpdateComment(notes.toString(), balance, ptoAccruedTS);
         }
     }
 
