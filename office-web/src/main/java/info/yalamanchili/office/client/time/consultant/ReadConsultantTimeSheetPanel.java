@@ -16,6 +16,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectConsultantEmployeeWidget;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
@@ -49,8 +50,13 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        populateComments();
                     }
                 });
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.time.ConsultantTimeSheet"));
     }
 
     @Override

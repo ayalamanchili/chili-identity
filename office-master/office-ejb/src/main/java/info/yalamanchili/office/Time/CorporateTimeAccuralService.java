@@ -13,6 +13,7 @@ import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
@@ -125,9 +126,9 @@ public class CorporateTimeAccuralService {
             }
             StringBuilder notes = new StringBuilder();
             BigDecimal balance = CorporateTimeService.instance().getYearlyVacationBalance(emp, date);
-            notes.append("System adding Carry Forword Vacation from ").append(emp.getFirstName()).append(" ").append(emp.getLastName()).append("2014 Starting Balance: ").append(balance);
+            notes.append("System adding Carry Forword Vacation from ").append("2014 Starting Balance: ").append(balance);
             if (DateUtils.differenceInDays(emp.getStartDate(), new Date()) < 365 && balance.compareTo(BigDecimal.ZERO) > 0) {
-                notes.append("new employee so balance will be prorated ");
+                notes.append(" new employee so balance will be prorated ");
                 //if less than one year prorate carry forword
                 balance = DateUtils.getProratedHours(balance, new BigDecimal("365"), new BigDecimal(DateUtils.differenceInDays(emp.getStartDate(), new Date())));
             }
@@ -137,10 +138,10 @@ public class CorporateTimeAccuralService {
             } else {
                 ptoAccruedTS.setHours(balance);
             }
-            notes.append(" final carry forword hours ").append(ptoAccruedTS.getHours());
+            notes.append(" final carry forword vacation hours ").append(ptoAccruedTS.getHours());
             notes.append("\n");
             dao.getEntityManager().merge(ptoAccruedTS);
-            dao.addTimeSheetUpdateComment(notes.toString(), balance, ptoAccruedTS);
+            CommentDao.instance().addComment(notes.toString(), ptoAccruedTS);
         }
     }
 

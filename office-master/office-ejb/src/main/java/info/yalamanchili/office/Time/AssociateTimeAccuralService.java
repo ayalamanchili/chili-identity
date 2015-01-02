@@ -10,10 +10,8 @@ package info.yalamanchili.office.Time;
 import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
@@ -112,15 +110,24 @@ public class AssociateTimeAccuralService {
             if (emp.getStartDate() == null) {
                 continue;
             }
-            BigDecimal balance = CorporateTimeService.instance().getYearlyVacationBalance(emp, date);
+            StringBuilder notes = new StringBuilder();
+            BigDecimal balance = ConsultantTimeService.instance().getYearlyVacationBalance(emp, date);
+            notes.append("System adding Carry Forword Vacation from ").append("2014 Starting Balance: ").append(balance);
+            if (DateUtils.differenceInDays(emp.getStartDate(), new Date()) < 365 && balance.compareTo(BigDecimal.ZERO) > 0) {
+                notes.append(" new employee so balance will be prorated ");
+                //if less than one year prorate carry forword
+                balance = DateUtils.getProratedHours(balance, new BigDecimal("365"), new BigDecimal(DateUtils.differenceInDays(emp.getStartDate(), new Date())));
+            }
             ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (balance.compareTo(new BigDecimal("40.00")) >= 0) {
                 ptoAccruedTS.setHours(new BigDecimal("40.00"));
             } else {
                 ptoAccruedTS.setHours(balance);
             }
+            notes.append(" final carry forword hours ").append(ptoAccruedTS.getHours());
+            notes.append("\n");
             dao.getEntityManager().merge(ptoAccruedTS);
-            dao.addTimeSheetUpdateComment("System adding Carry Forword Vacation from 2014: ", balance, ptoAccruedTS);
+            CommentDao.instance().addComment(notes.toString(), ptoAccruedTS);
         }
 
     }

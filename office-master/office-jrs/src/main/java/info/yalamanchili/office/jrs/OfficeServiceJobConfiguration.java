@@ -41,6 +41,10 @@ public class OfficeServiceJobConfiguration {
     @ManagedOperation
     public void convert2014CarryFwdHours() throws Exception {
         CorporateTimeAccuralService.instance().convertCarryForwardToPTO();
+    }
+
+    @ManagedOperation
+    public void convert2014AssociateCarryFwdHours() throws Exception {
         AssociateTimeAccuralService.instance().convertCarryForwardToPTO();
     }
 
