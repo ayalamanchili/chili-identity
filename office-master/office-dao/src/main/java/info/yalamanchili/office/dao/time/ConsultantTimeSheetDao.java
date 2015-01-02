@@ -223,8 +223,13 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
             ts.setEmployee(emp);
             ts.setCategory(TimeSheetCategory.PTO_ACCRUED);
             ts.setCreatedTimeStamp(new Date());
-            ts.setStartDate(emp.getStartDate());
-            ts.setEndDate(DateUtils.getNextYear(emp.getStartDate(), 100));
+            if (emp.getStartDate() == null) {
+                ts.setStartDate(new Date());
+                ts.setEndDate(new Date());
+            } else {
+                ts.setStartDate(emp.getStartDate());
+                ts.setEndDate(DateUtils.getNextYear(emp.getStartDate(), 100));
+            }
             ts.setHours(BigDecimal.ZERO);
             ts.setStatus(TimeSheetStatus.Approved);
             return getEntityManager().merge(ts);
