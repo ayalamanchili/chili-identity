@@ -15,10 +15,10 @@
         </activatedProfiles>
     </action>
     <action>
-        <actionName>CUSTOM-tomcat6:run-war -Pprod</actionName>
-        <displayName>tomcat6:run-war -Pprod</displayName>
+        <actionName>CUSTOM-tomcat7:run-war -Pprod</actionName>
+        <displayName>tomcat7:run-war -Pprod</displayName>
         <goals>
-            <goal>tomcat6:run-war</goal>
+            <goal>tomcat7:run-war</goal>
             
         </goals>
         <activatedProfiles>
@@ -26,10 +26,10 @@
             </activatedProfiles>
     </action>
     <action>
-        <actionName>CUSTOM-tomcat6:run-war</actionName>
-        <displayName>tomcat6:run-war</displayName>
+        <actionName>CUSTOM-tomcat7:run-war</actionName>
+        <displayName>tomcat7:run-war</displayName>
         <goals>
-            <goal>tomcat6:run-war</goal>
+            <goal>tomcat7:run-war</goal>
         </goals>
         <properties>
                 <Env.MAVEN_OPTS>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n</Env.MAVEN_OPTS>
@@ -48,11 +48,11 @@
         </properties>
     </action>
     <action>
-        <actionName>CUSTOM-clean tomcat6:run-war</actionName>
-        <displayName>clean tomcat6:run-war</displayName>
+        <actionName>CUSTOM-clean tomcat7:run-war</actionName>
+        <displayName>clean tomcat7:run-war</displayName>
         <goals>
             <goal>clean</goal>
-            <goal>tomcat6:run-war</goal>
+            <goal>tomcat7:run-war</goal>
                 
         </goals>
         <properties>

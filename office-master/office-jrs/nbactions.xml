@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
     <action>
-        <actionName>CUSTOM-mvn tomcat6:run</actionName>
-        <displayName>mvn tomcat6:run</displayName>
+        <actionName>CUSTOM-mvn tomcat7:run</actionName>
+        <displayName>mvn tomcat7:run</displayName>
         <goals>
-            <goal>tomcat6:run</goal>
+            <goal>tomcat7:run</goal>
         </goals>
         <properties>            
             <Env.MAVEN_OPTS>-XX:MaxPermSize=256m -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n</Env.MAVEN_OPTS>

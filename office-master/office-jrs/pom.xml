@@ -153,8 +153,8 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat6-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
                 <configuration>
                     <path>/office</path>
                     <port>9080</port>
@@ -164,21 +164,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.0.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.0</version>
-                <configuration>
-                    <!-- Container configuration -->
-                    <container>
-                        <containerId>tomcat6x</containerId>
-                    </container>
-                    <configuration>
-                        <type>existing</type>
-                        <home>${env.CATALINA_HOME}</home>
-                    </configuration>
-                </configuration>
             </plugin>
         </plugins>
     </build>
