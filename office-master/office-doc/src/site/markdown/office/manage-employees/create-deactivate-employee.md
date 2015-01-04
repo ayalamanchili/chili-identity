@@ -33,14 +33,14 @@ Employee Creation
 
 Create Employee
 ---------------
-![alt text](../images/empcreate.png "Create Employee")
+![alt text](../../images/manage-employees/empcreate.png "Create Employee")
 
 Deactivate Employee 
 ---------------
-![alt text](../images/empdeactivation.png "Employee Deactivation")
+![alt text](../../images/manage-employees/empdeactivation.png "Employee Deactivation")
 
 Delete Employee 
 ---------------
-![alt text](../images/empdelete.png "Employee Delete")
+![alt text](../../images/manage-employees/empdelete.png "Employee Delete")
 
 

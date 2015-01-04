@@ -22,12 +22,13 @@
             <item name="Introduction" href="/office/index.html"/>
             <item name="Social" href="/office/social.html"/>
             <item name="Manage Employees" href="office/my-office.html" collapse="true">
-                <item name="Create/Delete/Deactivate Employee" href="/office/employee.html"/>
-                <item name="Manage Client information" href="/office/bpm/new-client-info-process.html" collapse="true">
+                <item name="Create/Delete/Deactivate Employee" href="/office/manage-employees/create-deactivate-employee.html"/>
+                <item name="Employee Documents" href="/office/manage-employees/manage-employee-documents.html"/>
+                <item name="Employee Information" href="/office/manage-employees/update-employee-info.html"/>
+                <item name="Company Contacts" href="/office/manage-employees/manage-company-contacts.html"/>
+                <item name="Client information" href="/office/bpm/new-client-info-process.html" collapse="true">
                     <item name="Update Billrate" href="/office/updatebillingrate.html"/>
                 </item>
-                <item name="Employee Documents" href="/office/documetns.html"/>
-                <item name="Manage Employee Information" href="/office/manageEmpinfo.html"/>
             </item>
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Manage Profle" href="office/profile/profile.html"/>

@@ -9,12 +9,12 @@ Employee Documents
 ----
 (Navigation : My Office >>> Employees >>> View/Update Employee>>> Documents)
 
-![alt text](../images/add-document-profile.png "Employee Documents")
+![alt text](../../images/manage-employees/add-document-profile.png "Employee Documents")
 Create Document
 ----
 (Navigation : My Office >>> Employees >>> View/Update Employee>>> Documents>>> Add Documents>>>)
 
-![alt text](../images/create-document-profile.png "Employee Documents")
+![alt text](../../images/manage-employees/create-document-profile.png "Employee Documents")
 View/Download File
 ----
-![alt text](../images/document-read-profile.png "Employee Documents")
+![alt text](../../images/manage-employees/document-read-profile.png "Employee Documents")

@@ -6,8 +6,8 @@ Manage Employee Information
 
 How to search information.
 ----
-![alt text](../images/update-profile-info-emp.png "Update Profile")
+![alt text](../../images/manage-employees/update-profile-info-emp.png "Update Profile")
 
 How to update information.
 ----
-![alt text](../images/search-profile-emp-info.png "Update Profile")
+![alt text](../../images/manage-employees/search-profile-emp-info.png "Update Profile")
