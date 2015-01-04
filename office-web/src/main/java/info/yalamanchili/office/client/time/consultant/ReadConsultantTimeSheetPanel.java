@@ -111,6 +111,6 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
 
     @Override
     protected String getAuditUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.time.CorporateTimeSheet" + "/" + getEntityId();
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.time.ConsultantTimeSheet" + "/" + getEntityId();
     }
 }

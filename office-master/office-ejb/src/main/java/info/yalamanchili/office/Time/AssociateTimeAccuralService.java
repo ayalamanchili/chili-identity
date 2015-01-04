@@ -102,36 +102,6 @@ public class AssociateTimeAccuralService {
 
     }
 
-//TODOtemp method needed only once 
-    public void convertCarryForwardToPTO() throws ParseException {
-        ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
-        Date date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse("2014");
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Employee")) {
-            if (emp.getStartDate() == null) {
-                continue;
-            }
-            StringBuilder notes = new StringBuilder();
-            BigDecimal balance = ConsultantTimeService.instance().getYearlyVacationBalance(emp, date);
-            notes.append("System adding Carry Forword Vacation from ").append("2014 Starting Balance: ").append(balance);
-            if (DateUtils.differenceInDays(emp.getStartDate(), new Date()) < 365 && balance.compareTo(BigDecimal.ZERO) > 0) {
-                notes.append(" new employee so balance will be prorated ");
-                //if less than one year prorate carry forword
-                balance = DateUtils.getProratedHours(balance, new BigDecimal("365"), new BigDecimal(DateUtils.differenceInDays(emp.getStartDate(), new Date())));
-            }
-            ConsultantTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
-            if (balance.compareTo(new BigDecimal("40.00")) >= 0) {
-                ptoAccruedTS.setHours(new BigDecimal("40.00"));
-            } else {
-                ptoAccruedTS.setHours(balance);
-            }
-            notes.append(" final carry forword hours ").append(ptoAccruedTS.getHours());
-            notes.append("\n");
-            dao.getEntityManager().merge(ptoAccruedTS);
-            CommentDao.instance().addComment(notes.toString(), ptoAccruedTS);
-        }
-
-    }
-
     public static AssociateTimeAccuralService instance() {
         return SpringContext.getBean(AssociateTimeAccuralService.class);
     }

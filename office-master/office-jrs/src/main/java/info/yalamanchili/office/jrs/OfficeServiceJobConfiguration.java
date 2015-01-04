@@ -37,17 +37,6 @@ public class OfficeServiceJobConfiguration {
         AssociateTimeAccuralService.instance().revertRecentPTOAccruedChanges();
     }
 
-//TEMP
-    @ManagedOperation
-    public void convert2014CarryFwdHours() throws Exception {
-        CorporateTimeAccuralService.instance().convertCarryForwardToPTO();
-    }
-
-    @ManagedOperation
-    public void convert2014AssociateCarryFwdHours() throws Exception {
-        AssociateTimeAccuralService.instance().convertCarryForwardToPTO();
-    }
-
     @ManagedOperation
     public void syncPerformanceEvaluationQuestions() {
         PerformanceEvaluationQuestionsFactory.instance().syncQuestions();

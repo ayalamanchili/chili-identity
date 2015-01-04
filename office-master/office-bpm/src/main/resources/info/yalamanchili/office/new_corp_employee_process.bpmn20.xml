@@ -19,16 +19,8 @@
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
                 New Employee Created.
-                Please Add "Reports To" Company Contact who will be resposible for approving leave requests
-                Please create Future Time Sheets For New Corporate Employee with pending status and future start date and end of year as end date.
-                Example:  Ex :Add New Corporate Employee Time Sheets
-                For ex:  David  Johnson starts as on April 28, 2014 
-                one future timesheet for PTO after 2 months of probation ie start date of June 28, 2014
-                one future timesheet for Vacation after 6 months of probation ie start date of Oct 28, 2014
-                make sure the status is pending rather than Approved.
-                Hours should be prorated accordingly
-                once the start date of the timesheet passes the status will be changed to 
-                approved by the system after when the employee can view them as available in summary so they can apply  
+                Please Add "Reports To" Company Contact who will be resposible for approving leave requests and other approvals.
+                Instructions: https://apps.sstech.us/site/office/manage-employees/manage-company-contacts.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />

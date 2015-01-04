@@ -8,19 +8,16 @@
  */
 package info.yalamanchili.office.dao.time;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.dao.CRUDDao;
-import info.chili.jpa.QueryUtils;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
@@ -33,7 +30,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
@@ -59,46 +55,10 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
 
     @Override
     public CorporateTimeSheet save(CorporateTimeSheet entity) {
-        if (entity.getCategory().equals(TimeSheetCategory.PTO_ACCRUED) && QueryUtils.findEntity(getEntityManager(), CorporateTimeSheet.class, "category", TimeSheetCategory.PTO_ACCRUED.name()) != null) {
+        if (entity.getCategory().equals(TimeSheetCategory.PTO_ACCRUED) && entity.getId() == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.have.morethanone.pto-accrued", "Cannot have more than one PTO Accrued Timesheet");
         }
         return super.save(entity);
-    }
-//TODO remove
-
-    public void saveTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
-        if (findTimeSheet(emp, category, hours, startDate, endDate) == null) {
-            CorporateTimeSheet ts = new CorporateTimeSheet();
-            ts.setEmployee(emp);
-            ts.setCategory(category);
-            ts.setHours(hours);
-            ts.setStatus(TimeSheetStatus.Approved);
-            ts.setStartDate(startDate);
-            ts.setEndDate(endDate);
-            super.save(ts);
-        }
-    }
-//TODO remove
-
-    public CorporateTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
-        StringBuilder queryStr = new StringBuilder();
-        queryStr.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where");
-        queryStr.append(" category=:categoryParam");
-        queryStr.append(" and startDate=:startDateParam");
-        queryStr.append(" and endDate=:endDateParam");
-        queryStr.append(" and hours=:hoursParam");
-        queryStr.append(" and employee=:empParam");
-        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery(queryStr.toString(), CorporateTimeSheet.class);
-        query.setParameter("categoryParam", category);
-        query.setParameter("startDateParam", startDate, TemporalType.DATE);
-        query.setParameter("endDateParam", endDate, TemporalType.DATE);
-        query.setParameter("hoursParam", hours);
-        query.setParameter("empParam", emp);
-        if (query.getResultList().size() > 0) {
-            return query.getResultList().get(0);
-        } else {
-            return null;
-        }
     }
 
     public Long getTimeSheetsSizeForEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
@@ -188,13 +148,11 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public CorporateTimeSheet getPTOAccruedTimeSheet(Employee emp) {
-        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam", CorporateTimeSheet.class);
-        query.setParameter("categoryParam", TimeSheetCategory.PTO_ACCRUED);
-        query.setParameter("employeeParam", emp);
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            CorporateTimeSheet ts = new CorporateTimeSheet();
+        CorporateTimeSheet ts = queryPTOAccruedTimeSheet(emp);
+        if (ts != null) {
+            return ts;
+        } else {
+            ts = new CorporateTimeSheet();
             ts.setEmployee(emp);
             ts.setCategory(TimeSheetCategory.PTO_ACCRUED);
             ts.setCreatedTimeStamp(new Date());
@@ -206,10 +164,21 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
     }
 
+    protected CorporateTimeSheet queryPTOAccruedTimeSheet(Employee emp) {
+        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category =:categoryParam", CorporateTimeSheet.class);
+        query.setParameter("categoryParam", TimeSheetCategory.PTO_ACCRUED);
+        query.setParameter("employeeParam", emp);
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void delete(Long id) {
         CorporateTimeSheet ts = findById(id);
-        if (ts.getCategory().equals(TimeSheetCategory.PTO_ACCRUED) && !OfficeSecurityService.instance().hasRole(OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
+        if (ts.getCategory().equals(TimeSheetCategory.PTO_ACCRUED)) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.delete.pto_accrued.timesheet", "Cannot delete PTO Accrued timesheet ");
         } else {
             delete(ts);
