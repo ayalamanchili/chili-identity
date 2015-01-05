@@ -61,7 +61,7 @@ public class EventInterceptor {
             Event event = new Event();
             event.setEvenTimeStamp(new Date());
             event.setUser(officeSecurityService.getCurrentUserName());
-            event.setName(pjp.getSignature().toLongString());
+            event.setName(pjp.getSignature().toShortString());
             event.setUserAgentInfo(request.getHeader("User-Agent-X"));
             event.setInput(describeInput(pjp));
             output = pjp.proceed();

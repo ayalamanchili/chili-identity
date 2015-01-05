@@ -24,29 +24,19 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadAllEventPanel extends CRUDReadAllComposite {
+public class ReadAllEventsPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllEventPanel.class.getName());
-    public static ReadAllEventPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllEventsPanel.class.getName());
+    public static ReadAllEventsPanel instance;
 
-    public ReadAllEventPanel() {
+    public ReadAllEventsPanel() {
         instance = this;
         initTable("Event", OfficeWelcome.constants);
-    }
-
-    public ReadAllEventPanel(String parentId) {
-        instance = this;
-        this.parentId = parentId;
-        initTable("Event", OfficeWelcome.constants);
-    }
-
-    public ReadAllEventPanel(JSONArray array) {
-        instance = this;
-        initTable("Event", array, OfficeWelcome.constants);
     }
 
     @Override
     public void viewClicked(String entityId) {
+        logger.info("asdf" + entityId);
         TabPanel.instance().homePanel.entityPanel.clear();
         TabPanel.instance().homePanel.entityPanel.add(new ReadEventPanel(getEntity(entityId)));
     }
@@ -55,11 +45,11 @@ public class ReadAllEventPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -74,12 +64,12 @@ public class ReadAllEventPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllEventURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info("rrr:" + result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info("rrr:" + result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -96,14 +86,19 @@ public class ReadAllEventPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 1, JSONUtils.toString(entity, "user"));
-            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evenTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_LONG));
+            table.setText(i, 2, JSONUtils.toString(entity, "user"));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "evenTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_LONG));
         }
     }
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, getEnitityIDAttribute()));
+    }
+
+    @Override
+    protected String getEnitityIDAttribute() {
+        return "_id";
     }
 
     private String getDeleteURL(String entityId) {

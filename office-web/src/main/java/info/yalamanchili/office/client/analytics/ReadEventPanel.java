@@ -43,18 +43,18 @@ public class ReadEventPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("name", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("user", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("evenTimeStamp", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("input", entity, DataType.TEXT_AREA_FIELD);
@@ -71,10 +71,10 @@ public class ReadEventPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("name", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("name", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("user", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("evenTimeStamp", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("input", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("input", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("output", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
