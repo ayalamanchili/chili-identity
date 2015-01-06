@@ -55,6 +55,7 @@ public class ReadEmployeePanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("ddd" + entity);
+        assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -88,6 +89,7 @@ public class ReadEmployeePanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employeeType", employeeSelectWidget);
+        addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("firstName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("middleInitial", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);

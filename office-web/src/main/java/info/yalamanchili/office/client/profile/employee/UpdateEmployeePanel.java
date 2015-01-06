@@ -40,6 +40,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("hoursPerWeek", entity);
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
@@ -82,6 +83,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -113,6 +115,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void addWidgets() {
         // same here update them
         addDropDown("employeeType", employeeSelectWidget);
+        addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);

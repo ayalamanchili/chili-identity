@@ -52,8 +52,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-        })
+    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+})
 @Indexed
 @XmlRootElement
 @Entity
@@ -75,6 +75,7 @@ public class Employee extends Contact {
     protected String jobTitle;
     @Enumerated(EnumType.STRING)
     protected Branch branch;
+    protected Integer hoursPerWeek;
 
     public Branch getBranch() {
         return branch;
@@ -406,5 +407,19 @@ public class Employee extends Contact {
     @Override
     public String toString() {
         return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + '}';
+    }
+
+    /**
+     * @return the hoursPerWeek
+     */
+    public Integer getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    /**
+     * @param hoursPerWeek the hoursPerWeek to set
+     */
+    public void setHoursPerWeek(Integer hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
     }
 }
