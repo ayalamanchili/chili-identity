@@ -27,6 +27,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -75,6 +77,8 @@ public class Employee extends Contact {
     protected String jobTitle;
     @Enumerated(EnumType.STRING)
     protected Branch branch;
+    @Max(40)
+    @Min(0)    
     protected Integer hoursPerWeek;
 
     public Branch getBranch() {
