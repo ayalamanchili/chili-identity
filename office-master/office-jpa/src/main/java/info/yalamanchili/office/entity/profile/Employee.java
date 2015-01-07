@@ -54,8 +54,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-        })
+    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+})
 @Indexed
 @XmlRootElement
 @Entity
@@ -86,6 +86,7 @@ public class Employee extends Contact {
     /**
      * hours per week used to prorate monthly leave hours defaults to 40 hours
      */
+    @NotNull(message = "{hoursPerWeek.not.empty.msg}")
     @Max(40)
     @Min(0)
     protected Integer hoursPerWeek;
@@ -403,6 +404,7 @@ public class Employee extends Contact {
     public void setHoursPerWeek(Integer hoursPerWeek) {
         this.hoursPerWeek = hoursPerWeek;
     }
+
     @Transient
     public boolean isActive() {
         if (this.getUser() != null && !this.getUser().isEnabled()) {
@@ -434,5 +436,4 @@ public class Employee extends Contact {
     public String toString() {
         return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + '}';
     }
-
 }

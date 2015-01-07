@@ -50,5 +50,52 @@ public class TimeAccuralConstants {
             return DateUtils.getProratedHours(lessThanOneYearHoursAccuralMax, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
         }
     }
-    //TODO add similar remaining methods
+
+    public static BigDecimal twoToFourYearsHoursAccural(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return twoToFourYearsHoursAccural;
+        } else {
+            return DateUtils.getProratedHours(twoToFourYearsHoursAccural, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
+
+    public static BigDecimal twoToFourYearsHoursAccuralMax(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return twoToFourYearsHoursAccuralMax;
+        } else {
+            return DateUtils.getProratedHours(twoToFourYearsHoursAccuralMax, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
+
+    public static BigDecimal fiveToTenYearsHoursAccural(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return fiveToTenYearsHoursAccural;
+        } else {
+            return DateUtils.getProratedHours(fiveToTenYearsHoursAccural, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
+
+    public static BigDecimal fiveToTenYearsHoursAccuralMax(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return fiveToTenYearsHoursAccuralMax;
+        } else {
+            return DateUtils.getProratedHours(fiveToTenYearsHoursAccuralMax, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
+
+    public static BigDecimal moreThanTenYearsHoursAccural(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return moreThanTenYearsHoursAccural;
+        } else {
+            return DateUtils.getProratedHours(moreThanTenYearsHoursAccural, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
+
+    public static BigDecimal moreThanTenYearsHoursAccuralMax(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return moreThanTenYearsHoursAccuralMax;
+        } else {
+            return DateUtils.getProratedHours(moreThanTenYearsHoursAccuralMax, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
 }

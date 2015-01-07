@@ -23,7 +23,7 @@ import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
 
 public class UpdateEmployeePanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateEmployeePanel.class.getName());
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
@@ -32,15 +32,15 @@ public class UpdateEmployeePanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
-    
+
     public static Object instance() {
         return null;
     }
-    
+
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("firstName", entity);
@@ -48,11 +48,13 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("dateOfBirth", entity);
         assignEntityValueFromField("sex", entity);
-        assignEntityValueFromField("startDate", entity);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            assignEntityValueFromField("startDate", entity);
+        }
         assignEntityValueFromField("jobTitle", entity);
         assignEntityValueFromField("branch", entity);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
-        assignEntityValueFromField("hoursPerWeek", entity);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            assignEntityValueFromField("hoursPerWeek", entity);
         }
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", entity);
@@ -69,24 +71,24 @@ public class UpdateEmployeePanel extends UpdateComposite {
         logger.info("aaaaaaaaaa" + entity.toString());
         return entity;
     }
-    
+
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
-                    
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadImage(JSONUtils.toString(entity, "id"));
-                    }
-                });
-        
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+
+            @Override
+            public void onSuccess(String arg0) {
+                uploadImage(JSONUtils.toString(entity, "id"));
+            }
+        });
+
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
@@ -94,31 +96,33 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
+        }
         if (fields.containsKey("employeeType")) {
             assignFieldValueFromEntity("employeeType", entity, null);
         }
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
-        assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         }
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
         //TODO add image panel for employee image
     }
-    
+
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void addWidgets() {
         // same here update them
@@ -128,11 +132,13 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("sex", false, true, Sex.names(), Alignment.HORIZONTAL);
-        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        }
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
-        addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         }
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -140,21 +146,21 @@ public class UpdateEmployeePanel extends UpdateComposite {
         entityFieldsPanel.add(empImageUploadPanel);
         alignFields();
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/save";
     }
-    
+
     protected void uploadImage(String entityId) {
         empImageUploadPanel.upload(entityId.trim());
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Information");
