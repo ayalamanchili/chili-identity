@@ -17,6 +17,7 @@ import info.chili.gwt.fields.FileuploadField;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
@@ -42,7 +43,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
     
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("hoursPerWeek", entity);
         assignEntityValueFromField("firstName", entity);
         assignEntityValueFromField("middleInitial", entity);
         assignEntityValueFromField("lastName", entity);
@@ -51,6 +51,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("jobTitle", entity);
         assignEntityValueFromField("branch", entity);
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR)) {
+        assignEntityValueFromField("hoursPerWeek", entity);
+        }
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", entity);
         }
@@ -86,7 +89,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
     
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -98,6 +100,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR)) {
+        assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
+        }
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
@@ -118,7 +123,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void addWidgets() {
         // same here update them
         addDropDown("employeeType", employeeSelectWidget);
-        addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -127,6 +131,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR)) {
+        addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        }
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
