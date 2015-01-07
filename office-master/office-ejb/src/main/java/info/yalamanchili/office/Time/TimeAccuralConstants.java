@@ -8,26 +8,47 @@
  */
 package info.yalamanchili.office.Time;
 
+import info.chili.commons.DateUtils;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.math.BigDecimal;
 
 /**
  *
  * @author anuyalamanchili
  */
-public interface TimeAccuralConstants {
+//TODO externalize this?
+public class TimeAccuralConstants {
 
     /**
      * monthly hours accrual
      */
-    BigDecimal lessThanOneYearHoursAccural = new BigDecimal("6.667");
-    BigDecimal twoToFourYearsHoursAccural = new BigDecimal("12.00");
-    BigDecimal fiveToTenYearsHoursAccural = new BigDecimal("14.667");
-    BigDecimal moreThanTenYearsHoursAccural = new BigDecimal("16.667");
+    public static final BigDecimal lessThanOneYearHoursAccural = new BigDecimal("6.667");
+    public static final BigDecimal twoToFourYearsHoursAccural = new BigDecimal("12.00");
+    public static final BigDecimal fiveToTenYearsHoursAccural = new BigDecimal("14.667");
+    public static final BigDecimal moreThanTenYearsHoursAccural = new BigDecimal("16.667");
     /**
      * max hours accrual
      */
-    BigDecimal lessThanOneYearHoursAccuralMax = new BigDecimal("80.00");
-    BigDecimal twoToFourYearsHoursAccuralMax = new BigDecimal("144.00");
-    BigDecimal fiveToTenYearsHoursAccuralMax = new BigDecimal("176.00");
-    BigDecimal moreThanTenYearsHoursAccuralMax = new BigDecimal("200.00");
+    public static final BigDecimal lessThanOneYearHoursAccuralMax = new BigDecimal("80.00");
+    public static final BigDecimal twoToFourYearsHoursAccuralMax = new BigDecimal("144.00");
+    public static final BigDecimal fiveToTenYearsHoursAccuralMax = new BigDecimal("176.00");
+    public static final BigDecimal moreThanTenYearsHoursAccuralMax = new BigDecimal("200.00");
+
+    public static BigDecimal lessThanOneYearAccural(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return lessThanOneYearHoursAccural;
+        } else {
+            return DateUtils.getProratedHours(lessThanOneYearHoursAccural, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
+
+    //TODO add similar remaining methods
+    public static BigDecimal lessThanOneYearAccuralMax(Employee emp) {
+        if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
+            return lessThanOneYearHoursAccuralMax;
+        } else {
+            return DateUtils.getProratedHours(lessThanOneYearHoursAccuralMax, new BigDecimal("40"), new BigDecimal(emp.getHoursPerWeek()));
+        }
+    }
+    //TODO add similar remaining methods
 }
