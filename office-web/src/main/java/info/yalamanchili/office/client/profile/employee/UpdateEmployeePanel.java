@@ -19,9 +19,11 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
+import java.util.logging.Logger;
 
 public class UpdateEmployeePanel extends UpdateComposite {
-
+    
+    private static Logger logger = Logger.getLogger(UpdateEmployeePanel.class.getName());
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
@@ -29,15 +31,15 @@ public class UpdateEmployeePanel extends UpdateComposite {
             postUpdateSuccess(null);
         }
     };
-
+    
     public static Object instance() {
         return null;
     }
-
+    
     public UpdateEmployeePanel(JSONObject entity) {
         initUpdateComposite(entity, "Employee", OfficeWelcome.constants);
     }
-
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("hoursPerWeek", entity);
@@ -61,26 +63,27 @@ public class UpdateEmployeePanel extends UpdateComposite {
             employeeType.put("name", employeeType.get("value"));
             entity.put("employeeType", employeeType);
         }
+        logger.info("aaaaaaaaaa" + entity.toString());
         return entity;
     }
-
+    
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-
-            @Override
-            public void onSuccess(String arg0) {
-                uploadImage(JSONUtils.toString(entity, "id"));
-            }
-        });
-
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
+                    
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(JSONUtils.toString(entity, "id"));
+                    }
+                });
+        
     }
-
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
@@ -100,17 +103,17 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         //TODO add image panel for employee image
     }
-
+    
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected void addWidgets() {
         // same here update them
@@ -130,21 +133,21 @@ public class UpdateEmployeePanel extends UpdateComposite {
         entityFieldsPanel.add(empImageUploadPanel);
         alignFields();
     }
-
+    
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "employee/save";
     }
-
+    
     protected void uploadImage(String entityId) {
         empImageUploadPanel.upload(entityId.trim());
     }
-
+    
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Employee Information");

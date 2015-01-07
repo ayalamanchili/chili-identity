@@ -17,6 +17,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,6 +52,9 @@ public class EmployeeDto implements Serializable {
     @Enumerated(EnumType.STRING)
     @Field
     protected Branch branch;
+    @Max(40)
+    @Min(0)
+    protected Integer hoursPerWeek;
     protected String imageURL;
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
@@ -128,6 +133,14 @@ public class EmployeeDto implements Serializable {
 
     public void setBranch(Branch branch) {
         this.branch = branch;
+    }
+
+    public Integer getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(Integer hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
     }
 
     public String getImageURL() {

@@ -54,8 +54,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-})
+            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+        })
 @Indexed
 @XmlRootElement
 @Entity
@@ -74,11 +74,20 @@ public class Employee extends Contact {
     @Field
     @org.hibernate.annotations.Index(name = "EMPID")
     protected String employeeId;
+    /**
+     *
+     */
     protected String jobTitle;
+    /**
+     *
+     */
     @Enumerated(EnumType.STRING)
     protected Branch branch;
+    /**
+     * hours per week used to prorate monthly leave hours defaults to 40 hours
+     */
     @Max(40)
-    @Min(0)    
+    @Min(0)
     protected Integer hoursPerWeek;
 
     public Branch getBranch() {
@@ -381,6 +390,19 @@ public class Employee extends Contact {
         this.ssnHash = ssnHash;
     }
 
+    /**
+     * @return the hoursPerWeek
+     */
+    public Integer getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    /**
+     * @param hoursPerWeek the hoursPerWeek to set
+     */
+    public void setHoursPerWeek(Integer hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
     @Transient
     public boolean isActive() {
         if (this.getUser() != null && !this.getUser().isEnabled()) {
@@ -413,17 +435,4 @@ public class Employee extends Contact {
         return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + '}';
     }
 
-    /**
-     * @return the hoursPerWeek
-     */
-    public Integer getHoursPerWeek() {
-        return hoursPerWeek;
-    }
-
-    /**
-     * @param hoursPerWeek the hoursPerWeek to set
-     */
-    public void setHoursPerWeek(Integer hoursPerWeek) {
-        this.hoursPerWeek = hoursPerWeek;
-    }
 }
