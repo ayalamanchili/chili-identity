@@ -51,7 +51,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("jobTitle", entity);
         assignEntityValueFromField("branch", entity);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
         assignEntityValueFromField("hoursPerWeek", entity);
         }
         if (Auth.isAdmin()) {
@@ -100,7 +100,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
         assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         }
         if (Auth.isAdmin()) {
@@ -131,7 +131,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
         addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         }
         if (Auth.isAdmin()) {

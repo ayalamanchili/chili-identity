@@ -55,7 +55,6 @@ public class ReadEmployeePanel extends ReadComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         logger.info("ddd" + entity);
-        assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("firstName", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("middleInitial", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lastName", entity, DataType.STRING_FIELD);
@@ -67,6 +66,9 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
+        assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
+        }
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
@@ -89,7 +91,6 @@ public class ReadEmployeePanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addDropDown("employeeType", employeeSelectWidget);
-        addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         addField("firstName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("middleInitial", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -101,6 +102,9 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
+        addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);  
+        }
         if (Auth.isAdmin()) {
             addField("ssn", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
