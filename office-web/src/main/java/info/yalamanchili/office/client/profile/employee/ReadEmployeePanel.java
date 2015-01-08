@@ -42,13 +42,13 @@ public class ReadEmployeePanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("this is the response from the server" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("this is the response from the server" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
 
     }
 
@@ -66,9 +66,7 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
         assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
-        }
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
@@ -102,9 +100,7 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles( ROLE.ROLE_HR_ADMINSTRATION)) {
-        addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);  
-        }
+        addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         if (Auth.isAdmin()) {
             addField("ssn", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
@@ -115,7 +111,7 @@ public class ReadEmployeePanel extends ReadComposite {
     }
 
     protected boolean canViewDOBField() {
-        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
+        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
     }
 
     @Override

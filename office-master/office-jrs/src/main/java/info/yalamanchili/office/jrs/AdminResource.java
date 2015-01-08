@@ -73,6 +73,12 @@ public class AdminResource {
         return mapper.map(securityService.login(user), EmployeeLoginDto.class);
     }
 
+    @Path("/ping")
+    @GET
+    public void ping() {
+        
+    }
+
     @Path("/changepassword/{empId}")
     @PUT
     @Validate

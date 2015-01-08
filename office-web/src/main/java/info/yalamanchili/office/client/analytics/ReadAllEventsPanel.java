@@ -106,6 +106,6 @@ public class ReadAllEventsPanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllEventURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "chili/analytics/events";
+        return OfficeWelcome.constants.root_url() + "chili/analytics/events/" + start.toString() + "/" + limit.toString();
     }
 }

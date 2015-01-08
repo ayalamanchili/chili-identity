@@ -86,7 +86,6 @@ public class Employee extends Contact {
     /**
      * hours per week used to prorate monthly leave hours defaults to 40 hours
      */
-    @NotNull(message = "{hoursPerWeek.not.empty.msg}")
     @Max(40)
     @Min(0)
     protected Integer hoursPerWeek;
