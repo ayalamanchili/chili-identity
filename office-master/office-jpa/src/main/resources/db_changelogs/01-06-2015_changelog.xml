@@ -14,12 +14,12 @@
     <changeSet author="ayalamanchili" id="addEmployeeHoursPerWeek">
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="Employee">
+                   tableName="contact">
             <column name="hoursPerWeek" type="int"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"
-                   tableName="Employee_aud">
+                   tableName="contact_aud">
             <column name="hoursPerWeek" type="int"/>
         </addColumn>
     </changeSet>
