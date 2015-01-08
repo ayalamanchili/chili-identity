@@ -87,7 +87,7 @@ public class Employee extends Contact {
      * hours per week used to prorate monthly leave hours defaults to 40 hours
      */
     @Max(40)
-    @Min(0)
+    @Min(1)
     protected Integer hoursPerWeek;
 
     public Branch getBranch() {
