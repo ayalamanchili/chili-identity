@@ -61,19 +61,19 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("userName", DataType.STRING_FIELD);
+        addField("user", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
-        addField("eventaName", DataType.DATE_FIELD);
+        addField("name", DataType.DATE_FIELD);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("userName", entity);
+        assignEntityValueFromField("user", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("eventaName", entity);
+        assignEntityValueFromField("name", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -113,18 +113,18 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "analytics/search/" + searchText + "/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "chilli/analytics/search/" + searchText + "/" + start.toString() + "/"
                 + limit.toString());
 
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "analytics/search/" + start.toString() + "/"
+        return URL.encode(OfficeWelcome.constants.root_url() + "chilli/analytics/search/" + start.toString() + "/"
                 + limit.toString());
     }
 
     private String getnameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "analytics/dropdown/0/10000?column=id&column=name";
+        return OfficeWelcome.constants.root_url() + "chilli/analytics/dropdown/0/10000?column=id&column=name";
     }
 }
