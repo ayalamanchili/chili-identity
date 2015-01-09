@@ -25,7 +25,6 @@ public class AuditStackPanelWidget extends ALComposite implements ClickHandler {
     protected ScrollPanel panel = new ScrollPanel();
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink loginActivityL = new ClickableLink("Login Activity");
-    protected ClickableLink activityL = new ClickableLink("Activity");
 
     public AuditStackPanelWidget() {
         init(panel);
@@ -34,7 +33,7 @@ public class AuditStackPanelWidget extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         loginActivityL.addClickHandler(this);
-        activityL.addClickHandler(this);
+
     }
 
     @Override
@@ -44,7 +43,7 @@ public class AuditStackPanelWidget extends ALComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         mainPanel.add(loginActivityL);
-        mainPanel.add(activityL);
+
         panel.add(mainPanel);
     }
 
@@ -54,9 +53,6 @@ public class AuditStackPanelWidget extends ALComposite implements ClickHandler {
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllLoginActivityPanel());
         }
-        if (event.getSource().equals(activityL)) {
-            TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new ReadAllEventsPanel());
-        }
+
     }
 }
