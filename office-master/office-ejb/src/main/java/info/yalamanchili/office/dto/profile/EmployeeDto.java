@@ -53,7 +53,7 @@ public class EmployeeDto implements Serializable {
     @Field
     protected Branch branch;
     @Max(40)
-    @Min(0)
+    @Min(1)
     protected Integer hoursPerWeek;
     protected String imageURL;
     @NotNull(message = "{startDate.not.empty.msg}")

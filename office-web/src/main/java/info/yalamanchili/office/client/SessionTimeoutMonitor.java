@@ -18,8 +18,10 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 
 public class SessionTimeoutMonitor {
 
@@ -27,10 +29,12 @@ public class SessionTimeoutMonitor {
     private static SessionTimeoutMonitor instance = new SessionTimeoutMonitor();
     private SessionTimeoutTimer activityTimer;
     private HandlerRegistration activityHandlerRegistration;
+    //4 hours server is timeout is set to 300 mins 5 hours
+    private static final int TIMEOUT_IN_MINUTES = 240;
 
     private SessionTimeoutMonitor() {
         int total_timeout = maxSessionTimeoutSeconds();
-        int timeout = 120 * 60;
+        int timeout = TIMEOUT_IN_MINUTES * 60;
         if (timeout > total_timeout) {
             timeout = total_timeout / 2;
         }
@@ -48,8 +52,8 @@ public class SessionTimeoutMonitor {
             }
         };
         private long startTime = 0;
-        private int IDLE_SECONDS = 120 * 60;
-        private int TIMEOUT_SECONDS = 120 * 60;
+        private int IDLE_SECONDS = TIMEOUT_IN_MINUTES * 60;
+        private int TIMEOUT_SECONDS = TIMEOUT_IN_MINUTES * 60;
         private int reset_count = 0;
 
         public SessionTimeoutTimer(int idle, int timeout) {
@@ -59,7 +63,7 @@ public class SessionTimeoutMonitor {
 
         public void updateTimeRemaining() {
             long time_left = TIMEOUT_SECONDS - (System.currentTimeMillis() - startTime) / 1000;
-
+//            log.info("timeleft........" + time_left);
             if (time_left > 0) {
                 int mins = (int) (time_left / 60);
                 int secs = (int) (time_left % 60);
@@ -74,15 +78,35 @@ public class SessionTimeoutMonitor {
         }
 
         protected void onSessionTimeout() {
-            log.info("logged out");
-            HttpService.HttpServiceAsync.instance().logout(new ALAsyncCallback<Void>() {
-                @Override
-                public void onResponse(Void arg0) {
-                    Window.Location.reload();
-                }
-            });
+            if (Window.confirm("Your Session expired due to inactivity. Click OK to continue work.")) {
+                reset(true);
+                HttpService.HttpServiceAsync.instance().doGet(pingUrl(), OfficeWelcome.instance().getHeaders(), true,
+                        new AsyncCallback<String>() {
+                            @Override
+                            public void onSuccess(String arg0) {
+                                new ResponseStatusWidget().show("Session renued... Please continue");
+                            }
+
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                throw new UnsupportedOperationException("Failed to renew Session. Please make sure you copy paste any unsaved data to notepad and relogin");
+                            }
+                        });
+            } else {
+                HttpService.HttpServiceAsync.instance().logout(new ALAsyncCallback<Void>() {
+                    @Override
+                    public void onResponse(Void arg0) {
+                        Window.Location.reload();
+                    }
+                });
+            }
         }
 
+        private String pingUrl() {
+            return OfficeWelcome.constants.root_url() + "admin/ping";
+        }
+
+        @Override
         public void run() {
             startTime = System.currentTimeMillis();
             updateTimeRemaining();

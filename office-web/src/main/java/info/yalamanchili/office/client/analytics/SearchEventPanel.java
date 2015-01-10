@@ -26,12 +26,12 @@ public class SearchEventPanel extends SearchComposite {
     private static Logger logger = Logger.getLogger(SearchEventPanel.class.getName());
 
     public SearchEventPanel() {
-        init("Activity Search", "Activity", OfficeWelcome.constants);
+        init("Events Search", "Events", OfficeWelcome.constants);
     }
 
     @Override
     protected void populateSearchSuggestBox() {
-        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
@@ -42,7 +42,7 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
@@ -62,18 +62,26 @@ public class SearchEventPanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("user", DataType.STRING_FIELD);
+        addField("name", DataType.STRING_FIELD);
+        addField("type", DataType.STRING_FIELD);
+        addField("clientInfo", DataType.STRING_FIELD);
+        addField("input", DataType.STRING_FIELD);
+        addField("output", DataType.STRING_FIELD);
         addField("startDate", DataType.DATE_FIELD);
         addField("endDate", DataType.DATE_FIELD);
-        addField("name", DataType.DATE_FIELD);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("user", entity);
+        assignEntityValueFromField("name", entity);
+        assignEntityValueFromField("type", entity);
+        assignEntityValueFromField("clientInfo", entity);
+        assignEntityValueFromField("input", entity);
+        assignEntityValueFromField("output", entity);
         assignEntityValueFromField("startDate", entity);
         assignEntityValueFromField("endDate", entity);
-        assignEntityValueFromField("name", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -83,32 +91,31 @@ public class SearchEventPanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    processSearchResult(result);
-                }
-            });
-
-
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
         }
 
     }
 
     @Override
     protected void search(JSONObject entity) {
-        HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 10), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(getSearchURL(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
     protected void postSearchSuccess(JSONArray result) {
+        
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEventsPanel());
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEventsPanel(result));
     }
 
     @Override
@@ -118,13 +125,16 @@ public class SearchEventPanel extends SearchComposite {
 
     }
 
-    @Override
-    protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "chilli/analytics/search/" + start.toString() + "/"
-                + limit.toString());
+    protected String getSearchURL() {
+        return OfficeWelcome.constants.root_url() + "chili/analytics/events/search";
     }
 
-    private String getnameDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "chilli/analytics/dropdown/0/10000?column=id&column=name";
+    @Override
+    protected String getSearchURI(Integer start, Integer limit) {
+        return URL.encode(OfficeWelcome.constants.root_url() + "chilli/analytics/events/search");
+    }
+
+    private String getNameDropDownUrl() {
+        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=employeeId";
     }
 }

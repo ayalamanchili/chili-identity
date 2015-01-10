@@ -34,6 +34,11 @@ public class ReadAllEventsPanel extends CRUDReadAllComposite {
         initTable("Event", OfficeWelcome.constants);
     }
 
+    public ReadAllEventsPanel(JSONArray array) {
+        instance = this;
+        initTable("Event", array, OfficeWelcome.constants);
+    }
+
     @Override
     public void viewClicked(String entityId) {
         logger.info("asdf" + entityId);
