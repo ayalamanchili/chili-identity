@@ -11,6 +11,7 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
@@ -31,13 +32,7 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
-        HttpService.HttpServiceAsync.instance().doGet(getNameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                loadSearchSuggestions(values.values());
-            }
-        });
+
     }
 
     @Override
@@ -46,7 +41,8 @@ public class SearchEventPanel extends SearchComposite {
             @Override
             public void onResponse(String entityString) {
                 Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                loadSearchSuggestions(values.values());
+                SuggestBox sb = (SuggestBox) fields.get("user");
+                sb.loadData(values.values());
             }
         });
     }
@@ -88,15 +84,6 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
-        if (getSearchText() != null) {
-            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 10),
-                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            processSearchResult(result);
-                        }
-                    });
-        }
 
     }
 
@@ -113,7 +100,6 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected void postSearchSuccess(JSONArray result) {
-        
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllEventsPanel(result));
     }
@@ -136,5 +122,10 @@ public class SearchEventPanel extends SearchComposite {
 
     private String getNameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=employeeId";
+    }
+
+    @Override
+    protected boolean disableRegularSearch() {
+        return false;
     }
 }

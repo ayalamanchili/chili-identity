@@ -59,6 +59,7 @@ public class ReadEventPanel extends ReadComposite {
         assignFieldValueFromEntity("evenTimeStamp", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("input", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("output", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("userAgentInfo", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -76,6 +77,7 @@ public class ReadEventPanel extends ReadComposite {
         addField("evenTimeStamp", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("input", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("output", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("userAgentInfo", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 

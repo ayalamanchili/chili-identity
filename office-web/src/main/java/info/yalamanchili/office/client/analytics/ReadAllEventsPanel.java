@@ -42,8 +42,8 @@ public class ReadAllEventsPanel extends CRUDReadAllComposite {
     @Override
     public void viewClicked(String entityId) {
         logger.info("asdf" + entityId);
-        TabPanel.instance().homePanel.entityPanel.clear();
-        TabPanel.instance().homePanel.entityPanel.add(new ReadEventPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadEventPanel(getEntity(entityId)));
     }
 
     @Override

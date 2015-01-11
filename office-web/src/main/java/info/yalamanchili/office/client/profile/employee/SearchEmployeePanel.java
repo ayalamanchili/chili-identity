@@ -149,11 +149,11 @@ public class SearchEmployeePanel extends SearchComposite {
         if (getSearchText() != null) {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 200),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    processSearchResult(result);
-                }
-            });
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
         }
     }
 
@@ -161,11 +161,11 @@ public class SearchEmployeePanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 200), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override

@@ -13,6 +13,8 @@ import info.chili.analytics.service.EventsService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
@@ -55,9 +57,9 @@ public class EventInterceptor {
     }
 
     @Around("anyJRSMethod() && @annotation(path)")
-    public Object profile(ProceedingJoinPoint pjp, Path path) throws Throwable {
+    public Object logEvent(ProceedingJoinPoint pjp, Path path) throws Throwable {
         Object output;
-        if (officeServiceConfiguration.getEnableAnalytics()) {
+        if (officeServiceConfiguration.getEnableAnalytics() && !ignoreEvent(pjp)) {
             Event event = new Event();
             event.setEvenTimeStamp(new Date());
             event.setUser(officeSecurityService.getCurrentUserName());
@@ -71,6 +73,21 @@ public class EventInterceptor {
             output = pjp.proceed();
         }
         return output;
+    }
+
+    protected boolean ignoreEvent(ProceedingJoinPoint pjp) {
+        for (String str : ignoreMethods) {
+            if (pjp.getSignature().toShortString().toLowerCase().contains(str.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected static Set<String> ignoreMethods = new HashSet<String>();
+
+    static {
+        ignoreMethods.add("dropdown");
     }
 
     protected String describeOutput(ProceedingJoinPoint pjp, Object result) {
