@@ -57,11 +57,7 @@ public class ServiceInterceptor {
     @Transactional(readOnly = true)
     public Object process(ProceedingJoinPoint joinPoint, Validate validate) throws Throwable {
         Object result = null;
-        if (joinPoint.getSignature().toShortString().contains("login")) {
-            LoginSuccessListener.instance().logLogin(OfficeSecurityService.instance().getCurrentUserName());
-        } else {
-            validate(joinPoint);
-        }
+        validate(joinPoint);
         try {
             result = joinPoint.proceed();
         } catch (ServiceException se) {
