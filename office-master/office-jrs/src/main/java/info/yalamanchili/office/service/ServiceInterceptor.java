@@ -7,8 +7,6 @@ import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
-import info.yalamanchili.office.dao.security.LoginSuccessListener;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.MailUtils;
 
 import javax.validation.ConstraintViolation;
