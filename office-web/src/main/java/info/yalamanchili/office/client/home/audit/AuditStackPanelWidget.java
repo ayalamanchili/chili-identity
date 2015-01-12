@@ -13,8 +13,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
-import info.yalamanchili.office.client.analytics.ReadAllEventsPanel;
-import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -49,10 +47,5 @@ public class AuditStackPanelWidget extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(loginActivityL)) {
-            TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new ReadAllLoginActivityPanel());
-        }
-
     }
 }

@@ -14,7 +14,6 @@ import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.home.audit.AuditStackPanelWidget;
 import info.yalamanchili.office.client.home.message.MessageStackPanelWidget;
 import info.yalamanchili.office.client.home.tasks.TasksStackPanelWidget;
 import info.yalamanchili.office.client.home.todo.TODOStackPanelWidget;
@@ -34,7 +33,6 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
     MessageStackPanelWidget msgStackPanel = new MessageStackPanelWidget();
     MyReportsStackPanelWidget projectsStackPanel = new MyReportsStackPanelWidget();
     TODOStackPanelWidget todoStackPanel = new TODOStackPanelWidget();
-    AuditStackPanelWidget auditStackPanelWidget = new AuditStackPanelWidget();
 
     public HomeStackPanel() {
         init(panel);
@@ -57,9 +55,6 @@ public class HomeStackPanel extends ALComposite implements ClickHandler {
         panel.add(selfServStackPanel, "Self Service");
         panel.add(projectsStackPanel, "My Reports");
         panel.add(msgStackPanel, "Messages");
-        if (Auth.isCorporateEmployee()) {
-            panel.add(auditStackPanelWidget, "Audit");
-        }
         panel.add(todoStackPanel, "TODO's");
     }
 
