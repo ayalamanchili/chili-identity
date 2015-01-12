@@ -30,7 +30,7 @@ public class SearchEventPanel extends SearchComposite {
     private static Logger logger = Logger.getLogger(SearchEventPanel.class.getName());
 
     public SearchEventPanel() {
-        init("Events Search", "Events", OfficeWelcome.constants);
+        init("Events Search", "Event", OfficeWelcome.constants);
     }
 
     @Override
