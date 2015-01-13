@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.employee.perfeval;
 
-import info.yalamanchili.office.entity.employee.PerformanceEvaluationStage;
 import java.io.Serializable;
 
 /**
@@ -37,10 +36,6 @@ public class PerformanceEvaluationReportDto implements Serializable {
      *
      */
     protected Boolean managerReviewStarted;
-    /**
-     *
-     */
-    protected Boolean managerTaskPending;
 
     /**
      * @return the employee
@@ -112,13 +107,5 @@ public class PerformanceEvaluationReportDto implements Serializable {
 
     public void setManagerReviewStarted(Boolean managerReviewStarted) {
         this.managerReviewStarted = managerReviewStarted;
-    }
-
-    public Boolean getManagerTaskComplete() {
-        return managerTaskPending;
-    }
-
-    public void setManagerTaskComplete(Boolean managerTaskComplete) {
-        this.managerTaskPending = managerTaskComplete;
     }
 }
