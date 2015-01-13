@@ -12,6 +12,7 @@ import info.chili.analytics.model.Event;
 import info.chili.analytics.service.EventsService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.email.MailUtils;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -92,26 +93,38 @@ public class EventInterceptor {
 
     protected String describeOutput(ProceedingJoinPoint pjp, Object result) {
         StringBuilder sb = new StringBuilder();
-        if (logResultType(result) && result != null) {
-            if (isEntity(result)) {
-                sb.append(result.toString());
-            } else {
-                sb.append(ReflectionToStringBuilder.toString(result));
+        try {
+            if (logResultType(result) && result != null) {
+                if (isEntity(result)) {
+                    sb.append(result.toString());
+                } else {
+                    sb.append(ReflectionToStringBuilder.toString(result));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MailUtils.logExceptionDetials(e);
+            return sb.toString();
         }
         return sb.toString();
     }
 
     protected String describeInput(ProceedingJoinPoint pjp) {
         StringBuilder sb = new StringBuilder();
-        for (Object input : pjp.getArgs()) {
-            if (input != null) {
-                if (isEntity(input)) {
-                    sb.append(input.toString());
-                } else {
-                    sb.append(ReflectionToStringBuilder.toString(input));
+        try {
+            for (Object input : pjp.getArgs()) {
+                if (input != null) {
+                    if (isEntity(input)) {
+                        sb.append(input.toString());
+                    } else {
+                        sb.append(ReflectionToStringBuilder.toString(input));
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MailUtils.logExceptionDetials(e);
+            return sb.toString();
         }
         return sb.toString();
     }
