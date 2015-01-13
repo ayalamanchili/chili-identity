@@ -32,12 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 public class AuditResource {
 
-//    @GET
-//    @Path("/resent_loginactivity/{start}/{limit}")
-//    @PreAuthorize("hasRole('ROLE_CORPORATE_EMPLOYEE')")
-//    public LoginActivityTable getRecentLoginActivity(@PathParam("start") int start, @PathParam("limit") int limit) {
-//        return OfficeAuditService.instance().getLoginActivity(start, limit);
-//    }
 
     @GET
     @Path("/changes/{entityClass}/{id}")
