@@ -723,7 +723,7 @@ public class ClientInformation extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", endPreviousProject=" + endPreviousProject + ", client=" + client + ", vendor=" + vendor + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRates=" + billingRates + ", billingRateDuration=" + billingRateDuration + ", overTimeRateDuration=" + overTimeRateDuration + ", invoiceFrequency=" + invoiceFrequency + ", invoiceDeliveryMethod=" + invoiceDeliveryMethod + ", visaStatus=" + visaStatus + ", notes=" + notes + ", terminationNotice=" + terminationNotice + ", payRate1099=" + payRate1099 + ", overTimePayrate1099=" + overTimePayrate1099 + ", payTimeDuration1099=" + payTimeDuration1099 + ", paymentTerms1099=" + paymentTerms1099 + ", accountVerificationDocs=" + accountVerificationDocs + ", signedCopyOfWorkOrder=" + signedCopyOfWorkOrder + ", i9Filled=" + i9Filled + ", w4Filled=" + w4Filled + ", joiningReport=" + joiningReport + ", logisticsPreparation=" + logisticsPreparation + ", hrOrientation=" + hrOrientation + '}';
+        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRates=" + billingRates + ", billingRateDuration=" + billingRateDuration + ", overTimeRateDuration=" + overTimeRateDuration + ", visaStatus=" + visaStatus + ", notes=" + notes + '}';
     }
-    
+
 }
