@@ -22,6 +22,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.Consumes;
@@ -33,6 +34,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,60 +49,60 @@ import org.springframework.transaction.annotation.Transactional;
 @Consumes("application/json")
 @Transactional
 public class BPMResource {
-
+    
     @Autowired
     protected OfficeBPMTaskService officeBPMTaskService;
     @Autowired
     protected OfficeBPMFormService officeBPMFormService;
-
+    
     @GET
     @Path("/claimtask/{taskId}")
     public void claimTask(@PathParam("taskId") String taskId) {
         officeBPMTaskService.acquireTask(taskId, SecurityUtils.getCurrentUser());
     }
-
+    
     @GET
     @Path("/release-task/{taskId}")
     public void releaseTask(@PathParam("taskId") String taskId) {
         officeBPMTaskService.releaseTask(taskId);
     }
-
+    
     @PUT
     @Path("/task/assign/{taskId}/{employeeId}")
     public void assignTask(@PathParam("taskId") String taskId, @PathParam("employeeId") Long employeeId) {
         officeBPMTaskService.assignTask(taskId, employeeId);
     }
-
+    
     @GET
     @Path("/resolvetask/{taskId}")
     public void resolveTask(@PathParam("taskId") String taskId) {
         officeBPMTaskService.resolveTask(taskId);
     }
-
+    
     @PUT
     @Path("/completetask/{taskId}")
     public void completeTask(@PathParam("taskId") String taskId, Entries vars) {
         officeBPMTaskService.completeTask(taskId, vars.getEntries());
     }
-
+    
     @GET
     @Path("/deletetask/{taskId}")
     public void deleteTask(@PathParam("taskId") String taskId) {
         officeBPMTaskService.deleteTask(taskId);
     }
-
+    
     @PUT
     @Path("/submittask/{taskId}")
     public void submitTask(@PathParam("taskId") String taskId, Entries vars) {
         officeBPMFormService.submitTask(taskId, vars.getEntries());
     }
-
+    
     @GET
     @Path("/completetask/{taskId}")
     public void completeTask(@PathParam("taskId") String taskId) {
         officeBPMTaskService.completeTask(taskId, null);
     }
-
+    
     @GET
     @Path("/tasks/{start}/{limit}")
     public TaskTable getTasks(@QueryParam("assignee") String assignee, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -110,49 +112,59 @@ public class BPMResource {
             return officeBPMTaskService.getTasksForAsignee(assignee, start, limit);
         }
     }
-
+    
     @GET
     @Path("/alltasks/{start}/{limit}")
     public TaskTable getTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
         return officeBPMTaskService.getAllTasks(start, limit);
     }
-
+    
     @GET
     @Path("/tasks/currentuser/{start}/{limit}")
     public TaskTable getMyTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
         return officeBPMTaskService.getAllTasksForUser(OfficeSecurityService.instance().getCurrentUser(), start, limit);
     }
-
+    
     @GET
     @Path("/history/tasks/{start}/{limit}")
     public HistoricTask.HistoricTaskTable getHistoryTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
         return officeBPMTaskService.getHistoricalTasks(start, limit);
     }
-
+    
+    @GET
+    @Path("/tasks/{processId}/{start}/{limit}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public TaskTable getHistoryTasks(@PathParam("processId") String processId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        TaskTable result = new TaskTable();
+        result.setEntities(new HashSet<Task>(officeBPMTaskService.getTasksForProcessId(processId)));
+        result.setSize(10l);
+        return result;
+    }
+    
     @PUT
     @Path("task")
     public void createTask(Task task) {
         officeBPMTaskService.createTask(task);
     }
-
+    
     @PUT
     @Path("/task/add-user/{taskId}/{userId}")
     public void addCandidateUser(@PathParam("taskId") String taskId, @PathParam("userId") String userId) {
         officeBPMTaskService.addCandidateUser(taskId, userId);
     }
-
+    
     @PUT
     @Path("/task/remove-user/{taskId}/{userId}")
     public void removeCandidateUser(@PathParam("taskId") String taskId, @PathParam("userId") String userId) {
         officeBPMTaskService.removeCandidateUser(taskId, userId);
     }
-
+    
     @PUT
     @Path("/task/add-group/{taskId}/{groupId}")
     public void addCandidateGroup(@PathParam("taskId") String taskId, @PathParam("groupId") String groupId) {
         officeBPMTaskService.addCandidateGroup(taskId, groupId);
     }
-
+    
     @PUT
     @Path("/task/remove-group/{taskId}/{groupId}")
     public void removeCandidateGroup(@PathParam("taskId") String taskId, @PathParam("groupId") String groupId) {
@@ -165,7 +177,7 @@ public class BPMResource {
     public CommentTable getComments(@PathParam("taskId") String taskId) {
         return officeBPMTaskService.getComments(taskId);
     }
-
+    
     @PUT
     @Path("addcomment")
     public void addComment(Comment comment) {
@@ -178,13 +190,13 @@ public class BPMResource {
     public List<FormProperty> getStartFormProperties(@PathParam("processId") String processId) {
         return officeBPMFormService.getStartFormProperties(processId);
     }
-
+    
     @GET
     @Path("/task_form_properties/{taskId}")
     public List<FormProperty> getTaskFormProperties(@PathParam("taskId") String taskId) {
         return officeBPMFormService.getTaskFormProperties(taskId);
     }
-
+    
     @PUT
     @Path("/submit_start_form/{processId}")
     public void submitStartForm(@PathParam("processId") String processId, FormProperties properties) {
@@ -193,36 +205,36 @@ public class BPMResource {
     /*
      * process management
      */
-
+    
     @GET
     @Path("/startprocess/{processId}")
     public void startProcess(@PathParam("processId") String processId) {
         OfficeBPMService.instance().startProcess(processId, getCurrentUserMap());
     }
-
+    
     @GET
     @Path("/deployed-process-info")
     public String getDeployedProcessInfo() {
         return OfficeBPMService.instance().getDeployedProcessInfo();
     }
-
+    
     @GET
     @Path("/deployprocess/{processId}")
     public void deployProcess(@PathParam("processId") String processId) {
         OfficeBPMService.instance().deployProcess(processId);
     }
-
+    
     @GET
     @Path("/deleteprocess/{processId}")
     public void deleteProcess(@PathParam("processId") String processId) {
         OfficeBPMService.instance().deleteProcess(processId);
     }
-
+    
     protected Map<String, Object> getCurrentUserMap() {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("currentEmployee", emp);
         return vars;
     }
-
+    
 }
