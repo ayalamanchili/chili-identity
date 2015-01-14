@@ -20,10 +20,6 @@ public enum Branch {
     /**
      * @generated
      */
-    Florida,
-    /**
-     * @generated
-     */
     Atlanta,
     /**
      * @generated
