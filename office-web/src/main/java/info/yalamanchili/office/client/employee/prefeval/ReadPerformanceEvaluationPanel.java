@@ -15,11 +15,13 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
 import info.yalamanchili.office.client.ext.question.ReadAllQuestionCommentsPanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -130,8 +132,8 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "performance-evaluation/" + entityId;
     }
-    
-     @Override
+
+    @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION);
     }
@@ -139,5 +141,16 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.PerformanceEvaluation" + "/" + getEntityId();
+    }
+
+    @Override
+    protected boolean enableViewTasks() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
+    }
+
+    @Override
+    protected void displayTasks() {
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId" + "/")));
     }
 }
