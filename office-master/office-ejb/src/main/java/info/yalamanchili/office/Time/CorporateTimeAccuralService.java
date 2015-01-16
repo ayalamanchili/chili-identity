@@ -12,12 +12,14 @@ import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
+import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -84,6 +86,37 @@ public class CorporateTimeAccuralService {
             sendEmailNotification("");
         }
     }
+<<<<<<< .mine
+
+    public void accuredtimeforIndiaemployee() {
+        //TODO also create prorate hours for emp who passed probation period
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (hasMoreThanOneYearService(emp)) {
+                //8 days(64 hours) PTO earned
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.PTO_Earned, CorporateTimeConstants.ptoEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                //10 days(80 hours) vacation earned
+                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, CorporateTimeConstants.vacationEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                //Get Available Vacation in previous year and Create carry forword for max of 5days--> 40 hours
+                BigDecimal carryFwdVacation = CorporateTimeService.instance().getYearlyVacationBalance(emp, DateUtils.getNextYear(new Date(), -1));
+                if (carryFwdVacation.longValue() >= CorporateTimeConstants.carryForward.longValue()) {
+                    CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, CorporateTimeConstants.carryForward, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                } else {
+                    CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, carryFwdVacation, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+                }
+            }
+        }
+    }
+=======
+>>>>>>> .r5111
+
+    protected boolean hasMoreThanOneYearService(Employee emp) {
+        //TODO possible bug for leap year???
+        if (emp.getStartDate() != null && DateUtils.getNextYear(emp.getStartDate(), 1).before(new Date())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     protected void sendEmailNotification(String msg) {
         Email email = new Email();
@@ -114,5 +147,9 @@ public class CorporateTimeAccuralService {
 
     public static CorporateTimeAccuralService instance() {
         return SpringContext.getBean(CorporateTimeAccuralService.class);
+    }
+
+    public void runYearlyEarnedIndiaTimeSheets() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
