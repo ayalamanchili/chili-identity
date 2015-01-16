@@ -84,10 +84,6 @@ public class CorporateTimeAccuralService {
             sendEmailNotification("");
         }
     }
-    
-    public void accuredtimeforIndiaemployee() {
-        
-    }
 
     protected void sendEmailNotification(String msg) {
         Email email = new Email();
