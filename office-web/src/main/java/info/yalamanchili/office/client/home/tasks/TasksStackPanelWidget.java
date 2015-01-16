@@ -9,10 +9,20 @@ package info.yalamanchili.office.client.home.tasks;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.StringField;
+import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -28,6 +38,7 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
     protected ClickableLink myTasksL = new ClickableLink("My Tasks");
     protected ClickableLink completedTasksL = new ClickableLink("Completed Tasks");
     protected ClickableLink allTasksL = new ClickableLink("All Tasks");
+    protected Button searchTasks = new Button("Search");
 
     public TasksStackPanelWidget() {
         init(panel);
@@ -42,7 +53,14 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void configure() {
+        searchTasks.addClickHandler(this);
     }
+
+    StringField userField = null;
+
+    StringField taskNameField = null;
+
+    StringField taskIdField = null;
 
     @Override
     protected void addWidgets() {
@@ -50,6 +68,21 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
         mainPanel.add(completedTasksL);
         if (Auth.isAdmin()) {
             mainPanel.add(allTasksL);
+            mainPanel.add(Utils.getLineSeperatorTag("Search Tasks"));
+
+            userField = new StringField(OfficeWelcome.constants,
+                    "user", "Task", false, false);
+
+            taskNameField = new StringField(OfficeWelcome.constants,
+                    "taskName", "Task", false, false);
+
+            taskIdField = new StringField(OfficeWelcome.constants,
+                    "taskId", "Task", false, false);
+
+            mainPanel.add(userField);
+            mainPanel.add(taskNameField);
+            mainPanel.add(taskIdField);
+            mainPanel.add(searchTasks);
         }
         panel.add(mainPanel);
     }
@@ -71,5 +104,28 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
             String url = OfficeWelcome.constants.root_url() + "bpm/alltasks/";
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(url));
         }
+        if (event.getSource().equals(searchTasks)) {
+            TabPanel.instance().getHomePanel().entityPanel.clear();
+            String url = OfficeWelcome.constants.root_url() + "bpm/tasks/search";
+            JSONObject entity = new JSONObject();
+
+            HttpService.HttpServiceAsync.instance().doPut(url, entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                new ResponseStatusWidget().show("no results");
+                            } else {
+                                //TODO use size and entities attributes
+                                JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                String key = (String) resObj.keySet().toArray()[0];
+                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(results));
+                            }
+
+                        }
+                    });
+        }
     }
+
 }

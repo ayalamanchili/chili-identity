@@ -18,6 +18,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
+import static info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel.instance;
 import java.util.logging.Logger;
 
 /**
@@ -39,6 +40,11 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     public ReadAllTasks() {
         instance = this;
         initTable("Task", OfficeWelcome.constants);
+    }
+
+    public ReadAllTasks(JSONArray array) {
+        instance = this;
+        initTable("Task", array, OfficeWelcome.constants);
     }
 
     @Override

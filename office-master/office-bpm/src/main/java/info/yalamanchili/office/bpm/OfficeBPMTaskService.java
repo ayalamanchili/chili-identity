@@ -255,6 +255,21 @@ public class OfficeBPMTaskService {
         return result;
     }
 
+    public List<Task> searchTasks(Task task) {
+        List<Task> tasks = new ArrayList<Task>();
+        TaskQuery query = bpmTaskService.createTaskQuery();
+        if (!Strings.isNullOrEmpty(task.getName())) {
+            query.taskNameLike(task.getName().trim());
+        }
+        if (!Strings.isNullOrEmpty(task.getId())) {
+            query.taskId(task.getId().trim());
+        }
+        for (org.activiti.engine.task.Task bpmTask : query.listPage(0, 100)) {
+            tasks.add(mapper.map(bpmTask, Task.class));
+        }
+        return tasks;
+    }
+
     public TaskTable getCandidateTasksForUser(String user, int start, int limit) {
         TaskTable result = new TaskTable();
         TaskQuery query = bpmTaskService.createTaskQuery().taskCandidateUser(user);
@@ -277,7 +292,7 @@ public class OfficeBPMTaskService {
 
     public HistoricTaskTable getHistoricalTasks(int start, int limit) {
         HistoricTaskTable result = new HistoricTaskTable();
-        HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished();
+        HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished().orderByHistoricTaskInstanceEndTime();
         for (HistoricTaskInstance task : query.listPage(start, limit)) {
             result.getEntities().add(mapper.map(task, HistoricTask.class));
         }
