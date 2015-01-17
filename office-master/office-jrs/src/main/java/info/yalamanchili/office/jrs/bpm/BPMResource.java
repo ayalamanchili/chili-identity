@@ -129,13 +129,6 @@ public class BPMResource {
     }
 
     @GET
-    @Path("/tasks/user/{userId}/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public TaskTable getTasksByUser(@PathParam("userId") String userId, @PathParam("start") int start, @PathParam("limit") int limit) {
-        return officeBPMTaskService.getAllTasksForUser(EmployeeDao.instance().findEmployeWithEmpId(userId), start, limit);
-    }
-
-    @GET
     @Path("/history/tasks/{start}/{limit}")
     public HistoricTask.HistoricTaskTable getHistoryTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
         return officeBPMTaskService.getHistoricalTasks(start, limit);

@@ -7,11 +7,13 @@
  */
 package info.yalamanchili.office.client.home.tasks;
 
+import com.google.common.base.Strings;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -108,7 +110,12 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             String url = OfficeWelcome.constants.root_url() + "bpm/tasks/search";
             JSONObject entity = new JSONObject();
-
+            if (userField != null && !Strings.isNullOrEmpty(userField.getValue())) {
+                entity.put("assignee", new JSONString(userField.getValue()));
+            }
+            if (taskNameField != null && !Strings.isNullOrEmpty(taskNameField.getValue())) {
+                entity.put("name", new JSONString(taskNameField.getValue()));
+            }
             HttpService.HttpServiceAsync.instance().doPut(url, entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override

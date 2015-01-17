@@ -258,6 +258,9 @@ public class OfficeBPMTaskService {
     public List<Task> searchTasks(Task task) {
         List<Task> tasks = new ArrayList<Task>();
         TaskQuery query = bpmTaskService.createTaskQuery();
+        if (!Strings.isNullOrEmpty(task.getAssignee())) {
+            return new ArrayList<Task>(getAllTasksForUser(EmployeeDao.instance().findEmployeWithEmpId(task.getAssignee()), 0, 100).getEntities());
+        }
         if (!Strings.isNullOrEmpty(task.getName())) {
             query.taskNameLike(task.getName().trim());
         }
