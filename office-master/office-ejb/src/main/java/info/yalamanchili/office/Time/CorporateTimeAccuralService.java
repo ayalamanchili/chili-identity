@@ -17,9 +17,9 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
-import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.jms.MessagingService;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -43,7 +43,7 @@ public class CorporateTimeAccuralService {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         Date today = new Date();
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            if (emp.getStartDate() == null) {
+            if (emp.getStartDate() == null || Branch.Hyderabad.equals(emp.getBranch())) {
                 continue;
             }
             Date startDate = emp.getStartDate();
@@ -86,28 +86,28 @@ public class CorporateTimeAccuralService {
             sendEmailNotification("");
         }
     }
-<<<<<<< .mine
 
-    public void accuredtimeforIndiaemployee() {
-        //TODO also create prorate hours for emp who passed probation period
+    /**
+     * for india team
+     */
+    public void accrueYearlyPTO() {
+        CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            if (hasMoreThanOneYearService(emp)) {
-                //8 days(64 hours) PTO earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.PTO_Earned, CorporateTimeConstants.ptoEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
-                //10 days(80 hours) vacation earned
-                CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_Earned, CorporateTimeConstants.vacationEarned, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
-                //Get Available Vacation in previous year and Create carry forword for max of 5days--> 40 hours
-                BigDecimal carryFwdVacation = CorporateTimeService.instance().getYearlyVacationBalance(emp, DateUtils.getNextYear(new Date(), -1));
-                if (carryFwdVacation.longValue() >= CorporateTimeConstants.carryForward.longValue()) {
-                    CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, CorporateTimeConstants.carryForward, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
-                } else {
-                    CorporateTimeSheetDao.instance().saveTimeSheet(emp, TimeSheetCategory.Vacation_CarryForward, carryFwdVacation, DateUtils.getFirstDayOfCurrentYear(), DateUtils.getLastDayCurrentOfYear());
+            if (Branch.Hyderabad.equals(emp.getBranch()) && hasMoreThanOneYearService(emp)) {
+                CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
+                if (ptoAccruedTS != null) {
+                    BigDecimal carryForwordHours = null;
+                    if (ptoAccruedTS.getHours().compareTo(new BigDecimal("40.00")) < 0) {
+                        carryForwordHours = ptoAccruedTS.getHours();
+                    } else {
+                        carryForwordHours = new BigDecimal("40.00");
+                    }
+                    ptoAccruedTS.setHours(carryForwordHours.add(TimeAccuralConstants.oneYearFullPTO));
+                    dao.addTimeSheetUpdateComment("System Yearly Update: ", carryForwordHours, ptoAccruedTS);
                 }
             }
         }
     }
-=======
->>>>>>> .r5111
 
     protected boolean hasMoreThanOneYearService(Employee emp) {
         //TODO possible bug for leap year???

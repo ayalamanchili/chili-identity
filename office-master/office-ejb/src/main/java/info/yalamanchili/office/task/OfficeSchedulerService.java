@@ -55,20 +55,6 @@ public class OfficeSchedulerService {
     }
 
     /**
-     * run at jan 1st 1'0 clock every year to accumulate Yearly Hours,
-     */
-<<<<<<< .mine
-    @Scheduled(cron = "0 0 1 1 1 *")
-    public void runYearlyEarnedIndiaTimeSheets() {
-        CorporateTimeAccuralService.instance().runYearlyEarnedIndiaTimeSheets();
-=======
-    @Scheduled(cron = "0 1 1 1 0 ?")
-    public void accuredtimeforIndiaemployee() {
-        CorporateTimeAccuralService.instance().accureMonthlyTime();
->>>>>>> .r5111
-    }
-
-    /**
      * runs every night at 1.10 AM
      */
     @Scheduled(cron = "0 10 1 * * ?")

@@ -32,6 +32,11 @@ public class OfficeServiceJobConfiguration {
     }
 
     @ManagedOperation
+    public void processYearlyTimeAccrualForIndiaTeam() {
+        CorporateTimeAccuralService.instance().accrueYearlyPTO();
+    }
+
+    @ManagedOperation
     public void revertRecentMonthlyTimeAccrual() {
         CorporateTimeAccuralService.instance().revertRecentPTOAccruedChanges();
         AssociateTimeAccuralService.instance().revertRecentPTOAccruedChanges();
