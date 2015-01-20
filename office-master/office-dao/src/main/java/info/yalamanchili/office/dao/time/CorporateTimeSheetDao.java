@@ -241,6 +241,20 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
     }
 
+    public BigDecimal getHoursInMonth(Employee employee, List<TimeSheetCategory> category, List<TimeSheetStatus> status, Date monthDate) {
+        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + CorporateTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category in (:categoryParam) and status in (:statusParam) and startDate >=:startDateParam and endDate <=:endDateParam", BigDecimal.class);
+        query.setParameter("employeeParam", employee);
+        query.setParameter("categoryParam", category);
+        query.setParameter("statusParam", status);
+        query.setParameter("startDateParam", DateUtils.getFirstDayOfMonth(monthDate), TemporalType.DATE);
+        query.setParameter("endDateParam", DateUtils.getLastDayOfMonth(monthDate), TemporalType.DATE);
+        if (query.getSingleResult() != null) {
+            return query.getSingleResult();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
     public List<CorporateTimeSheet> getCurrentCompanyLeaves() {
         TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where status=:statusParam and category IN (:categoryParam) and ((startDate <=:dateRangeEndParam ) and (endDate >=:dateRangeStartParam))", CorporateTimeSheet.class);
         query.setParameter("statusParam", TimeSheetStatus.Approved);

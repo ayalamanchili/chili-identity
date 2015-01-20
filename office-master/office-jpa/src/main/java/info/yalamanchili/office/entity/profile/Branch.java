@@ -32,5 +32,9 @@ public enum Branch {
     /**
      *
      */
-    Tampa
+    Tampa,
+    /**
+     * TODO REMOVE TEMP holder to avoid error during serilization java.io.InvalidObjectException: enum constant  
+     */
+    Florida 
 }
