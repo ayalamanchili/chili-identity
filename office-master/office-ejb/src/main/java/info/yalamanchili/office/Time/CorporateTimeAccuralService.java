@@ -83,8 +83,8 @@ public class CorporateTimeAccuralService {
                 dao.getEntityManager().merge(ptoAccruedTS);
                 dao.addTimeSheetUpdateComment("System Montly Update: ", beforeHours, ptoAccruedTS);
             }
-            sendEmailNotification("");
         }
+        sendEmailNotification("");
     }
 
     /**
