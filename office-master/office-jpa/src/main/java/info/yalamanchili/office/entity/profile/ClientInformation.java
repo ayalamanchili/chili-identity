@@ -723,7 +723,7 @@ public class ClientInformation extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", client=" + client + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", overTimePayRate=" + overTimePayRate + ", overTimeBillingRate=" + overTimeBillingRate + ", billingRates=" + billingRates + ", billingRateDuration=" + billingRateDuration + ", overTimeRateDuration=" + overTimeRateDuration + ", visaStatus=" + visaStatus + ", notes=" + notes + '}';
+        return "ClientInformation{" + "consultantJobTitle=" + consultantJobTitle + ", ciPrimary=" + ciPrimary + ", startDate=" + startDate + ", endDate=" + endDate + ", itemNumber=" + itemNumber + ", payRate=" + payRate + ", billingRate=" + billingRate + ", subcontractorinvoiceFrequency=" + subcontractorinvoiceFrequency + '}';
     }
 
 }

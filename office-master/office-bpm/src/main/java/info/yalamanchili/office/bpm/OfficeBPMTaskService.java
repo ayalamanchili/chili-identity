@@ -295,7 +295,7 @@ public class OfficeBPMTaskService {
 
     public HistoricTaskTable getHistoricalTasks(int start, int limit) {
         HistoricTaskTable result = new HistoricTaskTable();
-        HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished().orderByHistoricTaskInstanceEndTime();
+        HistoricTaskInstanceQuery query = bpmHistoryService.createHistoricTaskInstanceQuery().finished();
         for (HistoricTaskInstance task : query.listPage(start, limit)) {
             result.getEntities().add(mapper.map(task, HistoricTask.class));
         }
