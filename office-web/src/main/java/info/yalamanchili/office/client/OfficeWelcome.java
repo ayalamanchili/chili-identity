@@ -17,7 +17,11 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import info.chili.gwt.composite.LocalStorage;
+import info.chili.gwt.widgets.NewWindowPanel;
 import info.yalamanchili.office.client.config.OfficeClientConfig;
 import info.yalamanchili.office.client.login.LoginPage;
 import info.yalamanchili.office.client.resources.OfficeImages;
@@ -37,6 +41,7 @@ public class OfficeWelcome implements EntryPoint {
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
         RootLayoutPanel.get().add(new LoginPage());
+        showFeedbackPage();
         //This is a hack to load the tab panel js fragment on back ground while the users enters his username and password
         GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {
             @Override
@@ -49,6 +54,18 @@ public class OfficeWelcome implements EntryPoint {
                 rootLayout.setVisible(false);
             }
         });
+    }
+
+    protected static final String FEEDBACK_KEY = "FEEDBACK-JAN-2015";
+
+    protected void showFeedbackPage() {
+        if (LocalStorage.getValue(FEEDBACK_KEY) == null) {
+            Frame feedbackForm = new Frame("https://docs.google.com/forms/d/1m33EzGvGN2aSBg1b0BT0USiNIhF_UpXRt0J3xq7Y-eE/viewform?usp=send_form");
+            feedbackForm.setHeight("70em");
+            feedbackForm.setWidth("55em");
+            new NewWindowPanel(feedbackForm, Window.getClientWidth() / 5, 0).show();
+            LocalStorage.putValue(FEEDBACK_KEY, "true");
+        }
     }
 
     public void onMainModuleLoad(JSONObject employee) {
