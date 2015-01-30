@@ -49,6 +49,14 @@ public class QuestionComment {
      *
      */
     protected int sortOrder;
+    /**
+     *
+     */
+    protected boolean questionCommentRequired;
+    /**
+     *
+     */
+    protected boolean questionRatingRequired;
 
     public QuestionComment() {
     }
@@ -107,6 +115,22 @@ public class QuestionComment {
 
     public void setSortOrder(int sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public boolean isQuestionCommentRequired() {
+        return questionCommentRequired;
+    }
+
+    public void setQuestionCommentRequired(boolean questionCommentRequired) {
+        this.questionCommentRequired = questionCommentRequired;
+    }
+
+    public boolean isQuestionRatingRequired() {
+        return questionRatingRequired;
+    }
+
+    public void setQuestionRatingRequired(boolean questionRatingRequired) {
+        this.questionRatingRequired = questionRatingRequired;
     }
 
 }

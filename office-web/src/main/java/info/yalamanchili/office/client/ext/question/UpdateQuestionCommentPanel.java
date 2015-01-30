@@ -97,7 +97,7 @@ public class UpdateQuestionCommentPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        ratingWidget = new RatingWidget(5, false, false);
+        ratingWidget = new RatingWidget(5, isRatingRequired, false);
         entityFieldsPanel.add(questionInfoL);
         addField("comment", false, false, DataType.TEXT_AREA_FIELD);
         entityFieldsPanel.add(ratingWidget);

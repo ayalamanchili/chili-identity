@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import java.util.logging.Logger;
 
@@ -39,7 +38,6 @@ public class RatingWidget extends Composite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(naCB) && naCB.getValue()) {
-            logger.info("set rating");
             setRating(0);
         }
     }
@@ -68,8 +66,10 @@ public class RatingWidget extends Composite implements ClickHandler {
         getElement().getStyle().setCursor(Cursor.POINTER);
         getElement().getStyle().setPadding(2, Unit.PX);
         naCB.addClickHandler(this);
-        container.add(naLabel);
-        container.add(naCB);
+        if (!required) {
+            container.add(naLabel);
+            container.add(naCB);
+        }
         for (int index = 0; index < starCount; index++) {
             Image starImage = new Image();
             container.add(starImage);
