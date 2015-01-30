@@ -57,7 +57,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignEntityValueFromField("keyAccomplishments", entity);
         assignEntityValueFromField("areasNeedImprovement", entity);
 //        assignEntityValueFromField("nextYearObjectives", entity);
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
             assignEntityValueFromField("managerComments", entity);
             assignEntityValueFromField("employeeComments", entity);
             assignEntityValueFromField("hrComments", entity);
@@ -133,7 +133,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         assignFieldValueFromEntity("keyAccomplishments", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("areasNeedImprovement", entity, DataType.TEXT_AREA_FIELD);
 //        assignFieldValueFromEntity("nextYearObjectives", entity, DataType.TEXT_AREA_FIELD);
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
             assignFieldValueFromEntity("managerComments", entity, DataType.TEXT_AREA_FIELD);
             assignFieldValueFromEntity("employeeComments", entity, DataType.TEXT_AREA_FIELD);
             assignFieldValueFromEntity("hrComments", entity, DataType.TEXT_AREA_FIELD);
@@ -195,7 +195,7 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         addField("keyAccomplishments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("areasNeedImprovement", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
 //        addField("nextYearObjectives", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type)) {
+        if (PerformanceEvaluationWizardType.SELF_MANAGER.equals(type) || (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION))) {
             addField("managerComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("employeeComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
             addField("hrComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
