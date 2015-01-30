@@ -41,7 +41,8 @@ public class OfficeWelcome implements EntryPoint {
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
         RootLayoutPanel.get().add(new LoginPage());
-        showFeedbackPage();
+//        showFeedbackPage();
+//        UserLocation.getUserLocation();
         //This is a hack to load the tab panel js fragment on back ground while the users enters his username and password
         GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {
             @Override

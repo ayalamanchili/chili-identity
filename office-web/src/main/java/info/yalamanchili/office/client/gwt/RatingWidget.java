@@ -18,17 +18,31 @@ import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.resources.OfficeImages;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
-public class RatingWidget extends Composite {
+public class RatingWidget extends Composite implements ClickHandler {
+
+    public static Logger logger = Logger.getLogger(RatingWidget.class.getName());
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(naCB) && naCB.getValue()) {
+            logger.info("set rating");
+            setRating(0);
+        }
+    }
 
     static public interface Presenter {
 
@@ -42,6 +56,8 @@ public class RatingWidget extends Composite {
     private HTMLPanel container;
     protected boolean required;
     protected boolean readOnly;
+    protected Label naLabel = new Label("N/A");
+    protected CheckBox naCB = new CheckBox();
 
     public RatingWidget(final int starCount, boolean required, boolean readOnly) {
         this.required = required;
@@ -51,6 +67,9 @@ public class RatingWidget extends Composite {
         getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
         getElement().getStyle().setCursor(Cursor.POINTER);
         getElement().getStyle().setPadding(2, Unit.PX);
+        naCB.addClickHandler(this);
+        container.add(naLabel);
+        container.add(naCB);
         for (int index = 0; index < starCount; index++) {
             Image starImage = new Image();
             container.add(starImage);
@@ -77,9 +96,11 @@ public class RatingWidget extends Composite {
 
             @Override
             public void onClick(ClickEvent event) {
-                setRating((int) Math.ceil((double) event.getRelativeX(getElement()) / getOffsetWidth() * starCount));
-                if (presenter != null) {
-                    presenter.onRatingChanged(RatingWidget.this.rating);
+                if (!naCB.getValue()) {
+                    setRating((int) Math.ceil((double) event.getRelativeX(getElement()) / getOffsetWidth() * starCount));
+                    if (presenter != null) {
+                        presenter.onRatingChanged(RatingWidget.this.rating);
+                    }
                 }
             }
         }, ClickEvent.getType());
@@ -108,6 +129,7 @@ public class RatingWidget extends Composite {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+        logger.info("rating" + rating);
         displayRating(rating);
     }
 
