@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.admin;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -28,6 +29,7 @@ import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
 import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
 import info.yalamanchili.office.client.analytics.EventsSidePanel;
 import info.yalamanchili.office.client.analytics.ReadAllEventsPanel;
+import info.yalamanchili.office.client.company.ReadAllCompanyPanel;
 import info.yalamanchili.office.client.ext.question.QuestionSidePanel;
 import info.yalamanchili.office.client.ext.question.ReadAllQuestionPanel;
 
@@ -57,6 +59,9 @@ public class AdminMenu extends Composite {
         }
         if (Auth.isAdmin()) {
             adminMenuBar.addItem("Activity", activityMaintainenceCmd);
+        }
+        if (Auth.isAdmin()) {
+            adminMenuBar.addItem("Company", companyMaintainenceCmd);
         }
         adminMenuBar.addStyleName("entityMenuBar");
     }
@@ -130,6 +135,14 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new EventsSidePanel());
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllEventsPanel());
+
+        }
+    };
+    Command companyMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllCompanyPanel());
 
         }
     };
