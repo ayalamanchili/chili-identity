@@ -6,68 +6,65 @@ package info.yalamanchili.office.client.company;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import java.util.logging.Logger;
 
 /**
  *
- * @author benerji.v
+ * @author chaitanya.k
  */
-public class CreateCompanyPanel extends CreateComposite {
+public class UpdateCompanyPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(CreateCompanyPanel.class.getName());
-
-    public CreateCompanyPanel(CreateComposite.CreateCompositeType type) {
-        super(type);
-        initCreateComposite("Company", OfficeWelcome.constants);
+    public UpdateCompanyPanel(JSONObject entity) {
+        initUpdateComposite(entity, "Company", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         assignEntityValueFromField("employees", entity);
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
         assignEntityValueFromField("logoURL", entity);
-        
-        logger.info(entity.toString());
         return entity;
+
     }
 
     @Override
-    protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
                 handleErrorResponse(arg0);
             }
 
             @Override
             public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
+                postUpdateSuccess(arg0);
             }
         });
+
     }
 
     @Override
-    protected void addButtonClicked() {
+    public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("employees", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("esatablished date", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("logoURL", entity, DataType.IMAGE_FIELD);
+
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Company Created");
-        TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.clear();
-        TabPanel.instance().adminPanel.sidePanelTop.add(new CompanySidePanel());
+    protected void postUpdateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Updated Company");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllCompanyPanel());
+
     }
 
     @Override
@@ -84,7 +81,6 @@ public class CreateCompanyPanel extends CreateComposite {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
         addField("logoURL", false, true, DataType.IMAGE_FIELD);
-        
     }
 
     @Override

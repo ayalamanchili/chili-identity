@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -36,8 +36,8 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
-        logger.info("asdf" + entityId);
         TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadCompanyPanel(entityId));
     }
 
     @Override
@@ -57,6 +57,8 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateCompanyPanel(getEntity(entityId)));
     }
 
     @Override

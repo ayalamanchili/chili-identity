@@ -29,6 +29,7 @@ import info.yalamanchili.office.client.admin.vendor.ReadAllVendorsPanel;
 import info.yalamanchili.office.client.admin.vendor.VendorsSidePanel;
 import info.yalamanchili.office.client.analytics.EventsSidePanel;
 import info.yalamanchili.office.client.analytics.ReadAllEventsPanel;
+import info.yalamanchili.office.client.company.CompanySidePanel;
 import info.yalamanchili.office.client.company.ReadAllCompanyPanel;
 import info.yalamanchili.office.client.ext.question.QuestionSidePanel;
 import info.yalamanchili.office.client.ext.question.ReadAllQuestionPanel;
@@ -142,6 +143,7 @@ public class AdminMenu extends Composite {
         public void execute() {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.add(new CompanySidePanel());
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllCompanyPanel());
 
         }
