@@ -11,6 +11,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 
 /**
  *
@@ -19,6 +20,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 public class ReadCompanyPanel extends ReadComposite {
 
     private static ReadCompanyPanel instance;
+    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
 
     public static ReadCompanyPanel instance() {
         return instance;
@@ -48,9 +50,9 @@ public class ReadCompanyPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employees", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("employees", entity, null);
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("esatablished date", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("establishedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("logoURL", entity, DataType.IMAGE_FIELD);
     }
 
@@ -64,11 +66,11 @@ public class ReadCompanyPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employees", false, true, DataType.STRING_FIELD);
-        addField("name", false, true, DataType.STRING_FIELD);
-        addField("establishedDate", false, true, DataType.DATE_FIELD);
-        addField("logoURL", false, true, DataType.IMAGE_FIELD);
-       
+        addDropDown("employees", selectEmployeeWidgetF);
+        addField("name", true, false, DataType.STRING_FIELD);
+        addField("establishedDate", true, false, DataType.DATE_FIELD);
+        addField("logoURL", true, false, DataType.IMAGE_FIELD);
+
     }
 
     @Override

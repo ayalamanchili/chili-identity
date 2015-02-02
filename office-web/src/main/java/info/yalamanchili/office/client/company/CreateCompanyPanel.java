@@ -30,11 +30,10 @@ public class CreateCompanyPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        assignEntityValueFromField("employees", entity);
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
         assignEntityValueFromField("logoURL", entity);
-        
+
         logger.info(entity.toString());
         return entity;
     }
@@ -80,11 +79,10 @@ public class CreateCompanyPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employees", false, true, DataType.STRING_FIELD);
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
         addField("logoURL", false, true, DataType.IMAGE_FIELD);
-        
+
     }
 
     @Override

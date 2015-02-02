@@ -12,6 +12,8 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,13 +21,20 @@ import info.yalamanchili.office.client.TabPanel;
  */
 public class UpdateCompanyPanel extends UpdateComposite {
 
+    private static Logger logger = Logger.getLogger(UpdateCompanyPanel.class.getName());
+    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(true, true);
+
     public UpdateCompanyPanel(JSONObject entity) {
         initUpdateComposite(entity, "Company", OfficeWelcome.constants);
     }
 
+    UpdateCompanyPanel(String entityId) {
+        initUpdateComposite(entityId, "Company", OfficeWelcome.constants);
+    }
+
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("employees", entity);
+        entity.put("employees", employeeF.getSelectedObject());
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
         assignEntityValueFromField("logoURL", entity);
@@ -52,9 +61,9 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employees", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("employees", entity, null);
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("esatablished date", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("establishedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("logoURL", entity, DataType.IMAGE_FIELD);
 
     }
@@ -77,7 +86,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employees", false, true, DataType.STRING_FIELD);
+        addDropDown("employees", employeeF);
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
         addField("logoURL", false, true, DataType.IMAGE_FIELD);

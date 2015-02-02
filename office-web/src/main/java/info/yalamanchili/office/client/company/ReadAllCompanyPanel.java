@@ -58,7 +58,7 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new UpdateCompanyPanel(getEntity(entityId)));
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateCompanyPanel(entityId));
     }
 
     @Override
@@ -84,9 +84,10 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "employee"));
+            JSONObject emp = (JSONObject) entity.get("employees");
+            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
-            table.setText(i, 3, JSONUtils.toString(entity, "establisheddate"));
+            table.setText(i, 3, JSONUtils.toString(entity, "establishedDate"));
         }
     }
 
