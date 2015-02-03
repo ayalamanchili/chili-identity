@@ -51,8 +51,7 @@ public class CompanyResource extends CRUDResource<Company> {
 
     @Autowired
     public CompanyDao companyDao;
-    @Autowired
-    protected ContactService contactService;
+    
     @PersistenceContext
     protected EntityManager em;
 
