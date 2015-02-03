@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 public class UpdateCompanyPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateCompanyPanel.class.getName());
-    SelectCorpEmployeeWidget employeeF = new SelectCorpEmployeeWidget(true, true);
 
     public UpdateCompanyPanel(JSONObject entity) {
         initUpdateComposite(entity, "Company", OfficeWelcome.constants);
@@ -34,7 +33,6 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        entity.put("employees", employeeF.getSelectedObject());
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
         assignEntityValueFromField("logoURL", entity);
@@ -61,7 +59,6 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employees", entity, null);
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("establishedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("logoURL", entity, DataType.IMAGE_FIELD);
@@ -86,7 +83,6 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employees", employeeF);
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
         addField("logoURL", false, true, DataType.IMAGE_FIELD);

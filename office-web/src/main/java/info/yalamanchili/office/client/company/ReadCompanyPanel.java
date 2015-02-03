@@ -20,7 +20,6 @@ import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 public class ReadCompanyPanel extends ReadComposite {
 
     private static ReadCompanyPanel instance;
-    SelectEmployeeWidget selectEmployeeWidgetF = new SelectEmployeeWidget("Employee", false, true);
 
     public static ReadCompanyPanel instance() {
         return instance;
@@ -50,7 +49,6 @@ public class ReadCompanyPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("employees", entity, null);
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("establishedDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("logoURL", entity, DataType.IMAGE_FIELD);
@@ -66,7 +64,6 @@ public class ReadCompanyPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("employees", selectEmployeeWidgetF);
         addField("name", true, false, DataType.STRING_FIELD);
         addField("establishedDate", true, false, DataType.DATE_FIELD);
         addField("logoURL", true, false, DataType.IMAGE_FIELD);

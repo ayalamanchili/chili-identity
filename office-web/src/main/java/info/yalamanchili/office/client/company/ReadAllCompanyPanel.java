@@ -54,7 +54,7 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-         new ResponseStatusWidget().show("Successfully Deleted Company Information");
+        new ResponseStatusWidget().show("Successfully Deleted Company Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllCompanyPanel());
     }
@@ -78,9 +78,9 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 1, getKeyValue("Employees"));
-        table.setText(0, 2, getKeyValue("Name"));
-        table.setText(0, 3, getKeyValue("EstablishedDate"));
+        table.setText(0, 0, getKeyValue("Table_Action"));
+        table.setText(0, 1, getKeyValue("Name"));
+        table.setText(0, 2, getKeyValue("EstablishedDate"));
     }
 
     @Override
@@ -88,10 +88,8 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            JSONObject emp = (JSONObject) entity.get("employees");
-            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 2, JSONUtils.toString(entity, "name"));
-            table.setText(i, 3, JSONUtils.toString(entity, "establishedDate"));
+            table.setText(i, 1, JSONUtils.toString(entity, "name"));
+            table.setText(i, 2, JSONUtils.toString(entity, "establishedDate"));
         }
     }
 
