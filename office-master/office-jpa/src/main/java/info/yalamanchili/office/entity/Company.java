@@ -46,12 +46,12 @@ public class Company extends AbstractEntity {
      * @generated
      */
     @Field
-    @NotEmpty
+    @NotEmpty(message = "{company.name.not.empty.msg}")
     protected String name;
     /**
      * @generated
      */
-    @Past
+    @Past(message = "{establishedDate.past.msg}")
     @Field(index = Index.UN_TOKENIZED)
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date establishedDate;
