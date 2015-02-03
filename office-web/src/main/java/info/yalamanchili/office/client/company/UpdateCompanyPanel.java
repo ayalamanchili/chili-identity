@@ -70,7 +70,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated Company");
+        new ResponseStatusWidget().show("Successfully Updated Company Information");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllCompanyPanel());
 

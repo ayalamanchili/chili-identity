@@ -11,6 +11,7 @@ import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
@@ -53,6 +54,9 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
+         new ResponseStatusWidget().show("Successfully Deleted Company Information");
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllCompanyPanel());
     }
 
     @Override
