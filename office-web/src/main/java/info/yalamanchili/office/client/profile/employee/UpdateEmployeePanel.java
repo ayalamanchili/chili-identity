@@ -19,7 +19,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
-import info.yalamanchili.office.client.company.SelectCompnayWidget;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
@@ -144,7 +144,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         }
-        addDropDown("company", new SelectCompnayWidget(false, true, Alignment.HORIZONTAL));
+        addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }

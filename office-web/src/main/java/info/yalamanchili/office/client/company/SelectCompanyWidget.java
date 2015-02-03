@@ -14,20 +14,20 @@ import info.yalamanchili.office.client.OfficeWelcome;
  *
  * @author prasanthi.p
  */
-public class SelectCompnayWidget extends SelectComposite {
+public class SelectCompanyWidget extends SelectComposite {
 
-    private static SelectCompnayWidget instance;
+    private static SelectCompanyWidget instance;
 
-    public static SelectCompnayWidget instance() {
+    public static SelectCompanyWidget instance() {
         return instance;
     }
 
-    public SelectCompnayWidget(Boolean readOnly, Boolean isRequired) {
+    public SelectCompanyWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "Company", readOnly, isRequired);
         instance = this;
     }
 
-    public SelectCompnayWidget(Boolean readOnly, Boolean isRequired, Alignment alignemnt) {
+    public SelectCompanyWidget(Boolean readOnly, Boolean isRequired, Alignment alignemnt) {
         super(OfficeWelcome.constants, "Company", readOnly, isRequired, alignemnt);
         instance = this;
     }
