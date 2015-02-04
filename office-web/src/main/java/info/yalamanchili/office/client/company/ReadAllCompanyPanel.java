@@ -1,4 +1,7 @@
-    /*
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -10,6 +13,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.fields.ImageField;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
@@ -83,6 +87,7 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("EstablishedDate"));
+        table.setText(0, 3, getKeyValue("Image"));
     }
 
     @Override
@@ -93,6 +98,7 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "establishedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             
+            table.setWidget(i, 3, new ImageField("Picture", JSONUtils.toString(entity, "logoURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
         }
     }
 
