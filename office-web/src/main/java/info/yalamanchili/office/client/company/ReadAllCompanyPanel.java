@@ -4,11 +4,13 @@
  */
 package info.yalamanchili.office.client.company;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -89,7 +91,8 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
-            table.setText(i, 2, JSONUtils.toString(entity, "establishedDate"));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "establishedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            
         }
     }
 
