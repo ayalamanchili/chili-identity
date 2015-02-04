@@ -25,6 +25,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -149,8 +150,11 @@ public class ConsultantTimeService {
 
     @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_H1B_IMMIGRATION", "ROLE_CONSULTANT_TIME_REPORTS", "ROLE_CONSULTANT_TIME_ADMIN"})
     public Response getReport(ConsultantTimeSheet entity) {
+        Company company=new Company();
         PdfDocumentData data = new PdfDocumentData();
+        if(company.getName().equals(entity) ){
         data.setTemplateUrl("/templates/pdf/assoc-ts-template.pdf");
+        }
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
