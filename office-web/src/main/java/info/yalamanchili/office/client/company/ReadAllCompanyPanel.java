@@ -62,7 +62,7 @@ public class ReadAllCompanyPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new UpdateCompanyPanel(entityId));
+        TabPanel.instance().adminPanel.entityPanel.add(new UpdateCompanyPanel(getEntity(entityId)));
     }
 
     @Override

@@ -12,7 +12,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import java.util.logging.Logger;
 
 /**
@@ -25,10 +24,6 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     public UpdateCompanyPanel(JSONObject entity) {
         initUpdateComposite(entity, "Company", OfficeWelcome.constants);
-    }
-
-    UpdateCompanyPanel(String entityId) {
-        initUpdateComposite(entityId, "Company", OfficeWelcome.constants);
     }
 
     @Override
@@ -44,16 +39,16 @@ public class UpdateCompanyPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -61,8 +56,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("establishedDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("logoURL", entity, DataType.IMAGE_FIELD);
-
+        assignFieldValueFromEntity("logoURL", entity, DataType.STRING_FIELD);
     }
 
     @Override
@@ -85,7 +79,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
-        addField("logoURL", false, true, DataType.IMAGE_FIELD);
+        addField("logoURL", false, true, DataType.STRING_FIELD);
     }
 
     @Override
@@ -94,6 +88,6 @@ public class UpdateCompanyPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "company";
+        return OfficeWelcome.constants.root_url() + "company/saveCompnay";
     }
 }

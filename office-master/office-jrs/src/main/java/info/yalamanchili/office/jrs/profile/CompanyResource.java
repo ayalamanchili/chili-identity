@@ -20,6 +20,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,7 +43,7 @@ public class CompanyResource extends CRUDResource<Company> {
 
     @Autowired
     public CompanyDao companyDao;
-    
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -62,9 +63,15 @@ public class CompanyResource extends CRUDResource<Company> {
 
     @PUT
     @Validate
+    @Path("/save")
+    @Produces("application/text")
+    public String saveCompany(Company company) {
+        return super.save(company).getId().toString();
+    }
+
     @Override
-    public Company save(Company company) {
-        return super.save(company);
+    public Company save(Company entity) {
+        throw new UnsupportedOperationException();
     }
 
     @PUT

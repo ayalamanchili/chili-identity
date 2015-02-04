@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -22,6 +23,13 @@ public class CreateCompanyPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateCompanyPanel.class.getName());
 
+    FileuploadField logoURLUploadPanel = new FileuploadField(OfficeWelcome.constants, "Company", "logoURL", "Company/logoURL", false) {
+        @Override
+        public void onUploadComplete(String res) {
+            postCreateSuccess(null);
+        }
+    };
+
     public CreateCompanyPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Company", OfficeWelcome.constants);
@@ -32,8 +40,7 @@ public class CreateCompanyPanel extends CreateComposite {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
-        assignEntityValueFromField("logoURL", entity);
-
+        entity.put("logoURL", logoURLUploadPanel.getFileName());
         logger.info(entity.toString());
         return entity;
     }
@@ -42,17 +49,21 @@ public class CreateCompanyPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(arg0);
+                    }
+                });
+    }
+
+    protected void uploadImage(String entityId) {
+        logoURLUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -80,8 +91,7 @@ public class CreateCompanyPanel extends CreateComposite {
     protected void addWidgets() {
         addField("name", false, true, DataType.STRING_FIELD);
         addField("establishedDate", false, true, DataType.DATE_FIELD);
-        addField("logoURL", false, true, DataType.IMAGE_FIELD);
-
+        entityFieldsPanel.add((logoURLUploadPanel));
     }
 
     @Override
@@ -90,6 +100,6 @@ public class CreateCompanyPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "company";
+        return OfficeWelcome.constants.root_url() + "company/save";
     }
 }
