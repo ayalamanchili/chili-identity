@@ -150,10 +150,12 @@ public class ConsultantTimeService {
 
     @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_H1B_IMMIGRATION", "ROLE_CONSULTANT_TIME_REPORTS", "ROLE_CONSULTANT_TIME_ADMIN"})
     public Response getReport(ConsultantTimeSheet entity) {
-        Company company=new Company();
         PdfDocumentData data = new PdfDocumentData();
-        if(company.getName().equals(entity) ){
-        data.setTemplateUrl("/templates/pdf/assoc-ts-template.pdf");
+        Employee emp = entity.getEmployee();
+        if (emp.getCompany() != null && emp.getCompany().getName().equals("TechPillars")) {
+            data.setTemplateUrl("/templates/pdf/assoc-ts-template-techp.pdf");
+        } else {
+            data.setTemplateUrl("templates/pdf/assoc-ts-template.pdf");
         }
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
