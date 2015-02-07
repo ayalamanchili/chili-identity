@@ -71,7 +71,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
             employeeType.put("name", employeeType.get("value"));
             entity.put("employeeType", employeeType);
         }
-        if (fields.containsKey("company")) {
+        if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
             JSONObject company = selectCompnayWidget.getSelectedObject();
             company.put("name", company.get("value"));
             entity.put("company", company);
