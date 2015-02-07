@@ -9,6 +9,7 @@ package info.yalamanchili.office.dto.profile;
 
 import info.chili.security.SecurityUtils;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
@@ -66,6 +67,7 @@ public class EmployeeDto implements Serializable {
     protected String jobTitle;
     @NotNull(message = "{employeetype.not.null.msg}")
     protected EmployeeType employeeType;
+    protected Company company;
     protected String ssn;
 
     public EmployeeDto() {
@@ -189,6 +191,14 @@ public class EmployeeDto implements Serializable {
 
     public void setEmployeeType(EmployeeType employeeType) {
         this.employeeType = employeeType;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public void setJobTitle(String jobTitle) {

@@ -25,6 +25,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.selfserv.ServiceTicketDao;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.company.CompanyContact;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Email;
@@ -108,6 +109,11 @@ public class EmployeeDao extends CRUDDao<Employee> {
             Employee updatedEmployee = null;
             updatedEmployee = super.save(entity);
             updatedEmployee.setEmployeeType(em.find(EmployeeType.class, entity.getEmployeeType().getId()));
+            if (entity.getCompany() != null) {
+                updatedEmployee.setCompany(em.find(Company.class, entity.getCompany().getId()));
+            } else {
+                  updatedEmployee.setCompany(null);
+            }
             syncEmployeeTypeChange(updatedEmployee);
             return em.merge(updatedEmployee);
         }

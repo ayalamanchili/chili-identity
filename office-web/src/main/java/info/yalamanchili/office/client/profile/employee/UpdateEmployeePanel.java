@@ -27,6 +27,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEmployeePanel.class.getName());
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(false, false);
+    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
         public void onUploadComplete(String res) {
@@ -70,6 +71,11 @@ public class UpdateEmployeePanel extends UpdateComposite {
             employeeType.put("name", employeeType.get("value"));
             entity.put("employeeType", employeeType);
         }
+        if (fields.containsKey("company")) {
+            JSONObject company = selectCompnayWidget.getSelectedObject();
+            company.put("name", company.get("value"));
+            entity.put("company", company);
+        }
         logger.info("aaaaaaaaaa" + entity.toString());
         return entity;
     }
@@ -78,16 +84,16 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadImage(JSONUtils.toString(entity, "id"));
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(JSONUtils.toString(entity, "id"));
+                    }
+                });
 
     }
 
@@ -143,7 +149,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         }
-        addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
+        addDropDown("company", selectCompnayWidget);
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
