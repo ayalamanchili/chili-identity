@@ -14,6 +14,7 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
@@ -23,6 +24,7 @@ public class ReadEmployeePanel extends ReadComposite {
 
     private static Logger logger = Logger.getLogger(ReadEmployeePanel.class.getName());
     private static ReadEmployeePanel instance;
+    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(true, false, Alignment.HORIZONTAL);
     protected SelectEmployeeTypeWidget employeeSelectWidget = new SelectEmployeeTypeWidget(true, false);
 
     public static ReadEmployeePanel instance() {
@@ -42,13 +44,13 @@ public class ReadEmployeePanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("this is the response from the server" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info("this is the response from the server" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
 
     }
 
@@ -67,6 +69,9 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
+        if (Auth.isAdmin()) {
+            assignFieldValueFromEntity("company", entity, null);
+        }
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
@@ -101,6 +106,9 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
         addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        if (Auth.isAdmin()) {
+            addDropDown("company", selectCompnayWidget);
+        }
         if (Auth.isAdmin()) {
             addField("ssn", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
