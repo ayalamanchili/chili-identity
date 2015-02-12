@@ -58,7 +58,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             assignEntityValueFromField("hoursPerWeek", entity);
         }
-        assignEntityValueFromField("company", entity);
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", entity);
         }
@@ -115,7 +114,9 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         }
-        assignFieldValueFromEntity("company", entity, null);
+        if (fields.containsKey("company")) {
+            assignFieldValueFromEntity("company", entity, null);
+        }
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
@@ -148,8 +149,8 @@ public class UpdateEmployeePanel extends UpdateComposite {
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+            addDropDown("company", selectCompnayWidget);
         }
-        addDropDown("company", selectCompnayWidget);
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
