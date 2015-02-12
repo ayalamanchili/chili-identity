@@ -61,10 +61,10 @@ public class OfficeWelcome implements EntryPoint {
 
     protected void showFeedbackPage() {
         if (LocalStorage.getValue(FEEDBACK_KEY) == null) {
-            Frame feedbackForm = new Frame("https://docs.google.com/forms/d/1m33EzGvGN2aSBg1b0BT0USiNIhF_UpXRt0J3xq7Y-eE/viewform?usp=send_form");
-            feedbackForm.setHeight("70em");
-            feedbackForm.setWidth("55em");
-            new NewWindowPanel(feedbackForm, Window.getClientWidth() / 5, 0).show();
+//            Frame feedbackForm = new Frame("https://docs.google.com/forms/d/1m33EzGvGN2aSBg1b0BT0USiNIhF_UpXRt0J3xq7Y-eE/viewform?usp=send_form");
+//            feedbackForm.setHeight("70em");
+//            feedbackForm.setWidth("55em");
+//            new NewWindowPanel(feedbackForm, Window.getClientWidth() / 5, 0).show();
             LocalStorage.putValue(FEEDBACK_KEY, "true");
         }
     }
