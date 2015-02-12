@@ -69,9 +69,7 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
-        if (Auth.isAdmin()) {
-            assignFieldValueFromEntity("company", entity, null);
-        }
+        assignFieldValueFromEntity("company", entity, null);
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
         }
@@ -106,9 +104,7 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
         addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        if (Auth.isAdmin()) {
-            addDropDown("company", selectCompnayWidget);
-        }
+        addDropDown("company", selectCompnayWidget);
         if (Auth.isAdmin()) {
             addField("ssn", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
