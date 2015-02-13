@@ -42,7 +42,7 @@ public class UpdateCompanyPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("establishedDate", entity);
-        entity.put("imageURL", logoURLUploadPanel.getFileName());
+        entity.put("logoURL", logoURLUploadPanel.getFileName());
         return entity;
 
     }
