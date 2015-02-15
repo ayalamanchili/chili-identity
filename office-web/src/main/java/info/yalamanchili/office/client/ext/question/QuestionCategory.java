@@ -16,7 +16,8 @@ public enum QuestionCategory {
     SKILL_AND_APTITUDE,
     ATTITUDE,
     MANAGEMENT,
-    SELF_EVALUATION;
+    SELF_EVALUATION,
+    PROBATION_PERIOD_EVALUATION_MANAGER;
 
     public static String[] names() {
         QuestionCategory[] values = values();

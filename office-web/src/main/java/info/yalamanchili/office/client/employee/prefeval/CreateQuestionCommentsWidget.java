@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class CreateQuestionCommentsWidget extends Composite {
 
-    protected CaptionPanel captionPanel = new CaptionPanel();
+    public CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
     List<CreateQuestionCommentWidget> commentWidgets = new ArrayList<CreateQuestionCommentWidget>();
     protected QuestionCategory category;
@@ -77,7 +77,7 @@ public class CreateQuestionCommentsWidget extends Composite {
         }
     }
 
-    protected void populateQuestion(JSONArray questions) {
+    public void populateQuestion(JSONArray questions) {
         for (int i = 0; i < questions.size(); i++) {
             JSONObject obj = (JSONObject) questions.get(i);
             CreateQuestionCommentWidget commentwidget;

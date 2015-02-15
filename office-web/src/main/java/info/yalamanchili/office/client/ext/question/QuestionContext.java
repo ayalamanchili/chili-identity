@@ -14,7 +14,8 @@ package info.yalamanchili.office.client.ext.question;
 public enum QuestionContext {
 
     PERFORMANCE_EVALUATION_MANGER,
-    PERFORMANCE_EVALUATION_SELF;
+    PERFORMANCE_EVALUATION_SELF,
+    PROBATION_PERIOD_EVALUATION;
 
     public static String[] names() {
         QuestionContext[] values = values();

@@ -25,6 +25,7 @@ public class TreeEmpReportsPanel extends TreePanelComposite {
     private static Logger logger = Logger.getLogger(TreeEmpReportsPanel.class.getName());
     protected static final String PROJECTS_REPORTS_NODE = "project-reports";
     protected static final String PERFORMANCE_REPORTS_NODE = "preformance-reports";
+    protected static final String PROBATION_EVALUATION_NODE = "probation-evaluation-reports";
     protected String employeeId;
 
     public TreeEmpReportsPanel(String empId) {
@@ -46,6 +47,7 @@ public class TreeEmpReportsPanel extends TreePanelComposite {
             addFirstChildLink("Status Reports", PROJECTS_REPORTS_NODE);
         }
         addFirstChildLink("Performance Reports", PERFORMANCE_REPORTS_NODE);
+        addFirstChildLink("Probation Period Reports", PROBATION_EVALUATION_NODE);
     }
 
     @Override
@@ -55,6 +57,10 @@ public class TreeEmpReportsPanel extends TreePanelComposite {
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllStatusReportPanel(employeeId));
         }
         if (PERFORMANCE_REPORTS_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel(employeeId));
+        }
+        if (PROBATION_EVALUATION_NODE.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel(employeeId));
         }

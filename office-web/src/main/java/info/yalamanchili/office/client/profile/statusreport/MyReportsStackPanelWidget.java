@@ -12,13 +12,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
-import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.yalamanchili.office.client.Auth;
-import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.ReadAllPerformanceEvaluationPanel;
 
@@ -32,6 +27,7 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
     protected FlowPanel mainPanel = new FlowPanel();
     protected ClickableLink projectReportsL = new ClickableLink("Status Reports");
     protected ClickableLink perfEvalReportsL = new ClickableLink("Performance Evaluations");
+    protected ClickableLink probationPRDReportsL = new ClickableLink("Probation Evaluations");
 
     public MyReportsStackPanelWidget() {
         init(panel);
@@ -41,6 +37,7 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
     protected void addListeners() {
         projectReportsL.addClickHandler(this);
         perfEvalReportsL.addClickHandler(this);
+        probationPRDReportsL.addClickHandler(this);
     }
 
     @Override
@@ -51,6 +48,7 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
     protected void addWidgets() {
         mainPanel.add(projectReportsL);
         mainPanel.add(perfEvalReportsL);
+        mainPanel.add(probationPRDReportsL);
         panel.add(mainPanel);
     }
 
@@ -59,6 +57,10 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
         if (event.getSource().equals(projectReportsL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllStatusReportPanel());
+        }
+        if (event.getSource().equals(perfEvalReportsL)) {
+            TabPanel.instance().getHomePanel().entityPanel.clear();
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel());
         }
         if (event.getSource().equals(perfEvalReportsL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
