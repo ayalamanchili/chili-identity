@@ -11,7 +11,7 @@ package info.yalamanchili.office.entity.employee;
  *
  * @author benerji.v
  */
-public enum ProbationPeriodEvalutionStage {
+public enum ProbationPeriodEvaluationStage {
     Manager_Review,
     Employee_Acceptance,
     HR_Approval,
