@@ -39,7 +39,7 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
      * evaluation Date
      */
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date evalutionDate;
+    private Date evaluationDate;
     /**
      *
      */
@@ -96,15 +96,15 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
     /**
      * @return the evalutionDate
      */
-    public Date getEvalutionDate() {
-        return evalutionDate;
+    public Date getEvaluationDate() {
+        return evaluationDate;
     }
 
     /**
-     * @param evalutionDate the evalutionDate to set
+     * @param evaluationDate the evalutionDate to set
      */
-    public void setEvalutionDate(Date evalutionDate) {
-        this.evalutionDate = evalutionDate;
+    public void setEvaluationDate(Date evaluationDate) {
+        this.evaluationDate = evaluationDate;
     }
 
     /**
