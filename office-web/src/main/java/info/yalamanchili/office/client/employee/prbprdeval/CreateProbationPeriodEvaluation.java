@@ -76,14 +76,13 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
         if (validate()) {
             HttpService.HttpServiceAsync.instance().doPut(getUrl(), getEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-
-                        @Override
-                        public void onResponse(String result) {
-                            new ResponseStatusWidget().show("Successfully Created Probation Period Evaluation");
-                            TabPanel.instance().homePanel.entityPanel.clear();
-                            TabPanel.instance().homePanel.entityPanel.add(new ReadAllPerformanceEvaluationPanel());
-                        }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    new ResponseStatusWidget().show("Successfully Created Probation Period Evaluation");
+                    TabPanel.instance().homePanel.entityPanel.clear();
+                    TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
+                }
+            });
         }
     }
 

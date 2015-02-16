@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.employee.prbprdeval.ReadAllProbationPeriodEvaluationsPanel;
 import info.yalamanchili.office.client.employee.prefeval.ReadAllPerformanceEvaluationPanel;
 
 /**
@@ -65,6 +66,10 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
         if (event.getSource().equals(perfEvalReportsL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel());
+        }
+        if (event.getSource().equals(probationPRDReportsL)) {
+            TabPanel.instance().getHomePanel().entityPanel.clear();
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
         }
     }
 }
