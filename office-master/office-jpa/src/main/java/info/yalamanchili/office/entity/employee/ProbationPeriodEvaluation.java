@@ -177,6 +177,13 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
         this.questions = questions;
     }
 
+    public void addQuestion(Question entity) {
+        if (entity == null) {
+            return;
+        }
+        getQuestions().add(entity);
+    }
+
     /**
      * @return the approvedBy
      */

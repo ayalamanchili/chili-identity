@@ -18,12 +18,12 @@
         <userTask id="managerReviewTask" 
                   name="Probation Period Evaluation Task for ${entity.employee.firstName} ${entity.employee.lastName}">
             <documentation>
-                Probation Period Evaluation Task
-                Employee has completed his self review please complete Manager Peformance Review by following the steps below.
-                1) Naviate to My Office--> Search Employee--> View --> Reports--> Performance Evaluations-->Create Manager Review.
-                2) Once Review is completed come back to My Tasks and Complete this task. A Task/Email is sent to employee for final acceptance.
+                Please complete employee Probation Period Evaluation for 
                 
                 Employee Name              : #{entity.employee.firstName} #{entity.employee.lastName}
+                
+                1) Naviate to My Office--> Search Employee--> View --> Reports--> Probation Evaluations-->Create Review.
+                2) Once Review is completed come back to My Tasks and Complete this task. A Task/Email is sent to employee for final acceptance.
                 
                 Detailed instructions below:
                 https://apps.sstech.us/site/office/probation-period-evaluation/probation-period-evaluation-process.html
@@ -52,16 +52,14 @@
         <sequenceFlow sourceRef="managerReviewTask" 
                       targetRef="employeeAcceptTask" />
         <userTask id="employeeAcceptTask" 
-                  name="Performance Evaluation Accept with comments Task"
+                  name="Probation Period Evaluation Review and Acknowledge Task"
                   activiti:assignee="${entity.employee.employeeId}" >
             <documentation>
-                Your manager has completed your performance review and its ready for your comments and acceptance.
-                1) Please review your evaluation under Home--> My Reports--> Performance Evaluations
-                2) Once review is complete please go to My Tasks--> to add your comment and complete it.
-                Evaluation Fiscal Year     : #{entity.evaluationFYYear}
-                Rating                     : #{entity.rating}   
+                Your manager has completed your Probation Period Evaluation and now its ready for your acceptance.
+                1) Please review your evaluation under Home--> My Reports--> Probation Evaluation
+                2) Once review is complete please go to My Tasks--> to acknowledge and complete it.
                 Detailed instructions below:
-                https://apps.sstech.us/site/office/perf-eval/corp-submit-review.html                             
+                https://apps.sstech.us/site/office/probation-period-evaluation/probation-period-evaluation-acknowledge.html                            
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.probationeval.ProbationPeriodEvaluationProcess" />
@@ -91,16 +89,16 @@
         <serviceTask id="employeeAcceptTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <sequenceFlow  sourceRef="employeeAcceptTask" targetRef="hrFinalApprovalTask" />
         <userTask id="hrFinalApprovalTask" 
-                  name="Performance Evaluation Final HR Approval Task for ${entity.employee.firstName} ${currentity.employee.lastName}" 
+                  name="Probation Period Evaluation Final HR Approval Task for ${entity.employee.firstName} ${currentity.employee.lastName}" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
-                Performance Evaluation Final HR Approval Task
-                Employee has accepted the performance review.
+                Probation Period Evaluation Final HR Approval Task
+                Employee has acknowledged his Probation Period Evaluation review.
                 Please add comments to task (My Tasks) to complete review.
                 Employee Name              : #{entity.employee.firstName} #{entity.employee.lastName}
                 
                 Detailed instructions below:
-                https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html
+                https://apps.sstech.us/site/office/probation-period-evaluation/probation-period-evaluation-process.html
                                 
             </documentation>
             <extensionElements>
