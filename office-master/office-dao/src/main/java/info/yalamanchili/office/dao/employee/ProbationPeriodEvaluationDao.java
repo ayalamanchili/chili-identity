@@ -43,7 +43,7 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
         super(ProbationPeriodEvaluation.class);
     }
 
-    public static PerformanceEvaluationDao instance() {
+    public static ProbationPeriodEvaluationDao instance() {
         return SpringContext.getBean(ProbationPeriodEvaluation.class);
     }
 }
