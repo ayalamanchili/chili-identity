@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.employee.probeval;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.dao.employee.ProbationPeriodEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -36,17 +37,25 @@ public class ProbationPeriodEvaluationService {
     protected ProbationPeriodEvaluationDao probationPeriodEvaluationDao;
 
     public void initiateProbationPeriodEvaluationReview(Long employeeId) {
-        ProbationPeriodEvaluation evaluation = new ProbationPeriodEvaluation();
-        evaluation.setEmployee(EmployeeDao.instance().findById(employeeId));
-        evaluation = probationPeriodEvaluationDao.save(evaluation);
-        probationPeriodEvaluationDao.getEntityManager().flush();
-        Map<String, Object> obj = new HashMap<String, Object>();
-        obj.put("entity", evaluation);
-        OfficeBPMService.instance().startProcess("probation_period_evaluation_process", obj);
+        if (probationPeriodEvaluationDao.query(0, 10).size() > 0) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "probation.evaluation.already.exists", "Probation Period Evaluation already Exists");
+        } else {
+            ProbationPeriodEvaluation evaluation = new ProbationPeriodEvaluation();
+            evaluation.setEmployee(EmployeeDao.instance().findById(employeeId));
+            evaluation = probationPeriodEvaluationDao.save(evaluation);
+            probationPeriodEvaluationDao.getEntityManager().flush();
+            Map<String, Object> obj = new HashMap<String, Object>();
+            obj.put("entityId", evaluation.getId());
+            obj.put("entity", evaluation);
+            OfficeBPMService.instance().startProcess("probation_period_evaluation_process", obj);
+        }
     }
 
     public void save(ProbationPeriodEvaluationDto dto) {
-        ProbationPeriodEvaluation entity = probationPeriodEvaluationDao.save(dto.getEvaluation());
+        ProbationPeriodEvaluation entity = probationPeriodEvaluationDao.findById(dto.getEvaluation().getId());
+        entity.setTrainingRequirments(dto.getEvaluation().getTrainingRequirments());
+        entity.setAdditionalComments((dto.getEvaluation().getAdditionalComments()));
+        entity = probationPeriodEvaluationDao.save(entity);
         createQuestionComments(entity, dto.getComments());
     }
 

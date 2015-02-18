@@ -39,13 +39,15 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
     protected TextAreaField commentTB;
     protected RatingWidget ratingWidget;
     protected Boolean displayRating;
+    protected Boolean displayComment;
     protected Boolean useRichTextEditor;
     protected Boolean isRatingRequired;
     protected Boolean isCommentRequired;
 
-    public CreateQuestionCommentWidget(JSONObject question, Boolean displayRating, Boolean useRichTextEditor) {
+    public CreateQuestionCommentWidget(JSONObject question, Boolean displayRating, Boolean displayComment, Boolean useRichTextEditor) {
         this.question = question;
         this.displayRating = displayRating;
+        this.displayComment = displayComment;
         this.useRichTextEditor = useRichTextEditor;
         isRatingRequired = JSONUtils.toBoolean(question, "questionRatingRequired");
         isCommentRequired = JSONUtils.toBoolean(question, "questionCommentRequired");
@@ -102,7 +104,9 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
         ratingWidget.setPresenter(this);
         panel.add(questionL);
         panel.add(questionDecriptionL);
-        panel.add(commentTB);
+        if (displayComment) {
+            panel.add(commentTB);
+        }
         if (displayRating) {
             panel.add(ratingWidget);
         }
@@ -111,6 +115,9 @@ public class CreateQuestionCommentWidget extends ALComposite implements Presente
 
     @Override
     public void onRatingChanged(int value) {
+        if (PerformanceEvaluationWizard.instance() == null) {
+            return;
+        }
         Double rating = PerformanceEvaluationWizard.instance().getRating();
         if (rating != null && rating > 0) {
             new ResponseStatusWidget().show("Estimated Final Rating: " + PerformanceEvaluationWizard.instance().getRating().toString());

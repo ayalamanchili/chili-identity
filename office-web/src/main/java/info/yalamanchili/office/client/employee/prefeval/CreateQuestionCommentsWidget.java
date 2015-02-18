@@ -36,6 +36,7 @@ public class CreateQuestionCommentsWidget extends Composite {
     protected QuestionCategory category;
     protected QuestionContext context;
     protected Boolean displayRating;
+    protected Boolean displayComment;
     protected Boolean useRichTextEditor;
 
     public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context) {
@@ -46,10 +47,11 @@ public class CreateQuestionCommentsWidget extends Composite {
         captionPanel.setContentWidget(panel);
     }
 
-    public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context, boolean displayRating, boolean useRichTextEditor) {
+    public CreateQuestionCommentsWidget(QuestionCategory category, QuestionContext context, boolean displayRating, boolean displayComment, boolean useRichTextEditor) {
         this.category = category;
         this.context = context;
         this.displayRating = displayRating;
+        this.displayComment = displayComment;
         this.useRichTextEditor = useRichTextEditor;
         initWidget(captionPanel);
         captionPanel.setCaptionHTML(category.name());
@@ -82,9 +84,9 @@ public class CreateQuestionCommentsWidget extends Composite {
             JSONObject obj = (JSONObject) questions.get(i);
             CreateQuestionCommentWidget commentwidget;
             if (useRichTextEditor != null || displayRating != null) {
-                commentwidget = new CreateQuestionCommentWidget(obj, displayRating, useRichTextEditor);
+                commentwidget = new CreateQuestionCommentWidget(obj, displayRating, displayComment, useRichTextEditor);
             } else {
-                commentwidget = new CreateQuestionCommentWidget(obj, true, false);
+                commentwidget = new CreateQuestionCommentWidget(obj, true, true, false);
             }
             commentWidgets.add(commentwidget);
             panel.add(commentwidget);

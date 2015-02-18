@@ -36,7 +36,7 @@ public class PeformanceSelfEvaluationPanel extends ALComposite implements ClickH
     protected FlowPanel panel = new FlowPanel();
     protected HTML purposeHtml = new HTML("<b>Instructions: </b></br> Your manager will utilize the information you provide to the following questions for </br>your FY performance review.");
     protected SelectYearWidget selectYearWidget = new SelectYearWidget(null, false, true);
-    protected CreateQuestionCommentsWidget selfEvalCommentsPanel = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF, false, false);
+    protected CreateQuestionCommentsWidget selfEvalCommentsPanel = new CreateQuestionCommentsWidget(QuestionCategory.SELF_EVALUATION, QuestionContext.PERFORMANCE_EVALUATION_SELF, false, true, false);
     protected Button create = new Button("Create Self Evaluation");
 
     public PeformanceSelfEvaluationPanel() {
