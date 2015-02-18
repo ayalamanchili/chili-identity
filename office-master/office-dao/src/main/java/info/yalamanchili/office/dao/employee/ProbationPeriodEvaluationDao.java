@@ -11,6 +11,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -35,6 +36,12 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
         return em;
     }
 
+    public List<ProbationPeriodEvaluation> getEvaluations(Employee emp) {
+        TypedQuery<ProbationPeriodEvaluation> query = em.createQuery("from " + ProbationPeriodEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", ProbationPeriodEvaluation.class);
+        query.setParameter("employeeParam", emp);
+        return query.getResultList();
+    }
+
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public Long size(Employee emp) {
         TypedQuery<Long> sizeQuery = em.createQuery("select count (*) from " + ProbationPeriodEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", Long.class);
@@ -47,6 +54,6 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
     }
 
     public static ProbationPeriodEvaluationDao instance() {
-        return SpringContext.getBean(ProbationPeriodEvaluation.class);
+        return SpringContext.getBean(ProbationPeriodEvaluationDao.class);
     }
 }

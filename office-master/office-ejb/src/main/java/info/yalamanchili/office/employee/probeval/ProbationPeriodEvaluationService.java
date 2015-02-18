@@ -39,6 +39,7 @@ public class ProbationPeriodEvaluationService {
         ProbationPeriodEvaluation evaluation = new ProbationPeriodEvaluation();
         evaluation.setEmployee(EmployeeDao.instance().findById(employeeId));
         evaluation = probationPeriodEvaluationDao.save(evaluation);
+        probationPeriodEvaluationDao.getEntityManager().flush();
         Map<String, Object> obj = new HashMap<String, Object>();
         obj.put("entity", evaluation);
         OfficeBPMService.instance().startProcess("probation_period_evaluation_process", obj);

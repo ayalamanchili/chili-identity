@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -152,6 +153,7 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
     /**
      * @return the employee
      */
+    @XmlTransient
     public Employee getEmployee() {
         return employee;
     }
@@ -166,6 +168,7 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
     /**
      * @return the questions
      */
+    @XmlTransient
     public Set<Question> getQuestions() {
         return questions;
     }

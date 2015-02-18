@@ -8,6 +8,7 @@
 package info.yalamanchili.office.jrs.employee;
 
 import info.chili.dao.CRUDDao;
+import info.yalamanchili.office.dao.employee.ProbationPeriodEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationDto;
@@ -43,7 +44,7 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
     protected ProbationPeriodEvaluationService probationPeriodEvaluationService;
     
     @GET
-    @Path("/initiate-review")
+    @Path("/initiate-review/{employeeId}")
     public void initiateReview(@PathParam("employeeId") Long employeeId) {
         probationPeriodEvaluationService.initiateProbationPeriodEvaluationReview(employeeId);
     }
@@ -63,7 +64,8 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
         } else {
             emp = EmployeeDao.instance().findById(employeeId);
         }
-        ProbationPeriodEvaluationResource.ProbationPeriodEvaluationTable tableObj = new ProbationPeriodEvaluationResource.ProbationPeriodEvaluationTable();
+        ProbationPeriodEvaluationTable tableObj = new ProbationPeriodEvaluationTable();
+        tableObj.setEntities(ProbationPeriodEvaluationDao.instance().getEvaluations(emp));
         tableObj.setSize(1l);
         return tableObj;
     }
