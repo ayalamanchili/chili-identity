@@ -65,6 +65,15 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
     protected void configure() {
         formatTextAreaFields();
     }
+     private void formatTextAreaFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+        }
+    }
 
     @Override
     protected void addWidgets() {
@@ -82,13 +91,5 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
         return OfficeWelcome.instance().constants.root_url() + "probation-period-evaluation/delete/" + entityId;
     }
 
-    private void formatTextAreaFields() {
-        for (Map.Entry entry : fields.entrySet()) {
-            if (entry.getValue() instanceof TextAreaField) {
-                TextAreaField textAreaField = (TextAreaField) entry.getValue();
-                textAreaField.getTextbox().setCharacterWidth(75);
-                textAreaField.getTextbox().setVisibleLines(4);
-            }
-        }
-    }
+   
 }
