@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -121,6 +122,7 @@ public class PerformanceEvaluationResource extends CRUDResource<PerformanceEvalu
 
     @PUT
     @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
     public void delete(@PathParam("id") Long id) {
         PerformanceEvaluationService.instance().delete(id);

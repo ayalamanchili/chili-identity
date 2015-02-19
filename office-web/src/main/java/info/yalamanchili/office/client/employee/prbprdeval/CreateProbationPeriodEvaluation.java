@@ -18,7 +18,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -38,6 +40,8 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     protected FlowPanel panel = new FlowPanel();
     protected HTML purposeHtml = new HTML("<b>Instructions:");
     protected CreateQuestionCommentsWidget probationPrdEvaluationQuestionsPanel = new CreateQuestionCommentsWidget(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER, QuestionContext.PROBATION_PERIOD_EVALUATION, true, false, false);
+    TextAreaField trainingRequirmentsF = new TextAreaField(OfficeWelcome.constants, "trainingRequirments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
+    TextAreaField additionalCommentsF = new TextAreaField(OfficeWelcome.constants, "additionalcomments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
     protected Button create = new Button("Complete Evaluation");
     protected String entityId;
 
@@ -62,6 +66,8 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     protected void addWidgets() {
         panel.add(purposeHtml);
         panel.add(probationPrdEvaluationQuestionsPanel);
+        panel.add(trainingRequirmentsF);
+        panel.add(additionalCommentsF);
         panel.add(create);
         cp.setContentWidget(panel);
     }
@@ -91,6 +97,8 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     protected JSONObject getEntity() {
         JSONObject entity = new JSONObject();
         JSONObject evaluation = new JSONObject();
+        evaluation.put("trainingRequirments", new JSONString(trainingRequirmentsF.getValue()));
+        evaluation.put("additionalComments", new JSONString(additionalCommentsF.getValue()));
         evaluation.put("id", new JSONString(entityId));
         entity.put("evaluation", evaluation);
         entity.put("comments", probationPrdEvaluationQuestionsPanel.getValues());

@@ -63,11 +63,11 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -96,19 +96,18 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
         }
 
-
     }
 
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllEvaluationsUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info("ddddddddddd" + result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info("ddddddddddd" + result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -141,16 +140,10 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
         return true;
     }
 
-    protected boolean enableUpdate(JSONObject entity) {
-        return JSONUtils.toString(entity, "enableUpdate").equals("true");
-    }
-
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
-        } else if (enableUpdate(entity)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
@@ -185,11 +178,11 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getInitiateEvaluationUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                new ResponseStatusWidget().show("Review Initiated and manager is notified.");
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Review Initiated and manager is notified.");
+                    }
+                });
     }
 
     @Override

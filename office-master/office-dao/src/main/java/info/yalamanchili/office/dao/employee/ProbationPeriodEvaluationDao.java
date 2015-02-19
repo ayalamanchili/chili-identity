@@ -14,6 +14,9 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
+import info.yalamanchili.office.entity.ext.Question;
+import info.yalamanchili.office.entity.ext.QuestionCategory;
+import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -51,6 +54,14 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
         TypedQuery<Long> sizeQuery = em.createQuery("select count (*) from " + ProbationPeriodEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", Long.class);
         sizeQuery.setParameter("employeeParam", emp);
         return (Long) sizeQuery.getSingleResult();
+    }
+
+    public List<Question> getQuestions(Long id, QuestionCategory category, QuestionContext context) {
+        TypedQuery<Question> query = getEntityManager().createQuery("select question from " + ProbationPeriodEvaluation.class.getCanonicalName() + " pe inner join pe.questions question where pe.id=:idPraam and question.category =:categoryParam and question.context =:contextParam order by question.sortOrder ASC", Question.class);
+        query.setParameter("idPraam", id);
+        query.setParameter("categoryParam", category);
+        query.setParameter("contextParam", context);
+        return query.getResultList();
     }
 
     public void acceccCheck(Employee employee) {

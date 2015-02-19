@@ -94,8 +94,10 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
             entity.setAcceptDate(new Date());
         } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+            String notes = (String) task.getExecution().getVariable("hrNotes");
             entity.setHrApprovalBy(currentUser.getEmployeeId());
             entity.setHrApprovalDate(new Date());
+            entity.setHrNotes(notes);
             entity.setStage(ProbationPeriodEvaluationStage.Complete);
         }
         ProbationPeriodEvaluationDao.instance().save(entity);

@@ -31,10 +31,6 @@
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.probationeval.ProbationPeriodEvaluationProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.probationeval.ProbationPeriodEvaluationProcess" />
-                <activiti:formProperty id="managerNotes" 
-                                       name="Comments"
-                                       required="true" 
-                                       type="string" />
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
