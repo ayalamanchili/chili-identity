@@ -70,10 +70,6 @@
                                        type="enum">
                     <activiti:value id="accept" name="Acknowledge"/>
                 </activiti:formProperty>                
-                <activiti:formProperty id="employeeNotes" 
-                                       name="Comments"
-                                       required="true" 
-                                       type="string" />
             </extensionElements> 
         </userTask>
         <!-- Task escalation email after 48 hours-->
@@ -89,7 +85,7 @@
         <serviceTask id="employeeAcceptTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <sequenceFlow  sourceRef="employeeAcceptTask" targetRef="hrFinalApprovalTask" />
         <userTask id="hrFinalApprovalTask" 
-                  name="Probation Period Evaluation Final HR Approval Task for ${entity.employee.firstName} ${currentity.employee.lastName}" 
+                  name="Probation Period Evaluation Final HR Approval Task for ${entity.employee.firstName} ${entity.employee.lastName}" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
                 Probation Period Evaluation Final HR Approval Task
