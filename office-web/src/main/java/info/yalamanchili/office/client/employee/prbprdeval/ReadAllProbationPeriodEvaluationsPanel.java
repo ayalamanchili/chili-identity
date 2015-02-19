@@ -19,6 +19,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -85,6 +86,17 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
 
     @Override
     public void updateClicked(String entityId) {
+        new ResponseStatusWidget().show("Successfully Updated Probation Period Evaluations Information");
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel(parentId));
+        }
+        if (TabPanel.instance().homePanel.isVisible()) {
+            TabPanel.instance().homePanel.entityPanel.clear();
+            TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
+        }
+
+
     }
 
     @Override
@@ -129,9 +141,19 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
         return true;
     }
 
+    protected boolean enableUpdate(JSONObject entity) {
+        return JSONUtils.toString(entity, "enableUpdate").equals("true");
+    }
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "ID"));
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+        } else if (enableUpdate(entity)) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        }
     }
 
     private String getDeleteURL(String entityId) {
