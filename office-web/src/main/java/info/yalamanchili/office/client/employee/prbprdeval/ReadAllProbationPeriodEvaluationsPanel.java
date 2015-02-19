@@ -8,9 +8,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.rpc.HttpService;
 
 import info.chili.gwt.utils.JSONUtils;
@@ -102,6 +104,8 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, "Options");
         table.setText(0, 2, getKeyValue("Stage"));
+        table.setText(0, 3, getKeyValue("Print"));
+
     }
 
     @Override
@@ -116,6 +120,8 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                 table.setWidget(i, 1, managerReviewL);
             }
             table.setText(i, 2, JSONUtils.toString(entity, "stage"));
+            FileField managerReviewP = new FileField("Manager Review", ChiliClientConfig.instance().getFileDownloadUrl() + "probation-period-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=manager");
+            table.setWidget(i, 6, managerReviewP);
         }
     }
 
