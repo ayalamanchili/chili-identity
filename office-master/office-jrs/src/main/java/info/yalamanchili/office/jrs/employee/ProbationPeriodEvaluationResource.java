@@ -42,22 +42,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPeriodEvaluation> {
-    
+
     @Autowired
     protected ProbationPeriodEvaluationService probationPeriodEvaluationService;
-    
+
     @GET
     @Path("/initiate-review/{employeeId}")
     public void initiateReview(@PathParam("employeeId") Long employeeId) {
         probationPeriodEvaluationService.initiateProbationPeriodEvaluationReview(employeeId);
     }
-    
+
     @PUT
     @Path("/save")
-    public void initiateReview(ProbationPeriodEvaluationDto dto) {
+    public void save(ProbationPeriodEvaluationDto dto) {
         probationPeriodEvaluationService.save(dto);
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -65,7 +65,7 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
     public void delete(@PathParam("id") Long id) {
         probationPeriodEvaluationService.delete(id);
     }
-    
+
     @GET
     @Path("/{start}/{limit}")
     public ProbationPeriodEvaluationResource.ProbationPeriodEvaluationTable reportsForEmployee(@QueryParam("employeeId") Long employeeId, @PathParam("start") int start, @PathParam("limit") int limit) {
@@ -78,42 +78,42 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
         getDao().acceccCheck(emp);
         ProbationPeriodEvaluationTable tableObj = new ProbationPeriodEvaluationTable();
         tableObj.setEntities(getDao().getEvaluations(emp));
-        tableObj.setSize(1l);
+        tableObj.setSize(new Long(getDao().getEvaluations(emp).size()));
         return tableObj;
     }
-    
+
     @GET
     @Path("/report")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id, @QueryParam("type") String type) {
         return ProbationPeriodEvaluationService.instance().getReport(id, type);
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class ProbationPeriodEvaluationTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<ProbationPeriodEvaluation> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<ProbationPeriodEvaluation> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<ProbationPeriodEvaluation> entities) {
             this.entities = entities;
         }
     }
-    
+
     @Override
     public ProbationPeriodEvaluationDao getDao() {
         return SpringContext.getBean(ProbationPeriodEvaluationDao.class);

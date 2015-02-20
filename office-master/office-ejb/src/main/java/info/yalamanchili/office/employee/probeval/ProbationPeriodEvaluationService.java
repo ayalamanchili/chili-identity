@@ -117,6 +117,7 @@ public class ProbationPeriodEvaluationService {
     }
 
     public Response getReport(Long id, String type) {
+        //TODO check permissions? same for performance evals?
         ProbationPeriodEvaluation evaluation = probationPeriodEvaluationDao.findById(id);
         Employee employee = evaluation.getEmployee();
         probationPeriodEvaluationDao.acceccCheck(employee);

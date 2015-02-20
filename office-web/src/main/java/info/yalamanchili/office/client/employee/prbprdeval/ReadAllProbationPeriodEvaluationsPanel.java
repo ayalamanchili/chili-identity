@@ -137,7 +137,11 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
     }
 
     public boolean enableReview(JSONObject entity) {
-        return true;
+        if (JSONUtils.toString(entity, "stage").equals("Manager_Review")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
