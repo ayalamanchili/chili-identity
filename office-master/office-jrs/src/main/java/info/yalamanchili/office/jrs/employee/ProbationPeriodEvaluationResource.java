@@ -80,13 +80,13 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
         tableObj.setSize(1l);
         return tableObj;
     }
-
-    @GET
+ @GET
     @Path("/report")
     @Produces({"application/pdf"})
-    public Response getReport(@QueryParam("id") Long id) {
-        return probationPeriodEvaluationService.getReport(id);
+    public Response getReport(@QueryParam("id") Long id, @QueryParam("type") String type) {
+        return ProbationPeriodEvaluationService.instance().getReport(id, type);
     }
+  
 
     @XmlRootElement
     @XmlType

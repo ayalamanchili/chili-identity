@@ -13,6 +13,7 @@ import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
 import info.chili.service.jrs.exception.ServiceException;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
@@ -115,7 +116,7 @@ public class ProbationPeriodEvaluationService {
         return QuestionService.instance().getQuestionCommentsForProbationPeriodEvaluations(id, category, context);
     }
 
-    public Response getReport(Long id) {
+    public Response getReport(Long id, String type) {
         ProbationPeriodEvaluation evaluation = probationPeriodEvaluationDao.findById(id);
         Employee employee = evaluation.getEmployee();
         probationPeriodEvaluationDao.acceccCheck(employee);
@@ -168,5 +169,9 @@ public class ProbationPeriodEvaluationService {
                 .header("content-disposition", "filename = probation-period-evaluation.pdf")
                 .header("Content-Length", pdf)
                 .build();
+    }
+
+    public static ProbationPeriodEvaluationService instance() {
+        return SpringContext.getBean(ProbationPeriodEvaluationService.class);
     }
 }
