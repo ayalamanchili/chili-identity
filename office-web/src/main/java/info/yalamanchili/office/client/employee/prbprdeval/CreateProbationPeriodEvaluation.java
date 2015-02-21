@@ -27,6 +27,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.CreateQuestionCommentsWidget;
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -40,7 +41,7 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     protected FlowPanel panel = new FlowPanel();
     protected HTML purposeHtml = new HTML("<b>Instructions:");
     protected CreateQuestionCommentsWidget probationPrdEvaluationQuestionsPanel = new CreateQuestionCommentsWidget(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER, QuestionContext.PROBATION_PERIOD_EVALUATION, true, false, false);
-    TextAreaField trainingRequirmentsF = new TextAreaField(OfficeWelcome.constants, "trainingRequirments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
+    TextAreaField trainingRequirmentsF = new TextAreaField(OfficeWelcome.constants, "trainingRequirments", "ProbationPeriodEvaluation", false, false, Alignment.VERTICAL);
     TextAreaField additionalCommentsF = new TextAreaField(OfficeWelcome.constants, "additionalcomments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
     protected Button create = new Button("Complete Evaluation");
     protected String entityId;
@@ -60,6 +61,10 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     protected void configure() {
         cp.setCaptionHTML("Probation Period Evaluation");
         probationPrdEvaluationQuestionsPanel.captionPanel.setCaptionHTML("For enter the information and complete the review:");
+        trainingRequirmentsF.getTextbox().setCharacterWidth(75);
+        trainingRequirmentsF.getTextbox().setVisibleLines(4);
+        additionalCommentsF.getTextbox().setCharacterWidth(75);
+        additionalCommentsF.getTextbox().setVisibleLines(4);
     }
 
     @Override

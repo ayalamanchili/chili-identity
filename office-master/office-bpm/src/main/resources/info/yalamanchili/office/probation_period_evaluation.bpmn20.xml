@@ -22,7 +22,7 @@
                 
                 Employee Name              : #{entity.employee.firstName} #{entity.employee.lastName}
                 
-                1) Naviate to My Office--> Search Employee--> View --> Reports--> Probation Evaluations-->Create Review.
+                1) Naviate to My Office--> Search Employee--> View --> Reports--> Probation Evaluations-->Create Manager Review.
                 2) Once Review is completed come back to My Tasks and Complete this task. A Task/Email is sent to employee for final acceptance.
                 
                 Detailed instructions below:

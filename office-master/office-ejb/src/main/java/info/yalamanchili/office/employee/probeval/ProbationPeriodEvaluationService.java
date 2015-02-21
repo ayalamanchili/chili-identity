@@ -126,7 +126,9 @@ public class ProbationPeriodEvaluationService {
         PdfDocumentData data = new PdfDocumentData();
         data.setKeyStoreName(securityConfig.getKeyStoreName());
         data.setTemplateUrl("/templates/pdf/probation-period-evaluation-template.pdf");
-        data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
+        if (evaluation.getEvaluationDate() != null) {
+            data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
+        }
         data.getData().put("employeeName", employee.getFirstName() + " " + employee.getLastName());
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(employee.getStartDate()));
         data.getData().put("jobTitle", employee.getJobTitle());

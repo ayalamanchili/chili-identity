@@ -11,9 +11,13 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.employee.ProbationPeriodEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.employee.QuestionComment;
+import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationService;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationDto;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationService;
 import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
+import info.yalamanchili.office.entity.ext.QuestionCategory;
+import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
@@ -80,6 +84,12 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
         tableObj.setEntities(getDao().getEvaluations(emp));
         tableObj.setSize(new Long(getDao().getEvaluations(emp).size()));
         return tableObj;
+    }
+
+    @GET
+    @Path("/comments/{id}")
+    public List<QuestionComment> getQuestionComments(@PathParam("id") Long id, @QueryParam("category") QuestionCategory category, @QueryParam("context") QuestionContext context) {
+        return probationPeriodEvaluationService.instance().getQuestionComments(id, category, context);
     }
 
     @GET
