@@ -75,7 +75,7 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
         }
         //this is a corp emp review
         if (isCorporateEmployee) {
-            if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name())) {
+            if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRoles.OfficeRole.ROLE_PRB_EVALUATIONS_MANAGER.name())) {
                 return;
             }
             Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");

@@ -27,7 +27,7 @@ import org.activiti.engine.delegate.TaskListener;
  * @author anuyalamanchili
  */
 public class ProbationPeriodEvaluationProcess implements TaskListener {
-
+    
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
@@ -38,16 +38,16 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
             probationEvalTaskCompleted(task);
             new GenericTaskCompleteNotification().notify(task);
         }
-
+        
     }
-
+    
     protected void probationEvalTaskCreated(DelegateTask task) {
         saveProbationEvaluation(task);
         if (task.getTaskDefinitionKey().equals("managerReviewTask")) {
             assignManagerReviewTask(task);
         }
     }
-
+    
     protected void saveProbationEvaluation(DelegateTask task) {
         ProbationPeriodEvaluation entity = getProbationEvaluationFromTask(task);
         if (entity != null) {
@@ -63,7 +63,7 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
             task.getExecution().setVariable("entityId", entity.getId());
         }
     }
-
+    
     protected void assignManagerReviewTask(DelegateTask task) {
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
         Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
@@ -74,9 +74,10 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
             task.addCandidateUser(manager.getEmployeeId());
         } else {
             task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name());
+            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PRB_EVALUATIONS_MANAGER.name());
         }
     }
-
+    
     protected void probationEvalTaskCompleted(DelegateTask task) {
         ProbationPeriodEvaluation entity = getProbationEvaluationFromTask(task);
         if (entity == null) {
@@ -89,7 +90,7 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setApprovedBy(currentUser.getEmployeeId());
             entity.setApprovedDate(new Date());
-             entity.setEvaluationDate(new Date());
+            entity.setEvaluationDate(new Date());
         } else if ("employeeAcceptTask".equals(task.getTaskDefinitionKey())) {
             entity.setAcceptDate(new Date());
         } else if ("hrFinalApprovalTask".equals(task.getTaskDefinitionKey())) {
@@ -102,7 +103,7 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
         }
         ProbationPeriodEvaluationDao.instance().save(entity);
     }
-
+    
     protected ProbationPeriodEvaluation getProbationEvaluationFromTask(DelegateTask task) {
         Long tsId = (Long) task.getExecution().getVariable("entityId");
         if (tsId != null) {

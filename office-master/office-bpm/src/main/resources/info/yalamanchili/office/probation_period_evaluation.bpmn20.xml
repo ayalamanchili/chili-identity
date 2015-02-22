@@ -82,7 +82,7 @@
         <sequenceFlow  sourceRef="employeeAcceptTask" targetRef="hrFinalApprovalTask" />
         <userTask id="hrFinalApprovalTask" 
                   name="Probation Period Evaluation Final HR Approval Task for ${entity.employee.firstName} ${entity.employee.lastName}" 
-                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION,ROLE_PRB_EVALUATIONS_MANAGER">
             <documentation>
                 Probation Period Evaluation Final HR Approval Task
                 Employee has acknowledged his Probation Period Evaluation review.

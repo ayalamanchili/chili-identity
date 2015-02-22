@@ -28,6 +28,7 @@ public class Auth {
         ROLE_CONSULTANT_TIME_ADMIN,
         ROLE_IT_DEVELOPER,
         ROLE_CORPORATE_DATA,
+        ROLE_PRB_EVALUATIONS_MANAGER,
     }
 
     public static boolean isAdmin() {

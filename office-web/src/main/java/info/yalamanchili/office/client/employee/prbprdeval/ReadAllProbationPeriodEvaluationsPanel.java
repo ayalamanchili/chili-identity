@@ -134,7 +134,7 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                 table.setWidget(i, 1, managerReviewL);
             }
             table.setText(i, 2, JSONUtils.toString(entity, "stage"));
-            FileField managerReviewP = new FileField("Manager Review", ChiliClientConfig.instance().getFileDownloadUrl() + "probation-period-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=manager");
+            FileField managerReviewP = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "probation-period-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=manager");
             table.setWidget(i, 3, managerReviewP);
         }
     }
