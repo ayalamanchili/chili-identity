@@ -19,6 +19,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -283,6 +284,17 @@ public class ProbationPeriodEvaluation extends AbstractEntity {
      */
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+    
+    @Transient
+    protected boolean enableManagerReview;
+
+    public boolean isEnableManagerReview() {
+        return enableManagerReview;
+    }
+
+    public void setEnableManagerReview(boolean enableManagerReview) {
+        this.enableManagerReview = enableManagerReview;
     }
 
     @Override

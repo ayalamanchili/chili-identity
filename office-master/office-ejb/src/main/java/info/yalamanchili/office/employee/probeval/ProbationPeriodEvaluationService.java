@@ -14,6 +14,7 @@ import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
@@ -23,6 +24,7 @@ import info.yalamanchili.office.dao.employee.ProbationPeriodEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
 import info.yalamanchili.office.entity.ext.Comment;
@@ -55,6 +57,8 @@ public class ProbationPeriodEvaluationService {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         if (probationPeriodEvaluationDao.getEvaluations(emp).size() > 0) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "probation.evaluation.already.exists", "Probation Period Evaluation already Exists");
+        } else if (!OfficeSecurityService.instance().getUserRoles(emp).contains(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "probation.evaluation.associate.not.supported", "Probation Period Evaluation for associates not supported yet.");
         } else {
             ProbationPeriodEvaluation evaluation = new ProbationPeriodEvaluation();
             evaluation.setEmployee(emp);
@@ -174,7 +178,9 @@ public class ProbationPeriodEvaluationService {
                 .build();
     }
 
-    public static ProbationPeriodEvaluationService instance() {
-        return SpringContext.getBean(ProbationPeriodEvaluationService.class);
+    public static ProbationPeriodEvaluationService
+            instance() {
+        return SpringContext.getBean(ProbationPeriodEvaluationService.class
+        );
     }
 }

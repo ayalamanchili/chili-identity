@@ -65,7 +65,7 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
     }
     
     protected void assignManagerReviewTask(DelegateTask task) {
-        Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        Employee emp = getProbationEvaluationFromTask(task).getEmployee();
         Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
         if (manager == null) {
             manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");

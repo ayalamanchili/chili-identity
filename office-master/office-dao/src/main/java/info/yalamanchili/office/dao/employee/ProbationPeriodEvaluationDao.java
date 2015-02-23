@@ -14,10 +14,12 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
+import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluationStage;
 import info.yalamanchili.office.entity.ext.Question;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,8 +46,17 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
     }
 
     public List<ProbationPeriodEvaluation> getEvaluations(Employee emp) {
+        List<ProbationPeriodEvaluation> evals = new ArrayList<ProbationPeriodEvaluation>();
         TypedQuery<ProbationPeriodEvaluation> query = em.createQuery("from " + ProbationPeriodEvaluation.class.getCanonicalName() + "  where employee=:employeeParam", ProbationPeriodEvaluation.class);
         query.setParameter("employeeParam", emp);
+        for (ProbationPeriodEvaluation eval : query.getResultList()) {
+            if (enableUpdate(eval, emp) && eval.getQuestions().isEmpty()) {
+                eval.setEnableManagerReview(true);
+            } else {
+                eval.setEnableManagerReview(false);
+            }
+            evals.add(eval);
+        }
         return query.getResultList();
     }
 
@@ -62,6 +73,23 @@ public class ProbationPeriodEvaluationDao extends CRUDDao<ProbationPeriodEvaluat
         query.setParameter("categoryParam", category);
         query.setParameter("contextParam", context);
         return query.getResultList();
+    }
+
+    public boolean enableUpdate(ProbationPeriodEvaluation eval, Employee employee) {
+        boolean flag = false;
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_HR_ADMINSTRATION.name(), OfficeRoles.OfficeRole.ROLE_PRB_EVALUATIONS_MANAGER.name())) {
+            flag = true;
+        }
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
+        Employee perfEvalMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Perf_Eval_Manager");
+        if (perfEvalMgr != null && currentUser.getId().equals(perfEvalMgr.getId())) {
+            flag = true;
+        }
+        Employee reportsToMgr = CompanyContactDao.instance().getCompanyContactForEmployee(employee, "Reports_To");
+        if (reportsToMgr != null && currentUser.getId().equals(reportsToMgr.getId())) {
+            flag = true;
+        }
+        return flag && ProbationPeriodEvaluationStage.Manager_Review.equals(eval.getStage());
     }
 
     public void acceccCheck(Employee employee) {
