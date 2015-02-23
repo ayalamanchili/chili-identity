@@ -13,16 +13,15 @@ Manager Review and Approve Task.
 
 How to Create Manager Review
 -----
-//TODO add screenshots
-
+![alt text](../../images/perf-eval/probation_period_evaluation_createmanagerreview.png "Probation Period Evaluation")
 
 How to Review and Acknowledge your review
 -----
-//TODO add screenshots
+![alt text](../../images/perf-eval/probation_period_evaluation_acknowledgereview.png "Probation Period Evaluation")
 
 How to Complete Manager Review Task
 -----
-//TODO add screenshots
+![alt text](../../images/perf-eval/probation_period_evaluation_managerreview.png "Probation Period Evaluation")
 
 
 HR (HR Admin) Review and Approve Task.
@@ -30,3 +29,5 @@ HR (HR Admin) Review and Approve Task.
 
  - Once manager completes a final approval is needed from HR Administration Team or Probation Evaluation Manager to complete the review.
  - Employee from HR Admin Team or Probation Evaluation Manager reviews and completes the task with optional comments
+
+![alt text](../../images/perf-eval/probation_period_evaluation_HRreview.png "Probation Period Evaluation")
