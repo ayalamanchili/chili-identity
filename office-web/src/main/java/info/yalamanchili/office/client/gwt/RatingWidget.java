@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.gwt;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
@@ -20,6 +21,7 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -52,6 +54,7 @@ public class RatingWidget extends Composite implements ClickHandler {
     private Presenter presenter;
 
     private HTMLPanel container;
+    FlowPanel panel = new FlowPanel();
     protected boolean required;
     protected boolean readOnly;
     protected Label naLabel = new Label("N/A");
@@ -67,21 +70,26 @@ public class RatingWidget extends Composite implements ClickHandler {
         getElement().getStyle().setPadding(2, Unit.PX);
         naCB.addClickHandler(this);
         if (!required) {
-            container.add(naLabel);
-            container.add(naCB);
+            panel.add(naLabel);
+            naLabel.getElement().getStyle().setFloat(Style.Float.LEFT);
+            panel.add(naCB);
+            container.add(panel);
         }
         for (int index = 0; index < starCount; index++) {
             Image starImage = new Image();
             container.add(starImage);
         }
+
         setRating(0);
         sinkEvents(Event.ONMOUSEMOVE | Event.ONMOUSEOUT | Event.ONMOUSEDOWN);
         addDomHandler(new MouseMoveHandler() {
 
             @Override
             public void onMouseMove(MouseMoveEvent event) {
-                int rating = (int) Math.ceil((double) event.getRelativeX(getElement()) / getOffsetWidth() * starCount);
-                displayRating(rating);
+                if (!naCB.getValue()) {
+                    int rating = (int) Math.ceil((double) event.getRelativeX(getElement()) / getOffsetWidth() * starCount);
+                    displayRating(rating);
+                }
             }
         }, MouseMoveEvent.getType());
         addDomHandler(new MouseOutHandler() {
