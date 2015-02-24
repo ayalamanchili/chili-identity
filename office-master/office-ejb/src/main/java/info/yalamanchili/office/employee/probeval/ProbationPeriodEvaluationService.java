@@ -67,7 +67,7 @@ public class ProbationPeriodEvaluationService {
             Map<String, Object> obj = new HashMap<String, Object>();
             obj.put("entityId", evaluation.getId());
             obj.put("entity", evaluation);
-            OfficeBPMService.instance().startProcess("probation_period_evaluation_process", obj);
+            evaluation.setBpmProcessId(OfficeBPMService.instance().startProcess("probation_period_evaluation_process", obj));
         }
     }
 

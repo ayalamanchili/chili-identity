@@ -27,7 +27,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.employee.prefeval.CreateQuestionCommentsWidget;
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**

@@ -85,7 +85,7 @@ public class ProbationPeriodEvaluationProcess implements TaskListener {
         }
         if ("managerReviewTask".equals(task.getTaskDefinitionKey())) {
             if (entity.getQuestions().size() <= 4) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.complete.mgr.eval..task", "Please go to MyOffice-->Employee-->Reports-->Performance Evaluations to complete Manager Review before completing the task.");
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.complete.mgr.eval.task", "Please go to MyOffice-->Employee-->Reports-->Probation Evaluations to complete Manager Review before completing the task.");
             }
             Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
             entity.setApprovedBy(currentUser.getEmployeeId());

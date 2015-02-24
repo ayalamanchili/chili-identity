@@ -297,18 +297,22 @@ public class PerformanceEvaluationService {
         //Manager 
         if (evaluation.getApprovedBy() != null) {
             Employee manager = employeeDao.findEmployeWithEmpId(evaluation.getApprovedBy());
-            Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "managerSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(manager), null);
-            data.getSignatures().add(approvedBysignature);
-            data.getData().put("managerTitle", manager.getJobTitle());
-            data.getData().put("managerName", manager.getFirstName() + " " + manager.getLastName());
+            if (manager != null) {
+                Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "managerSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(manager), null);
+                data.getSignatures().add(approvedBysignature);
+                data.getData().put("managerTitle", manager.getJobTitle());
+                data.getData().put("managerName", manager.getFirstName() + " " + manager.getLastName());
+            }
         }
         //HR 
         if (evaluation.getHrApprovalBy() != null) {
             Employee hr = employeeDao.findEmployeWithEmpId(evaluation.getHrApprovalBy());
-            Signature hrSignature = new Signature(hr.getEmployeeId(), hr.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "hrSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(hr), null);
-            data.getSignatures().add(hrSignature);
-            data.getData().put("hrTitle", hr.getJobTitle());
-            data.getData().put("hrName", hr.getFirstName() + " " + hr.getLastName());
+            if (hr != null) {
+                Signature hrSignature = new Signature(hr.getEmployeeId(), hr.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "hrSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(hr), null);
+                data.getSignatures().add(hrSignature);
+                data.getData().put("hrTitle", hr.getJobTitle());
+                data.getData().put("hrName", hr.getFirstName() + " " + hr.getLastName());
+            }
         }
         //Employee
         Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
@@ -326,7 +330,7 @@ public class PerformanceEvaluationService {
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
         PdfDocumentData data = new PdfDocumentData();
-        data.setTemplateUrl( "/templates/pdf/self-review-template.pdf");
+        data.setTemplateUrl("/templates/pdf/self-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));

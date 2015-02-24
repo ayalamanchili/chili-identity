@@ -35,21 +35,21 @@ import java.util.logging.Logger;
  * @author chaitanya.k
  */
 public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite {
-    
+
     private static Logger logger = Logger.getLogger(ReadAllProbationPeriodEvaluationsPanel.class.getName());
     public static ReadAllProbationPeriodEvaluationsPanel instance;
-    
+
     public ReadAllProbationPeriodEvaluationsPanel() {
         instance = this;
         initTable("ProbationPeriodEvaluations", OfficeWelcome.constants);
     }
-    
+
     public ReadAllProbationPeriodEvaluationsPanel(String employeeId) {
         instance = this;
         this.parentId = employeeId;
         initTable("ProbationPeriodEvaluations", OfficeWelcome.constants);
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
@@ -61,7 +61,7 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             TabPanel.instance().homePanel.entityPanel.add(new ReadProbationPeriodEvaluation(entityId));
         }
     }
-    
+
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
@@ -72,7 +72,7 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                     }
                 });
     }
-    
+
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Probation Period Evaluations Information");
@@ -84,9 +84,9 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
         }
-        
+
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
         new ResponseStatusWidget().show("Successfully Updated Probation Period Evaluations Information");
@@ -98,9 +98,9 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             TabPanel.instance().homePanel.entityPanel.clear();
             TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
         }
-        
+
     }
-    
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllEvaluationsUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
@@ -112,16 +112,16 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                     }
                 });
     }
-    
+
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, "Options");
         table.setText(0, 2, getKeyValue("Stage"));
         table.setText(0, 3, getKeyValue("Print"));
-        
+
     }
-    
+
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -138,7 +138,7 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             table.setWidget(i, 3, managerReviewP);
         }
     }
-    
+
     public boolean enableReview(JSONObject entity) {
         if (JSONUtils.toString(entity, "enableManagerReview").equals("true") && TabPanel.instance().myOfficePanel.isVisible()) {
             return true;
@@ -146,7 +146,7 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             return false;
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
@@ -155,11 +155,11 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
-    
+
     private String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "probation-period-evaluation/delete/" + entityId;
     }
-    
+
     private String getReadAllEvaluationsUrl(Integer start, String tableSize) {
         logger.info("aaaadddd" + parentId);
         if (parentId == null) {
@@ -170,17 +170,17 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                     + tableSize.toString() + "?employeeId=" + parentId;
         }
     }
-    
+
     @Override
     protected void configureCreateButton() {
-        if (TabPanel.instance().homePanel.isVisible()) {
-            createButton.setVisible(false);
-        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {
-            createButton.setText("Initiate Probation Period Evaluation");
+        if (TabPanel.instance().myOfficePanel.isVisible() && Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_PRB_EVALUATIONS_MANAGER)) {
             createButton.setVisible(true);
+            createButton.setText("Initiate Probation Period Evaluation");
+        } else {
+            createButton.setVisible(false);
         }
     }
-    
+
     @Override
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doGet(getInitiateEvaluationUrl(), OfficeWelcome.instance().getHeaders(), true,
@@ -191,7 +191,7 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                     }
                 });
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() instanceof ClickableLink) {
@@ -203,12 +203,12 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             super.onClick(event);
         }
     }
-    
+
     protected void createManagerReview(String entityId) {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new CreateProbationPeriodEvaluation(entityId));
     }
-    
+
     public String getInitiateEvaluationUrl() {
         return OfficeWelcome.constants.root_url() + "probation-period-evaluation/initiate-review/" + TreeEmployeePanel.instance().getEntityId();
     }
