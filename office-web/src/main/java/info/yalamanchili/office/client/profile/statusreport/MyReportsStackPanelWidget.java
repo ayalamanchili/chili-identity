@@ -63,10 +63,6 @@ public class MyReportsStackPanelWidget extends ALComposite implements ClickHandl
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel());
         }
-        if (event.getSource().equals(perfEvalReportsL)) {
-            TabPanel.instance().getHomePanel().entityPanel.clear();
-            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllPerformanceEvaluationPanel());
-        }
         if (event.getSource().equals(probationPRDReportsL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
