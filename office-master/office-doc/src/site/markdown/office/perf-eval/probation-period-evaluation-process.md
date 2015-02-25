@@ -32,3 +32,4 @@ HR (HR Admin) Review and Approve Task.
  - Employee from HR Admin Team or Probation Evaluation Manager reviews and completes the task with optional comments
 
 ![alt text](../../images/perf-eval/5.png "Probation Period Evaluation")
+![alt text](../../images/perf-eval/6.png "Probation Period Evaluation")
