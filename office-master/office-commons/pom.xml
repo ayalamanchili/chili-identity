@@ -76,6 +76,14 @@
                 </filters>
             </build>
         </profile>
+        <profile>
+            <id>gce-test</id>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/office-service-gce-test.properties</filter>
+                </filters>
+            </build>
+        </profile>        
     </profiles>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
