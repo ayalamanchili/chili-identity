@@ -13,19 +13,16 @@ import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
-import info.yalamanchili.office.dao.time.TimeSheetPeriodDao;
 import info.yalamanchili.office.email.Email;
 import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -64,6 +61,36 @@ public class TimeJobService {
             email.setBody(messageText);
             MessagingService.instance().sendEmail(email);
         }
+    }
+
+    public void approveNewCorpEmployeeTimeSheets() {
+        List<CorporateTimeSheet> approvedts = new ArrayList<CorporateTimeSheet>();
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            if (emp.getStartDate() != null || Branch.Hyderabad.equals(emp.getBranch()) && new Date().before(DateUtils.getNextYear(DateUtils.getLastDayOfYear(emp.getStartDate()), 1))) {
+                for (CorporateTimeSheet ts : CorporateTimeSheetDao.instance().getTimeSheetsForEmployee(emp, TimeSheetStatus.getPendingAndSavedCategories(), TimeSheetCategory.getEarnedCategories())) {
+                    if (ts.getBpmProcessId() == null && ts.getStartDate().before(new Date())) {
+                        ts.setStatus(TimeSheetStatus.Approved);
+                        approvedts.add(CorporateTimeSheetDao.instance().save(ts));
+                    }
+                }
+            }
+        }
+        if (approvedts.size() > 0) {
+            sendApprovedTimeSheetsEmail(approvedts);
+        }
+    }
+
+    protected void sendApprovedTimeSheetsEmail(List<CorporateTimeSheet> timesheets) {
+        Email email = new Email();
+        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRole.ROLE_HR_ADMINSTRATION.name()));
+        email.setSubject("System Approved the following TimeSheets for New Employees");
+        email.setHtml(Boolean.TRUE);
+        StringBuilder sb = new StringBuilder();
+        for (CorporateTimeSheet ts : timesheets) {
+            sb.append(ts.describe()).append("\n");
+        }
+        email.setBody(sb.toString());
+        MessagingService.instance().sendEmail(email);
     }
 
     public static TimeJobService instance() {
