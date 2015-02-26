@@ -41,7 +41,7 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     protected HTML purposeHtml = new HTML("<b>Instructions:");
     protected CreateQuestionCommentsWidget probationPrdEvaluationQuestionsPanel = new CreateQuestionCommentsWidget(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER, QuestionContext.PROBATION_PERIOD_EVALUATION, true, false, false);
     TextAreaField trainingRequirmentsF = new TextAreaField(OfficeWelcome.constants, "trainingRequirments", "ProbationPeriodEvaluation", false, false, Alignment.VERTICAL);
-    TextAreaField additionalCommentsF = new TextAreaField(OfficeWelcome.constants, "additionalcomments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
+    TextAreaField additionalCommentsF = new TextAreaField(OfficeWelcome.constants, "additionalComments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);
     protected Button create = new Button("Complete Evaluation");
     protected String entityId;
 
