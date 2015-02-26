@@ -178,9 +178,7 @@ public class ProbationPeriodEvaluationService {
                 .build();
     }
 
-    public static ProbationPeriodEvaluationService
-            instance() {
-        return SpringContext.getBean(ProbationPeriodEvaluationService.class
-        );
+    public static ProbationPeriodEvaluationService instance() {
+        return SpringContext.getBean(ProbationPeriodEvaluationService.class);
     }
 }

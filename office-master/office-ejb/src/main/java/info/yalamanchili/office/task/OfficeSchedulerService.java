@@ -7,14 +7,19 @@
  */
 package info.yalamanchili.office.task;
 
+import info.chili.commons.DateUtils;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.Time.AssociateTimeAccuralService;
 import info.yalamanchili.office.Time.CorporateTimeAccuralService;
 import info.yalamanchili.office.Time.TimeJobService;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -87,6 +92,20 @@ public class OfficeSchedulerService {
                 String messageText = "SystemSoft Technologies Wishes a very Happy Birthday to " + empres.getFirstName() + "," + empres.getLastName();
                 email.setBody(messageText);
                 MessagingService.instance().sendEmail(email);
+            }
+        }
+    }
+
+    /**
+     * runs every night at 1.20 AM
+     */
+    @Scheduled(cron = "0 20 1 * * ?")
+    public void initiateProbationPeriodEvaluations() {
+        ProbationPeriodEvaluationService service = ProbationPeriodEvaluationService.instance();
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            long numberOfDays = DateUtils.differenceInDays(emp.getStartDate(), new Date());
+            if (numberOfDays == 52) {
+                service.initiateProbationPeriodEvaluationReview(emp.getId());
             }
         }
     }
