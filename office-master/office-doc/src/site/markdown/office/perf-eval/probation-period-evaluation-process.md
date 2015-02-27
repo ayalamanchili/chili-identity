@@ -1,4 +1,4 @@
-Probation Period Process
+Probation Period Evaluation Process
 -----
 ![alt text](../../images/perf-eval/probation-period-evaluation-process.png "Probation Period Evaluation")
 
