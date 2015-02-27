@@ -159,6 +159,14 @@
             </build>
         </profile>
         <profile>
+            <id>gce-test</id>
+            <build> 
+                <filters>
+                    <filter>src/main/resources/env/database-gce-test.properties</filter>
+                </filters>
+            </build>
+        </profile>        
+        <profile>
             <id>db-diff</id>
             <build>
                 <plugins>
