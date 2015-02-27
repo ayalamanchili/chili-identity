@@ -235,7 +235,7 @@ public class PerformanceEvaluationService {
     protected Response generateManagerReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
         if (evaluation == null) {
-            return;
+            return Response.ok().build();
         }
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
@@ -329,8 +329,8 @@ public class PerformanceEvaluationService {
 
     protected Response generateSelfReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
-                if (evaluation == null) {
-            return;
+        if (evaluation == null) {
+            return Response.ok().build();
         }
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
