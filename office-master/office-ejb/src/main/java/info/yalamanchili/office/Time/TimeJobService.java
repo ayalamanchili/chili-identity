@@ -66,7 +66,7 @@ public class TimeJobService {
     public void approveNewCorpEmployeeTimeSheets() {
         List<CorporateTimeSheet> approvedts = new ArrayList<CorporateTimeSheet>();
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            if (emp.getStartDate() != null || Branch.Hyderabad.equals(emp.getBranch()) && new Date().before(DateUtils.getNextYear(DateUtils.getLastDayOfYear(emp.getStartDate()), 1))) {
+            if (emp.getStartDate() != null && Branch.Hyderabad.equals(emp.getBranch()) && new Date().before(DateUtils.getNextYear(DateUtils.getLastDayOfYear(emp.getStartDate()), 1))) {
                 for (CorporateTimeSheet ts : CorporateTimeSheetDao.instance().getTimeSheetsForEmployee(emp, TimeSheetStatus.getPendingAndSavedCategories(), TimeSheetCategory.getEarnedCategories())) {
                     if (ts.getBpmProcessId() == null && ts.getStartDate().before(new Date())) {
                         ts.setStatus(TimeSheetStatus.Approved);
