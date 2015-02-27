@@ -234,6 +234,9 @@ public class PerformanceEvaluationService {
 
     protected Response generateManagerReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
+        if (evaluation == null) {
+            return;
+        }
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
         OfficeServiceConfiguration serviceConfig = OfficeServiceConfiguration.instance();
@@ -326,6 +329,9 @@ public class PerformanceEvaluationService {
 
     protected Response generateSelfReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
+                if (evaluation == null) {
+            return;
+        }
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
         PdfDocumentData data = new PdfDocumentData();

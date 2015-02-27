@@ -121,7 +121,6 @@ public class ProbationPeriodEvaluationService {
     }
 
     public Response getReport(Long id, String type) {
-        //TODO check permissions? same for performance evals?
         ProbationPeriodEvaluation evaluation = probationPeriodEvaluationDao.findById(id);
         Employee employee = evaluation.getEmployee();
         probationPeriodEvaluationDao.acceccCheck(employee);
@@ -153,20 +152,24 @@ public class ProbationPeriodEvaluationService {
         //Manager 
         if (evaluation.getApprovedBy() != null) {
             Employee manager = employeeDao.findEmployeWithEmpId(evaluation.getApprovedBy());
-            Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "managerSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(manager), null);
-            data.getSignatures().add(approvedBysignature);
-            //TODO is this needed?
-            data.getData().put("managerTitle", manager.getJobTitle());
-            data.getData().put("managerName", manager.getFirstName() + " " + manager.getLastName());
+            if (manager != null) {
+                Signature approvedBysignature = new Signature(manager.getEmployeeId(), manager.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "managerSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(manager), null);
+                data.getSignatures().add(approvedBysignature);
+                //TODO is this needed?
+                data.getData().put("managerTitle", manager.getJobTitle());
+                data.getData().put("managerName", manager.getFirstName() + " " + manager.getLastName());
+            }
         }
         //HR 
         if (evaluation.getHrApprovalBy() != null) {
             Employee hr = employeeDao.findEmployeWithEmpId(evaluation.getHrApprovalBy());
-            Signature hrSignature = new Signature(hr.getEmployeeId(), hr.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "hrSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(hr), null);
-            data.getSignatures().add(hrSignature);
-            //TODO is this needed?
-            data.getData().put("hrTitle", hr.getJobTitle());
-            data.getData().put("hrName", hr.getFirstName() + " " + hr.getLastName());
+            if (hr != null) {
+                Signature hrSignature = new Signature(hr.getEmployeeId(), hr.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "hrSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(hr), null);
+                data.getSignatures().add(hrSignature);
+                //TODO is this needed?
+                data.getData().put("hrTitle", hr.getJobTitle());
+                data.getData().put("hrName", hr.getFirstName() + " " + hr.getLastName());
+            }
         }
         //Employee
         Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
