@@ -59,6 +59,18 @@
                 <Env.MAVEN_OPTS>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n</Env.MAVEN_OPTS>
             </properties>
     </action>
+    <action>
+            <actionName>CUSTOM-gce-test</actionName>
+            <displayName>gce-test</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>-DskipTests</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>gce-test</activatedProfile>
+            </activatedProfiles>
+        </action>
     
     
         
