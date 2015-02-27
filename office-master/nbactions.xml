@@ -22,6 +22,19 @@
                 <skipTests>true</skipTests>
             </properties>
     </action>
+    <action>
+            <actionName>CUSTOM-gce-test</actionName>
+            <displayName>gce-test</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>-DskipTests</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>gce-test</activatedProfile>
+            </activatedProfiles>
+        </action>
+    
     
     
     
