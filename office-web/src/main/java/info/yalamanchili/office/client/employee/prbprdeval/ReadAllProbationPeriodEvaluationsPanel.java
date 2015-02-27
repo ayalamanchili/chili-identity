@@ -212,4 +212,19 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
     public String getInitiateEvaluationUrl() {
         return OfficeWelcome.constants.root_url() + "probation-period-evaluation/initiate-review/" + TreeEmployeePanel.instance().getEntityId();
     }
+
+    @Override
+    protected boolean showDocumentationLink() {
+        return true;
+    }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "perf-eval/probation-period-evaluation-process.html";
+    }
+
+    @Override
+    protected boolean autoShowDocumentation() {
+        return true;
+    }
 }
