@@ -49,10 +49,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ProbationPeriodEvaluationService {
-
+    
     @Autowired
     protected ProbationPeriodEvaluationDao probationPeriodEvaluationDao;
-
+    
     public void initiateProbationPeriodEvaluationReview(Long employeeId) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         if (probationPeriodEvaluationDao.getEvaluations(emp).size() > 0) {
@@ -70,15 +70,16 @@ public class ProbationPeriodEvaluationService {
             evaluation.setBpmProcessId(OfficeBPMService.instance().startProcess("probation_period_evaluation_process", obj));
         }
     }
-
+    
     public void save(ProbationPeriodEvaluationDto dto) {
         ProbationPeriodEvaluation entity = probationPeriodEvaluationDao.findById(dto.getEvaluation().getId());
         entity.setTrainingRequirments(dto.getEvaluation().getTrainingRequirments());
         entity.setAdditionalComments((dto.getEvaluation().getAdditionalComments()));
+        entity.setHrNotes(dto.getEvaluation().getHrNotes());
         entity = probationPeriodEvaluationDao.save(entity);
         createQuestionComments(entity, dto.getComments());
     }
-
+    
     public void delete(Long id) {
         ProbationPeriodEvaluation ticket = probationPeriodEvaluationDao.findById(id);
         Task task = getTaskForTicket(ticket);
@@ -98,7 +99,7 @@ public class ProbationPeriodEvaluationService {
             return null;
         }
     }
-
+    
     public void createQuestionComments(ProbationPeriodEvaluation evaluation, List<QuestionComment> comments) {
         CommentDao commentDao = CommentDao.instance();
         for (QuestionComment comment : comments) {
@@ -115,11 +116,11 @@ public class ProbationPeriodEvaluationService {
             }
         }
     }
-
+    
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
         return QuestionService.instance().getQuestionCommentsForProbationPeriodEvaluations(id, category, context);
     }
-
+    
     public Response getReport(Long id, String type) {
         ProbationPeriodEvaluation evaluation = probationPeriodEvaluationDao.findById(id);
         Employee employee = evaluation.getEmployee();
@@ -147,7 +148,7 @@ public class ProbationPeriodEvaluationService {
         data.getData().put("trainingRequirments", evaluation.getTrainingRequirments());
         data.getData().put("additionalComments", evaluation.getAdditionalComments());
         data.getData().put("hrNotes", evaluation.getHrNotes());
-
+        
         EmployeeDao employeeDao = EmployeeDao.instance();
         //Manager 
         if (evaluation.getApprovedBy() != null) {
@@ -180,7 +181,7 @@ public class ProbationPeriodEvaluationService {
                 .header("Content-Length", pdf)
                 .build();
     }
-
+    
     public static ProbationPeriodEvaluationService instance() {
         return SpringContext.getBean(ProbationPeriodEvaluationService.class);
     }

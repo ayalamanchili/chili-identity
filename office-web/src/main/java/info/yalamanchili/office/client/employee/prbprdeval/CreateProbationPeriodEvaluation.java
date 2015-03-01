@@ -38,7 +38,12 @@ public class CreateProbationPeriodEvaluation extends ALComposite implements Clic
     private static Logger logger = Logger.getLogger(CreateProbationPeriodEvaluation.class.getName());
     protected CaptionPanel cp = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
-    protected HTML purposeHtml = new HTML("<b>Instructions:");
+    protected HTML purposeHtml = new HTML("<h1><strong>Instructions:</strong></h1>\n"
+            + "\n"
+            + "<ul>\n"
+            + "	<li><strong>Please complete the review by entering the information in the below form.</strong></li>\n"
+            + "	<li><b>After completing navigate to Home--&gt; My Tasks --&gt; view the Probation Period Evaluation Task for the Employee and click Complete so the employee is notified to about the review.</b></li>\n"
+            + "</ul>");
     protected CreateQuestionCommentsWidget probationPrdEvaluationQuestionsPanel = new CreateQuestionCommentsWidget(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER, QuestionContext.PROBATION_PERIOD_EVALUATION, true, false, false);
     TextAreaField trainingRequirmentsF = new TextAreaField(OfficeWelcome.constants, "trainingRequirments", "ProbationPeriodEvaluation", false, false, Alignment.VERTICAL);
     TextAreaField additionalCommentsF = new TextAreaField(OfficeWelcome.constants, "additionalComments", "ProbationPeriodEvaluation", false, true, Alignment.VERTICAL);

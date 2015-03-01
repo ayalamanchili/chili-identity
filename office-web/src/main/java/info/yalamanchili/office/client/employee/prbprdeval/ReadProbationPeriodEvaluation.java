@@ -115,5 +115,4 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
     protected String getURI() {
         return OfficeWelcome.instance().constants.root_url() + "probation-period-evaluation/" + entityId;
     }
-
 }

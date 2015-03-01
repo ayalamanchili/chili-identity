@@ -1,4 +1,5 @@
 /**
+ * '
  * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
  */
 /*
@@ -10,20 +11,18 @@ package info.yalamanchili.office.client.employee.prbprdeval;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Frame;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.UpdateComposite;
-import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.ext.question.QuestionCategory;
+import info.yalamanchili.office.client.ext.question.QuestionContext;
+import info.yalamanchili.office.client.ext.question.UpdateAllQuestionCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.statusreport.ReadAllStatusReportPanel;
 import info.yalamanchili.office.client.profile.statusreport.UpdateStatusReportPanel;
 import java.util.logging.Logger;
 
@@ -34,12 +33,8 @@ import java.util.logging.Logger;
 public class UpdateProbationPeriodEvaluation extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateStatusReportPanel.class.getName());
-    protected boolean showPreview;
 
-    public UpdateProbationPeriodEvaluation(String id, Boolean preview) {
-        showPreview = preview;
-        initUpdateComposite(id, "ProbationPeriodEvaluation", OfficeWelcome.constants);
-    }
+    protected UpdateAllQuestionCommentsPanel updateQuestionsPanel;
 
     public UpdateProbationPeriodEvaluation(String id) {
         initUpdateComposite(id, "ProbationPeriodEvaluation", OfficeWelcome.constants);
@@ -49,24 +44,13 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info(response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-
-            }
-        });
-        if (showPreview) {
-            showPreview();
-        }
-    }
-
-    protected void showPreview() {
-        Frame f = new Frame(ChiliClientConfig.instance().getFileDownloadUrl() + "probation-period-evaluation/report" + "&passthrough=true" + "&id=" + entityId);
-        f.setHeight("35em");
-        f.setWidth("50em");
-        new GenericPopup(f).show();
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     protected String getReadURI() {
@@ -75,35 +59,52 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject report = new JSONObject();
-        assignEntityValueFromField("date", entity);
+        JSONObject eval = new JSONObject();
         assignEntityValueFromField("stage", entity);
-
-        logger.info("Dddddd" + entity);
-        return entity;
+        assignEntityValueFromField("evaluationDate", entity);
+        assignEntityValueFromField("approvedBy", entity);
+        assignEntityValueFromField("approvedDate", entity);
+        assignEntityValueFromField("acceptDate", entity);
+        assignEntityValueFromField("hrApprovalBy", entity);
+        assignEntityValueFromField("hrApprovalDate", entity);
+        assignEntityValueFromField("trainingRequirments", entity);
+        assignEntityValueFromField("additionalComments", entity);
+        assignEntityValueFromField("hrNotes", entity);
+        eval.put("evaluation", entity);
+        eval.put("comments", updateQuestionsPanel.getQuestions());
+        logger.info("Dddddd" + eval);
+        return eval;
     }
 
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject reportDocument = entity.get("reportDocument").isObject();
-        assignFieldValueFromEntity("date", reportDocument, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("stage", reportDocument, DataType.TEXT_AREA_FIELD);
+        logger.info("eeee" + entity);
+        assignFieldValueFromEntity("stage", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("evaluationDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("approvedBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("approvedDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("acceptDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("hrApprovalBy", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("hrApprovalDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("trainingRequirments", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("additionalComments", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("hrNotes", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -111,45 +112,50 @@ public class UpdateProbationPeriodEvaluation extends UpdateComposite {
         new ResponseStatusWidget().show("Successfully Updated Status Report Information");
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            if (previewF.getValue()) {
-                TabPanel.instance().homePanel.entityPanel.add(new UpdateProbationPeriodEvaluation(getEntityId(), true));
-            } else {
-                TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
-            }
         }
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel(TreeEmployeePanel.instance().getEntityId()));
         }
-
     }
 
     @Override
     protected void addListeners() {
-        submitForApprovalF.getBox().addClickHandler(this);
-        previewF.getBox().addClickHandler(this);
+
     }
-    BooleanField submitForApprovalF;
-    BooleanField previewF;
 
     @Override
     protected void configure() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected void addWidgets() {
-        addField("date", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("stage", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addEnumField("stage", false, true, ProbationPeriodEvaluationStage.names(), Alignment.HORIZONTAL);
+        addField("evaluationDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("acceptDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("hrApprovalBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("hrApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("trainingRequirments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("additionalComments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("hrNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        alignFields();
+        updateQuestionsPanel = new UpdateAllQuestionCommentsPanel(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER.name(), getQuestionCommentsUrl(QuestionCategory.PROBATION_PERIOD_EVALUATION_MANAGER.name(), QuestionContext.PROBATION_PERIOD_EVALUATION.name()));
+        entityFieldsPanel.add(updateQuestionsPanel);
+    }
+
+    protected String getQuestionCommentsUrl(String category, String context) {
+        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/comments/" + getEntityId() + "?category=" + category + "&context=" + context;
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/save?submitForApproval=" + submitForApprovalF.getValue();
+        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/save";
     }
 }

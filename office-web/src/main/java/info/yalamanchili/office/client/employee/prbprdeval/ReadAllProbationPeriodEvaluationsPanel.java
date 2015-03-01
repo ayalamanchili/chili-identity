@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.employee.prbprdeval;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.ui.Frame;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
 
@@ -20,6 +21,7 @@ import info.chili.gwt.rpc.HttpService;
 
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
@@ -89,16 +91,14 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
 
     @Override
     public void updateClicked(String entityId) {
-        new ResponseStatusWidget().show("Successfully Updated Probation Period Evaluations Information");
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel(parentId));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateProbationPeriodEvaluation((entityId)));
         }
         if (TabPanel.instance().homePanel.isVisible()) {
             TabPanel.instance().homePanel.entityPanel.clear();
-            TabPanel.instance().homePanel.entityPanel.add(new ReadAllProbationPeriodEvaluationsPanel());
+            TabPanel.instance().homePanel.entityPanel.add(new UpdateProbationPeriodEvaluation((entityId)));
         }
-
     }
 
     @Override
@@ -118,7 +118,8 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, "Options");
         table.setText(0, 2, getKeyValue("Stage"));
-        table.setText(0, 3, getKeyValue("Print"));
+        table.setText(0, 3, getKeyValue("Preview"));
+        table.setText(0, 4, getKeyValue("Print"));
 
     }
 
@@ -134,9 +135,22 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
                 table.setWidget(i, 1, managerReviewL);
             }
             table.setText(i, 2, JSONUtils.toString(entity, "stage"));
+            //Preview
+            ClickableLink previewL = new ClickableLink("Preview");
+            previewL.addClickHandler(this);
+            previewL.setTitle(JSONUtils.toString(entity, "id"));
+            table.setWidget(i, 3, previewL);
+            //Print
             FileField managerReviewP = new FileField("Print", ChiliClientConfig.instance().getFileDownloadUrl() + "probation-period-evaluation/report" + "&passthrough=true" + "&id=" + JSONUtils.toString(entity, "id") + "&type=manager");
-            table.setWidget(i, 3, managerReviewP);
+            table.setWidget(i, 4, managerReviewP);
         }
+    }
+
+    protected void showPreview(String entityId) {
+        Frame f = new Frame(ChiliClientConfig.instance().getFileDownloadUrl() + "probation-period-evaluation/report" + "&passthrough=true" + "&id=" + entityId);
+        f.setHeight("35em");
+        f.setWidth("50em");
+        new GenericPopup(f).show();
     }
 
     public boolean enableReview(JSONObject entity) {
@@ -198,6 +212,9 @@ public class ReadAllProbationPeriodEvaluationsPanel extends CRUDReadAllComposite
             ClickableLink link = (ClickableLink) event.getSource();
             if (link.getText().contains("Manager")) {
                 createManagerReview(link.getTitle());
+            }
+            if (link.getText().contains("Preview")) {
+                showPreview(link.getTitle());
             }
         } else {
             super.onClick(event);
