@@ -84,7 +84,7 @@ public class SessionTimeoutMonitor {
                         new AsyncCallback<String>() {
                             @Override
                             public void onSuccess(String arg0) {
-                                new ResponseStatusWidget().show("Session renued... Please continue");
+                                new ResponseStatusWidget().show("Session renewed... Please continue");
                             }
 
                             @Override

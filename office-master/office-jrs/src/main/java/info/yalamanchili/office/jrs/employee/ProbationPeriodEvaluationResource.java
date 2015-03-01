@@ -12,8 +12,8 @@ import info.yalamanchili.office.dao.employee.ProbationPeriodEvaluationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.QuestionComment;
-import info.yalamanchili.office.employee.perfeval.PerformanceEvaluationService;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationDto;
+import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationInitiator;
 import info.yalamanchili.office.employee.probeval.ProbationPeriodEvaluationService;
 import info.yalamanchili.office.entity.employee.ProbationPeriodEvaluation;
 import info.yalamanchili.office.entity.ext.QuestionCategory;
@@ -53,7 +53,7 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
     @GET
     @Path("/initiate-review/{employeeId}")
     public void initiateReview(@PathParam("employeeId") Long employeeId) {
-        probationPeriodEvaluationService.initiateProbationPeriodEvaluationReview(employeeId);
+        ProbationPeriodEvaluationInitiator.instance().initiateProbationPeriodEvaluationReview(employeeId);
     }
 
     @PUT
