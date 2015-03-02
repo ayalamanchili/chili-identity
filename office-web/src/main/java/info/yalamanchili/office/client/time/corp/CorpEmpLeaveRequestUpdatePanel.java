@@ -13,6 +13,7 @@ import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -61,11 +62,12 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     @Override
     protected void addWidgets() {
         addDropDown("employee", employeeF);
-        addEnumField("category", false, true, LeaveRequestTimeCategory.names());
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("hours", false, true, DataType.FLOAT_FIELD);
-        addField("notes", false, true, DataType.TEXT_AREA_FIELD);
+        addEnumField("category", false, true, LeaveRequestTimeCategory.names(), Alignment.HORIZONTAL);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("hours", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override
@@ -82,7 +84,6 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "corporate-timesheet/update-leave-request";
     }
-
     MultiSelectSuggestBox employeesSB = new MultiSelectSuggestBox() {
         @Override
         public void initTosSuggesBox() {
@@ -111,5 +112,4 @@ public class CorpEmpLeaveRequestUpdatePanel extends UpdateCorporateTimeSheetPane
     protected String getDocumentationLink() {
         return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "timesheets/update-cancel-leave-request.html";
     }
-
 }
