@@ -34,7 +34,7 @@ public class HomeAddressChangeProcessBean {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
-        email.setSubject("Address pdated Review");
+        email.setSubject("Address Updated Review");
         email.setBody("Your Address updated review as been completed");
         messagingService.sendEmail(email);
 
