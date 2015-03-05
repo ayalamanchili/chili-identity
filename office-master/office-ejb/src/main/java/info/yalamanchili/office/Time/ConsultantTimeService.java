@@ -168,6 +168,7 @@ public class ConsultantTimeService {
         if (entity.getCreatedTimeStamp() != null) {
             data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
         }
+        data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
         data.getData().put("createdTimeStamp", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
