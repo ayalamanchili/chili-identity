@@ -170,6 +170,7 @@ public class ConsultantTimeService {
         }
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
+        data.getData().put("createdTimeStamp", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
         data.getData().put("notes", entity.getNotes());
         if (entity.getApprovedBy() != null) {
             Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());
