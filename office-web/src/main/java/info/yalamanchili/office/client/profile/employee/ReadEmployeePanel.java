@@ -117,6 +117,9 @@ public class ReadEmployeePanel extends ReadComposite {
     protected boolean canViewDOBField() {
         return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
     }
+    protected boolean canViewWorkStatus(){
+        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR);
+    }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
