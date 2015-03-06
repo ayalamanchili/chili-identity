@@ -92,6 +92,7 @@ public class Employee extends Contact {
     /**
      *
      */
+    @Enumerated(EnumType.STRING)
     protected WorkStatus workStatus;
 
     public Branch getBranch() {

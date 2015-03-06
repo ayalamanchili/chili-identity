@@ -19,6 +19,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 
 public class UpdateAddressPanel extends UpdateComposite {
 
@@ -51,6 +52,9 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
             assignEntityValueFromField("addressType", entity);
             assignEntityValueFromField("notifyChange", entity);
+            assignEntityValueFromField("immigration", entity);
+            assignEntityValueFromField("healthInsurance", entity);
+            assignEntityValueFromField("hrChange", entity);
             assignEntityValueFromField("changeNotes", entity);
         }
         logger.info(entity.toString());
@@ -63,16 +67,20 @@ public class UpdateAddressPanel extends UpdateComposite {
         logger.info(entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
     }
 
     @Override
@@ -95,6 +103,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
+        populateComments();
     }
 
     @Override
@@ -122,9 +131,12 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("immigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("healthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("hrChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
-         alignFields();
+        alignFields();
     }
 
     @Override

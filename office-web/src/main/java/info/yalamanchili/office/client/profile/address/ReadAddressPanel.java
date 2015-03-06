@@ -18,6 +18,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -53,13 +54,17 @@ public class ReadAddressPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("read ec6 response" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info("read ec6 response" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
     }
 
     @Override
@@ -73,6 +78,7 @@ public class ReadAddressPanel extends ReadComposite {
         if (ReadAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
+        populateComments();
     }
 
     @Override
