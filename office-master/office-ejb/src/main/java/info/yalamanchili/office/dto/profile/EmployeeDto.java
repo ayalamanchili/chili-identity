@@ -14,6 +14,7 @@ import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.entity.profile.Sex;
+import info.yalamanchili.office.entity.profile.WorkStatus;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.EnumType;
@@ -56,6 +57,7 @@ public class EmployeeDto implements Serializable {
     @Max(40)
     @Min(1)
     protected Integer hoursPerWeek;
+    protected WorkStatus workStatus;
     protected String imageURL;
     @NotNull(message = "{startDate.not.empty.msg}")
     protected Date startDate;
@@ -145,6 +147,14 @@ public class EmployeeDto implements Serializable {
         this.hoursPerWeek = hoursPerWeek;
     }
 
+    public WorkStatus getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(WorkStatus workStatus) {
+        this.workStatus = workStatus;
+    }
+
     public String getImageURL() {
         return imageURL;
     }
@@ -219,7 +229,7 @@ public class EmployeeDto implements Serializable {
 
     @Override
     public String toString() {
-        return "EmployeeDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + ", jobTitle=" + jobTitle + ", employeeType=" + employeeType + '}';
+        return "EmployeeDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", employeeId=" + employeeId + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", startDate=" + startDate + ", email=" + email + ", phoneNumber=" + phoneNumber + ", jobTitle=" + jobTitle + ", employeeType=" + employeeType + ", workStatus=" + workStatus + '}';
     }
 
     public static EmployeeDto map(Mapper mapper, info.yalamanchili.office.entity.profile.Employee entity) {

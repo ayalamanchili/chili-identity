@@ -89,6 +89,10 @@ public class Employee extends Contact {
     @Max(40)
     @Min(1)
     protected Integer hoursPerWeek;
+    /**
+     *
+     */
+    protected WorkStatus workStatus;
 
     public Branch getBranch() {
         return branch;
@@ -433,6 +437,20 @@ public class Employee extends Contact {
 
     @Override
     public String toString() {
-        return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + '}';
+        return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", workStatus=" + workStatus + '}';
+    }
+
+    /**
+     * @return the workStatus
+     */
+    public WorkStatus getWorkStatus() {
+        return workStatus;
+    }
+
+    /**
+     * @param workStatus the workStatus to set
+     */
+    public void setWorkStatus(WorkStatus workStatus) {
+        this.workStatus = workStatus;
     }
 }

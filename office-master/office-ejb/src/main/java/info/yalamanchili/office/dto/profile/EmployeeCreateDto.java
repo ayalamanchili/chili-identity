@@ -10,6 +10,7 @@ package info.yalamanchili.office.dto.profile;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Sex;
+import info.yalamanchili.office.entity.profile.WorkStatus;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.EnumType;
@@ -47,6 +48,7 @@ public class EmployeeCreateDto implements Serializable {
     protected String email;
     protected String phoneNumber;
     protected Branch branch;
+    protected WorkStatus workStatus;
     protected String jobTitle;
     @NotNull(message = "{employeetype.not.null.msg}")
     protected EmployeeType employeeType;
@@ -136,6 +138,14 @@ public class EmployeeCreateDto implements Serializable {
         this.branch = branch;
     }
 
+    public WorkStatus getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(WorkStatus workStatus) {
+        this.workStatus = workStatus;
+    }
+
     public String getJobTitle() {
         return jobTitle;
     }
@@ -170,6 +180,6 @@ public class EmployeeCreateDto implements Serializable {
 
     @Override
     public String toString() {
-        return "EmployeeCreateDto{" + "firstName=" + firstName + ", lastName=" + lastName + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", email=" + email + ", employeeType=" + employeeType + '}';
+        return "EmployeeCreateDto{" + "firstName=" + firstName + ", lastName=" + lastName + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", email=" + email + ", employeeType=" + employeeType + ", workStatus=" + workStatus + '}';
     }
 }

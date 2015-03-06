@@ -19,6 +19,7 @@ import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
+import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 
 public class CreateEmployeePanel extends CreateComposite {
@@ -50,6 +51,9 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("employeeType", employee);
         assignEntityValueFromField("jobTitle", employee);
         assignEntityValueFromField("branch", employee);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR)) {
+            assignEntityValueFromField("workStatus", employee);
+        }
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", employee);
         }
@@ -80,6 +84,9 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("passwordHash", false, true, DataType.PASSWORD_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR)) {
+            addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
+        }
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }

@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
+import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWidget;
 import java.util.logging.Logger;
 
@@ -69,6 +70,9 @@ public class ReadEmployeePanel extends ReadComposite {
         assignFieldValueFromEntity("jobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("branch", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR)) {
+            assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
+        }
         assignFieldValueFromEntity("company", entity, null);
         if (Auth.isAdmin()) {
             assignFieldValueFromEntity("ssn", entity, DataType.STRING_FIELD);
@@ -104,6 +108,9 @@ public class ReadEmployeePanel extends ReadComposite {
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, false, Branch.names(), Alignment.HORIZONTAL);
         addField("hoursPerWeek", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR)) {
+            addEnumField("workStatus", true, false, WorkStatus.names(), Alignment.HORIZONTAL);
+        }
         addDropDown("company", selectCompnayWidget);
         if (Auth.isAdmin()) {
             addField("ssn", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -116,9 +123,6 @@ public class ReadEmployeePanel extends ReadComposite {
 
     protected boolean canViewDOBField() {
         return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP);
-    }
-    protected boolean canViewWorkStatus(){
-        return Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR);
     }
 
     @Override
