@@ -52,9 +52,9 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
             assignEntityValueFromField("addressType", entity);
             assignEntityValueFromField("notifyChange", entity);
-            assignEntityValueFromField("immigration", entity);
-            assignEntityValueFromField("healthInsurance", entity);
-            assignEntityValueFromField("hrChange", entity);
+//            assignEntityValueFromField("immigration", entity);
+//            assignEntityValueFromField("healthInsurance", entity);
+//            assignEntityValueFromField("hrChange", entity);
             assignEntityValueFromField("changeNotes", entity);
         }
         logger.info(entity.toString());
@@ -79,9 +79,9 @@ public class UpdateAddressPanel extends UpdateComposite {
         });
     }
 
-    protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
-    }
+//    protected void populateComments() {
+//        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
+//    }
 
     @Override
     protected void postUpdateSuccess(String result) {
@@ -103,7 +103,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
-        populateComments();
+//        populateComments();
     }
 
     @Override
@@ -131,9 +131,9 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("immigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("healthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-            addField("hrChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//            addField("immigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//            addField("healthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//            addField("hrChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
