@@ -56,7 +56,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         assignEntityValueFromField("jobTitle", entity);
         assignEntityValueFromField("branch", entity);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignEntityValueFromField("workStatus", entity);
         }
         if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
@@ -118,7 +118,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR)) {
             assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
         }
-        if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         }
         if (fields.containsKey("company")) {
