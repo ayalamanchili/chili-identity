@@ -82,26 +82,12 @@ public class Address extends AbstractEntity {
     @ManyToOne
     @ForeignKey(name = "FK_AddressType_Addresses")
     protected AddressType addressType;
+
     /**
      * @generated
      */
     @Transient
     protected boolean notifyChange;
-    /**
-     * @generated
-     */
-    @Transient
-    protected boolean immigration;
-    /**
-     * @generated
-     */
-    @Transient
-    protected boolean healthInsurance;
-    /**
-     * @generated
-     */
-    @Transient
-    protected boolean hrChange;
     /**
      *
      */
@@ -247,48 +233,6 @@ public class Address extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Address{" + "street1=" + street1 + ", street2=" + street2 + ", city=" + city + ", state=" + state + ", country=" + country + ", zip=" + zip + ", contact=" + contact + ", addressType=" + addressType + ", immigration=" + immigration + ", healthInsurance=" + healthInsurance + ", hrChange=" + hrChange + '}';
-    }
-
-    /**
-     * @return the immigration
-     */
-    public boolean isImmigration() {
-        return immigration;
-    }
-
-    /**
-     * @param immigration the immigration to set
-     */
-    public void setImmigration(boolean immigration) {
-        this.immigration = immigration;
-    }
-
-    /**
-     * @return the healthInsurance
-     */
-    public boolean isHealthInsurance() {
-        return healthInsurance;
-    }
-
-    /**
-     * @param healthInsurance the healthInsurance to set
-     */
-    public void setHealthInsurance(boolean healthInsurance) {
-        this.healthInsurance = healthInsurance;
-    }
-
-    /**
-     * @return the hrChange
-     */
-    public boolean isHrChange() {
-        return hrChange;
-    }
-
-    /**
-     * @param hrChange the hrChange to set
-     */
-    public void setHrChange(boolean hrChange) {
-        this.hrChange = hrChange;
+        return "Address{" + "street1=" + street1 + ", street2=" + street2 + ", city=" + city + ", state=" + state + ", country=" + country + ", zip=" + zip + ", contact=" + contact + ", addressType=" + addressType + '}';
     }
 }
