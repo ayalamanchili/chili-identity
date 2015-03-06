@@ -103,7 +103,7 @@ public class ReadCorporateTimeSheetPanel extends ReadComposite {
 
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION);
+        return true;
     }
 
     @Override

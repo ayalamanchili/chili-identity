@@ -95,7 +95,7 @@ public class OfficeSchedulerService {
     /**
      * runs every night at 1.20 AM
      */
-//    @Scheduled(cron = "0 20 1 * * ?")
+    @Scheduled(cron = "0 20 1 * * ?")
     public void initiateProbationPeriodEvaluations() {
         ProbationPeriodEvaluationInitiator.instance().initiateNewHireProbationPeriodEvaluations();
     }

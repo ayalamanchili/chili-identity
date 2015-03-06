@@ -25,7 +25,6 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
 import info.yalamanchili.office.dao.time.SearchConsultantTimeSheetDto;
 import info.yalamanchili.office.dto.time.ConsultantTimeSummary;
-import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.ConsultantTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -168,10 +167,11 @@ public class ConsultantTimeService {
         if (entity.getCreatedTimeStamp() != null) {
             data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
         }
-        data.getData().put("requestedDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
         data.getData().put("startDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getStartDate()));
         data.getData().put("endDate", new SimpleDateFormat("MM-dd-yyyy").format(entity.getEndDate()));
-        data.getData().put("createdTimeStamp", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
+        if (entity.getCreatedTimeStamp() != null) {
+            data.getData().put("createdTimeStamp", new SimpleDateFormat("MM-dd-yyyy").format(entity.getCreatedTimeStamp()));
+        }
         data.getData().put("notes", entity.getNotes());
         if (entity.getApprovedBy() != null) {
             Employee approver = employeeDao.findEmployeWithEmpId(entity.getApprovedBy());

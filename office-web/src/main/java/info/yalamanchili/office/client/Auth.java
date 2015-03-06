@@ -84,6 +84,10 @@ public class Auth {
         return OfficeWelcome.instance().roles.contains(ROLE.ROLE_CORPORATE_EMPLOYEE.name());
     }
 
+    public static boolean isConsultantEmployee(JSONObject employee) {
+        return JSONUtils.toString(employee.get("employeeType"), "name").equals("Employee");
+    }
+
     public static boolean isConsultantEmployee() {
         return JSONUtils.toString(OfficeWelcome.instance().employee.get("employeeType"), "name").equals("Employee");
     }
