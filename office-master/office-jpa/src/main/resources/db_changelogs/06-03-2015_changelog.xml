@@ -15,7 +15,7 @@
         <addColumn catalogName="office"
                    schemaName="public"
                    tableName="contact">
-            <column name="workStaus" type="varchar(255)"/>
+            <column name="workStatus" type="varchar(255)"/>
         </addColumn>
         <addColumn catalogName="office"
                    schemaName="public"

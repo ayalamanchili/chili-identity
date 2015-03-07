@@ -54,8 +54,8 @@ import org.jasypt.hibernate.type.EncryptedStringType;
  */
 @TypeDef(name = "encryptedString", typeClass = EncryptedStringType.class,
         parameters = {
-    @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
-})
+            @Parameter(name = "encryptorRegisteredName", value = "hibernateStringEncryptor")
+        })
 @Indexed
 @XmlRootElement
 @Entity
@@ -436,11 +436,6 @@ public class Employee extends Contact {
         return digitPattern.matcher(str).matches();
     }
 
-    @Override
-    public String toString() {
-        return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", workStatus=" + workStatus + '}';
-    }
-
     /**
      * @return the workStatus
      */
@@ -454,4 +449,10 @@ public class Employee extends Contact {
     public void setWorkStatus(WorkStatus workStatus) {
         this.workStatus = workStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Contact{" + "firstName=" + firstName + ", lastName=" + lastName + ", middleInitial=" + middleInitial + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", imageURL=" + imageURL + ", workStatus=" + workStatus + '}';
+    }
+
 }
