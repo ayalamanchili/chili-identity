@@ -37,35 +37,34 @@ public class HomeAddressChangeProcessBean {
     @Autowired
     protected MailUtils mailUtils;
 
-    public void sendAddressChangeRequestSubmittedEmail(Address address, TicketComment comment) {
+    public void sendAddressChangeRequestSubmittedEmail(Address address) {
 
 
-        Employee commentAuthor = OfficeSecurityService.instance().getCurrentUser();
-        String[] roles = {OfficeRoles.OfficeRole.ROLE_RECRUITER.name()};
-        Email email = new Email();
-        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
-        StringBuilder subject = new StringBuilder();
-        subject.append(commentAuthor.getFirstName()).append(" ").append(commentAuthor.getLastName()).append(" updated ticket:").append(comment.getTicket().getSubject());
-        email.setSubject(subject.toString());
-        Map<String, Object> emailCtx = new HashMap<String, Object>();
-        emailCtx.put("currentComment", comment);
-        emailCtx.put("ticket", comment.getTicket());
-        emailCtx.put("ticketDepartment", OfficeRoles.rolesMessages.get(comment.getTicket().getDepartmentAssigned().getRolename()));
-
-        email.setTemplateName("address_update_template.html");
-        email.setContext(emailCtx);
-        email.setHtml(Boolean.TRUE);
-        MessagingService.instance().sendEmail(email);
+//        Employee commentAuthor = OfficeSecurityService.instance().getCurrentUser();
+//        String[] roles = {OfficeRoles.OfficeRole.ROLE_RECRUITER.name()};
+//        Email email = new Email();
+//        email.setTos(mailUtils.getEmailsAddressesForRoles(roles));
+//        StringBuilder subject = new StringBuilder();
+//        
+//        email.setSubject(subject.toString());
+//        Map<String, Object> emailCtx = new HashMap<String, Object>();
+//
+//       
+//
+//        email.setTemplateName("address_update_template.html");
+//        email.setContext(emailCtx);
+//        email.setHtml(Boolean.TRUE);
+//        MessagingService.instance().sendEmail(email);
 
     }
 
-    public void sendAddressChangeRequestCompletedEmail(Address address, Employee employee) {
-        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
-        Email email = new Email();
-        email.addTo(EmployeeDao.instance().getPrimaryEmail(employee));
-        email.setSubject("Address Updated Review");
-        email.setBody("Your Address updated review as been completed");
-        messagingService.sendEmail(email);
+    public void sendAddressChangeRequestCompletedEmail(Address address) {
+//        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+//        Email email = new Email();
+//        
+//        email.setSubject("Address Updated Review");
+//        email.setBody("Your Address updated review as been completed");
+//        messagingService.sendEmail(email);
 
     }
 }

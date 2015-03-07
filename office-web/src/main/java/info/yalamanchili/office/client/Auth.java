@@ -29,6 +29,7 @@ public class Auth {
         ROLE_IT_DEVELOPER,
         ROLE_CORPORATE_DATA,
         ROLE_PRB_EVALUATIONS_MANAGER,
+        ROLE_HEALTH_INSURANCE_MANAGER,
     }
 
     public static boolean isAdmin() {
