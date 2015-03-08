@@ -175,6 +175,7 @@
                 City                                : ${entity.city}
                 State                               : ${entity.state}
                 Zip                                 : ${entity.zip} 
+                Payroll Dept Notes                  : ${payrollDeptNotes}
                 More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
             </documentation>
             <extensionElements>
