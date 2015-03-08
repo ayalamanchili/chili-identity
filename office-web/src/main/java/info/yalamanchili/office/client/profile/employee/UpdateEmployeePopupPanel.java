@@ -16,6 +16,7 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.ProfileHome;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
+import info.yalamanchili.office.client.profile.contact.WorkStatus;
 
 /**
  *
@@ -45,6 +46,9 @@ public class UpdateEmployeePopupPanel extends UpdateEmployeePanel {
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", true, true, Branch.names(), Alignment.HORIZONTAL);
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR)) {
+            addEnumField("workStatus", true, true, WorkStatus.names(), Alignment.HORIZONTAL);
+        }
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         }
