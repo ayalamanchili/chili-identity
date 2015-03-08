@@ -37,14 +37,12 @@
                 Address Change Notes From Employee  : ${entity.changeNotes} 
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
-                City                                : ${entity.city}
-                State                               : ${entity.state}
-                Zip                                 : ${entity.zip} 
+                City, State, Zip                    : ${entity.city}, ${entity.state}, ${entity.zip} 
                 More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="payrollDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
@@ -85,14 +83,12 @@
                 Address Change Notes From Employee  : ${entity.changeNotes} 
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
-                City                                : ${entity.city}
-                State                               : ${entity.state}
-                Zip                                 : ${entity.zip} 
+                City, State, Zip                    : ${entity.city}, ${entity.state}, ${entity.zip} 
                 More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="immigrationDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
@@ -129,14 +125,12 @@
                 Address Change Notes From Employee  : ${entity.changeNotes} 
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
-                City                                : ${entity.city}
-                State                               : ${entity.state}
-                Zip                                 : ${entity.zip} 
+                City, State, Zip                    : ${entity.city}, ${entity.state}, ${entity.zip} 
                 More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="healthInsuranceDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
@@ -172,15 +166,17 @@
                 Address Change Notes From Employee  : ${entity.changeNotes} 
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
-                City                                : ${entity.city}
-                State                               : ${entity.state}
-                Zip                                 : ${entity.zip} 
+                City, State, Zip                    : ${entity.city}, ${entity.state}, ${entity.zip} 
+--------------------------------------#Notes#----------------------------------------------------------------
                 Payroll Dept Notes                  : ${payrollDeptNotes}
+                Immigration Dept Notes              : ${immigrationDeptNotes}
+                Health Insurance Dept Notes         : ${healthInsuranceDeptNotes}
+-------------------------------------------------------------------------------------------------------------                
                 More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="hrAdminDeptNotes" type="string" required="false" name="Notes"/>
             </extensionElements>             
         </userTask>

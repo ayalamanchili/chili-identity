@@ -6,6 +6,7 @@ package info.yalamanchili.office.jrs.profile;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.profile.BPMProfileService;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -14,8 +15,10 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
+import java.util.HashMap;
 
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.PUT;
 
 import javax.ws.rs.Path;
@@ -51,7 +54,7 @@ public class AddressResource extends CRUDResource<Address> {
     @Validate
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
-        processAddressUpdateNotification(entity, null);
+        processAddressUpdateNotificationV2(entity, null, true, true, true);
         return save(entity);
     }
 
@@ -61,6 +64,23 @@ public class AddressResource extends CRUDResource<Address> {
         }
         if (emp.getEmployeeType().getName().equals("Employee") && entity.isNotifyChange()) {
             BPMProfileService.instance().startAddressUpdatedProcess(entity, emp, entity.getChangeNotes());
+        }
+    }
+
+    public void processAddressUpdateNotificationV2(Address entity, Employee emp, boolean primaryMailingAddress, boolean notifyImmigration, boolean notifyHealthInsurance) {
+        if (emp == null) {
+            emp = EmployeeDao.instance().findById(entity.getContact().getId());
+        }
+        if (emp.getEmployeeType().getName().equals("Employee") && entity.isNotifyChange()) {
+            Map<String, Object> vars = new HashMap<String, Object>();
+            vars.put("entity", entity);
+            vars.put("entityId", entity.getId());
+            vars.put("employeeName", emp.getFirstName() + " " + emp.getLastName());
+            //notify flags
+            vars.put("primaryMailingAddress", true);
+            vars.put("${notifyImmigration", true);
+            vars.put("${notifyHealthInsurance", true);
+            OfficeBPMService.instance().startProcess("home_address_update_process", vars);
         }
     }
 
