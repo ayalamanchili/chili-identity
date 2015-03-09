@@ -57,6 +57,7 @@
             <build> 
                 <filters>
                     <filter>src/main/resources/env/office-service-dev.properties</filter>
+                    <filter>src/main/resources/env/office-feature-flipper-dev.properties</filter>
                 </filters>
             </build>
         </profile>
@@ -65,6 +66,7 @@
             <build> 
                 <filters>
                     <filter>src/main/resources/env/office-service-test.properties</filter>
+                    <filter>src/main/resources/env/office-feature-flipper-test.properties</filter>
                 </filters>
             </build>
         </profile>
@@ -73,6 +75,7 @@
             <build> 
                 <filters>
                     <filter>src/main/resources/env/office-service-prod.properties</filter>
+                    <filter>src/main/resources/env/office-feature-flipper-prod.properties</filter>
                 </filters>
             </build>
         </profile>
@@ -81,6 +84,7 @@
             <build> 
                 <filters>
                     <filter>src/main/resources/env/office-service-gce-test.properties</filter>
+                    <filter>src/main/resources/env/office-feature-flipper-gce-test.properties</filter>
                 </filters>
             </build>
         </profile>        

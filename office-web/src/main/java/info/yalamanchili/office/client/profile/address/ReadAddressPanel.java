@@ -54,18 +54,18 @@ public class ReadAddressPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
-//    protected void populateComments() {
-//        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
-//    }
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
+    }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
@@ -78,7 +78,7 @@ public class ReadAddressPanel extends ReadComposite {
         if (ReadAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
-//        populateComments();
+        populateComments();
     }
 
     @Override

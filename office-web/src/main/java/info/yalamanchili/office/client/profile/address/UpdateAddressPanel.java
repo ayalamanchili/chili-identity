@@ -67,21 +67,21 @@ public class UpdateAddressPanel extends UpdateComposite {
         logger.info(entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
-//    protected void populateComments() {
-//        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
-//    }
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.Address"));
+    }
 
     @Override
     protected void postUpdateSuccess(String result) {
@@ -103,7 +103,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
-//        populateComments();
+        populateComments();
     }
 
     @Override

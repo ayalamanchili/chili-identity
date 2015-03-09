@@ -28,5 +28,5 @@
     </bean>
     
     <util:properties id="officeProperties" location="classpath:office-service.properties" />  
-
+    <util:properties id="officeFeatureFlipperProperties" location="classpath:office-feature-flipper.properties" />  
 </beans>

@@ -26,16 +26,20 @@ public class HomeAddressChangeProcess implements TaskListener {
     @Override
     public void notify(DelegateTask task) {
         if ("create".equals(task.getEventName())) {
-            addressChangeTaskCreated();
+            addressChangeTaskCreated(task);
         }
         if ("complete".equals(task.getEventName())) {
-
+            addressChangeTaskCompleted(task);
         }
     }
 
     protected void addressChangeTaskCreated(DelegateTask task) {
-        String taskName = task.getName();
+        //TODO
+        new GenericTaskCreateNotification().notify(task);
+    }
 
+    protected void addressChangeTaskCompleted(DelegateTask task) {
+        String taskName = task.getTaskDefinitionKey();
         switch (taskName) {
             case "updateAddressPayrollTask":
                 String payrollDeptNotes = (String) task.getExecution().getVariable("payrollDeptNotes");
@@ -57,10 +61,6 @@ public class HomeAddressChangeProcess implements TaskListener {
                 break;
             default:
         }
-        new GenericTaskCreateNotification().notify(task);
-    }
-
-    protected void addressChangeTaskCreated(DelegateTask task) {
         new GenericTaskCompleteNotification().notify(task);
     }
 

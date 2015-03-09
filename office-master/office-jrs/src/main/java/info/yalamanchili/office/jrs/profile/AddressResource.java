@@ -8,6 +8,7 @@ import info.chili.jpa.validation.Validate;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.profile.BPMProfileService;
+import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -54,7 +55,11 @@ public class AddressResource extends CRUDResource<Address> {
     @Validate
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
-        processAddressUpdateNotificationV2(entity, null, true, true, true);
+        if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess()) {
+            processAddressUpdateNotificationV2(entity, null, true, true, true);
+        } else {
+            processAddressUpdateNotification(entity, null);
+        }
         return save(entity);
     }
 
@@ -71,15 +76,16 @@ public class AddressResource extends CRUDResource<Address> {
         if (emp == null) {
             emp = EmployeeDao.instance().findById(entity.getContact().getId());
         }
+        //TODO checl address type==home
         if (emp.getEmployeeType().getName().equals("Employee") && entity.isNotifyChange()) {
             Map<String, Object> vars = new HashMap<String, Object>();
             vars.put("entity", entity);
             vars.put("entityId", entity.getId());
             vars.put("employeeName", emp.getFirstName() + " " + emp.getLastName());
             //notify flags
-            vars.put("primaryMailingAddress", true);
-            vars.put("${notifyImmigration", true);
-            vars.put("${notifyHealthInsurance", true);
+            vars.put("primaryMailingAddress", primaryMailingAddress);
+            vars.put("notifyImmigration", notifyImmigration);
+            vars.put("notifyHealthInsurance", notifyHealthInsurance);
             OfficeBPMService.instance().startProcess("home_address_update_process", vars);
         }
     }

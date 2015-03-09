@@ -42,7 +42,7 @@
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="payrollDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
@@ -88,7 +88,7 @@
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="immigrationDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
@@ -130,7 +130,7 @@
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="healthInsuranceDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
@@ -176,7 +176,7 @@
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.address.HomeAddressChangeProcess" />
                 <activiti:formProperty id="hrAdminDeptNotes" type="string" required="false" name="Notes"/>
             </extensionElements>             
         </userTask>
