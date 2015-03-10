@@ -15,6 +15,7 @@ import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
+import info.yalamanchili.office.client.ext.externalReferences.ReadAllExternalRefPanel;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
@@ -106,7 +107,7 @@ public class MyOfficeMenu extends Composite {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllExternalReferencesPanel());            
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllExternalRefPanel());            
         }
     };
 }
