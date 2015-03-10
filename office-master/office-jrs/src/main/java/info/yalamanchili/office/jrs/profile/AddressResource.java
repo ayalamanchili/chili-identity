@@ -58,7 +58,7 @@ public class AddressResource extends CRUDResource<Address> {
         if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess()) {
             processAddressUpdateNotificationV2(entity, null, true, true, true);
         } else {
-            processAddressUpdateNotification(entity, null);
+//            processAddressUpdateNotification(entity, null);
         }
         return save(entity);
     }

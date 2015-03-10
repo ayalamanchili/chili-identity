@@ -12,11 +12,12 @@ package info.yalamanchili.office.entity.profile;
  * @author chaitanya.k
  */
 public enum WorkStatus {
-    
+
     /**
      * @generated
      */
     OPT,
+    CPT,
     /**
      * @generated
      */
@@ -25,8 +26,9 @@ public enum WorkStatus {
      * @generated
      */
     GREENCARD,
+    GREENCARD_EAD,
     /**
      * @generated
      */
     CITIZEN
-  }
+}
