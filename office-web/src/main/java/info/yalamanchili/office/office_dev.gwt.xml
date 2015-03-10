@@ -8,9 +8,6 @@
 
     <!-- logging -->
     <inherits name="com.google.gwt.logging.Logging" />
-    <!-- Enable Firebug logger and disable console logger -->
-    <set-property name="gwt.logging.firebugHandler" value="ENABLED" />
-    <set-property name="gwt.logging.popupHandler" value="DISABLED" />
 
     <!-- GWT Super Dev mode -->
     <add-linker name="xsiframe"/>
