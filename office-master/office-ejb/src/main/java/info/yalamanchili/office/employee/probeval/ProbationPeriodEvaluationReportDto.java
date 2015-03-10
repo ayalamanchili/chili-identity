@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -16,6 +19,7 @@ public class ProbationPeriodEvaluationReportDto implements Serializable {
     private String employee;
     private Date startDate;
     private String stage;
+    protected String email;
 
     /**
      * @return the employee
@@ -57,5 +61,19 @@ public class ProbationPeriodEvaluationReportDto implements Serializable {
      */
     public void setStage(String stage) {
         this.stage = stage;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

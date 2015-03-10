@@ -11,6 +11,7 @@ package info.yalamanchili.office.employee.probeval;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
 import info.chili.commons.pdf.PdfDocumentData;
+import info.chili.reporting.ReportGenerator;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
@@ -29,12 +30,17 @@ import info.yalamanchili.office.entity.ext.QuestionCategory;
 import info.yalamanchili.office.entity.ext.QuestionContext;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.ext.QuestionService;
+import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Response;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -46,6 +52,8 @@ public class ProbationPeriodEvaluationService {
 
     @Autowired
     protected ProbationPeriodEvaluationDao probationPeriodEvaluationDao;
+    @Autowired
+    protected Mapper mapper;
 
     public void save(ProbationPeriodEvaluationDto dto) {
         ProbationPeriodEvaluation entity = probationPeriodEvaluationDao.findById(dto.getEvaluation().getId());
@@ -156,6 +164,21 @@ public class ProbationPeriodEvaluationService {
                 .header("content-disposition", "filename = probation-period-evaluation.pdf")
                 .header("Content-Length", pdf)
                 .build();
+    }
+
+    @Async
+    @Transactional
+    public void generateEmployeProbationPeriodEvalInfoReport(String email) {
+        List<ProbationPeriodEvaluationReportDto> res = new ArrayList<ProbationPeriodEvaluationReportDto>();
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
+            ProbationPeriodEvaluationReportDto dto = mapper.map(emp, ProbationPeriodEvaluationReportDto.class);
+            dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+            dto.setEmail(EmployeeDao.instance().getPrimaryEmail(emp));
+            dto.setStartDate(emp.getStartDate());
+
+            res.add(dto);
+        }
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "probation-period-evaluation-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     public static ProbationPeriodEvaluationService instance() {
