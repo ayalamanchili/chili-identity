@@ -90,8 +90,12 @@ public class ReadAllCorporateTimeSheetPanel extends CRUDReadAllComposite impleme
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().timePanel.entityPanel.clear();
-        TabPanel.instance().timePanel.entityPanel.add(new UpdateCorporateTimeSheetPanel(getEntity(entityId)));
+        if (JSONUtils.toString(getEntity(entityId), "category").equals("PTO_ACCRUED")) {
+            new GenericPopup(new PTOAccruedHoursAdjustmentPanel(parentId, getEntity(entityId))).show();
+        } else {
+            TabPanel.instance().timePanel.entityPanel.clear();
+            TabPanel.instance().timePanel.entityPanel.add(new UpdateCorporateTimeSheetPanel(getEntity(entityId)));
+        }
     }
 
     @Override

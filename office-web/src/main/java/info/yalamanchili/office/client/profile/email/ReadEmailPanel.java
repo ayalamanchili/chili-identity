@@ -15,6 +15,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.yalamanchili.office.client.profile.emailtype.SelectEmailTypeWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.Auth;
 import java.util.logging.Logger;
 
 /**
@@ -76,6 +77,16 @@ public class ReadEmailPanel extends ReadComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_RELATIONSHIP);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Email" + "/" + getEntityId();
     }
 
     @Override

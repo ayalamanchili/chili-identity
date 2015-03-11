@@ -22,6 +22,7 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.security.AccessCheck;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -96,6 +97,15 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
             entity.setEmployee(emp);
         }
         return super.save(entity);
+    }
+
+    @Validate
+    @Path("/adjust-hours")
+    @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
+    @PUT
+    public void adjustPTOAccruedHours(CorporateTimeSheet entity, @QueryParam("adjustmentHours") BigDecimal adjustmentHours, @QueryParam("adjustmentReason") String adjustmentReason) {
+        entity = corporateTimeSheetDao.findById(entity.getId());
+        corporateTimeSheetDao.adjustPTODAccruedHours(entity, adjustmentHours, adjustmentReason);
     }
 
     @Override

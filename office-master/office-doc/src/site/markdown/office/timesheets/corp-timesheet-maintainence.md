@@ -11,6 +11,11 @@ How to view a PTO Accruals and Decuctions
 ![alt text](../../images/timesheets/view-pto-accrued-1.PNG "Time")
 ![alt text](../../images/timesheets/view-pto-accrued-2.PNG "Time")
 
+How to Adjust PTO Hours
+-----
+ - Click update icon on a PTO Accrued time sheet
+![alt text](../../images/timesheets/update-pto-accrued.PNG "Time")
+
 Categories of time sheets
 ----- 
  -   PTO Accrued - PTO Accrued timesheet will show the latest balance hours available. 
