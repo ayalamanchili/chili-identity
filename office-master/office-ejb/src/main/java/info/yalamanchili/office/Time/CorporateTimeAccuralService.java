@@ -12,7 +12,6 @@ import info.chili.audit.AuditService;
 import info.chili.commons.DateUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
-import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
@@ -37,7 +36,6 @@ public class CorporateTimeAccuralService {
 
     private final static Logger logger = Logger.getLogger(CorporateTimeAccuralService.class.getName());
 
-    //TODO support for proration hours
     //TODO avoid duplicate creation
     public void accureMonthlyTime() {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
@@ -47,11 +45,14 @@ public class CorporateTimeAccuralService {
                 continue;
             }
             Date startDate = emp.getStartDate();
-            int numberOfMonthsCompleted = DateUtils.differenceInMonths(startDate, new Date());
             CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS != null) {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();
-                if (today.before(DateUtils.getNextDay(startDate, 30))) {
+                //India Team
+                if (Branch.Hyderabad.equals(emp.getBranch()) && DateUtils.differenceInMonths(startDate, new Date()) > 6) {
+                    ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.indiaTeamMonthlyAccrual));
+                    //All Other Branches
+                } else if (today.before(DateUtils.getNextDay(startDate, 30))) {
                     //New employee less than a month
                     Long daysWorkedInMonth = DateUtils.differenceInDays(startDate, today);
                     ptoAccruedTS.setHours(DateUtils.getProratedHours(TimeAccuralConstants.lessThanOneYearHoursAccural, new BigDecimal("30"), new BigDecimal(daysWorkedInMonth)));
@@ -87,28 +88,6 @@ public class CorporateTimeAccuralService {
         sendEmailNotification("");
     }
 
-    /**
-     * for india team
-     */
-    public void accrueYearlyPTO() {
-        CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            if (Branch.Hyderabad.equals(emp.getBranch()) && hasMoreThanOneYearService(emp)) {
-                CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
-                if (ptoAccruedTS != null) {
-                    BigDecimal carryForwordHours = null;
-                    if (ptoAccruedTS.getHours().compareTo(new BigDecimal("40.00")) < 0) {
-                        carryForwordHours = ptoAccruedTS.getHours();
-                    } else {
-                        carryForwordHours = new BigDecimal("40.00");
-                    }
-                    ptoAccruedTS.setHours(carryForwordHours.add(TimeAccuralConstants.oneYearFullPTO));
-                    dao.addTimeSheetUpdateComment("System Yearly Update: ", carryForwordHours, ptoAccruedTS);
-                }
-            }
-        }
-    }
-
     protected boolean hasMoreThanOneYearService(Employee emp) {
         //TODO possible bug for leap year???
         if (emp.getStartDate() != null && DateUtils.getNextYear(emp.getStartDate(), 1).before(new Date())) {
@@ -129,9 +108,6 @@ public class CorporateTimeAccuralService {
     public void revertRecentPTOAccruedChanges() {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            if (emp.getStartDate() == null || Branch.Hyderabad.equals(emp.getBranch())) {
-                continue;
-            }
             CorporateTimeSheet ptoAccruedTS = dao.getPTOAccruedTimeSheet(emp);
             if (ptoAccruedTS.getId() != null) {
                 CorporateTimeSheet previousVersion = (CorporateTimeSheet) AuditService.instance().mostRecentVersion(CorporateTimeSheet.class, ptoAccruedTS.getId());

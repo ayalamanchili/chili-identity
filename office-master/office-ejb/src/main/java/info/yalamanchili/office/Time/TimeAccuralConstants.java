@@ -44,7 +44,7 @@ public class TimeAccuralConstants {
     /**
      * yearly Accrual for India team
      */
-    public static final BigDecimal oneYearFullPTO = new BigDecimal("144.00");
+    public static final BigDecimal indiaTeamMonthlyAccrual = new BigDecimal("12.00");
 
     public static BigDecimal lessThanOneYearAccuralMax(Employee emp) {
         if (emp.getHoursPerWeek() == null || emp.getHoursPerWeek().equals(40)) {
