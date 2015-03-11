@@ -17,6 +17,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.Branch;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
@@ -25,6 +26,7 @@ import info.yalamanchili.office.client.profile.employeetype.SelectEmployeeTypeWi
 public class CreateEmployeePanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateEmployeePanel.class.getName());
+    protected SelectCompanyWidget selectCompnayWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     FileuploadField empImageUploadPanel = new FileuploadField(OfficeWelcome.constants, "Employee", "imageUrl", "Employee/imageURL", false) {
         @Override
         public void onUploadComplete(String res) {
@@ -53,6 +55,11 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("branch", employee);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignEntityValueFromField("workStatus", employee);
+        }
+         if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
+            JSONObject company = selectCompnayWidget.getSelectedObject();
+            company.put("name", company.get("value"));
+            entity.put("company", company);
         }
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", employee);
@@ -86,6 +93,9 @@ public class CreateEmployeePanel extends CreateComposite {
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+            addDropDown("company", selectCompnayWidget);
         }
         if (Auth.isAdmin()) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
