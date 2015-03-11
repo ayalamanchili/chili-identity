@@ -53,10 +53,10 @@ public class CreateEmployeePanel extends CreateComposite {
         assignEntityValueFromField("employeeType", employee);
         assignEntityValueFromField("jobTitle", employee);
         assignEntityValueFromField("branch", employee);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignEntityValueFromField("workStatus", employee);
         }
-         if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
+        if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
             JSONObject company = selectCompnayWidget.getSelectedObject();
             company.put("name", company.get("value"));
             entity.put("company", company);
@@ -91,10 +91,10 @@ public class CreateEmployeePanel extends CreateComposite {
         addField("passwordHash", false, true, DataType.PASSWORD_FIELD, Alignment.HORIZONTAL);
         addField("jobTitle", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("branch", false, true, Branch.names(), Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
             addDropDown("company", selectCompnayWidget);
         }
         if (Auth.isAdmin()) {
