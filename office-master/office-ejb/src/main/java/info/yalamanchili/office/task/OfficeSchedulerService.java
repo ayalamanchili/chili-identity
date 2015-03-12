@@ -56,14 +56,6 @@ public class OfficeSchedulerService {
     }
 
     /**
-     * runs every night at 1.05 AM
-     */
-//    @Scheduled(cron = "0 5 1 * * ?")
-    public void approveNewCorpEmployeeTimeSheets() {
-        TimeJobService.instance().approveNewCorpEmployeeTimeSheets();
-    }
-
-    /**
      * runs every night at 1.10 AM
      */
     @Scheduled(cron = "0 10 1 * * ?")
