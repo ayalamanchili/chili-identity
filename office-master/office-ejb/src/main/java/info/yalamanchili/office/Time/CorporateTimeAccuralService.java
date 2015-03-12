@@ -49,36 +49,40 @@ public class CorporateTimeAccuralService {
             if (ptoAccruedTS != null) {
                 BigDecimal beforeHours = ptoAccruedTS.getHours();
                 //India Team
-                if (Branch.Hyderabad.equals(emp.getBranch()) && DateUtils.differenceInMonths(startDate, new Date()) > 6) {
-                    ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.indiaTeamMonthlyAccrual));
+                if (Branch.Hyderabad.equals(emp.getBranch())) {
+                    if (DateUtils.differenceInMonths(startDate, new Date()) > 6) {
+                        ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.indiaTeamMonthlyAccrual));
+                    }
+                } else {
                     //All Other Branches
-                } else if (today.before(DateUtils.getNextDay(startDate, 30))) {
-                    //New employee less than a month
-                    Long daysWorkedInMonth = DateUtils.differenceInDays(startDate, today);
-                    ptoAccruedTS.setHours(DateUtils.getProratedHours(TimeAccuralConstants.lessThanOneYearHoursAccural, new BigDecimal("30"), new BigDecimal(daysWorkedInMonth)));
-                } else if (today.before(DateUtils.getNextYear(startDate, 1))) {
-                    if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.lessThanOneYearHoursAccural, emp)).compareTo(TimeAccuralConstants.lessThanOneYearAccuralMax(emp)) >= 0) {
-                        ptoAccruedTS.setHours(TimeAccuralConstants.lessThanOneYearAccuralMax(emp));
-                    } else {
-                        ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.lessThanOneYearHoursAccural, emp)));
-                    }
-                } else if (today.after(DateUtils.getNextYear(startDate, 1)) && today.before(DateUtils.getNextYear(startDate, 5))) {
-                    if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.twoToFourYearsHoursAccural, emp)).compareTo(TimeAccuralConstants.twoToFourYearsHoursAccuralMax(emp)) >= 0) {
-                        ptoAccruedTS.setHours(TimeAccuralConstants.twoToFourYearsHoursAccuralMax(emp));
-                    } else {
-                        ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.twoToFourYearsHoursAccural, emp)));
-                    }
-                } else if (today.after(DateUtils.getNextYear(startDate, 5)) && today.before(DateUtils.getNextYear(startDate, 10))) {
-                    if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.fiveToTenYearsHoursAccural, emp)).compareTo(TimeAccuralConstants.fiveToTenYearsHoursAccuralMax(emp)) >= 0) {
-                        ptoAccruedTS.setHours(TimeAccuralConstants.fiveToTenYearsHoursAccuralMax(emp));
-                    } else {
-                        ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.fiveToTenYearsHoursAccural, emp)));
-                    }
-                } else if (today.after(DateUtils.getNextYear(startDate, 10))) {
-                    if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.moreThanTenYearsHoursAccural, emp)).compareTo(TimeAccuralConstants.moreThanTenYearsHoursAccuralMax(emp)) >= 0) {
-                        ptoAccruedTS.setHours(TimeAccuralConstants.moreThanTenYearsHoursAccuralMax(emp));
-                    } else {
-                        ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.moreThanTenYearsHoursAccural, emp)));
+                    if (today.before(DateUtils.getNextDay(startDate, 30))) {
+                        //New employee less than a month
+                        Long daysWorkedInMonth = DateUtils.differenceInDays(startDate, today);
+                        ptoAccruedTS.setHours(DateUtils.getProratedHours(TimeAccuralConstants.lessThanOneYearHoursAccural, new BigDecimal("30"), new BigDecimal(daysWorkedInMonth)));
+                    } else if (today.before(DateUtils.getNextYear(startDate, 1))) {
+                        if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.lessThanOneYearHoursAccural, emp)).compareTo(TimeAccuralConstants.lessThanOneYearAccuralMax(emp)) >= 0) {
+                            ptoAccruedTS.setHours(TimeAccuralConstants.lessThanOneYearAccuralMax(emp));
+                        } else {
+                            ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.lessThanOneYearHoursAccural, emp)));
+                        }
+                    } else if (today.after(DateUtils.getNextYear(startDate, 1)) && today.before(DateUtils.getNextYear(startDate, 5))) {
+                        if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.twoToFourYearsHoursAccural, emp)).compareTo(TimeAccuralConstants.twoToFourYearsHoursAccuralMax(emp)) >= 0) {
+                            ptoAccruedTS.setHours(TimeAccuralConstants.twoToFourYearsHoursAccuralMax(emp));
+                        } else {
+                            ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.twoToFourYearsHoursAccural, emp)));
+                        }
+                    } else if (today.after(DateUtils.getNextYear(startDate, 5)) && today.before(DateUtils.getNextYear(startDate, 10))) {
+                        if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.fiveToTenYearsHoursAccural, emp)).compareTo(TimeAccuralConstants.fiveToTenYearsHoursAccuralMax(emp)) >= 0) {
+                            ptoAccruedTS.setHours(TimeAccuralConstants.fiveToTenYearsHoursAccuralMax(emp));
+                        } else {
+                            ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.fiveToTenYearsHoursAccural, emp)));
+                        }
+                    } else if (today.after(DateUtils.getNextYear(startDate, 10))) {
+                        if (ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.moreThanTenYearsHoursAccural, emp)).compareTo(TimeAccuralConstants.moreThanTenYearsHoursAccuralMax(emp)) >= 0) {
+                            ptoAccruedTS.setHours(TimeAccuralConstants.moreThanTenYearsHoursAccuralMax(emp));
+                        } else {
+                            ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(TimeAccuralConstants.getPTOAccuredHours(TimeAccuralConstants.moreThanTenYearsHoursAccural, emp)));
+                        }
                     }
                 }
                 dao.getEntityManager().merge(ptoAccruedTS);
