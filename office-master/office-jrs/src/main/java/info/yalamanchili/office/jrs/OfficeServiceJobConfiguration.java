@@ -40,11 +40,6 @@ public class OfficeServiceJobConfiguration {
     }
 
     @ManagedOperation
-    public void syncapproveNewCorpEmployeeTimeSheets() {
-        TimeJobService.instance().approveNewCorpEmployeeTimeSheets();
-    }
-
-    @ManagedOperation
     public void syncPerformanceEvaluationQuestions() {
         PerformanceEvaluationQuestionsFactory.instance().syncQuestions();
     }

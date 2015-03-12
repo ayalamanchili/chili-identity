@@ -41,7 +41,7 @@ public class CorporateTimeAccuralService {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         Date today = new Date();
         for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            if (emp.getStartDate() == null || Branch.Hyderabad.equals(emp.getBranch())) {
+            if (emp.getStartDate() == null) {
                 continue;
             }
             Date startDate = emp.getStartDate();

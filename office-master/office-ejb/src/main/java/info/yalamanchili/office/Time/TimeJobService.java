@@ -63,23 +63,6 @@ public class TimeJobService {
         }
     }
 
-    public void approveNewCorpEmployeeTimeSheets() {
-        List<CorporateTimeSheet> approvedts = new ArrayList<CorporateTimeSheet>();
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 2000, OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
-            if (emp.getStartDate() != null && Branch.Hyderabad.equals(emp.getBranch())) {
-                for (CorporateTimeSheet ts : CorporateTimeSheetDao.instance().getTimeSheetsForEmployee(emp, TimeSheetStatus.getPendingAndSavedCategories(), TimeSheetCategory.getEarnedCategories())) {
-                    if (ts.getBpmProcessId() == null && ts.getStartDate().before(new Date())) {
-                        ts.setStatus(TimeSheetStatus.Approved);
-                        approvedts.add(CorporateTimeSheetDao.instance().save(ts));
-                    }
-                }
-            }
-        }
-        if (approvedts.size() > 0) {
-            sendApprovedTimeSheetsEmail(approvedts);
-        }
-    }
-
     protected void sendApprovedTimeSheetsEmail(List<CorporateTimeSheet> timesheets) {
         Email email = new Email();
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRole.ROLE_HR_ADMINSTRATION.name()));
