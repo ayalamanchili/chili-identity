@@ -76,21 +76,6 @@ public class ProfileNotificationService {
         messagingService.sendEmail(newUserEmailObj);
     }
 
-//TODO remove not needed.
-    @Async
-    @Transactional
-    public void sendForgotPasswordNotification(Employee emp, String tempPassword) {
-        Email email = new Email();
-        String primaryEmail = EmployeeDao.instance().getPrimaryEmail(emp);
-        if (primaryEmail == null) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.email", "no primary email for employee");
-        }
-        email.addTo(primaryEmail);
-        email.setSubject("Employee Temp Password");
-        email.setBody("you temp password is:" + tempPassword);
-        messagingService.sendEmail(email);
-    }
-
     @Async
     @Transactional(readOnly = true)
     public void sendResetPasswordNotification(Employee emp, String resetPassword) {
@@ -103,7 +88,7 @@ public class ProfileNotificationService {
         email.addTo(primaryEmail);
         email.setHtml(Boolean.TRUE);
         email.setSubject("Employee Password Reset");
-        email.setBody("Your password has been reset \n Username: " + emp.getEmployeeId() + " \n password:" + resetPassword + "\n please change your password after you login from your profile");
+        email.setBody(" Your password has been reset \n Username: " + emp.getEmployeeId() + " \n Password: " + resetPassword + "\n please change your password after you login from your profile \n Portal URL: https://apps.sstech.us/portal");
         messagingService.sendEmail(email);
     }
 
