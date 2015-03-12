@@ -112,7 +112,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
             if (entity.getCompany() != null) {
                 updatedEmployee.setCompany(em.find(Company.class, entity.getCompany().getId()));
             } else {
-                  updatedEmployee.setCompany(null);
+                updatedEmployee.setCompany(null);
             }
             syncEmployeeTypeChange(updatedEmployee);
             return em.merge(updatedEmployee);
@@ -150,6 +150,17 @@ public class EmployeeDao extends CRUDDao<Employee> {
             }
         }
         return newEmail;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Employee> sqlSearch(String searchText, int start, int limit, List<String> columns) {
+        Query searchQ = getEntityManager().createQuery("FROM " + Employee.class.getCanonicalName() + " WHERE user.enabled= TRUE and (firstName LIKE :firstNameParam OR lastName LIKE :lastNameParam)");
+        searchQ.setParameter("firstNameParam", '%' + searchText + '%');
+        searchQ.setParameter("lastNameParam", '%' + searchText + '%');
+        searchQ.setFirstResult(start);
+        searchQ.setMaxResults(limit);
+        return searchQ.getResultList();
     }
 
     public List<Employee> searchByCompanyContact(Employee companyContact, int start, int limit) {
