@@ -30,5 +30,6 @@ public enum WorkStatus {
     /**
      * @generated
      */
-    CITIZEN
+    CITIZEN,
+    L2EAD
 }

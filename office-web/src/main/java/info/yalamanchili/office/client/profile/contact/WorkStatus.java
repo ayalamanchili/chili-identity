@@ -30,6 +30,7 @@ public enum WorkStatus {
     /**
      * @generated
      */
+    L2EAD,
     CITIZEN;
 
     public static String[] names() {
