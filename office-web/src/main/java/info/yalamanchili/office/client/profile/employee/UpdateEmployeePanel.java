@@ -56,7 +56,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         assignEntityValueFromField("jobTitle", entity);
         assignEntityValueFromField("branch", entity);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignEntityValueFromField("workStatus", entity);
         }
         if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
@@ -87,16 +87,16 @@ public class UpdateEmployeePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadImage(JSONUtils.toString(entity, "id"));
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(JSONUtils.toString(entity, "id"));
+                    }
+                });
 
     }
 
@@ -118,7 +118,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_HR)) {
             assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
         }
-        if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+        if (fields.containsKey("hoursPerWeek") && Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             assignFieldValueFromEntity("hoursPerWeek", entity, DataType.INTEGER_FIELD);
         }
         if (fields.containsKey("company")) {
@@ -159,6 +159,8 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HR)) {
             addDropDown("company", selectCompnayWidget);
         }
         if (Auth.isAdmin()) {

@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.dto.profile;
 
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Sex;
@@ -57,6 +58,8 @@ public class EmployeeCreateDto implements Serializable {
     @NotEmpty(message = "{user.passwordHash.not.empty.msg}")
     @Size(min = 6, message = "{user.passwordHash.length.invalid.msg}")
     protected String passwordHash;
+
+    protected Company company;
 
     public String getFirstName() {
         return firstName;
@@ -176,6 +179,14 @@ public class EmployeeCreateDto implements Serializable {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override

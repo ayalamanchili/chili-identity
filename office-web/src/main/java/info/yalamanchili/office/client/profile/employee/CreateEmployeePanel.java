@@ -59,12 +59,13 @@ public class CreateEmployeePanel extends CreateComposite {
         if (fields.containsKey("company") && selectCompnayWidget.getSelectedObject() != null) {
             JSONObject company = selectCompnayWidget.getSelectedObject();
             company.put("name", company.get("value"));
-            entity.put("company", company);
+            employee.put("company", company);
         }
         if (Auth.isAdmin()) {
             assignEntityValueFromField("ssn", employee);
         }
         employee.put("imageURL", empImageUploadPanel.getFileName());
+        logger.info("employee"+employee.toString());
         return employee;
     }
 
@@ -94,7 +95,7 @@ public class CreateEmployeePanel extends CreateComposite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_HR)) {
             addDropDown("company", selectCompnayWidget);
         }
         if (Auth.isAdmin()) {
@@ -113,16 +114,16 @@ public class CreateEmployeePanel extends CreateComposite {
     public void createButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadImage(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadImage(arg0);
+                    }
+                });
 
     }
 
