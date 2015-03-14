@@ -8,6 +8,9 @@
 
     <!-- logging -->
     <inherits name="com.google.gwt.logging.Logging" />
+    <set-property name="gwt.logging.enabled" value="TRUE"/>
+    <set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
+    <set-property name="gwt.logging.logLevel" value="INFO"/>
 
     <!-- GWT Super Dev mode -->
     <add-linker name="xsiframe"/>
@@ -26,7 +29,7 @@
    
     <!-- GWT HTML5 Video support-->
     <inherits name='fr.hd3d.html5.video.HTML5Video'/>
-     <!-- CKEditor(Rich Text) Editor-->
+    <!-- CKEditor(Rich Text) Editor-->
     <!--<inherits name='com.axeiya.gwtckeditor.Gwtckeditor'/>-->
     
     <!--guava-->
