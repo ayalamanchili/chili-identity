@@ -62,6 +62,11 @@ public class ConsultantTimeService {
 
     public void submitLeaveRequest(ConsultantTimeSheet request) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        BigDecimal ptoAvailable = ConsultantTimeSheetDao.instance().getPTOAccruedTimeSheet(emp).getHours();
+        BigDecimal ptoPending = ConsultantTimeSheetDao.instance().getHours(emp, TimeSheetCategory.PTO_USED, TimeSheetStatus.Pending);
+        if (ptoAvailable.subtract(ptoPending).compareTo(BigDecimal.ONE) >= 0 && TimeSheetCategory.Unpaid.equals(request.getCategory())) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "use.pto.hours", "Please use available PTO Hours before using Unpaid hours");
+        }
         request.setEmployee(emp);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("leaveRequest", request);

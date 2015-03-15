@@ -276,4 +276,20 @@ public class ConsultantTimeSheetDao extends CRUDDao<ConsultantTimeSheet> {
             return BigDecimal.ZERO;
         }
     }
+
+    public BigDecimal getHours(Employee employee, TimeSheetCategory timeSheetCategory, TimeSheetStatus timeSheetStatus) {
+        return getHours(employee, Lists.newArrayList(timeSheetCategory), Lists.newArrayList(timeSheetStatus));
+    }
+
+    public BigDecimal getHours(Employee employee, List<TimeSheetCategory> timeSheetCategory, List<TimeSheetStatus> timeSheetStatus) {
+        TypedQuery<BigDecimal> query = getEntityManager().createQuery("select sum(hours) from " + ConsultantTimeSheet.class.getCanonicalName() + " where employee=:employeeParam and category in (:categoryParam) and status in (:statusParam)", BigDecimal.class);
+        query.setParameter("employeeParam", employee);
+        query.setParameter("categoryParam", timeSheetCategory);
+        query.setParameter("statusParam", timeSheetStatus);
+        if (query.getSingleResult() != null) {
+            return query.getSingleResult();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
 }

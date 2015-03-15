@@ -119,7 +119,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
             panel.add(createtimeSheetlink);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {

@@ -66,11 +66,11 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -90,11 +90,11 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllCorporateTimeSheetsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
@@ -174,7 +174,7 @@ public class ReadAllConsultantTimeSheetsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
