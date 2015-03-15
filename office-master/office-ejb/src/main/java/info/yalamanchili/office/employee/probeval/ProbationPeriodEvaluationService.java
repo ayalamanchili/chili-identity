@@ -126,6 +126,8 @@ public class ProbationPeriodEvaluationService {
             data.getData().put("probation.prd.eval.qc" + i, qc.getQuestionInfo());
             if (qc.getRating() != null) {
                 data.getData().put("q" + i + ".rating", qc.getRating().toString());
+            } else {
+                data.getData().put("q" + i + ".rating", "n/a");
             }
             i++;
         }
@@ -157,8 +159,10 @@ public class ProbationPeriodEvaluationService {
             }
         }
         //Employee
-        Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
-        data.getSignatures().add(employeeSignature);
+        if (evaluation.getAcceptDate() != null) {
+            Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
+            data.getSignatures().add(employeeSignature);
+        }
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = probation-period-evaluation.pdf")
