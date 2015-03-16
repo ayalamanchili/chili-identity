@@ -144,7 +144,7 @@ public class ProbationPeriodEvaluationService {
                 data.getSignatures().add(approvedBysignature);
                 //TODO is this needed?
                 data.getData().put("managerTitle", manager.getJobTitle());
-                data.getData().put("managerName", manager.getFirstName() + " " + manager.getLastName());
+                data.getData().put("manageName", manager.getFirstName() + " " + manager.getLastName());
             }
         }
         //HR 
