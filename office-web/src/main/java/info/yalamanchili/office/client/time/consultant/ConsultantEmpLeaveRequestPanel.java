@@ -15,6 +15,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -54,17 +55,17 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -94,12 +95,13 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("startDate", false, true, DataType.DATE_FIELD);
-        addField("endDate", false, true, DataType.DATE_FIELD);
-        addField("hours", false, true, DataType.FLOAT_FIELD);
-        addEnumField("category", false, true, LeaveRequestTimeCategory.names());
-        addField("createdTimeStamp", false, true, DataType.DATE_FIELD);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD);
+        addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("hours", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addEnumField("category", false, true, LeaveRequestTimeCategory.names(), Alignment.HORIZONTAL);
+        addField("createdTimeStamp", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        alignFields();
     }
 
     @Override

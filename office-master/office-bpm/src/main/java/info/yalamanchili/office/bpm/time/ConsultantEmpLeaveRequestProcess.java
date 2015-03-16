@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.bpm.time;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
@@ -52,10 +53,14 @@ public class ConsultantEmpLeaveRequestProcess implements TaskListener {
         }
         String status = (String) task.getExecution().getVariable("status");
         ConsultantTimeSheetDao dao = ConsultantTimeSheetDao.instance();
+        Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
         if (status.equalsIgnoreCase("approved")) {
+            if (ConsultantEmpLeaveRequestProcessBean.instance().validateLeaveRequest(ts.getEmployee(), ts)) {
+                ts.setApprovedBy(currentUser.getEmployeeId());
+            } else {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "no.enough.leaves", "No Enough leaves for employee. Please verify time summary and reject the task");
+            }
             ts.setStatus(TimeSheetStatus.Approved);
-            Employee currentUser = OfficeSecurityService.instance().getCurrentUser();
-            ts.setApprovedBy(currentUser.getEmployeeId());
             ts.setApprovedDate(new Date());
             if (ts.getCategory().equals(TimeSheetCategory.PTO_USED)) {
                 dao.deductPTOUsedHours(ts);
