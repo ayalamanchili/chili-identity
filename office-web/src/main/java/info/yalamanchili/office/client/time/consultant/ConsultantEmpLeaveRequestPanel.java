@@ -8,12 +8,14 @@
  */
 package info.yalamanchili.office.client.time.consultant;
 
+import com.google.common.base.Strings;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -100,7 +102,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         addField("hours", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names(), Alignment.HORIZONTAL);
         addField("createdTimeStamp", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -110,6 +112,11 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         DateField endDateF = (DateField) fields.get("endDate");
         if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
             endDateF.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        TextAreaField notesF = (TextAreaField) fields.get("notes");
+        if (Strings.isNullOrEmpty(notesF.getValue())) {
+            notesF.setMessage("Please enter notes");
             return false;
         }
         return true;
