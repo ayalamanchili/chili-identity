@@ -85,7 +85,6 @@ public class ConsultantTimeSheet extends AbstractEntity {
      * notes
      */
     @Lob
-    @NotNull(message = "{tmesheet.notes.not.empty.msg}")
     protected String notes;
     /**
      * BPM process Id associated with the request
