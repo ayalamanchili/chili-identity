@@ -310,7 +310,7 @@ public class PerformanceEvaluationService {
         if (evaluation.getHrApprovalBy() != null) {
             Employee hr = employeeDao.findEmployeWithEmpId(evaluation.getHrApprovalBy());
             if (hr != null) {
-                Signature hrSignature = new Signature(hr.getEmployeeId(), hr.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "hrSignature", DateUtils.dateToCalendar(evaluation.getApprovedDate()), employeeDao.getPrimaryEmail(hr), null);
+                Signature hrSignature = new Signature(hr.getEmployeeId(), hr.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "hrSignature", DateUtils.dateToCalendar(evaluation.getHrApprovalDate()), employeeDao.getPrimaryEmail(hr), null);
                 data.getSignatures().add(hrSignature);
                 data.getData().put("hrTitle", hr.getJobTitle());
                 data.getData().put("hrName", hr.getFirstName() + " " + hr.getLastName());
