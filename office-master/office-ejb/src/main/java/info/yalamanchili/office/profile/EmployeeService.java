@@ -20,6 +20,7 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.EmployeeCreateDto;
 import info.yalamanchili.office.dto.security.User;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Email;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
@@ -56,6 +57,7 @@ public class EmployeeService {
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
+        emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
         String employeeId = generateEmployeeId(employee);
         String empType = emp.getEmployeeType().getName();
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
@@ -82,7 +84,7 @@ public class EmployeeService {
         if (emp.getEmployeeType().getName().equalsIgnoreCase("Corporate Employee")) {
             OfficeBPMIdentityService.instance().createUser(employeeId);
             // BPMTimeService.instance().startNewEmpTimeProcess(emp);
-            Map<String, Object> obj = new HashMap<String, Object>();
+            Map<String, Object> obj = new HashMap<>();
             obj.put("employee", emp);
             OfficeBPMService.instance().startProcess("new_corp_employee_process", obj);
 
