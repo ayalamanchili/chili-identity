@@ -99,8 +99,8 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addEnumField("category", false, true, LeaveRequestTimeCategory.names(), Alignment.HORIZONTAL);
-        addField("createdTimeStamp", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("createdTimeStamp", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
