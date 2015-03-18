@@ -172,7 +172,7 @@ public class ProbationPeriodEvaluationService {
 
     @Async
     @Transactional
-    public void generateEmployeProbationPeriodEvalInfoReport(String email) {
+    public void getgenerateEmployeProbationPeriodEvalInfoReport(String email, String year) {
         List<ProbationPeriodEvaluationReportDto> res = new ArrayList<ProbationPeriodEvaluationReportDto>();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType("Corporate Employee")) {
             ProbationPeriodEvaluationReportDto dto = mapper.map(emp, ProbationPeriodEvaluationReportDto.class);
@@ -182,10 +182,12 @@ public class ProbationPeriodEvaluationService {
 
             res.add(dto);
         }
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "probation-period-evaluation-info-report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(res, "Probation-Period-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
 
     public static ProbationPeriodEvaluationService instance() {
         return SpringContext.getBean(ProbationPeriodEvaluationService.class);
     }
+
+  
 }

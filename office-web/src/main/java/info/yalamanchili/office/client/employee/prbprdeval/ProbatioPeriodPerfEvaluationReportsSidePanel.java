@@ -60,6 +60,6 @@ public class ProbatioPeriodPerfEvaluationReportsSidePanel extends ALComposite im
     }
 
     protected String getprobationperfEvaluationReportUrl() {
-        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/probation-period-evaluation-info-report";
+        return OfficeWelcome.constants.root_url() + "probation-period-evaluation/probation-period-evaluation-report";
     }
 }

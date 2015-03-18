@@ -99,6 +99,13 @@ public class ProbationPeriodEvaluationResource extends CRUDResource<ProbationPer
         return ProbationPeriodEvaluationService.instance().getReport(id, type);
     }
 
+    @GET
+    @Path("/probation-period-evaluation-report")
+    public void employeeprobperformanceEvaluationReport(@QueryParam("year") String year) {
+        probationPeriodEvaluationService.getgenerateEmployeProbationPeriodEvalInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), year);
+
+    }
+
     @XmlRootElement
     @XmlType
     public static class ProbationPeriodEvaluationTable implements java.io.Serializable {
