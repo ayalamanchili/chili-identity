@@ -66,7 +66,7 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         BigDecimal currentBalance = ptoAccruedTS.getHours();
         ptoAccruedTS.setHours(ptoAccruedTS.getHours().add(adjustmentHours));
         getEntityManager().merge(ptoAccruedTS);
-        addTimeSheetUpdateComment("PTO Accrued Hours Manual Adjustment: ", currentBalance, ptoAccruedTS);
+        addTimeSheetUpdateComment("PTO Accrued Hours Manual Adjustment: Reason: " + adjustmentReason, currentBalance, ptoAccruedTS);
     }
 
     public void saveTimeSheet(Employee emp, TimeSheetCategory category, BigDecimal hours, Date startDate, Date endDate) {
