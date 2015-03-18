@@ -57,7 +57,9 @@ public class EmployeeService {
     public String createUser(EmployeeCreateDto employee) {
         Employee emp = mapper.map(employee, Employee.class);
         emp.setEmployeeType(em.find(EmployeeType.class, emp.getEmployeeType().getId()));
+        if(emp.getCompany()!=null){
         emp.setCompany(em.find(Company.class, employee.getCompany().getId()));
+        }
         String employeeId = generateEmployeeId(employee);
         String empType = emp.getEmployeeType().getName();
         if (empType.equals("Corporate Employee") || empType.equals("Employee")) {
