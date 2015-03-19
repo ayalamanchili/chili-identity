@@ -10,6 +10,7 @@ package info.yalamanchili.office.dao.ext;
 
 import info.chili.dao.AbstractHandleEntityDao;
 import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.QueryUtils;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.ext.ExternalRef;
 import javax.persistence.EntityManager;
@@ -27,6 +28,11 @@ public class ExternalRefDao extends AbstractHandleEntityDao<ExternalRef> {
 
     @PersistenceContext
     protected EntityManager em;
+
+    public AbstractEntity findReferenceEntity(String externalRefId) {
+        ExternalRef externalRef = QueryUtils.findEntity(em, ExternalRef.class, "externalId", externalRefId);
+        return find(externalRef.getTargetEntityId(), externalRef.getTargetEntityName());
+    }
 
     @Override
     public ExternalRef save(ExternalRef source, AbstractEntity target) {

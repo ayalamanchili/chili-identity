@@ -8,24 +8,14 @@
  */
 package info.yalamanchili.office.entity.time;
 
-import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.hibernate.envers.Audited;
 
 /**
  *
  * @author ayalamanchili
  */
-@Entity
-@Audited
-@XmlRootElement
-@XmlType
-public class TimeEntry extends AbstractHandleEntity {
+public class TimeEntry {
 
-    private static final long serialVersionUID = 1L;
     /**
      *
      */
@@ -33,11 +23,11 @@ public class TimeEntry extends AbstractHandleEntity {
     /**
      *
      */
-    protected Date timeIn;
+    protected Date entryDate;
     /**
      *
      */
-    protected Date timeOut;
+    protected Date entryTimeStamp;
 
     public TimeEntry() {
     }
@@ -50,20 +40,25 @@ public class TimeEntry extends AbstractHandleEntity {
         this.employeeId = employeeId;
     }
 
-    public Date getTimeIn() {
-        return timeIn;
+    public Date getEntryDate() {
+        return entryDate;
     }
 
-    public void setTimeIn(Date timeIn) {
-        this.timeIn = timeIn;
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
     }
 
-    public Date getTimeOut() {
-        return timeOut;
+    public Date getEntryTimeStamp() {
+        return entryTimeStamp;
     }
 
-    public void setTimeOut(Date timeOut) {
-        this.timeOut = timeOut;
+    public void setEntryTimeStamp(Date entryTimeStamp) {
+        this.entryTimeStamp = entryTimeStamp;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeEntry{" + "employeeId=" + employeeId + ", entryDate=" + entryDate + ", entryTimeStamp=" + entryTimeStamp + '}';
     }
 
 }

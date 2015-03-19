@@ -8,8 +8,14 @@
  */
 package info.yalamanchili.office.Time.track;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bulkimport.BulkImportProcess;
+import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.time.TimeEntry;
+import java.util.Date;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +27,10 @@ public class EmployeeTimeDataBulkImportProcessBean implements BulkImportProcess 
 
     @Override
     public BulkImport submit(BulkImport bulkImport) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        AvantelEmployeeTimeDataMapper mapper = SpringContext.getBean(AvantelEmployeeTimeDataMapper.class);
+        List<TimeEntry> res = mapper.mapAvantelTimeRecords(bulkImport);
+        processTimeEntryRecords(res);
+        return bulkImport;
     }
 
     @Override
@@ -38,5 +47,25 @@ public class EmployeeTimeDataBulkImportProcessBean implements BulkImportProcess 
     public BulkImport revert(BulkImport bulkImport) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    protected void processTimeEntryRecords(List<TimeEntry> timeEntries) {
+        for (Date date : getDates(timeEntries)) {
+            for (String externalRefId : getEmployeeIds(timeEntries)) {
+                Employee emp = (Employee) ExternalRefDao.instance().findReferenceEntity(externalRefId);
+            }
+        }
+    }
+
+    protected List<TimeEntry> getTimeEntriesForEmployee(Employee emp, List<TimeEntry> timeEntries) {
+
+        return timeEntries;
+    }
+
+    protected List<String> getEmployeeIds(List<TimeEntry> timeEntries) {
+        return null;
+    }
+
+    protected List<Date> getDates(List<TimeEntry> timeEntries) {
+        return null;
+    }
 }

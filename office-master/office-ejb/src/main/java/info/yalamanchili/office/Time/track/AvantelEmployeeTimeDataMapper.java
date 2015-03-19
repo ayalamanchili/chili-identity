@@ -13,11 +13,13 @@ import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.time.TimeEntry;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Component;
 public class AvantelEmployeeTimeDataMapper {
 
     public List<TimeEntry> mapAvantelTimeRecords(BulkImport bulkImport) {
+        List<TimeEntry> res = new ArrayList<>();
         InputStream inp;
         HSSFWorkbook workbook;
         try {
@@ -40,15 +43,26 @@ public class AvantelEmployeeTimeDataMapper {
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
             Row record = rowIterator.next();
-            if (record.getCell(0) != null && !record.getCell(0).toString().trim().isEmpty()) {
-
+            if (record.getRowNum() < 8) {
+                continue;
+            }
+            if (record.getCell(4).getStringCellValue().contains("Floor")) {
+                TimeEntry timeEntry = new TimeEntry();
+                timeEntry.setEmployeeId(Integer.toString(new Double(record.getCell(1).getNumericCellValue()).intValue()));
+                timeEntry.setEntryDate(record.getCell(2).getDateCellValue());
+                timeEntry.setEntryTimeStamp(record.getCell(3).getDateCellValue());
+                System.out.println(timeEntry);
+                res.add(timeEntry);
             }
         }
-        return null;
+        return res;
     }
 
-    protected String getFilePath(BulkImport bulkImport) {
-        String fileUrl = OfficeServiceConfiguration.instance().getContentManagementLocationRoot() + bulkImport.getFileUrl();
+    @Autowired
+    protected OfficeServiceConfiguration officeServiceConfiguration;
+
+    public String getFilePath(BulkImport bulkImport) {
+        String fileUrl = officeServiceConfiguration.getContentManagementLocationRoot() + bulkImport.getFileUrl();
         return fileUrl.replace("entityId", bulkImport.getId().toString());
     }
 }

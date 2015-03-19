@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
@@ -135,7 +136,6 @@ public class CreateStatusReportPanel extends CreateComposite {
     @Override
     protected void configure() {
         formatTextAreaFields();
-        formatStringFields();
         submitForApprovalF = (BooleanField) fields.get("submitForApproval");
         previewF = (BooleanField) fields.get("preview");
         StringField p1 = (StringField) fields.get("projectPhase1Deliverable");
@@ -146,22 +146,18 @@ public class CreateStatusReportPanel extends CreateComposite {
         p3.getTextbox().setVisibleLength(90);
         StringField p4 = (StringField) fields.get("projectPhase4Deliverable");
         p4.getTextbox().setVisibleLength(90);
-    }
-
-    protected void formatStringFields() {
-        for (Entry entry : fields.entrySet()) {
-            if (entry.getValue() instanceof StringField) {
-                StringField textAreaField = (StringField) entry.getValue();
-                textAreaField.setBackgroundText();
-            }
-        }
+        setBackgroundText();
     }
 
     protected void formatTextAreaFields() {
         for (Entry entry : fields.entrySet()) {
             if (entry.getValue() instanceof TextAreaField) {
                 TextAreaField textAreaField = (TextAreaField) entry.getValue();
-                textAreaField.setBackgroundText();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(4);
+            }
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
                 textAreaField.getTextbox().setCharacterWidth(75);
                 textAreaField.getTextbox().setVisibleLines(4);
             }
