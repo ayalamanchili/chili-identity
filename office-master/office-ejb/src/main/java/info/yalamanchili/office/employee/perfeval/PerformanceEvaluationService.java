@@ -16,6 +16,7 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.security.Signature;
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.types.Task;
@@ -26,6 +27,7 @@ import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
 import info.yalamanchili.office.dto.employee.QuestionComment;
 import info.yalamanchili.office.dto.ext.QuestionDto;
@@ -317,8 +319,17 @@ public class PerformanceEvaluationService {
             }
         }
         //Employee
-        Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
-        data.getSignatures().add(employeeSignature);
+        if (OfficeSecurityService.instance().getUserRoles(evaluation.getEmployee()).contains(OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+            //corp emp
+            if (evaluation.getAcceptDate() != null) {
+                Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getAcceptDate()), employeeDao.getPrimaryEmail(employee), null);
+                data.getSignatures().add(employeeSignature);
+            }
+        } else {
+            //assoc emp
+            Signature employeeSignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfig.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), employeeDao.getPrimaryEmail(employee), null);
+            data.getSignatures().add(employeeSignature);
+        }
         data.getData().put("employeeTitle", employee.getJobTitle());
         byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)

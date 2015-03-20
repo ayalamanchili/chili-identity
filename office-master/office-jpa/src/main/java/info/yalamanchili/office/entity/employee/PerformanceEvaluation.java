@@ -136,6 +136,11 @@ public class PerformanceEvaluation extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date hrApprovalDate;
     /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date acceptDate;
+    /**
      * stage
      */
     @Enumerated(EnumType.STRING)
@@ -299,6 +304,14 @@ public class PerformanceEvaluation extends AbstractEntity {
 
     public void setHrApprovalDate(Date hrApprovalDate) {
         this.hrApprovalDate = hrApprovalDate;
+    }
+
+    public Date getAcceptDate() {
+        return acceptDate;
+    }
+
+    public void setAcceptDate(Date acceptDate) {
+        this.acceptDate = acceptDate;
     }
 
     public PerformanceEvaluationStage getStage() {
