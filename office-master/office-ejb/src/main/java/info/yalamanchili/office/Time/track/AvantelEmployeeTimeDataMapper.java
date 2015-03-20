@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.Time.track;
 
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.time.TimeEntry;
@@ -64,5 +65,9 @@ public class AvantelEmployeeTimeDataMapper {
     public String getFilePath(BulkImport bulkImport) {
         String fileUrl = officeServiceConfiguration.getContentManagementLocationRoot() + bulkImport.getFileUrl();
         return fileUrl.replace("entityId", bulkImport.getId().toString());
+    }
+
+    public static AvantelEmployeeTimeDataMapper instance() {
+        return SpringContext.getBean(AvantelEmployeeTimeDataMapper.class);
     }
 }
