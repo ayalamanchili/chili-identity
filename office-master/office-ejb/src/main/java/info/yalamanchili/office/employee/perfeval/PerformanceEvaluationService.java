@@ -67,7 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("request")
 public class PerformanceEvaluationService {
-
+    
     @Autowired
     protected PerformanceEvaluationDao performanceEvaluationDao;
 
@@ -85,7 +85,7 @@ public class PerformanceEvaluationService {
             entity.setBpmProcessId(startAssociatePerformanceEvaluationProcess(entity, employee));
         }
     }
-
+    
     protected String startAssociatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "eemReviewTask", true);
         OfficeBPMTaskService.instance().deleteTasksWithVariable("entityId", entity.getId(), "hrFinalApprovalTask", true);
@@ -110,13 +110,25 @@ public class PerformanceEvaluationService {
             entity.setManagerComments(dto.getPerformanceEvaluation().getManagerComments());
             entity.setEmployeeComments(dto.getPerformanceEvaluation().getEmployeeComments());
             entity.setHrComments(dto.getPerformanceEvaluation().getHrComments());
+            if (dto.getPerformanceEvaluation().getApprovedDate() != null) {
+                entity.setApprovedDate(dto.getPerformanceEvaluation().getApprovedDate());
+            }
+            if (dto.getPerformanceEvaluation().getHrApprovalDate() != null) {
+                entity.setHrApprovalDate(dto.getPerformanceEvaluation().getHrApprovalDate());
+            }
+            if (dto.getPerformanceEvaluation().getAcceptDate() != null) {
+                entity.setAcceptDate(dto.getPerformanceEvaluation().getAcceptDate());
+            }
+            if (dto.getPerformanceEvaluation().getEvaluationDate() != null) {
+                entity.setEvaluationDate(dto.getPerformanceEvaluation().getEvaluationDate());
+            }
         }
         createQuestionComments(entity, dto.getComments());
         if (startProcess) {
             entity.setBpmProcessId(startCorporatePerformanceEvaluationProcess(entity, employee));
         }
     }
-
+    
     protected String startCorporatePerformanceEvaluationProcess(PerformanceEvaluation entity, Employee emp) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("entityId", entity.getId());
@@ -124,7 +136,7 @@ public class PerformanceEvaluationService {
         vars.put("currentEmployee", emp);
         return OfficeBPMService.instance().startProcess("corp_emp_perf_eval_process", vars);
     }
-
+    
     public PerformanceEvaluation getEvaluationForYear(String year, Employee emp, PerformanceEvaluationSaveDto dto) {
         Date date;
         try {
@@ -157,11 +169,11 @@ public class PerformanceEvaluationService {
         }
         return null;
     }
-
+    
     public List<QuestionDto> getQuestions(QuestionCategory category) {
         return QuestionService.instance().getQuestions(category, QuestionContext.PERFORMANCE_EVALUATION_MANGER, 0, 100);
     }
-
+    
     public void createQuestionComments(PerformanceEvaluation perfEval, List<QuestionComment> comments) {
         CommentDao commentDao = CommentDao.instance();
         for (QuestionComment comment : comments) {
@@ -179,7 +191,7 @@ public class PerformanceEvaluationService {
         }
         calculatRating(perfEval);
     }
-
+    
     protected void calculatRating(PerformanceEvaluation perfEval) {
         Double sum = 0.0;
         Double size = 0.0;
@@ -197,11 +209,11 @@ public class PerformanceEvaluationService {
             perfEval.setRating(new Double(Math.round(avg)));
         }
     }
-
+    
     public List<QuestionComment> getQuestionComments(Long id, QuestionCategory category, QuestionContext context) {
         return QuestionService.instance().getQuestionComments(id, category, context);
     }
-
+    
     public List<Entry> getFYYears(Employee emp) {
         List<Entry> res = new ArrayList<Entry>();
         Set<String> years = getFYYears();
@@ -216,7 +228,7 @@ public class PerformanceEvaluationService {
         }
         return res;
     }
-
+    
     public Set<String> getFYYears() {
         Set<String> fyYears = new HashSet<String>();
         fyYears.add("2012");
@@ -225,7 +237,7 @@ public class PerformanceEvaluationService {
         //TODO add years as needed
         return fyYears;
     }
-
+    
     public Response getReport(Long id, String type) {
         if ("self".equals(type)) {
             return generateSelfReviewReport(id);
@@ -233,7 +245,7 @@ public class PerformanceEvaluationService {
             return generateManagerReviewReport(id);
         }
     }
-
+    
     protected Response generateManagerReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
         if (evaluation == null) {
@@ -337,7 +349,7 @@ public class PerformanceEvaluationService {
                 .header("Content-Length", pdf)
                 .build();
     }
-
+    
     protected Response generateSelfReviewReport(Long id) {
         PerformanceEvaluation evaluation = performanceEvaluationDao.findById(id);
         if (evaluation == null) {
@@ -351,7 +363,7 @@ public class PerformanceEvaluationService {
         data.getData().put("nextFYYear", new Integer(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1).toString());
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-
+        
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Signature preparedBysignature = new Signature(employee.getEmployeeId(), employee.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(evaluation.getEvaluationDate()), EmployeeDao.instance().getPrimaryEmail(employee), null);
         data.getSignatures().add(preparedBysignature);
@@ -378,7 +390,7 @@ public class PerformanceEvaluationService {
             return null;
         }
     }
-
+    
     public void delete(Long id) {
         PerformanceEvaluation ticket = performanceEvaluationDao.findById(id);
         Task task = getTaskForTicket(ticket);
@@ -387,7 +399,7 @@ public class PerformanceEvaluationService {
         }
         performanceEvaluationDao.delete(id);
     }
-
+    
     @Async
     @Transactional(readOnly = true)
     public void getPerformanceEvaluationReport(String email, String year) {
@@ -418,7 +430,7 @@ public class PerformanceEvaluationService {
         }
         MessagingService.instance().emailReport(ReportGenerator.generateExcelReport(report, "Performance-Evaluation-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot()), email);
     }
-
+    
     public static PerformanceEvaluationService instance() {
         return SpringContext.getBean(PerformanceEvaluationService.class);
     }
