@@ -42,7 +42,7 @@ public class MyOfficeMenu extends Composite {
             myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
-            myOfficeMenuBar.addItem("ExternalReferences", externalReferencesMaintainenceCmd);
+            myOfficeMenuBar.addItem("External References", externalReferencesMaintainenceCmd);
         }
         myOfficeMenuBar.addItem("Information", corpEmpInfo);
         myOfficeMenuBar.addStyleName("entityMenuBar");
@@ -107,7 +107,7 @@ public class MyOfficeMenu extends Composite {
         public void execute() {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllExternalRefPanel());            
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllExternalRefPanel());
         }
     };
 }
