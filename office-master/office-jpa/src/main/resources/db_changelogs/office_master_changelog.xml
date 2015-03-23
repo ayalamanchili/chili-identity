@@ -31,5 +31,6 @@
     <include file="db_changelogs/21-02-2015_changelog.xml"/> 
     <include file="db_changelogs/02-26-2015_changelog.xml"/> 
     <include file="db_changelogs/06-03-2015_changelog.xml"/> 
-    <include file="db_changelogs/03-20-2015_changelog.xml"/> 
+    <include file="db_changelogs/03-20-2015_changelog.xml"/>
+    <include file="db_changelogs/03-23-2015_changelog.xml"/> 
 </databaseChangeLog>

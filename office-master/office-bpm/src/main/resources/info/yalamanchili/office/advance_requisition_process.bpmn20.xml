@@ -19,9 +19,9 @@
                   name="Advance Requisition Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Advance Requisition Approval Task
-                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Amount     : #{entity.amount}
-                Purpose    : #{entity.purpose}
+                Employee Name   : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Amount          : #{entity.amount}
+                Purpose         : #{entity.purpose}
                 Needed By Date :#{entity.neededBy}
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/expense/advancerequestprocess.html
@@ -78,9 +78,9 @@
                   activiti:candidateGroups="ROLE_ADMIN">
             <documentation>
                 Advance Requisition Final Approval Task
-                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Amount     : #{entity.amount}
-                Purpose    : #{entity.purpose}
+                Employee Name  : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Amount         : #{entity.amount}
+                Purpose        : #{entity.purpose}
                 Needed By Date :#{entity.neededBy}
             </documentation>
             <extensionElements>

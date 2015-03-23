@@ -96,6 +96,15 @@ public class AdvanceRequisition extends AbstractEntity {
     /**
      *
      */
+    protected String approvedBy;
+    /**
+     *
+     */
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date approvedDate;
+    /**
+     *
+     */
     @OneToMany(cascade = CascadeType.ALL)
     protected List<Transaction> transactions;
     /**
@@ -195,6 +204,22 @@ public class AdvanceRequisition extends AbstractEntity {
 
     public void setBpmProcessId(String bpmProcessId) {
         this.bpmProcessId = bpmProcessId;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Date getApprovedDate() {
+        return approvedDate;
+    }
+
+    public void setApprovedDate(Date approvedDate) {
+        this.approvedDate = approvedDate;
     }
 
     @XmlTransient

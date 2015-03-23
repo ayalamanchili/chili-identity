@@ -73,6 +73,10 @@ public class AdvanceRequestProcess implements TaskListener {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(AdvanceRequisitionStatus.Approved);
+            if (task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask")) {
+                entity.setApprovedBy(currentUser.getEmployeeId());
+                entity.setApprovedDate(new Date());
+            }
         } else {
             entity.setStatus(AdvanceRequisitionStatus.Rejected);
         }
@@ -80,8 +84,7 @@ public class AdvanceRequestProcess implements TaskListener {
             entity.setStatus(AdvanceRequisitionStatus.Completed);
         }
         AdvanceRequisitionDao.instance().save(entity);
-        if (task.getTaskDefinitionKey().equals("advanceRequisitionFinalApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())
-                || task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
+        if (task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
             return;
         }
         new GenericTaskCompleteNotification().notify(task);
@@ -107,9 +110,8 @@ public class AdvanceRequestProcess implements TaskListener {
         Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
         if (emp.getEmployeeType().getName().equals("Corporate Employee") && reportsToEmp != null) {
             task.addCandidateUser(reportsToEmp.getEmployeeId());
-        } else {
-            task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
         }
+        task.addCandidateGroup(OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 
     protected AdvanceRequisition getRequestFromTask(DelegateTask task) {
