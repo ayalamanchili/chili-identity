@@ -35,7 +35,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class BulkImport extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
-    
+
     @NotEmpty(message = "{name.not.empty.msg}")
     @org.hibernate.annotations.Index(name = "BLK_IMPRT_NM")
     protected String name;
@@ -144,6 +144,7 @@ public class BulkImport extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "BulkImport{" + "name=" + name + ", description=" + description + ", importDate=" + importTimeStamp + ", fileUrl=" + fileUrl + ", status=" + status + ", messages=" + messages + '}';
+        return "BulkImport{" + "name=" + name + ", description=" + description + ", importTimeStamp=" + importTimeStamp + ", fileUrl=" + fileUrl + ", adapter=" + adapter + ", status=" + status + '}';
     }
+
 }
