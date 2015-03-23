@@ -1,13 +1,13 @@
 Advance Request Process
 =========
- - When a employee submits Advance Requisition Request 
-    -  For Associate phani Employees the approval Task is sent to Payroll Department.
-    -  For Corporate Employees the approval Task is to Reports_To Manager.
- - If the Task is approved a Final Approval Task is create for Admin.
- - The approved amount can be update during this process.
- - Once the final approval is completed a Task for Accounts Payable Dept is created for Payment Dispatch.
- - Accounts Payable team can validate enter payment information and complete it and email notification will be sent to employee
- - If it is rejected a denial  email will be sent to employee with description.
+ - When an employee submits Advance Requisition Request 
+    -  For Associate Employees the request approval process is sent to Payroll Department.
+    -  For Corporate Employees the request approval process is sent to Reporting Manager.
+ - If the request is approved, a final approval process is created for Admin.
+ - The requested/approved amount can be update before the final approval process is complete. 
+ - After the final approval is complete, system generates a task for Accounts Payable Dept., for payment dispatch.
+ - Accounts Payable team validates and completes payment. 
+ - Email request is rejected, a denial email is sent to the employee with description.
 
 View Advance Requisition Details.
 ----
