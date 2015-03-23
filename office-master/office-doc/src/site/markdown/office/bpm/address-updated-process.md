@@ -2,7 +2,7 @@ Address Update Process
 -------
 
 - When a Employee Address is updated in portal tasks are created for
-* Payroll and Benifits Department for updating ADP, BIS, SMS etc.
+* Payroll and Benefits Department for updating ADP, BIS, SMS etc.
 * HR and Immigration Department to handle all Immigration related changes.
 
 What should be done?
