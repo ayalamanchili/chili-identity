@@ -3,32 +3,35 @@ Employee Creation
 
 (Navigation : My Office >>> Employees)
 
-- Create Employee 
-    - Click on 'Create Employee' link above search box.
-    - Enter the required fields<br/>
+Listed below are guidelines to Create a new employee record and/or Deactivate/Delete an existing employee record.
+ 
+- To Create Employee 
+    - Click on the 'Create Employee' link located above the search box.
+    - Enter information in the required fields. Fields shown in the web page are demonstrated below with an example <br/>
        For ex: <br/>
-            -   Select 'Emp Type'. Let's say 'Employee' , <br/>
+            -   Select 'Emp Type': 'Employee' , <br/>
             -   First Name : David , Last Name : Johnson ,<br/>
             -   Email : djohn@yahoo.com ,<br/>
             -   Date of Birth : 12/24/1975 ,<br/>
-            -   Select Gender ,<br/>
+            -   Select Gender: 'Male',<br/>
             -   Password : ******** ,<br/> 
-        Click on Create button<br/>
-        "Successfully created Employee" Message will be displayed at the top   
-                                                    
-    - Saved Employee record gets displayed in the list along with other records
+    - After all the details are entered, click on the Create button.<br/>
+    - If all entered information is correct, system generates a message - "Successfully Created Employee".                                                  
+    - Saved employee record gets displayed in the Employee List along with other employee records.
 
- - Deactivate Employee
-    - Select an Employee from the employee's list and click on view
-    - Employee Information is displayed.
-    - Click on ''Deactivation'' link which is present on the left side in 'Employee' tree
-    - A pop up window appears asking to confirm deactivation. <br/>
-    On Confirming, Employee gets deactivated and will be disabled from further login
+ - To Deactivate Employee
+    - Select employee record to be deactivated from the Employee List.
+    - Click on the View button.
+    - Employee information is displayed.
+    - Click on the Deactivation button, present on the left side in the employee tree.
+    - A pop up window appears asking to confirm the deactivation. <br/>
+    On confirming, employee record gets deactivated and the employee will be disabled from further login.
 
- - Delete Employee
-    - Select an Employee from employee's list and click on delete
-    - A pop up window appears asking to confirm delete action<br/>
-    On confirming, Employee gets deleted and disappears from employee's list.
+ - To Delete Employee
+    - Select the employee record to be deleted from Employee List. 
+    - Click on the Delete button. 
+    - A pop up window appears asking to confirm the deletion. <br/>
+    On confirming, employee record gets deleted and disappears from Employee List.
 
 
 Create Employee
