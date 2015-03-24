@@ -90,7 +90,7 @@ public class AdvanceRequisitionResource extends CRUDResource<AdvanceRequisition>
     @Path("/{start}/{limit}")
     public AdvanceRequisitionTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         AdvanceRequisitionTable tableObj = new AdvanceRequisitionTable();
-        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name())) {
+        if (OfficeSecurityService.instance().hasAnyRole(OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name(), OfficeRoles.OfficeRole.ROLE_ADMIN.name())) {
             tableObj.setEntities(advanceRequisitionDao.queryAll(start, limit));
             tableObj.setSize(advanceRequisitionDao.size());
         } else {
