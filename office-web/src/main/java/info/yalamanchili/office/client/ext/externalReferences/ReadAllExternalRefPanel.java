@@ -82,10 +82,10 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllExternalRefPanel());
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
     }
 
     @Override
@@ -120,9 +120,9 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
 
     @Override
     protected void createButtonClicked() {
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new CreateExternalReferencesPanel(parentId, targetClassName));
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new CreateExternalReferencesPanel(parentId, targetClassName));
     }
 
     @Override

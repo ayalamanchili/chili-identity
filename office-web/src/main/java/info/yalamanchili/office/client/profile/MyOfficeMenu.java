@@ -15,7 +15,6 @@ import info.chili.gwt.fields.FileField;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.contacttype.CompanyContactTypeSidePanel;
 import info.yalamanchili.office.client.contacttype.ReadAllCompanyContactTypePanel;
-import info.yalamanchili.office.client.ext.externalReferences.ReadAllExternalRefPanel;
 import info.yalamanchili.office.client.profile.addresstype.AddressTypeSidePanel;
 import info.yalamanchili.office.client.profile.addresstype.ReadAllAddressTypePanel;
 import info.yalamanchili.office.client.profile.emailtype.EmailTypeSidePanel;
@@ -42,7 +41,7 @@ public class MyOfficeMenu extends Composite {
             myOfficeMenuBar.addItem("AddressType", addressTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("EmailType", emailTypesMaintainenceCmd);
             myOfficeMenuBar.addItem("ContactType", companyContactTypeMaintainenceCmd);
-            myOfficeMenuBar.addItem("External References", externalReferencesMaintainenceCmd);
+
         }
         myOfficeMenuBar.addItem("Information", corpEmpInfo);
         myOfficeMenuBar.addStyleName("entityMenuBar");
@@ -101,13 +100,6 @@ public class MyOfficeMenu extends Composite {
             TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
             FileField reportL = new FileField("Corporate Contacts Info", ChiliClientConfig.instance().getFileDownloadUrl() + "contact-info-reports/corp-emp-contact-info" + "&passthrough=true");
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(reportL);
-        }
-    };
-    Command externalReferencesMaintainenceCmd = new Command() {
-        public void execute() {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllExternalRefPanel());
         }
     };
 }

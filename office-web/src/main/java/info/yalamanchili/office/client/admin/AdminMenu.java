@@ -30,6 +30,7 @@ import info.yalamanchili.office.client.analytics.EventsSidePanel;
 import info.yalamanchili.office.client.analytics.ReadAllEventsPanel;
 import info.yalamanchili.office.client.company.CompanySidePanel;
 import info.yalamanchili.office.client.company.ReadAllCompanyPanel;
+import info.yalamanchili.office.client.ext.externalReferences.ReadAllExternalRefPanel;
 import info.yalamanchili.office.client.ext.question.QuestionSidePanel;
 import info.yalamanchili.office.client.ext.question.ReadAllQuestionPanel;
 
@@ -54,6 +55,7 @@ public class AdminMenu extends Composite {
         adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
         adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
         adminMenuBar.addItem("Question", questionMaintainenceCmd);
+        adminMenuBar.addItem("ExternalReferences", externalReferencesMaintainenceCmd);
         if (Auth.isAdmin() || Auth.isAccountant() || Auth.hasContractsRole()) {
             adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
         }
@@ -79,6 +81,14 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllClientsPanel());
             TabPanel.instance().getAdminPanel().sidePanelTop.add(new ClientSidePanel());
+        }
+    };
+    Command externalReferencesMaintainenceCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getAdminPanel().entityPanel.clear();
+            TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+            TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
+            
         }
     };
     Command projectsMaintainenceCmd = new Command() {

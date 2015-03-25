@@ -69,9 +69,9 @@ public class CreateExternalReferencesPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added External Reference");
-        TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllExternalRefPanel());
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
     }
 
     @Override
