@@ -17,8 +17,21 @@
         <name>Project Documentation</name>
         <src>/images/doc-logo.png</src>
     </bannerRight>
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.2.1</version>
+    </skin>
+    <custom>
+        <fluidoSkin>
+            <sideBarEnabled>true</sideBarEnabled>
+<!--            <googleSearch>
+                <sitesearch/>
+            </googleSearch>            -->
+        </fluidoSkin>
+    </custom>    
     <body>
-        <menu name="Overview" width="20%">
+        <menu name="Overview">
             <item name="Introduction" href="/office/index.html"/>
             <item name="Social" href="/office/social.html"/>
             <item name="Manage Employees" href="office/my-office.html" collapse="true">

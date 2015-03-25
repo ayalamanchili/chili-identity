@@ -6,7 +6,7 @@
     <artifactId>office-doc</artifactId>
     <version>1.2-SNAPSHOT</version>
     <name>office-doc</name>
-    <url>http://maven.apache.org</url>
+    <url>https://apps.sstech.us/site/</url>
     <dependencies>
     </dependencies>
     <build>
