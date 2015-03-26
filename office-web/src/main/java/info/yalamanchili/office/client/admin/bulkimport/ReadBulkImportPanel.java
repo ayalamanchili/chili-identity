@@ -22,9 +22,14 @@ import info.chili.gwt.rpc.HttpService;
 public class ReadBulkImportPanel extends ReadComposite {
 
     private static ReadBulkImportPanel instance;
+    protected SelectImportAdapterComposite employeeSelectWidget = new SelectImportAdapterComposite(true, false);
 
     public static ReadBulkImportPanel instance() {
         return instance;
+    }
+     public ReadBulkImportPanel(JSONObject entity) {
+        instance = this;
+        initReadComposite(entity, "BulkImport", OfficeWelcome.constants);
     }
 
     public ReadBulkImportPanel(String id) {
@@ -47,6 +52,7 @@ public class ReadBulkImportPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("bulkImport", entity, null);
     }
 
     @Override
@@ -59,6 +65,7 @@ public class ReadBulkImportPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
+         addDropDown("adapter", new SelectImportAdapterComposite(false, true));
         addField("name", true, false, DataType.STRING_FIELD);
         addField("description", true, false, DataType.STRING_FIELD);
     }
