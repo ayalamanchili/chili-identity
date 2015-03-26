@@ -16,29 +16,33 @@
         <!--submit User task-->
         <userTask id="bulkImportSubmitTask" 
                   name="Submit ${bulkImport.name} ${bulkImport.adapter}" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_BULK_IMPORT">
             <documentation>
-                BulkImport Submit
+                Bulk Import Submit Task
+                Bulk Import Name        : #{bulkImport.name}
+                Bulk Import Adapter     : #{bulkImport.adapter}
+                Bulk Import Description : #{bulkImport.description}
+                Bulk Import Date        : #{bulkImport.importTimeStamp}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/admin/bulkimport.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bulkimport.BulkImportSubmit" />
             </extensionElements> 
         </userTask>
-        <sequenceFlow id="bulkImportSubmitUserTaskToSubmitServiceTask" sourceRef="bulkImportSubmitTask" targetRef="bulkImportSubmit" />
-        <!--BulkImport Submit Service Task-->
-        <serviceTask
-            id="bulkImportSubmit"
-            name="BulkImport Process Submit"
-            activiti:class="info.yalamanchili.office.bulkimport.BulkImportSubmit">
-        </serviceTask>
-        <!-- TODO status updates-->
-        <sequenceFlow id="bulkImportSubmitServiceTaskToReviewUserTask" sourceRef="bulkImportSubmit" targetRef="bulkImportReviewTask" />
+        <sequenceFlow id="bulkImportSubmitUserTaskToSubmitServiceTask" sourceRef="bulkImportSubmitTask" targetRef="bulkImportReviewTask" />
         <userTask id="bulkImportReviewTask" 
                   name="Review BulkImport ${bulkImport.name} for: ${bulkImport.adapter}" 
-                  activiti:candidateGroups="ROLE_TIME,ROLE_EXPENSE,ROLE_ADMIN">
+                  activiti:candidateGroups="ROLE_BULK_IMPORT">
             <documentation>
-                Review Bulk Import 
+                Bulk Import Submit Task
+                Bulk Import Name        : #{bulkImport.name}
+                Bulk Import Adapter     : #{bulkImport.adapter}
+                Bulk Import Description : #{bulkImport.description}
+                Bulk Import Date        : #{bulkImport.importTimeStamp}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/admin/bulkimport.html
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
@@ -50,10 +54,6 @@
                     <activiti:value id="approved" name="approved"/>
                     <activiti:value id="rejected" name="rejected"/>
                 </activiti:formProperty>
-                <activiti:formProperty id="reason" 
-                                       name="Reason"
-                                       required="true" 
-                                       type="string" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="true" 

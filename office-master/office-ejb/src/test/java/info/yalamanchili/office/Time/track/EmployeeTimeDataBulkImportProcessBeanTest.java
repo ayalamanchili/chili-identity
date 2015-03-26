@@ -52,7 +52,7 @@ public class EmployeeTimeDataBulkImportProcessBeanTest {
         te4.setEntryTimeStamp(DateUtils.addHours(new Date(), 3));
         timeEntries.add(te4);
         EmployeeTimeDataBulkImportProcessBean instance = new EmployeeTimeDataBulkImportProcessBean();
-        instance.processTimeEntryRecords(timeEntries);
+        instance.processTimeEntryRecords(null, timeEntries);
 
     }
 

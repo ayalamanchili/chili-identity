@@ -44,7 +44,7 @@ public class AvantelEmployeeTimeDataMapper {
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()) {
             Row record = rowIterator.next();
-            if (record.getRowNum() < 8) {
+            if (record.getRowNum() < 6) {
                 continue;
             }
             if (record.getCell(4).getStringCellValue().contains("Floor")) {

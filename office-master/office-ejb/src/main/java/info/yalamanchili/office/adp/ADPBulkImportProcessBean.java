@@ -8,11 +8,10 @@
 package info.yalamanchili.office.adp;
 
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.bulkimport.BulkImportProcess;
+import info.yalamanchili.office.bulkimport.AbstractBulkImportProcess;
 import info.yalamanchili.office.dao.time.TimeSheetDao;
 import info.yalamanchili.office.entity.VersionStatus;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
-import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import info.yalamanchili.office.entity.time.TimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetPeriod;
@@ -20,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +27,7 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
-public class ADPBulkImportProcessBean implements BulkImportProcess {
+public class ADPBulkImportProcessBean extends AbstractBulkImportProcess<TimeSheet> {
 
     private final static Logger logger = Logger.getLogger(ADPBulkImportProcessBean.class.getName());
     @PersistenceContext
@@ -67,40 +65,8 @@ public class ADPBulkImportProcessBean implements BulkImportProcess {
     }
 
     @Override
-    public BulkImport commit(BulkImport bulkImport) {
-        bulkImport = em.find(BulkImport.class, bulkImport.getId());
-        for (BulkImportEntity entity : bulkImport.getEntities()) {
-            Query q = em.createQuery("from " + entity.getEntityType() + " where id=:idParam");
-            q.setParameter("idParam", entity.getEntityId());
-            if (q.getResultList().size() > 0) {
-                TimeSheet ts = (TimeSheet) q.getResultList().get(0);
-                //TODO set the timesheet status as active and save the timesheet
-                ts.setVersionStatus(VersionStatus.ACTIVE);
-                em.merge(ts);
-            }
-        }
-        return em.merge(bulkImport);
-    }
-
-    @Override
-    public BulkImport revert(BulkImport bulkImport) {
-        bulkImport = em.find(BulkImport.class, bulkImport.getId());
-        for (BulkImportEntity entity : bulkImport.getEntities()) {
-            Query q = em.createQuery("from " + entity.getEntityType() + " where id=:idParam");
-            q.setParameter("idParam", entity.getEntityId());
-            if (q.getResultList().size() > 0) {
-                TimeSheet ts = (TimeSheet) q.getResultList().get(0);
-                em.remove(ts);
-            }
-        }
-        return em.merge(bulkImport);
-    }
-
-    protected void addBulkImportEntity(BulkImport bulkImport, TimeSheet timesheet) {
-        BulkImportEntity biEntity = new BulkImportEntity();
-        biEntity.setEntityType(TimeSheet.class.getCanonicalName());
-        biEntity.setEntityId(timesheet.getId());
-        biEntity = em.merge(biEntity);
-        bulkImport.addEntity(biEntity);
+    protected TimeSheet saveOnCommit(TimeSheet entity) {
+        entity.setVersionStatus(VersionStatus.ACTIVE);
+        return entity;
     }
 }

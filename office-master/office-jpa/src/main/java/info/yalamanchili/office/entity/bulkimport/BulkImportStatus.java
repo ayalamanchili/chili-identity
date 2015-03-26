@@ -13,5 +13,5 @@ package info.yalamanchili.office.entity.bulkimport;
  */
 public enum BulkImportStatus {
 
-    NEW, SUBMITTED, APPROVED, REJECTED, RESUBMITTED, COMPLETE
+    NEW, SUBMITTED, APPROVED, REJECTED, RESUBMITTED,ERROR, COMPLETE
 }

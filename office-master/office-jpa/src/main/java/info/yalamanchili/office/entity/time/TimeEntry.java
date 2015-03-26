@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.entity.time;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -28,37 +29,42 @@ public class TimeEntry {
      *
      */
     protected Date entryTimeStamp;
-
+    
     public TimeEntry() {
     }
-
+    
     public String getEmployeeId() {
         return employeeId;
     }
-
+    
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
-
+    
     public Date getEntryDate() {
         return entryDate;
     }
-
+    
     public void setEntryDate(Date entryDate) {
         this.entryDate = entryDate;
     }
-
+    
     public Date getEntryTimeStamp() {
         return entryTimeStamp;
     }
-
+    
     public void setEntryTimeStamp(Date entryTimeStamp) {
         this.entryTimeStamp = entryTimeStamp;
     }
-
+    
     @Override
     public String toString() {
         return "TimeEntry{" + "employeeId=" + employeeId + ", entryDate=" + entryDate + ", entryTimeStamp=" + entryTimeStamp + '}';
     }
-
+    SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm:ss");
+    
+    public String describe() {
+        
+        return "TimeEntry{" + ", entryDate=" + entryDate + ", entryTime=" + printFormat.format(entryTimeStamp) + '}';
+    }
 }

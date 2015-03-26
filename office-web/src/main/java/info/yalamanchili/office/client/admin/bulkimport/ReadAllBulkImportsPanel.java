@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.client.admin.bulkimport;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -18,6 +19,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.crud.TableRowOptionsWidget;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import java.util.logging.Logger;
 
@@ -56,8 +58,9 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Adapter"));
         table.setText(0, 2, getKeyValue("Name"));
-        table.setText(0, 3, getKeyValue("Description"));
-        table.setText(0, 4, getKeyValue("File"));
+        table.setText(0, 3, getKeyValue("Status"));
+        table.setText(0, 4, getKeyValue("Date"));
+        table.setText(0, 5, getKeyValue("File"));
     }
 
     @Override
@@ -67,10 +70,11 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "adapter"));
             table.setText(i, 2, JSONUtils.toString(entity, "name"));
-            table.setText(i, 3, JSONUtils.toString(entity, "description"));
+            table.setText(i, 3, JSONUtils.toString(entity, "status"));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "importTimeStamp"), DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
             String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
             FileField fileField = new FileField(fileURL);
-            table.setWidget(i, 4, fileField);
+            table.setWidget(i, 5, fileField);
         }
     }
 

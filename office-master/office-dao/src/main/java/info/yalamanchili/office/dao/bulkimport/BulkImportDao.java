@@ -8,6 +8,7 @@
 package info.yalamanchili.office.dao.bulkimport;
 
 import info.chili.dao.CRUDDao;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,5 +33,9 @@ public class BulkImportDao extends CRUDDao<BulkImport> {
     @Override
     public EntityManager getEntityManager() {
         return em;
+    }
+
+    public static BulkImportDao instance() {
+        return SpringContext.getBean(BulkImportDao.class);
     }
 }

@@ -30,6 +30,7 @@ public class Auth {
         ROLE_CORPORATE_DATA,
         ROLE_PRB_EVALUATIONS_MANAGER,
         ROLE_HEALTH_INSURANCE_MANAGER,
+        ROLE_BULK_IMPORT,
     }
 
     public static boolean isAdmin() {
