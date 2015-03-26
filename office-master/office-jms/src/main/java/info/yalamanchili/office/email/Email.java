@@ -47,6 +47,10 @@ public class Email implements Serializable {
         getTos().add(to);
     }
 
+    public void addTos(Set<String> more) {
+        getTos().addAll(more);
+    }
+
     public Set<String> getCcs() {
         if (this.ccs == null) {
             this.ccs = new HashSet<String>();

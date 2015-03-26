@@ -14,10 +14,14 @@ package info.yalamanchili.office.client.advancetranscation;
 public enum AdvanceRequisitionStatus {
 
     Open,
+    //TODO remove pending
     Pending,
+    Pending_Initial_Approval,
+    Pending_Final_Approval,
     Approved,
-    Rejected,
-    Completed;
+    //TODO remove pending
+    Completed,
+    Rejected;
 
     public static String[] names() {
         AdvanceRequisitionStatus[] values = values();

@@ -57,7 +57,42 @@ public class AdvanceRequestProcess implements TaskListener {
         if (currentUser.getEmployeeId().equals(entity.getEmployee().getEmployeeId())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.self.approve.corp.advancerequisition", "You cannot approve your advancerequisition task");
         }
-        //Amount
+        switch (task.getTaskDefinitionKey()) {
+            case "advanceRequisitionApprovalTask":
+                payrollOrManagerApprovalTaskComplete(entity, task);
+                break;
+            case "advanceRequisitionFinalApprovalTask":
+                adminApprovalTaskComplete(entity, task);
+                break;
+        }
+    }
+
+    protected void payrollOrManagerApprovalTaskComplete(AdvanceRequisition entity, DelegateTask task) {
+        String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
+        BigDecimal approvedAmount;
+        try {
+            approvedAmount = new BigDecimal(approvedAmountVar);
+        } catch (NumberFormatException ex) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.approved.amount", "Approved amount must be a valid amount eg: 99.99 ");
+        }
+        entity.setAmount(approvedAmount);
+        //Notes
+        String notes = (String) task.getExecution().getVariable("notes");
+        CommentDao.instance().addComment(notes, entity);
+        //Status
+        String status = (String) task.getExecution().getVariable("status");
+        if (status.equalsIgnoreCase("approved")) {
+            entity.setStatus(AdvanceRequisitionStatus.Pending_Final_Approval);
+            entity.setApprovedBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+            entity.setApprovedDate(new Date());
+        } else {
+            entity.setStatus(AdvanceRequisitionStatus.Rejected);
+            new GenericTaskCompleteNotification().notify(task);
+        }
+        AdvanceRequisitionDao.instance().save(entity);
+    }
+
+    protected void adminApprovalTaskComplete(AdvanceRequisition entity, DelegateTask task) {
         String approvedAmountVar = (String) task.getExecution().getVariable("approvedAmount");
         BigDecimal approvedAmount;
         try {
@@ -73,21 +108,11 @@ public class AdvanceRequestProcess implements TaskListener {
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
             entity.setStatus(AdvanceRequisitionStatus.Approved);
-            if (task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask")) {
-                entity.setApprovedBy(currentUser.getEmployeeId());
-                entity.setApprovedDate(new Date());
-            }
         } else {
             entity.setStatus(AdvanceRequisitionStatus.Rejected);
         }
-        if (task.getTaskDefinitionKey().equals("advanceRequisitionPaymentDispatchTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
-            entity.setStatus(AdvanceRequisitionStatus.Completed);
-        }
         AdvanceRequisitionDao.instance().save(entity);
-        if (task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask") && AdvanceRequisitionStatus.Approved.equals(entity.getStatus())) {
-            return;
-        }
-        new GenericTaskCompleteNotification().notify(task);
+        new GenericTaskCompleteNotification().notifyWithMoreRoles(task, OfficeRoles.OfficeRole.ROLE_PAYROLL_AND_BENIFITS.name());
     }
 
     protected void saveAdvanceRequisition(DelegateTask task) {
@@ -96,7 +121,7 @@ public class AdvanceRequestProcess implements TaskListener {
         AdvanceRequisition entity = (AdvanceRequisition) task.getExecution().getVariable("entity");
         String repaymentCmt = "Repayment Months:" + entity.getRepaymentMonths() + "Repayment Notes:" + entity.getRepaymentNotes();
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
-        entity.setStatus(AdvanceRequisitionStatus.Pending);
+        entity.setStatus(AdvanceRequisitionStatus.Pending_Initial_Approval);
         entity.setEmployee(emp);
         entity.setDateRequested(new Date());
         entity = dao.save(entity);

@@ -11,6 +11,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.BPMUtils;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.email.Email;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -25,9 +26,14 @@ public class GenericTaskCompleteNotification implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
+        notifyWithMoreRoles(delegateTask);
+    }
+
+    public void notifyWithMoreRoles(DelegateTask delegateTask, String... notifyRoles) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(delegateTask));
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(notifyRoles));
         Employee employee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
         if (employee != null) {
             email.addTo(EmployeeDao.instance().getPrimaryEmail(employee.getId()));
