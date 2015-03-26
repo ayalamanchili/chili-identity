@@ -15,6 +15,6 @@ Advance Requisition  Request
 
 Advance Requisition Process
 ----
-![alt text](../../images/expense/advance-form.png "Advance Requisition")
+![alt text](../../images/expense/advance-requisition-process.png "Advance Requisition")
 
 
