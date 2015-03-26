@@ -90,6 +90,8 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
+        TabPanel.instance().getAdminPanel().entityPanel.clear();
+        TabPanel.instance().getAdminPanel().entityPanel.add(new UpdateExternalReferencesPanel(getEntity(entityId)));
     }
 
     @Override
