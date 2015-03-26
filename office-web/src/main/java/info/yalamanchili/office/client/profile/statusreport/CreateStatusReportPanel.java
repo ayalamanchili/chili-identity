@@ -146,7 +146,7 @@ public class CreateStatusReportPanel extends CreateComposite {
         p3.getTextbox().setVisibleLength(90);
         StringField p4 = (StringField) fields.get("projectPhase4Deliverable");
         p4.getTextbox().setVisibleLength(90);
-        setBackgroundText();
+      //  setBackgroundText();
     }
 
     protected void formatTextAreaFields() {
