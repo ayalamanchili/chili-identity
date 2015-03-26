@@ -91,8 +91,8 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         }
     }
     
-    protected List<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries) {
-        List<TimeEntry> res = new ArrayList();
+    protected Set<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries) {
+        Set<TimeEntry> res = new HashSet();
         for (TimeEntry te : timeEntries) {
             if (te.getEntryDate().compareTo(entryDate) == 0 && te.getEmployeeId().equals(empExtRefId)) {
                 res.add(te);
