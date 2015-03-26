@@ -15,8 +15,7 @@ package info.yalamanchili.office.entity.expense;
  */
 public enum AdvanceRequisitionStatus {
     Open,
-    PENDING_MANAGER_APPROVAL,
-    PENDING_FINAL_APPROVAL,
+    Pending,
     Approved,
     Completed,
     Rejected,

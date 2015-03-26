@@ -72,12 +72,10 @@ public class AdvanceRequestProcess implements TaskListener {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(AdvanceRequisitionStatus.PENDING_FINAL_APPROVAL);
+            entity.setStatus(AdvanceRequisitionStatus.Approved);
             if (task.getTaskDefinitionKey().equals("advanceRequisitionApprovalTask")) {
                 entity.setApprovedBy(currentUser.getEmployeeId());
                 entity.setApprovedDate(new Date());
-            } else {
-                entity.setStatus(AdvanceRequisitionStatus.Approved);
             }
         } else {
             entity.setStatus(AdvanceRequisitionStatus.Rejected);
@@ -98,7 +96,7 @@ public class AdvanceRequestProcess implements TaskListener {
         AdvanceRequisition entity = (AdvanceRequisition) task.getExecution().getVariable("entity");
         String repaymentCmt = "Repayment Months:" + entity.getRepaymentMonths() + "Repayment Notes:" + entity.getRepaymentNotes();
         entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
-        entity.setStatus(AdvanceRequisitionStatus.PENDING_MANAGER_APPROVAL);
+        entity.setStatus(AdvanceRequisitionStatus.Pending);
         entity.setEmployee(emp);
         entity.setDateRequested(new Date());
         entity = dao.save(entity);
