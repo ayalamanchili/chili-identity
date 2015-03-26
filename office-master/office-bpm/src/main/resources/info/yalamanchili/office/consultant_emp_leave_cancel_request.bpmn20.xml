@@ -9,7 +9,7 @@
         <startEvent id="consultantEmpLeaveRequestCancelStart" />
         <sequenceFlow targetRef="consultantEmpLeaveRequestCancelTask" sourceRef="consultantEmpLeaveRequestCancelStart"/>
         <userTask id="consultantEmpLeaveRequestCancelTask" name="Cancel Leave Request For ${currentEmployee.firstName} ${currentEmployee.lastName}"
-                  activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_PAYROLL_AND_BENIFITS">
+                  activiti:candidateGroups="ROLE_CONSULTANT_TIME_ADMIN">
             <documentation>
                 A Leave cancel request has been created. 
                 Reason:       : #{cancelReason}
