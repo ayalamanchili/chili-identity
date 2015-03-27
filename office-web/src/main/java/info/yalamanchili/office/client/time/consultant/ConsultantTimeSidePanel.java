@@ -32,6 +32,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.FileUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
@@ -52,6 +53,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     private static Logger logger = Logger.getLogger(CorporateTimeSummarySidePanel.class.getName());
     public FlowPanel panel = new FlowPanel();
     ClickableLink createtimeSheetlink = new ClickableLink("Enter TimeSheet");
+    ClickableLink submitLeaveRequest = new ClickableLink("Submit Leave Request");
     //Timesheets for employee
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
@@ -89,6 +91,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
 
     @Override
     protected void addListeners() {
+        submitLeaveRequest.addClickHandler(this);
         createtimeSheetlink.addClickHandler(this);
         showTimeSheetsForEmpB.addClickHandler(this);
         viewReportsB.addClickHandler(this);
@@ -121,6 +124,7 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
             panel.add(createtimeSheetlink);
+            panel.add(submitLeaveRequest);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_RELATIONSHIP, Auth.ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {
             //employee
@@ -145,6 +149,9 @@ public class ConsultantTimeSidePanel extends ALComposite implements ClickHandler
 
     @Override
     public void onClick(ClickEvent event) {
+        if (event.getSource().equals(submitLeaveRequest)) {
+            new GenericPopup(new ConsultantEmpLeaveRequestPanel(CreateComposite.CreateCompositeType.CREATE)).show();
+        }
         if (event.getSource().equals(createtimeSheetlink)) {
             TabPanel.instance().timePanel.entityPanel.clear();
             TabPanel.instance().timePanel.entityPanel.add(new CreateConsultantTimeSheetPanel(CreateComposite.CreateCompositeType.CREATE));

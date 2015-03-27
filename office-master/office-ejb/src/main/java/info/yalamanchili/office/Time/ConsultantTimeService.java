@@ -61,17 +61,24 @@ public class ConsultantTimeService {
     protected ConsultantTimeSheetDao consultantTimeSheetDao;
 
     public void submitLeaveRequest(ConsultantTimeSheet request) {
-        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        Employee emp;
+        Map<String, Object> vars = new HashMap<String, Object>();
+        if (request.getEmployee() == null) {
+            emp = EmployeeDao.instance().findById(request.getEmployee().getId());
+        } else {
+            emp = OfficeSecurityService.instance().getCurrentUser();
+        }
         BigDecimal ptoAvailable = ConsultantTimeSheetDao.instance().getPTOAccruedTimeSheet(emp).getHours();
         BigDecimal ptoPending = ConsultantTimeSheetDao.instance().getHours(emp, TimeSheetCategory.PTO_USED, TimeSheetStatus.Pending);
         if (ptoAvailable.subtract(ptoPending).compareTo(BigDecimal.ONE) >= 0 && TimeSheetCategory.Unpaid.equals(request.getCategory())) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "use.pto.hours", "Please use available PTO Hours before using Unpaid hours");
         }
         request.setEmployee(emp);
-        Map<String, Object> vars = new HashMap<String, Object>();
+
         vars.put("leaveRequest", request);
         vars.put("summary", getYearlySummary(emp));
         vars.put("currentEmployee", emp);
+        vars.put("submittedBy", OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
         OfficeBPMService.instance().startProcess("consultant_emp_leave_request_process", vars);
     }
 //TODO move to commons

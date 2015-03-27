@@ -33,7 +33,9 @@ public class GenericTaskCompleteNotification implements TaskListener {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
         email.setTos(BPMUtils.getCandidateEmails(delegateTask));
-        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(notifyRoles));
+        if (notifyRoles.length > 0) {
+            email.addTos(MailUtils.instance().getEmailsAddressesForRoles(notifyRoles));
+        }
         Employee employee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
         if (employee != null) {
             email.addTo(EmployeeDao.instance().getPrimaryEmail(employee.getId()));

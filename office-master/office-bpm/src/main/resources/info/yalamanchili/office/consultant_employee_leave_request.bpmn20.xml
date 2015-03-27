@@ -51,8 +51,10 @@
                 End Date      : #{leaveRequest.endDate} 
                 Category      : #{leaveRequest.category} 
                 Hours         : #{leaveRequest.hours} 
-                Submited Date    : #{leaveRequest.createdTimeStamp}
+                Submited Date : #{leaveRequest.createdTimeStamp}
+                Submited By   : #{submittedBy}
                 PTO Available when request submitted : #{summary.availablePTOHours}
+                Hours         : #{leaveRequest.hours}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.time.ConsultantEmpLeaveRequestProcess" />

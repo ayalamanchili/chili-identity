@@ -9,21 +9,27 @@
 package info.yalamanchili.office.client.time.consultant;
 
 import com.google.common.base.Strings;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -38,6 +44,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         super(type);
         initCreateComposite("EmpLeaveRequest", OfficeWelcome.constants);
     }
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -49,7 +56,12 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         assignEntityValueFromField("category", entity);
         assignEntityValueFromField("notes", entity);
         entity.put("status", new JSONString(TimeSheetStatus.Pending.name()));
-        entity.put("employee", new JSONObject());
+        if (fields.containsKey("employee")) {
+            assignEntityValueFromField("employee", entity);
+        } else {
+            entity.put("employee", new JSONObject());
+        }
+        logger.info(entity.toString());
         return entity;
     }
 
@@ -93,10 +105,25 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
     @Override
     protected void configure() {
         setButtonText("Submit");
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                @Override
+                public void onResponse(String entityString) {
+                    logger.info(entityString);
+                    Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                    if (values != null) {
+                        employeeSB.loadData(values);
+                    }
+                }
+            });
+        }
     }
 
     @Override
     protected void addWidgets() {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+            addSuggestField("employee", employeeSB);
+        }
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("hours", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
@@ -104,6 +131,10 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         addField("createdTimeStamp", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("notes", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         alignFields();
+    }
+
+    protected String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Employee");
     }
 
     @Override
