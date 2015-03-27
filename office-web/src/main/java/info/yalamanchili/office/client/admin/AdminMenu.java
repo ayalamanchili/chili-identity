@@ -55,7 +55,7 @@ public class AdminMenu extends Composite {
         adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
         adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
         adminMenuBar.addItem("Question", questionMaintainenceCmd);
-        adminMenuBar.addItem("ExternalReferences", externalReferencesMaintainenceCmd);
+        adminMenuBar.addItem("External References", externalReferencesMaintainenceCmd);
         if (Auth.isAdmin() || Auth.isAccountant() || Auth.hasContractsRole()) {
             adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
         }
