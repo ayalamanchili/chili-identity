@@ -9,6 +9,7 @@
 package info.yalamanchili.office.entity.ext;
 
 import info.chili.jpa.AbstractHandleEntity;
+import info.chili.jpa.validation.Unique;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -24,6 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Audited
 @XmlRootElement
 @XmlType
+@Unique(entity = ExternalRef.class, fields = {"externalId","source"}, message = "{external.ref.not.unique.msg}")
 public class ExternalRef extends AbstractHandleEntity {
 
     private static final long serialVersionUID = 1L;
