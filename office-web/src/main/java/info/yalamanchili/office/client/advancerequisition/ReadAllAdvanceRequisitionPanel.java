@@ -141,4 +141,14 @@ public class ReadAllAdvanceRequisitionPanel extends CRUDReadAllComposite {
         return OfficeWelcome.constants.root_url() + "advancerequisition/" + start.toString() + "/"
                 + limit.toString();
     }
+
+    @Override
+    protected String getDocumentationLink() {
+        return OfficeWelcome.instance().getOfficeClientConfig().getPortalDocumentationSiteUrl() + "expense/advance.html";
+    }
+
+    @Override
+    protected boolean autoShowDocumentation() {
+        return true;
+    }
 }

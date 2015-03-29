@@ -68,7 +68,7 @@ public class ExternalRefResource {
         ExternalRefTable table = new ExternalRefTable();
         List<ExternalRef> extrefs = externalRefDao.query(start, limit);
         table.setEntities(extrefs);
-        table.setSize(Integer.valueOf(extrefs.size()).longValue());
+        table.setSize(externalRefDao.size());
         return table;
 
     }

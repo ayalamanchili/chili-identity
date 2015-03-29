@@ -39,23 +39,6 @@ public class ExternalRefDao extends AbstractHandleEntityDao<ExternalRef> {
         }
     }
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public AbstractEntity find(Long id, String targetClassName) {
-//        TypedQuery<AbstractEntity> query = getEntityManager().createQuery("from " + targetClassName + " where id=:idParam", AbstractEntity.class);
-//        query.setParameter("idParam", id);
-//        if (query.getResultList().size() > 0) {
-//            return query.getResultList().get(0);
-//        } else {
-//            //TODO throw exception
-//            return null;
-//        }
-//    }
-    @Override
-    public ExternalRef save(ExternalRef source, AbstractEntity target) {
-        return super.save(source, target);
-    }
-
     public ExternalRefDao() {
         super(ExternalRef.class);
     }
