@@ -13,6 +13,7 @@ import info.yalamanchili.office.bulkimport.AbstractBulkImportProcess;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeEntry;
@@ -36,25 +37,26 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportProcess<CorporateTimeSheet> {
-    
+
     @Autowired
     protected AvantelEmployeeTimeDataMapper avantelEmployeeTimeDataMapper;
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     public BulkImport submit(BulkImport bulkImport) {
         List<TimeEntry> res = avantelEmployeeTimeDataMapper.mapAvantelTimeRecords(bulkImport);
         processTimeEntryRecords(bulkImport, res);
         return bulkImport;
     }
-    
+
     public void processTimeEntryRecords(BulkImport bulkImport, List<TimeEntry> timeEntries) {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         for (Date entryDate : getDates(timeEntries)) {
             for (String empExtRefId : getEmployeeIds(timeEntries)) {
                 if (ExternalRefDao.instance().findReferenceEntity(empExtRefId) == null) {
+                    createBulkImportMessage(bulkImport, "employee.ref.not.found", empExtRefId, BulkImportMessageType.WARN);
                     continue;
                 }
                 Employee emp = (Employee) ExternalRefDao.instance().findReferenceEntity(empExtRefId);
@@ -89,7 +91,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
             }
         }
     }
-    
+
     protected Set<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries) {
         Set<TimeEntry> res = new HashSet();
         for (TimeEntry te : timeEntries) {
@@ -99,7 +101,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         }
         return res;
     }
-    
+
     protected Set<String> getEmployeeIds(List<TimeEntry> timeEntries) {
         Set<String> employeeIds = new HashSet();
         for (TimeEntry te : timeEntries) {
@@ -107,7 +109,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         }
         return employeeIds;
     }
-    
+
     protected Set<Date> getDates(List<TimeEntry> timeEntries) {
         Set<Date> dates = new HashSet();
         for (TimeEntry te : timeEntries) {
@@ -115,7 +117,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         }
         return dates;
     }
-    
+
     @Override
     protected CorporateTimeSheet saveOnCommit(CorporateTimeSheet entity) {
         entity.setStatus(TimeSheetStatus.Approved);
