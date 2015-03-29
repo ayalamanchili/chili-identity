@@ -25,7 +25,7 @@
     <custom>
         <fluidoSkin>
             <sideBarEnabled>true</sideBarEnabled>
-<!--            <googleSearch>
+            <!--            <googleSearch>
                 <sitesearch/>
             </googleSearch>            -->
         </fluidoSkin>
@@ -62,7 +62,7 @@
                 <item name="Find Candidates" href="/office/recruiting/find-candidates.html"/>   
             </item>
             <item name="Adminstration" href="/office/admin.html" collapse="true">
-                <item name="Bulkupload" href="/office/bulkupload.html"/>
+                <item name="Bulkupload" href="/office/admin/bulkimport.html"/>
             </item>
             <item name="Time" href="/office/timesheets/submit-leave-request.html" collapse="true">
                 <item name="Submit Leave Request" href="/office/timesheets/submit-leave-request.html"/>
@@ -73,6 +73,7 @@
                 <item name="Leaves Accumulation" href="/office/timesheets/leaves-accumulation.html"/>
                 <item name="Reports" href="/office/timesheets/corp-emp-reports.html"/>
                 <item name="Leaves for Employees" href="/office/timesheets/employee-leave-request.html"/>
+                <item name="Time Data Import" href="/office/timesheets/import-external-time-data.html"/>
             </item>
             <item name="Portal Processes" href="/office/bpm/bpm.html" collapse="true">
                 <item name="Employee Address updated" href="/office/bpm/address-updated-process.html"/>
@@ -107,6 +108,6 @@
                 <item name="Forgot Password" href="/office/forgot-password.html"/>
             </item>
         </menu>
-        <footer>COPYRIGHT © 2012-2014 sstech.us - All Rights Reserved</footer>
+        <footer>COPYRIGHT © 2012-2015 sstech.us - All Rights Reserved</footer>
     </body>
 </project>
