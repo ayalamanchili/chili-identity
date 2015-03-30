@@ -8,6 +8,8 @@
  */
 package info.yalamanchili.office.jrs.ext;
 
+import info.chili.jpa.validation.Validate;
+import static info.chili.jpa.validation.ValidationUtils.validate;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.entity.ext.ExternalRef;
 import java.util.List;
@@ -43,21 +45,22 @@ public class ExternalRefResource {
     public ExternalRefDao externalRefDao;
 
     @PUT
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
+    @Validate
     public void save(ExternalRef externalRef) {
         externalRefDao.save(externalRef);
     }
 
     @PUT
     @Path("/delete")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
     public void delete(ExternalRef externalRef) {
         externalRefDao.delete(externalRef);
     }
 
     @PUT
     @Path("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
     public void delete(@PathParam("id") Long id) {
         externalRefDao.delete(id);
     }

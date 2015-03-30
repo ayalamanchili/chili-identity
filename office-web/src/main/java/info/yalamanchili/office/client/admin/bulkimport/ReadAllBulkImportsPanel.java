@@ -28,15 +28,15 @@ import java.util.logging.Logger;
  * @author ayalamanchili
  */
 public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
-
+    
     private static Logger logger = Logger.getLogger(ReadAllBulkImportsPanel.class.getName());
     public static ReadAllBulkImportsPanel instance;
-
+    
     public ReadAllBulkImportsPanel() {
         instance = this;
         initTable("BulkImport", OfficeWelcome.constants);
     }
-
+    
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getclientsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
@@ -47,12 +47,12 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
                     }
                 });
     }
-
+    
     public String getclientsURL(String employeeId, Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "bulkimport/" + start.toString() + "/"
                 + limit.toString();
     }
-
+    
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
@@ -62,7 +62,7 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("Date"));
         table.setText(0, 5, getKeyValue("File"));
     }
-
+    
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
@@ -77,35 +77,35 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
             table.setWidget(i, 5, fileField);
         }
     }
-
+    
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.isAdmin() || Auth.isAccountant() || Auth.hasContractsRole()) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BULK_IMPORT)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         }
     }
-
+    
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().adminPanel.sidePanelTop.clear();
         TabPanel.instance().adminPanel.sidePanelTop.add(new TreeBulkImportPanel(entityId));
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadBulkImportPanel(entityId));
-
+        
     }
-
+    
     @Override
     public void deleteClicked(String entityId) {
     }
-
+    
     protected String getDeleteURL(String entityId) {
         return null;
     }
-
+    
     @Override
     public void postDeleteSuccess() {
     }
-
+    
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().adminPanel.sidePanelTop.clear();
