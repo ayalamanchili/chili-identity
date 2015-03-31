@@ -21,6 +21,7 @@ import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -71,32 +72,35 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
                         timeOut = timeEntry.getEntryTimeStamp();
                     }
                     if (timeIn != null && timeOut != null) {
-                        //TODO save timein and out;
                         minutes = minutes + TimeUnit.MILLISECONDS.toMinutes(timeOut.getTime() - timeIn.getTime());
                         timeIn = null;
                         timeOut = null;
                     }
                     notes.append(timeEntry.describe() + "\n");
                 }
-                CorporateTimeSheet ts = new CorporateTimeSheet();
-                ts.setHours(new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP));
-                ts.setCategory(TimeSheetCategory.Regular);
-                ts.setStatus(TimeSheetStatus.Saved);
-                ts.setEmployee(emp);
-                ts.setStartDate(entryDate);
-                ts.setEndDate(entryDate);
-                ts.setNotes(notes.toString());
-                ts = dao.save(ts);
-                addBulkImportEntity(bulkImport, ts);
+                if (dao.findTimeSheet(emp, TimeSheetCategory.Regular, entryDate, entryDate) == null) {
+                    CorporateTimeSheet ts = new CorporateTimeSheet();
+                    ts.setHours(new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP));
+                    ts.setCategory(TimeSheetCategory.Regular);
+                    ts.setStatus(TimeSheetStatus.Saved);
+                    ts.setEmployee(emp);
+                    ts.setStartDate(entryDate);
+                    ts.setEndDate(entryDate);
+                    ts.setNotes(notes.toString());
+                    ts = dao.save(ts);
+                    addBulkImportEntity(bulkImport, ts);
+                }
             }
         }
     }
 
-    protected Set<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries) {
-        Set<TimeEntry> res = new HashSet();
+    protected List<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries) {
+        List<TimeEntry> res = new ArrayList();
         for (TimeEntry te : timeEntries) {
             if (te.getEntryDate().compareTo(entryDate) == 0 && te.getEmployeeId().equals(empExtRefId)) {
-                res.add(te);
+                if (!res.contains(te)) {
+                    res.add(te);
+                }
             }
         }
         return res;

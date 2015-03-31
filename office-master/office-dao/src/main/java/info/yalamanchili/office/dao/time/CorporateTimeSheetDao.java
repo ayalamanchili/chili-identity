@@ -103,6 +103,25 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
     }
 
+    public CorporateTimeSheet findTimeSheet(Employee emp, TimeSheetCategory category, Date startDate, Date endDate) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where");
+        queryStr.append(" category=:categoryParam");
+        queryStr.append(" and startDate=:startDateParam");
+        queryStr.append(" and endDate=:endDateParam");
+        queryStr.append(" and employee=:empParam");
+        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery(queryStr.toString(), CorporateTimeSheet.class);
+        query.setParameter("categoryParam", category);
+        query.setParameter("startDateParam", startDate, TemporalType.DATE);
+        query.setParameter("endDateParam", endDate, TemporalType.DATE);
+        query.setParameter("empParam", emp);
+        if (query.getResultList().size() > 0) {
+            return query.getResultList().get(0);
+        } else {
+            return null;
+        }
+    }
+
     public Long getTimeSheetsSizeForEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
         String queryStr = "select count(*) " + getTimeSheetsForEmployeeQuery(employee, status, category);
         Query query = getEntityManager().createQuery(queryStr);

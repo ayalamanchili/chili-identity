@@ -10,6 +10,7 @@ package info.yalamanchili.office.entity.time;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -55,6 +56,36 @@ public class TimeEntry {
     
     public void setEntryTimeStamp(Date entryTimeStamp) {
         this.entryTimeStamp = entryTimeStamp;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.employeeId);
+        hash = 37 * hash + Objects.hashCode(this.entryDate);
+        hash = 37 * hash + Objects.hashCode(this.entryTimeStamp);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TimeEntry other = (TimeEntry) obj;
+        if (!Objects.equals(this.employeeId, other.employeeId)) {
+            return false;
+        }
+        if (!Objects.equals(this.entryDate, other.entryDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.entryTimeStamp, other.entryTimeStamp)) {
+            return false;
+        }
+        return true;
     }
     
     @Override
