@@ -63,7 +63,7 @@ public class ConsultantTimeService {
     public void submitLeaveRequest(ConsultantTimeSheet request) {
         Employee emp;
         Map<String, Object> vars = new HashMap<>();
-        if (request.getEmployee() != null) {
+        if (request.getEmployee().getId() != null) {
             emp = EmployeeDao.instance().findById(request.getEmployee().getId());
         } else {
             emp = OfficeSecurityService.instance().getCurrentUser();
