@@ -17,23 +17,23 @@ Attendance Data Bulk Import Process
 
 Create Bulk Import.
 -----
-![alt text](../../images/admin/create.png "Bulk Import Process")
+![alt text](../../images/admin/4.png "Bulk Import Process")
 
 Approval task for Bulk Import Manager Role
 -----
-![alt text](../../images/admin/taskcompletion.png "Bulk Import Process")
+![alt text](../../images/admin/5.png "Bulk Import Process")
 
 - [Time Data Import](../../office/timesheets/import-external-time-data.html "Bulk Import")
 
 Regular Day Hours for employee
 -----
-![alt text](../../images/admin/savedtimesheet.png "Bulk Import Process")
+![alt text](../../images/admin/6.png "Bulk Import Process")
 
 Review bulk import task Bulk Import Manager Role
 -----
-![alt text](../../images/admin/review.png "Bulk Import Process")
-![alt text](../../images/admin/reviewbulkimport.png "Bulk Import Process")
+![alt text](../../images/admin/7.png "Bulk Import Process")
+
 
 Saved Status 
 -----
-![alt text](../../images/admin/Status.png "Bulk Import Process")
+![alt text](../../images/admin/10.png "Bulk Import Process")

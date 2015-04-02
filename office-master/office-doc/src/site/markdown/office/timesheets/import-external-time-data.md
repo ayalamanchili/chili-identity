@@ -14,5 +14,6 @@ Create External References
 
 Regular Day Hours for employee
 -----
-![alt text](../../images/admin/approvedtimesheet.png "Bulk Import Process")
-![alt text](../../images/admin/savedtimesheet.png "Bulk Import Process")
+![alt text](../../images/admin/7.png "Bulk Import Process")
+![alt text](../../images/admin/8.png "Bulk Import Process")
+![alt text](../../images/admin/9.png "Bulk Import Process")
