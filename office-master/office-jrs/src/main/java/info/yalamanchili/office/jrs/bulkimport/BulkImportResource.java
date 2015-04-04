@@ -14,6 +14,7 @@ import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
 import info.yalamanchili.office.dao.bulkimport.BulkImportMessageDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessage;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -88,6 +89,16 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
     }
 
     @GET
+    @Path("/entities/{bulkImportId}/{start}/{limit}")
+    public BulkImportEntityTable getEntities(@PathParam("bulkImportId") Long bulkImportId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("messageType") String messageType) {
+        BulkImportEntityTable tableObj = new BulkImportEntityTable();
+        BulkImport bulkImport = bulkImportDao.findById(bulkImportId);
+        tableObj.setEntities(bulkImport.getEntities());
+        tableObj.setSize(Integer.valueOf(bulkImport.getEntities().size()).longValue());
+        return tableObj;
+    }
+
+    @GET
     @Path("/messages/{bulkImportId}/{start}/{limit}")
     public BulkImportMessageTable getMessages(@PathParam("bulkImportId") Long bulkImportId, @PathParam("start") int start, @PathParam("limit") int limit, @QueryParam("messageType") String messageType) {
         BulkImportMessageTable tableObj = new BulkImportMessageTable();
@@ -146,6 +157,31 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
         }
 
         public void setEntities(List<BulkImportMessage> entities) {
+            this.entities = entities;
+        }
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class BulkImportEntityTable {
+
+        protected Long size;
+        protected List<BulkImportEntity> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<BulkImportEntity> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<BulkImportEntity> entities) {
             this.entities = entities;
         }
     }

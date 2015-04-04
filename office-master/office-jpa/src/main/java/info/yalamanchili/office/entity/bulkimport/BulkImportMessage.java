@@ -27,9 +27,10 @@ import org.hibernate.envers.Audited;
 @XmlRootElement
 @Audited
 public class BulkImportMessage extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
+
     protected String code;
     protected String description;
     @Enumerated(EnumType.STRING)

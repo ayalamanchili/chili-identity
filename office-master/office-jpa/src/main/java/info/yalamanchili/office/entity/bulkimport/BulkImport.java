@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.envers.Audited;
@@ -109,7 +108,7 @@ public class BulkImport extends AbstractEntity {
     @XmlTransient
     public List<BulkImportMessage> getMessages() {
         if (this.messages == null) {
-            this.messages = new ArrayList<BulkImportMessage>();
+            this.messages = new ArrayList<>();
         }
         return messages;
     }
@@ -134,7 +133,7 @@ public class BulkImport extends AbstractEntity {
     @XmlTransient
     public List<BulkImportEntity> getEntities() {
         if (this.entities == null) {
-            this.entities = new ArrayList<BulkImportEntity>();
+            this.entities = new ArrayList<>();
         }
         return entities;
     }

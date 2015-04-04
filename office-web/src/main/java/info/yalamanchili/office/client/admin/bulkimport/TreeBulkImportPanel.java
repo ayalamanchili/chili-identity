@@ -24,6 +24,7 @@ public class TreeBulkImportPanel extends TreePanelComposite {
         return instance;
     }
     private static Logger logger = Logger.getLogger(TreeBulkImportPanel.class.getName());
+    protected static final String ENTITIES_NODE = "ENTITIES";
     protected static final String INFO_MESSAGES_NODE = "INFO_Messages";
     protected static final String WARN_MESSAGES_NODE = "WARN_Messages";
     protected static final String ERROR_MESSAGES_NODE = "ERROR_Messages";
@@ -49,6 +50,7 @@ public class TreeBulkImportPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
+        addFirstChildLink("Entities", ENTITIES_NODE);
         addFirstChildLink("INFO Messages", INFO_MESSAGES_NODE);
         addFirstChildLink("WARN Messages", WARN_MESSAGES_NODE);
         addFirstChildLink("ERROR Messages", ERROR_MESSAGES_NODE);
@@ -56,6 +58,10 @@ public class TreeBulkImportPanel extends TreePanelComposite {
 
     @Override
     public void treeNodeSelected(String entityNodeKey) {
+        if (ENTITIES_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportEntitiesPanel(entityId));
+        }
         if (INFO_MESSAGES_NODE.equals(entityNodeKey)) {
             TabPanel.instance().adminPanel.entityPanel.clear();
             TabPanel.instance().adminPanel.entityPanel.add(new ReadAllBulkImportMessagesPanel(entityId, "INFO"));

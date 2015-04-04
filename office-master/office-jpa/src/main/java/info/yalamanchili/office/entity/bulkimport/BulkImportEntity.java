@@ -26,9 +26,10 @@ import org.hibernate.envers.Audited;
 @Audited
 @XmlRootElement
 public class BulkImportEntity extends AbstractEntity {
+
     @Transient
     private static final long serialVersionUID = 1L;
-    
+
     @org.hibernate.annotations.Index(name = "BLK_IMPRT_ENTY_TP")
     protected String entityType;
     @org.hibernate.annotations.Index(name = "BLK_IMPRT_ENTY_ID")

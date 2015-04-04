@@ -77,6 +77,7 @@ public abstract class AbstractBulkImportProcess<T extends AbstractEntity> implem
         msg.setCode(code);
         msg.setDescription(description);
         msg.setMessageType(type);
+        msg = em.merge(msg);
         bulkImport.addMessage(msg);
     }
 
