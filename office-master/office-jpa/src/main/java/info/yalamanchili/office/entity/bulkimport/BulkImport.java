@@ -53,6 +53,10 @@ public class BulkImport extends AbstractEntity {
     protected List<BulkImportMessage> messages;
     @OneToMany(mappedBy = "bulkImport", cascade = CascadeType.ALL)
     protected List<BulkImportEntity> entities;
+    /**
+     *
+     */
+    protected String bpmProcessId;
 
     public String getName() {
         return name;
@@ -117,6 +121,14 @@ public class BulkImport extends AbstractEntity {
     public void addMessage(BulkImportMessage message) {
         message.setBulkImport(this);
         getMessages().add(message);
+    }
+
+    public String getBpmProcessId() {
+        return bpmProcessId;
+    }
+
+    public void setBpmProcessId(String bpmProcessId) {
+        this.bpmProcessId = bpmProcessId;
     }
 
     @XmlTransient

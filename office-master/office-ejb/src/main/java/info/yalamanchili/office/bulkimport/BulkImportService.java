@@ -9,6 +9,7 @@ package info.yalamanchili.office.bulkimport;
 
 import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.time.BPMTimeService;
 import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
@@ -34,9 +35,17 @@ public class BulkImportService {
     protected EntityManager em;
 
     public String saveBulkUpload(BulkImport entity) {
-        BulkImport bi = (BulkImport) bulkImportDao.save(entity);
-        BPMTimeService.instance().startBulkImportProcess(bi);
-        return bi.getId().toString();
+        entity = bulkImportDao.save(entity);
+        entity.setBpmProcessId(BPMTimeService.instance().startBulkImportProcess(entity));
+        return bulkImportDao.save(entity).getId().toString();
+    }
+
+    public void delete(Long id) {
+        BulkImport entity = bulkImportDao.findById(id);
+        BulkImportProcess adapter = (BulkImportProcess) SpringContext.getBean(entity.getAdapter());
+        adapter.revert(entity);
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
+        bulkImportDao.delete(id);
     }
 
     public List<Entry> getBulkImportAdapters() {

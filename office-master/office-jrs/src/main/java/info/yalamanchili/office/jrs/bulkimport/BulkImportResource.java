@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,6 +59,7 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
     @Validate
     @Path("/save")
     @Produces("application/text")
+    @PreAuthorize("hasRole('ROLE_BULK_IMPORT')")
     public String saveBulkUpload(BulkImport entity) {
         return bulkImportService.saveBulkUpload(entity);
     }
@@ -66,6 +68,14 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
     @Path("/adapters")
     public List<Entry> getBulkImportAdapters() {
         return bulkImportService.getBulkImportAdapters();
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Override
+    public void delete(@PathParam("id") Long id) {
+        bulkImportService.delete(id);
     }
 
     @GET
@@ -92,7 +102,7 @@ public class BulkImportResource extends CRUDResource<BulkImport> {
 
     @XmlRootElement
     @XmlType
-    public static class BulkImportTable implements java.io.Serializable{
+    public static class BulkImportTable implements java.io.Serializable {
 
         protected Long size;
         protected List<BulkImport> entities;

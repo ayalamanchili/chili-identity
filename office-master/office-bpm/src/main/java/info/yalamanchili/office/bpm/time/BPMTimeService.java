@@ -44,11 +44,10 @@ public class BPMTimeService {
         officeBPMService.startProcess("overtime_hours_adjustment_process", vars);
     }
 
-    @Async
-    public void startBulkImportProcess(BulkImport bulkImport) {
+    public String startBulkImportProcess(BulkImport bulkImport) {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put("bulkImport", bulkImport);
-        officeBPMService.startProcess("bulkimport_process", vars);
+        return officeBPMService.startProcess("bulkimport_process", vars);
     }
 
     @Async

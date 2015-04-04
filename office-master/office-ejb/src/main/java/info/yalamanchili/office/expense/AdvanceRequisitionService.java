@@ -47,18 +47,19 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class AdvanceRequisitionService {
-
+    
     @Autowired
     protected AdvanceRequisitionDao advanceRequisitionDao;
-
+    
     public void submitAdvanceRequisition(AdvanceRequisition entity) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         vars.put("currentEmployee", emp);
-        OfficeBPMService.instance().startProcess("advance_requisition_process", vars);
+        String processId = OfficeBPMService.instance().startProcess("advance_requisition_process", vars);
+        entity.setBpmProcessId(processId);
     }
-
+    
     protected Task getTaskForTicket(AdvanceRequisition advanceRequisition) {
         OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
         List<Task> tasks = taskService.getTasksForProcessId(advanceRequisition.getBpmProcessId());
@@ -68,16 +69,13 @@ public class AdvanceRequisitionService {
             return null;
         }
     }
-
+    
     public void delete(Long id) {
         AdvanceRequisition ticket = advanceRequisitionDao.findById(id);
-        Task task = getTaskForTicket(ticket);
-        if (task != null) {
-            OfficeBPMTaskService.instance().deleteTask(task.getId());
-        }
+        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         advanceRequisitionDao.delete(id);
     }
-
+    
     @AccessCheck(employeePropertyName = "employee", companyContacts = {}, roles = {"ROLE_PAYROLL_AND_BENIFITS", "ROLE_ACCOUNTS_PAYABLE"})
     public Response getReport(AdvanceRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
@@ -135,9 +133,9 @@ public class AdvanceRequisitionService {
                 .header("content-disposition", "filename = advacne-requisition.pdf")
                 .header("Content-Length", pdf)
                 .build();
-
+        
     }
-
+    
     public static AdvanceRequisitionService instance() {
         return SpringContext.getBean(AdvanceRequisitionService.class);
     }
