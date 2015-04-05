@@ -17,6 +17,8 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.bulkimport.ReadBulkImportPanel;
+import info.yalamanchili.office.client.admin.bulkimport.TreeBulkImportPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.logging.Logger;
 
@@ -64,6 +66,9 @@ public class ReadAllExternalRefPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadExternalRefPanel(getEntity(entityId)));
     }
 
     @Override

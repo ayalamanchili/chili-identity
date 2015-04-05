@@ -51,6 +51,12 @@ public class ExternalRefResource {
         externalRefDao.save(externalRef);
     }
 
+    @GET
+    @Path("/clone/{id}")
+    public ExternalRef clone(@PathParam("id") Long id) {
+        return externalRefDao.clone(id);
+    }
+
     @PUT
     @Path("/delete")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
