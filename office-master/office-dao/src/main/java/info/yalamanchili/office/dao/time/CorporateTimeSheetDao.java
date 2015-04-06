@@ -122,10 +122,13 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         }
     }
 
-    public Long getTimeSheetsSizeForEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
-        String queryStr = "select count(*) " + getTimeSheetsForEmployeeQuery(employee, status, category);
+    public Long getTimeSheetsSizeForEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category, boolean ignoreRegular) {
+        String queryStr = "select count(*) " + getTimeSheetsForEmployeeQuery(employee, status, category, ignoreRegular);
         Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
+        if (ignoreRegular) {
+            query.setParameter("regularCategoryParam", TimeSheetCategory.Regular);
+        }
         if (queryStr.contains("statusParam")) {
             query.setParameter("statusParam", status);
         }
@@ -135,10 +138,13 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return (Long) query.getSingleResult();
     }
 
-    public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
-        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category) + " order by endDate DESC ";
+    public List<CorporateTimeSheet> getTimeSheetsEmployee(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit, boolean ignoreRegular) {
+        String queryStr = getTimeSheetsForEmployeeQuery(employee, status, category, ignoreRegular) + " order by endDate DESC ";
         Query query = getEntityManager().createQuery(queryStr);
         query.setParameter("employeeParam", employee);
+        if (ignoreRegular) {
+            query.setParameter("regularCategoryParam", TimeSheetCategory.Regular);
+        }
         if (queryStr.contains("statusParam")) {
             query.setParameter("statusParam", status);
         }
@@ -150,9 +156,12 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
         return query.getResultList();
     }
 
-    protected String getTimeSheetsForEmployeeQuery(Employee employee, TimeSheetStatus status, TimeSheetCategory category) {
+    protected String getTimeSheetsForEmployeeQuery(Employee employee, TimeSheetStatus status, TimeSheetCategory category, boolean ignoreRegular) {
         StringBuilder queryStr = new StringBuilder();
-        queryStr.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where employee=:employeeParam");
+        queryStr.append("from ").append(CorporateTimeSheet.class.getCanonicalName()).append(" where employee=:employeeParam ");
+        if (ignoreRegular) {
+            queryStr.append(" and category!=:regularCategoryParam ");
+        }
         if (status != null) {
             queryStr.append(" and status=:statusParam ");
         }
