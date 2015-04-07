@@ -54,10 +54,12 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
 
     public void processTimeEntryRecords(BulkImport bulkImport, List<TimeEntry> timeEntries) {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
+        Set<String> employeeIdsNotFound = new HashSet();
         for (Date entryDate : getDates(timeEntries)) {
             for (String empExtRefId : getEmployeeIds(timeEntries)) {
                 if (ExternalRefDao.instance().findReferenceEntity(empExtRefId) == null) {
-                    createBulkImportMessage(bulkImport, "employee.ref.not.found", empExtRefId, BulkImportMessageType.WARN);
+                    employeeIdsNotFound.add(empExtRefId);
+
                     continue;
                 }
                 Employee emp = (Employee) ExternalRefDao.instance().findReferenceEntity(empExtRefId);
@@ -91,6 +93,9 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
                     addBulkImportEntity(bulkImport, ts);
                 }
             }
+        }
+        for (String notFoundEmpId : employeeIdsNotFound) {
+            createBulkImportMessage(bulkImport, "employee.ref.not.found", notFoundEmpId, BulkImportMessageType.WARN);
         }
     }
 
