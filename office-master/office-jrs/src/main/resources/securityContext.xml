@@ -10,12 +10,13 @@
              xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
     
     <!-- Security url configuration -->
     <http auto-config="true" create-session="stateless" use-expressions="true">
         <intercept-url pattern="/**/secured/**" access="hasRole('ROLE_USER') and hasIpAddress('127.0.0.1')" />
+        <csrf disabled="true"/>
     </http>
      
     <authentication-manager>

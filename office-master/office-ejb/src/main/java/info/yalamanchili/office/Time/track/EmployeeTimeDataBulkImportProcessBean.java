@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,27 +103,26 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
 
     protected List<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries) {
         List<TimeEntry> res = new ArrayList();
-        for (TimeEntry te : timeEntries) {
-            if (te.getEntryDate().compareTo(entryDate) == 0 && te.getEmployeeId().equals(empExtRefId)) {
-                res.add(te);
-            }
-        }
-        return res;
+        Predicate<TimeEntry> equalsDate = (TimeEntry te) -> te.getEntryDate().compareTo(entryDate) == 0;
+        Predicate<TimeEntry> equalsEmp = (TimeEntry te) -> te.getEmployeeId().equals(empExtRefId);
+        Predicate<TimeEntry> fullPredicate = equalsDate.and(equalsEmp);
+        return timeEntries.stream().filter(fullPredicate)
+                .collect(Collectors.toList());
     }
 
     protected Set<String> getEmployeeIds(List<TimeEntry> timeEntries) {
         Set<String> employeeIds = new HashSet();
-        for (TimeEntry te : timeEntries) {
+        timeEntries.stream().forEach((te) -> {
             employeeIds.add(te.getEmployeeId());
-        }
+        });
         return employeeIds;
     }
 
     protected Set<Date> getDates(List<TimeEntry> timeEntries) {
         Set<Date> dates = new HashSet();
-        for (TimeEntry te : timeEntries) {
+        timeEntries.stream().forEach((te) -> {
             dates.add(te.getEntryDate());
-        }
+        });
         return dates;
     }
 

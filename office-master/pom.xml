@@ -445,9 +445,9 @@
         <guava.version>17.0</guava.version>
         <jersey.version>1.8</jersey.version>
         <spring.version>4.0.5.RELEASE</spring.version>
-        <spring.security.version>3.2.7.RELEASE</spring.security.version>
+        <spring.security.version>4.0.0.RELEASE</spring.security.version>
         <jasypt.version>1.7</jasypt.version>
-        <aspectj.version>1.6.11</aspectj.version>
+        <aspectj.version>1.8.5</aspectj.version>
         <!-- hibernate version-->
         <hibernate.version>3.6.10.Final</hibernate.version>
         <hibernate.commons.annotations.verion>3.2.0.Final</hibernate.commons.annotations.verion>
