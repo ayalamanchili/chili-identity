@@ -16,6 +16,7 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import java.util.logging.Logger;
 
 /**
@@ -35,11 +36,11 @@ public class ReadAllBulkImportEntitiesPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllBulkImportEntitiesURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                postFetchTable(result);
+            }
+        });
 
     }
 
@@ -67,11 +68,12 @@ public class ReadAllBulkImportEntitiesPanel extends CRUDReadAllComposite {
 
     @Override
     public void viewClicked(String entityId) {
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new ReadBulkImportEntitiesPanel(entityId));
     }
 
     @Override
     public void deleteClicked(String entityId) {
-
     }
 
     @Override
@@ -80,7 +82,6 @@ public class ReadAllBulkImportEntitiesPanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-
     }
 
     public String getReadAllBulkImportEntitiesURL(Integer start, String limit) {

@@ -27,7 +27,8 @@ public class ReadBulkImportPanel extends ReadComposite {
     public static ReadBulkImportPanel instance() {
         return instance;
     }
-     public ReadBulkImportPanel(JSONObject entity) {
+
+    public ReadBulkImportPanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "BulkImport", OfficeWelcome.constants);
     }
@@ -40,19 +41,20 @@ public class ReadBulkImportPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("adapter", entity, null);
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("bulkImport", entity, null);
+
     }
 
     @Override
@@ -65,13 +67,23 @@ public class ReadBulkImportPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-         addDropDown("adapter", new SelectImportAdapterComposite(false, true));
+        addDropDown("adapter", new SelectImportAdapterComposite(true, false));
         addField("name", true, false, DataType.STRING_FIELD);
         addField("description", true, false, DataType.STRING_FIELD);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return true;
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.bulkimport.BulkImport" + "/" + getEntityId();
     }
 
     @Override
