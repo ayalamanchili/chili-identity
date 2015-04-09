@@ -82,9 +82,9 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_DELETE, row, JSONUtils.toString(entity, "id"));
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BULK_IMPORT)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
         }
     }
 
