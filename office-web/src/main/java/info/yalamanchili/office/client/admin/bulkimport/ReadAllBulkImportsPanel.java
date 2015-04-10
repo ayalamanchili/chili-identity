@@ -22,6 +22,7 @@ import info.chili.gwt.fields.FileField;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import java.util.logging.Logger;
 
 /**
@@ -116,6 +117,7 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
 
     @Override
     public void postDeleteSuccess() {
+        new ResponseStatusWidget().show("Successfully Deleted Bulk Import Information");
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().sidePanelTop.clear();
         TabPanel.instance().getAdminPanel().entityPanel.clear();
