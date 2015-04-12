@@ -26,6 +26,7 @@ and open the template in the editor.
                 A fault occoured when processing this task.
                 Please investigate the root cause based on the information.
                 Once ready please complete to retry this task.
+                Details: #{entity.payload.toString()}
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.fault.FaultEventProcess" />

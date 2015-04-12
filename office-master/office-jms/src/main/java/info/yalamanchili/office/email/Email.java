@@ -144,6 +144,6 @@ public class Email implements Serializable {
 
     @Override
     public String toString() {
-        return "Email{" + "tos=" + tos + ", ccs=" + ccs + ", bccs=" + bccs + ", subject=" + subject + ", body=" + body + ", isHtml=" + html + ", attachments=" + attachments + ", templateName=" + templateName + '}';
+        return "Email{" + "tos=" + tos + ", ccs=" + ccs + ", bccs=" + bccs + ", subject=" + subject + ", body=" + body + ", html=" + html + ", richText=" + richText + ", attachments=" + attachments + ", templateName=" + templateName + ", context=" + context + '}';
     }
 }
