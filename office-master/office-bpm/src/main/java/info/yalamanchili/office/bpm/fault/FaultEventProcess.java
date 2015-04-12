@@ -10,8 +10,8 @@ package info.yalamanchili.office.bpm.fault;
 
 import info.chili.exception.FaultEventPayload;
 import info.chili.spring.SpringContext;
-import info.chili.bpm.email.GenericTaskCompleteNotification;
-import info.chili.bpm.email.GenericTaskCreateNotification;
+import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
+import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -23,18 +23,24 @@ public class FaultEventProcess implements TaskListener {
 
     @Override
     public void notify(DelegateTask task) {
+        Boolean enableEmailNotification = (Boolean) task.getVariable("enableEmailNotification");
         if ("create".equals(task.getEventName())) {
-            new GenericTaskCreateNotification().notify(task);
+            if (enableEmailNotification) {
+                new GenericTaskCreateNotification().notify(task);
+            }
         }
         if ("complete".equals(task.getEventName())) {
             handleFaultEventRetry(task);
-            new GenericTaskCompleteNotification().notify(task);
+            if (enableEmailNotification) {
+                new GenericTaskCompleteNotification().notify(task);
+            }
         }
     }
 
     protected void handleFaultEventRetry(DelegateTask task) {
         FaultEventPayload payload = (FaultEventPayload) task.getVariable("entity");
         FaultEventHandler handler = (FaultEventHandler) SpringContext.getBean(payload.getPayloadType() + ".FaultEventHandler");
+        handler.handleFaultEvent(payload);
     }
 
 }

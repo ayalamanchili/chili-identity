@@ -3,11 +3,15 @@
  */
 package info.yalamanchili.office.service;
 
+import info.chili.bpm.BPMService;
+import info.chili.exception.FaultEventException;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.ServiceMessages;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.exception.ServiceException.StatusCode;
 import info.yalamanchili.office.email.MailUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -87,12 +91,20 @@ public class ServiceInterceptor {
         } else if (exception instanceof ActivitiException && exception.getCause() != null && exception.getCause().getCause() instanceof ServiceException) {
             ServiceException se = (ServiceException) exception.getCause().getCause();
             throw new ServiceException(StatusCode.INVALID_REQUEST, se.getErrors());
-
+        } else if (exception instanceof FaultEventException || (exception.getCause() != null && exception.getCause() instanceof FaultEventException)) {
+            handleFaultEvent((FaultEventException) exception);
         } else {
             MailUtils.logExceptionDetials(exception);
             //TODO this is again intercepted by this same service interceptor to convert into 400 error
             throw new ServiceException(StatusCode.INTERNAL_SYSTEM_ERROR, "SYSTEM", "INTERNAL_ERROR", exception.getMessage());
         }
+    }
+
+    protected void handleFaultEvent(FaultEventException ex) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("entity", ex.getFaultEventPayload());
+        vars.put("enableEmailNotification", ex.isEnableEmailNotification());
+        BPMService.instance().startProcess("fault_event_process", vars);
     }
 
     //TODO should have a catch all exception here?

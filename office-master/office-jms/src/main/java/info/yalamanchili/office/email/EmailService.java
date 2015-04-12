@@ -8,7 +8,10 @@
 package info.yalamanchili.office.email;
 
 import com.google.common.xml.XmlEscapers;
+import info.chili.bpm.BPMService;
 import info.chili.commons.HtmlUtils;
+import info.chili.exception.FaultEventException;
+import info.chili.exception.FaultEventPayload;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.cache.OfficeCacheManager;
@@ -17,11 +20,11 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
 import info.yalamanchili.office.template.TemplateService;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
@@ -59,6 +63,8 @@ public class EmailService {
     @Autowired
     protected OfficeCacheManager officeCacheManager;
 
+    @Async
+    @Transactional
     public void sendEmail(final Email email) {
         final Address[] tos = convertToEmailAddress(filterEmails(email.getTos()));
         if (tos.length < 1) {
@@ -79,7 +85,7 @@ public class EmailService {
             mailSender.send(preparator);
         } catch (MailException ex) {
             ex.printStackTrace();
-            throw new CEmailException(email, ex.getMessage(), ex);
+            throw new FaultEventException(new FaultEventPayload(email, Email.class.getCanonicalName()), false, ex);
         }
     }
 
