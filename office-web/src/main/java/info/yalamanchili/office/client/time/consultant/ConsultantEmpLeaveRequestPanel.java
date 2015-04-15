@@ -44,7 +44,7 @@ public class ConsultantEmpLeaveRequestPanel extends CreateComposite {
         super(type);
         initCreateComposite("EmpLeaveRequest", OfficeWelcome.constants);
     }
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false, Alignment.HORIZONTAL);
 
     @Override
     protected JSONObject populateEntityFromFields() {
