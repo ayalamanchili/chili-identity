@@ -28,30 +28,19 @@ import java.util.logging.Logger;
  *
  * @author benerji.v
  */
-public class ReadAllAttendencePanel extends CRUDReadAllComposite implements ClickHandler{
-    private static Logger logger = Logger.getLogger(ReadAllAttendencePanel.class.getName());
-    public static ReadAllAttendencePanel instance;
+public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements ClickHandler {
 
-    public ReadAllAttendencePanel(String parentId) {
+    private static Logger logger = Logger.getLogger(ReadAllTimeRecordsPanel.class.getName());
+    public static ReadAllTimeRecordsPanel instance;
+
+    public ReadAllTimeRecordsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Corporate Time Sheets", OfficeWelcome.constants);
+        initTable("Time Records", OfficeWelcome.constants);
     }
 
-    public ReadAllAttendencePanel() {
+    public ReadAllTimeRecordsPanel(String title, JSONArray array) {
         instance = this;
-        initTable("My Time Sheets", OfficeWelcome.constants);
-    }
-
-    public ReadAllAttendencePanel(String title, JSONArray array) {
-        instance = this;
-        initTable(title, array, OfficeWelcome.constants);
-    }
-    protected boolean isEmployeesOnLeavePanel = false;
-
-    public ReadAllAttendencePanel(String title, JSONArray array, boolean isEmployeesOnLeavePanel) {
-        instance = this;
-        this.isEmployeesOnLeavePanel = isEmployeesOnLeavePanel;
         initTable(title, array, OfficeWelcome.constants);
     }
 
@@ -63,7 +52,7 @@ public class ReadAllAttendencePanel extends CRUDReadAllComposite implements Clic
 
     @Override
     public void deleteClicked(String entityId) {
-         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -76,7 +65,7 @@ public class ReadAllAttendencePanel extends CRUDReadAllComposite implements Clic
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Coporate Time Sheet Information");
         TabPanel.instance().timePanel.entityPanel.clear();
-        TabPanel.instance().timePanel.entityPanel.add(new ReadAllAttendencePanel(parentId));
+        TabPanel.instance().timePanel.entityPanel.add(new ReadAllTimeRecordsPanel(parentId));
 
     }
 
@@ -104,17 +93,13 @@ public class ReadAllAttendencePanel extends CRUDReadAllComposite implements Clic
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Employee"));
-        if (!isEmployeesOnLeavePanel) {
-            table.setText(0, 2, getKeyValue("Category"));
-        }
-        table.setText(0, 3, getKeyValue("StartDate"));
-        table.setText(0, 4, getKeyValue("EndDate"));
-        table.setText(0, 5, getKeyValue("ReceptionTotal"));
-        table.setText(0, 6, getKeyValue("ReceptionCubical"));
-        table.setText(0, 7, getKeyValue("CubicalHours"));
-        table.setText(0, 8, getKeyValue("2ndFloorTotal"));
-        table.setText(0, 9, getKeyValue("Status"));
+        table.setText(0, 1, getKeyValue("startDate"));
+        table.setText(0, 2, getKeyValue("endDate"));
+        table.setText(0, 3, getKeyValue("ReceptionTotal"));
+        table.setText(0, 4, getKeyValue("ReceptionCubical"));
+        table.setText(0, 5, getKeyValue("notes"));
+        table.setText(0, 6, getKeyValue("notes"));
+        table.setText(0, 7, getKeyValue("notes"));
     }
 
     @Override
@@ -124,9 +109,6 @@ public class ReadAllAttendencePanel extends CRUDReadAllComposite implements Clic
             addOptionsWidget(i, entity);
             JSONObject emp = (JSONObject) entity.get("employee");
             table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            if (!isEmployeesOnLeavePanel) {
-                setEnumColumn(i, 2, entity, "category", "category");
-            }
             table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 5, JSONUtils.toString(entity, "hours"));
@@ -139,7 +121,7 @@ public class ReadAllAttendencePanel extends CRUDReadAllComposite implements Clic
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BULK_IMPORT)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -147,25 +129,12 @@ public class ReadAllAttendencePanel extends CRUDReadAllComposite implements Clic
     }
 
     private String getDeleteURL(String entityId) {
-                return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "timerecord/delete/" + entityId;
 
     }
 
     private String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
-        String queryStr = "?";
-        if (AttendenceSidePanel.instance != null && AttendenceSidePanel.instance.categoryField.getValue() != null) {
-            queryStr = queryStr + "&category=" + AttendenceSidePanel.instance.categoryField.getValue();
-        }
-        if (AttendenceSidePanel.instance != null && AttendenceSidePanel.instance.statusField.getValue() != null) {
-            queryStr = queryStr + "&status=" + AttendenceSidePanel.instance.statusField.getValue();
-        }
-        if (parentId == null) {
-            return OfficeWelcome.constants.root_url() + "corporate-timesheet/currentuser/" + start.toString() + "/" + limit.toString() + queryStr;
-        } else {
-            return OfficeWelcome.constants.root_url() + "corporate-timesheet/employee/" + parentId + "/" + start.toString() + "/" + limit.toString() + queryStr;
-        }
+        return OfficeWelcome.constants.root_url() + "timerecord/" + parentId + "/" + start.toString() + "/" + limit.toString();
     }
 
-    
-    
 }

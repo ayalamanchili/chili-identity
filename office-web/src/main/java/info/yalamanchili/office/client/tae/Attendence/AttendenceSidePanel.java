@@ -143,7 +143,7 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler{
         if (employeeSB.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeSB.getKey()));
-            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllAttendencePanel(employeeSB.getKey()));
+            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey()));
         }
         if (event.getSource().equals(viewReportsB)) {
             viewReport();
