@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.tae.bonuspayment.AdjustmentHoursSidePanel;
 import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPanel;
+import info.yalamanchili.office.client.tae.timesheet.Attendence.AttendenceSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSidePanel;
@@ -49,6 +50,9 @@ public class TimeMenu extends Composite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_CONSULTANT_TIME_REPORTS)) {
             tAEMenuBar.addItem("Employee Time", consultantTimeMaintainenceCmd);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_CORPORATE_TIME_REPORTS, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_BULK_IMPORT)) {
+            tAEMenuBar.addItem("TimeEntry", attendenceCmd);
+        }
         tAEMenuBar.addStyleName("entityMenuBar");
     }
     Command summaryMaintainenceCmd = new Command() {
@@ -75,6 +79,14 @@ public class TimeMenu extends Composite {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.clear();
             TabPanel.instance().getTimePanel().sidePanelTop.add(new CorporateTimeSidePanel());
+        }
+    };
+    Command attendenceCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.clear();
+            TabPanel.instance().getTimePanel().sidePanelTop.add(new AttendenceSidePanel());
         }
     };
     Command consultantTimeMaintainenceCmd = new Command() {

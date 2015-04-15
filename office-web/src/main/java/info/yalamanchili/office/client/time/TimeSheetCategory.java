@@ -14,7 +14,7 @@ package info.yalamanchili.office.client.time;
  */
 public enum TimeSheetCategory {
 
-    Regular,
+    
     PTO_ACCRUED,
     PTO_USED,
     Unpaid,
