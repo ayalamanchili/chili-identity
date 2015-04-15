@@ -25,8 +25,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -73,15 +75,13 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
                     continue;
                 }
                 Employee emp = (Employee) ExternalRefDao.instance().findReferenceEntity(empExtRefId);
-                // second floor actual time
-                StringBuilder secondFloorActualTimeNotes = new StringBuilder();
-                long secondFloorActualTimeMinutes = caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, SECOND_FLOOR), secondFloorActualTimeNotes);
-                createTimeRecord(emp.getId().toString(), secondFloorActualTimeMinutes, entryDate, entryDate, SECOND_FLOOR, secondFloorActualTimeNotes.toString());
-//                    addBulkImportEntity(bulkImport, ts);
-                // reception actual time
-                StringBuilder receptionActualTimeNotes = new StringBuilder();
-                long receptionActualTime = caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, RECEPTION), receptionActualTimeNotes);
-                createTimeRecord(emp.getId().toString(), secondFloorActualTimeMinutes, entryDate, entryDate, RECEPTION, receptionActualTimeNotes.toString());
+                Map<String, BigDecimal> hoursPerType = new HashMap();
+                // RECEPTION actual time
+                StringBuilder notes = new StringBuilder();
+                hoursPerType.put(RECEPTION, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, RECEPTION), notes));
+                // SECOND_FLOOR actual time
+                hoursPerType.put(SECOND_FLOOR, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, SECOND_FLOOR), notes));
+                createTimeRecord(emp.getId().toString(), entryDate, entryDate, hoursPerType, notes.toString());
 //                    addBulkImportEntity(bulkImport, ts);
             }
         }
@@ -90,7 +90,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         }
     }
 
-    protected long caluclateMinutes(List<TimeEntry> entries, StringBuilder notes) {
+    protected BigDecimal caluclateMinutes(List<TimeEntry> entries, StringBuilder notes) {
         long minutes = 0;
         Date timeIn = null;
         Date timeOut = null;
@@ -107,19 +107,18 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
             }
             notes.append(timeEntry.describe()).append("\n");
         }
-        return minutes;
+        return new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP);
     }
 
-    protected void createTimeRecord(String employeeId, long minutes, Date startDate, Date endDate, String location, String notes) {
+    protected void createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, String notes) {
         TimeRecord ts = new TimeRecord();
-        ts.setHours(new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP));
         ts.setCategory(TimeRecordCategory.Regular);
         ts.setStatus(TimeRecordStatus.Saved);
         ts.setEmployeeId(employeeId);
         ts.setStartDate(startDate);
         ts.setEndDate(endDate);
         ts.setNotes(notes);
-        ts.getTags().add(location);
+        ts.getTags().put(notes, BigDecimal.ZERO);
         mongoTemplate.save(ts);
     }
 

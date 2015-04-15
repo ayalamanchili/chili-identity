@@ -10,9 +10,9 @@ package info.yalamanchili.office.model.time;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -66,8 +66,7 @@ public class TimeRecord {
     /**
      *
      */
-    @Indexed
-    protected Set<String> tags;
+    protected Map<String,BigDecimal> tags;
 
     public TimeRecord() {
     }
@@ -136,14 +135,14 @@ public class TimeRecord {
         this.notes = notes;
     }
 
-    public Set<String> getTags() {
+    public Map<String,BigDecimal> getTags() {
         if (tags == null) {
-            this.tags = new HashSet<>();
+            this.tags = new HashMap<>();
         }
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(Map<String,BigDecimal> tags) {
         this.tags = tags;
     }
 
