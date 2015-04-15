@@ -17,7 +17,7 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.tae.bonuspayment.AdjustmentHoursSidePanel;
 import info.yalamanchili.office.client.tae.bonuspayment.ReadAllAdjustmentHoursPanel;
-import info.yalamanchili.office.client.tae.timesheet.Attendence.AttendenceSidePanel;
+import info.yalamanchili.office.client.tae.Attendence.AttendenceSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.TimeSheetPeriodSidePanel;
 import info.yalamanchili.office.client.tae.timesheetperiod.ReadAllTimeSheetPeriodsPanel;
 import info.yalamanchili.office.client.time.consultant.ConsultantTimeSidePanel;
