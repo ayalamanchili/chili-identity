@@ -8,18 +8,22 @@
  */
 package info.yalamanchili.office.model.time;
 
-import info.yalamanchili.office.entity.time.TimeSheetCategory;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author ayalamanchili
  */
-@Document(collection = "events")
+@Document(collection = "timerecords")
 @XmlRootElement
 @XmlType
 public class TimeRecord {
@@ -31,14 +35,17 @@ public class TimeRecord {
     /**
      *
      */
+    @Indexed
     protected String employeeId;
     /**
      *
      */
+    @Indexed
     protected Date startDate;
     /**
      *
      */
+    @Indexed
     protected Date endDate;
     /**
      *
@@ -51,11 +58,16 @@ public class TimeRecord {
     /**
      *
      */
-    protected TimeSheetCategory category;
+    protected TimeRecordCategory category;
     /**
      *
      */
     protected String notes;
+    /**
+     *
+     */
+    @Indexed
+    protected Set<String> tags;
 
     public TimeRecord() {
     }
@@ -108,11 +120,11 @@ public class TimeRecord {
         this.status = status;
     }
 
-    public TimeSheetCategory getCategory() {
+    public TimeRecordCategory getCategory() {
         return category;
     }
 
-    public void setCategory(TimeSheetCategory category) {
+    public void setCategory(TimeRecordCategory category) {
         this.category = category;
     }
 
@@ -124,4 +136,44 @@ public class TimeRecord {
         this.notes = notes;
     }
 
+    public Set<String> getTags() {
+        if (tags == null) {
+            this.tags = new HashSet<>();
+        }
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeRecord{" + "_id=" + _id + ", employeeId=" + employeeId + ", startDate=" + startDate + ", endDate=" + endDate + ", hours=" + hours + ", status=" + status + ", category=" + category + ", notes=" + notes + ", tags=" + tags + '}';
+    }
+
+    @XmlRootElement
+    @XmlType
+    public static class TimeRecordsTable implements java.io.Serializable {
+
+        protected Long size;
+        protected List<TimeRecord> entities;
+
+        public Long getSize() {
+            return size;
+        }
+
+        public void setSize(Long size) {
+            this.size = size;
+        }
+
+        @XmlElement
+        public List<TimeRecord> getEntities() {
+            return entities;
+        }
+
+        public void setEntities(List<TimeRecord> entities) {
+            this.entities = entities;
+        }
+    }
 }

@@ -30,72 +30,56 @@ public class TimeEntry {
      *
      */
     protected Date entryTimeStamp;
-    
+    /**
+     *
+     */
+    protected String location;
+
     public TimeEntry() {
     }
-    
+
     public String getEmployeeId() {
         return employeeId;
     }
-    
+
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
-    
+
     public Date getEntryDate() {
         return entryDate;
     }
-    
+
     public void setEntryDate(Date entryDate) {
         this.entryDate = entryDate;
     }
-    
+
     public Date getEntryTimeStamp() {
         return entryTimeStamp;
     }
-    
+
     public void setEntryTimeStamp(Date entryTimeStamp) {
         this.entryTimeStamp = entryTimeStamp;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.employeeId);
-        hash = 37 * hash + Objects.hashCode(this.entryDate);
-        hash = 37 * hash + Objects.hashCode(this.entryTimeStamp);
-        return hash;
+    public String getLocation() {
+        return location;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TimeEntry other = (TimeEntry) obj;
-        if (!Objects.equals(this.employeeId, other.employeeId)) {
-            return false;
-        }
-        if (!Objects.equals(this.entryDate, other.entryDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.entryTimeStamp, other.entryTimeStamp)) {
-            return false;
-        }
-        return true;
+    public void setLocation(String location) {
+        this.location = location;
     }
-    
+
+   
+
     @Override
     public String toString() {
         return "TimeEntry{" + "employeeId=" + employeeId + ", entryDate=" + entryDate + ", entryTimeStamp=" + entryTimeStamp + '}';
     }
     SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm:ss");
-    
+
     public String describe() {
-        
+
         return "TimeEntry{" + ", entryDate=" + entryDate + ", entryTime=" + printFormat.format(entryTimeStamp) + '}';
     }
 }
