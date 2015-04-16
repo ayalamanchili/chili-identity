@@ -70,7 +70,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         instance = this;
         initWidget(tabPanel);
         tabPanel.addStyleName("tabPanel");
-        tabPanel.add(homePanel, "Home", false);
+        tabPanel.add(homePanel, "asdfasdf", false);
         tabPanel.add(myOfficePanel, "My Office", false);
         tabPanel.add(timePanel, "Time", false);
         tabPanel.add(expensePanel, "Expense", false);

@@ -81,7 +81,7 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllCorporateTimeSheetsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllTimeRecordsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -93,29 +93,20 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("startDate"));
-        table.setText(0, 2, getKeyValue("endDate"));
-        table.setText(0, 3, getKeyValue("ReceptionTotal"));
-        table.setText(0, 4, getKeyValue("ReceptionCubical"));
-        table.setText(0, 5, getKeyValue("notes"));
-        table.setText(0, 6, getKeyValue("notes"));
-        table.setText(0, 7, getKeyValue("notes"));
+        table.setText(0, 1, getKeyValue("Start Date"));
+        table.setText(0, 2, getKeyValue("End Date"));
+        table.setText(0, 3, getKeyValue("Hours"));
     }
 
     @Override
     public void fillData(JSONArray entities) {
+        logger.info(entities.toString());
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            JSONObject emp = (JSONObject) entity.get("employee");
-            table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 5, JSONUtils.toString(entity, "hours"));
-            table.setText(i, 6, JSONUtils.formatEnumString(entity, "hours"));
-            table.setText(i, 7, JSONUtils.formatEnumString(entity, "hours"));
-            table.setText(i, 8, JSONUtils.formatEnumString(entity, "hours"));
-            table.setText(i, 9, JSONUtils.formatEnumString(entity, "status"));
+            table.setText(i, 1, JSONUtils.toString(entity, "startDate"));
+            table.setText(i, 2, JSONUtils.toString(entity, "endDate"));
+            table.setText(i, 3, entity.get("tags").isObject().toString());
         }
     }
 
@@ -133,8 +124,8 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
 
     }
 
-    private String getReadAllCorporateTimeSheetsURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "timerecord/" + parentId + "/" + start.toString() + "/" + limit.toString();
+    private String getReadAllTimeRecordsURL(Integer start, String limit) {
+        return OfficeWelcome.constants.root_url() + "timerecord/employee/" + parentId + "/" + start.toString() + "/" + limit.toString();
     }
 
 }

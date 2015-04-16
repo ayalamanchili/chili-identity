@@ -118,7 +118,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         ts.setStartDate(startDate);
         ts.setEndDate(endDate);
         ts.setNotes(notes);
-        ts.getTags().put(notes, BigDecimal.ZERO);
+        ts.setTags(hours);
         mongoTemplate.save(ts);
     }
 

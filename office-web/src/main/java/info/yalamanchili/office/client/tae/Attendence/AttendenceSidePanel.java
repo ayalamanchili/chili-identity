@@ -42,7 +42,8 @@ import java.util.logging.Logger;
  *
  * @author benerji.v
  */
-public class AttendenceSidePanel extends ALComposite implements ClickHandler{
+public class AttendenceSidePanel extends ALComposite implements ClickHandler {
+
     private static Logger logger = Logger.getLogger(AttendenceSidePanel.class.getName());
     public FlowPanel timeSheetsidepanel = new FlowPanel();
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
@@ -90,7 +91,8 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler{
         viewReportsB.addClickHandler(this);
         clearReportsL.addClickHandler(this);
         reportsB.addClickHandler(this);
-        summaryReportL.addClickHandler(this);    }
+        summaryReportL.addClickHandler(this);
+    }
 
     @Override
     protected void configure() {
@@ -111,7 +113,7 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler{
 
     @Override
     protected void addWidgets() {
-        
+
         if (Auth.isCorporateEmployee()) {
             //time sheets for emp panel
             timesheetsForEmpPanel.add(employeeSB);
@@ -142,7 +144,6 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler{
     public void onClick(ClickEvent event) {
         if (employeeSB.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
-            TabPanel.instance().getTimePanel().entityPanel.add(new CorporateTimeSummaryPanel(employeeSB.getKey()));
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey()));
         }
         if (event.getSource().equals(viewReportsB)) {
@@ -160,7 +161,7 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler{
     }
 
     private String getEmployeeIdsDropDownUrl() {
-                return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
 
     }
 
@@ -196,7 +197,7 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler{
     }
 
     private void pdfReport() {
-                FileUtils.openFile(getReportObject(), getPDFReportURL());
+        FileUtils.openFile(getReportObject(), getPDFReportURL());
 
     }
 
@@ -242,18 +243,18 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler{
     }
 
     private String getReportUrl() {
-                return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/report/0/500";
+        return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/report/0/500";
 
     }
 
     private String getPDFReportURL() {
-                return ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/report" + "&passthrough=true";
+        return ChiliClientConfig.instance().getFileDownloadUrl() + "corporate-timesheet/report" + "&passthrough=true";
 
     }
 
     private String getSummaryReportUrl() {
-                return OfficeWelcome.constants.root_url() + "corporate-timesheet/all-emp-summary-report";
+        return OfficeWelcome.constants.root_url() + "corporate-timesheet/all-emp-summary-report";
 
     }
-    
+
 }
