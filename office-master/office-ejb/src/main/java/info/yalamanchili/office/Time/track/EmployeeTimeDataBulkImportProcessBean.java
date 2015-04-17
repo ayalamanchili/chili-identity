@@ -107,7 +107,9 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
             }
             notes.append(timeEntry.describe()).append("\n");
         }
-        return new BigDecimal((double) minutes / (double) 60).setScale(2, RoundingMode.UP);
+        Long hours = minutes / 60;
+        Long mnts = minutes % 60;
+        return new BigDecimal(hours.toString() + "." + mnts.toString());
     }
 
     protected void createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, String notes) {
@@ -127,7 +129,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         Predicate<TimeEntry> equalsDate = (TimeEntry te) -> te.getEntryDate().compareTo(entryDate) == 0;
         Predicate<TimeEntry> equalsEmp = (TimeEntry te) -> te.getEmployeeId().equals(empExtRefId);
         Predicate<TimeEntry> equalsLocation = (TimeEntry te) -> te.getLocation().equals(location);
-        Predicate<TimeEntry> fullPredicate = equalsDate.and(equalsEmp);
+        Predicate<TimeEntry> fullPredicate = equalsDate.and(equalsEmp).and(equalsLocation);
         return timeEntries.stream().filter(fullPredicate)
                 .collect(Collectors.toList());
     }

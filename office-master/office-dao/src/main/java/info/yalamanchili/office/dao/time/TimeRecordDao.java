@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,7 @@ public class TimeRecordDao {
     public TimeRecordsTable getEvents(String employeeId, int start, int limit) {
         TimeRecordsTable res = new TimeRecordsTable();
         Query query = new Query();
+        query.addCriteria(Criteria.where("employeeId").is(employeeId));
         query.with(new Sort(Sort.Direction.DESC, "startDate"));
         res.setEntities(mongoTemplate.find(query.limit(limit).skip(start), TimeRecord.class));
         res.setSize(mongoTemplate.count(query, TimeRecord.class));

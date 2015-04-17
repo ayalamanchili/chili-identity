@@ -48,14 +48,13 @@ public class AvantelEmployeeTimeDataMapper {
             if (record.getRowNum() < 6) {
                 continue;
             }
-            if (record.getCell(4).getStringCellValue().contains("Floor")) {
-                TimeEntry timeEntry = new TimeEntry();
-                timeEntry.setEmployeeId(Integer.toString(new Double(record.getCell(1).getNumericCellValue()).intValue()));
-                timeEntry.setEntryDate(record.getCell(2).getDateCellValue());
-                timeEntry.setEntryTimeStamp(record.getCell(3).getDateCellValue());
-                System.out.println(timeEntry);
-                res.add(timeEntry);
-            }
+            TimeEntry timeEntry = new TimeEntry();
+            timeEntry.setEmployeeId(Integer.toString(new Double(record.getCell(1).getNumericCellValue()).intValue()));
+            timeEntry.setEntryDate(record.getCell(2).getDateCellValue());
+            timeEntry.setEntryTimeStamp(record.getCell(3).getDateCellValue());
+            timeEntry.setLocation(record.getCell(4).getStringCellValue());
+            System.out.println(timeEntry);
+            res.add(timeEntry);
         }
         return res;
     }
