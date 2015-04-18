@@ -110,12 +110,25 @@ public class StatusReportService {
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "preparedBySignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
-        data.setTemplateUrl("/templates/pdf/status-report-template.pdf");
-        data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC");
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("TechPillars")) {
+            data.setTemplateUrl("/templates/pdf/status-report-techp-template.pdf");
+        } else {
+            data.setTemplateUrl("/templates/pdf/status-report-template.pdf");
+        }
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("TechPillars")) {
+            data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for Tech Pillars");
+        } else {
+            data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC");
+        }
         data.getData().put("projectDescription", reportDocument.getProjectDescription());
         data.getData().put("projectStatus", entity.getStatus().name());
         data.getData().put("projectDuration", new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportStartDate()) + " - " + new SimpleDateFormat("MM-dd-yyyy").format(entity.getReportEndDate()));
-        data.getData().put("distribution", "System Soft Technologies LLC");
+        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("TechPillars")) {
+            data.getData().put("distribution", "Tech Pillars");
+        } else {
+            data.getData().put("distribution", "System Soft Technologies LLC");
+        }
+
         //Phase 1
         data.getData().put("projectPhase1Name", reportDocument.getProjectPhase1Name());
         data.getData().put("projectPhase1Deliverrable", reportDocument.getProjectPhase1Deliverable());
