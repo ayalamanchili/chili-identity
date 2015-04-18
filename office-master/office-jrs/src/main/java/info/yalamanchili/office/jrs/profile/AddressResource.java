@@ -56,7 +56,7 @@ public class AddressResource extends CRUDResource<Address> {
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
         if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess()) {
-            processAddressUpdateNotificationV2(entity, null, true, true, true);
+//            processAddressUpdateNotificationV2(entity, null, true, true, true);
         } else {
 //            processAddressUpdateNotification(entity, null);
         }

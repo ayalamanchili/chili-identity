@@ -116,9 +116,9 @@ public class StatusReportService {
             data.setTemplateUrl("/templates/pdf/status-report-template.pdf");
         }
         if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals("TechPillars")) {
-            data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for Tech Pillars");
+            data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for Tech Pillars) ");
         } else {
-            data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC");
+            data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for System Soft Technologies LLC) ");
         }
         data.getData().put("projectDescription", reportDocument.getProjectDescription());
         data.getData().put("projectStatus", entity.getStatus().name());
