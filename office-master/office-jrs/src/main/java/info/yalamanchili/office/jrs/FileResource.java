@@ -135,8 +135,8 @@ public class FileResource {
         String contentType = FileUtils.getFileContentType(file);
         if (contentType == null) {
             response.header("Content-Disposition", "attachment;");
-        }else{
-             response.header("Content-Disposition", "attachment; filename="+file.getName());
+        } else {
+            response.header("Content-Disposition", "attachment; filename=" + file.getName());
         }
         response.header("Content-Type", contentType);
         //Content disposition with attachement forces the browser to download as attachment(avod inconsistent file type handles by browser)
@@ -186,7 +186,7 @@ public class FileResource {
                 return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Error Uploading File", e);
             }
         }
-        return Response.ok().build();
+        return Response.ok().header("X-Frame-Options", "GOFORIT").build();
     }
 
     protected Response buildResponse(Response.Status status, String errorMsg, Exception e) {

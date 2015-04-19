@@ -9,10 +9,8 @@ package info.yalamanchili.office.client.admin.bulkimport;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -29,7 +27,7 @@ import java.util.logging.Logger;
 public class CreateBulkImportPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreateBulkImportPanel.class.getName());
-    FileuploadField bulkImportUploadPanel = new FileuploadField(OfficeWelcome.constants, "BulkImport", "fileUrl", "BulkImport/fileUrl", false) {
+    FileuploadField bulkImportUploadPanel = new FileuploadField(OfficeWelcome.constants, "BulkImport", "fileUrl", "BulkImport/fileUrl", true) {
         @Override
         public void onUploadComplete(String res) {
             postCreateSuccess(null);

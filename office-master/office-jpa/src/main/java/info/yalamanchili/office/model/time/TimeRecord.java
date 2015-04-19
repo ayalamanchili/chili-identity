@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.model.time;
 
+import info.chili.document.AbstractDocument;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,12 +27,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "timerecords")
 @XmlRootElement
 @XmlType
-public class TimeRecord {
+public class TimeRecord extends AbstractDocument {
 
-    /**
-     *
-     */
-    protected String _id;
     /**
      *
      */
@@ -66,17 +63,9 @@ public class TimeRecord {
     /**
      *
      */
-    protected Map<String,BigDecimal> tags;
+    protected Map<String, BigDecimal> tags;
 
     public TimeRecord() {
-    }
-
-    public String getId() {
-        return _id;
-    }
-
-    public void setId(String _id) {
-        this._id = _id;
     }
 
     public String getEmployeeId() {
@@ -135,20 +124,20 @@ public class TimeRecord {
         this.notes = notes;
     }
 
-    public Map<String,BigDecimal> getTags() {
+    public Map<String, BigDecimal> getTags() {
         if (tags == null) {
             this.tags = new HashMap<>();
         }
         return tags;
     }
 
-    public void setTags(Map<String,BigDecimal> tags) {
+    public void setTags(Map<String, BigDecimal> tags) {
         this.tags = tags;
     }
 
     @Override
     public String toString() {
-        return "TimeRecord{" + "_id=" + _id + ", employeeId=" + employeeId + ", startDate=" + startDate + ", endDate=" + endDate + ", hours=" + hours + ", status=" + status + ", category=" + category + ", notes=" + notes + ", tags=" + tags + '}';
+        return "TimeRecord{" + "employeeId=" + employeeId + ", startDate=" + startDate + ", endDate=" + endDate + ", hours=" + hours + ", status=" + status + ", category=" + category + ", notes=" + notes + ", tags=" + tags + '}';
     }
 
     @XmlRootElement

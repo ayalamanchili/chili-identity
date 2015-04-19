@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -96,6 +99,8 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
         table.setText(0, 1, getKeyValue("Start Date"));
         table.setText(0, 2, getKeyValue("End Date"));
         table.setText(0, 3, getKeyValue("Hours"));
+        table.setText(0, 4, getKeyValue("Status"));
+
     }
 
     @Override
@@ -104,9 +109,10 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "startDate"));
-            table.setText(i, 2, JSONUtils.toString(entity, "endDate"));
+            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 3, entity.get("tags").isObject().toString());
+            table.setText(i, 4, JSONUtils.toString(entity, "status"));
         }
     }
 

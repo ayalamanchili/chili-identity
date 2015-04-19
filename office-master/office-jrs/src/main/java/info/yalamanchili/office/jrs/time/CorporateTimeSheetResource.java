@@ -129,9 +129,9 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     public CorporateTimeSheetTable getCorporateTimeSheet(@PathParam("empId") Long empId, @QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
         if (category != null && TimeSheetCategory.Regular.equals(category)) {
-            return getCorporateTimeSheets(emp, status, category, start, limit, false);
+            return getCorporateTimeSheets(emp, status, category, start, limit);
         } else {
-            return getCorporateTimeSheets(emp, status, category, start, limit, true);
+            return getCorporateTimeSheets(emp, status, category, start, limit);
         }
     }
 
@@ -139,7 +139,7 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
     @Path("/currentuser/{start}/{limit}")
     public CorporateTimeSheetTable getCorporateTimeSheet(@QueryParam("status") TimeSheetStatus status, @QueryParam("category") TimeSheetCategory category, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
-        return getCorporateTimeSheets(emp, status, category, start, limit, true);
+        return getCorporateTimeSheets(emp, status, category, start, limit);
     }
 
     @PUT
@@ -172,10 +172,10 @@ public class CorporateTimeSheetResource extends CRUDResource<CorporateTimeSheet>
         CorporateTimeService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
-    protected CorporateTimeSheetTable getCorporateTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit, boolean ignoreRegular) {
+    protected CorporateTimeSheetTable getCorporateTimeSheets(Employee employee, TimeSheetStatus status, TimeSheetCategory category, int start, int limit) {
         CorporateTimeSheetTable tableObj = new CorporateTimeSheetTable();
-        tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(employee, status, category, start, limit, ignoreRegular));
-        tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(employee, status, category, ignoreRegular));
+        tableObj.setEntities(corporateTimeSheetDao.getTimeSheetsEmployee(employee, status, category, start, limit));
+        tableObj.setSize(corporateTimeSheetDao.getTimeSheetsSizeForEmployee(employee, status, category));
         return tableObj;
     }
 }

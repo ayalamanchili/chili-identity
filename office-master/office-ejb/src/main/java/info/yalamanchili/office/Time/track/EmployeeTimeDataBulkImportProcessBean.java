@@ -9,20 +9,18 @@
  */
 package info.yalamanchili.office.Time.track;
 
-import info.yalamanchili.office.bulkimport.AbstractBulkImportProcess;
+import info.yalamanchili.office.bulkimport.AbstractBulkImportDocumentProcess;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
 import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeEntry;
-import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecordCategory;
 import info.yalamanchili.office.model.time.TimeRecordStatus;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,6 +35,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 /**
@@ -44,27 +44,27 @@ import org.springframework.stereotype.Component;
  * @author ayalamanchili
  */
 @Component
-public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportProcess<CorporateTimeSheet> {
-
+public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDocumentProcess<TimeRecord> {
+    
     @Autowired
     protected AvantelEmployeeTimeDataMapper avantelEmployeeTimeDataMapper;
-
+    
     protected static final String SECOND_FLOOR = "2nd Floor";
     protected static final String RECEPTION = "Reception";
-
+    
     @PersistenceContext
     protected EntityManager em;
-
+    
     @Autowired
     protected MongoOperations mongoTemplate;
-
+    
     @Override
     public BulkImport submit(BulkImport bulkImport) {
         List<TimeEntry> res = avantelEmployeeTimeDataMapper.mapAvantelTimeRecords(bulkImport);
         processTimeEntryRecords(bulkImport, res);
         return bulkImport;
     }
-
+    
     public void processTimeEntryRecords(BulkImport bulkImport, List<TimeEntry> timeEntries) {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         Set<String> employeeIdsNotFound = new HashSet();
@@ -81,15 +81,15 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
                 hoursPerType.put(RECEPTION, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, RECEPTION), notes));
                 // SECOND_FLOOR actual time
                 hoursPerType.put(SECOND_FLOOR, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, SECOND_FLOOR), notes));
-                createTimeRecord(emp.getId().toString(), entryDate, entryDate, hoursPerType, notes.toString());
-//                    addBulkImportEntity(bulkImport, ts);
+                TimeRecord ts = createTimeRecord(emp.getId().toString(), entryDate, entryDate, hoursPerType, notes.toString());
+                addBulkImportEntity(bulkImport, ts);
             }
         }
         for (String notFoundEmpId : employeeIdsNotFound) {
             createBulkImportMessage(bulkImport, "employee.ref.not.found", notFoundEmpId, BulkImportMessageType.WARN);
         }
     }
-
+    
     protected BigDecimal caluclateMinutes(List<TimeEntry> entries, StringBuilder notes) {
         long minutes = 0;
         Date timeIn = null;
@@ -111,8 +111,8 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         Long mnts = minutes % 60;
         return new BigDecimal(hours.toString() + "." + mnts.toString());
     }
-
-    protected void createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, String notes) {
+    
+    protected TimeRecord createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, String notes) {
         TimeRecord ts = new TimeRecord();
         ts.setCategory(TimeRecordCategory.Regular);
         ts.setStatus(TimeRecordStatus.Saved);
@@ -122,8 +122,9 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         ts.setNotes(notes);
         ts.setTags(hours);
         mongoTemplate.save(ts);
+        return ts;
     }
-
+    
     protected List<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries, String location) {
         List<TimeEntry> res = new ArrayList();
         Predicate<TimeEntry> equalsDate = (TimeEntry te) -> te.getEntryDate().compareTo(entryDate) == 0;
@@ -133,7 +134,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         return timeEntries.stream().filter(fullPredicate)
                 .collect(Collectors.toList());
     }
-
+    
     protected Set<String> getEmployeeIds(List<TimeEntry> timeEntries) {
         Set<String> employeeIds = new HashSet();
         timeEntries.stream().forEach((te) -> {
@@ -141,7 +142,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         });
         return employeeIds;
     }
-
+    
     protected Set<Date> getDates(List<TimeEntry> timeEntries) {
         Set<Date> dates = new HashSet();
         timeEntries.stream().forEach((te) -> {
@@ -149,10 +150,33 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportPro
         });
         return dates;
     }
-
+    
     @Override
-    protected CorporateTimeSheet saveOnCommit(CorporateTimeSheet entity) {
-        entity.setStatus(TimeSheetStatus.Approved);
+    protected TimeRecord saveOnCommit(TimeRecord entity) {
+        entity.setStatus(TimeRecordStatus.Approved);
         return entity;
+    }
+    
+    @Override
+    public BulkImport revert(BulkImport bulkImport) {
+        for (BulkImportEntity bie : bulkImport.getEntities()) {
+            String id = bie.getEntityType().substring(bie.getEntityType().indexOf(":") + 1);
+            Query q = new Query(Criteria.where("id").is(id));
+            TimeRecord trec = mongoTemplate.findOne(q, TimeRecord.class);
+            mongoTemplate.remove(trec);
+        }
+        return bulkImport;
+    }
+    
+    @Override
+    public BulkImport commit(BulkImport bulkImport) {
+        for (BulkImportEntity bie : bulkImport.getEntities()) {
+            String id = bie.getEntityType().substring(bie.getEntityType().indexOf(":") + 1);
+            Query q = new Query(Criteria.where("id").is(id));
+            TimeRecord trec = mongoTemplate.findOne(q, TimeRecord.class);
+            trec.setStatus(TimeRecordStatus.Approved);
+            mongoTemplate.save(trec);
+        }
+        return bulkImport;
     }
 }
