@@ -103,7 +103,16 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     }
 
     @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        if (bulkImportUploadPanel.isEmpty()) {
+            bulkImportUploadPanel.setMessage("Please select a file");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "bulkimport/save";
+        return OfficeWelcome.constants.root_url() + "bulkimport";
     }
 }
