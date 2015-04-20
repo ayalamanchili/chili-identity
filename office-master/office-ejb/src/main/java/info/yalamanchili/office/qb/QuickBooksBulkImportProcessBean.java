@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  *
  * @author ayalamanchili
  */
-@Component
+@Component("QuickBooksDataImportAdapter")
 public class QuickBooksBulkImportProcessBean extends AbstractBulkImportProcess<TimeSheet> {
 
     private final static Logger logger = Logger.getLogger(QuickBooksBulkImportProcessBean.class.getName());

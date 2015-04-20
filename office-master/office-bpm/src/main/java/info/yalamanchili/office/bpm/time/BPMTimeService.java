@@ -36,7 +36,7 @@ public class BPMTimeService {
 
     @Async
     public void submitOverTimePayRequest(List<Entry> request) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         for (Entry entry : request) {
             vars.put(entry.getId(), entry.getValue());
         }
@@ -45,14 +45,15 @@ public class BPMTimeService {
     }
 
     public String startBulkImportProcess(BulkImport bulkImport) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("bulkImport", bulkImport);
+        vars.put("bulkImportId", bulkImport.getId());
         return officeBPMService.startProcess("bulkimport_process", vars);
     }
 
     @Async
     public void startNewEmpTimeProcess(Employee emp) {
-        Map<String, Object> vars = new HashMap<String, Object>();
+        Map<String, Object> vars = new HashMap<>();
         vars.put("employee", emp);
         //TODO currently the date time set to middle of day at 12.00 PM should be change to 12.00 AM (begining)
         vars.put("twoMonthCompletionDate", DateUtils.getNextMonth(emp.getStartDate(), 2));

@@ -18,6 +18,8 @@ import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class UpdateBulkImportPanel extends UpdateComposite {
 
-    public static Logger loggar = Logger.getLogger(UpdateBulkImportPanel.class.getName());
+    public static Logger logger = Logger.getLogger(UpdateBulkImportPanel.class.getName());
     FileuploadField bulkImportUploadPanel = new FileuploadField(OfficeWelcome.constants, "BulkImport", "fileUrl", "BulkImport/fileUrl", false) {
         @Override
         public void onUploadComplete(String res) {
@@ -42,11 +44,6 @@ public class UpdateBulkImportPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         assignEntityValueFromField("name", entity);
         assignEntityValueFromField("description", entity);
-        SelectComposite adapterSC = (SelectComposite) fields.get("adapter");
-        if (adapterSC.getSelectedObject() != null) {
-            JSONString adapter = adapterSC.getSelectedObject().get("value").isString();
-            entity.put("adapter", adapter);
-        }
         entity.put("fileUrl", bulkImportUploadPanel.getFileName());
         return entity;
     }
@@ -96,11 +93,9 @@ public class UpdateBulkImportPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addDropDown("adapter", new SelectImportAdapterComposite(false, true));
         addField("name", false, true, DataType.STRING_FIELD);
         addField("description", false, false, DataType.STRING_FIELD);
         entityFieldsPanel.add(bulkImportUploadPanel);
-        //just show name description and fileuplaod fields
     }
 
     @Override

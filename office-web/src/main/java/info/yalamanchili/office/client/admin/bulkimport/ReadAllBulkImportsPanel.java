@@ -18,11 +18,13 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.FileField;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth.ROLE;
 import java.util.logging.Logger;
 
 /**
@@ -82,7 +84,9 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN) && (JSONUtils.toString(entity, "status").equals("NEW") || JSONUtils.toString(entity, "status").equals("ERROR"))) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BULK_IMPORT)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_DELETE, row, JSONUtils.toString(entity, "id"));
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_BULK_IMPORT)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -130,5 +134,20 @@ public class ReadAllBulkImportsPanel extends CRUDReadAllComposite {
         TabPanel.instance().adminPanel.sidePanelTop.add(new BulkImportSidePanel());
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new UpdateBulkImportPanel(getEntity(entityId)));
+    }
+
+    @Override
+    protected void configureCreateButton() {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_BULK_IMPORT)) {
+            createButton.setText("Create Bulk Import");
+            createButton.setVisible(true);
+        }
+    }
+
+    @Override
+    protected void createButtonClicked() {
+        TabPanel.instance().getAdminPanel().sidePanelTop.clear();
+        TabPanel.instance().adminPanel.entityPanel.clear();
+        TabPanel.instance().adminPanel.entityPanel.add(new CreateBulkImportPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 }

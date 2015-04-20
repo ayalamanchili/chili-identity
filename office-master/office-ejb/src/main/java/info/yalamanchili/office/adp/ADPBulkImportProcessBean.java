@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  *
  * @author ayalamanchili
  */
-@Component
+@Component("ADPDataImportAdapter")
 public class ADPBulkImportProcessBean extends AbstractBulkImportProcess<TimeSheet> {
 
     private final static Logger logger = Logger.getLogger(ADPBulkImportProcessBean.class.getName());

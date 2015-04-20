@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
  *
  * @author ayalamanchili
  */
-@Component
+@Component("AvantelTimeDataAdapter")
 public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDocumentProcess<TimeRecord> {
     
     @Autowired

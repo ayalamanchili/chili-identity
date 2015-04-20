@@ -27,7 +27,8 @@ public class BulkImportCommit implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        BulkImport bulkImport = (BulkImport) execution.getVariable("bulkImport");
+        BulkImportDao dao = BulkImportDao.instance();
+        BulkImport bulkImport = dao.findById((Long) execution.getVariable("bulkImportId"));
         BulkImportProcess adapter = (BulkImportProcess) SpringContext.getBean(bulkImport.getAdapter());
         try {
             bulkImport = adapter.commit(bulkImport);
@@ -44,5 +45,6 @@ public class BulkImportCommit implements JavaDelegate {
         }
         bulkImport.setStatus(BulkImportStatus.APPROVED);
         execution.setVariable("bulkImport", bulkImport);
+        dao.save(bulkImport);
     }
 }

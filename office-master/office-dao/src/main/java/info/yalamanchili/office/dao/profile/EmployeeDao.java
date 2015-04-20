@@ -258,7 +258,7 @@ public class EmployeeDao extends CRUDDao<Employee> {
         EmployeeDocumentDao.instance().deleteAll(EmployeeDocumentDao.instance().getDocuments(id));
         ServiceTicketDao.instance().deleteAll(ServiceTicketDao.instance().getTickets(emp, 0, 10000));
         ConsultantTimeSheetDao.instance().deleteAll(ConsultantTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 10000));
-        CorporateTimeSheetDao.instance().deleteAll(CorporateTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 10000, false));
+        CorporateTimeSheetDao.instance().deleteAll(CorporateTimeSheetDao.instance().getTimeSheetsEmployee(emp, null, null, 0, 10000));
         AdvanceRequisitionDao.instance().deleteAll(AdvanceRequisitionDao.instance().queryForEmployee(emp.getId(), 0, 10000));
         /*
          Expenses

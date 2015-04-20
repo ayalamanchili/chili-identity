@@ -13,6 +13,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.time.BPMTimeService;
 import info.yalamanchili.office.dao.bulkimport.BulkImportDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
+import info.yalamanchili.office.entity.bulkimport.BulkImportStatus;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -35,6 +36,7 @@ public class BulkImportService {
     protected EntityManager em;
 
     public String saveBulkUpload(BulkImport entity) {
+        entity.setStatus(BulkImportStatus.NEW);
         entity = bulkImportDao.save(entity);
         entity.setBpmProcessId(BPMTimeService.instance().startBulkImportProcess(entity));
         return bulkImportDao.save(entity).getId().toString();

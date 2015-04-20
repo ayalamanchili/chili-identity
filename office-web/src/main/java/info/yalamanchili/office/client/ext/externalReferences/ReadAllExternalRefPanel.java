@@ -17,8 +17,6 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.bulkimport.ReadBulkImportPanel;
-import info.yalamanchili.office.client.admin.bulkimport.TreeBulkImportPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.logging.Logger;
 
