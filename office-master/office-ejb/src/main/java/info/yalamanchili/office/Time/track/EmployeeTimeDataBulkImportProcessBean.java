@@ -45,26 +45,26 @@ import org.springframework.stereotype.Component;
  */
 @Component("AvantelTimeDataAdapter")
 public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDocumentProcess<TimeRecord> {
-    
+
     @Autowired
     protected AvantelEmployeeTimeDataMapper avantelEmployeeTimeDataMapper;
-    
+    protected static final String CUBICAL = "Cubical";
     protected static final String SECOND_FLOOR = "2nd Floor";
     protected static final String RECEPTION = "Reception";
-    
+
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Autowired
     protected MongoOperations mongoTemplate;
-    
+
     @Override
     public BulkImport submit(BulkImport bulkImport) {
         List<TimeEntry> res = avantelEmployeeTimeDataMapper.mapAvantelTimeRecords(bulkImport);
         processTimeEntryRecords(bulkImport, res);
         return bulkImport;
     }
-    
+
     public void processTimeEntryRecords(BulkImport bulkImport, List<TimeEntry> timeEntries) {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         Set<String> employeeIdsNotFound = new HashSet();
@@ -78,9 +78,11 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
                 Map<String, BigDecimal> hoursPerType = new HashMap();
                 // RECEPTION actual time
                 StringBuilder notes = new StringBuilder();
-                hoursPerType.put(RECEPTION, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, RECEPTION), notes));
+                hoursPerType.put(RECEPTION, caluclateBorderMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, RECEPTION), notes));
                 // SECOND_FLOOR actual time
-                hoursPerType.put(SECOND_FLOOR, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, SECOND_FLOOR), notes));
+                hoursPerType.put(SECOND_FLOOR, caluclateBorderMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, SECOND_FLOOR), notes));
+                //Cubucal Hours
+                hoursPerType.put(CUBICAL, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, SECOND_FLOOR), notes));
                 TimeRecord ts = createTimeRecord(emp.getId().toString(), entryDate, entryDate, hoursPerType, notes.toString());
                 addBulkImportEntity(bulkImport, ts);
             }
@@ -89,7 +91,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
             createBulkImportMessage(bulkImport, "employee.ref.not.found", notFoundEmpId, BulkImportMessageType.WARN);
         }
     }
-    
+
     protected BigDecimal caluclateMinutes(List<TimeEntry> entries, StringBuilder notes) {
         long minutes = 0;
         Date timeIn = null;
@@ -111,7 +113,20 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         Long mnts = minutes % 60;
         return new BigDecimal(hours.toString() + "." + mnts.toString());
     }
-    
+
+    protected BigDecimal caluclateBorderMinutes(List<TimeEntry> entries, StringBuilder notes) {
+        long minutes = 0;
+        if (entries.size() <= 0) {
+            return BigDecimal.ZERO;
+        }
+        Date timeIn = entries.get(0).getEntryTimeStamp();
+        Date timeOut = entries.get(entries.size() - 1).getEntryTimeStamp();
+        minutes = minutes + TimeUnit.MILLISECONDS.toMinutes(timeOut.getTime() - timeIn.getTime());
+        Long hours = minutes / 60;
+        Long mnts = minutes % 60;
+        return new BigDecimal(hours.toString() + "." + mnts.toString());
+    }
+
     protected TimeRecord createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, String notes) {
         TimeRecord ts = new TimeRecord();
         ts.setCategory(TimeRecordCategory.Regular);
@@ -124,7 +139,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         mongoTemplate.save(ts);
         return ts;
     }
-    
+
     protected List<TimeEntry> getTimeEntriesForEmployeeByDate(String empExtRefId, Date entryDate, List<TimeEntry> timeEntries, String location) {
         List<TimeEntry> res = new ArrayList();
         Predicate<TimeEntry> equalsDate = (TimeEntry te) -> te.getEntryDate().compareTo(entryDate) == 0;
@@ -134,7 +149,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         return timeEntries.stream().filter(fullPredicate)
                 .collect(Collectors.toList());
     }
-    
+
     protected Set<String> getEmployeeIds(List<TimeEntry> timeEntries) {
         Set<String> employeeIds = new HashSet();
         timeEntries.stream().forEach((te) -> {
@@ -142,7 +157,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         });
         return employeeIds;
     }
-    
+
     protected Set<Date> getDates(List<TimeEntry> timeEntries) {
         Set<Date> dates = new HashSet();
         timeEntries.stream().forEach((te) -> {
@@ -150,13 +165,13 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         });
         return dates;
     }
-    
+
     @Override
     protected TimeRecord saveOnCommit(TimeRecord entity) {
         entity.setStatus(TimeRecordStatus.Approved);
         return entity;
     }
-    
+
     @Override
     public BulkImport revert(BulkImport bulkImport) {
         for (BulkImportEntity bie : bulkImport.getEntities()) {
@@ -167,7 +182,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         }
         return bulkImport;
     }
-    
+
     @Override
     public BulkImport commit(BulkImport bulkImport) {
         for (BulkImportEntity bie : bulkImport.getEntities()) {
