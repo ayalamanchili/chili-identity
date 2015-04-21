@@ -21,6 +21,7 @@ import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecordCategory;
 import info.yalamanchili.office.model.time.TimeRecordStatus;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,20 +112,20 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         }
         Long hours = minutes / 60;
         Long mnts = minutes % 60;
-        return new BigDecimal(hours.toString() + "." + mnts.toString());
+        return new BigDecimal(hours.toString() + "." + mnts.toString()).setScale(2, RoundingMode.HALF_UP);
     }
 
     protected BigDecimal caluclateBorderMinutes(List<TimeEntry> entries, StringBuilder notes) {
         long minutes = 0;
         if (entries.size() <= 0) {
-            return BigDecimal.ZERO;
+            return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         }
         Date timeIn = entries.get(0).getEntryTimeStamp();
         Date timeOut = entries.get(entries.size() - 1).getEntryTimeStamp();
         minutes = minutes + TimeUnit.MILLISECONDS.toMinutes(timeOut.getTime() - timeIn.getTime());
         Long hours = minutes / 60;
         Long mnts = minutes % 60;
-        return new BigDecimal(hours.toString() + "." + mnts.toString());
+        return new BigDecimal(hours.toString() + "." + mnts.toString()).setScale(2, RoundingMode.HALF_UP);
     }
 
     protected TimeRecord createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, String notes) {

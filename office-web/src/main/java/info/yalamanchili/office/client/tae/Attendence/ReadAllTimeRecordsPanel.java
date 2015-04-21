@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -98,8 +99,10 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
         table.setText(0, 0, getKeyValue("Table_Action"));
         table.setText(0, 1, getKeyValue("Start Date"));
         table.setText(0, 2, getKeyValue("End Date"));
-        table.setText(0, 3, getKeyValue("Hours"));
-        table.setText(0, 4, getKeyValue("Status"));
+        table.setText(0, 3, getKeyValue("Reception Hours"));
+        table.setText(0, 4, getKeyValue("Second Floor Hours"));
+        table.setText(0, 5, getKeyValue("Cubical Hours"));
+        table.setText(0, 6, getKeyValue("Status"));
 
     }
 
@@ -111,8 +114,10 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
             addOptionsWidget(i, entity);
             table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, entity.get("tags").isObject().toString());
-            table.setText(i, 4, JSONUtils.toString(entity, "status"));
+            table.setText(i, 3, JSONUtils.getValueFromMap(entity.get("tags").isObject(), "Reception"));
+            table.setText(i, 4, JSONUtils.getValueFromMap(entity.get("tags").isObject(), "2nd Floor"));
+            table.setText(i, 5, JSONUtils.getValueFromMap(entity.get("tags").isObject(), "Cubical"));
+            table.setText(i, 6, JSONUtils.toString(entity, "status"));
         }
     }
 
@@ -131,7 +136,7 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
     }
 
     private String getReadAllTimeRecordsURL(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "timerecord/employee/" + parentId + "/" + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "timerecord/employee/" + parentId + "/" + start.toString() + "/" + limit;
     }
 
 }
