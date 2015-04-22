@@ -12,6 +12,7 @@ package info.yalamanchili.office.Time.track;
 import info.yalamanchili.office.bulkimport.AbstractBulkImportDocumentProcess;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
+import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.entity.bulkimport.BulkImport;
 import info.yalamanchili.office.entity.bulkimport.BulkImportEntity;
 import info.yalamanchili.office.entity.bulkimport.BulkImportMessageType;
@@ -35,7 +36,6 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
@@ -57,7 +57,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
     protected EntityManager em;
 
     @Autowired
-    protected MongoOperations mongoTemplate;
+    protected TimeRecordDao timeRecordDao;
 
     @Override
     public BulkImport submit(BulkImport bulkImport) {
@@ -85,7 +85,9 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
                 //Cubucal Hours
                 hoursPerType.put(CUBICAL, caluclateMinutes(getTimeEntriesForEmployeeByDate(empExtRefId, entryDate, timeEntries, SECOND_FLOOR), notes));
                 TimeRecord ts = createTimeRecord(emp.getId().toString(), entryDate, entryDate, hoursPerType, notes.toString());
-                addBulkImportEntity(bulkImport, ts);
+                if (ts != null) {
+                    addBulkImportEntity(bulkImport, ts);
+                }
             }
         }
         for (String notFoundEmpId : employeeIdsNotFound) {
@@ -129,6 +131,9 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
     }
 
     protected TimeRecord createTimeRecord(String employeeId, Date startDate, Date endDate, Map<String, BigDecimal> hours, String notes) {
+        if (timeRecordDao.find(employeeId, startDate, endDate) != null) {
+            return null;
+        }
         TimeRecord ts = new TimeRecord();
         ts.setCategory(TimeRecordCategory.Regular);
         ts.setStatus(TimeRecordStatus.Saved);
@@ -137,7 +142,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         ts.setEndDate(endDate);
         ts.setNotes(notes);
         ts.setTags(hours);
-        mongoTemplate.save(ts);
+        timeRecordDao.save(ts);
         return ts;
     }
 

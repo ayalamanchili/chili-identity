@@ -10,6 +10,7 @@ package info.yalamanchili.office.dao.time;
 
 import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecord.TimeRecordsTable;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
@@ -29,7 +30,7 @@ public class TimeRecordDao {
     @Autowired
     protected MongoOperations mongoTemplate;
 
-    public TimeRecordsTable getEvents(String employeeId, int start, int limit) {
+    public TimeRecordsTable getTimeRecords(String employeeId, int start, int limit) {
         TimeRecordsTable res = new TimeRecordsTable();
         Query query = new Query();
         query.addCriteria(Criteria.where("employeeId").is(employeeId));
@@ -37,5 +38,17 @@ public class TimeRecordDao {
         res.setEntities(mongoTemplate.find(query.limit(limit).skip(start), TimeRecord.class));
         res.setSize(mongoTemplate.count(query, TimeRecord.class));
         return res;
+    }
+
+    public TimeRecord find(String employeeId, Date startDate, Date endDate) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("startDate").is(startDate));
+        query.addCriteria(Criteria.where("endDate").is(endDate));
+        query.addCriteria(Criteria.where("employeeId").is(employeeId));
+        return mongoTemplate.findOne(query, TimeRecord.class);
+    }
+
+    public void save(TimeRecord trec) {
+        mongoTemplate.save(trec);
     }
 }
