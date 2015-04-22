@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.bulkimport.BulkImportSidePanel;
 import info.yalamanchili.office.client.admin.bulkimport.ReadAllBulkImportsPanel;
@@ -55,8 +56,8 @@ public class AdminMenu extends Composite {
         adminMenuBar.addItem("SOW's", sowMaintainenceCmd);
         adminMenuBar.addItem("Notification Groups", notificationGroupMaintainenceCmd);
         adminMenuBar.addItem("Question", questionMaintainenceCmd);
-        adminMenuBar.addItem("External References", externalReferencesMaintainenceCmd);
-        if (Auth.isAdmin() || Auth.isAccountant() || Auth.hasContractsRole()) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
+            adminMenuBar.addItem("External References", externalReferencesMaintainenceCmd);
             adminMenuBar.addItem("Bulk Import", bulkImportMaintainenceCmd);
         }
         if (Auth.isAdmin()) {
@@ -88,7 +89,7 @@ public class AdminMenu extends Composite {
             TabPanel.instance().getAdminPanel().entityPanel.clear();
             TabPanel.instance().getAdminPanel().sidePanelTop.clear();
             TabPanel.instance().getAdminPanel().entityPanel.add(new ReadAllExternalRefPanel());
-            
+
         }
     };
     Command projectsMaintainenceCmd = new Command() {
