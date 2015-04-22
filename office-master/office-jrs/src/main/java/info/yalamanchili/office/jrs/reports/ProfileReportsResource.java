@@ -16,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,13 @@ public class ProfileReportsResource {
     @Path("/employee-basic-info-report")
     public void basicEmployeeInfoReport() {
         profileReportsService.generateEmployeBasicInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+    }
+
+    @GET
+    @Path("/employee-advance-info-report")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void generateProfileInformationReport() {
+        profileReportsService.generateProfileReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @GET

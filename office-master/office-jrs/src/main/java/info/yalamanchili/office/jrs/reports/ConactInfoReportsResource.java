@@ -9,8 +9,6 @@
 package info.yalamanchili.office.jrs.reports;
 
 import info.yalamanchili.office.contact.ContactInfoReportingService;
-import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.profile.ProfileReportingService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -37,11 +35,5 @@ public class ConactInfoReportsResource {
     @Produces({"application/pdf"})
     public Response getCorporateContactInfo() {
         return ContactInfoReportingService.instance().getCorporateContactInfo();
-    }
-
-    @GET
-    @Path("/profile-info-report")
-    public void generateProfileInformationReport() {
-        ProfileReportingService.instance().generateProfileReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 }
