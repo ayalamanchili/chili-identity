@@ -107,9 +107,9 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
             addOptionsWidget(i, entity);
             table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 3, getValueFromMap(entity.get("tags").isObject(), "Reception"));
-            table.setText(i, 4, getValueFromMap(entity.get("tags").isObject(), "2nd Floor"));
-            table.setText(i, 5, getValueFromMap(entity.get("tags").isObject(), "Cubical"));
+            table.setText(i, 3, JSONUtils.getValueFromMap(entity.get("tags").isObject(), "Reception"));
+            table.setText(i, 4, JSONUtils.getValueFromMap(entity.get("tags").isObject(), "2nd Floor"));
+            table.setText(i, 5, JSONUtils.getValueFromMap(entity.get("tags").isObject(), "Cubical"));
             table.setText(i, 6, JSONUtils.toString(entity, "status"));
         }
     }
@@ -130,16 +130,6 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
 
     private String getReadAllTimeRecordsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "timerecord/employee/" + parentId + "/" + start.toString() + "/" + limit;
-    }
-
-    protected static String getValueFromMap(JSONValue entity, String key) {
-        JSONArray array = JSONUtils.toJSONArray(entity.isObject().get("entry"));
-        for (int i = 0; i < array.size(); i++) {
-            if (array.get(i).isObject().get("key").isString().stringValue().equals(key)) {
-                return array.get(i).isObject().get("value").isString().stringValue();
-            }
-        }
-        return "";
     }
 
 }

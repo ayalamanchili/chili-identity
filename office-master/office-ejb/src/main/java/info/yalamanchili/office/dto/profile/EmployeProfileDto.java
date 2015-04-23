@@ -28,6 +28,8 @@ public class EmployeProfileDto extends EmployeeDto {
     protected String emergencyContactName;
     protected String emergencyContactPhone;
     protected String emergencyContactEmail;
+    protected String employeeTypeStr;
+    protected String manager;
 
     public String getHomeAddress1() {
         return homeAddress1;
@@ -99,6 +101,24 @@ public class EmployeProfileDto extends EmployeeDto {
 
     public void setEmergencyContactEmail(String emergencyContactEmail) {
         this.emergencyContactEmail = emergencyContactEmail;
+    }
+
+    public String getEmployeeTypeStr() {
+        return employeeTypeStr;
+    }
+
+    public void setEmployeeTypeStr(String employeeTypeStr) {
+        this.employeeTypeStr = employeeTypeStr;
+    }
+
+    
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
     }
     
 }
