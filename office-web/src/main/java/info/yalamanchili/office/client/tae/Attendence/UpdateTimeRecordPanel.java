@@ -13,6 +13,7 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.rpc.HttpService;
+import static info.chili.gwt.utils.JSONUtils.getValueFromMap;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
