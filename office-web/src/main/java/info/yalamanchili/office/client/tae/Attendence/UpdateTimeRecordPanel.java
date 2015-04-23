@@ -17,7 +17,6 @@ import static info.chili.gwt.utils.JSONUtils.getValueFromMap;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import static info.yalamanchili.office.client.tae.Attendence.ReadAllTimeRecordsPanel.getValueFromMap;
 import java.util.logging.Logger;
 
 /**

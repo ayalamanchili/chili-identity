@@ -113,6 +113,7 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
             table.setText(i, 6, JSONUtils.toString(entity, "status"));
         }
     }
+    
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
