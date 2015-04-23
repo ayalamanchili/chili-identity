@@ -186,7 +186,7 @@ public class FileResource {
                 return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Error Uploading File", e);
             }
         }
-        return Response.ok().header("X-Frame-Options", "GOFORIT").build();
+        return Response.ok().build();
     }
 
     protected Response buildResponse(Response.Status status, String errorMsg, Exception e) {
