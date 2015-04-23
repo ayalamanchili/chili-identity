@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
+//TODO extend from abstract dao
 public class TimeRecordDao {
 
     @Autowired
@@ -46,6 +47,11 @@ public class TimeRecordDao {
         query.addCriteria(Criteria.where("endDate").is(endDate));
         query.addCriteria(Criteria.where("employeeId").is(employeeId));
         return mongoTemplate.findOne(query, TimeRecord.class);
+    }
+
+    public void delete(String id) {
+        Query q = new Query(Criteria.where("id").is(id));
+        mongoTemplate.findAndRemove(q, TimeRecord.class);
     }
 
     public void save(TimeRecord trec) {

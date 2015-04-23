@@ -18,14 +18,11 @@ import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.time.corp.PTOAccruedHoursAdjustmentPanel;
 import info.yalamanchili.office.client.time.corp.ReadCorporateTimeSheetPanel;
-import info.yalamanchili.office.client.time.corp.UpdateCorporateTimeSheetPanel;
 import java.util.logging.Logger;
 
 /**
@@ -75,12 +72,8 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
 
     @Override
     public void updateClicked(String entityId) {
-        if (JSONUtils.toString(getEntity(entityId), "category").equals("PTO_ACCRUED")) {
-            new GenericPopup(new PTOAccruedHoursAdjustmentPanel(parentId, getEntity(entityId))).show();
-        } else {
-            TabPanel.instance().timePanel.entityPanel.clear();
-            TabPanel.instance().timePanel.entityPanel.add(new UpdateCorporateTimeSheetPanel(getEntity(entityId)));
-        }
+        TabPanel.instance().timePanel.entityPanel.clear();
+        TabPanel.instance().timePanel.entityPanel.add(new UpdateTimeRecordPanel(getEntity(entityId)));
     }
 
     @Override
@@ -138,6 +131,7 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
     private String getReadAllTimeRecordsURL(Integer start, String limit) {
         return OfficeWelcome.constants.root_url() + "timerecord/employee/" + parentId + "/" + start.toString() + "/" + limit;
     }
+
     protected static String getValueFromMap(JSONValue entity, String key) {
         JSONArray array = JSONUtils.toJSONArray(entity.isObject().get("entry"));
         for (int i = 0; i < array.size(); i++) {

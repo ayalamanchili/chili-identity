@@ -11,9 +11,11 @@ package info.yalamanchili.office.jrs.time;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecord.TimeRecordsTable;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -33,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 @Path("secured/timerecord")
+//TODO extend from crud resource
 public class TimeRecordResource {
 
     @Autowired
@@ -43,6 +46,19 @@ public class TimeRecordResource {
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
     public TimeRecordsTable getTimeRecordsForEmployee(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
-        return timeRecordDao.getEvents(empId.toString(), start, limit);
+        return timeRecordDao.getTimeRecords(empId.toString(), start, limit);
+    }
+
+    @PUT
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
+    public void save(TimeRecord entity) {
+        timeRecordDao.save(entity);
+    }
+
+    @PUT
+    @Path("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
+    public void delete(@PathParam("id") String id) {
+        timeRecordDao.delete(id);
     }
 }
