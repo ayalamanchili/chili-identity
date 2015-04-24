@@ -100,7 +100,7 @@ public class ReadTimeRecordPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "timerecord/" + entityId;
+        return OfficeWelcome.constants.root_url() + "timerecord" + entityId;
     }
 
     @Override
