@@ -18,7 +18,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
-import static info.yalamanchili.office.client.profile.employee.ReadAllEmployeesPanel.instance;
 import java.util.logging.Logger;
 
 /**
