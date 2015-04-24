@@ -18,7 +18,6 @@ import info.yalamanchili.office.bpm.types.FormProperty;
 import info.yalamanchili.office.bpm.types.HistoricTask;
 import info.yalamanchili.office.bpm.types.Task;
 import info.yalamanchili.office.bpm.types.Task.TaskTable;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.security.SecurityUtils;
@@ -139,7 +138,7 @@ public class BPMResource {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public TaskTable getTasksByProcess(@PathParam("processId") String processId, @PathParam("start") int start, @PathParam("limit") int limit) {
         TaskTable result = new TaskTable();
-        result.setEntities(new HashSet<Task>(officeBPMTaskService.getTasksForProcessId(processId)));
+        result.setEntities(new HashSet<>(officeBPMTaskService.getTasksForProcessId(processId)));
         result.setSize(10l);
         return result;
     }

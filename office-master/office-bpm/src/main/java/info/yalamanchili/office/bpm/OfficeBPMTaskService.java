@@ -173,7 +173,7 @@ public class OfficeBPMTaskService {
         if (processId == null || processId.isEmpty()) {
             return Collections.EMPTY_LIST;
         }
-        List<Task> result = new ArrayList<Task>();
+        List<Task> result = new ArrayList<>();
         TaskQuery query = bpmTaskService.createTaskQuery().processInstanceId(processId);
         for (org.activiti.engine.task.Task bpmTask : query.list()) {
             result.add(mapper.map(bpmTask, Task.class));
