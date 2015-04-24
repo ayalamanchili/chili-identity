@@ -48,7 +48,7 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().timePanel.entityPanel.clear();
-        TabPanel.instance().timePanel.entityPanel.add(new ReadCorporateTimeSheetPanel(entityId));
+        TabPanel.instance().timePanel.entityPanel.add(new ReadTimeRecordPanel(entityId));
     }
 
     @Override
