@@ -41,6 +41,15 @@ public class TimeRecordResource {
     @Autowired
     protected TimeRecordDao timeRecordDao;
 
+    
+    @GET
+    @Path("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
+    public TimeRecord find(@PathParam("id") String id) {
+        return timeRecordDao.find(id);
+    }
+
+    
     @GET
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")

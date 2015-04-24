@@ -41,6 +41,11 @@ public class TimeRecordDao {
         return res;
     }
 
+    public TimeRecord find(String id) {
+        Query q = new Query(Criteria.where("id").is(id));
+        return mongoTemplate.findOne(q, TimeRecord.class);
+    }
+
     public TimeRecord find(String employeeId, Date startDate, Date endDate) {
         Query query = new Query();
         query.addCriteria(Criteria.where("startDate").is(startDate));
