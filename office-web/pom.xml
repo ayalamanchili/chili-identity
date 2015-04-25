@@ -144,11 +144,6 @@
             <version>2.17.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
-        </dependency>
     </dependencies>
     <build>
         <finalName>office-web</finalName>

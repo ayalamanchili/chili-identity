@@ -79,7 +79,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
             company.put("name", company.get("value"));
             entity.put("company", company);
         }
-        logger.info("aaaaaaaaaa" + entity.toString());
         return entity;
     }
 
