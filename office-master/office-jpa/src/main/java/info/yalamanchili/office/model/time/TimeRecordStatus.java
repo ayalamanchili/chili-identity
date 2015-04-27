@@ -17,4 +17,5 @@ public enum TimeRecordStatus {
     Saved,
     Pending,
     Approved,
+    Error,
 }
