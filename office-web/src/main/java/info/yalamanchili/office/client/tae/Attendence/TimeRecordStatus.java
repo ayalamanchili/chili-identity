@@ -10,10 +10,12 @@ package info.yalamanchili.office.client.tae.Attendence;
  * @author ayalamanchili
  */
 public enum TimeRecordStatus {
+    
 
     Saved,
     Pending,
-    Approved;
+    Approved,
+    Error;
 
     public static String[] names() {
         TimeRecordStatus[] values = values();
