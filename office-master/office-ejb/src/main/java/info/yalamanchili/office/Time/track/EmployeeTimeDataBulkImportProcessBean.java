@@ -143,7 +143,7 @@ public class EmployeeTimeDataBulkImportProcessBean extends AbstractBulkImportDoc
         }
         TimeRecord ts = new TimeRecord();
         ts.setCategory(TimeRecordCategory.Regular);
-        ts.setStatus(TimeRecordStatus.Saved);
+        ts.setStatus(status);
         ts.setEmployeeId(employeeId);
         ts.setStartDate(startDate);
         ts.setEndDate(endDate);

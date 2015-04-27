@@ -12,9 +12,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.rpc.HttpService;
 import static info.chili.gwt.utils.JSONUtils.getValueFromMap;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 
 /**
  *
@@ -44,21 +42,17 @@ public class ReadTimeRecordPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        });
-    }
-
-    protected void populateComments() {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.model.time.TimeRecord"));
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("status", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("category", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
@@ -100,16 +94,7 @@ public class ReadTimeRecordPanel extends ReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "timerecord" + entityId;
+        return OfficeWelcome.constants.root_url() + "timerecord/" + entityId;
     }
 
-    @Override
-    protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION);
-    }
-
-    @Override
-    protected String getAuditUrl() {
-        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.model.time.TimeRecord" + "/" + getEntityId();
-    }
 }
