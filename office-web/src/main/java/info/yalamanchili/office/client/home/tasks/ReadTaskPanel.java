@@ -214,8 +214,10 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Completed");
+                        GenericPopup.instance().hide();
                         TabPanel.instance().getHomePanel().entityPanel.clear();
                         TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                        
                     }
                 });
     }

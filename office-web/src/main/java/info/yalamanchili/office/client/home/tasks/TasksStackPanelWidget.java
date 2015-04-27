@@ -94,17 +94,17 @@ public class TasksStackPanelWidget extends ALComposite implements ClickHandler {
         if (event.getSource().equals(myTasksL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             String myTasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser/";
-            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(myTasksUrl));
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(myTasksUrl,false));
         }
         if (event.getSource().equals(completedTasksL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             String completedTasksUrl = OfficeWelcome.constants.root_url() + "bpm/history/tasks/";
-            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(completedTasksUrl));
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(completedTasksUrl,false));
         }
         if (event.getSource().equals(allTasksL)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();
             String url = OfficeWelcome.constants.root_url() + "bpm/alltasks/";
-            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(url));
+            TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks(url,false));
         }
         if (event.getSource().equals(searchTasks)) {
             TabPanel.instance().getHomePanel().entityPanel.clear();

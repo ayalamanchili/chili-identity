@@ -151,6 +151,6 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
     @Override
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
-        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId" + "/")));
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId" + "/"),false));
     }
 }

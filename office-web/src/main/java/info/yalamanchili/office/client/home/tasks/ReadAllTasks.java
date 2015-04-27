@@ -18,6 +18,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.logging.Logger;
 
 /**
@@ -29,10 +30,12 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllTasks.class.getName());
     public static ReadAllTasks instance;
     protected String url;
+    boolean openInPopup = false;
 
-    public ReadAllTasks(String url) {
+    public ReadAllTasks(String url, boolean openInPopup) {
         instance = this;
         this.url = url;
+        this.openInPopup = openInPopup;
         initTable("Task", OfficeWelcome.constants);
     }
 
@@ -86,14 +89,18 @@ public class ReadAllTasks extends CRUDReadAllComposite {
 
     public String getReadAllTasksUrl(Integer start, String limit) {
         if (url != null) {
-            return url + start.toString() + "/" + limit.toString();
+            return url + start.toString() + "/" + limit;
         } else {
-            return OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser/" + start.toString() + "/" + limit.toString();
+            return OfficeWelcome.constants.root_url() + "bpm/tasks/currentuser/" + start.toString() + "/" + limit;
         }
     }
 
     @Override
     public void viewClicked(String entityId) {
+        if (openInPopup) {
+            new GenericPopup(new ReadTaskPanel(getEntity(entityId), false)).show();
+            return;
+        }
         TabPanel.instance().getHomePanel().entityPanel.clear();
         if (url != null && url.contains("history")) {
             TabPanel.instance().getHomePanel().entityPanel.add(new ReadTaskPanel(getEntity(entityId), true));
