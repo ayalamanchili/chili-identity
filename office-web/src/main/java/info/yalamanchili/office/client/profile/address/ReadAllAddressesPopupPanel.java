@@ -51,7 +51,7 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
 
     @Override
     protected void createButtonClicked() {
-        CreateAddressPopupPanel createPanel = new CreateAddressPopupPanel(CreateAddressPanelType.ALL_WITH_NOTIFY);
+        CreateAddressPopupPanel createPanel = new CreateAddressPopupPanel(CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY);
         new GenericPopup(createPanel).show();
     }
 }

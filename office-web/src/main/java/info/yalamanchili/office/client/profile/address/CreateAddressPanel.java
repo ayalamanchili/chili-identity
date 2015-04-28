@@ -26,7 +26,7 @@ public class CreateAddressPanel extends CreateComposite {
 
     public enum CreateAddressPanelType {
 
-        ALL, MIN, ALL_WITH_NOTIFY
+        ALL, MIN, CHANGE_WITH_TYPE_NOTIFY
     }
     CreateAddressPanelType type;
 
@@ -49,12 +49,10 @@ public class CreateAddressPanel extends CreateComposite {
         if (CreateAddressPanelType.ALL.equals(type)) {
             assignEntityValueFromField("addressType", entity);
         }
-        if (CreateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
-            assignEntityValueFromField("addressType", entity);
+        if (CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             assignEntityValueFromField("notifyChange", entity);
-//            assignEntityValueFromField("immigration", entity);
-//            assignEntityValueFromField("healthInsurance", entity);
-//            assignEntityValueFromField("hrChange", entity);
+            assignEntityValueFromField("notifyImmigration", entity);
+            assignEntityValueFromField("notifyHealthInsurance", entity);
             assignEntityValueFromField("changeNotes", entity);
         }
         logger.info(entity.toString());
@@ -70,16 +68,16 @@ public class CreateAddressPanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
 
     }
 
@@ -113,12 +111,10 @@ public class CreateAddressPanel extends CreateComposite {
         if (CreateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         }
-        if (CreateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
-            addDropDown("addressType", new SelectAddressTypeWidget(false, false));
+        if (CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//            addField("immigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//            addField("healthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//            addField("hrChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("notifyImmigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+            addField("notifyHealthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
