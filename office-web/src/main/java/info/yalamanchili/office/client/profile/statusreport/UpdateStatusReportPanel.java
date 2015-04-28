@@ -21,12 +21,14 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -272,8 +274,13 @@ public class UpdateStatusReportPanel extends UpdateComposite {
         addField("accomplishments", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("scheduledActivities", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_RELATIONSHIP)) {
-            addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+                addField("preparedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+                addField("approvedBy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            } else {
+                addField("preparedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+                addField("approvedBy", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+            }
             addField("submittedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
             addField("approvedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
@@ -363,5 +370,16 @@ public class UpdateStatusReportPanel extends UpdateComposite {
     @Override
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.employee.statusreport.StatusReport" + "/" + getEntityId();
+    }
+
+    @Override
+    protected boolean enableViewTasks() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_HR);
+    }
+
+    @Override
+    protected void displayTasks() {
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 }

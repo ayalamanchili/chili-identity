@@ -16,6 +16,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
@@ -25,6 +26,7 @@ import info.yalamanchili.office.client.employee.prefeval.PerformanceEvaluationWi
 import info.yalamanchili.office.client.ext.question.QuestionCategory;
 import info.yalamanchili.office.client.ext.question.QuestionContext;
 import info.yalamanchili.office.client.ext.question.UpdateAllQuestionCommentsPanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -243,5 +245,16 @@ public class UpdatePerformanceEvaluationPanel extends UpdateComposite {
         } else {
             return null;
         }
+    }
+
+    @Override
+    protected boolean enableViewTasks() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_HR_ADMINSTRATION);
+    }
+
+    @Override
+    protected void displayTasks() {
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 }

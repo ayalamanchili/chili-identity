@@ -12,8 +12,8 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -43,7 +43,7 @@ public class GenericBPMTaskFormPanel extends GenericBPMFormPanel {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Task Completed");
         TabPanel.instance().getHomePanel().entityPanel.clear();
-        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+        ReadAllTasks.instance.refresh();
     }
 
     protected String getTaskFormPropertiesURL(String taskId) {

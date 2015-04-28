@@ -24,6 +24,7 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -99,6 +100,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
+        GenericPopup.instance().hide();
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override

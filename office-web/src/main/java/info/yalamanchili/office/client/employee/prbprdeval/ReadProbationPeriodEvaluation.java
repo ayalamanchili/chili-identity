@@ -126,13 +126,13 @@ public class ReadProbationPeriodEvaluation extends ReadComposite {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_PRB_EVALUATIONS_MANAGER);
     }
 
     @Override
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
-        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId" + "/"), true));
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 
     @Override

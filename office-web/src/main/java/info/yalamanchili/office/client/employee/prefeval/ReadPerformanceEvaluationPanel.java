@@ -145,12 +145,12 @@ public class ReadPerformanceEvaluationPanel extends ReadComposite {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_HR_ADMINSTRATION);
     }
 
     @Override
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
-        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId" + "/"),false));
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 }
