@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -34,6 +36,7 @@ public class OfficeWelcome implements EntryPoint {
     public List<String> roles = new ArrayList<String>();
     public static OfficeConstants constants = (OfficeConstants) GWT.create(OfficeConstants.class);
     public static OfficeMessages messages = (OfficeMessages) GWT.create(OfficeMessages.class);
+    public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
     public OfficeClientConfig officeClientConfig;
 
     @Override

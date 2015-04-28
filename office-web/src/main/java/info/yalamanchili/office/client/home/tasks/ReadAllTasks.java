@@ -99,6 +99,7 @@ public class ReadAllTasks extends CRUDReadAllComposite {
     public void viewClicked(String entityId) {
         if (openInPopup) {
             new GenericPopup(new ReadTaskPanel(getEntity(entityId), false)).show();
+            this.table.clear(true);
             return;
         }
         TabPanel.instance().getHomePanel().entityPanel.clear();
