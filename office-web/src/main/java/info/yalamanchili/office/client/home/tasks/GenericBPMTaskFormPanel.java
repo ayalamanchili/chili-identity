@@ -43,7 +43,7 @@ public class GenericBPMTaskFormPanel extends GenericBPMFormPanel {
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Task Completed");
         TabPanel.instance().getHomePanel().entityPanel.clear();
-        ReadAllTasks.instance.refresh();
+        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
     }
 
     protected String getTaskFormPropertiesURL(String taskId) {

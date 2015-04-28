@@ -100,7 +100,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
 
     @Override
     protected void createButtonClicked() {
-        GenericPopup.instance().hide();
+        GenericPopup.hideIfOpen();
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override

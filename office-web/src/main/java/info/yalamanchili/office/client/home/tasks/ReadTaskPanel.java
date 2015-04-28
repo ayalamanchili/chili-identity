@@ -180,7 +180,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Acquired");
                         TabPanel.instance().getHomePanel().entityPanel.clear();
-                        ReadAllTasks.instance.refresh();
+                       TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
                 });
     }
@@ -192,7 +192,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Released");
                         TabPanel.instance().getHomePanel().entityPanel.clear();
-                        ReadAllTasks.instance.refresh();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
                 });
     }
@@ -204,7 +204,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Resolved");
                         TabPanel.instance().getHomePanel().entityPanel.clear();
-                         ReadAllTasks.instance.refresh();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
                 });
     }
@@ -216,7 +216,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Completed");
                         TabPanel.instance().getHomePanel().entityPanel.clear();
-                        ReadAllTasks.instance.refresh();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
                 });
     }
@@ -228,7 +228,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Deleted");
                         TabPanel.instance().getHomePanel().entityPanel.clear();
-                        ReadAllTasks.instance.refresh();
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
                 });
     }
