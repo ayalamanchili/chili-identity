@@ -150,7 +150,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        GenericPopup.instance().hide();
+        GenericPopup.hideIfOpen();
         if (event.getSource().equals(resolveB)) {
             resolveClicked();
         }
