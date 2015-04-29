@@ -3,6 +3,7 @@
  */
 package info.yalamanchili.office.client.profile.address;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -18,6 +19,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.USAStatesFactory;
+import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
 
 public class CreateAddressPanel extends CreateComposite {
@@ -35,6 +38,11 @@ public class CreateAddressPanel extends CreateComposite {
         this.type = type;
         initCreateComposite("Address", OfficeWelcome.constants);
     }
+
+    BooleanField notifyChangeF;
+    BooleanField notifyImmigrationF;
+    BooleanField notifyHealthInsuranceF;
+    TextAreaField changeNotesF;
 
     @Override
     protected JSONObject populateEntityFromFields() {
@@ -92,11 +100,40 @@ public class CreateAddressPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        // TODO Auto-generated method stub
+        notifyChangeF.getBox().addClickHandler(this);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(notifyChangeF.getBox())) {
+            if (notifyChangeF.getValue()) {
+                renderChangeAddressFields(true);
+            } else {
+                renderChangeAddressFields(false);
+            }
+        } else {
+            super.onClick(event);
+        }
+    }
+
+    protected void renderChangeAddressFields(boolean show) {
+        notifyImmigrationF.setVisible(show);
+        notifyHealthInsuranceF.setVisible(show);
+        changeNotesF.setVisible(show);
+        alignFields();
     }
 
     @Override
     protected void configure() {
+        if (CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
+            notifyChangeF = (BooleanField) fields.get("notifyChange");
+            notifyImmigrationF = (BooleanField) fields.get("notifyImmigration");
+            notifyHealthInsuranceF = (BooleanField) fields.get("notifyHealthInsurance");
+            changeNotesF = (TextAreaField) fields.get("changeNotes");
+            notifyImmigrationF.setVisible(false);
+            notifyHealthInsuranceF.setVisible(false);
+            changeNotesF.setVisible(false);
+        }
     }
 
     @Override
