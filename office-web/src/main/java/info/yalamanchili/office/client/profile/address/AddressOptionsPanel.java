@@ -47,7 +47,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     public void onClick(ClickEvent arg0) {
         if (arg0.getSource().equals(addAddressLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.ALL_WITH_NOTIFY));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY));
         }
     }
 }
