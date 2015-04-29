@@ -29,8 +29,8 @@ public class SessionTimeoutMonitor {
     private static SessionTimeoutMonitor instance = new SessionTimeoutMonitor();
     private SessionTimeoutTimer activityTimer;
     private HandlerRegistration activityHandlerRegistration;
-    //4 hours server is timeout is set to 300 mins 5 hours
-    private static final int TIMEOUT_IN_MINUTES = 240;
+    //8 hours server is timeout is set to 540 mins 9 hours
+    private static final int TIMEOUT_IN_MINUTES = 480;
 
     private SessionTimeoutMonitor() {
         int total_timeout = maxSessionTimeoutSeconds();
@@ -78,28 +78,28 @@ public class SessionTimeoutMonitor {
         }
 
         protected void onSessionTimeout() {
-            if (Window.confirm("Your Session expired due to inactivity. Click OK to continue work.")) {
-                reset(true);
-                HttpService.HttpServiceAsync.instance().doGet(pingUrl(), OfficeWelcome.instance().getHeaders(), true,
-                        new AsyncCallback<String>() {
-                            @Override
-                            public void onSuccess(String arg0) {
-                                new ResponseStatusWidget().show("Session renewed... Please continue");
-                            }
-
-                            @Override
-                            public void onFailure(Throwable caught) {
-                                throw new UnsupportedOperationException("Failed to renew Session. Please make sure you copy paste any unsaved data to notepad and relogin");
-                            }
-                        });
-            } else {
-                HttpService.HttpServiceAsync.instance().logout(new ALAsyncCallback<Void>() {
-                    @Override
-                    public void onResponse(Void arg0) {
-                        Window.Location.reload();
-                    }
-                });
-            }
+//            if (Window.confirm("Your Session expired due to inactivity. Click OK to continue work.")) {
+//                reset(true);
+//                HttpService.HttpServiceAsync.instance().doGet(pingUrl(), OfficeWelcome.instance().getHeaders(), true,
+//                        new AsyncCallback<String>() {
+//                            @Override
+//                            public void onSuccess(String arg0) {
+//                                new ResponseStatusWidget().show("Session renewed... Please continue");
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Throwable caught) {
+//                                throw new UnsupportedOperationException("Failed to renew Session. Please make sure you copy paste any unsaved data to notepad and relogin");
+//                            }
+//                        });
+//            } else {
+            HttpService.HttpServiceAsync.instance().logout(new ALAsyncCallback<Void>() {
+                @Override
+                public void onResponse(Void arg0) {
+                    Window.Location.reload();
+                }
+            });
+//            }
         }
 
         private String pingUrl() {
