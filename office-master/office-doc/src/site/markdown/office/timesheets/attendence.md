@@ -1,38 +1,37 @@
 Attendance Process
 =========
-- [Login to Portal](../../office/forgot-password.html "Login")
+- [Bulk Import](../../office/admin/bulkimport.html "Bulk Import")
 - Navigate to Time --> Attendance
 - Enter employee name in side bar search panel and click View
 
-![alt text](../../images/timesheets/attendance-view.png "View Attendance")
+![alt text](../../images/timesheets/Employee_View.png "View Attendance")
 
 - Employee Attendance Records are displayed in main window
 - Status is marked as Error if Cubicle hours is calculated incorrectly
-![Main View](../../images/timesheets/attendance-view.png "View Attendance")
+![Main View](../../images/timesheets/SavedtimeSheet.png "View Attendance")
 
 
 View Attendance Record.
 -----
 - Click the View icon against the attendance record to view record
-![Details](../../images/timesheets/attendance-view.png "View Attendance")
+![Details](../../images/timesheets/View.png "View Attendance")
 
 
 Update Attendance Record
 -----
 - Click the Update icon against the attendance record to update record 
-![Update](../../images/timesheets/attendance-view.png "View Attendance")
-
-Error Records
-- Rectify the cubicle hours by manually typing the correct figures
-- Change record status to Pending
-![Delete](../../images/timesheets/attendance-view.png "View Attendance")
+![Update](../../images/timesheets/Update.png "View Attendance")
 
 Pending Records 
 - Review the cubicle hours and other fields
 - Change record status to Saved if record is correct
-![Delete](../../images/timesheets/attendance-view.png "View Attendance")
+![Delete](../../images/timesheets/UpdatedEntities.png "View Attendance")
 
 Delete Attendance Record
 -----
 - Click the Update icon against the attendance record to delete record
-![Delete](../../images/timesheets/attendance-view.png "View Attendance")
+![Delete](../../images/timesheets/delete.png "View Attendance")
+
+Final Status Record
+-----
+![Main View](../../images/timesheets/Approvedentities.png "View Attendance")
