@@ -24,7 +24,9 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
     protected HorizontalPanel panel = new HorizontalPanel();
     protected Anchor addAddressLink = new Anchor("Add Address");
+    protected Anchor manageHomeAddressL = new Anchor("Manage Home Address");
     protected String employeeId;
+    protected String manageHomeAddressType;
 
     public AddressOptionsPanel() {
         init(panel);
@@ -38,6 +40,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     @Override
     protected void addListeners() {
         addAddressLink.addClickHandler(this);
+        manageHomeAddressL.addClickHandler(this);
     }
 
     @Override
@@ -49,7 +52,8 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
                     @Override
                     public void onResponse(String arg0) {
-                        renderAddressOptions(arg0);
+                        logger.info("a" + arg0);
+                        manageHomeAddressType = arg0.trim();
                     }
                 });
 
@@ -60,52 +64,13 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
 
     }
 
-    protected void renderAddressOptions(String options) {
-        switch (options.trim()) {
-            case "create":
-                Anchor createAnchor = new Anchor("Create Home Address");
-                panel.add(createAnchor);
-                logger.info("adding create home address link");
-                createAnchor.addClickHandler(new ClickHandler() {
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        if (TabPanel.instance().myOfficePanel.isVisible()) {
-                            TabPanel.instance().myOfficePanel.entityPanel.clear();
-                            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateHomeAddressPanel());
-                        } else if (TabPanel.instance().profilePanel.isVisible()) {
-                            TabPanel.instance().profilePanel.entityPanel.clear();
-                            TabPanel.instance().profilePanel.entityPanel.add(new CreateHomeAddressPanel());
-                        }
-                    }
-                }
-                );
-                break;
-            case "update":
-                Anchor updateAnchor = new Anchor("Update Home Address");
-                panel.add(updateAnchor);
-                updateAnchor.addClickHandler(new ClickHandler() {
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        if (TabPanel.instance().myOfficePanel.isVisible()) {
-                            TabPanel.instance().myOfficePanel.entityPanel.clear();
-//                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateHomeAddressPanel());
-                        } else if (TabPanel.instance().profilePanel.isVisible()) {
-                            TabPanel.instance().profilePanel.entityPanel.clear();
-//                        TabPanel.instance().profilePanel.entityPanel.add(new UpdateHomeAddressPanel());
-                        }
-                    }
-                }
-                );
-                break;
-        }
-    }
-
     @Override
     protected void addWidgets() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME)) {
+            panel.add(manageHomeAddressL);
             panel.add(addAddressLink);
         }
-
+//TODO how is this visible to actual users with consultant role
     }
 
     @Override
@@ -113,6 +78,28 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
         if (arg0.getSource().equals(addAddressLink)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.MIN));
+        }
+        if (arg0.getSource().equals(manageHomeAddressL)) {
+            switch (manageHomeAddressType) {
+                case "create":
+                    if (TabPanel.instance().myOfficePanel.isVisible()) {
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+                        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateHomeAddressPanel());
+                    } else if (TabPanel.instance().profilePanel.isVisible()) {
+                        TabPanel.instance().profilePanel.entityPanel.clear();
+                        TabPanel.instance().profilePanel.entityPanel.add(new CreateHomeAddressPanel());
+                    }
+                    break;
+                case "update":
+                    if (TabPanel.instance().myOfficePanel.isVisible()) {
+                        TabPanel.instance().myOfficePanel.entityPanel.clear();
+//                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateHomeAddressPanel());
+                    } else if (TabPanel.instance().profilePanel.isVisible()) {
+                        TabPanel.instance().profilePanel.entityPanel.clear();
+//                        TabPanel.instance().profilePanel.entityPanel.add(new UpdateHomeAddressPanel());
+                    }
+                    break;
+            }
         }
     }
 }

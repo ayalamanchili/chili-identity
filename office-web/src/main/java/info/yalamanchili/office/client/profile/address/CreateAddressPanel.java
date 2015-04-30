@@ -107,7 +107,7 @@ public class CreateAddressPanel extends CreateComposite {
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(notifyChangeF.getBox())) {
+        if (notifyChangeF != null && event.getSource().equals(notifyChangeF.getBox())) {
             if (notifyChangeF.getValue()) {
                 renderChangeAddressFields(true);
             } else {
