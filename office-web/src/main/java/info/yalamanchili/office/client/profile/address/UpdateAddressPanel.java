@@ -27,7 +27,7 @@ public class UpdateAddressPanel extends UpdateComposite {
 
     public enum UpdateAddressPanelType {
 
-        ALL, MIN, ALL_WITH_NOTIFY
+        ALL, MIN, CHANGE_WITH_TYPE_NOTIFY
     }
     UpdateAddressPanelType type;
 
@@ -49,7 +49,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanelType.ALL.equals(type)) {
             assignEntityValueFromField("addressType", entity);
         }
-        if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+        if (UpdateAddressPanel.UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             assignEntityValueFromField("addressType", entity);
             assignEntityValueFromField("notifyChange", entity);
 //            assignEntityValueFromField("immigration", entity);
@@ -128,7 +128,7 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanelType.ALL.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
         }
-        if (UpdateAddressPanel.UpdateAddressPanelType.ALL_WITH_NOTIFY.equals(type)) {
+        if (UpdateAddressPanel.UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
 //            addField("immigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);

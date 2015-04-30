@@ -100,7 +100,9 @@ public class CreateAddressPanel extends CreateComposite {
 
     @Override
     protected void addListeners() {
-        notifyChangeF.getBox().addClickHandler(this);
+        if (notifyChangeF != null) {
+            notifyChangeF.getBox().addClickHandler(this);
+        }
     }
 
     @Override
@@ -120,7 +122,9 @@ public class CreateAddressPanel extends CreateComposite {
         notifyImmigrationF.setVisible(show);
         notifyHealthInsuranceF.setVisible(show);
         changeNotesF.setVisible(show);
-        alignFields();
+        if (show) {
+            alignFields(180);
+        }
     }
 
     @Override

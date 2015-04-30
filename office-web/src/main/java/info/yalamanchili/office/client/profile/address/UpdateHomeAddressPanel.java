@@ -6,6 +6,7 @@
 package info.yalamanchili.office.client.profile.address;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 
 /**
  *
@@ -17,4 +18,12 @@ public class UpdateHomeAddressPanel extends UpdateAddressPanel {
         super(entity, UpdateAddressPanelType.MIN);
     }
 
+    @Override
+    protected JSONObject populateEntityFromFields() {
+        entity = super.populateEntityFromFields();
+        JSONObject addressType = new JSONObject();
+        addressType.put("addressType", new JSONString("Home"));
+        entity.put("addressType", addressType);
+        return entity;
+    }
 }

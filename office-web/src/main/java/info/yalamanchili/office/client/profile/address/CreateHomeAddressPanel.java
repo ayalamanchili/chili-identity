@@ -14,8 +14,8 @@ import com.google.gwt.json.client.JSONString;
  */
 public class CreateHomeAddressPanel extends CreateAddressPanel {
 
-    public CreateHomeAddressPanel(CreateAddressPanelType type) {
-        super(CreateAddressPanelType.MIN);
+    public CreateHomeAddressPanel() {
+        super(CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY);
     }
 
     @Override

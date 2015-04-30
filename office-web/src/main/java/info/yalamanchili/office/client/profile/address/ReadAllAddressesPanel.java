@@ -118,7 +118,7 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressPanel(getEntity(entityId), UpdateAddressPanelType.ALL_WITH_NOTIFY));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressPanel(getEntity(entityId), UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY));
 
     }
 

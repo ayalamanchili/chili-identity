@@ -33,7 +33,7 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
 
     @Override
     public void updateClicked(String entityId) {
-        UpdateAddressPopupPanel updateaddressPanel = new UpdateAddressPopupPanel(getEntity(entityId), UpdateAddressPanelType.ALL_WITH_NOTIFY);
+        UpdateAddressPopupPanel updateaddressPanel = new UpdateAddressPopupPanel(getEntity(entityId), UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY);
         new GenericPopup(updateaddressPanel).show();
     }
 
