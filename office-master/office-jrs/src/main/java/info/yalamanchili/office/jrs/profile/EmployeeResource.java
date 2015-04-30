@@ -26,9 +26,7 @@ import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.practice.PracticeDao;
-import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
@@ -56,7 +54,6 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import net.sf.jasperreports.engine.JRException;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -200,12 +197,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     public void addAddress(@PathParam("empId") Long empId, Address address) {
         Employee emp = (Employee) getDao().findById(empId);
         address.setContact(emp);
-        if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess()) {
-            AddressResource.instance().processAddressUpdateNotificationV2(address, null, true, true, true);
-        } else {
-//            processAddressUpdateNotification(entity, null);
-        }
-        AddressDao.instance().save(address);
+        AddressResource.instance().saveEmployeeAddress(address);
     }
 
     /* SkillSet */

@@ -75,12 +75,16 @@ public class AddressResource extends CRUDResource<Address> {
     @Validate
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
-        if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess()) {
-            processAddressUpdateNotificationV2(entity, null, true, true, true);
+        boolean notifyImmigration = entity.isNotifyImmigrationTeam();
+        boolean notifyHealthInsurance = entity.isNotifyHealthInsurance();
+        boolean notifyChange = entity.isNotifyChange();
+        entity = save(entity);
+        if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess() && notifyChange) {
+            processAddressUpdateNotificationV2(entity, null, true, notifyImmigration, notifyHealthInsurance);
         } else {
 //            processAddressUpdateNotification(entity, null);
         }
-        return save(entity);
+        return entity;
     }
 
     public void processAddressUpdateNotification(Address entity, Employee emp) {
@@ -97,7 +101,7 @@ public class AddressResource extends CRUDResource<Address> {
             emp = EmployeeDao.instance().findById(entity.getContact().getId());
         }
         //TODO checl address type==home
-        if (emp.getEmployeeType().getName().equals("Employee") && entity.isNotifyChange()) {
+        if (emp.getEmployeeType().getName().equals("Employee")) {
             Map<String, Object> vars = new HashMap<String, Object>();
             vars.put("entity", entity);
             vars.put("entityId", entity.getId());
