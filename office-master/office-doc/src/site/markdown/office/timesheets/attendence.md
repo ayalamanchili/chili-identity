@@ -1,6 +1,5 @@
 Attendance Process
 =========
-- [Bulk Import](../../office/admin/bulkimport.html "Bulk Import")
 - Navigate to Time --> Attendance
 - Enter employee name in side bar search panel and click View
 
@@ -20,18 +19,18 @@ View Attendance Record.
 Update Attendance Record
 -----
 - Click the Update icon against the attendance record to update record 
-![Update](../../images/timesheets/Update.png "View Attendance")
-
-Pending Records 
-- Review the cubicle hours and other fields
+- Review and modify cubicle hours and other fields
 - Change record status to Saved if record is correct
-![Delete](../../images/timesheets/UpdatedEntities.png "View Attendance")
+![Delete](../../images/timesheets/UpdatedEntities.png "Update Attendance")
 
 Delete Attendance Record
 -----
 - Click the Update icon against the attendance record to delete record
-![Delete](../../images/timesheets/delete.png "View Attendance")
+![Delete](../../images/timesheets/delete.png "Delete Attendance")
 
 Final Status Record
 -----
+- After attendance records are reviewed the bulk import task will be marked as complete by bulk import manager
+- Refer to [Bulk Import Process](../../office/admin/bulkimport.html "Bulk Import") for details
+- Once bulk import task is complete then then attendance records will move to Approved status.
 ![Main View](../../images/timesheets/Approvedentities.png "View Attendance")
