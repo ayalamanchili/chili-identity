@@ -20,10 +20,13 @@ import java.util.HashMap;
 
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -51,12 +54,29 @@ public class AddressResource extends CRUDResource<Address> {
         return addressDao;
     }
 
+    @GET
+    @Path("/options")
+    @Produces("application/text")
+    public String getManageAddressOptions(@QueryParam("id") Long employeeId) {
+        Employee emp = null;
+        if (employeeId != null) {
+            emp = employeeDao.findById(employeeId);
+        } else {
+            emp = OfficeSecurityService.instance().getCurrentUser();
+        }
+        if (addressDao.getAddressByType(emp, "Home").size() > 0) {
+            return "update";
+        } else {
+            return "create";
+        }
+    }
+
     @PUT
     @Validate
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
         if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess()) {
-//            processAddressUpdateNotificationV2(entity, null, true, true, true);
+            processAddressUpdateNotificationV2(entity, null, true, true, true);
         } else {
 //            processAddressUpdateNotification(entity, null);
         }

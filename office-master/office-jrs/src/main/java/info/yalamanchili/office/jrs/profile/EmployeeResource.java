@@ -26,7 +26,9 @@ import info.yalamanchili.office.dto.profile.SkillSetDto;
 import info.yalamanchili.office.entity.profile.*;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.config.OfficeFeatureFlipper;
 import info.yalamanchili.office.dao.practice.PracticeDao;
+import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.privacy.PrivacyData;
 import info.yalamanchili.office.privacy.PrivacyAware;
@@ -197,13 +199,13 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @Path("/address/{empId}")
     public void addAddress(@PathParam("empId") Long empId, Address address) {
         Employee emp = (Employee) getDao().findById(empId);
-        AddressResource.instance().processAddressUpdateNotification(address, emp);
-        if (address.getAddressType() != null) {
-            AddressType addressType = getDao().getEntityManager().find(AddressType.class,
-                    address.getAddressType().getId());
-            address.setAddressType(addressType);
+        address.setContact(emp);
+        if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess()) {
+            AddressResource.instance().processAddressUpdateNotificationV2(address, null, true, true, true);
+        } else {
+//            processAddressUpdateNotification(entity, null);
         }
-        emp.addAddress(address);
+        AddressDao.instance().save(address);
     }
 
     /* SkillSet */

@@ -5,11 +5,15 @@ package info.yalamanchili.office.dao.profile;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.QueryUtils;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.AddressType;
+import info.yalamanchili.office.entity.profile.Employee;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 
 import org.springframework.stereotype.Repository;
@@ -33,17 +37,22 @@ public class AddressDao extends CRUDDao<Address> {
 
     @Override
     public Address save(Address entity) {
-        if (entity.getId() != null) {
-            Address updatedAddress = null;
-            updatedAddress = super.save(entity);
-            if (entity.getAddressType() == null) {
-                updatedAddress.setAddressType(null);
-            } else {
-                updatedAddress.setAddressType(em.find(AddressType.class, entity.getAddressType().getId()));
-            }
-            return em.merge(updatedAddress);
+        //Set address Type
+        if (entity.getAddressType() == null) {
+            entity.setAddressType(null);
+        } else if (!entity.getAddressType().getAddressType().isEmpty()) {
+            entity.setAddressType(QueryUtils.findEntity(em, AddressType.class, "addressType", entity.getAddressType().getAddressType()));
+        } else if (entity.getAddressType().getId() != null) {
+            entity.setAddressType(em.find(AddressType.class, entity.getAddressType().getId()));
         }
         return super.save(entity);
+    }
+
+    public List<Address> getAddressByType(Employee emp, String type) {
+        TypedQuery<Address> query = em.createQuery("from " + Address.class.getCanonicalName() + " where contact=:contactParam and addressType.addressType=:addressTypeParam", Address.class);
+        query.setParameter("contactParam", emp);
+        query.setParameter("addressTypeParam", type);
+        return query.getResultList();
     }
 
     @Override

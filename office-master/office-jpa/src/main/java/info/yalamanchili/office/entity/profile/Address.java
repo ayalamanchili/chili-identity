@@ -89,6 +89,16 @@ public class Address extends AbstractEntity {
     @Transient
     protected boolean notifyChange;
     /**
+     * @generated
+     */
+    @Transient
+    protected boolean notifyImmigrationTeam;
+    /**
+     * @generated
+     */
+    @Transient
+    protected boolean notifyHealthInsurance;
+    /**
      *
      */
     @Transient
@@ -221,6 +231,22 @@ public class Address extends AbstractEntity {
 
     public void setNotifyChange(boolean notifyChange) {
         this.notifyChange = notifyChange;
+    }
+
+    public boolean isNotifyImmigrationTeam() {
+        return notifyImmigrationTeam;
+    }
+
+    public void setNotifyImmigrationTeam(boolean notifyImmigrationTeam) {
+        this.notifyImmigrationTeam = notifyImmigrationTeam;
+    }
+
+    public boolean isNotifyHealthInsurance() {
+        return notifyHealthInsurance;
+    }
+
+    public void setNotifyHealthInsurance(boolean notifyHealthInsurance) {
+        this.notifyHealthInsurance = notifyHealthInsurance;
     }
 
     public String getChangeNotes() {
