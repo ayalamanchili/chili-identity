@@ -75,7 +75,7 @@ public class AddressResource extends CRUDResource<Address> {
     @Validate
     @Path("/employee")
     public Address saveEmployeeAddress(Address entity) {
-        boolean notifyImmigration = entity.isNotifyImmigrationTeam();
+        boolean notifyImmigration = entity.isNotifyImmigration();
         boolean notifyHealthInsurance = entity.isNotifyHealthInsurance();
         boolean notifyChange = entity.isNotifyChange();
         entity = save(entity);
@@ -102,7 +102,7 @@ public class AddressResource extends CRUDResource<Address> {
         }
         //TODO checl address type==home
         if (emp.getEmployeeType().getName().equals("Employee")) {
-            Map<String, Object> vars = new HashMap<String, Object>();
+            Map<String, Object> vars = new HashMap<>();
             vars.put("entity", entity);
             vars.put("entityId", entity.getId());
             vars.put("employeeName", emp.getFirstName() + " " + emp.getLastName());

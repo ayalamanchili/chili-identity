@@ -92,7 +92,7 @@ public class Address extends AbstractEntity {
      * @generated
      */
     @Transient
-    protected boolean notifyImmigrationTeam;
+    protected boolean notifyImmigration;
     /**
      * @generated
      */
@@ -233,12 +233,12 @@ public class Address extends AbstractEntity {
         this.notifyChange = notifyChange;
     }
 
-    public boolean isNotifyImmigrationTeam() {
-        return notifyImmigrationTeam;
+    public boolean isNotifyImmigration() {
+        return notifyImmigration;
     }
 
-    public void setNotifyImmigrationTeam(boolean notifyImmigrationTeam) {
-        this.notifyImmigrationTeam = notifyImmigrationTeam;
+    public void setNotifyImmigration(boolean notifyImmigration) {
+        this.notifyImmigration = notifyImmigration;
     }
 
     public boolean isNotifyHealthInsurance() {
