@@ -110,7 +110,7 @@ public class UpdateCorporateTimeSheetPanel extends UpdateComposite {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_CORPORATE_TIME_REPORTS,Auth.ROLE.ROLE_TIME);
     }
 
     @Override
