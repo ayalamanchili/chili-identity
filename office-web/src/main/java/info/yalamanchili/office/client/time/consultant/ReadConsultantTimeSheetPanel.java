@@ -13,10 +13,12 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import info.yalamanchili.office.client.profile.employee.SelectConsultantEmployeeWidget;
 import info.yalamanchili.office.client.time.TimeSheetCategory;
 import info.yalamanchili.office.client.time.TimeSheetStatus;
@@ -107,6 +109,15 @@ public class ReadConsultantTimeSheetPanel extends ReadComposite {
     @Override
     protected boolean enableAudit() {
         return Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION);
+    }
+     @Override
+    protected boolean enableViewTasks() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION,Auth.ROLE.ROLE_CONSULTANT_TIME_ADMIN,Auth.ROLE.ROLE_HR);
+    }
+    @Override
+    protected void displayTasks() {
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/";
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
     }
 
     @Override
