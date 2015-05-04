@@ -123,7 +123,7 @@ public class CreateAddressPanel extends CreateComposite {
         notifyHealthInsuranceF.setVisible(show);
         changeNotesF.setVisible(show);
         if (show) {
-            alignFields(180);
+//            alignFields(180);
         }
     }
 
