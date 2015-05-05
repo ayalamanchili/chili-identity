@@ -18,7 +18,7 @@
                      name="Address Change Request Received Email" 
                      activiti:expression="#{homeAddressChangeProcessBean.sendAddressChangeRequestSubmittedEmail(entity)}" />
         <sequenceFlow sourceRef="sendAddressChangeRequestReceivedEmail" targetRef="createTasks" />
-        <parallelGateway id="createTasks" />
+        <inclusiveGateway id="createTasks" />
         <!-- Parallel Payroll Dept Task-->
         <sequenceFlow sourceRef="createTasks"
                       targetRef="updateAddressPayrollTask">
@@ -46,7 +46,19 @@
                 <activiti:formProperty id="payrollDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
-        <sequenceFlow sourceRef="updateAddressPayrollTask" targetRef="waitForTasks" />
+        <exclusiveGateway id="payrollTaskGateway" />
+        <sequenceFlow sourceRef="updateAddressPayrollTask" 
+                      targetRef="waitForTasks">
+            <conditionExpression>
+                ${allTasksCompleted == true}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="updateAddressPayrollTask" 
+                      targetRef="updateAddressEnd">
+            <conditionExpression>
+                ${allTasksCompleted == false}
+            </conditionExpression>
+        </sequenceFlow>
         <!--Payroll Task escalation email after 2 days-->
         <boundaryEvent id="payrollTaskEmailEscalationTimer"
                        cancelActivity="false" 
@@ -92,7 +104,19 @@
                 <activiti:formProperty id="immigrationDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
-        <sequenceFlow sourceRef="updateAddressImmigrationTask" targetRef="waitForTasks" />
+        <exclusiveGateway id="immigrationTaskGateway" />
+        <sequenceFlow sourceRef="updateAddressImmigrationTask" 
+                      targetRef="waitForTasks">
+            <conditionExpression>
+                ${allTasksCompleted == true}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="updateAddressImmigrationTask" 
+                      targetRef="updateAddressEnd">
+            <conditionExpression>
+                ${allTasksCompleted == false}
+            </conditionExpression>
+        </sequenceFlow> 
         <!--Immigration Task escalation email after 2 days-->
         <boundaryEvent id="immigrationTaskEmailEscalationTimer"
                        cancelActivity="false" 
@@ -134,7 +158,19 @@
                 <activiti:formProperty id="healthInsuranceDeptNotes" type="string" required="true" name="Notes"/>
             </extensionElements>             
         </userTask>
-        <sequenceFlow sourceRef="updateHealthInsuranceTask" targetRef="waitForTasks" />
+        <exclusiveGateway id="healthInsuranceTaskGateway" />
+        <sequenceFlow sourceRef="updateHealthInsuranceTask" 
+                      targetRef="waitForTasks">
+            <conditionExpression>
+                ${allTasksCompleted == true}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="updateHealthInsuranceTask" 
+                      targetRef="updateAddressEnd">
+            <conditionExpression>
+                ${allTasksCompleted == false}
+            </conditionExpression>
+        </sequenceFlow>         
         <!--Payroll Task escalation email after 2 days-->
         <boundaryEvent id="healthInsuranceTaskEmailEscalationTimer"
                        cancelActivity="false" 
@@ -151,7 +187,7 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>     
             
-        <parallelGateway id="waitForTasks" />
+        <inclusiveGateway id="waitForTasks" />
         
         <sequenceFlow sourceRef="waitForTasks" targetRef="updateAddressHRAdminTask" />
         <!--  Final HR Aadmin task-->
@@ -167,11 +203,9 @@
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
                 City, State, Zip                    : ${entity.city}, ${entity.state}, ${entity.zip} 
---------------------------------------#Notes#----------------------------------------------------------------
-                Payroll Dept Notes                  : ${payrollDeptNotes}
-                Immigration Dept Notes              : ${immigrationDeptNotes}
-                Health Insurance Dept Notes         : ${healthInsuranceDeptNotes}
--------------------------------------------------------------------------------------------------------------                
+                --------------------------------------#Notes#----------------------------------------------------------------
+
+                -------------------------------------------------------------------------------------------------------------                
                 More Information : https://apps.sstech.us/site/office/bpm/address-updated-process.html
             </documentation>
             <extensionElements>
