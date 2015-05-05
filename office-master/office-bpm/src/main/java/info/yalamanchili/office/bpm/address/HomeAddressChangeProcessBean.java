@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class HomeAddressChangeProcessBean {
-    
+
     @Autowired
     protected MailUtils mailUtils;
 
@@ -42,6 +42,7 @@ public class HomeAddressChangeProcessBean {
         subject.append("Address update request received");
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<String, Object>();
+        emailCtx.put("employeeName", address.getContact().getFirstName() + " " + address.getContact().getLastName());
         email.setTemplateName("home_address_update_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
