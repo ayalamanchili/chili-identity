@@ -110,6 +110,7 @@ public class AddressResource extends CRUDResource<Address> {
             vars.put("primaryMailingAddress", primaryMailingAddress);
             vars.put("notifyImmigration", notifyImmigration);
             vars.put("notifyHealthInsurance", notifyHealthInsurance);
+            vars.put("allTasksCompleted", false);
             OfficeBPMService.instance().startProcess("home_address_update_process", vars);
         }
     }
