@@ -55,6 +55,14 @@ public class OfficeBPMTaskService {
     @Autowired
     protected Mapper mapper;
 
+    public TaskService getBpmTaskService() {
+        return bpmTaskService;
+    }
+
+    public void setBpmTaskService(TaskService bpmTaskService) {
+        this.bpmTaskService = bpmTaskService;
+    }
+
     public void createTask(Task task) {
         org.activiti.engine.task.Task bpmTask = bpmTaskService.newTask();
         mapper.map(task, bpmTask);

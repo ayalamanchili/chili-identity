@@ -52,7 +52,6 @@ public class AvantelEmployeeTimeDataMapper {
             timeEntry.setEntryDate(record.getCell(2).getDateCellValue());
             timeEntry.setEntryTimeStamp(record.getCell(3).getDateCellValue());
             timeEntry.setLocation(record.getCell(4).getStringCellValue());
-            System.out.println(timeEntry);
             res.add(timeEntry);
         }
         return res;

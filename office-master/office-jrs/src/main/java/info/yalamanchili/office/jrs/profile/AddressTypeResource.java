@@ -10,6 +10,7 @@ import info.yalamanchili.office.dao.profile.AddressTypeDao;
 import info.yalamanchili.office.entity.profile.AddressType;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -78,7 +79,13 @@ public class AddressTypeResource extends CRUDResource<AddressType> {
     @Override
     public List<Entry> getDropDown(@PathParam("start") int start, @PathParam("limit") int limit,
             @QueryParam("column") List<String> columns) {
-        return super.getDropDown(start, limit, columns);
+        List<Entry> res= new ArrayList<>();
+        for(Entry e:super.getDropDown(start, limit, columns)){
+            if(!e.getValue().trim().equalsIgnoreCase("home")){
+                res.add(e);
+            }
+        }
+        return res;
     }
 
     @XmlRootElement

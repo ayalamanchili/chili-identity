@@ -9,6 +9,7 @@
 package info.yalamanchili.office.bpm.address;
 
 import com.google.common.base.Strings;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -34,11 +35,13 @@ public class HomeAddressChangeProcess implements TaskListener {
     }
 
     protected void addressChangeTaskCreated(DelegateTask task) {
-        //TODO
         new GenericTaskCreateNotification().notify(task);
     }
 
     protected void addressChangeTaskCompleted(DelegateTask task) {
+        if (task.getAssignee() != null && task.getAssignee().equals("adminadmin")) {
+            return;
+        }
         String taskName = task.getTaskDefinitionKey();
         switch (taskName) {
             case "updateAddressPayrollTask":
@@ -60,6 +63,11 @@ public class HomeAddressChangeProcess implements TaskListener {
                 }
                 break;
             default:
+        }
+        if (OfficeBPMTaskService.instance().getTasksForProcessId(task.getExecution().getProcessInstanceId()).size() == 1) {
+            task.getExecution().setVariable("allTasksCompleted", true);
+        } else {
+            task.getExecution().setVariable("allTasksCompleted", false);
         }
         new GenericTaskCompleteNotification().notify(task);
     }

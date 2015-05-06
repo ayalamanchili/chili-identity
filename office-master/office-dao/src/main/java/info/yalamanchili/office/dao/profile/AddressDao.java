@@ -40,7 +40,7 @@ public class AddressDao extends CRUDDao<Address> {
         //Set address Type
         if (entity.getAddressType() == null) {
             entity.setAddressType(null);
-        } else if (!entity.getAddressType().getAddressType().isEmpty()) {
+        } else if (entity.getAddressType().getAddressType() != null && !entity.getAddressType().getAddressType().isEmpty()) {
             entity.setAddressType(QueryUtils.findEntity(em, AddressType.class, "addressType", entity.getAddressType().getAddressType()));
         } else if (entity.getAddressType().getId() != null) {
             entity.setAddressType(em.find(AddressType.class, entity.getAddressType().getId()));

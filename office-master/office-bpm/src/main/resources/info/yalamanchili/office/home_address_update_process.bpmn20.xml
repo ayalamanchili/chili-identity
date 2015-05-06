@@ -64,7 +64,7 @@
                        cancelActivity="false" 
                        attachedToRef="updateAddressPayrollTask">
             <timerEventDefinition> 
-                <timeDuration>PT24H</timeDuration> 
+                <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="payrollTaskEmailEscalationTimer" 
@@ -122,7 +122,7 @@
                        cancelActivity="false" 
                        attachedToRef="updateAddressImmigrationTask">
             <timerEventDefinition> 
-                <timeDuration>PT24H</timeDuration> 
+                <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
         <sequenceFlow sourceRef="immigrationTaskEmailEscalationTimer" 
