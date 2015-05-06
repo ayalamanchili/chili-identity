@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel.CreateAddressPanelType;
@@ -54,51 +55,57 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
                     public void onResponse(String arg0) {
                         logger.info("a" + arg0);
                         manageHomeAddressType = arg0.trim();
+                        switch (manageHomeAddressType) {
+                            case "create":
+                                manageHomeAddressL.setText("Create Home Address");
+                                break;
+                            case "update":
+                                manageHomeAddressL.setText("Update Home Address");
+                                break;
+                        }
                     }
                 });
 
     }
 
     protected String manageAddressOptionsUrl() {
-        return OfficeWelcome.constants.root_url() + "address/options?employeeId=" + employeeId;
+        if (employeeId != null) {
+            return OfficeWelcome.constants.root_url() + "address/options?id=" + employeeId;
+        } else {
+            return OfficeWelcome.constants.root_url() + "address/options";
+        }
 
     }
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME)) {
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME)) {
+                panel.add(manageHomeAddressL);
+                panel.add(addAddressLink);
+            }
+        } else if (TabPanel.instance().profilePanel.isVisible()) {
             panel.add(manageHomeAddressL);
             panel.add(addAddressLink);
         }
-//TODO how is this visible to actual users with consultant role
     }
 
     @Override
     public void onClick(ClickEvent arg0) {
         if (arg0.getSource().equals(addAddressLink)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.MIN));
+            if (TabPanel.instance().myOfficePanel.isVisible()) {
+                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                TabPanel.instance().myOfficePanel.entityPanel.add(new CreateAddressPanel(CreateAddressPanelType.ALL));
+            } else if (TabPanel.instance().profilePanel.isVisible()) {
+                new GenericPopup(new CreateAddressPanel(CreateAddressPanelType.ALL)).show();
+            }
         }
         if (arg0.getSource().equals(manageHomeAddressL)) {
-            switch (manageHomeAddressType) {
-                case "create":
-                    if (TabPanel.instance().myOfficePanel.isVisible()) {
-                        TabPanel.instance().myOfficePanel.entityPanel.clear();
-                        TabPanel.instance().myOfficePanel.entityPanel.add(new CreateHomeAddressPanel());
-                    } else if (TabPanel.instance().profilePanel.isVisible()) {
-                        TabPanel.instance().profilePanel.entityPanel.clear();
-                        TabPanel.instance().profilePanel.entityPanel.add(new CreateHomeAddressPanel());
-                    }
-                    break;
-                case "update":
-                    if (TabPanel.instance().myOfficePanel.isVisible()) {
-                        TabPanel.instance().myOfficePanel.entityPanel.clear();
-//                        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateHomeAddressPanel());
-                    } else if (TabPanel.instance().profilePanel.isVisible()) {
-                        TabPanel.instance().profilePanel.entityPanel.clear();
-//                        TabPanel.instance().profilePanel.entityPanel.add(new UpdateHomeAddressPanel());
-                    }
-                    break;
+            if (TabPanel.instance().myOfficePanel.isVisible()) {
+                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                TabPanel.instance().myOfficePanel.entityPanel.add(new CreateHomeAddressPanel());
+            } else if (TabPanel.instance().profilePanel.isVisible()) {
+                new GenericPopup(new CreateHomeAddressPanel()).show();
             }
         }
     }

@@ -130,7 +130,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (ADDRESS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(getEntityId()));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
+            TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel(getEntityId()));
         }
         if (EMAIL_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();

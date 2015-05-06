@@ -21,6 +21,7 @@ public class CreateHomeAddressPanel extends CreateAddressPanel {
         super(CreateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY);
     }
 
+
     @Override
     protected JSONObject populateEntityFromFields() {
         entity = super.populateEntityFromFields();

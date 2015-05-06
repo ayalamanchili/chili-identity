@@ -22,6 +22,8 @@ import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
+import info.yalamanchili.office.client.profile.ProfileHome;
 
 public class CreateAddressPanel extends CreateComposite {
 
@@ -86,16 +88,19 @@ public class CreateAddressPanel extends CreateComposite {
                         postCreateSuccess(arg0);
                     }
                 });
-
     }
 
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Employee Address");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
-
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(TreeEmployeePanel.instance().getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel());
+        } else if (TabPanel.instance().profilePanel.isVisible()) {
+            ProfileHome.instance().refreshAddresses();
+            GenericPopup.instance().hide();
+        }
     }
 
     @Override
@@ -168,6 +173,10 @@ public class CreateAddressPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/address/" + TreeEmployeePanel.instance().getEntityId();
+        if (TreeEmployeePanel.instance() == null) {
+            return OfficeWelcome.constants.root_url() + "employee/address/" + OfficeWelcome.instance().employeeId;
+        } else {
+            return OfficeWelcome.constants.root_url() + "employee/address/" + TreeEmployeePanel.instance().getEntityId();
+        }
     }
 }
