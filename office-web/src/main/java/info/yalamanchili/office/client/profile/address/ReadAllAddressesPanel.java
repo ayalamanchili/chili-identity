@@ -80,10 +80,18 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_TIME, ROLE.ROLE_RELATIONSHIP) && !isHomeAddress(entity)) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        }
+    }
+
+    protected boolean isHomeAddress(JSONObject entity) {
+        if (JSONUtils.toString(entity.get("addressType"), "addressType").equals("Home")) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -118,7 +126,7 @@ public class ReadAllAddressesPanel extends CRUDReadAllComposite {
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressPanel(getEntity(entityId), UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateAddressPanel(getEntity(entityId), UpdateAddressPanelType.ALL));
 
     }
 

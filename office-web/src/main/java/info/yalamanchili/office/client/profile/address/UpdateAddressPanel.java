@@ -52,9 +52,6 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanel.UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             assignEntityValueFromField("addressType", entity);
             assignEntityValueFromField("notifyChange", entity);
-//            assignEntityValueFromField("immigration", entity);
-//            assignEntityValueFromField("healthInsurance", entity);
-//            assignEntityValueFromField("hrChange", entity);
             assignEntityValueFromField("changeNotes", entity);
         }
         logger.info(entity.toString());
@@ -63,7 +60,6 @@ public class UpdateAddressPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-        // TODO Auto-generated method stub
         logger.info(entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
@@ -131,9 +127,6 @@ public class UpdateAddressPanel extends UpdateComposite {
         if (UpdateAddressPanel.UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY.equals(type)) {
             addDropDown("addressType", new SelectAddressTypeWidget(false, false));
             addField("notifyChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//            addField("immigration", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//            addField("healthInsurance", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-//            addField("hrChange", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
             addField("changeNotes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
         alignFields();
@@ -146,7 +139,6 @@ public class UpdateAddressPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        // TODO Auto-generated method stub
         return OfficeWelcome.constants.root_url() + "address/employee";
     }
 }

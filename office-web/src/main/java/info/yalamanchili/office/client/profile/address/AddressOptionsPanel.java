@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -24,8 +25,8 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     private static Logger logger = Logger.getLogger(AddressOptionsPanel.class.getName());
 
     protected HorizontalPanel panel = new HorizontalPanel();
-    protected Anchor addAddressLink = new Anchor("Add Address");
-    protected Anchor manageHomeAddressL = new Anchor("Manage Home Address");
+    protected ClickableLink addAddressLink = new ClickableLink("Add Address");
+    protected ClickableLink manageHomeAddressL = new ClickableLink("");
     protected String employeeId;
     protected String manageHomeAddressType;
 

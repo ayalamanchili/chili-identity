@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class AddressResource extends CRUDResource<Address> {
-    
+
     @Autowired
     public AddressDao addressDao;
     @Autowired
@@ -48,12 +48,12 @@ public class AddressResource extends CRUDResource<Address> {
     protected OfficeSecurityService securityService;
     @Autowired
     protected ProfileNotificationService profileNotificationservice;
-    
+
     @Override
     public CRUDDao getDao() {
         return addressDao;
     }
-    
+
     @GET
     @Path("/options")
     @Produces("application/text")
@@ -70,7 +70,7 @@ public class AddressResource extends CRUDResource<Address> {
             return "create";
         }
     }
-    
+
     @PUT
     @Validate
     @Path("/employee")
@@ -79,10 +79,10 @@ public class AddressResource extends CRUDResource<Address> {
         boolean notifyHealthInsurance = entity.isNotifyHealthInsurance();
         boolean notifyChange = entity.isNotifyChange();
         //Update existing home address
-        if (entity.getContact() != null && entity.getAddressType().getAddressType() != null && entity.getAddressType().getAddressType().equals("Home") && addressDao.getAddressByType((Employee) entity.getContact(), "Home").size() > 0) {
+        if (entity.getContact() != null && entity.getAddressType()!=null && entity.getAddressType().getAddressType() != null && entity.getAddressType().getAddressType().equals("Home") && addressDao.getAddressByType((Employee) entity.getContact(), "Home").size() > 0) {
             Address existingAddress = addressDao.getAddressByType((Employee) entity.getContact(), "Home").get(0);
             entity.setId(existingAddress.getId());
-        }        
+        }
         entity = save(entity);
         if (OfficeFeatureFlipper.instance().getEnableNewHomeAddressChangeProcess() && notifyChange) {
             processAddressUpdateNotificationV2(entity, null, true, notifyImmigration, notifyHealthInsurance);
@@ -91,7 +91,7 @@ public class AddressResource extends CRUDResource<Address> {
         }
         return entity;
     }
-    
+
     public void processAddressUpdateNotification(Address entity, Employee emp) {
         if (emp == null) {
             emp = EmployeeDao.instance().findById(entity.getContact().getId());
@@ -100,7 +100,7 @@ public class AddressResource extends CRUDResource<Address> {
             BPMProfileService.instance().startAddressUpdatedProcess(entity, emp, entity.getChangeNotes());
         }
     }
-    
+
     public void processAddressUpdateNotificationV2(Address entity, Employee emp, boolean primaryMailingAddress, boolean notifyImmigration, boolean notifyHealthInsurance) {
         if (emp == null) {
             emp = EmployeeDao.instance().findById(entity.getContact().getId());
@@ -119,38 +119,38 @@ public class AddressResource extends CRUDResource<Address> {
             OfficeBPMService.instance().startProcess("home_address_update_process", vars);
         }
     }
-    
+
     @PUT
     @Path("/delete/{id}")
     @Override
     public void delete(@PathParam("id") Long id) {
         super.delete(id);
     }
-    
+
     public static AddressResource instance() {
         return SpringContext.getBean(AddressResource.class);
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class AddressTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<Address> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<Address> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<Address> entities) {
             this.entities = entities;
         }

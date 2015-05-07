@@ -37,15 +37,16 @@ public class AddressDao extends CRUDDao<Address> {
 
     @Override
     public Address save(Address entity) {
-        //Set address Type
-        if (entity.getAddressType() == null) {
+        AddressType addressType = entity.getAddressType();
+        entity = super.save(entity);
+        if (addressType == null) {
             entity.setAddressType(null);
-        } else if (entity.getAddressType().getAddressType() != null && !entity.getAddressType().getAddressType().isEmpty()) {
-            entity.setAddressType(QueryUtils.findEntity(em, AddressType.class, "addressType", entity.getAddressType().getAddressType()));
-        } else if (entity.getAddressType().getId() != null) {
-            entity.setAddressType(em.find(AddressType.class, entity.getAddressType().getId()));
+        } else if (addressType.getAddressType() != null && !addressType.getAddressType().isEmpty()) {
+            entity.setAddressType(QueryUtils.findEntity(em, AddressType.class, "addressType", addressType.getAddressType()));
+        } else if (addressType.getId() != null) {
+            entity.setAddressType(em.find(AddressType.class, addressType.getId()));
         }
-        return super.save(entity);
+        return entity;
     }
 
     public List<Address> getAddressByType(Employee emp, String type) {

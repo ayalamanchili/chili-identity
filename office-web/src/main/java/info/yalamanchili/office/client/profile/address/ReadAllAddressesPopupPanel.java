@@ -33,12 +33,16 @@ public class ReadAllAddressesPopupPanel extends ReadAllAddressesPanel {
 
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
-        createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        if (isHomeAddress(entity)) {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+        } else {
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+        }
     }
 
     @Override
     public void updateClicked(String entityId) {
-        UpdateAddressPopupPanel updateaddressPanel = new UpdateAddressPopupPanel(getEntity(entityId), UpdateAddressPanelType.CHANGE_WITH_TYPE_NOTIFY);
+        UpdateAddressPopupPanel updateaddressPanel = new UpdateAddressPopupPanel(getEntity(entityId), UpdateAddressPanelType.ALL);
         new GenericPopup(updateaddressPanel).show();
     }
 
