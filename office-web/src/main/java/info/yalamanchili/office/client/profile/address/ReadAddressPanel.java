@@ -18,6 +18,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.yalamanchili.office.client.profile.addresstype.SelectAddressTypeWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import java.util.logging.Logger;
 
@@ -54,13 +55,13 @@ public class ReadAddressPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info("read ec6 response" + response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info("read ec6 response" + response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
     }
 
     protected void populateComments() {
@@ -108,7 +109,17 @@ public class ReadAddressPanel extends ReadComposite {
     }
 
     @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_HR_ADMINSTRATION);
+    }
+
+    @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "address/" + entityId;
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Address" + "/" + getEntityId();
     }
 }
