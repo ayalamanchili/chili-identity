@@ -15,8 +15,8 @@ public class LoginTest extends AbstractOfficeTest {
 //    @Test(description="test consultant login",groups="login",dependsOnGroups="StaticContents")
     public void testUserLogin() {
         System.out.println("Enter UserLogin: " + new Date());
-        String userId = properties.getProperty("USER_ID");
-        String userPwd = properties.getProperty("USER_PWD");        
+        String userId = properties.getProperty("user_id");
+        String userPwd = properties.getProperty("user_pwd");        
         assertTrue(login(userId, userPwd),"Error:Could not login as user ");
         System.out.println("Exit UserLogin: " + new Date());
     }
@@ -24,8 +24,8 @@ public class LoginTest extends AbstractOfficeTest {
     @Test(description="test admin login",groups="login",dependsOnGroups="StaticContents")
     public void testAdminLogin() {
         System.out.println("Enter AdminLogin: " + new Date());
-        String adminId = properties.getProperty("ADMIN_ID");
-        String adminPwd = properties.getProperty("ADMIN_PWD");        
+        String adminId = properties.getProperty("admin_id");
+        String adminPwd = properties.getProperty("admin_pwd");        
         assertTrue(login(adminId, adminPwd),"Error:Could not login as admin ");
         System.out.println("Exit AdminLogin: " + new Date());
     }

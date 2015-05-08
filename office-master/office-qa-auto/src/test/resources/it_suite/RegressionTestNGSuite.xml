@@ -6,7 +6,6 @@
 -->
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="info.yalamanchili.office_office-qa-auto_jar_1.2-SNAPSHOT">
-    
     <test name="All tests for info.yalamanchili.office_office-qa-auto_jar_1.2-SNAPSHOT">
         <packages>
             <package name="info.yalamanchili.office.qa">

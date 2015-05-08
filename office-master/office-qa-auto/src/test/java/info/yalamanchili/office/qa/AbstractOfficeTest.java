@@ -23,6 +23,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
 /**
  *
@@ -58,17 +59,17 @@ public abstract class AbstractOfficeTest {
     public void launchURL() throws Exception {        
         System.out.println("Enter launchURL: " + new Date());
         
-        browser = properties.getProperty("BROWSER").toLowerCase();
+        browser = properties.getProperty("browser").toLowerCase();
         switch (browser) {
             case "firefox": 
                 driver = new FirefoxDriver();                
                 break;                
             case "chrome":
-                System.setProperty("webdriver.chrome.driver", properties.getProperty("CHROME_DRIVER"));
+                System.setProperty("webdriver.chrome.driver", properties.getProperty("chrome_driver"));
                 driver = new ChromeDriver();
                 break;                
             case "internetexplorer":
-                System.setProperty("webdriver.ie.driver", properties.getProperty("IE_DRIVER"));
+                System.setProperty("webdriver.ie.driver", properties.getProperty("ie_driver"));
                 driver = new InternetExplorerDriver();
                 break;                
             case "safari":
@@ -76,8 +77,8 @@ public abstract class AbstractOfficeTest {
             default:              
         }
         
-        driver.get(properties.getProperty("ROOT_URL"));
-        wait = new WebDriverWait(driver, Long.parseLong(properties.getProperty("WAIT_PERIOD")));
+        driver.get(properties.getProperty("root_url"));
+        wait = new WebDriverWait(driver, Long.parseLong(properties.getProperty("wait_period")));
         
         System.out.println("Exit launchURL: " + new Date());
     }
