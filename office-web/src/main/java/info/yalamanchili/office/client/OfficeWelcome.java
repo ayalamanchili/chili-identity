@@ -37,7 +37,7 @@ public class OfficeWelcome implements EntryPoint {
     public OfficeClientConfig officeClientConfig;
 
     @Override
-    public void onModuleLoad1() {
+    public void onModuleLoad() {
         OfficeImages.INSTANCE.officeCss().ensureInjected();
         instance = this;
         RootLayoutPanel.get().add(new LoginPage());
