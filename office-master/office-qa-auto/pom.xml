@@ -34,7 +34,34 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>2.45.0</version>
-            <scope>test</scope>        
         </dependency>    
     </dependencies>        
+    <build>
+        <!-- skip unit test run, tests to be executed during integration-test -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>surefire-it</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <suiteXmlFiles> 
+                                <suiteXmlFile>src/test/resources/it_suite/RegressionTestNGSuite.xml</suiteXmlFile>                               
+                            </suiteXmlFiles>
+                            <skip>false</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>    
+        </plugins>
+    </build>
 </project>
